@@ -1,14 +1,15 @@
 import axios from 'axios';
 import querystring from 'querystring';
+import Config from '../utils/clarety-config';
 import { parseNestedElements } from '../utils/element-utils';
 
-const baseUrl = 'http://dev-clarety-baseline.clarety.io/api';
-const explainEndpoint   = baseUrl + '/explain/?endpoint=subscribe';
-const subscribeEndpoint = baseUrl + '/subscribe/';
+const explainPath = '/explain/?endpoint=subscribe';
+const subscribePath = '/subscribe/';
 
 class SubscribeApi {
   static async fetchElements() {
-    const response = await axios.get(explainEndpoint);
+    const endpoint = this._apiBase() + explainPath;
+    const response = await axios.get(endpoint);
 
     try {
       return response.data.result[0].elements;
@@ -25,13 +26,21 @@ class SubscribeApi {
       data: JSON.stringify([postData]),
     });
 
-    const response = await axios.post(subscribeEndpoint, postBody);
+    const endpoint = this._apiBase() + subscribePath;
+    const response = await axios.post(endpoint, postBody);
 
     try {
       return response.data.result[0];
     } catch (error) {
       return null;
     }
+  }
+
+  static _apiBase() {
+    const env = Config.get('env');
+    const prefix = env ? env + '-' : '';
+    const instanceKey = Config.get('instanceKey') || 'NO_INSTANCE_KEY';
+    return `http://${prefix}${instanceKey}.clarety.io/api`;
   }
 }
 
