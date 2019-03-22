@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import { formStatuses } from '../actions/formStatusActions';
 
-const SubmitButton = ({ title, className, block, isReady }) => (
-  <Button className={className} block={block} disabled={!isReady} type="submit">
+const SubmitButton = ({ title, className, block, testId, isReady }) => (
+  <Button className={className} block={block} disabled={!isReady} type="submit" data-testid={testId}>
     {isReady ? title : <Spinner />} 
   </Button>
 );

@@ -46,7 +46,7 @@ describe('<TestSubscribeView>', () => {
         const request = querystring.parse(config.data);
         const postData = JSON.parse(request.data);
 
-        expect(postData[0].name).toBe('George Costanza');
+        expect(postData[0].firstName).toBe('George Costanza');
         expect(postData[0].email).toBe('gcostanza@humanfund.org');
         expect(postData[0].code).toBe('test-newsletter');
 

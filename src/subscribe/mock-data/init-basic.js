@@ -22,6 +22,18 @@ export default {
           description: 'Subscriber Email',
           options: [],
         },
+        country: {
+          name: 'Customer Country',
+          property: 'country',
+          methods: ['get', 'post'],
+          example: 'AU',
+          description: 'Customer Country',
+          options: {
+            "AU": "Australia",
+            "US": "United States",
+            "UK": "United Kingdom",
+          },
+        }
       }
     }
   ]

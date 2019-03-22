@@ -12,7 +12,7 @@ export default {
         {
           code: "R1000",
           message: "Name is required",
-          field: "name",
+          field: "firstName",
         },
         {
           code: null,

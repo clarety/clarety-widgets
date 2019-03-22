@@ -1,26 +1,21 @@
 import React from 'react';
-import { Form, Button } from 'react-bootstrap';
-import BaseSubscribeView from './BaseSubscribeView';
+import { BaseSubscribeView } from './BaseSubscribeView';
 import { connectStore } from '../utils/store-utils';
 import SubscribeForm from '../components/SubscribeForm';
 import ErrorMessages from '../components/ErrorMessages';
 import TextInput from '../components/TextInput';
+import SelectInput from '../components/SelectInput';
+import SubmitButton from '../components/SubmitButton';
 
 class TestSubscribeView extends BaseSubscribeView {
   renderFormPanel() {
     return (
       <SubscribeForm testId="subscribe-form">
         <ErrorMessages />
-
-        <Form.Group>
-          <TextInput property="name" testId="name-input" />
-        </Form.Group>
-
-        <Form.Group>
-          <TextInput property="email" type="email" testId="email-input" />
-        </Form.Group>
-
-        <Button type="submit" data-testid="submit-button">Subscribe</Button>
+        <TextInput property="firstName" placeholder="Name" testId="name-input" />
+        <TextInput property="email" type="email" placeholder="Email" testId="email-input" />
+        <SelectInput property="country" placeholder="(Please Select)" testId="submit-button" />
+        <SubmitButton title="Subscribe" testId="submit-button" />
       </SubscribeForm>
     );
   }
