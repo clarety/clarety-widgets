@@ -1,6 +1,6 @@
 {
   "name": "clarety-widgets",
-  "version": "0.1.00",
+  "version": "0.0.0",
   "description": "",
   "main": "lib/clarety-widgets.js",
   "repository": {
@@ -30,13 +30,17 @@
     "@babel/preset-react": "7.0.0",
     "axios-mock-adapter": "^1.16.0",
     "babel-loader": "8.0.5",
+    "np": "^4.0.2",
     "react-testing-library": "^6.0.0",
     "webpack-cli": "^3.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "webpack",
-    "test": "react-scripts test",
+    "test": "jest",
+    "test:watch": "react-scripts test",
+    "prepare": "yarn run build",
+    "publish": "np",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
