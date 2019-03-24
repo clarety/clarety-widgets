@@ -1,6 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import ClaretyConfig from './subscribe/utils/clarety-config';
+import render from './subscribe/utils/clarety-render';
 import BaseSubscribeView from './subscribe/views/BaseSubscribeView';
 import './index.css';
 
@@ -9,7 +9,8 @@ ClaretyConfig.init({
   instanceKey: 'clarety-baseline',
 });
 
-ReactDOM.render(
-  <BaseSubscribeView code="newsletter" />,
-  document.getElementById('subscribe-view')
+render('subscribe-widget',
+  <BaseSubscribeView
+    code="newsletter"
+  />
 );
