@@ -4,7 +4,7 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import querystring from 'querystring';
 import TestFormView from './TestFormView';
-import ClaretyConfig from '../utils/clarety-config';
+import ClaretyConfig from '../services/clarety-config';
 import initBasicResponse from '../mock-data/init-basic';
 import validationOkResponse from '../mock-data/validation-ok';
 import validationErrorResponse from '../mock-data/validation-error';
