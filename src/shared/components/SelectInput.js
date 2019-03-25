@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { getNestedElement } from '../utils/element-utils';
+import { findElement } from '../utils/element-utils';
 import { updateData } from '../actions/formDataActions';
 
 const SelectInput = ({ property, placeholder, formData, elements, errors, updateData }) => {
   const error = getValidationError(property, errors);
-  const { options } = getNestedElement(property, elements);
+  const { options } = findElement(property, elements);
   const values = Object.keys(options);
 
   return (

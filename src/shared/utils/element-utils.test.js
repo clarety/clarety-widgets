@@ -1,6 +1,6 @@
-import { getNestedElement, parseNestedElements } from './element-utils';
+import { findElement, parseNestedElements } from './element-utils';
 
-describe('getNestedElement', () => {
+describe('findElement', () => {
   it('gets a non-nested element', () => {
     const elements = {
       firstName: {
@@ -10,7 +10,7 @@ describe('getNestedElement', () => {
 
     const property = 'firstName';
 
-    const element = getNestedElement(property, elements);
+    const element = findElement(property, elements);
 
     expect(element.name).toBe('First Name');
   });
@@ -26,7 +26,7 @@ describe('getNestedElement', () => {
 
     const property = 'billingId.address1';
 
-    const element = getNestedElement(property, elements);
+    const element = findElement(property, elements);
 
     expect(element.name).toBe('Customer Address 1');
   });
@@ -44,7 +44,7 @@ describe('getNestedElement', () => {
 
     const property = 'address.billing.city';
 
-    const element = getNestedElement(property, elements);
+    const element = findElement(property, elements);
 
     expect(element.name).toBe('Billing Address City');
   });
@@ -58,7 +58,7 @@ describe('getNestedElement', () => {
 
     const property = 'address';
 
-    expect(() => getNestedElement(property, elements))
+    expect(() => findElement(property, elements))
       .toThrowError();
   });
 
@@ -76,7 +76,7 @@ describe('getNestedElement', () => {
 
     const property = 'billing.address';
 
-    expect(() => getNestedElement(property, elements))
+    expect(() => findElement(property, elements))
       .toThrowError();
   });
 });

@@ -1,4 +1,4 @@
-export const getNestedElement = (propertyName, elements) => {
+export const findElement = (propertyName, elements) => {
   const properties = propertyName.split('.');
 
   let element = elements;
