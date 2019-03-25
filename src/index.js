@@ -1,5 +1,5 @@
 import React from 'react';
-import ClaretyConfig from './shared/utils/clarety-config';
+import ClaretyConfig from './shared/services/clarety-config';
 import { renderWidget } from './shared/utils/widget-utils';
 import SubscribeFormView from './shared/views/SubscribeFormView';
 import './index.css';

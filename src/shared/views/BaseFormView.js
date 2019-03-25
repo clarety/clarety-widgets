@@ -1,6 +1,6 @@
 import React from 'react';
 import { MemoryRouter, Switch, Route } from 'react-router-dom';
-import ClaretyApi from '../api/clarety-api';
+import ClaretyApi from '../services/clarety-api';
 import { statuses } from '../actions/formStatusActions';
 import { connectFormToStore } from '../utils/form-utils';
 

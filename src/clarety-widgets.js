@@ -1,4 +1,4 @@
-import ClaretyConfig from './shared/utils/clarety-config';
+import ClaretyConfig from './shared/services/clarety-config';
 import { renderWidget } from './shared/utils/widget-utils';
 import { BaseFormView } from './shared/views/BaseFormView';
 import ErrorMessages from './shared/components/ErrorMessages';

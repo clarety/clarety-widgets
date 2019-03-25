@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-import ClaretyConfig from './clarety-config';
+import ClaretyConfig from '../services/clarety-config';
 
 export function renderWidget(elementId, component) {
   const element = document.getElementById(elementId);

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import querystring from 'querystring';
-import Config from '../utils/clarety-config';
+import Config from './clarety-config';
 import { parseNestedElements } from '../utils/element-utils';
 
 class ClaretyApi {
