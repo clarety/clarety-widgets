@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom';
-import ClaretyConfig from '../utils/clarety-config';
+import ClaretyConfig from './clarety-config';
 
-function render(elementId, component) {
+export function renderWidget(elementId, component) {
   const element = document.getElementById(elementId);
   if (element) {
     ReactDOM.render(component, element);
@@ -11,5 +11,3 @@ function render(elementId, component) {
     }
   }
 };
-
-export default render;

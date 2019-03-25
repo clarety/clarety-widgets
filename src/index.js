@@ -1,6 +1,6 @@
 import React from 'react';
 import ClaretyConfig from './shared/utils/clarety-config';
-import render from './shared/utils/clarety-render';
+import { renderWidget } from './shared/utils/widget-utils';
 import SubscribeFormView from './shared/views/SubscribeFormView';
 import './index.css';
 
@@ -9,4 +9,4 @@ ClaretyConfig.init({
   instanceKey: 'clarety-baseline',
 });
 
-render('test-widget', <SubscribeFormView />);
+renderWidget('test-widget', <SubscribeFormView />);
