@@ -14,6 +14,8 @@ class SubscribeFormView extends BaseFormView {
   action = 'subscribe';
 
   renderForm() {
+    const { listCode } = this.props;
+
     return (
       <div>
         <ErrorMessages />
@@ -31,7 +33,7 @@ class SubscribeFormView extends BaseFormView {
             <SelectInput property="country" placeholder="(Please Select)" />
           </Col>
 
-          <HiddenInput property="code" value="newsletter" />
+          <HiddenInput property="code" value={listCode} />
 
           <SubmitButton title="Subscribe" className="ml-1" />
         </Form.Row>

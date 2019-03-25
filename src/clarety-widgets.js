@@ -1,6 +1,7 @@
 import ClaretyConfig from './shared/services/clarety-config';
 import { renderWidget } from './shared/utils/widget-utils';
 import { BaseFormView } from './shared/views/BaseFormView';
+import SubscribeFormView from './shared/views/SubscribeFormView';
 import ErrorMessages from './shared/components/ErrorMessages';
 import TextInput from './shared/components/TextInput';
 import SelectInput from './shared/components/SelectInput';
@@ -13,6 +14,7 @@ export default {
   widget: renderWidget,
 
   BaseFormView,
+  SubscribeFormView,
   ErrorMessages,
   TextInput,
   SelectInput,
