@@ -4,6 +4,7 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import querystring from 'querystring';
 import TestSubscribeView from './TestSubscribeView';
+import ClaretyConfig from '../utils/clarety-config';
 import initBasicResponse from '../mock-data/init-basic';
 import validationOkResponse from '../mock-data/validation-ok';
 import validationErrorResponse from '../mock-data/validation-error';
@@ -14,8 +15,13 @@ const enterText = (textInput, value) => fireEvent.change(textInput, { target: { 
 
 describe('<TestSubscribeView>', () => {
   beforeEach(() => {
+    ClaretyConfig.init({
+      env: 'dev',
+      instanceKey: 'test',
+    });
+
     mock
-      .onGet('http://dev-clarety-baseline.clarety.io/api/explain/?endpoint=subscribe')
+      .onGet('http://dev-test.clarety.io/api/explain/?endpoint=subscribe')
       .reply(200, initBasicResponse);
   });
 
@@ -41,7 +47,7 @@ describe('<TestSubscribeView>', () => {
 
   it('posts the expected data when submitted', async () => {
     mock
-      .onPost('http://dev-clarety-baseline.clarety.io/api/subscribe/')
+      .onPost('http://dev-test.clarety.io/api/subscribe/')
       .reply(config => {
         const request = querystring.parse(config.data);
         const postData = JSON.parse(request.data);
@@ -70,7 +76,7 @@ describe('<TestSubscribeView>', () => {
 
   it('displays the success panel when validation succeeds', async () => {
     mock
-      .onPost('http://dev-clarety-baseline.clarety.io/api/subscribe/')
+      .onPost('http://dev-test.clarety.io/api/subscribe/')
       .reply(200, validationOkResponse);
 
     const { getByTestId, queryByTestId } = render(
@@ -93,7 +99,7 @@ describe('<TestSubscribeView>', () => {
 
   it('displays errors when validation fails', async () => {
     mock
-      .onPost('http://dev-clarety-baseline.clarety.io/api/subscribe/')
+      .onPost('http://dev-test.clarety.io/api/subscribe/')
       .reply(200, validationErrorResponse);
 
     const { getByTestId, queryByTestId, getByText, queryByText } = render(
