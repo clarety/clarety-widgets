@@ -1,30 +1,34 @@
 import React from 'react';
-import { BaseSubscribeView } from './BaseSubscribeView';
-import { connectStore } from '../utils/store-utils';
-import SubscribeForm from '../components/SubscribeForm';
+import { connectFormToStore } from '../utils/form-utils';
+import { BaseFormView } from './BaseFormView';
 import ErrorMessages from '../components/ErrorMessages';
 import TextInput from '../components/TextInput';
 import SelectInput from '../components/SelectInput';
 import SubmitButton from '../components/SubmitButton';
+import HiddenInput from '../components/HiddenInput';
 
-class TestSubscribeView extends BaseSubscribeView {
-  renderFormPanel() {
+class TestFormView extends BaseFormView {
+  endpoint = 'test';
+  action = 'test';
+
+  renderForm() {
     return (
-      <SubscribeForm testId="subscribe-form">
+      <div data-testid="test-form">
         <ErrorMessages />
         <TextInput property="firstName" placeholder="Name" testId="name-input" />
         <TextInput property="email" type="email" placeholder="Email" testId="email-input" />
         <SelectInput property="country" placeholder="(Please Select)" testId="submit-button" />
+        <HiddenInput property="code" value="test-newsletter" />
         <SubmitButton title="Subscribe" testId="submit-button" />
-      </SubscribeForm>
+      </div>
     );
   }
 
-  renderSuccessPanel() {
+  renderSuccess() {
     return (
       <p data-testid="success-message">Thanks for subscribing</p>
     );
   }
 }
 
-export default connectStore(TestSubscribeView);
+export default connectFormToStore(TestFormView);

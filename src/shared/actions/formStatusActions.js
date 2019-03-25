@@ -1,12 +1,12 @@
 import actionTypes from './types';
 
-export const formStatuses = {
+export const statuses = {
   uninitialized: 'uninitialized',
   ready: 'ready',
   busy: 'busy',
 };
 
-export const setFormStatus = state => ({
+export const setStatus = state => ({
   type: actionTypes.setFormStatus,
   payload: state,
 });

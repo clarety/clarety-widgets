@@ -3,7 +3,7 @@ import { render, cleanup, fireEvent, waitForElement } from 'react-testing-librar
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import querystring from 'querystring';
-import TestSubscribeView from './TestSubscribeView';
+import TestFormView from './TestFormView';
 import ClaretyConfig from '../utils/clarety-config';
 import initBasicResponse from '../mock-data/init-basic';
 import validationOkResponse from '../mock-data/validation-ok';
@@ -13,7 +13,7 @@ const mock = new MockAdapter(axios);
 
 const enterText = (textInput, value) => fireEvent.change(textInput, { target: { value } });
 
-describe('<TestSubscribeView>', () => {
+describe('<TestFormView>', () => {
   beforeEach(() => {
     ClaretyConfig.init({
       env: 'dev',
@@ -21,22 +21,22 @@ describe('<TestSubscribeView>', () => {
     });
 
     mock
-      .onGet('http://dev-test.clarety.io/api/explain/?endpoint=subscribe')
+      .onGet('http://dev-test.clarety.io/api/explain/?endpoint=test')
       .reply(200, initBasicResponse);
   });
 
   afterEach(cleanup);
 
   it('renders without crashing', () => {
-    render(<TestSubscribeView />);
+    render(<TestFormView />);
   });
 
   it('initially displays the form panel', async () => {
     const { getByTestId, queryByTestId } = render(
-      <TestSubscribeView code="test-newsletter" />
+      <TestFormView />
     );
 
-    await waitForElement(() => getByTestId('subscribe-form'));
+    await waitForElement(() => getByTestId('test-form'));
 
     expect(queryByTestId('name-input')).not.toBeNull();
     expect(queryByTestId('email-input')).not.toBeNull();
@@ -47,7 +47,7 @@ describe('<TestSubscribeView>', () => {
 
   it('posts the expected data when submitted', async () => {
     mock
-      .onPost('http://dev-test.clarety.io/api/subscribe/')
+      .onPost('http://dev-test.clarety.io/api/test/')
       .reply(config => {
         const request = querystring.parse(config.data);
         const postData = JSON.parse(request.data);
@@ -60,10 +60,10 @@ describe('<TestSubscribeView>', () => {
       });
 
     const { getByTestId } = render(
-      <TestSubscribeView code="test-newsletter" />
+      <TestFormView />
     );
 
-    await waitForElement(() => getByTestId('subscribe-form'));
+    await waitForElement(() => getByTestId('test-form'));
 
     const nameInput = getByTestId('name-input');
     const emailInput = getByTestId('email-input');
@@ -76,14 +76,14 @@ describe('<TestSubscribeView>', () => {
 
   it('displays the success panel when validation succeeds', async () => {
     mock
-      .onPost('http://dev-test.clarety.io/api/subscribe/')
+      .onPost('http://dev-test.clarety.io/api/test/')
       .reply(200, validationOkResponse);
 
     const { getByTestId, queryByTestId } = render(
-      <TestSubscribeView code="test-newsletter" />
+      <TestFormView />
     );
 
-    await waitForElement(() => getByTestId('subscribe-form'));
+    await waitForElement(() => getByTestId('test-form'));
 
     expect(queryByTestId('success-message')).toBeNull();
 
@@ -99,14 +99,14 @@ describe('<TestSubscribeView>', () => {
 
   it('displays errors when validation fails', async () => {
     mock
-      .onPost('http://dev-test.clarety.io/api/subscribe/')
+      .onPost('http://dev-test.clarety.io/api/test/')
       .reply(200, validationErrorResponse);
 
     const { getByTestId, queryByTestId, getByText, queryByText } = render(
-      <TestSubscribeView code="test-newsletter" />
+      <TestFormView />
     );
 
-    await waitForElement(() => getByTestId('subscribe-form'));
+    await waitForElement(() => getByTestId('test-form'));
 
     const btn = getByTestId('submit-button');
     fireEvent.click(btn);

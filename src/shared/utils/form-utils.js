@@ -1,23 +1,27 @@
 import React from 'react';
 import { createStore } from 'redux';
 import { Provider, connect } from 'react-redux';
-import rootReducer from '../reducers';
+import { setStatus } from '../actions/formStatusActions';
 import { setElements } from '../actions/elementsActions';
-import { setFormStatus } from '../actions/formStatusActions';
-import { updateFormData } from '../actions/formDataActions';
+import { updateData } from '../actions/formDataActions';
+import { setValidationErrors, clearValidationErrors } from '../actions/formErrorsActions';
+import formReducer from '../reducers/formReducer';
 
-export function connectStore(ViewComponent) {
+export function connectFormToStore(ViewComponent) {
   const mapStateToProps = state => {
     return {
-      formStatus: state.formStatus,
       elements: state.elements,
+      status: state.status,
+      formData: state.data,
     };
   };
 
   const actions = {
-    setFormStatus: setFormStatus,
+    setStatus: setStatus,
     setElements: setElements,
-    updateFormData: updateFormData,
+    updateData: updateData,
+    clearValidationErrors: clearValidationErrors,
+    setValidationErrors: setValidationErrors,
   };
 
   const ConnectedComponent = connect(mapStateToProps, actions)(ViewComponent);
@@ -25,7 +29,7 @@ export function connectStore(ViewComponent) {
   class StoreWrapper extends React.Component {
     render() {
       return (
-        <Provider store={createStore(rootReducer)}>
+        <Provider store={createStore(formReducer)}>
           <ConnectedComponent {...this.props } />
         </Provider>
       );

@@ -3,13 +3,11 @@ import querystring from 'querystring';
 import Config from '../utils/clarety-config';
 import { parseNestedElements } from '../utils/element-utils';
 
-const explainPath = '/explain/?endpoint=subscribe';
-const subscribePath = '/subscribe/';
-
-class SubscribeApi {
-  static async fetchElements() {
-    const endpoint = this._apiBase() + explainPath;
-    const response = await axios.get(endpoint);
+class ClaretyApi {
+  static async fetchElements(endpoint) {
+    const apiBase = this._apiBase();
+    const url = `${apiBase}/explain/?endpoint=${endpoint}`;
+    const response = await axios.get(url);
 
     try {
       return response.data.result[0].elements;
@@ -18,16 +16,17 @@ class SubscribeApi {
     }
   }
 
-  static async subscribe(formData) {
-    const postData = parseNestedElements(formData);
+  static async post(endpoint, action, data) {
+    const postData = parseNestedElements(data);
 
     const postBody = querystring.stringify({
-      action: 'subscribe',
+      action: action,
       data: JSON.stringify([postData]),
     });
 
-    const endpoint = this._apiBase() + subscribePath;
-    const response = await axios.post(endpoint, postBody);
+    const apiBase = this._apiBase();
+    const url = `${apiBase}/${endpoint}/`;
+    const response = await axios.post(url, postBody);
 
     try {
       return response.data.result[0];
@@ -44,4 +43,4 @@ class SubscribeApi {
   }
 }
 
-export default SubscribeApi;
+export default ClaretyApi;

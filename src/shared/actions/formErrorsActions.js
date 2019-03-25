@@ -1,10 +1,10 @@
 import actionTypes from './types';
 
 export const setValidationErrors = errors => ({
-  type: actionTypes.setValidationErrors,
+  type: actionTypes.setFormValidationErrors,
   payload: errors,
 });
 
 export const clearValidationErrors = () => ({
-  type: actionTypes.clearValidationErrors,
+  type: actionTypes.clearFormValidationErrors,
 });

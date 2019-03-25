@@ -1,7 +1,7 @@
 import actionTypes from '../actions/types';
-import { formStatuses } from '../actions/formStatusActions';
+import { statuses } from '../actions/formStatusActions';
 
-const initialState = formStatuses.uninitialized;
+const initialState = statuses.uninitialized;
 
 const formStatusReducer = (state = initialState, action) => {
   switch (action.type) {

@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import { getNestedElement } from '../utils/element-utils';
-import { updateFormData } from '../actions/formDataActions';
+import { updateData } from '../actions/formDataActions';
 
-const SelectInput = ({ property, placeholder, formData, elements, errors, updateFormData }) => {
+const SelectInput = ({ property, placeholder, formData, elements, errors, updateData }) => {
   const error = getValidationError(property, errors);
   const { options } = getNestedElement(property, elements);
   const values = Object.keys(options);
@@ -13,7 +13,7 @@ const SelectInput = ({ property, placeholder, formData, elements, errors, update
     <>
       <Form.Control as="select"
         value={formData[property] || ''}
-        onChange={event => updateFormData(property, event.target.value)}
+        onChange={event => updateData(property, event.target.value)}
         isInvalid={error !== null}
       >
         <option>{placeholder}</option>
@@ -41,14 +41,14 @@ const getValidationError = (property, errors) => {
 
 const mapStateToProps = state => {
   return {
-    formData: state.formData,
     elements: state.elements,
-    errors: state.validationErrors,
+    formData: state.data,
+    errors: state.errors,
   }
 };
 
 const actions = {
-  updateFormData: updateFormData,
+  updateData: updateData,
 };
 
 export default connect(mapStateToProps, actions)(SelectInput);

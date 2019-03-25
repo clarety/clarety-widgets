@@ -17,7 +17,7 @@ const ErrorMessages = ({ errors }) => {
 const mapStateToProps = state => {
   return {
     // Filter out any field errors.
-    errors: state.validationErrors.filter(error => !error.field),
+    errors: state.errors.filter(error => !error.field),
   };
 };
 

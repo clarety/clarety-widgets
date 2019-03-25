@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { updateFormData } from '../actions/formDataActions';
+import { updateData } from '../actions/formDataActions';
 
-const TextInput = ({ property, type, placeholder, testId, formData, errors, updateFormData }) => {
+const TextInput = ({ property, type, placeholder, testId, formData, errors, updateData }) => {
   let error = getValidationError(property, errors);
 
   return (
@@ -12,7 +12,7 @@ const TextInput = ({ property, type, placeholder, testId, formData, errors, upda
         type={type || 'text'}
         placeholder={placeholder}
         value={formData[property] || ''}
-        onChange={event => updateFormData(property, event.target.value)}
+        onChange={event => updateData(property, event.target.value)}
         data-testid={testId}
         isInvalid={error !== null}
       />
@@ -35,13 +35,13 @@ const getValidationError = (property, errors) => {
 
 const mapStateToProps = state => {
   return {
-    formData: state.formData,
-    errors: state.validationErrors,
+    formData: state.data,
+    errors: state.errors,
   };
 };
 
 const actions = {
-  updateFormData: updateFormData,
+  updateData: updateData,
 };
 
 export default connect(mapStateToProps, actions)(TextInput);

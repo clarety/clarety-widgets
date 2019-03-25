@@ -1,6 +1,6 @@
 import actionTypes from './types';
 
-export const updateFormData = (field, value) => ({
+export const updateData = (field, value) => ({
   type: actionTypes.updateFormData,
   payload: { field, value },
 });

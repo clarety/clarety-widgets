@@ -1,22 +1,22 @@
-import { BaseSubscribeView } from './subscribe/views/BaseSubscribeView';
-import SubscribeForm from './subscribe/components/SubscribeForm';
-import ErrorMessages from './subscribe/components/ErrorMessages';
-import TextInput from './subscribe/components/TextInput';
-import SelectInput from './subscribe/components/SelectInput';
-import SubmitButton from './subscribe/components/SubmitButton';
-import { connectStore } from './subscribe/utils/store-utils';
-import ClaretyConfig from './subscribe/utils/clarety-config';
-import render from './subscribe/utils/clarety-render';
+import { BaseFormView } from './shared/views/BaseFormView';
+import ErrorMessages from './shared/components/ErrorMessages';
+import TextInput from './shared/components/TextInput';
+import SelectInput from './shared/components/SelectInput';
+import HiddenInput from './shared/components/HiddenInput';
+import SubmitButton from './shared/components/SubmitButton';
+import { connectFormToStore } from './shared/utils/form-utils';
+import ClaretyConfig from './shared/utils/clarety-config';
+import render from './shared/utils/clarety-render';
 
 export default {
   config: ClaretyConfig.init,
   widget: render,
 
-  BaseSubscribeView,
-  SubscribeForm,
+  BaseFormView,
   ErrorMessages,
   TextInput,
   SelectInput,
+  HiddenInput,
   SubmitButton,
-  connectStore,
+  connectFormToStore,
 };
