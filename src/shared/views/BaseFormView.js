@@ -9,8 +9,8 @@ export class BaseFormView extends React.Component {
   action = null;
 
   async componentDidMount() {
-    if (!this.endpoint) throw new Error('[Clarety] No endpoint provided.');
-    if (!this.action) throw new Error('[Clarety] No action provided.');
+    if (!this.endpoint) throw new Error('[Clarety] BaseFormView "endpoint" must be overridden.');
+    if (!this.action) throw new Error('[Clarety] BaseFormView "action" must be overridden.');
 
     const { setElements, setStatus } = this.props;
 
@@ -66,11 +66,11 @@ export class BaseFormView extends React.Component {
   }
 
   renderForm() {
-    throw new Error('[Clarety] renderForm not implemented');
+    throw new Error('[Clarety] BaseFormView "renderForm" must be overridden.');
   }
 
   renderSuccess() {
-    throw new Error('[Clarety] renderSuccess not implemented');
+    throw new Error('[Clarety] BaseFormView "renderSuccess" must be overridden.');
   }
 }
 
