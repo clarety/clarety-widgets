@@ -6,7 +6,7 @@ import ErrorMessages from '../components/ErrorMessages';
 import TextInput from '../components/TextInput';
 import SubmitButton from '../components/SubmitButton';
 import SelectInput from '../components/SelectInput';
-import HiddenInput from '../components/HiddenInput';
+import FormElement from '../components/FormElement';
 
 
 class SubscribeFormView extends BaseFormView {
@@ -20,6 +20,8 @@ class SubscribeFormView extends BaseFormView {
       <div>
         <ErrorMessages />
 
+        <FormElement property="code" value={listCode} />
+
         <Form.Row className="mr-0 align-items-start">
           <Col>
             <TextInput property="firstName" placeholder="Name" />
@@ -30,10 +32,8 @@ class SubscribeFormView extends BaseFormView {
           </Col>
 
           <Col>
-            <SelectInput property="country" placeholder="(Please Select)" />
+            <SelectInput property="country" placeholder="(Select Country)" />
           </Col>
-
-          <HiddenInput property="code" value={listCode} />
 
           <SubmitButton title="Subscribe" className="ml-1" />
         </Form.Row>

@@ -5,7 +5,7 @@ import SubscribeFormView from './shared/views/SubscribeFormView';
 import ErrorMessages from './shared/components/ErrorMessages';
 import TextInput from './shared/components/TextInput';
 import SelectInput from './shared/components/SelectInput';
-import HiddenInput from './shared/components/HiddenInput';
+import FormElement from './shared/components/FormElement';
 import SubmitButton from './shared/components/SubmitButton';
 import { connectFormToStore } from './shared/utils/form-utils';
 
@@ -18,7 +18,7 @@ export default {
   ErrorMessages,
   TextInput,
   SelectInput,
-  HiddenInput,
+  FormElement,
   SubmitButton,
   connectFormToStore,
 };

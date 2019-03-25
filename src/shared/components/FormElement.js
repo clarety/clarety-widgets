@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { updateData } from '../actions/formDataActions';
 
-class HiddenInput extends React.Component {
+class FormElement extends React.Component {
   componentWillMount() {
     const { property, value, updateData } = this.props;
     updateData(property, value);
@@ -17,4 +17,4 @@ const actions = {
   updateData: updateData,
 };
 
-export default connect(null, actions)(HiddenInput);
+export default connect(null, actions)(FormElement);
