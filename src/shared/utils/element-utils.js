@@ -3,6 +3,10 @@ export const getNestedElement = (propertyName, elements) => {
 
   let element = elements;
   for (let property of properties) {
+    if (!element[property]) {
+      throw new Error(`[Clarety] property "${propertyName}" not found.`);
+    }
+
     element = element[property];
   }
 

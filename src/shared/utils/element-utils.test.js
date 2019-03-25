@@ -48,6 +48,37 @@ describe('getNestedElement', () => {
 
     expect(element.name).toBe('Billing Address City');
   });
+
+  it('throws an error when a non-nested element does not exist', () => {
+    const elements = {
+      firstName: {
+        name: 'First Name',
+      }
+    };
+
+    const property = 'address';
+
+    expect(() => getNestedElement(property, elements))
+      .toThrowError();
+  });
+
+  it('throws an error when a nested element does not exist', () => {
+    const elements = {
+      firstName: {
+        name: 'First Name',
+      },
+      billing: {
+        city: {
+          name: 'Billing City',
+        }
+      }
+    };
+
+    const property = 'billing.address';
+
+    expect(() => getNestedElement(property, elements))
+      .toThrowError();
+  });
 });
 
 describe('parseNestedElements', () => {
