@@ -1,5 +1,4 @@
-import actionTypes from '../actions/types';
-import { statuses } from '../actions/form-status-actions';
+import { actionTypes, statuses } from '../actions';
 
 const initialState = statuses.uninitialized;
 

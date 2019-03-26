@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { updateData } from '../actions/form-data-actions';
+import { updateData } from '../actions';
 
 const TextInput = ({ property, type, placeholder, testId, formData, errors, updateData }) => {
   let error = getValidationError(property, errors);

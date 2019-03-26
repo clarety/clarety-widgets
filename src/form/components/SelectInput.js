@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import { findElement } from '../../shared/utils/element-utils';
-import { updateData } from '../actions/form-data-actions';
+import { updateData } from '../actions';
 
 const SelectInput = ({ property, placeholder, formData, elements, errors, updateData }) => {
   const error = getValidationError(property, errors);

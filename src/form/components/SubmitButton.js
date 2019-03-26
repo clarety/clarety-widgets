@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
-import { statuses } from '../actions/form-status-actions';
+import { statuses } from '../actions';
 
 const SubmitButton = ({ title, className, block, testId, isReady }) => (
   <Button className={className} block={block} disabled={!isReady} type="submit" data-testid={testId}>

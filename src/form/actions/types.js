@@ -1,4 +1,4 @@
-export default {
+export const actionTypes = {
   // Form Status Actions
   setFormStatus: 'SET_FORM_STATUS',
 
