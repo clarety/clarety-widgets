@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import { updateData } from '../actions';
 import { getValidationError } from '../utils/form-utils';
+import FieldError from './FieldError';
 
 const TextInput = ({ property, type, placeholder, testId, formData, errors, updateData }) => {
   let error = getValidationError(property, errors);
@@ -17,11 +18,7 @@ const TextInput = ({ property, type, placeholder, testId, formData, errors, upda
         data-testid={testId}
         isInvalid={error !== null}
       />
-      {error && 
-        <Form.Control.Feedback type="invalid">
-          {error.message}
-        </Form.Control.Feedback>
-      }
+      <FieldError error={error} />
     </>
     );
 };

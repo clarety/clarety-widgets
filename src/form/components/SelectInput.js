@@ -4,6 +4,7 @@ import { Form } from 'react-bootstrap';
 import { findElement } from '../../shared/utils/element-utils';
 import { updateData } from '../actions';
 import { getValidationError } from '../utils/form-utils';
+import FieldError from './FieldError';
 
 const SelectInput = ({ property, placeholder, formData, elements, errors, updateData }) => {
   const error = getValidationError(property, errors);
@@ -22,12 +23,7 @@ const SelectInput = ({ property, placeholder, formData, elements, errors, update
           <option key={value} value={value}>{options[value]}</option>
         )}
       </Form.Control>
-      
-      {error && 
-        <Form.Control.Feedback type="invalid">
-          {error.message}
-        </Form.Control.Feedback>
-      }
+      <FieldError error={error} />
     </>
   );
 };
