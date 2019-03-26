@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { findElement } from '../utils/element-utils';
+import { findElement } from '../../shared/utils/element-utils';
 import { updateData } from '../actions/formDataActions';
 
 const SelectInput = ({ property, placeholder, formData, elements, errors, updateData }) => {

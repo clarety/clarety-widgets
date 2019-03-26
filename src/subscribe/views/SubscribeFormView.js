@@ -1,13 +1,12 @@
 import React from 'react';
 import { Col, Form, Alert } from 'react-bootstrap';
-import { BaseFormView } from './BaseFormView';
-import { connectFormToStore } from '../utils/form-utils';
-import ErrorMessages from '../components/ErrorMessages';
-import TextInput from '../components/TextInput';
-import SubmitButton from '../components/SubmitButton';
-import SelectInput from '../components/SelectInput';
-import FormElement from '../components/FormElement';
-
+import { BaseFormView } from '../../form/views/BaseFormView';
+import { connectFormToStore } from '../../form/utils/form-utils';
+import ErrorMessages from '../../form/components/ErrorMessages';
+import TextInput from '../../form/components/TextInput';
+import SubmitButton from '../../form/components/SubmitButton';
+import SelectInput from '../../form/components/SelectInput';
+import FormElement from '../../form/components/FormElement';
 
 class SubscribeFormView extends BaseFormView {
   endpoint = 'subscribe';

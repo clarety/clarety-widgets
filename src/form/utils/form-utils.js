@@ -2,7 +2,7 @@ import React from 'react';
 import { createStore } from 'redux';
 import { Provider, connect } from 'react-redux';
 import { setStatus } from '../actions/formStatusActions';
-import { setElements } from '../actions/elementsActions';
+import { setElements } from '../../shared/actions/elementsActions';
 import { updateData } from '../actions/formDataActions';
 import { setValidationErrors, clearValidationErrors } from '../actions/formErrorsActions';
 import formReducer from '../reducers/formReducer';

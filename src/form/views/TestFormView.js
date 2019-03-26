@@ -5,7 +5,7 @@ import ErrorMessages from '../components/ErrorMessages';
 import TextInput from '../components/TextInput';
 import SelectInput from '../components/SelectInput';
 import SubmitButton from '../components/SubmitButton';
-import HiddenInput from '../components/HiddenInput';
+import FormElement from '../components/FormElement';
 
 class TestFormView extends BaseFormView {
   endpoint = 'test';
@@ -18,7 +18,7 @@ class TestFormView extends BaseFormView {
         <TextInput property="firstName" placeholder="Name" testId="name-input" />
         <TextInput property="email" type="email" placeholder="Email" testId="email-input" />
         <SelectInput property="country" placeholder="(Please Select)" testId="submit-button" />
-        <HiddenInput property="code" value="test-newsletter" />
+        <FormElement property="code" value="test-newsletter" />
         <SubmitButton title="Subscribe" testId="submit-button" />
       </div>
     );

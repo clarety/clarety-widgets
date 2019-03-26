@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import elementsReducer from './elementsReducer';
+import elementsReducer from '../../shared/reducers/elementsReducer';
 import formStatusReducer from './formStatusReducer';
 import formDataReducer from './formDataReducer';
 import formErrorsReducer from './formErrorsReducer';
