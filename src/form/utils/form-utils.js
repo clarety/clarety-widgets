@@ -2,7 +2,7 @@ import React from 'react';
 import { createStore } from 'redux';
 import { Provider, connect } from 'react-redux';
 import formReducer from '../reducers/form-Reducer';
-import { setElements } from '../../shared/actions/elements-actions';
+import { setElements } from '../../shared/actions';
 import { setStatus, updateData, setValidationErrors, clearValidationErrors } from '../actions';
 
 export function connectFormToStore(ViewComponent) {
