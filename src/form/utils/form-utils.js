@@ -1,11 +1,11 @@
 import React from 'react';
 import { createStore } from 'redux';
 import { Provider, connect } from 'react-redux';
-import { setStatus } from '../actions/formStatusActions';
-import { setElements } from '../../shared/actions/elementsActions';
-import { updateData } from '../actions/formDataActions';
-import { setValidationErrors, clearValidationErrors } from '../actions/formErrorsActions';
-import formReducer from '../reducers/formReducer';
+import formReducer from '../reducers/form-Reducer';
+import { setElements } from '../../shared/actions/elements-actions';
+import { setStatus } from '../actions/form-status-actions';
+import { updateData } from '../actions/form-data-actions';
+import { setValidationErrors, clearValidationErrors } from '../actions/form-errors-actions';
 
 export function connectFormToStore(ViewComponent) {
   const mapStateToProps = state => {

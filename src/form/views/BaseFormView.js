@@ -1,7 +1,7 @@
 import React from 'react';
 import { MemoryRouter, Switch, Route } from 'react-router-dom';
 import ClaretyApi from '../../shared/services/clarety-api';
-import { statuses } from '../actions/formStatusActions';
+import { statuses } from '../actions/form-status-actions';
 import { connectFormToStore } from '../utils/form-utils';
 
 export class BaseFormView extends React.Component {
