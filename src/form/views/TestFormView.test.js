@@ -40,6 +40,7 @@ describe('<TestFormView>', () => {
 
     expect(queryByTestId('name-input')).not.toBeNull();
     expect(queryByTestId('email-input')).not.toBeNull();
+    expect(queryByTestId('country-input')).not.toBeNull();
     expect(queryByTestId('submit-button')).not.toBeNull();
 
     expect(queryByTestId('success-message')).toBeNull();

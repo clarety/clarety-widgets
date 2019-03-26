@@ -17,7 +17,7 @@ class TestFormView extends BaseFormView {
         <ErrorMessages />
         <TextInput property="firstName" placeholder="Name" testId="name-input" />
         <TextInput property="email" type="email" placeholder="Email" testId="email-input" />
-        <SelectInput property="country" placeholder="(Please Select)" testId="submit-button" />
+        <SelectInput property="country" placeholder="(Please Select)" testId="country-input" />
         <FormElement property="code" value="test-newsletter" />
         <SubmitButton title="Subscribe" testId="submit-button" />
       </div>

@@ -31,7 +31,7 @@ class SubscribeFormView extends BaseFormView {
           </Col>
 
           <Col>
-            <SelectInput property="country" placeholder="(Select Country)" />
+            <SelectInput property="country" placeholder="(Select Country)" testId="hello-test" />
           </Col>
 
           <SubmitButton title="Subscribe" className="ml-1" />
