@@ -4,7 +4,6 @@ import formStatusReducer from './form-status-reducer';
 import formDataReducer from './form-data-reducer';
 import formErrorsReducer from './form-errors-reducer';
 
-
 const formReducer = combineReducers({
   elements: elementsReducer,
   status: formStatusReducer,

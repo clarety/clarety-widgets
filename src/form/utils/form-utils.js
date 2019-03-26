@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStore } from 'redux';
 import { Provider, connect } from 'react-redux';
-import formReducer from '../reducers/form-Reducer';
+import formReducer from '../reducers/form-reducer';
 import { setElements } from '../../shared/actions';
 import { setStatus, updateData, setValidationErrors, clearValidationErrors } from '../actions';
 
