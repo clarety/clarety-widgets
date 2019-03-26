@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import { findElement } from '../../shared/utils/element-utils';
 import { updateData } from '../actions';
+import { getValidationError } from '../utils/form-utils';
 
 const SelectInput = ({ property, placeholder, formData, elements, errors, updateData }) => {
   const error = getValidationError(property, errors);
@@ -29,14 +30,6 @@ const SelectInput = ({ property, placeholder, formData, elements, errors, update
       }
     </>
   );
-};
-
-const getValidationError = (property, errors) => {
-  for (let error of errors) {
-    if (error.field === property) return error;
-  }
-
-  return null;
 };
 
 const mapStateToProps = state => {

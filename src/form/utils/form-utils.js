@@ -38,3 +38,11 @@ export function connectFormToStore(ViewComponent) {
 
   return StoreWrapper;
 }
+
+export const getValidationError = (property, errors) => {
+  for (let error of errors) {
+    if (error.field === property) return error;
+  }
+
+  return null;
+};

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import { updateData } from '../actions';
+import { getValidationError } from '../utils/form-utils';
 
 const TextInput = ({ property, type, placeholder, testId, formData, errors, updateData }) => {
   let error = getValidationError(property, errors);
@@ -23,14 +24,6 @@ const TextInput = ({ property, type, placeholder, testId, formData, errors, upda
       }
     </>
     );
-};
-
-const getValidationError = (property, errors) => {
-  for (let error of errors) {
-    if (error.field === property) return error;
-  }
-
-  return null;
 };
 
 const mapStateToProps = state => {
