@@ -32,14 +32,14 @@ export class BaseFormView extends React.Component {
     clearValidationErrors();
     
     const result = await ClaretyApi.post(this.endpoint, this.action, formData);
-
-    if (result.status === 'error') {
-      setValidationErrors(result.validationErrors);
-    } else {
-      this.onSuccess(route);
+    if (result) {
+      if (result.status === 'error') {
+        setValidationErrors(result.validationErrors);
+        setStatus(statuses.ready);
+      } else {
+        this.onSuccess(route);
+      }
     }
-
-    setStatus(statuses.ready);
   };
 
   onSuccess(route) {

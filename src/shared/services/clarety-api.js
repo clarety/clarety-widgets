@@ -7,12 +7,12 @@ class ClaretyApi {
   static async fetchElements(endpoint) {
     const apiBase = this._apiBase();
     const url = `${apiBase}/explain/?endpoint=${endpoint}`;
-    const response = await axios.get(url);
 
     try {
+      const response = await axios.get(url);
       return response.data.result[0].elements;
     } catch (error) {
-      return null;
+      throw new Error(`[Clarety API] Failed to fetch elements from endpoint '${endpoint}'`);
     }
   }
 
@@ -26,12 +26,12 @@ class ClaretyApi {
 
     const apiBase = this._apiBase();
     const url = `${apiBase}/${endpoint}/`;
-    const response = await axios.post(url, postBody);
 
     try {
+      const response = await axios.post(url, postBody);
       return response.data.result[0];
     } catch (error) {
-      return null;
+      throw new Error(`[Clarety API] Something went wrong posting data to endpoint '${endpoint}' w/ action '${action}'`);
     }
   }
 
