@@ -2,54 +2,8 @@ import React from 'react';
 import { Card, Button, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import DonationOption from '../components/DonationOption';
 import DonationInput from '../components/DonationInput';
-
-const singleOptions = [
-  {
-    label: 'AUD $30',
-    amount: 30,
-    desc: 'Can provide bandages and painkillers in an emergency.',
-    image: 'https://placeimg.com/160/130/nature',
-  },
-  {
-    label: 'AUD $60',
-    amount: 60,
-    desc: 'Could save a life by providing antivenom after a snakebite.',
-    image: 'https://placeimg.com/160/130/people',
-  },
-  {
-    label: 'AUD $100',
-    amount: 100,
-    desc: 'Can help keep a flight nurse on board an aircraft.',
-    image: 'https://placeimg.com/160/130/tech',
-  },
-  {
-    label: 'AUD $',
-    amount: null,
-    desc: 'Enter amount',
-    image: 'https://placeimg.com/160/130/arch',
-  },
-];
-
-const recurringOptions = [
-  {
-    label: 'AUD $20',
-    amount: 20,
-    desc: 'Can provide bandages and painkillers in an emergency.',
-    image: 'https://placeimg.com/160/130/tech',
-  },
-  {
-    label: 'AUD $40',
-    amount: 40,
-    desc: 'Can help keep a flight nurse on board an aircraft.',
-    image: 'https://placeimg.com/160/130/nature',
-  },
-  {
-    label: 'AUD $',
-    amount: null,
-    desc: 'Enter amount',
-    image: 'https://placeimg.com/160/130/people',
-  },
-];
+import singleOptions from '../mock-data/single-options';
+import recurringOptions from '../mock-data/recurring-options';
 
 class AmountForm extends React.Component {
   state = {
