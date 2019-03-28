@@ -1,5 +1,6 @@
 import React from 'react';
-import { Card, Button, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
+import { Card, Button } from 'react-bootstrap';
+import FrequencySelect from '../components/FrequencySelect';
 import DonationOption from '../components/DonationOption';
 import DonationInput from '../components/DonationInput';
 import singleOptions from '../mock-data/single-options';
@@ -23,15 +24,10 @@ class AmountForm extends React.Component {
         <Card.Header>Choose Amount</Card.Header>
 
         <Card.Body>
-          <ToggleButtonGroup
-            type="radio"
-            name="frequency"
+          <FrequencySelect
             value={this.state.frequency}
             onChange={this.selectFrequency}
-          >
-            <ToggleButton value="single" variant="outline-primary">One-Time</ToggleButton>
-            <ToggleButton value="recurring" variant="outline-primary">Monthly</ToggleButton>
-          </ToggleButtonGroup>
+          />
 
           <div className="mt-3 text-left">
             {this._getOptions().map(this.renderDonationOption)}
