@@ -1,12 +1,13 @@
 import React from 'react';
 import { Row, Col, Card } from 'react-bootstrap';
 
-const PriceHandle = ({ data, isSelected, onClick }) => (
+const DonationOption = ({ data, isSelected, selectAmount }) => (
   <Card
-    onClick={onClick}
-    style={{ marginTop: '10px', cursor: 'pointer' }}
-    bg={isSelected ? 'primary' : null}
+    className="mt-2"
+    style={{ cursor: 'pointer' }}
+    bg={isSelected ? 'primary' : 'light'}
     text={isSelected ? 'white' : null}
+    onClick={() => selectAmount(data.amount)}
   >
     <Row noGutters>
       <Col xs={4}>
@@ -14,13 +15,12 @@ const PriceHandle = ({ data, isSelected, onClick }) => (
       </Col>
       <Col xs={8}>
       <Card.Body>
-        <Card.Title>{data.price}</Card.Title>
+        <Card.Title className="mb-1">{data.label}</Card.Title>
         <Card.Text>{data.desc}</Card.Text>
-        
       </Card.Body>
       </Col>
     </Row>
   </Card>
 );
 
-export default PriceHandle;
+export default DonationOption;

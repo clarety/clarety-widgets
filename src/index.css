@@ -9,6 +9,11 @@
   margin: 80px auto;
 }
 
+#donate-widget {
+  width: 500px;
+  margin: 80px auto;
+}
+
 @keyframes fadein {
   from { opacity: 0; }
   to   { opacity: 1; }

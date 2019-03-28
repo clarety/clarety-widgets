@@ -1,7 +1,7 @@
 import React from 'react';
 import ClaretyConfig from './shared/services/clarety-config';
 import { renderWidget } from './shared/utils/widget-utils';
-import DonateFormView from './donate/views/DonateFormView';
+import DonateWidget from './donate/views/DonateWidget';
 import './index.css';
 
 ClaretyConfig.init({
@@ -9,4 +9,4 @@ ClaretyConfig.init({
   instanceKey: 'clarety-baseline',
 });
 
-renderWidget('donate-widget', <DonateFormView />);
+renderWidget('donate-widget', <DonateWidget />);

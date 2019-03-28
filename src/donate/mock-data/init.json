@@ -1,0 +1,79 @@
+{
+  "requestId": "",
+  "success": true,
+  "result": [
+    {
+      "resource": "donate",
+      
+      "suggestedDonations": [
+        {
+          "offerId": "111",
+          "offerPaymentId": "222",
+          "frequency": "recurring",
+          "ammount": "30",
+          "desc": "Could save a life by providing antivenom after a snakebite.",
+          "image": "https://placeimg.com/160/130/nature"
+        },
+        {
+          "offerId": "112",
+          "offerPaymentId": "223",
+          "frequency": "single",
+          "ammount": "30",
+          "desc": "Can provide bandages and painkillers in an emergency.",
+          "image": "https://placeimg.com/160/130/nature"
+        },
+        ...
+      ],
+
+      "elements": {
+        "offerId": {},
+        "offerPaymentId": {},
+        "ammount": {},
+        "frequency": {
+          "options": [
+            { "value": "single", "label": "One Time" },
+            { "value": "recurring", "label": "Monthly" }
+          ]
+        },
+
+        "email": {},
+
+        "cardNumber": {},
+        "cardName": {},
+        "cardExpMonth": {},
+        "cardExpYear": {},
+        "ccv": {},
+
+        "recaptcha": {},
+
+        "customerType": {
+          "options": [
+            { "value": "0", "label": "Individual" },
+            { "value": "1", "label": "Business" }
+          ]
+        },
+
+        "firstName": {},
+        "lastName": {},
+        "phoneNumber": {},
+        "receiptName": {},
+        "dobDay": {},
+        "dobMonth": {},
+        "dobYear": {},
+
+        "newsletter": {},
+
+        "source": {
+          "options": [
+            { "value": "209", "label": "Book" },
+            { "value": "9",   "label": "Event" },
+            { "value": "276", "label": "10-Year Film" },
+            ...
+          ]
+        },
+
+        "address": {}
+      }
+    }
+  ]
+}

@@ -13,7 +13,6 @@ export default {
           description: 'Subscriber Name',
           options: [],
         },
-
         email: {
           name: 'Email',
           property: 'email',
