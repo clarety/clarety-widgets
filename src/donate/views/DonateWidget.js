@@ -1,12 +1,12 @@
 import React from 'react';
-import AmountForm from './AmountForm';
-import DetailsForm from './DetailsForm';
-import PaymentForm from './PaymentForm';
+import AmountPanel from './AmountPanel';
+import DetailsPanel from './DetailsPanel';
+import PaymentPanel from './PaymentPanel';
 
 const DonateWidget = () => (
-  <AmountForm />
-  // <DetailsForm />
-  // <PaymentForm />
+  <AmountPanel />
+  // <DetailsPanel />
+  // <PaymentPanel />
 );
 
 export default DonateWidget;

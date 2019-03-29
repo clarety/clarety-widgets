@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Form, Col, Button } from 'react-bootstrap';
 
-const PaymentForm = () => (
+const PaymentPanel = () => (
   <Card>
     <Card.Header className="text-center">
       Payment Details
@@ -48,4 +48,4 @@ const PaymentForm = () => (
   </Card>
 );
 
-export default PaymentForm;
+export default PaymentPanel;

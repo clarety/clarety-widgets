@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Form, Col, Button } from 'react-bootstrap';
 
-const DetailsForm = () => (
+const DetailsPanel = () => (
   <Card>
     <Card.Header className="text-center">
       Personal Details
@@ -44,4 +44,4 @@ const DetailsForm = () => (
   </Card>
 );
 
-export default DetailsForm;
+export default DetailsPanel;

@@ -6,7 +6,7 @@ import DonationInput from '../components/DonationInput';
 import singleOptions from '../mock-data/single-options';
 import recurringOptions from '../mock-data/recurring-options';
 
-class AmountForm extends React.Component {
+class AmountPanel extends React.Component {
   state = {
     frequency: 'single',
     amount: 0,
@@ -73,4 +73,4 @@ class AmountForm extends React.Component {
   }
 }
 
-export default AmountForm;
+export default AmountPanel;
