@@ -9,70 +9,89 @@
         {
           "offerId": "111",
           "offerPaymentId": "222",
-          "frequency": "recurring",
-          "ammount": "30",
-          "desc": "Could save a life by providing antivenom after a snakebite.",
-          "image": "https://placeimg.com/160/130/nature"
+          "frequency": "single",
+          "amounts": [
+            {
+              "amount": 30,
+              "label": "AUD $30",
+              "desc": "Can provide bandages and painkillers in an emergency.",
+              "image": "https://placeimg.com/160/130/nature"
+            },
+            {
+              "amount": 60,
+              "label": "AUD $60",
+              "desc": "Could save a life by providing antivenom after a snakebite.",
+              "image": "https://placeimg.com/160/130/people"
+            },
+            {
+              "amount": 100,
+              "label": "AUD $100",
+              "desc": "Can help keep a flight nurse on board an aircraft.",
+              "image": "https://placeimg.com/160/130/tech",
+              "default": true
+            },
+            {
+              "label": "AUD $",
+              "desc": "Enter amount",
+              "image": "https://placeimg.com/160/130/arch"
+            }
+          ]
         },
         {
-          "offerId": "112",
-          "offerPaymentId": "223",
-          "frequency": "single",
-          "ammount": "30",
-          "desc": "Can provide bandages and painkillers in an emergency.",
-          "image": "https://placeimg.com/160/130/nature"
-        },
-        ...
+          "offerId": "333",
+          "offerPaymentId": "444",
+          "frequency": "recurring",
+          "amounts": [
+            {
+              "label": "AUD $20",
+              "amount": 20,
+              "desc": "Can provide bandages and painkillers in an emergency.",
+              "image": "https://placeimg.com/160/130/tech"
+            },
+            {
+              "label": "AUD $40",
+              "amount": 40,
+              "desc": "Can help keep a flight nurse on board an aircraft.",
+              "image": "https://placeimg.com/160/130/nature",
+              "default": true
+            },
+            {
+              "label": "AUD $",
+              "desc": "Enter amount",
+              "image": "https://placeimg.com/160/130/people"
+            }
+          ]
+        }
       ],
 
       "elements": {
-        "offerId": {},
-        "offerPaymentId": {},
-        "ammount": {},
-        "frequency": {
-          "options": [
-            { "value": "single", "label": "One Time" },
-            { "value": "recurring", "label": "Monthly" }
-          ]
+        "offerId": {
+          "required": true
         },
 
-        "email": {},
-
-        "cardNumber": {},
-        "cardName": {},
-        "cardExpMonth": {},
-        "cardExpYear": {},
-        "ccv": {},
-
-        "recaptcha": {},
-
-        "customerType": {
-          "options": [
-            { "value": "0", "label": "Individual" },
-            { "value": "1", "label": "Business" }
-          ]
+        "offerPaymentId": {
+          "required": true
         },
 
-        "firstName": {},
-        "lastName": {},
-        "phoneNumber": {},
-        "receiptName": {},
-        "dobDay": {},
-        "dobMonth": {},
-        "dobYear": {},
-
-        "newsletter": {},
-
-        "source": {
-          "options": [
-            { "value": "209", "label": "Book" },
-            { "value": "9",   "label": "Event" },
-            { "value": "276", "label": "10-Year Film" },
-            ...
-          ]
+        "ammount": {
+          "required": true
         },
 
-        "address": {}
+        "firstName": {
+          "required": true
+        },
+
+        "lastName": {
+          "required": true
+        },
+
+        "email": {
+          "required": true
+        },
+
+        "cardToken": {
+          "required": true
+        }
       }
     }
   ]

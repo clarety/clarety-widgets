@@ -74,5 +74,5 @@ export class BaseFormView extends React.Component {
   }
 }
 
-// Note: An un-connected BaseFormView is also exported where the class is defined.
+// Note: An un-wrapped BaseFormView is also exported above.
 export default connectFormToStore(BaseFormView);

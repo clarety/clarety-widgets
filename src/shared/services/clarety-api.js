@@ -4,13 +4,23 @@ import Config from './clarety-config';
 import { parseNestedElements } from '../utils/element-utils';
 
 class ClaretyApi {
-  static async fetchElements(endpoint) {
+  static async explain(endpoint) {
     const apiBase = this._apiBase();
     const url = `${apiBase}/explain/?endpoint=${endpoint}`;
 
     try {
       const response = await axios.get(url);
-      return response.data.result[0].elements;
+      return response.data.result[0];
+    } catch (error) {
+      throw new Error(`[Clarety API] Failed to explain endpoint '${endpoint}'`);
+    }
+  }
+
+  // TODO: Remove 'fetchElements' and let callers use 'explain' instead.
+  static async fetchElements(endpoint) {
+    try {
+      const explain = await this.explain(endpoint);
+      return explain.elements;
     } catch (error) {
       throw new Error(`[Clarety API] Failed to fetch elements from endpoint '${endpoint}'`);
     }
