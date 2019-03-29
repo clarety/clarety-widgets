@@ -16,6 +16,7 @@ export default [
     label: 'AUD $100',
     desc: 'Can help keep a flight nurse on board an aircraft.',
     image: 'https://placeimg.com/160/130/tech',
+    default: true,
   },
   {
     amount: null,

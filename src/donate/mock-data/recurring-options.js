@@ -10,6 +10,7 @@ export default [
     amount: 40,
     desc: 'Can help keep a flight nurse on board an aircraft.',
     image: 'https://placeimg.com/160/130/nature',
+    default: true,
   },
   {
     label: 'AUD $',

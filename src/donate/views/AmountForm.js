@@ -8,15 +8,20 @@ import recurringOptions from '../mock-data/recurring-options';
 
 class AmountForm extends React.Component {
   state = {
-    singleIndex: null,
-    recurringIndex: null,
     frequency: 'single',
     amount: 0,
+    singleIndex: -1,
+    recurringIndex: -1,
   };
 
   selectFrequency = frequency => this.setState({ frequency });
   selectSingleAmount = (singleIndex, amount) => this.setState({ singleIndex, amount });
   selectRecurringAmount = (recurringIndex, amount) => this.setState({ recurringIndex, amount });
+
+  componentDidMount() {
+    this._selectDefaultAmount(singleOptions, this.selectSingleAmount);
+    this._selectDefaultAmount(recurringOptions, this.selectRecurringAmount);
+  }
 
   render() {
     return (
@@ -48,6 +53,7 @@ class AmountForm extends React.Component {
 
     return (
       <DonationComponent
+        key={index}
         data={option}
         selectAmount={amount => selectAmount(index, amount)}
         isSelected={selectedIndex === index}
@@ -60,6 +66,11 @@ class AmountForm extends React.Component {
   _getSelectAmountHandler = () => (this.state.frequency === 'single' ? this.selectSingleAmount : this.selectRecurringAmount);
 
   _getSelectedIndex = () => (this.state.frequency === 'single' ? this.state.singleIndex : this.state.recurringIndex);
+
+  _selectDefaultAmount = (options, selectAmount) => {
+    const index = options.findIndex(option => option.default);
+    selectAmount(index, options[index].amount);
+  }
 }
 
 export default AmountForm;
