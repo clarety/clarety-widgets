@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 import FrequencySelect from '../components/FrequencySelect';
-import DonationOption from '../components/DonationOption';
+import SuggestedDonation from '../components/SuggestedDonation';
 import DonationInput from '../components/DonationInput';
 import singleOptions from '../mock-data/single-options';
 import recurringOptions from '../mock-data/recurring-options';
@@ -47,7 +47,7 @@ class AmountPanel extends React.Component {
   }
 
   renderDonationOption = (option, index) => {
-    const DonationComponent = option.amount ? DonationOption : DonationInput;
+    const DonationComponent = option.amount ? SuggestedDonation : DonationInput;
     const selectAmount = this._getSelectAmountHandler();
     const selectedIndex = this._getSelectedIndex();
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col, Card } from 'react-bootstrap';
 
-const DonationOption = ({ data, isSelected, selectAmount }) => (
+const SuggestedDonation = ({ data, isSelected, selectAmount }) => (
   <Card
     className="mt-2"
     style={{ cursor: 'pointer' }}
@@ -23,4 +23,4 @@ const DonationOption = ({ data, isSelected, selectAmount }) => (
   </Card>
 );
 
-export default DonationOption;
+export default SuggestedDonation;
