@@ -16,16 +16,6 @@ class ClaretyApi {
     }
   }
 
-  // TODO: Remove 'fetchElements' and let callers use 'explain' instead.
-  static async fetchElements(endpoint) {
-    try {
-      const explain = await this.explain(endpoint);
-      return explain.elements;
-    } catch (error) {
-      throw new Error(`[Clarety API] Failed to fetch elements from endpoint '${endpoint}'`);
-    }
-  }
-
   static async post(endpoint, action, data) {
     const postData = parseNestedElements(data);
 

@@ -14,9 +14,9 @@ export class BaseFormView extends React.Component {
 
     const { setElements, setStatus } = this.props;
 
-    const elements = await ClaretyApi.fetchElements(this.endpoint);
-    if (elements) {
-      setElements(elements);
+    const explain = await ClaretyApi.explain(this.endpoint);
+    if (explain) {
+      setElements(explain.elements);
       setStatus(statuses.ready);
     }
   }
