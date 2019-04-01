@@ -27,27 +27,19 @@ class AmountPanel extends React.Component {
   }
 
   render() {
-    // TODO: get from init.
-    const frequencyOptions = [
-      { value: 'single', label: 'One-Time' },
-      { value: 'recurring', label: 'Monthly' },
-    ];
-
-    const amounts = this._getSuggestedAmounts();
-
     return (
       <Card className="text-center">
         <Card.Header>Choose Amount</Card.Header>
 
         <Card.Body>
           <FrequencySelect
-            options={frequencyOptions}
+            options={this._getFrequencyOptions()}
             value={this.state.frequency}
             onChange={this.selectFrequency}
           />
 
           <div className="mt-3 text-left">
-            {amounts.map(this.renderDonationComponent)}
+            {this._getAmounts().map(this.renderDonationComponent)}
           </div>
         </Card.Body>
 
@@ -73,9 +65,16 @@ class AmountPanel extends React.Component {
     );
   }
 
-  _getSuggestedAmounts = () => {
-    const suggestedDonations = this.props.suggestedDonations.find(offer => offer.frequency === this.state.frequency);
-    return suggestedDonations.amounts;
+  _getFrequencyOptions = () => {
+    return this.props.suggestedDonations.map(offer => ({
+      value: offer.frequency,
+      label: offer.label,
+    }));
+  };
+
+  _getAmounts = () => {
+    const offer = this.props.suggestedDonations.find(offer => offer.frequency === this.state.frequency);
+    return offer.amounts;
   };
 
   _selectDefaultAmounts = () => {

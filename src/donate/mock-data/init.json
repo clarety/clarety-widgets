@@ -10,6 +10,7 @@
           "offerId": "111",
           "offerPaymentId": "222",
           "frequency": "single",
+          "label": "One-Off",
           "amounts": [
             {
               "amount": 30,
@@ -40,7 +41,8 @@
         {
           "offerId": "333",
           "offerPaymentId": "444",
-          "frequency": "recurring",
+          "frequency": "monthly",
+          "label": "Monthly",
           "amounts": [
             {
               "label": "AUD $20",
