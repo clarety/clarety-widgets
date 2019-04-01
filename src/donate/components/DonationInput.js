@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Row, Col, Card, InputGroup } from 'react-bootstrap';
 
-const DonationOption = ({ data, isSelected, selectAmount }) => {
+const DonationOption = ({ value, data, isSelected, amountChange }) => {
   let amountInput = React.createRef();
 
   return (
@@ -25,11 +25,12 @@ const DonationOption = ({ data, isSelected, selectAmount }) => {
                 <InputGroup.Text>{data.label}</InputGroup.Text>
               </InputGroup.Prepend>
               <Form.Control
+                value={value}
                 className="text-right"
                 type="number"
                 min="0"
-                onFocus={event => selectAmount(event.target.value)}
-                onChange={event => selectAmount(event.target.value)}
+                onFocus={event => amountChange(event.target.value)}
+                onChange={event => amountChange(event.target.value)}
                 ref={amountInput}
               />
             </InputGroup>

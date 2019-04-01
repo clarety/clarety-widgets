@@ -13,10 +13,18 @@ class AmountPanel extends React.Component {
 
   selectFrequency = frequency => this.setState({ frequency });
 
-  selectAmount = (frequency, index, amount) => {
+  selectAmount = (frequency, index, amount, variableAmount = null) => {
     this.setState(prevState => {
       const selections = { ...prevState.selections };
-      selections[frequency] = { index, amount };
+      
+      selections[frequency] = selections[frequency] || {};
+      selections[frequency].index = index;
+      selections[frequency].amount = amount;
+
+      if (variableAmount !== null) {
+        selections[frequency].variableAmount = variableAmount;
+      }
+
       return { selections };
     });
   }
@@ -51,16 +59,30 @@ class AmountPanel extends React.Component {
   }
 
   renderDonationComponent = (option, index) => {
-    const DonationComponent = option.amount ? SuggestedDonation : DonationInput;
-    const selectAmount = (amount) => this.selectAmount(this.state.frequency, index, amount);
-    const selectedIndex = this.state.selections[this.state.frequency].index;
+    const { selections, frequency } = this.state;
+    const selection = selections[frequency];
+
+    const selectAmount = amount => this.selectAmount(frequency, index, amount);
+    const variableAmountChange = amount => this.selectAmount(frequency, index, amount, amount);
+
+    if (option.amount) {
+      return (
+        <SuggestedDonation
+          key={index}
+          data={option}
+          selectAmount={selectAmount}
+          isSelected={selection.index === index}
+        />
+      );
+    }
 
     return (
-      <DonationComponent
+      <DonationInput
         key={index}
         data={option}
-        selectAmount={selectAmount}
-        isSelected={selectedIndex === index}
+        amountChange={variableAmountChange}
+        isSelected={selection.index === index}
+        value={selection.variableAmount || ''}
       />
     );
   }
