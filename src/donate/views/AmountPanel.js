@@ -24,12 +24,19 @@ class AmountPanel extends React.Component {
   }
 
   render() {
+    // TODO: get from init.
+    const options = [
+      { value: 'single', label: 'One-Time' },
+      { value: 'monthly', label: 'Monthly' },
+    ];
+
     return (
       <Card className="text-center">
         <Card.Header>Choose Amount</Card.Header>
 
         <Card.Body>
           <FrequencySelect
+          options={options}
             value={this.state.frequency}
             onChange={this.selectFrequency}
           />

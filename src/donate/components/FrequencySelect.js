@@ -1,15 +1,22 @@
 import React from 'react';
 import { ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 
-const FrequencySelect = ({ value, onChange }) => (
+const FrequencySelect = ({ options, value, onChange }) => (
   <ToggleButtonGroup
     type="radio"
     name="frequency"
     value={value}
     onChange={onChange}
   >
-    <ToggleButton value="single" variant="outline-primary">One-Time</ToggleButton>
-    <ToggleButton value="recurring" variant="outline-primary">Monthly</ToggleButton>
+    {options.map(option => (
+      <ToggleButton
+        value={option.value}
+        key={option.value}
+        variant="outline-primary"
+      >
+        {option.label}
+      </ToggleButton>
+    ))}
   </ToggleButtonGroup>
 );
 
