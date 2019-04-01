@@ -19,15 +19,24 @@ mock
 
 
 export class DonateWidget extends React.Component {
+  // TEMP: use 'hasInitialized' flag until 'status' is added to store.
+  state = {
+    hasInitialized: false,
+  };
+
   async componentWillMount() {
     const { setElements, setSuggestedDonations } = this.props;
 
     const explain = await ClaretyApi.explain('donate');
     setElements(explain.elements);
     setSuggestedDonations(explain.suggestedDonations);
+
+    this.setState({ hasInitialized: true });
   }
 
   render() {
+    if (!this.state.hasInitialized) return null;
+
     return (
       <AmountPanel />
       // <DetailsPanel />

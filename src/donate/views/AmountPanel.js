@@ -1,10 +1,9 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
 import FrequencySelect from '../components/FrequencySelect';
 import SuggestedDonation from '../components/SuggestedDonation';
 import DonationInput from '../components/DonationInput';
-import singleOptions from '../mock-data/single-options';
-import recurringOptions from '../mock-data/recurring-options';
 
 class AmountPanel extends React.Component {
   state = {
@@ -19,8 +18,9 @@ class AmountPanel extends React.Component {
   selectRecurringAmount = (recurringIndex, amount) => this.setState({ recurringIndex, amount });
 
   componentDidMount() {
-    this._selectDefaultAmount(singleOptions, this.selectSingleAmount);
-    this._selectDefaultAmount(recurringOptions, this.selectRecurringAmount);
+    const { single, recurring } = this.props.suggestedDonations;
+    this._selectDefaultAmount(single.amounts, this.selectSingleAmount);
+    this._selectDefaultAmount(recurring.amounts, this.selectRecurringAmount);
   }
 
   render() {
@@ -61,7 +61,10 @@ class AmountPanel extends React.Component {
     );
   }
 
-  _getOptions = () => (this.state.frequency === 'single' ? singleOptions : recurringOptions);
+  _getOptions = () => {
+    const { single, recurring } = this.props.suggestedDonations;
+    return this.state.frequency === 'single' ? single.amounts : recurring.amounts;
+  };
 
   _getSelectAmountHandler = () => (this.state.frequency === 'single' ? this.selectSingleAmount : this.selectRecurringAmount);
 
@@ -73,4 +76,10 @@ class AmountPanel extends React.Component {
   }
 }
 
-export default AmountPanel;
+const mapStateToProps = state => {
+  return {
+    suggestedDonations: state.suggestedDonations,
+  };
+};
+
+export default connect(mapStateToProps)(AmountPanel);
