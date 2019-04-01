@@ -4,37 +4,21 @@ import { connect } from 'react-redux';
 import FrequencySelect from '../components/FrequencySelect';
 import SuggestedDonation from '../components/SuggestedDonation';
 import DonationInput from '../components/DonationInput';
+import { selectFrequency, selectAmount } from '../actions';
 
 class AmountPanel extends React.Component {
-  state = {
-    frequency: null,
-    selections: {},
-  };
-
-  selectFrequency = frequency => this.setState({ frequency });
-
-  selectAmount = (frequency, index, amount, variableAmount = null) => {
-    this.setState(prevState => {
-      const selections = { ...prevState.selections };
-      
-      selections[frequency] = selections[frequency] || {};
-      selections[frequency].index = index;
-      selections[frequency].amount = amount;
-
-      if (variableAmount !== null) {
-        selections[frequency].variableAmount = variableAmount;
-      }
-
-      return { selections };
-    });
-  }
-
   componentWillMount() {
+    const { selectFrequency, suggestedDonations } = this.props;
+
     this._selectDefaultAmounts();
-    this.selectFrequency(this.props.suggestedDonations[0].frequency);
+    selectFrequency(suggestedDonations[0].frequency);
   }
 
   render() {
+    const { frequency, selectFrequency } = this.props;
+
+    if (frequency === null) return null;
+
     return (
       <Card className="text-center">
         <Card.Header>Choose Amount</Card.Header>
@@ -42,8 +26,8 @@ class AmountPanel extends React.Component {
         <Card.Body>
           <FrequencySelect
             options={this._getFrequencyOptions()}
-            value={this.state.frequency}
-            onChange={this.selectFrequency}
+            value={frequency}
+            onChange={selectFrequency}
           />
 
           <div className="mt-3 text-left">
@@ -59,18 +43,18 @@ class AmountPanel extends React.Component {
   }
 
   renderDonationComponent = (option, index) => {
-    const { selections, frequency } = this.state;
+    const { selections, frequency, selectAmount } = this.props;
     const selection = selections[frequency];
 
-    const selectAmount = amount => this.selectAmount(frequency, index, amount);
-    const variableAmountChange = amount => this.selectAmount(frequency, index, amount, amount);
+    const selectSuggestedAmount = amount => selectAmount(frequency, index, amount);
+    const variableAmountChange = amount => selectAmount(frequency, index, amount, amount);
 
     if (option.amount) {
       return (
         <SuggestedDonation
           key={index}
           data={option}
-          selectAmount={selectAmount}
+          selectAmount={selectSuggestedAmount}
           isSelected={selection.index === index}
         />
       );
@@ -95,14 +79,18 @@ class AmountPanel extends React.Component {
   };
 
   _getAmounts = () => {
-    const offer = this.props.suggestedDonations.find(offer => offer.frequency === this.state.frequency);
+    const { suggestedDonations, frequency } = this.props;
+
+    const offer = suggestedDonations.find(offer => offer.frequency === frequency);
     return offer.amounts;
   };
 
   _selectDefaultAmounts = () => {
-    for (let offer of this.props.suggestedDonations) {
+    const { suggestedDonations, selectAmount } = this.props;
+
+    for (let offer of suggestedDonations) {
       const index = offer.amounts.findIndex(option => option.default);
-      if (index) this.selectAmount(offer.frequency, index, offer.amounts[index].amount);
+      if (index) selectAmount(offer.frequency, index, offer.amounts[index].amount);
     }
   };
 }
@@ -110,7 +98,14 @@ class AmountPanel extends React.Component {
 const mapStateToProps = state => {
   return {
     suggestedDonations: state.suggestedDonations,
+    frequency: state.amountPanel.frequency,
+    selections: state.amountPanel.selections,
   };
 };
 
-export default connect(mapStateToProps)(AmountPanel);
+const actions = {
+  selectFrequency: selectFrequency,
+  selectAmount: selectAmount,
+};
+
+export default connect(mapStateToProps, actions)(AmountPanel);

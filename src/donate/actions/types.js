@@ -3,5 +3,6 @@ export const actionTypes = {
   setSuggestedDonations: 'SET_SUGGESTED_DONATIONS',
 
   // Amount Panel Actions
-  setAmountPanelFormData: 'SET_AMOUNT_PANEL_FORM_DATA',
+  selectFrequency: 'SELECT_FREQUENCY',
+  selectAmount: 'SELECT_AMOUNT',
 };
