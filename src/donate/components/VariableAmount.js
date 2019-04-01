@@ -1,8 +1,8 @@
 import React from 'react';
 import { Form, Row, Col, Card, InputGroup } from 'react-bootstrap';
 
-const DonationOption = ({ value, data, isSelected, amountChange }) => {
-  let amountInput = React.createRef();
+const VariableAmount = ({ value, data, isSelected, amountChange }) => {
+  let input = React.createRef();
 
   return (
     <Card
@@ -10,7 +10,7 @@ const DonationOption = ({ value, data, isSelected, amountChange }) => {
       style={{ cursor: 'pointer' }}
       bg={isSelected ? 'primary' : 'light'}
       text={isSelected ? 'white' : null}
-      onClick={() => amountInput.current.focus()}
+      onClick={() => input.current.focus()}
     >
       <Row noGutters>
         <Col xs={4}>
@@ -25,13 +25,13 @@ const DonationOption = ({ value, data, isSelected, amountChange }) => {
                 <InputGroup.Text>{data.label}</InputGroup.Text>
               </InputGroup.Prepend>
               <Form.Control
+                ref={input}
                 value={value}
                 className="text-right"
                 type="number"
                 min="0"
                 onFocus={event => amountChange(event.target.value)}
                 onChange={event => amountChange(event.target.value)}
-                ref={amountInput}
               />
             </InputGroup>
           </Card.Text>
@@ -42,4 +42,4 @@ const DonationOption = ({ value, data, isSelected, amountChange }) => {
   );
 };
 
-export default DonationOption;
+export default VariableAmount;

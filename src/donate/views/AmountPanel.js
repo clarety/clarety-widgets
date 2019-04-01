@@ -2,8 +2,8 @@ import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import FrequencySelect from '../components/FrequencySelect';
-import SuggestedDonation from '../components/SuggestedDonation';
-import DonationInput from '../components/DonationInput';
+import SuggestedAmount from '../components/SuggestedAmount';
+import VariableAmount from '../components/VariableAmount';
 import { selectFrequency, selectAmount } from '../actions';
 
 class AmountPanel extends React.Component {
@@ -51,7 +51,7 @@ class AmountPanel extends React.Component {
 
     if (option.amount) {
       return (
-        <SuggestedDonation
+        <SuggestedAmount
           key={index}
           data={option}
           selectAmount={selectSuggestedAmount}
@@ -61,7 +61,7 @@ class AmountPanel extends React.Component {
     }
 
     return (
-      <DonationInput
+      <VariableAmount
         key={index}
         data={option}
         amountChange={variableAmountChange}
