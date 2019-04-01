@@ -10,7 +10,7 @@
           "offerId": "111",
           "offerPaymentId": "222",
           "frequency": "single",
-          "label": "One-Off",
+          "label": "One-Time",
           "amounts": [
             {
               "amount": 30,
@@ -61,6 +61,26 @@
               "label": "AUD $",
               "desc": "Enter amount",
               "image": "https://placeimg.com/160/130/people"
+            }
+          ]
+        },
+        {
+          "offerId": "555",
+          "offerPaymentId": "666",
+          "frequency": "anual",
+          "label": "Yearly",
+          "amounts": [
+            {
+              "amount": 100,
+              "label": "AUD $100",
+              "desc": "Can help keep a flight nurse on board an aircraft.",
+              "image": "https://placeimg.com/160/130/tech",
+              "default": true
+            },
+            {
+              "label": "AUD $",
+              "desc": "Enter amount",
+              "image": "https://placeimg.com/160/130/arch"
             }
           ]
         }

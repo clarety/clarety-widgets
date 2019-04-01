@@ -90,7 +90,7 @@ class AmountPanel extends React.Component {
 
     for (let offer of suggestedDonations) {
       const index = offer.amounts.findIndex(option => option.default);
-      if (index) selectAmount(offer.frequency, index, offer.amounts[index].amount);
+      if (index !== -1) selectAmount(offer.frequency, index, offer.amounts[index].amount);
     }
   };
 }
