@@ -4,10 +4,10 @@ const initialState = [];
 
 const formErrorsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.setFormValidationErrors:
+    case actionTypes.setFormErrors:
       return action.payload;
 
-    case actionTypes.clearFormValidationErrors:
+    case actionTypes.clearFormErrors:
       return [];
 
     default:

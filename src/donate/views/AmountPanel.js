@@ -7,7 +7,7 @@ import SuggestedAmount from '../components/SuggestedAmount';
 import VariableAmount from '../components/VariableAmount';
 import SubmitButton from '../../form/components/SubmitButton';
 import { selectFrequency, selectAmount } from '../actions';
-import { setStatus, statuses, clearValidationErrors, setValidationErrors } from '../../form/actions';
+import { setStatus, statuses, clearErrors, setErrors } from '../../form/actions';
 
 class AmountPanel extends React.Component {
   componentWillMount() {
@@ -20,10 +20,10 @@ class AmountPanel extends React.Component {
   onSubmit = async event => {
     event.preventDefault();
 
-    const { selections, frequency, setStatus } = this.props;
-    const { setValidationErrors, clearValidationErrors } = this.props;
+    const { selections, frequency } = this.props;
+    const { setStatus, setErrors, clearErrors } = this.props;
 
-    clearValidationErrors();
+    clearErrors();
     setStatus(statuses.busy);
 
     const offer = this._getOffer(frequency);
@@ -39,7 +39,7 @@ class AmountPanel extends React.Component {
     const result = await ClaretyApi.post('donate/choose-amount', 'validate', lineItem);
 
     if (result.status === 'error') {
-      setValidationErrors(result.validationErrors);
+      setErrors(result.validationErrors);
     } else {
       // Add sale-line to cart.
       // Navigate to next panel.
@@ -142,8 +142,8 @@ const actions = {
   selectFrequency: selectFrequency,
   selectAmount: selectAmount,
   setStatus: setStatus,
-  setValidationErrors: setValidationErrors,
-  clearValidationErrors: clearValidationErrors,
+  setErrors: setErrors,
+  clearErrors: clearErrors,
 };
 
 export default connect(mapStateToProps, actions)(AmountPanel);

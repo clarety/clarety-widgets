@@ -23,18 +23,18 @@ export class BaseFormView extends React.Component {
 
   onSubmit = async (event, route) => {
     const { status, formData } = this.props;
-    const { setStatus, clearValidationErrors, setValidationErrors } = this.props;
+    const { setStatus, clearErrors, setErrors } = this.props;
 
     event.preventDefault();
     if (status !== statuses.ready) return;
 
     setStatus(statuses.busy);
-    clearValidationErrors();
+    clearErrors();
     
     const result = await ClaretyApi.post(this.endpoint, this.action, formData);
     if (result) {
       if (result.status === 'error') {
-        setValidationErrors(result.validationErrors);
+        setErrors(result.validationErrors);
         setStatus(statuses.ready);
       } else {
         this.onSuccess(route);

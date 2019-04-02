@@ -1,10 +1,10 @@
 import { actionTypes } from './types';
 
-export const setValidationErrors = errors => ({
-  type: actionTypes.setFormValidationErrors,
+export const setErrors = errors => ({
+  type: actionTypes.setFormErrors,
   payload: errors,
 });
 
-export const clearValidationErrors = () => ({
-  type: actionTypes.clearFormValidationErrors,
+export const clearErrors = () => ({
+  type: actionTypes.clearFormErrors,
 });

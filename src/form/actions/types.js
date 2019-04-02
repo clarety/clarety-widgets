@@ -6,6 +6,6 @@ export const actionTypes = {
   updateFormData: 'UPDATE_FORM_DATA',
 
   // Form Errors Actions
-  setFormValidationErrors: 'SET_FORM_VALIDATION_ERRORS',
-  clearFormValidationErrors: 'CLEAR_FORM_VALIDATION_ERRORS',
+  setFormErrors: 'SET_FORM_ERRORS',
+  clearFormErrors: 'CLEAR_FORM_ERRORS',
 };

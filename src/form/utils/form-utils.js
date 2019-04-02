@@ -3,7 +3,7 @@ import { createStore } from 'redux';
 import { Provider, connect } from 'react-redux';
 import formReducer from '../reducers/form-reducer';
 import { setElements } from '../../shared/actions';
-import { setStatus, updateData, setValidationErrors, clearValidationErrors } from '../actions';
+import { setStatus, updateData, setErrors, clearErrors } from '../actions';
 
 export function connectFormToStore(ViewComponent) {
   const mapStateToProps = state => {
@@ -18,8 +18,8 @@ export function connectFormToStore(ViewComponent) {
     setStatus: setStatus,
     setElements: setElements,
     updateData: updateData,
-    clearValidationErrors: clearValidationErrors,
-    setValidationErrors: setValidationErrors,
+    clearErrors: clearErrors,
+    setErrors: setErrors,
   };
 
   const ConnectedComponent = connect(mapStateToProps, actions)(ViewComponent);
