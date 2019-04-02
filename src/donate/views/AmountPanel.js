@@ -19,13 +19,14 @@ class AmountPanel extends React.Component {
   }
 
   onSubmit = async event => {
-    event.preventDefault();
-
-    const { selections, frequency } = this.props;
+    const { status, selections, frequency } = this.props;
     const { setStatus, setErrors, clearErrors } = this.props;
 
-    clearErrors();
+    event.preventDefault();
+    if (status !== statuses.ready) return;
+    
     setStatus(statuses.busy);
+    clearErrors();
 
     const offer = this._getOffer(frequency);
     const amount = selections[frequency].amount;
@@ -38,12 +39,13 @@ class AmountPanel extends React.Component {
     };
 
     const result = await ClaretyApi.post('donate/choose-amount', 'validate', lineItem);
-
-    if (result.status === 'error') {
-      setErrors(result.validationErrors);
-    } else {
-      // Add sale-line to cart.
-      // Navigate to next panel.
+    if (result) {
+      if (result.status === 'error') {
+        setErrors(result.validationErrors);
+      } else {
+        // Add sale-line to cart.
+        // Navigate to next panel.
+      }
     }
 
     setStatus(statuses.ready);
@@ -60,7 +62,7 @@ class AmountPanel extends React.Component {
       <form onSubmit={this.onSubmit}>
         <Card className="text-center">
           <Card.Header>Choose Amount</Card.Header>
-          
+
           <Card.Body>
             <ErrorMessages />
 
@@ -135,6 +137,7 @@ class AmountPanel extends React.Component {
 
 const mapStateToProps = state => {
   return {
+    status: state.status,
     suggestedDonations: state.suggestedDonations,
     frequency: state.amountPanel.frequency,
     selections: state.amountPanel.selections,
