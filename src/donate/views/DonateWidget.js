@@ -1,4 +1,5 @@
 import React from 'react';
+import { MemoryRouter, Switch, Route } from 'react-router-dom';
 import ClaretyApi from '../../shared/services/clarety-api';
 import { statuses } from '../../form/actions';
 import { connectDonateWidgetToStore } from '../utils/donate-utils.js';
@@ -26,10 +27,14 @@ export class DonateWidget extends React.Component {
     if (this.props.status === statuses.uninitialized) return null;
 
     return (
-      <AmountPanel />
-      // <DetailsPanel />
-      // <PaymentPanel />
-      // <SuccessPanel />
+      <MemoryRouter>
+        <Switch>
+          <Route exact path="/" component={AmountPanel} />
+          <Route path="/details" component={DetailsPanel} />
+          <Route path="/payment" component={PaymentPanel} />
+          <Route path="/success" component={SuccessPanel} />
+        </Switch>
+      </MemoryRouter>
     );
   }
 }

@@ -19,7 +19,7 @@ class AmountPanel extends React.Component {
   }
 
   onSubmit = async event => {
-    const { status, selections, frequency } = this.props;
+    const { status, selections, frequency, history } = this.props;
     const { setStatus, setErrors, clearErrors } = this.props;
 
     event.preventDefault();
@@ -43,8 +43,8 @@ class AmountPanel extends React.Component {
       if (result.status === 'error') {
         setErrors(result.validationErrors);
       } else {
-        // Add sale-line to cart.
-        // Navigate to next panel.
+        // TODO: Add sale-line to cart.
+        history.push('/details');
       }
     }
 
