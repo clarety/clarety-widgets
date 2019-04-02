@@ -6,6 +6,7 @@ import FrequencySelect from '../components/FrequencySelect';
 import SuggestedAmount from '../components/SuggestedAmount';
 import VariableAmount from '../components/VariableAmount';
 import { selectFrequency, selectAmount } from '../actions';
+import { setStatus, statuses } from '../../form/actions';
 
 class AmountPanel extends React.Component {
   componentWillMount() {
@@ -18,7 +19,9 @@ class AmountPanel extends React.Component {
   onSubmit = async event => {
     event.preventDefault();
 
-    const { selections, frequency } = this.props;
+    const { selections, frequency, setStatus } = this.props;
+
+    setStatus(statuses.busy);
 
     const offer = this._getOffer(frequency);
     const amount = selections[frequency].amount;
@@ -40,6 +43,8 @@ class AmountPanel extends React.Component {
       // Add sale-line to cart.
       // Navigate to next panel.
     }
+
+    setStatus(statuses.ready);
   }
 
   render() {
@@ -133,6 +138,7 @@ const mapStateToProps = state => {
 const actions = {
   selectFrequency: selectFrequency,
   selectAmount: selectAmount,
+  setStatus: setStatus,
 };
 
 export default connect(mapStateToProps, actions)(AmountPanel);
