@@ -6,7 +6,7 @@ import mockValidationOk from '../mock-data/validation-ok.json';
 import mockValidationError from '../mock-data/validation-error.json';
 
 export const setupAxiosMock = () => {
-  const mock = new MockAdapter(axios, { delayResponse: 2000 });
+  const mock = new MockAdapter(axios, { delayResponse: 500 });
 
   mock
     .onGet('http://dev-clarety-baseline.clarety.io/api/explain/?endpoint=donate')

@@ -9,11 +9,16 @@ import ErrorMessages from '../../form/components/ErrorMessages';
 import SubmitButton from '../../form/components/SubmitButton';
 import { selectFrequency, selectAmount } from '../actions';
 import { setStatus, statuses, clearErrors, setErrors } from '../../form/actions';
+import { addToCart, clearCart } from '../../shared/actions';
 
 class AmountPanel extends React.Component {
+  componentWillMount() {
+    this.props.clearCart();
+  }
+
   onSubmit = async event => {
     const { status, selections, frequency, history } = this.props;
-    const { setStatus, setErrors, clearErrors } = this.props;
+    const { setStatus, setErrors, clearErrors, addToCart } = this.props;
 
     event.preventDefault();
     if (status !== statuses.ready) return;
@@ -24,19 +29,19 @@ class AmountPanel extends React.Component {
     const offer = this._getOffer(frequency);
     const amount = selections[frequency].amount;
 
-    const lineItem = {
+    const saleLine = {
       offerId: offer.offerId,
       offerPaymentId: offer.offerPaymentId,
       qty: 1,
       amount: amount,
     };
 
-    const result = await ClaretyApi.post('donate/choose-amount', 'validate', lineItem);
+    const result = await ClaretyApi.post('donate/choose-amount', 'validate', saleLine);
     if (result) {
       if (result.status === 'error') {
         setErrors(result.validationErrors);
       } else {
-        // TODO: Add sale-line to cart.
+        addToCart(saleLine);
         history.push('/details');
       }
     }
@@ -134,6 +139,8 @@ const actions = {
   setStatus: setStatus,
   setErrors: setErrors,
   clearErrors: clearErrors,
+  addToCart: addToCart,
+  clearCart: clearCart,
 };
 
 export default connect(mapStateToProps, actions)(AmountPanel);
