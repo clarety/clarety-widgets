@@ -24,17 +24,21 @@ const _selectFrequency = (state, action) => {
 const _selectAmount = (state, action) => {
   const { frequency, amount, isVariableAmount } = action.payload;
 
-  const selections = { ...state.selections };
+  const prevVariableAmount = state.selections[frequency].variableAmount;
 
-  selections[frequency] = selections[frequency] || {};
-  selections[frequency].amount = amount;
-  selections[frequency].isVariableAmount = isVariableAmount;
-  if (isVariableAmount) selections[frequency].variableAmount = amount;
+  const selection = {
+    amount,
+    isVariableAmount,
+    variableAmount: isVariableAmount ? amount : prevVariableAmount,
+  };
 
   return {
     ...state,
-    selections,
-  };  
+    selections: {
+      ...state.selections,
+      [frequency]: selection,
+    }
+  };
 };
 
 const _selectDefaults = (state, action) => {
@@ -44,13 +48,12 @@ const _selectDefaults = (state, action) => {
   const defaultSelections = {};
 
   for (let offer of donationOffers) {
-    const index = offer.suggestedAmounts.findIndex(option => option.default);
-    if (index !== -1) {
-      defaultSelections[offer.frequency] = {
-        amount: offer.suggestedAmounts[index].amount,
-        isVariableAmount: false,
-      };
-    }
+    const defaultAmount = offer.suggestedAmounts.find(amount => amount.default);
+
+    defaultSelections[offer.frequency] = {
+      amount: defaultAmount ? defaultAmount.amount : 0,
+      isVariableAmount: false,
+    };
   }
 
   return {

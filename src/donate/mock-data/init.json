@@ -74,8 +74,7 @@
               "amount": 100,
               "label": "AUD $100",
               "desc": "Can help keep a flight nurse on board an aircraft.",
-              "image": "https://placeimg.com/160/130/tech",
-              "default": true
+              "image": "https://placeimg.com/160/130/tech"
             }
           ],
           "variableAmount": null
