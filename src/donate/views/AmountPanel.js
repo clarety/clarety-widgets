@@ -5,6 +5,7 @@ import ClaretyApi from '../../shared/services/clarety-api';
 import FrequencySelect from '../components/FrequencySelect';
 import SuggestedAmount from '../components/SuggestedAmount';
 import VariableAmount from '../components/VariableAmount';
+import ErrorMessages from '../../form/components/ErrorMessages';
 import SubmitButton from '../../form/components/SubmitButton';
 import { selectFrequency, selectAmount } from '../actions';
 import { setStatus, statuses, clearErrors, setErrors } from '../../form/actions';
@@ -59,8 +60,10 @@ class AmountPanel extends React.Component {
       <form onSubmit={this.onSubmit}>
         <Card className="text-center">
           <Card.Header>Choose Amount</Card.Header>
-
+          
           <Card.Body>
+            <ErrorMessages />
+
             <FrequencySelect
               options={this._getFrequencyOptions()}
               value={frequency}
