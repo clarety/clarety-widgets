@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import ClaretyApi from '../../shared/services/clarety-api';
 import FrequencySelect from '../components/FrequencySelect';
 import SuggestedAmount from '../components/SuggestedAmount';
 import VariableAmount from '../components/VariableAmount';
@@ -14,10 +15,39 @@ class AmountPanel extends React.Component {
     selectFrequency(suggestedDonations[0].frequency);
   }
 
+  onSubmit = async event => {
+    event.preventDefault();
+
+    const { selections, frequency } = this.props;
+
+    const offer = this._getOffer(frequency);
+    const amount = selections[frequency].amount;
+
+    const data = {
+      offerId: offer.offerId,
+      offerPaymentId: offer.offerPaymentId,
+      qty: 1,
+      amount: amount,
+    };
+
+    const result = await ClaretyApi.post('donate/choose-amount', 'validate', data);
+    console.log(result);
+
+    if (result.status === 'error') {
+      // set errors in redux.
+      // display validation errors in panel.
+    } else {
+      // Add sale-line to cart.
+      // Navigate to next panel.
+    }
+  }
+
   render() {
     const { frequency, selectFrequency } = this.props;
 
     if (frequency === null) return null;
+
+    const suggestedAmounts = this._getOffer(frequency).amounts;
 
     return (
       <Card className="text-center">
@@ -31,12 +61,12 @@ class AmountPanel extends React.Component {
           />
 
           <div className="mt-3 text-left">
-            {this._getAmounts().map(this.renderDonationComponent)}
+            {suggestedAmounts.map(this.renderDonationComponent)}
           </div>
         </Card.Body>
 
         <Card.Footer>
-          <Button block>Next</Button>
+          <Button onClick={this.onSubmit} block>Next</Button>
         </Card.Footer>
       </Card>
     );
@@ -78,11 +108,8 @@ class AmountPanel extends React.Component {
     }));
   };
 
-  _getAmounts = () => {
-    const { suggestedDonations, frequency } = this.props;
-
-    const offer = suggestedDonations.find(offer => offer.frequency === frequency);
-    return offer.amounts;
+  _getOffer = frequency => {
+    return this.props.suggestedDonations.find(offer => offer.frequency === frequency);
   };
 
   _selectDefaultAmounts = () => {

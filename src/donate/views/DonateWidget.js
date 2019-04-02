@@ -1,6 +1,5 @@
 import React from 'react';
 import { connectDonateWidgetToStore } from '../utils/donate-utils.js';
-import mockInitData from '../mock-data/init.json';
 import ClaretyApi from '../../shared/services/clarety-api';
 import AmountPanel from './AmountPanel';
 import DetailsPanel from './DetailsPanel';
@@ -10,12 +9,19 @@ import SuccessPanel from './SuccessPanel';
 
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
+import mockInitData from '../mock-data/init.json';
+import mockValidationOk from '../mock-data/validation-ok.json';
+import mockValidationError from '../mock-data/validation-error.json';
 
 const mock = new MockAdapter(axios);
 
 mock
   .onGet('http://dev-clarety-baseline.clarety.io/api/explain/?endpoint=donate')
   .reply(200, mockInitData);
+
+mock
+  .onPost('http://dev-clarety-baseline.clarety.io/api/donate/choose-amount/')
+  .reply(200, mockValidationError);
 
 
 export class DonateWidget extends React.Component {
