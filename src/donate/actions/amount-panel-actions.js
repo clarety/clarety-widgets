@@ -5,9 +5,9 @@ export const selectFrequency = frequency => ({
   payload: frequency,
 });
 
-export const selectAmount = (frequency, index, amount, variableAmount = null) => ({
+export const selectAmount = (frequency, index, amount, isVariableAmount = false) => ({
   type: actionTypes.selectAmount,
-  payload: { frequency, index, amount, variableAmount },
+  payload: { frequency, index, amount, isVariableAmount },
 });
 
 export const selectDefaults = suggestedDonations => ({

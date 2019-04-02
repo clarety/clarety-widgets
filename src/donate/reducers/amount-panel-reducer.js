@@ -22,17 +22,14 @@ const _selectFrequency = (state, action) => {
 };
 
 const _selectAmount = (state, action) => {
-  const { frequency, index, amount, variableAmount } = action.payload;
+  const { frequency, index, amount, isVariableAmount } = action.payload;
 
   const selections = { ...state.selections };
 
   selections[frequency] = selections[frequency] || {};
   selections[frequency].index = index;
   selections[frequency].amount = amount;
-
-  if (variableAmount !== null) {
-    selections[frequency].variableAmount = variableAmount;
-  }
+  if (isVariableAmount) selections[frequency].variableAmount = amount;
 
   return {
     ...state,

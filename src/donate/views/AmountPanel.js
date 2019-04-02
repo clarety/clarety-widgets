@@ -88,7 +88,7 @@ class AmountPanel extends React.Component {
     const selection = selections[frequency];
 
     const selectSuggestedAmount = amount => selectAmount(frequency, index, amount);
-    const variableAmountChange = amount => selectAmount(frequency, index, amount, amount);
+    const variableAmountChange = amount => selectAmount(frequency, index, amount, true);
 
     if (option.amount) {
       return (
