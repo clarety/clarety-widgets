@@ -1,10 +1,11 @@
 import React from 'react';
-import { Card, Button } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import ClaretyApi from '../../shared/services/clarety-api';
 import FrequencySelect from '../components/FrequencySelect';
 import SuggestedAmount from '../components/SuggestedAmount';
 import VariableAmount from '../components/VariableAmount';
+import SubmitButton from '../../form/components/SubmitButton';
 import { selectFrequency, selectAmount } from '../actions';
 import { setStatus, statuses } from '../../form/actions';
 
@@ -26,14 +27,14 @@ class AmountPanel extends React.Component {
     const offer = this._getOffer(frequency);
     const amount = selections[frequency].amount;
 
-    const data = {
+    const lineItem = {
       offerId: offer.offerId,
       offerPaymentId: offer.offerPaymentId,
       qty: 1,
       amount: amount,
     };
 
-    const result = await ClaretyApi.post('donate/choose-amount', 'validate', data);
+    const result = await ClaretyApi.post('donate/choose-amount', 'validate', lineItem);
     console.log(result);
 
     if (result.status === 'error') {
@@ -55,25 +56,27 @@ class AmountPanel extends React.Component {
     const suggestedAmounts = this._getOffer(frequency).amounts;
 
     return (
-      <Card className="text-center">
-        <Card.Header>Choose Amount</Card.Header>
+      <form onSubmit={this.onSubmit}>
+        <Card className="text-center">
+          <Card.Header>Choose Amount</Card.Header>
 
-        <Card.Body>
-          <FrequencySelect
-            options={this._getFrequencyOptions()}
-            value={frequency}
-            onChange={selectFrequency}
-          />
+          <Card.Body>
+            <FrequencySelect
+              options={this._getFrequencyOptions()}
+              value={frequency}
+              onChange={selectFrequency}
+            />
 
-          <div className="mt-3 text-left">
-            {suggestedAmounts.map(this.renderDonationComponent)}
-          </div>
-        </Card.Body>
+            <div className="mt-3 text-left">
+              {suggestedAmounts.map(this.renderDonationComponent)}
+            </div>
+          </Card.Body>
 
-        <Card.Footer>
-          <Button onClick={this.onSubmit} block>Next</Button>
-        </Card.Footer>
-      </Card>
+          <Card.Footer>
+            <SubmitButton block title="Next" />
+          </Card.Footer>
+        </Card>
+      </form>
     );
   }
 
