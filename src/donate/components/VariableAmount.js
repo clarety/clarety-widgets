@@ -30,8 +30,8 @@ const VariableAmount = ({ value, data, isSelected, amountChange }) => {
                 className="text-right"
                 type="number"
                 min="0"
-                onFocus={event => amountChange(event.target.value)}
-                onChange={event => amountChange(event.target.value)}
+                onFocus={event => amountChange(parseFloat(event.target.value))}
+                onChange={event => amountChange(parseFloat(event.target.value))}
               />
             </InputGroup>
           </Card.Text>

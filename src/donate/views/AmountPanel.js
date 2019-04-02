@@ -54,7 +54,7 @@ class AmountPanel extends React.Component {
 
     if (frequency === null) return null;
 
-    const suggestedAmounts = this._getOffer(frequency).amounts;
+    const offer = this._getOffer(frequency);
 
     return (
       <form onSubmit={this.onSubmit}>
@@ -71,7 +71,8 @@ class AmountPanel extends React.Component {
             />
 
             <div className="mt-3 text-left">
-              {suggestedAmounts.map(this.renderDonationComponent)}
+              {offer.amounts.map(this.renderSuggestedAmount)}
+              {this.renderVariableAmount(offer.variableAmount)}
             </div>
           </Card.Body>
 
@@ -83,34 +84,38 @@ class AmountPanel extends React.Component {
     );
   }
 
-  renderDonationComponent = (option, index) => {
+  renderSuggestedAmount = (option, index) => {
     const { selections, frequency, selectAmount } = this.props;
-    const selection = selections[frequency];
-
-    const selectSuggestedAmount = amount => selectAmount(frequency, index, amount);
-    const variableAmountChange = amount => selectAmount(frequency, index, amount, true);
-
-    if (option.amount) {
-      return (
-        <SuggestedAmount
-          key={index}
-          data={option}
-          selectAmount={selectSuggestedAmount}
-          isSelected={selection.index === index}
-        />
-      );
-    }
-
+    const currentSelection = selections[frequency];
+    
     return (
-      <VariableAmount
+      <SuggestedAmount
         key={index}
         data={option}
-        amountChange={variableAmountChange}
-        isSelected={selection.index === index}
-        value={selection.variableAmount || ''}
+        selectAmount={amount => selectAmount(frequency, index, amount)}
+        isSelected={currentSelection.index === index}
       />
     );
   }
+
+  renderVariableAmount = (variableAmount) => {
+    if (!variableAmount) return null;
+
+    const { selections, frequency, selectAmount } = this.props;
+    const currentSelection = selections[frequency];
+    
+    // TEMP: fake index.
+    const index = 999;
+
+    return (
+      <VariableAmount
+        data={variableAmount}
+        amountChange={amount => selectAmount(frequency, index, amount, true)}
+        isSelected={currentSelection.index === index}
+        value={currentSelection.variableAmount || ''}
+      />
+    );
+  };
 
   _getFrequencyOptions = () => {
     return this.props.suggestedDonations.map(offer => ({

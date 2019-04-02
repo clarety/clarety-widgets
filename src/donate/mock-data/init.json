@@ -30,13 +30,13 @@
               "desc": "Can help keep a flight nurse on board an aircraft.",
               "image": "https://placeimg.com/160/130/tech",
               "default": true
-            },
-            {
-              "label": "AUD $",
-              "desc": "Enter amount",
-              "image": "https://placeimg.com/160/130/arch"
             }
-          ]
+          ],
+          "variableAmount": {
+            "label": "AUD $",
+            "desc": "Enter amount",
+            "image": "https://placeimg.com/160/130/arch"
+          }
         },
         {
           "offerId": "333",
@@ -56,13 +56,13 @@
               "desc": "Can help keep a flight nurse on board an aircraft.",
               "image": "https://placeimg.com/160/130/nature",
               "default": true
-            },
-            {
-              "label": "AUD $",
-              "desc": "Enter amount",
-              "image": "https://placeimg.com/160/130/people"
             }
-          ]
+          ],
+          "variableAmount": {
+            "label": "AUD $",
+            "desc": "Enter amount",
+            "image": "https://placeimg.com/160/130/people"
+          }
         },
         {
           "offerId": "555",
@@ -76,13 +76,9 @@
               "desc": "Can help keep a flight nurse on board an aircraft.",
               "image": "https://placeimg.com/160/130/tech",
               "default": true
-            },
-            {
-              "label": "AUD $",
-              "desc": "Enter amount",
-              "image": "https://placeimg.com/160/130/arch"
             }
-          ]
+          ],
+          "variableAmount": null
         }
       ],
 
