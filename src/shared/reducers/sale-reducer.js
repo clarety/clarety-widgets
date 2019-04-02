@@ -5,9 +5,9 @@ const initialState = {
   total: 0,
 };
 
-const cartReducer = (state = initialState, action) => {
+const saleReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.addToCart:
+    case actionTypes.addToSale:
       const saleLine = action.payload;
 
       const saleLines = [
@@ -22,7 +22,7 @@ const cartReducer = (state = initialState, action) => {
         total,
       };
 
-    case actionTypes.clearCart:
+    case actionTypes.clearSale:
       return initialState;
 
     default:
@@ -30,4 +30,4 @@ const cartReducer = (state = initialState, action) => {
   }
 };
 
-export default cartReducer;
+export default saleReducer;

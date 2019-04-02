@@ -9,16 +9,16 @@ import ErrorMessages from '../../form/components/ErrorMessages';
 import SubmitButton from '../../form/components/SubmitButton';
 import { selectFrequency, selectAmount } from '../actions';
 import { setStatus, statuses, clearErrors, setErrors } from '../../form/actions';
-import { addToCart, clearCart } from '../../shared/actions';
+import { addToSale, clearSale } from '../../shared/actions';
 
 class AmountPanel extends React.Component {
   componentWillMount() {
-    this.props.clearCart();
+    this.props.clearSale();
   }
 
   onSubmit = async event => {
     const { status, selections, frequency, history } = this.props;
-    const { setStatus, setErrors, clearErrors, addToCart } = this.props;
+    const { setStatus, setErrors, clearErrors, addToSale } = this.props;
 
     event.preventDefault();
     if (status !== statuses.ready) return;
@@ -41,7 +41,7 @@ class AmountPanel extends React.Component {
       if (result.status === 'error') {
         setErrors(result.validationErrors);
       } else {
-        addToCart(saleLine);
+        addToSale(saleLine);
         history.push('/details');
       }
     }
@@ -144,8 +144,8 @@ const actions = {
   setErrors: setErrors,
   clearErrors: clearErrors,
 
-  addToCart: addToCart,
-  clearCart: clearCart,
+  addToSale: addToSale,
+  clearSale: clearSale,
 
   selectFrequency: selectFrequency,
   selectAmount: selectAmount,

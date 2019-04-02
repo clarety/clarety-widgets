@@ -2,7 +2,7 @@ export const actionTypes = {
   // Elements Actions
   setElements: 'SET_ELEMENTS',
 
-  // Cart Actions
-  addToCart: 'ADD_TO_CART',
-  clearCart: 'CLEAR_CART',
+  // Sale Actions
+  addToSale: 'ADD_TO_SALE',
+  clearSale: 'CLEAR_SALE',
 };
