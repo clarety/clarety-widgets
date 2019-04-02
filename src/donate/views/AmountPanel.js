@@ -84,16 +84,17 @@ class AmountPanel extends React.Component {
     );
   }
 
-  renderSuggestedAmount = (option, index) => {
+  renderSuggestedAmount = suggestedAmount => {
     const { selections, frequency, selectAmount } = this.props;
     const currentSelection = selections[frequency];
+    const isSelected = !currentSelection.isVariableAmount && currentSelection.amount === suggestedAmount.amount;
     
     return (
       <SuggestedAmount
-        key={index}
-        data={option}
-        selectAmount={amount => selectAmount(frequency, index, amount)}
-        isSelected={currentSelection.index === index}
+        key={suggestedAmount.amount}
+        data={suggestedAmount}
+        selectAmount={amount => selectAmount(frequency, amount)}
+        isSelected={isSelected}
       />
     );
   }
@@ -103,15 +104,12 @@ class AmountPanel extends React.Component {
 
     const { selections, frequency, selectAmount } = this.props;
     const currentSelection = selections[frequency];
-    
-    // TEMP: fake index.
-    const index = 999;
 
     return (
       <VariableAmount
         data={variableAmount}
-        amountChange={amount => selectAmount(frequency, index, amount, true)}
-        isSelected={currentSelection.index === index}
+        amountChange={amount => selectAmount(frequency, amount, true)}
+        isSelected={currentSelection.isVariableAmount}
         value={currentSelection.variableAmount || ''}
       />
     );
@@ -142,7 +140,7 @@ const mapStateToProps = state => {
 
 const actions = {
   setStatus: setStatus,
-  
+
   setErrors: setErrors,
   clearErrors: clearErrors,
 

@@ -22,13 +22,13 @@ const _selectFrequency = (state, action) => {
 };
 
 const _selectAmount = (state, action) => {
-  const { frequency, index, amount, isVariableAmount } = action.payload;
+  const { frequency, amount, isVariableAmount } = action.payload;
 
   const selections = { ...state.selections };
 
   selections[frequency] = selections[frequency] || {};
-  selections[frequency].index = index;
   selections[frequency].amount = amount;
+  selections[frequency].isVariableAmount = isVariableAmount;
   if (isVariableAmount) selections[frequency].variableAmount = amount;
 
   return {
@@ -47,8 +47,8 @@ const _selectDefaults = (state, action) => {
     const index = offer.suggestedAmounts.findIndex(option => option.default);
     if (index !== -1) {
       defaultSelections[offer.frequency] = {
-        index,
         amount: offer.suggestedAmounts[index].amount,
+        isVariableAmount: false,
       };
     }
   }
