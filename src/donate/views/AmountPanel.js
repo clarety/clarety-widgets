@@ -71,7 +71,7 @@ class AmountPanel extends React.Component {
             />
 
             <div className="mt-3 text-left">
-              {offer.amounts.map(this.renderSuggestedAmount)}
+              {offer.suggestedAmounts.map(this.renderSuggestedAmount)}
               {this.renderVariableAmount(offer.variableAmount)}
             </div>
           </Card.Body>

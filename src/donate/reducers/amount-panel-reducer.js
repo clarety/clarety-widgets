@@ -44,11 +44,11 @@ const _selectDefaults = (state, action) => {
   const defaultSelections = {};
 
   for (let offer of suggestedDonations) {
-    const index = offer.amounts.findIndex(option => option.default);
+    const index = offer.suggestedAmounts.findIndex(option => option.default);
     if (index !== -1) {
       defaultSelections[offer.frequency] = {
         index,
-        amount: offer.amounts[index].amount,
+        amount: offer.suggestedAmounts[index].amount,
       };
     }
   }

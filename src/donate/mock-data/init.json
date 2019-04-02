@@ -11,7 +11,7 @@
           "offerPaymentId": "222",
           "frequency": "single",
           "label": "One-Time",
-          "amounts": [
+          "suggestedAmounts": [
             {
               "amount": 30,
               "label": "AUD $30",
@@ -43,7 +43,7 @@
           "offerPaymentId": "444",
           "frequency": "monthly",
           "label": "Monthly",
-          "amounts": [
+          "suggestedAmounts": [
             {
               "label": "AUD $20",
               "amount": 20,
@@ -69,7 +69,7 @@
           "offerPaymentId": "666",
           "frequency": "anual",
           "label": "Yearly",
-          "amounts": [
+          "suggestedAmounts": [
             {
               "amount": 100,
               "label": "AUD $100",
