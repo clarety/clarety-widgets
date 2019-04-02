@@ -1,6 +1,6 @@
 export const actionTypes = {
-  // Suggested Donations Actions
-  setSuggestedDonations: 'SET_SUGGESTED_DONATIONS',
+  // Donation Offers Actions
+  setDonationOffers: 'SET_DONATION_OFFERS',
 
   // Amount Panel Actions
   selectFrequency: 'SELECT_FREQUENCY',

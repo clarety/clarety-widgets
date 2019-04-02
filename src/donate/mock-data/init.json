@@ -5,7 +5,7 @@
     {
       "resource": "donate",
       
-      "suggestedDonations": [
+      "donationOffers": [
         {
           "offerId": "111",
           "offerPaymentId": "222",

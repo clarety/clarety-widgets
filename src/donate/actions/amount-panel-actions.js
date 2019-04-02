@@ -10,7 +10,7 @@ export const selectAmount = (frequency, index, amount, isVariableAmount = false)
   payload: { frequency, index, amount, isVariableAmount },
 });
 
-export const selectDefaults = suggestedDonations => ({
+export const selectDefaults = donationOffers => ({
   type: actionTypes.selectDefaults,
-  payload: suggestedDonations,
+  payload: donationOffers,
 });

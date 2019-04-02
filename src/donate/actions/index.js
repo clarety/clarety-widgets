@@ -1,3 +1,3 @@
 export * from './types';
-export * from './suggested-donations-actions';
+export * from './donation-offers-actions';
 export * from './amount-panel-actions';

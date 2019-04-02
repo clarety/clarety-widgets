@@ -3,7 +3,7 @@ import formStatusReducer from '../../form/reducers/form-status-reducer';
 import formErrorsReducer from '../../form/reducers/form-errors-reducer';
 import elementsReducer from '../../shared/reducers/elements-reducer';
 import cartReducer from '../../shared/reducers/cart-reducer';
-import suggestedDonationsReducer from './suggested-donations-reducer';
+import donationOffersReducer from './donation-offers-reducer';
 import amountPanelReducer from './amount-panel-reducer';
 
 const donateReducer = combineReducers({
@@ -12,7 +12,7 @@ const donateReducer = combineReducers({
   cart: cartReducer,
 
   elements: elementsReducer,
-  suggestedDonations: suggestedDonationsReducer,
+  donationOffers: donationOffersReducer,
 
   amountPanel: amountPanelReducer,
 });

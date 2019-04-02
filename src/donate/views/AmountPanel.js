@@ -118,34 +118,39 @@ class AmountPanel extends React.Component {
   };
 
   _getFrequencyOptions = () => {
-    return this.props.suggestedDonations.map(offer => ({
+    return this.props.donationOffers.map(offer => ({
       value: offer.frequency,
       label: offer.label,
     }));
   };
 
   _getOffer = frequency => {
-    return this.props.suggestedDonations.find(offer => offer.frequency === frequency);
+    return this.props.donationOffers.find(offer => offer.frequency === frequency);
   };
 }
 
 const mapStateToProps = state => {
   return {
     status: state.status,
-    suggestedDonations: state.suggestedDonations,
+
+    donationOffers: state.donationOffers,
+
     frequency: state.amountPanel.frequency,
     selections: state.amountPanel.selections,
   };
 };
 
 const actions = {
-  selectFrequency: selectFrequency,
-  selectAmount: selectAmount,
   setStatus: setStatus,
+  
   setErrors: setErrors,
   clearErrors: clearErrors,
+
   addToCart: addToCart,
   clearCart: clearCart,
+
+  selectFrequency: selectFrequency,
+  selectAmount: selectAmount,
 };
 
 export default connect(mapStateToProps, actions)(AmountPanel);

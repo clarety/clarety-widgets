@@ -38,12 +38,12 @@ const _selectAmount = (state, action) => {
 };
 
 const _selectDefaults = (state, action) => {
-  const suggestedDonations = action.payload;
+  const donationOffers = action.payload;
 
-  const defaultFrequency = suggestedDonations[0].frequency;
+  const defaultFrequency = donationOffers[0].frequency;
   const defaultSelections = {};
 
-  for (let offer of suggestedDonations) {
+  for (let offer of donationOffers) {
     const index = offer.suggestedAmounts.findIndex(option => option.default);
     if (index !== -1) {
       defaultSelections[offer.frequency] = {
