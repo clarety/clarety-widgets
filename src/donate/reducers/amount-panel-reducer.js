@@ -8,8 +8,9 @@ const initialState = {
 const amountPanelReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.selectFrequency: return _selectFrequency(state, action);
-    case actionTypes.selectAmount: return _selectAmount(state, action);
-    default: return state;
+    case actionTypes.selectAmount:    return _selectAmount(state, action);
+    case actionTypes.selectDefaults:  return _selectDefaults(state, action);
+    default:                          return state;
   }
 };
 
@@ -37,6 +38,29 @@ const _selectAmount = (state, action) => {
     ...state,
     selections,
   };  
+};
+
+const _selectDefaults = (state, action) => {
+  const suggestedDonations = action.payload;
+
+  const defaultFrequency = suggestedDonations[0].frequency;
+  const defaultSelections = {};
+
+  for (let offer of suggestedDonations) {
+    const index = offer.amounts.findIndex(option => option.default);
+    if (index !== -1) {
+      defaultSelections[offer.frequency] = {
+        index,
+        amount: offer.amounts[index].amount,
+      };
+    }
+  }
+
+  return {
+    ...state,
+    frequency: defaultFrequency,
+    selections: defaultSelections,
+  };
 };
 
 export default amountPanelReducer;

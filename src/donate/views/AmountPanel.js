@@ -11,13 +11,6 @@ import { selectFrequency, selectAmount } from '../actions';
 import { setStatus, statuses, clearErrors, setErrors } from '../../form/actions';
 
 class AmountPanel extends React.Component {
-  componentWillMount() {
-    const { selectFrequency, suggestedDonations } = this.props;
-
-    this._selectDefaultAmounts();
-    selectFrequency(suggestedDonations[0].frequency);
-  }
-
   onSubmit = async event => {
     const { status, selections, frequency, history } = this.props;
     const { setStatus, setErrors, clearErrors } = this.props;
@@ -123,15 +116,6 @@ class AmountPanel extends React.Component {
 
   _getOffer = frequency => {
     return this.props.suggestedDonations.find(offer => offer.frequency === frequency);
-  };
-
-  _selectDefaultAmounts = () => {
-    const { suggestedDonations, selectAmount } = this.props;
-
-    for (let offer of suggestedDonations) {
-      const index = offer.amounts.findIndex(option => option.default);
-      if (index !== -1) selectAmount(offer.frequency, index, offer.amounts[index].amount);
-    }
   };
 }
 

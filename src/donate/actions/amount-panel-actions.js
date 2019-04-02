@@ -9,3 +9,8 @@ export const selectAmount = (frequency, index, amount, variableAmount = null) =>
   type: actionTypes.selectAmount,
   payload: { frequency, index, amount, variableAmount },
 });
+
+export const selectDefaults = suggestedDonations => ({
+  type: actionTypes.selectDefaults,
+  payload: suggestedDonations,
+});

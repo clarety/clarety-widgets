@@ -4,7 +4,7 @@ import { Provider, connect } from 'react-redux';
 import donateReducer from '../reducers/donate-reducer';
 import { setElements } from '../../shared/actions';
 import { setStatus } from '../../form/actions';
-import { setSuggestedDonations } from '../actions';
+import { setSuggestedDonations, selectDefaults } from '../actions';
 
 export function connectDonateWidgetToStore(ViewComponent) {
   const mapStateToProps = state => {
@@ -16,9 +16,10 @@ export function connectDonateWidgetToStore(ViewComponent) {
   };
 
   const actions = {
+    setStatus: setStatus,
     setElements: setElements,
     setSuggestedDonations: setSuggestedDonations,
-    setStatus: setStatus,
+    selectDefaults: selectDefaults,
   };
 
   const ConnectedComponent = connect(mapStateToProps, actions)(ViewComponent);
