@@ -2,7 +2,7 @@ import React from 'react';
 import { createStore } from 'redux';
 import { Provider, connect } from 'react-redux';
 import donateReducer from '../reducers/donate-reducer';
-import { setElements } from '../../shared/actions';
+import { setElements, setCurrency } from '../../shared/actions';
 import { setStatus } from '../../form/actions';
 import { setDonationOffers, selectDefaults } from '../actions';
 
@@ -15,6 +15,7 @@ export function connectDonateWidgetToStore(ViewComponent) {
 
   const actions = {
     setStatus: setStatus,
+    setCurrency: setCurrency,
     setElements: setElements,
     
     setDonationOffers: setDonationOffers,

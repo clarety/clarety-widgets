@@ -1,8 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Form, Row, Col, Card, InputGroup } from 'react-bootstrap';
 
-const VariableAmount = ({ value, data, isSelected, amountChange }) => {
+const VariableAmount = ({ value, data, isSelected, amountChange, currency }) => {
   let input = React.createRef();
+  const label = `${currency.code} ${currency.symbol}`;
 
   return (
     <Card
@@ -22,7 +24,7 @@ const VariableAmount = ({ value, data, isSelected, amountChange }) => {
           <Card.Text as="div">
             <InputGroup>
               <InputGroup.Prepend>
-                <InputGroup.Text>{data.label}</InputGroup.Text>
+                <InputGroup.Text>{label}</InputGroup.Text>
               </InputGroup.Prepend>
               <Form.Control
                 ref={input}
@@ -42,4 +44,10 @@ const VariableAmount = ({ value, data, isSelected, amountChange }) => {
   );
 };
 
-export default VariableAmount;
+const mapStateToProps = state => {
+  return {
+    currency: state.currency,
+  }
+};
+
+export default connect(mapStateToProps)(VariableAmount);

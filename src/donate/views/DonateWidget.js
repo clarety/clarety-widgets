@@ -15,9 +15,11 @@ setupAxiosMock();
 
 export class DonateWidget extends React.Component {
   async componentWillMount() {
-    const { setElements, setDonationOffers, setStatus, selectDefaults } = this.props;
+    const { setCurrency, setElements, setStatus } = this.props;
+    const { setDonationOffers, selectDefaults } = this.props;
 
     const explain = await ClaretyApi.explain('donate');
+    setCurrency(explain.currency);
     setElements(explain.elements);
     setDonationOffers(explain.donationOffers);
     selectDefaults(explain.donationOffers);

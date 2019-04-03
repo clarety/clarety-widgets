@@ -1,4 +1,7 @@
 export const actionTypes = {
+  // Currency Actions
+  setCurrency: 'SET_CURRENCY',
+
   // Elements Actions
   setElements: 'SET_ELEMENTS',
 
