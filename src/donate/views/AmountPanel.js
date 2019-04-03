@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import FrequencySelect from '../components/FrequencySelect';
 import SuggestedAmount from '../components/SuggestedAmount';
 import VariableAmount from '../components/VariableAmount';
-import ErrorMessages from '../../form/components/ErrorMessages';
 import SubmitButton from '../../form/components/SubmitButton';
 import { selectFrequency, selectAmount } from '../actions';
 import { setStatus, statuses, updateFormData } from '../../form/actions';
@@ -15,7 +14,7 @@ class AmountPanel extends React.Component {
     this.props.clearSale();
   }
 
-  onSubmit = async event => {
+  onSubmit = event => {
     const { status, setStatus } = this.props;
     const { selections, frequency, history } = this.props;
     const { updateFormData, addToSale } = this.props;
@@ -40,7 +39,7 @@ class AmountPanel extends React.Component {
     history.push('/details');
 
     setStatus(statuses.ready);
-  }
+  };
 
   render() {
     const { frequency, selectFrequency } = this.props;
@@ -55,8 +54,6 @@ class AmountPanel extends React.Component {
           <Card.Header>Choose Amount</Card.Header>
 
           <Card.Body>
-            <ErrorMessages />
-
             <FrequencySelect
               options={this._getFrequencyOptions()}
               value={frequency}
@@ -83,6 +80,7 @@ class AmountPanel extends React.Component {
     if (suggestedAmount.variable) {
       return (
         <VariableAmount
+          key="variable"
           data={suggestedAmount}
           amountChange={amount => selectAmount(frequency, amount, true)}
           isSelected={currentSelection.isVariableAmount}
@@ -100,7 +98,7 @@ class AmountPanel extends React.Component {
         isSelected={isSelected}
       />
     );
-  }
+  };
 
   _getFrequencyOptions = () => {
     return this.props.donationOffers.map(offer => ({
@@ -128,12 +126,13 @@ const mapStateToProps = state => {
 const actions = {
   setStatus: setStatus,
 
-  updateFormData: updateFormData,
+  selectFrequency: selectFrequency,
+  selectAmount: selectAmount,
+
   addToSale: addToSale,
   clearSale: clearSale,
 
-  selectFrequency: selectFrequency,
-  selectAmount: selectAmount,
+  updateFormData: updateFormData,
 };
 
 export default connect(mapStateToProps, actions)(AmountPanel);

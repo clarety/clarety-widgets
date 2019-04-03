@@ -13,12 +13,14 @@ export const setupAxiosMock = () => {
     .reply(200, explainResponse);
 
   mock
-    .onPost('http://dev-clarety-baseline.clarety.io/api/donate/choose-amount/')
+    .onPost('http://dev-clarety-baseline.clarety.io/api/donate/')
     .reply(config => {
       const query = querystring.parse(config.data);
       const data = JSON.parse(query.data);
 
-      if (data[0].amount) {
+      const { saleLine, customer } = data[0];
+
+      if (customer) {
         return [200, validationOkResponse];
       } else {
         return [200, validationErrorResponse];

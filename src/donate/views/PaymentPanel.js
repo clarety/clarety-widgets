@@ -17,26 +17,26 @@ class PaymentPanel extends React.Component {
         <Card.Body>
           <Form.Group controlId="cardNumber">
             <Form.Label>Card Number</Form.Label>
-            <TextInput property="cardNumber" />
+            <TextInput property="payment.cardNumber" />
           </Form.Group>
 
           <Form.Row>
             <Col>
               <Form.Group controlId="cardExpMonth">
                 <Form.Label>Expiry Month</Form.Label>
-                <TextInput property="cardExpMonth" />
+                <TextInput property="payment.cardExpMonth" />
               </Form.Group>
             </Col>
             <Col>
               <Form.Group controlId="cardExpYear">
                 <Form.Label>Expiry Year</Form.Label>
-                <TextInput property="cardExpYear" />
+                <TextInput property="payment.cardExpYear" />
               </Form.Group>
             </Col>
             <Col>
               <Form.Group controlId="ccv">
                 <Form.Label>CCV</Form.Label>
-                <TextInput property="ccv" />
+                <TextInput property="payment.ccv" />
               </Form.Group>
             </Col>
           </Form.Row>

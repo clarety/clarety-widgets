@@ -6,8 +6,16 @@
       "status": "error",
       "validationErrors": [
         {
-          "code": "R1000",
-          "message": "Please enter a valid donation amount."
+          "message": "First name is required",
+          "field": "customer.firstName"
+        },
+        {
+          "message": "Last name is required",
+          "field": "customer.lastName"
+        },
+        {
+          "message": "You must enter a valid email",
+          "field": "customer.email"
         }
       ]
     }
