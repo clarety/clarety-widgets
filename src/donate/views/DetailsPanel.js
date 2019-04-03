@@ -5,26 +5,32 @@ import ClaretyApi from '../../shared/services/clarety-api';
 import TextInput from '../../form/components/TextInput';
 import SubmitButton from '../../form/components/SubmitButton';
 import ErrorMessages from '../../form/components/ErrorMessages';
-import { statuses, setStatus, setErrors, clearErrors } from '../../form/actions';
+import { statuses, setStatus, setErrors, clearErrors, updateFormData } from '../../form/actions';
 
 class DetailsPanel extends React.Component {
   onPrev = () => this.props.history.goBack();
 
   onSubmit = async event => {
-    const { status, setStatus, formData } = this.props;
-    const { history, clearErrors, setErrors } = this.props;
+    const { history, status, setStatus } = this.props;
+    const { formData, updateFormData } = this.props;
+    const { clearErrors, setErrors } = this.props;
 
     event.preventDefault();
 
     if (status !== statuses.ready) return;
     setStatus(statuses.busy);
     clearErrors();
+
+    const uuid = formData['donation.uuid'];
+    const endpoint = uuid ? `donate/${uuid}` : 'donate';
     
-    const result = await ClaretyApi.post('donate', 'donate', formData);
+    const result = await ClaretyApi.post(endpoint, 'save', formData);
     if (result) {
       if (result.status === 'error') {
         setErrors(result.validationErrors);
       } else {
+        updateFormData('donation.uuid', result.donation.uuid);
+        updateFormData('jwt', result.jwt);
         history.push('/payment');
       }
     }
@@ -91,6 +97,7 @@ const actions = {
   setStatus: setStatus,
   setErrors: setErrors,
   clearErrors: clearErrors,
+  updateFormData: updateFormData,
 };
 
 export default connect(mapStateToProps, actions)(DetailsPanel);

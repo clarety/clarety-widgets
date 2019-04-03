@@ -20,6 +20,25 @@ export const setupAxiosMock = () => {
 
       const { saleLine, customer } = data[0];
 
+      console.log(data[0]);
+
+      if (customer) {
+        return [200, validationOkResponse];
+      } else {
+        return [200, validationErrorResponse];
+      }
+    });
+
+  mock
+    .onPost('http://dev-clarety-baseline.clarety.io/api/donate/bd9385e3-6bc4-4885-88d4-b5200d496f33/')
+    .reply(config => {
+      const query = querystring.parse(config.data);
+      const data = JSON.parse(query.data);
+
+      const { saleLine, customer, payment } = data[0];
+
+      console.log(data[0]);
+
       if (customer) {
         return [200, validationOkResponse];
       } else {
