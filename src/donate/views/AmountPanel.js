@@ -1,14 +1,13 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import ClaretyApi from '../../shared/services/clarety-api';
 import FrequencySelect from '../components/FrequencySelect';
 import SuggestedAmount from '../components/SuggestedAmount';
 import VariableAmount from '../components/VariableAmount';
 import ErrorMessages from '../../form/components/ErrorMessages';
 import SubmitButton from '../../form/components/SubmitButton';
 import { selectFrequency, selectAmount } from '../actions';
-import { setStatus, statuses, clearErrors, setErrors } from '../../form/actions';
+import { setStatus, statuses } from '../../form/actions';
 import { addToSale, clearSale } from '../../shared/actions';
 
 class AmountPanel extends React.Component {
@@ -17,34 +16,23 @@ class AmountPanel extends React.Component {
   }
 
   onSubmit = async event => {
-    const { status, selections, frequency, history } = this.props;
-    const { setStatus, setErrors, clearErrors, addToSale } = this.props;
+    const { status, setStatus } = this.props;
+    const { selections, frequency, history, addToSale } = this.props;
 
     event.preventDefault();
     if (status !== statuses.ready) return;
-    
     setStatus(statuses.busy);
-    clearErrors();
-
+    
     const offer = this._getOffer(frequency);
-    const amount = selections[frequency].amount;
 
-    const saleLine = {
+    addToSale({
       offerId: offer.offerId,
       offerPaymentId: offer.offerPaymentId,
+      amount: selections[frequency].amount,
       qty: 1,
-      amount: amount,
-    };
+    });
 
-    const result = await ClaretyApi.post('donate/choose-amount', 'validate', saleLine);
-    if (result) {
-      if (result.status === 'error') {
-        setErrors(result.validationErrors);
-      } else {
-        addToSale(saleLine);
-        history.push('/details');
-      }
-    }
+    history.push('/details');
 
     setStatus(statuses.ready);
   }
@@ -134,9 +122,6 @@ const mapStateToProps = state => {
 
 const actions = {
   setStatus: setStatus,
-
-  setErrors: setErrors,
-  clearErrors: clearErrors,
 
   addToSale: addToSale,
   clearSale: clearSale,

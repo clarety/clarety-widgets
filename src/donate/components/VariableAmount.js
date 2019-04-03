@@ -27,6 +27,7 @@ const VariableAmount = ({ value, data, isSelected, amountChange, currency }) => 
                 <InputGroup.Text>{label}</InputGroup.Text>
               </InputGroup.Prepend>
               <Form.Control
+                required={isSelected}
                 ref={input}
                 value={value}
                 className="text-right"
