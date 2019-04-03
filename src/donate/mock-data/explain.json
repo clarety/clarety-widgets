@@ -32,12 +32,13 @@
               "desc": "Can help keep a flight nurse on board an aircraft.",
               "image": "https://placeimg.com/160/130/tech",
               "default": true
+            },
+            {
+              "variable": true,
+              "desc": "Enter one-time amount",
+              "image": "https://placeimg.com/160/130/arch"
             }
-          ],
-          "variableAmount": {
-            "desc": "Enter amount",
-            "image": "https://placeimg.com/160/130/arch"
-          }
+          ]
         },
         {
           "offerId": "333",
@@ -55,12 +56,13 @@
               "desc": "Can help keep a flight nurse on board an aircraft.",
               "image": "https://placeimg.com/160/130/nature",
               "default": true
+            },
+            {
+              "variable": true,
+              "desc": "Enter monthly amount",
+              "image": "https://placeimg.com/160/130/people"
             }
-          ],
-          "variableAmount": {
-            "desc": "Enter amount",
-            "image": "https://placeimg.com/160/130/people"
-          }
+          ]
         },
         {
           "offerId": "555",
@@ -69,12 +71,11 @@
           "label": "Yearly",
           "suggestedAmounts": [
             {
-              "amount": 100,
-              "desc": "Can help keep a flight nurse on board an aircraft.",
-              "image": "https://placeimg.com/160/130/tech"
+              "variable": true,
+              "desc": "Enter yearly amount",
+              "image": "https://placeimg.com/160/130/nature"
             }
-          ],
-          "variableAmount": null
+          ]
         }
       ],
 

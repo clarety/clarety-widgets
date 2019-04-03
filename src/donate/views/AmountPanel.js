@@ -72,7 +72,6 @@ class AmountPanel extends React.Component {
 
             <div className="mt-3 text-left">
               {offer.suggestedAmounts.map(this.renderSuggestedAmount)}
-              {this.renderVariableAmount(offer.variableAmount)}
             </div>
           </Card.Body>
 
@@ -87,8 +86,19 @@ class AmountPanel extends React.Component {
   renderSuggestedAmount = suggestedAmount => {
     const { selections, frequency, selectAmount } = this.props;
     const currentSelection = selections[frequency];
+
+    if (suggestedAmount.variable) {
+      return (
+        <VariableAmount
+          data={suggestedAmount}
+          amountChange={amount => selectAmount(frequency, amount, true)}
+          isSelected={currentSelection.isVariableAmount}
+          value={currentSelection.variableAmount || ''}
+        />
+      );
+    }
+
     const isSelected = !currentSelection.isVariableAmount && currentSelection.amount === suggestedAmount.amount;
-    
     return (
       <SuggestedAmount
         key={suggestedAmount.amount}
@@ -98,22 +108,6 @@ class AmountPanel extends React.Component {
       />
     );
   }
-
-  renderVariableAmount = (variableAmount) => {
-    if (!variableAmount) return null;
-
-    const { selections, frequency, selectAmount } = this.props;
-    const currentSelection = selections[frequency];
-
-    return (
-      <VariableAmount
-        data={variableAmount}
-        amountChange={amount => selectAmount(frequency, amount, true)}
-        isSelected={currentSelection.isVariableAmount}
-        value={currentSelection.variableAmount || ''}
-      />
-    );
-  };
 
   _getFrequencyOptions = () => {
     return this.props.donationOffers.map(offer => ({
