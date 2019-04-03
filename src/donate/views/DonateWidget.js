@@ -32,7 +32,7 @@ export class DonateWidget extends React.Component {
     return (
       <MemoryRouter>
         <Switch>
-          <Route exact path="/" component={AmountPanel} />
+          <Route exact path="/" component={DetailsPanel} />
           <Route path="/details" component={DetailsPanel} />
           <Route path="/payment" component={PaymentPanel} />
           <Route path="/success" component={SuccessPanel} />

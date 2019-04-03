@@ -2,7 +2,7 @@ import { actionTypes } from '../actions';
 
 const initialState = null;
 
-const elementsReducer = (state = initialState, action) => {
+export const elementsReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.setElements:
       return action.payload;
@@ -11,5 +11,3 @@ const elementsReducer = (state = initialState, action) => {
       return state;
   }
 };
-
-export default elementsReducer;

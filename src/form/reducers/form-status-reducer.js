@@ -2,7 +2,7 @@ import { actionTypes, statuses } from '../actions';
 
 const initialState = statuses.uninitialized;
 
-const formStatusReducer = (state = initialState, action) => {
+export const formStatusReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.setFormStatus:
       return action.payload;
@@ -11,5 +11,3 @@ const formStatusReducer = (state = initialState, action) => {
       return state;
   }
 };
-
-export default formStatusReducer;

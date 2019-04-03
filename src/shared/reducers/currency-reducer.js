@@ -5,7 +5,7 @@ const initialState = {
   code: '',
 };
 
-const currencyReducer = (state = initialState, action) => {
+export const currencyReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.setCurrency:
       return action.payload;
@@ -14,5 +14,3 @@ const currencyReducer = (state = initialState, action) => {
       return state;
   }
 };
-
-export default currencyReducer;

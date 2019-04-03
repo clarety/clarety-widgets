@@ -5,7 +5,7 @@ const initialState = {
   total: 0,
 };
 
-const saleReducer = (state = initialState, action) => {
+export const saleReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.addToSale:
       const saleLine = action.payload;
@@ -29,5 +29,3 @@ const saleReducer = (state = initialState, action) => {
       return state;
   }
 };
-
-export default saleReducer;

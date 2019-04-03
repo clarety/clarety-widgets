@@ -5,7 +5,7 @@ const initialState = {
   selections: {},
 };
 
-const amountPanelReducer = (state = initialState, action) => {
+export const amountPanelReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.selectFrequency: return _selectFrequency(state, action);
     case actionTypes.selectAmount:    return _selectAmount(state, action);
@@ -62,5 +62,3 @@ const _selectDefaults = (state, action) => {
     selections: defaultSelections,
   };
 };
-
-export default amountPanelReducer;

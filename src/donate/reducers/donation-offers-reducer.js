@@ -2,7 +2,7 @@ import { actionTypes } from '../actions';
 
 const initialState = {};
 
-const donationOffersReducer = (state = initialState, action) => {
+export const donationOffersReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.setDonationOffers:
       return action.payload;
@@ -11,5 +11,3 @@ const donationOffersReducer = (state = initialState, action) => {
       return state;
   }
 };
-
-export default donationOffersReducer;
