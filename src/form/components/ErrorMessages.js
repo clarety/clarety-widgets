@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Alert } from 'react-bootstrap';
 
-const ErrorMessages = ({ errors }) => {
+const _ErrorMessages = ({ errors }) => {
   if (!errors || errors.length === 0) return null;
 
   return (
@@ -21,4 +21,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(ErrorMessages);
+export default connect(mapStateToProps)(_ErrorMessages);

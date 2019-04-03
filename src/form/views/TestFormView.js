@@ -1,11 +1,7 @@
 import React from 'react';
 import { connectFormToStore } from '../utils/form-utils';
 import { BaseFormView } from './BaseFormView';
-import ErrorMessages from '../components/ErrorMessages';
-import TextInput from '../components/TextInput';
-import SelectInput from '../components/SelectInput';
-import SubmitButton from '../components/SubmitButton';
-import FormElement from '../components/FormElement';
+import { TextInput, SelectInput, FormElement, ErrorMessages, SubmitButton } from '../components';
 
 class TestFormView extends BaseFormView {
   endpoint = 'test';

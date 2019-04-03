@@ -2,9 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Card, Form, Col, Button } from 'react-bootstrap';
 import ClaretyApi from '../../shared/services/clarety-api';
-import TextInput from '../../form/components/TextInput';
-import SubmitButton from '../../form/components/SubmitButton';
-import ErrorMessages from '../../form/components/ErrorMessages';
+import { TextInput, SubmitButton, ErrorMessages } from '../../form/components';
 import { statuses, setStatus, setErrors, clearErrors, updateFormData } from '../../form/actions';
 
 class DetailsPanel extends React.Component {

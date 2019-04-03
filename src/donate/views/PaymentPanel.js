@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Form, Col, Button } from 'react-bootstrap';
-import TextInput from '../../form/components/TextInput';
+import { TextInput } from '../../form/components';
 
 class PaymentPanel extends React.Component {
   onPrev = () => this.props.history.goBack();
