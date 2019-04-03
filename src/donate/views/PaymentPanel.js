@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, Form, Col, Button } from 'react-bootstrap';
+import TextInput from '../../form/components/TextInput';
 
 class PaymentPanel extends React.Component {
   onPrev = () => this.props.history.goBack();
@@ -16,26 +17,26 @@ class PaymentPanel extends React.Component {
         <Card.Body>
           <Form.Group controlId="cardNumber">
             <Form.Label>Card Number</Form.Label>
-            <Form.Control type="tel" />
+            <TextInput property="cardNumber" />
           </Form.Group>
 
           <Form.Row>
             <Col>
               <Form.Group controlId="cardExpMonth">
                 <Form.Label>Expiry Month</Form.Label>
-                <Form.Control type="tel" />
+                <TextInput property="cardExpMonth" />
               </Form.Group>
             </Col>
             <Col>
               <Form.Group controlId="cardExpYear">
                 <Form.Label>Expiry Year</Form.Label>
-                <Form.Control type="tel" />
+                <TextInput property="cardExpYear" />
               </Form.Group>
             </Col>
             <Col>
               <Form.Group controlId="ccv">
                 <Form.Label>CCV</Form.Label>
-                <Form.Control type="tel" />
+                <TextInput property="ccv" />
               </Form.Group>
             </Col>
           </Form.Row>
