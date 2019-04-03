@@ -11,7 +11,7 @@ const donateReducer = combineReducers({
   elements: elementsReducer,
   donationOffers: donationOffersReducer,
 
-  data: formDataReducer,
+  formData: formDataReducer,
   sale: saleReducer,
 
   amountPanel: amountPanelReducer,

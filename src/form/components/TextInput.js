@@ -25,7 +25,7 @@ const TextInput = ({ property, type, placeholder, testId, formData, errors, upda
 
 const mapStateToProps = state => {
   return {
-    formData: state.data,
+    formData: state.formData,
     errors: state.errors,
   };
 };

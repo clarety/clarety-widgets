@@ -10,7 +10,7 @@ export function connectFormToStore(ViewComponent) {
     return {
       elements: state.elements,
       status: state.status,
-      formData: state.data,
+      formData: state.formData,
     };
   };
 

@@ -32,7 +32,7 @@ const SelectInput = ({ property, placeholder, testId, formData, elements, errors
 const mapStateToProps = state => {
   return {
     elements: state.elements,
-    formData: state.data,
+    formData: state.formData,
     errors: state.errors,
   }
 };
