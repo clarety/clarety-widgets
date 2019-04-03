@@ -12,7 +12,7 @@ class ClaretyApi {
       const response = await axios.get(url);
       return response.data.result[0];
     } catch (error) {
-      throw new Error(`[Clarety API] Failed to explain endpoint '${endpoint}'`);
+      throw new Error(`[Clarety API] Failed to explain endpoint '${endpoint}': ${error.message}`);
     }
   }
 
@@ -31,7 +31,7 @@ class ClaretyApi {
       const response = await axios.post(url, postBody);
       return response.data.result[0];
     } catch (error) {
-      throw new Error(`[Clarety API] Something went wrong posting data to endpoint '${endpoint}' w/ action '${action}'`);
+      throw new Error(`[Clarety API] Something went wrong posting data to endpoint '${endpoint}' w/ action '${action}': ${error.message}`);
     }
   }
 
