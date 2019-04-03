@@ -7,7 +7,7 @@ import VariableAmount from '../components/VariableAmount';
 import ErrorMessages from '../../form/components/ErrorMessages';
 import SubmitButton from '../../form/components/SubmitButton';
 import { selectFrequency, selectAmount } from '../actions';
-import { setStatus, statuses } from '../../form/actions';
+import { setStatus, statuses, updateFormData } from '../../form/actions';
 import { addToSale, clearSale } from '../../shared/actions';
 
 class AmountPanel extends React.Component {
@@ -17,7 +17,8 @@ class AmountPanel extends React.Component {
 
   onSubmit = async event => {
     const { status, setStatus } = this.props;
-    const { selections, frequency, history, addToSale } = this.props;
+    const { selections, frequency, history } = this.props;
+    const { updateFormData, addToSale } = this.props;
 
     event.preventDefault();
     if (status !== statuses.ready) return;
@@ -31,6 +32,10 @@ class AmountPanel extends React.Component {
       amount: selections[frequency].amount,
       qty: 1,
     });
+
+    updateFormData('saleLine.offerId', offer.offerId);
+    updateFormData('saleLine.offerPaymentId', offer.offerPaymentId);
+    updateFormData('saleLine.amount', selections[frequency].amount);
 
     history.push('/details');
 
@@ -123,6 +128,7 @@ const mapStateToProps = state => {
 const actions = {
   setStatus: setStatus,
 
+  updateFormData: updateFormData,
   addToSale: addToSale,
   clearSale: clearSale,
 
