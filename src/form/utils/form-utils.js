@@ -3,23 +3,25 @@ import { createStore } from 'redux';
 import { Provider, connect } from 'react-redux';
 import formReducer from '../reducers/form-reducer';
 import { setElements } from '../../shared/actions';
-import { setStatus, updateData, setErrors, clearErrors } from '../actions';
+import { setStatus, updateFormData, setErrors, clearErrors } from '../actions';
 
 export function connectFormToStore(ViewComponent) {
   const mapStateToProps = state => {
     return {
-      elements: state.elements,
       status: state.status,
+      elements: state.elements,
       formData: state.formData,
     };
   };
 
   const actions = {
     setStatus: setStatus,
-    setElements: setElements,
-    updateData: updateData,
-    clearErrors: clearErrors,
     setErrors: setErrors,
+    clearErrors: clearErrors,
+
+    setElements: setElements,
+    
+    updateFormData: updateFormData,
   };
 
   const ConnectedComponent = connect(mapStateToProps, actions)(ViewComponent);

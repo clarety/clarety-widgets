@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateData } from '../actions';
+import { updateFormData } from '../actions';
 
 class FormElement extends React.Component {
   componentWillMount() {
-    const { property, value, updateData } = this.props;
-    updateData(property, value);
+    const { property, value, updateFormData } = this.props;
+    updateFormData(property, value);
   }
 
   render() {
@@ -14,7 +14,7 @@ class FormElement extends React.Component {
 }
 
 const actions = {
-  updateData: updateData,
+  updateFormData: updateFormData,
 };
 
 export default connect(null, actions)(FormElement);

@@ -1,12 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { updateData } from '../actions';
+import { updateFormData } from '../actions';
 import { getValidationError } from '../utils/form-utils';
 import FieldError from './FieldError';
 
-const TextInput = ({ property, type, placeholder, testId, formData, errors, updateData }) => {
+const TextInput = ({ property, type, placeholder, testId, formData, errors, updateFormData }) => {
   let error = getValidationError(property, errors);
+
+  const onChange = event => {
+    updateFormData(property, event.target.value);  
+  };
 
   return (
     <>
@@ -14,7 +18,7 @@ const TextInput = ({ property, type, placeholder, testId, formData, errors, upda
         type={type || 'text'}
         placeholder={placeholder}
         value={formData[property] || ''}
-        onChange={event => updateData(property, event.target.value)}
+        onChange={onChange}
         data-testid={testId}
         isInvalid={error !== null}
       />
@@ -31,7 +35,7 @@ const mapStateToProps = state => {
 };
 
 const actions = {
-  updateData: updateData,
+  updateFormData: updateFormData,
 };
 
 export default connect(mapStateToProps, actions)(TextInput);
