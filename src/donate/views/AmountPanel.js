@@ -1,10 +1,8 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import FrequencySelect from '../components/FrequencySelect';
-import SuggestedAmount from '../components/SuggestedAmount';
-import VariableAmount from '../components/VariableAmount';
-import SubmitButton from '../../form/components/SubmitButton';
+import { FrequencySelect, SuggestedAmount, VariableAmount } from '../components';
+import { SubmitButton } from '../../form/components';
 import { selectFrequency, selectAmount } from '../actions';
 import { setStatus, statuses, updateFormData } from '../../form/actions';
 import { addToSale, clearSale } from '../../shared/actions';
