@@ -1,3 +1,3 @@
-export { default as FrequencySelect } from './FrequencySelect';
-export { default as SuggestedAmount } from './SuggestedAmount';
-export { default as VariableAmount } from './VariableAmount';
+export { default as FrequencySelect } from './amount/FrequencySelect';
+export { default as SuggestedAmount } from './amount/SuggestedAmount';
+export { default as VariableAmount } from './amount/VariableAmount';
