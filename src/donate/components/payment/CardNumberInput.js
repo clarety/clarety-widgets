@@ -2,16 +2,27 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import { updatePaymentPanelData } from '../../actions';
+import './CardNumberInput.css';
 
 const CardNumberInput = ({ cardNumber, placeholder, testId, updateCardNumber }) => (
   <Form.Control
     type="tel"
+    className={'card-number ' + getCardType(cardNumber)}
     placeholder={placeholder || '•••• •••• •••• ••••'}
     value={formatCardNumber(cardNumber || '')}
     onChange={event => updateCardNumber(event.target.value)}
     data-testid={testId}
   />
 );
+
+const getCardType = number => {
+  if (/^4/.test(number)) return 'visa';
+  if (/^5[1-5]/.test(number)) return 'mastercard';
+  if (/^3(4|7)/.test(number)) return 'amex';
+  if (/^6011/.test(number)) return 'discovery';
+
+  return 'unknown';
+};
 
 // Split numbers into groups of 4.
 const formatCardNumber = number => {
