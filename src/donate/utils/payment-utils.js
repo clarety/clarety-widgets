@@ -1,10 +1,12 @@
-export const getCardType = number => {
-  if (/^4/.test(number)) return 'visa';
-  if (/^5[1-5]/.test(number)) return 'mastercard';
-  if (/^3(4|7)/.test(number)) return 'amex';
-  if (/^6011/.test(number)) return 'discovery';
+import creditCardType from 'credit-card-type';
 
-  return 'unknown';
+export const getCardType = number => {
+  if (!number) return 'unknown';
+
+  const matches = creditCardType(number);
+  if (!matches[0]) return 'unknown';
+
+  return matches[0].type;
 };
 
 // Split numbers into groups of 4.
