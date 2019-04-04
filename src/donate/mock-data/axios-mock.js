@@ -17,7 +17,6 @@ export const setupAxiosMock = () => {
     .reply(config => {
       const query = querystring.parse(config.data);
       const data = JSON.parse(query.data);
-
       const { saleLine, customer } = data[0];
 
       console.log(data[0]);
@@ -34,15 +33,22 @@ export const setupAxiosMock = () => {
     .reply(config => {
       const query = querystring.parse(config.data);
       const data = JSON.parse(query.data);
-
       const { saleLine, customer, payment } = data[0];
 
       console.log(data[0]);
 
-      if (customer) {
+      if (query.action === 'donate') {
         return [200, validationOkResponse];
-      } else {
-        return [200, validationErrorResponse];
       }
+
+      if (query.action === 'save') {
+        if (customer) {
+          return [200, validationOkResponse];
+        } else {
+          return [200, validationErrorResponse];
+        }
+      }
+
+      throw new Error(`[Clarety Mock] action '${query.action}' not implemented.`);
     });
 };

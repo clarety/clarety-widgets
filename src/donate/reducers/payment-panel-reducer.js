@@ -1,6 +1,11 @@
 import { actionTypes } from '../actions';
 
-const initialState = {};
+const initialState = {
+  cardNumber: '',
+  expiryMonth: '',
+  expiryYear: '',
+  ccv: '',
+};
 
 export const paymentPanelReducer = (state = initialState, action) => {
   switch (action.type) {
