@@ -14,16 +14,14 @@ export const amountPanelReducer = (state = initialState, action) => {
   }
 };
 
-const _selectFrequency = (state, action) => {
+const _selectFrequency = (state, { frequency }) => {
   return {
     ...state,
-    frequency: action.payload,
+    frequency,
   };
 };
 
-const _selectAmount = (state, action) => {
-  const { frequency, amount, isVariableAmount } = action.payload;
-
+const _selectAmount = (state, { frequency, amount, isVariableAmount }) => {
   const prevVariableAmount = state.selections[frequency].variableAmount;
 
   const selection = {
@@ -41,9 +39,7 @@ const _selectAmount = (state, action) => {
   };
 };
 
-const _selectDefaults = (state, action) => {
-  const donationOffers = action.payload;
-
+const _selectDefaults = (state, { donationOffers }) => {
   const defaultFrequency = donationOffers[0].frequency;
   const defaultSelections = {};
 

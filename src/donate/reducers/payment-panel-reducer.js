@@ -10,7 +10,7 @@ const initialState = {
 export const paymentPanelReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.updatePaymentPanelData:
-      const { field, value } = action.payload;
+      const { field, value } = action;
       return {
         ...state,
         [field]: value
