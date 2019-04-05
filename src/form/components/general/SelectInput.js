@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { findElement } from '../../shared/utils/element-utils';
-import { updateFormData } from '../actions';
-import { getValidationError } from '../utils/form-utils';
-import FieldError from './FieldError';
+import { findElement } from '../../../shared/utils/element-utils';
+import { updateFormData } from '../../actions';
+import { getValidationError } from '../../utils/form-utils';
+import FieldError from '../errors/FieldError';
 
 const SelectInput = ({ value, options, placeholder, testId, error, onChange }) => (
   <>

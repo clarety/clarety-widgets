@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { updateFormData } from '../actions';
-import { getValidationError } from '../utils/form-utils';
-import FieldError from './FieldError';
+import { updateFormData } from '../../actions';
+import { getValidationError } from '../../utils/form-utils';
+import FieldError from '../errors/FieldError';
 
 const TextInput = ({ value, type, placeholder, testId, error, onChange }) => (
   <>

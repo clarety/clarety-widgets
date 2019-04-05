@@ -1,8 +1,7 @@
-export { default as ErrorMessages } from './ErrorMessages';
-export { default as FieldError } from './FieldError';
+export { default as ErrorMessages } from './errors/ErrorMessages';
+export { default as FieldError } from './errors/FieldError';
 
-export { default as TextInput } from './TextInput';
-export { default as SelectInput } from './SelectInput';
-export { default as FormElement } from './FormElement';
-
-export { default as SubmitButton } from './SubmitButton';
+export { default as TextInput } from './general/TextInput';
+export { default as SelectInput } from './general/SelectInput';
+export { default as FormElement } from './general/FormElement';
+export { default as SubmitButton } from './general/SubmitButton';
