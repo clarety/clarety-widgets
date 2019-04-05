@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Card, Form, Col, Button } from 'react-bootstrap';
 import ClaretyApi from '../../shared/services/clarety-api';
-import { statuses } from '../../form/actions';
+import { statuses } from '../../shared/actions';
 import { SubmitButton, ErrorMessages } from '../../form/components';
 import { CardNumberInput, ExpiryMonthInput, ExpiryYearInput, CcvInput } from '../components';
 import { createStripeToken, parseStripeError, validateCard } from '../utils/stripe-utils';
+import * as sharedActions from '../../shared/actions';
 import * as formActions from '../../form/actions';
 
 class PaymentPanel extends React.Component {
@@ -129,7 +130,7 @@ const mapStateToProps = state => {
 };
 
 const actions = {
-  setStatus: formActions.setStatus,
+  setStatus: sharedActions.setStatus,
   setErrors: formActions.setErrors,
   clearErrors: formActions.clearErrors,
   updateFormData: formActions.updateFormData,

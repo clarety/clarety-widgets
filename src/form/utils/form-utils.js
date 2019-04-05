@@ -15,7 +15,7 @@ export function connectFormToStore(ViewComponent) {
   };
 
   const actions = {
-    setStatus: formActions.setStatus,
+    setStatus: sharedActions.setStatus,
     setElements: sharedActions.setElements,
 
     setErrors: formActions.setErrors,

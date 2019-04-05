@@ -1,7 +1,4 @@
 export const actionTypes = {
-  // Form Status Actions
-  setFormStatus: 'SET_FORM_STATUS',
-
   // Form Data Actions
   updateFormData: 'UPDATE_FORM_DATA',
 

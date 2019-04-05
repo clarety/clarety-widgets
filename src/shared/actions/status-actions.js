@@ -7,6 +7,6 @@ export const statuses = {
 };
 
 export const setStatus = status => ({
-  type: actionTypes.setFormStatus,
+  type: actionTypes.setStatus,
   status,
 });

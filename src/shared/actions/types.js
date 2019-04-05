@@ -1,4 +1,7 @@
 export const actionTypes = {
+  // Status Actions
+  setStatus: 'SET_STATUS',
+
   // Currency Actions
   setCurrency: 'SET_CURRENCY',
 
