@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { updatePaymentData } from '../../actions';
+import { updatePaymentData } from '../../../form/actions';
 import { getCardType, formatCardNumber, cleanCardNumber } from '../../utils/payment-utils';
 import { getValidationError } from '../../../form/utils/form-utils';
 import { FieldError } from '../../../form/components';
