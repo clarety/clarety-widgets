@@ -8,11 +8,9 @@ const initialState = {
 export const saleReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.addToSale:
-      const saleLine = action.payload;
-
       const saleLines = [
         ...state.saleLines,
-        saleLine,
+        action.saleLine,
       ];
 
       const total = saleLines.reduce((total, line) => total + line.amount, 0);

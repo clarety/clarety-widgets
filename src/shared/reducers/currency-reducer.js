@@ -8,7 +8,7 @@ const initialState = {
 export const currencyReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.setCurrency:
-      return action.payload;
+      return action.currency;
 
     default:
       return state;
