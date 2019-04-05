@@ -4,7 +4,7 @@ import { Card, Form, Col, Button } from 'react-bootstrap';
 import ClaretyApi from '../../shared/services/clarety-api';
 import { statuses } from '../../shared/actions';
 import { SubmitButton, ErrorMessages } from '../../form/components';
-import { CardNumberInput, ExpiryMonthInput, ExpiryYearInput, CcvInput } from '../components';
+import { CardNumberInput, ExpiryMonthInput, ExpiryYearInput, CcvInput } from '../../form/components';
 import { createStripeToken, parseStripeError, validateCard } from '../utils/stripe-utils';
 import * as sharedActions from '../../shared/actions';
 import * as formActions from '../../form/actions';
