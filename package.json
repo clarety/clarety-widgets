@@ -33,6 +33,7 @@
     "@babel/preset-react": "7.0.0",
     "axios-mock-adapter": "^1.16.0",
     "babel-loader": "8.0.5",
+    "identity-obj-proxy": "^3.0.0",
     "np": "^4.0.2",
     "react-testing-library": "^6.0.0",
     "webpack": "4.28.3",
@@ -49,6 +50,11 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(css|scss)$": "identity-obj-proxy"
+    }
   },
   "browserslist": [
     ">0.2%",
