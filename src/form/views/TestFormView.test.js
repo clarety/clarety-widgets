@@ -11,7 +11,8 @@ import validationErrorResponse from '../mock-data/validation-error';
 
 const mock = new MockAdapter(axios);
 
-const enterText = (textInput, value) => fireEvent.change(textInput, { target: { value } });
+const enterText = (input, value) => fireEvent.change(input, { target: { value } });
+const selectOption = (input, value) => fireEvent.change(input, { target: { value } });
 
 describe('<TestFormView>', () => {
   beforeEach(() => {
@@ -56,6 +57,7 @@ describe('<TestFormView>', () => {
         expect(postData[0].firstName).toBe('George Costanza');
         expect(postData[0].email).toBe('gcostanza@humanfund.org');
         expect(postData[0].code).toBe('test-newsletter');
+        expect(postData[0].country).toBe('AU');
 
         return [200, validationOkResponse];
       });
@@ -68,10 +70,12 @@ describe('<TestFormView>', () => {
 
     const nameInput = getByTestId('name-input');
     const emailInput = getByTestId('email-input');
+    const countryInput = getByTestId('country-input');
     const btn = getByTestId('submit-button');
 
     enterText(nameInput, 'George Costanza');
     enterText(emailInput, 'gcostanza@humanfund.org');
+    selectOption(countryInput, 'AU');
     fireEvent.click(btn);
   });
 

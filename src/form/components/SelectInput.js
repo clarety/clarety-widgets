@@ -6,44 +6,39 @@ import { updateFormData } from '../actions';
 import { getValidationError } from '../utils/form-utils';
 import FieldError from './FieldError';
 
-const SelectInput = ({ property, placeholder, testId, formData, elements, errors, updateFormData }) => {
-  const error = getValidationError(property, errors);
+const SelectInput = ({ value, options, placeholder, testId, error, onChange }) => (
+  <>
+    <Form.Control
+      as="select"
+      value={value}
+      onChange={onChange}
+      data-testid={testId}
+      isInvalid={error !== null}
+    >
+      <option>{placeholder}</option>
+      {Object.keys(options).map(value =>
+        <option key={value} value={value}>{options[value]}</option>
+      )}
+    </Form.Control>
+    <FieldError error={error} />
+  </>
+);
 
-  const { options } = findElement(property, elements);
-  const values = Object.keys(options);
+const mapStateToProps = (state, { property }) => {
+  const element = findElement(property, state.elements);
+  if (!element.options) throw new Error(`[Clarety] SelectInput could not find options for property '${property}'.`);
 
-  const onChange = event => {
-    updateFormData(property, event.target.value);
-  };
-
-  return (
-    <>
-      <Form.Control as="select"
-        value={formData[property] || ''}
-        onChange={onChange}
-        data-testid={testId}
-        isInvalid={error !== null}
-      >
-        <option>{placeholder}</option>
-        {values.map(value =>
-          <option key={value} value={value}>{options[value]}</option>
-        )}
-      </Form.Control>
-      <FieldError error={error} />
-    </>
-  );
-};
-
-const mapStateToProps = state => {
   return {
-    elements: state.elements,
-    formData: state.formData,
-    errors: state.errors,
+    options: element.options,
+    value: state.formData[property] || '',
+    error: getValidationError(property, state.errors),
   }
 };
 
-const actions = {
-  updateFormData: updateFormData,
+const mapDispatchToProps = (dispatch, { property }) => {
+  return {
+    onChange: event => dispatch(updateFormData(property, event.target.value)),
+  };
 };
 
-export default connect(mapStateToProps, actions)(SelectInput);
+export default connect(mapStateToProps, mapDispatchToProps)(SelectInput);
