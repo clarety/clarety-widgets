@@ -2,9 +2,9 @@ import React from 'react';
 import { createStore } from 'redux';
 import { Provider, connect } from 'react-redux';
 import donateReducer from '../reducers/donate-reducer';
-import { setElements, setCurrency } from '../../shared/actions';
-import { setStatus } from '../../form/actions';
-import { setDonationOffers, selectDefaults } from '../actions';
+import * as sharedActions from '../../shared/actions';
+import * as formActions from '../../form/actions';
+import * as donateActions from '../actions';
 
 export function connectDonateWidgetToStore(ViewComponent) {
   const mapStateToProps = state => {
@@ -14,12 +14,12 @@ export function connectDonateWidgetToStore(ViewComponent) {
   };
 
   const actions = {
-    setStatus: setStatus,
-    setCurrency: setCurrency,
-    setElements: setElements,
+    setStatus: formActions.setStatus,
+    setCurrency: sharedActions.setCurrency,
+    setElements: sharedActions.setElements,
     
-    setDonationOffers: setDonationOffers,
-    selectDefaults: selectDefaults,
+    setDonationOffers: donateActions.setDonationOffers,
+    selectDefaults: donateActions.selectDefaults,
   };
 
   const ConnectedComponent = connect(mapStateToProps, actions)(ViewComponent);

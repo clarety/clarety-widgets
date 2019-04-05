@@ -1,11 +1,12 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { statuses } from '../../form/actions';
 import { FrequencySelect, SuggestedAmount, VariableAmount } from '../components';
 import { SubmitButton } from '../../form/components';
-import { selectFrequency, selectAmount } from '../actions';
-import { setStatus, statuses, updateFormData } from '../../form/actions';
-import { addToSale, clearSale } from '../../shared/actions';
+import * as donateActions from '../actions';
+import * as formActions from '../../form/actions';
+import * as sharedActions from '../../shared/actions';
 
 class AmountPanel extends React.Component {
   componentWillMount() {
@@ -122,15 +123,14 @@ const mapStateToProps = state => {
 };
 
 const actions = {
-  setStatus: setStatus,
+  setStatus: formActions.setStatus,
+  updateFormData: formActions.updateFormData,
 
-  selectFrequency: selectFrequency,
-  selectAmount: selectAmount,
+  selectFrequency: donateActions.selectFrequency,
+  selectAmount: donateActions.selectAmount,
 
-  addToSale: addToSale,
-  clearSale: clearSale,
-
-  updateFormData: updateFormData,
+  addToSale: sharedActions.addToSale,
+  clearSale: sharedActions.clearSale,
 };
 
 export default connect(mapStateToProps, actions)(AmountPanel);

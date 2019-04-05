@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Card, Form, Col, Button } from 'react-bootstrap';
 import ClaretyApi from '../../shared/services/clarety-api';
+import { statuses } from '../../form/actions';
 import { SubmitButton, ErrorMessages } from '../../form/components';
 import { CardNumberInput, ExpiryMonthInput, ExpiryYearInput, CcvInput } from '../components';
 import { createStripeToken, parseStripeError, validateCard } from '../utils/stripe-utils';
-import { statuses, setStatus, updateFormData, setErrors, clearErrors } from '../../form/actions';
+import * as formActions from '../../form/actions';
 
 class PaymentPanel extends React.Component {
   onPrev = () => this.props.history.goBack();
@@ -128,10 +129,10 @@ const mapStateToProps = state => {
 };
 
 const actions = {
-  setStatus: setStatus,
-  setErrors: setErrors,
-  clearErrors: clearErrors,
-  updateFormData: updateFormData,
+  setStatus: formActions.setStatus,
+  setErrors: formActions.setErrors,
+  clearErrors: formActions.clearErrors,
+  updateFormData: formActions.updateFormData,
 };
 
 export default connect(mapStateToProps, actions)(PaymentPanel);
