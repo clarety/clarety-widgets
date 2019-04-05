@@ -4,14 +4,14 @@ import { Card, Form, Col, Button } from 'react-bootstrap';
 import ClaretyApi from '../../shared/services/clarety-api';
 import { SubmitButton, ErrorMessages } from '../../form/components';
 import { CardNumberInput, ExpiryMonthInput, ExpiryYearInput, CcvInput } from '../components';
-import { createStripeToken, parseStripeError } from '../utils/stripe-utils';
+import { createStripeToken, parseStripeError, validateCard } from '../utils/stripe-utils';
 import { statuses, setStatus, updateFormData, setErrors, clearErrors } from '../../form/actions';
 
 class PaymentPanel extends React.Component {
   onPrev = () => this.props.history.goBack();
 
-  onSubmit = async event => {
-    const { status, setStatus, setErrors } = this.props;
+  onSubmit = event => {
+    const { status, cardDetails, setStatus, setErrors, clearErrors } = this.props;
 
     event.preventDefault();
 
@@ -19,11 +19,19 @@ class PaymentPanel extends React.Component {
     setStatus(statuses.busy);
     clearErrors();
 
-    // TODO: client side stripe validation.
+    const errors = validateCard(cardDetails);
+    if (errors) {
+      setErrors(errors);
+      setStatus(statuses.ready);
+    } else {
+      this.onValidate(cardDetails);
+    }
+  };
 
-    const { paymentDetails } = this.props;
-    const result = await createStripeToken(paymentDetails);
-    console.log(result);
+  onValidate = async cardDetails => {
+    const { setStatus, setErrors } = this.props;
+
+    const result = await createStripeToken(cardDetails);
 
     if (result.error) {
       const errors = parseStripeError(result.error);
@@ -114,7 +122,7 @@ class PaymentPanel extends React.Component {
 const mapStateToProps = state => {
   return {
     status: state.status,
-    paymentDetails: state.paymentPanel,
+    cardDetails: state.paymentPanel,
     formData: state.formData,
   };
 };

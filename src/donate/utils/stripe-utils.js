@@ -1,6 +1,6 @@
 import ClaretyConfig from '../../shared/services/clarety-config';
 
-export const createStripeToken = ({ cardNumber, expiryMonth, expiryYear, cvc }) => {
+export const createStripeToken = ({ cardNumber, expiryMonth, expiryYear, ccv }) => {
   const { Stripe } = window;
 
   const stripeKey = ClaretyConfig.get('stripeKey');
@@ -13,12 +13,44 @@ export const createStripeToken = ({ cardNumber, expiryMonth, expiryYear, cvc }) 
       number: cardNumber,
       exp_month: expiryMonth,
       exp_year: expiryYear,
-      cvc: cvc,
+      cvc: ccv,
     };
-    console.log(card);
 
     Stripe.card.createToken(card, (status, response) => resolve(response));
   });
+};
+
+export const validateCard = ({ cardNumber, expiryMonth, expiryYear, ccv }) => {
+  const { Stripe } = window;
+
+  const errors = [];
+
+  if (!Stripe.card.validateCardNumber(cardNumber)) {
+    errors.push({
+      field: 'cardNumber',
+      message: 'Invalid card number.',
+    });
+  }
+
+  if (!Stripe.card.validateExpiry(expiryMonth, expiryYear)) {
+    errors.push({
+      field: 'expiryMonth',
+      message: 'Invalid date.',
+    });
+    errors.push({
+      field: 'expiryYear',
+      message: 'Invalid date.',
+    });
+  }
+
+  if (!Stripe.card.validateCVC(ccv)) {
+    errors.push({
+      field: 'ccv',
+      message: 'Invalid CCV.',
+    });
+  }
+
+  return errors.length ? errors : null;
 };
 
 export const parseStripeError = error => {
@@ -44,7 +76,7 @@ const _stripeParamToField = param => {
     case 'number': return 'cardNumber';
     case 'exp_month': return 'expiryMonth';
     case 'exp_year': return 'expiryYear';
-    case 'cvc': return 'cvc';
+    case 'cvc': return 'ccv';
 
     default: return undefined;
   }
