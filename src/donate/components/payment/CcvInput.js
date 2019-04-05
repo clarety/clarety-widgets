@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { updatePaymentPanelData } from '../../actions';
+import { updatePaymentData } from '../../actions';
 import { getValidationError } from '../../../form/utils/form-utils';
 import { FieldError } from '../../../form/components';
 
@@ -28,7 +28,7 @@ const mapStateToProps = state => {
 };
 
 const actions = {
-  onChange: event => updatePaymentPanelData('ccv', event.target.value),
+  onChange: event => updatePaymentData('ccv', event.target.value),
 };
 
 export default connect(mapStateToProps, actions)(CcvInput);

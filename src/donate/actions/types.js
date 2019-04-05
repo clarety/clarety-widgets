@@ -7,6 +7,6 @@ export const actionTypes = {
   selectAmount: 'SELECT_AMOUNT',
   selectDefaults: 'SELECT_DEFAULTS',
 
-  // Payment Panel Actions
-  updatePaymentPanelData: 'UPDATE_PAYMENT_PANEL_DATA',
+  // Payment Data Actions
+  updatePaymentData: 'UPDATE_PAYMENT_DATA',
 };

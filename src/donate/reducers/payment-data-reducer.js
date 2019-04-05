@@ -7,9 +7,9 @@ const initialState = {
   ccv: '',
 };
 
-export const paymentPanelReducer = (state = initialState, action) => {
+export const paymentDataReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.updatePaymentPanelData:
+    case actionTypes.updatePaymentData:
       const { field, value } = action;
       return {
         ...state,

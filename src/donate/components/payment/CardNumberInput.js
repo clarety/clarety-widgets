@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { updatePaymentPanelData } from '../../actions';
+import { updatePaymentData } from '../../actions';
 import { getCardType, formatCardNumber, cleanCardNumber } from '../../utils/payment-utils';
 import { getValidationError } from '../../../form/utils/form-utils';
 import { FieldError } from '../../../form/components';
@@ -30,7 +30,7 @@ const mapStateToProps = state => {
 };
 
 const actions = {
-  onChange: event => updatePaymentPanelData('cardNumber', cleanCardNumber(event.target.value)),
+  onChange: event => updatePaymentData('cardNumber', cleanCardNumber(event.target.value)),
 };
 
 export default connect(mapStateToProps, actions)(CardNumberInput);
