@@ -5,13 +5,13 @@ import { updatePaymentPanelData } from '../../actions';
 import { getValidationError } from '../../../form/utils/form-utils';
 import { FieldError } from '../../../form/components';
 
-const ExpiryYearInput = ({ expiryYear, placeholder, testId, updateExpiryYear, error }) => (
+const ExpiryYearInput = ({ expiryYear, placeholder, testId, onChange, error }) => (
   <>
     <Form.Control
       type="tel"
       placeholder={placeholder || 'YY'}
       value={expiryYear}
-      onChange={event => updateExpiryYear(event.target.value)}
+      onChange={onChange}
       data-testid={testId}
       maxLength={2}
       isInvalid={error !== null}
@@ -28,7 +28,7 @@ const mapStateToProps = state => {
 };
 
 const actions = {
-  updateExpiryYear: expiryYear => updatePaymentPanelData('expiryYear', expiryYear),
+  onChange: event => updatePaymentPanelData('expiryYear', event.target.value),
 };
 
 export default connect(mapStateToProps, actions)(ExpiryYearInput);

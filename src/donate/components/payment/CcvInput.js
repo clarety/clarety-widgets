@@ -5,13 +5,13 @@ import { updatePaymentPanelData } from '../../actions';
 import { getValidationError } from '../../../form/utils/form-utils';
 import { FieldError } from '../../../form/components';
 
-const CcvInput = ({ ccv, placeholder, testId, updateCcv, error }) => (
+const CcvInput = ({ ccv, placeholder, testId, onChange, error }) => (
   <>
     <Form.Control
       type="tel"
       placeholder={placeholder || '•••'}
       value={ccv}
-      onChange={event => updateCcv(event.target.value)}
+      onChange={onChange}
       data-testid={testId}
       maxLength={4}
       isInvalid={error !== null}
@@ -28,7 +28,7 @@ const mapStateToProps = state => {
 };
 
 const actions = {
-  updateCcv: ccv => updatePaymentPanelData('ccv', ccv),
+  onChange: event => updatePaymentPanelData('ccv', event.target.value),
 };
 
 export default connect(mapStateToProps, actions)(CcvInput);

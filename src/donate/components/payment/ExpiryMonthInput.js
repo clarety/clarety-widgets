@@ -5,13 +5,13 @@ import { updatePaymentPanelData } from '../../actions';
 import { getValidationError } from '../../../form/utils/form-utils';
 import { FieldError } from '../../../form/components';
 
-const ExpiryMonthInput = ({ expiryMonth, placeholder, testId, updateExpiryMonth, error }) => (
+const ExpiryMonthInput = ({ expiryMonth, placeholder, testId, onChange, error }) => (
   <>
     <Form.Control
       type="tel"
       placeholder={placeholder || 'MM'}
       value={expiryMonth}
-      onChange={event => updateExpiryMonth(event.target.value)}
+      onChange={onChange}
       data-testid={testId}
       maxLength={2}
       isInvalid={error !== null}
@@ -28,7 +28,7 @@ const mapStateToProps = state => {
 };
 
 const actions = {
-  updateExpiryMonth: expiryMonth => updatePaymentPanelData('expiryMonth', expiryMonth),
+  onChange: event => updatePaymentPanelData('expiryMonth', event.target.value),
 };
 
 export default connect(mapStateToProps, actions)(ExpiryMonthInput);

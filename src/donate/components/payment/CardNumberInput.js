@@ -7,14 +7,14 @@ import { getValidationError } from '../../../form/utils/form-utils';
 import { FieldError } from '../../../form/components';
 import './CardNumberInput.css';
 
-const CardNumberInput = ({ cardNumber, placeholder, testId, updateCardNumber, error }) => (
+const CardNumberInput = ({ cardNumber, placeholder, testId, onChange, error }) => (
   <>
     <Form.Control
       type="tel"
       className={'card-number ' + getCardType(cardNumber)}
       placeholder={placeholder || '•••• •••• •••• ••••'}
       value={cardNumber}
-      onChange={event => updateCardNumber(event.target.value)}
+      onChange={onChange}
       data-testid={testId}
       isInvalid={error !== null}
     />
@@ -30,7 +30,7 @@ const mapStateToProps = state => {
 };
 
 const actions = {
-  updateCardNumber: cardNumber => updatePaymentPanelData('cardNumber', cleanCardNumber(cardNumber)),
+  onChange: event => updatePaymentPanelData('cardNumber', cleanCardNumber(event.target.value)),
 };
 
 export default connect(mapStateToProps, actions)(CardNumberInput);
