@@ -2,7 +2,7 @@ import { actionTypes } from './types';
 
 export const setErrors = errors => ({
   type: actionTypes.setFormErrors,
-  payload: errors,
+  errors,
 });
 
 export const clearErrors = () => ({

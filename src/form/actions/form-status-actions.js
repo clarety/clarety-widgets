@@ -6,7 +6,7 @@ export const statuses = {
   busy: 'busy',
 };
 
-export const setStatus = state => ({
+export const setStatus = status => ({
   type: actionTypes.setFormStatus,
-  payload: state,
+  status,
 });
