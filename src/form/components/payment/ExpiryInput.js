@@ -5,6 +5,7 @@ import { updatePaymentData } from '../../../form/actions';
 import { formatExpiry, cleanExpiry } from '../../utils/payment-utils';
 import { getValidationError } from '../../../form/utils/form-utils';
 import { FieldError } from '../../../form/components';
+import './ExpiryInput.css';
 
 class ExpiryInput extends React.Component {
   onKeyDown = event => {
@@ -42,6 +43,7 @@ class ExpiryInput extends React.Component {
           onKeyDown={this.onKeyDown}
           data-testid={testId}
           isInvalid={error !== null}
+          className="expiry-input"
         />
         <FieldError error={error} />
       </>

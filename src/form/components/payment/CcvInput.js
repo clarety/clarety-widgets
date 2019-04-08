@@ -4,6 +4,7 @@ import { Form } from 'react-bootstrap';
 import { updatePaymentData } from '../../../form/actions';
 import { getValidationError } from '../../../form/utils/form-utils';
 import { FieldError } from '../../../form/components';
+import './CcvInput.css';
 
 const CcvInput = ({ ccv, placeholder, testId, onChange, error }) => (
   <>
@@ -15,6 +16,7 @@ const CcvInput = ({ ccv, placeholder, testId, onChange, error }) => (
       data-testid={testId}
       maxLength={4}
       isInvalid={error !== null}
+      className="ccv-input"
     />
     <FieldError error={error} />
   </>
