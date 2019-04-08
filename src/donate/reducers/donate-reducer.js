@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { formErrorsReducer, formDataReducer, paymentDataReducer } from '../../form/reducers';
 import { statusReducer, currencyReducer, elementsReducer, saleReducer } from '../../shared/reducers';
-import { donationReducer, donationOffersReducer, amountPanelReducer }  from '.';
+import { successPanelReducer, donationOffersReducer, amountPanelReducer }  from '.';
 
 const donateReducer = combineReducers({
   status: statusReducer,
@@ -13,10 +13,10 @@ const donateReducer = combineReducers({
 
   formData: formDataReducer,
   sale: saleReducer,
-  donation: donationReducer,
 
   amountPanel: amountPanelReducer,
   paymentPanel: paymentDataReducer,
+  successPanel: successPanelReducer,
 });
 
 export default donateReducer;

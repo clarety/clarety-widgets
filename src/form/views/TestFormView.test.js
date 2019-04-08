@@ -2,7 +2,6 @@ import React from 'react';
 import { render, cleanup, fireEvent, waitForElement } from 'react-testing-library';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import querystring from 'querystring';
 import TestFormView from './TestFormView';
 import ClaretyConfig from '../../shared/services/clarety-config';
 import initBasicResponse from '../mock-data/init-basic';

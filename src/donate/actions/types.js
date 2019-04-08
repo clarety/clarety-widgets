@@ -1,7 +1,4 @@
 export const actionTypes = {
-  // Donation Actions
-  setDonation: 'SET_DONATION',
-
   // Donation Offers Actions
   setDonationOffers: 'SET_DONATION_OFFERS',
 
@@ -9,4 +6,7 @@ export const actionTypes = {
   selectFrequency: 'SELECT_FREQUENCY',
   selectAmount: 'SELECT_AMOUNT',
   selectDefaults: 'SELECT_DEFAULTS',
+
+  // Success Panel Actions
+  setDonation: 'SET_DONATION',
 };
