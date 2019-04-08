@@ -6,7 +6,7 @@ const _ErrorMessages = ({ errors }) => {
   if (!errors || errors.length === 0) return null;
 
   return (
-    <Alert variant="danger">
+    <Alert variant="danger" className="text-left">
       <ul className="ml-3 mb-0">
         {errors.map((error, idx) => <li key={idx}>{error.message}</li>)}
       </ul>

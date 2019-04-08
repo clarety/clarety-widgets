@@ -3,7 +3,7 @@ import { Card } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { statuses } from '../../shared/actions';
 import { FrequencySelect, SuggestedAmount, VariableAmount } from '../components';
-import { SubmitButton } from '../../form/components';
+import { SubmitButton, ErrorMessages } from '../../form/components';
 import * as donateActions from '../actions';
 import * as formActions from '../../form/actions';
 import * as sharedActions from '../../shared/actions';
@@ -17,25 +17,33 @@ class AmountPanel extends React.Component {
     const { status, setStatus } = this.props;
     const { selections, frequency, history } = this.props;
     const { updateFormData, addToSale } = this.props;
+    const { setErrors, clearErrors } = this.props;
 
     event.preventDefault();
+
     if (status !== statuses.ready) return;
+    clearErrors();
     setStatus(statuses.busy);
-    
-    const offer = this._getOffer(frequency);
 
-    addToSale({
-      offerId: offer.offerId,
-      offerPaymentId: offer.offerPaymentId,
-      amount: selections[frequency].amount,
-      qty: 1,
-    });
+    // Make sure an amount has been selected.
+    if (selections[frequency].amount) {
+      const offer = this._getOffer(frequency);
 
-    updateFormData('saleLine.offerId', offer.offerId);
-    updateFormData('saleLine.offerPaymentId', offer.offerPaymentId);
-    updateFormData('saleLine.amount', selections[frequency].amount);
+      addToSale({
+        offerId: offer.offerId,
+        offerPaymentId: offer.offerPaymentId,
+        amount: selections[frequency].amount,
+        qty: 1,
+      });
 
-    history.push('/details');
+      updateFormData('saleLine.offerId', offer.offerId);
+      updateFormData('saleLine.offerPaymentId', offer.offerPaymentId);
+      updateFormData('saleLine.amount', selections[frequency].amount);
+
+      history.push('/details');
+    } else {
+      setErrors([{ message: 'Please select a donation amount.' }]);
+    }
 
     setStatus(statuses.ready);
   };
@@ -53,6 +61,8 @@ class AmountPanel extends React.Component {
           <Card.Header>Choose Amount</Card.Header>
 
           <Card.Body>
+            <ErrorMessages />
+
             <FrequencySelect
               options={this._getFrequencyOptions()}
               value={frequency}
@@ -126,6 +136,9 @@ const actions = {
   setStatus: sharedActions.setStatus,
   addToSale: sharedActions.addToSale,
   clearSale: sharedActions.clearSale,
+
+  setErrors: formActions.setErrors,
+  clearErrors: formActions.clearErrors,
 
   updateFormData: formActions.updateFormData,
 
