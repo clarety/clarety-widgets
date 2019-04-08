@@ -1,4 +1,7 @@
 export const actionTypes = {
+  // Donation Actions
+  setDonation: 'SET_DONATION',
+
   // Donation Offers Actions
   setDonationOffers: 'SET_DONATION_OFFERS',
 

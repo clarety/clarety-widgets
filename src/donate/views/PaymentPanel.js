@@ -8,6 +8,7 @@ import { CardNumberInput, ExpiryInput, CcvInput } from '../../form/components';
 import { createStripeToken, parseStripeError, validateCard } from '../utils/stripe-utils';
 import * as sharedActions from '../../shared/actions';
 import * as formActions from '../../form/actions';
+import * as donateActions from '../actions';
 
 class PaymentPanel extends React.Component {
   onPrev = () => this.props.history.goBack();
@@ -46,7 +47,7 @@ class PaymentPanel extends React.Component {
   };
 
   onStripeToken = async token => {
-    const { formData, setStatus, updateFormData, setErrors, history } = this.props;
+    const { formData, setStatus, updateFormData, setErrors, setDonation, history } = this.props;
 
     // Add token to both the store, and our local prop.
     updateFormData('payment.stripeToken', token);
@@ -60,6 +61,7 @@ class PaymentPanel extends React.Component {
       if (result.status === 'error') {
         setErrors(result.validationErrors);
       } else {
+        setDonation(result.donation);
         history.push('/success');
       }
     }
@@ -128,6 +130,7 @@ const actions = {
   setErrors: formActions.setErrors,
   clearErrors: formActions.clearErrors,
   updateFormData: formActions.updateFormData,
+  setDonation: donateActions.setDonation,
 };
 
 export default connect(mapStateToProps, actions)(PaymentPanel);

@@ -6,14 +6,16 @@ import { statuses } from '../../shared/actions';
 import { TextInput, SubmitButton, ErrorMessages } from '../../form/components';
 import * as sharedActions from '../../shared/actions';
 import * as formActions from '../../form/actions';
+import * as donateActions from '../actions';
 
 class DetailsPanel extends React.Component {
   onPrev = () => this.props.history.goBack();
 
   onSubmit = async event => {
-    const { history, status, setStatus } = this.props;
+    const { status, setStatus } = this.props;
     const { formData, updateFormData } = this.props;
     const { clearErrors, setErrors } = this.props;
+    const { history, setDonation } = this.props
 
     event.preventDefault();
 
@@ -34,6 +36,7 @@ class DetailsPanel extends React.Component {
       } else {
         updateFormData('donation.uuid', result.donation.uuid);
         updateFormData('jwt', result.jwt);
+        setDonation(result.donation);
         history.push('/payment');
       }
     }
@@ -101,6 +104,7 @@ const actions = {
   setErrors: formActions.setErrors,
   clearErrors: formActions.clearErrors,
   updateFormData: formActions.updateFormData,
+  setDonation: donateActions.setDonation,
 };
 
 export default connect(mapStateToProps, actions)(DetailsPanel);
