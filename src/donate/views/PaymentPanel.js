@@ -55,7 +55,7 @@ class PaymentPanel extends React.Component {
     const uuid = formData['donation.uuid'];
     const endpoint = uuid ? `donate/${uuid}` : 'donate';
 
-    const result = await ClaretyApi.post(endpoint, 'donate', formData);
+    const result = await ClaretyApi.post(endpoint, formData);
     if (result) {
       if (result.status === 'error') {
         setErrors(result.validationErrors);

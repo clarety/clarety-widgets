@@ -6,11 +6,9 @@ import { connectFormToStore } from '../utils/form-utils';
 
 export class BaseFormView extends React.Component {
   endpoint = null;
-  action = null;
 
   async componentDidMount() {
     if (!this.endpoint) throw new Error('[Clarety] BaseFormView "endpoint" must be overridden.');
-    if (!this.action) throw new Error('[Clarety] BaseFormView "action" must be overridden.');
 
     const { setElements, setStatus } = this.props;
 
@@ -31,7 +29,7 @@ export class BaseFormView extends React.Component {
     setStatus(statuses.busy);
     clearErrors();
     
-    const result = await ClaretyApi.post(this.endpoint, this.action, formData);
+    const result = await ClaretyApi.post(this.endpoint, formData);
     if (result) {
       if (result.status === 'error') {
         setErrors(result.validationErrors);

@@ -6,7 +6,6 @@ import { TextInput, SelectInput, FormElement, ErrorMessages, SubmitButton } from
 
 class SubscribeFormView extends BaseFormView {
   endpoint = 'subscribe';
-  action = 'subscribe';
 
   renderForm() {
     const { listCode } = this.props;

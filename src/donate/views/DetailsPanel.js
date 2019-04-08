@@ -27,7 +27,7 @@ class DetailsPanel extends React.Component {
     // Don't send payment data from this panel.
     formData['payment.stripeToken'] = undefined;
     
-    const result = await ClaretyApi.post(endpoint, 'save', formData);
+    const result = await ClaretyApi.post(endpoint, formData);
     if (result) {
       if (result.status === 'error') {
         setErrors(result.validationErrors);

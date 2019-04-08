@@ -2,6 +2,7 @@ import React from 'react';
 import ClaretyConfig from './shared/services/clarety-config';
 import { renderWidget } from './shared/utils/widget-utils';
 import DonateWidget from './donate/views/DonateWidget';
+// import SubscribeFormView from './subscribe/views/SubscribeFormView';
 import './index.css';
 
 ClaretyConfig.init({

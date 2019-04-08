@@ -1,5 +1,4 @@
 import axios from 'axios';
-import querystring from 'querystring';
 import Config from './clarety-config';
 import { parseNestedElements } from '../utils/element-utils';
 
@@ -16,22 +15,17 @@ class ClaretyApi {
     }
   }
 
-  static async post(endpoint, action, data) {
+  static async post(endpoint, data) {
     const postData = parseNestedElements(data);
-
-    const postBody = querystring.stringify({
-      action: action,
-      data: JSON.stringify([postData]),
-    });
 
     const apiBase = this._apiBase();
     const url = `${apiBase}/${endpoint}/`;
 
     try {
-      const response = await axios.post(url, postBody);
+      const response = await axios.post(url, postData);
       return response.data.result[0];
     } catch (error) {
-      throw new Error(`[Clarety API] Something went wrong posting data to endpoint '${endpoint}' w/ action '${action}': ${error.message}`);
+      throw new Error(`[Clarety API] Something went wrong posting data to endpoint '${endpoint}': ${error.message}`);
     }
   }
 
