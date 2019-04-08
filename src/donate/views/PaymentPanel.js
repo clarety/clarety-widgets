@@ -4,7 +4,7 @@ import { Card, Form, Col, Button } from 'react-bootstrap';
 import ClaretyApi from '../../shared/services/clarety-api';
 import { statuses } from '../../shared/actions';
 import { SubmitButton, ErrorMessages } from '../../form/components';
-import { CardNumberInput, ExpiryMonthInput, ExpiryYearInput, CcvInput } from '../../form/components';
+import { CardNumberInput, ExpiryInput, CcvInput } from '../../form/components';
 import { createStripeToken, parseStripeError, validateCard } from '../utils/stripe-utils';
 import * as sharedActions from '../../shared/actions';
 import * as formActions from '../../form/actions';
@@ -48,7 +48,7 @@ class PaymentPanel extends React.Component {
   onStripeToken = async token => {
     const { formData, setStatus, updateFormData, setErrors, history } = this.props;
 
-    // TODO: Don't want to modify formData prop.
+    // Add token to both the store, and our local prop.
     updateFormData('payment.stripeToken', token);
     formData.payment = { stripeToken: token };
 
@@ -86,14 +86,8 @@ class PaymentPanel extends React.Component {
             <Form.Row>
               <Col>
                 <Form.Group controlId="cardExpMonth">
-                  <Form.Label>Expiry Month</Form.Label>
-                  <ExpiryMonthInput />
-                </Form.Group>
-              </Col>
-              <Col>
-                <Form.Group controlId="cardExpYear">
-                  <Form.Label>Expiry Year</Form.Label>
-                  <ExpiryYearInput />
+                  <Form.Label>Expiry</Form.Label>
+                  <ExpiryInput />
                 </Form.Group>
               </Col>
               <Col>

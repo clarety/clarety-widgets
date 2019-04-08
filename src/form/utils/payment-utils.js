@@ -23,5 +23,31 @@ export const formatCardNumber = number => {
 
 // Remove anything that isn't a number.
 export const cleanCardNumber = number => {
-  return number.replace(/[^0-9]/g, '');
+  return number.replace(/[^0-9]/g, '').substring(0, 20);
 };
+
+export const formatExpiry = (month, year) => {
+  if (!month) return '';
+
+  if (!year) {
+    if (month === '0' || month === '1') return month;
+    return `${month} / `;
+  }
+
+  return `${month} / ${year}`;
+};
+
+export const cleanExpiry = expiry => {
+  let [month, year] = expiry.split(' / ');
+
+  if (month) month = _cleanDigits(month);
+  if (year) year = _cleanDigits(year);
+
+  if (month.length === 1 && month > 1) month = `0${month}`;
+  if (month > 12) month = '1';
+  if (month === '00') month = '0';
+
+  return { month, year };
+};
+
+const _cleanDigits = string => string.replace(/[^0-9]/g, '').substring(0, 2);

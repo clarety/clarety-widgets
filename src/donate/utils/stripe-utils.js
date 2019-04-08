@@ -34,12 +34,8 @@ export const validateCard = ({ cardNumber, expiryMonth, expiryYear, ccv }) => {
 
   if (!Stripe.card.validateExpiry(expiryMonth, expiryYear)) {
     errors.push({
-      field: 'expiryMonth',
-      message: 'Invalid date.',
-    });
-    errors.push({
-      field: 'expiryYear',
-      message: 'Invalid date.',
+      field: 'expiry',
+      message: 'Invalid expiry.',
     });
   }
 
@@ -74,8 +70,8 @@ export const parseStripeError = error => {
 const _stripeParamToField = param => {
   switch (param) {
     case 'number': return 'cardNumber';
-    case 'exp_month': return 'expiryMonth';
-    case 'exp_year': return 'expiryYear';
+    case 'exp_month': return 'expiry';
+    case 'exp_year': return 'expiry';
     case 'cvc': return 'ccv';
 
     default: return undefined;

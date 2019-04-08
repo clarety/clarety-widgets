@@ -8,5 +8,4 @@ export { default as TextInput } from './general/TextInput';
 
 export { default as CardNumberInput } from './payment/CardNumberInput';
 export { default as CcvInput } from './payment/CcvInput';
-export { default as ExpiryMonthInput } from './payment/ExpiryMonthInput';
-export { default as ExpiryYearInput } from './payment/ExpiryYearInput';
+export { default as ExpiryInput } from './payment/ExpiryInput';
