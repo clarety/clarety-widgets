@@ -40,8 +40,8 @@ export const formatExpiry = (month, year) => {
 export const cleanExpiry = expiry => {
   let [month, year] = expiry.split(' / ');
 
-  if (month) month = _cleanDigits(month);
-  if (year) year = _cleanDigits(year);
+  if (month) month = _cleanDigits(month, 2);
+  if (year) year = _cleanDigits(year, 2);
 
   if (month.length === 1 && month > 1) month = `0${month}`;
   if (month > 12) month = '1';
@@ -50,4 +50,9 @@ export const cleanExpiry = expiry => {
   return { month, year };
 };
 
-const _cleanDigits = string => string.replace(/[^0-9]/g, '').substring(0, 2);
+export const cleanCcv = ccv => _cleanDigits(ccv, 4);
+
+const _cleanDigits = (string, maxLength) => {
+  return string.replace(/[^0-9]/g, '')
+               .substring(0, maxLength);
+};

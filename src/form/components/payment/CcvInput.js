@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import { updatePaymentData } from '../../../form/actions';
+import { cleanCcv } from '../../utils/payment-utils';
 import { getValidationError } from '../../../form/utils/form-utils';
 import { FieldError } from '../../../form/components';
 import './CcvInput.css';
@@ -30,7 +31,7 @@ const mapStateToProps = state => {
 };
 
 const actions = {
-  onChange: event => updatePaymentData('ccv', event.target.value),
+  onChange: event => updatePaymentData('ccv', cleanCcv(event.target.value)),
 };
 
 export default connect(mapStateToProps, actions)(CcvInput);
