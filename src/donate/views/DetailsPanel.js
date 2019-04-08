@@ -25,7 +25,7 @@ class DetailsPanel extends React.Component {
     const endpoint = uuid ? `donate/${uuid}` : 'donate';
 
     // Don't send payment data from this panel.
-    formData['payment.stripeToken'] = undefined;
+    delete formData['payment.stripeToken'];
     
     const result = await ClaretyApi.post(endpoint, formData);
     if (result) {
