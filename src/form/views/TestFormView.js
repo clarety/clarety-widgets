@@ -5,7 +5,6 @@ import { TextInput, SelectInput, FormElement, ErrorMessages, SubmitButton } from
 
 class TestFormView extends BaseFormView {
   endpoint = 'test';
-  action = 'test';
 
   renderForm() {
     return (

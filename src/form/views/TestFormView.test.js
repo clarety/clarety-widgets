@@ -51,13 +51,12 @@ describe('<TestFormView>', () => {
     mock
       .onPost('http://dev-test.clarety.io/api/test/')
       .reply(config => {
-        const request = querystring.parse(config.data);
-        const postData = JSON.parse(request.data);
+        const postData = JSON.parse(config.data);
 
-        expect(postData[0].firstName).toBe('George Costanza');
-        expect(postData[0].email).toBe('gcostanza@humanfund.org');
-        expect(postData[0].code).toBe('test-newsletter');
-        expect(postData[0].country).toBe('AU');
+        expect(postData.firstName).toBe('George Costanza');
+        expect(postData.email).toBe('gcostanza@humanfund.org');
+        expect(postData.code).toBe('test-newsletter');
+        expect(postData.country).toBe('AU');
 
         return [200, validationOkResponse];
       });
