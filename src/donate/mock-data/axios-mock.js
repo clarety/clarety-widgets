@@ -1,8 +1,11 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
+
 import explainResponse from '../mock-data/explain.json';
 import validationOkResponse from '../mock-data/validation-ok.json';
 import validationErrorResponse from '../mock-data/validation-error.json';
+import paymentOkResponse from '../mock-data/payment-ok.json';
+import paymentErrorResponse from '../mock-data/payment-error.json';
 
 export const setupAxiosMock = () => {
   const mock = new MockAdapter(axios, { delayResponse: 500 });
@@ -35,7 +38,12 @@ export const setupAxiosMock = () => {
       console.log(data);
 
       if (payment) {
-        return [200, validationOkResponse];
+        if (saleLine.amount > 60) {
+          return [200, paymentErrorResponse];
+        } else {
+          return [200, paymentOkResponse];
+        }
+        
       } else {
         if (customer) {
           return [200, validationOkResponse];

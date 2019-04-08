@@ -1,0 +1,14 @@
+{
+  "requestId": "",
+  "success": true,
+  "result": [
+    {
+      "status": "error",
+      "validationErrors": [
+        {
+          "message": "Payment failed, insufficient funds."
+        }
+      ]
+    }
+  ]
+}
