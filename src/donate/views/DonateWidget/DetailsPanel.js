@@ -13,7 +13,7 @@ export class DetailsPanel extends React.Component {
 
   onSubmit = async event => {
     const { status, setStatus } = this.props;
-    const { formData, updateFormData } = this.props;
+    const { formData, updateFormData, saleLines } = this.props;
     const { clearErrors, setErrors } = this.props;
     const { history, setDonation } = this.props
 
@@ -26,8 +26,13 @@ export class DetailsPanel extends React.Component {
     const uuid = formData['donation.uuid'];
     const endpoint = uuid ? `donate/${uuid}` : 'donate';
 
+    const postData = {
+      ...formData,
+      saleLines,
+    };
+
     // Don't send payment data from this panel.
-    const postData = { ...formData };
+    //TODO: can this be removed yet?
     delete postData['payment.stripeToken'];
     
     const result = await ClaretyApi.post(endpoint, postData);
@@ -97,6 +102,7 @@ const mapStateToProps = state => {
   return {
     status: state.status,
     formData: state.formData,
+    saleLines: state.sale.saleLines,
   };
 };
 

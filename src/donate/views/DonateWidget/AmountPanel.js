@@ -14,9 +14,8 @@ class AmountPanel extends React.Component {
   }
 
   onSubmit = event => {
-    const { status, setStatus } = this.props;
+    const { status, setStatus, addSaleLine } = this.props;
     const { selections, frequency, history } = this.props;
-    const { updateFormData, addSaleLine } = this.props;
     const { setErrors, clearErrors } = this.props;
 
     event.preventDefault();
@@ -34,10 +33,6 @@ class AmountPanel extends React.Component {
         offerPaymentId: offer.offerPaymentId,
         amount: selections[frequency].amount,
       });
-
-      updateFormData('saleLine.offerId', offer.offerId);
-      updateFormData('saleLine.offerPaymentId', offer.offerPaymentId);
-      updateFormData('saleLine.amount', selections[frequency].amount);
 
       history.push('/details');
     } else {
@@ -133,13 +128,12 @@ const mapStateToProps = state => {
 
 const actions = {
   setStatus: sharedActions.setStatus,
+  
   addSaleLine: sharedActions.addSaleLine,
   clearSaleLines: sharedActions.clearSaleLines,
 
   setErrors: formActions.setErrors,
   clearErrors: formActions.clearErrors,
-
-  updateFormData: formActions.updateFormData,
 
   selectFrequency: donateActions.selectFrequency,
   selectAmount: donateActions.selectAmount,

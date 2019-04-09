@@ -1,8 +1,8 @@
 import React from 'react';
 import ClaretyConfig from './shared/services/clarety-config';
 import { renderWidget } from './shared/utils/widget-utils';
-// import DonateWidget from './donate/views/DonateWidget';
-import TestDonateWidget from './donate/views/TestDonateWidget/TestDonateWidget';
+import DonateWidget from './donate/views/DonateWidget/DonateWidget';
+// import TestDonateWidget from './donate/views/TestDonateWidget/TestDonateWidget';
 // import SubscribeFormView from './subscribe/views/SubscribeFormView';
 import './index.css';
 
@@ -12,4 +12,4 @@ ClaretyConfig.init({
   stripeKey: 'pk_test_5AVvhyJrg3yIEnWSMQVBl3mQ00mK2D2SOD',
 });
 
-renderWidget('donate-widget', <TestDonateWidget />);
+renderWidget('donate-widget', <DonateWidget />);
