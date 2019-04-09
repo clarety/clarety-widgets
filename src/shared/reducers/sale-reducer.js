@@ -1,4 +1,5 @@
 import { actionTypes } from '../actions';
+import { actionTypes as formActionTypes } from '../../form/actions';
 
 const initialState = {
   saleLines: [],
@@ -20,6 +21,19 @@ export const saleReducer = (state = initialState, action) => {
       return {
         ...state,
         saleLines: [],
+      };
+
+    case actionTypes.setPayment:
+      return {
+        ...state,
+        payment: action.payment,
+      };
+
+    case actionTypes.clearPayment:
+    case formActionTypes.updatePaymentData:
+      return {
+        ...state,
+        payment: {},
       };
 
     default:

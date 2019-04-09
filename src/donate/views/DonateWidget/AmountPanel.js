@@ -25,15 +25,10 @@ class AmountPanel extends React.Component {
     setStatus(statuses.busy);
 
     // Make sure an amount has been selected.
-    if (selections[frequency].amount) {
-      const offer = this._getOffer(frequency);
-
-      addSaleLine({
-        offerId: offer.offerId,
-        offerPaymentId: offer.offerPaymentId,
-        amount: selections[frequency].amount,
-      });
-
+    const { amount } = selections[frequency];
+    if (amount) {
+      const { offerId, offerPaymentId } = this._getOffer(frequency);
+      addSaleLine({ offerId, offerPaymentId, amount });
       history.push('/details');
     } else {
       setErrors([{ message: 'Please select a donation amount.' }]);

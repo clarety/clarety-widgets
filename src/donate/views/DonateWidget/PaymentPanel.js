@@ -32,9 +32,9 @@ class PaymentPanel extends React.Component {
   };
 
   onValidate = async cardDetails => {
-    const { formData, setStatus, setErrors, updateFormData } = this.props;
+    const { payment, setStatus, setErrors, setPayment } = this.props;
 
-    if (formData['payment.stripeToken']) {
+    if (payment.stripeToken) {
       this.attemptPayment();
     } else {
       const result = await createStripeToken(cardDetails);
@@ -44,22 +44,22 @@ class PaymentPanel extends React.Component {
         setErrors(errors);
         setStatus(statuses.ready);
       } else {
-        // Add token to both the store, and our local prop.
-        const token = result.id;
-        updateFormData('payment.stripeToken', token);
-        formData['payment.stripeToken'] = token;
+        setPayment({ stripeToken: result.id });
         this.attemptPayment();
       }
     }
   };
 
   attemptPayment = async () => {
-    const { formData, setStatus, setErrors, setDonation, history } = this.props;
+    const { formData, saleLines, payment } = this.props;
+    const { setStatus, setErrors, setDonation, history } = this.props;
 
     const uuid = formData['donation.uuid'];
     const endpoint = uuid ? `donate/${uuid}` : 'donate';
 
-    const result = await ClaretyApi.post(endpoint, formData);
+    const postData = { ...formData, saleLines, payment };
+
+    const result = await ClaretyApi.post(endpoint, postData);
     if (result) {
       if (result.status === 'error') {
         setErrors(result.validationErrors);
@@ -123,16 +123,22 @@ class PaymentPanel extends React.Component {
 const mapStateToProps = state => {
   return {
     status: state.status,
+
     cardDetails: state.paymentPanel,
+
     formData: state.formData,
+    saleLines: state.sale.saleLines,
+    payment: state.sale.payment,
   };
 };
 
 const actions = {
   setStatus: sharedActions.setStatus,
+
   setErrors: formActions.setErrors,
   clearErrors: formActions.clearErrors,
-  updateFormData: formActions.updateFormData,
+
+  setPayment: sharedActions.setPayment,
   setDonation: donateActions.setDonation,
 };
 
