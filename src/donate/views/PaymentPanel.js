@@ -32,26 +32,29 @@ class PaymentPanel extends React.Component {
   };
 
   onValidate = async cardDetails => {
-    const { setStatus, setErrors } = this.props;
+    const { formData, setStatus, setErrors, updateFormData } = this.props;
 
-    const result = await createStripeToken(cardDetails);
-
-    if (result.error) {
-      const errors = parseStripeError(result.error);
-      setErrors(errors);
-      setStatus(statuses.ready);
+    if (formData['payment.stripeToken']) {
+      this.attemptPayment();
     } else {
-      const token = result.id;
-      this.onStripeToken(token);
+      const result = await createStripeToken(cardDetails);
+
+      if (result.error) {
+        const errors = parseStripeError(result.error);
+        setErrors(errors);
+        setStatus(statuses.ready);
+      } else {
+        // Add token to both the store, and our local prop.
+        const token = result.id;
+        updateFormData('payment.stripeToken', token);
+        formData['payment.stripeToken'] = token;
+        this.attemptPayment();
+      }
     }
   };
 
-  onStripeToken = async token => {
-    const { formData, setStatus, updateFormData, setErrors, setDonation, history } = this.props;
-
-    // Add token to both the store, and our local prop.
-    updateFormData('payment.stripeToken', token);
-    formData.payment = { stripeToken: token };
+  attemptPayment = async () => {
+    const { formData, setStatus, setErrors, setDonation, history } = this.props;
 
     const uuid = formData['donation.uuid'];
     const endpoint = uuid ? `donate/${uuid}` : 'donate';
