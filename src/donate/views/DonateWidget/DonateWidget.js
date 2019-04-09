@@ -35,7 +35,7 @@ export class DonateWidget extends React.Component {
           <Route exact path="/" render={this.renderAmountPanel} />
           <Route path="/details" render={this.renderDetailsPanel} />
           <Route path="/payment" render={this.renderPaymentPanel} />
-          <Route path="/success" rener={this.renderSuccessPanel} />
+          <Route path="/success" render={this.renderSuccessPanel} />
         </Switch>
       </MemoryRouter>
     );
