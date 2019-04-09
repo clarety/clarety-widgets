@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Card } from 'react-bootstrap';
+import { Card, Table } from 'react-bootstrap';
 
 const SuccessPanel = ({ donation }) => (
   <Card>
@@ -15,7 +15,7 @@ const SuccessPanel = ({ donation }) => (
       </Card.Text>
     </Card.Body>
 
-    <table class="table mb-0">
+    <Table className="mb-0">
       <tbody>
         <tr>
           <th scope="row">Date</th>
@@ -38,7 +38,7 @@ const SuccessPanel = ({ donation }) => (
           <td>Card ending in {donation.last4}</td>
         </tr>
       </tbody>
-    </table>
+    </Table>
     <Card.Footer></Card.Footer>
   </Card>
 );
