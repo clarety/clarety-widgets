@@ -1,15 +1,15 @@
 import React from 'react';
 import { MemoryRouter, Switch, Route } from 'react-router-dom';
-import ClaretyApi from '../../shared/services/clarety-api';
-import { statuses } from '../../shared/actions';
-import { connectDonateWidgetToStore } from '../utils/donate-utils.js';
+import ClaretyApi from '../../../shared/services/clarety-api';
+import { statuses } from '../../../shared/actions';
+import { connectDonateWidgetToStore } from '../../utils/donate-utils.js';
 import AmountPanel from './AmountPanel';
 import DetailsPanel from './DetailsPanel';
 import PaymentPanel from './PaymentPanel';
 import SuccessPanel from './SuccessPanel';
 
 
-import { setupAxiosMock } from '../mock-data/axios-mock';
+import { setupAxiosMock } from '../../mock-data/axios-mock';
 setupAxiosMock();
 
 
@@ -32,13 +32,29 @@ export class DonateWidget extends React.Component {
     return (
       <MemoryRouter>
         <Switch>
-          <Route exact path="/" component={AmountPanel} />
-          <Route path="/details" component={DetailsPanel} />
-          <Route path="/payment" component={PaymentPanel} />
-          <Route path="/success" component={SuccessPanel} />
+          <Route exact path="/" render={this.renderAmountPanel} />
+          <Route path="/details" render={this.renderDetailsPanel} />
+          <Route path="/payment" render={this.renderPaymentPanel} />
+          <Route path="/success" rener={this.renderSuccessPanel} />
         </Switch>
       </MemoryRouter>
     );
+  }
+
+  renderAmountPanel(props) {
+    return <AmountPanel {...props} />;
+  }
+
+  renderDetailsPanel(props) {
+    return <DetailsPanel {...props} />;
+  }
+
+  renderPaymentPanel(props) {
+    return <PaymentPanel {...props} />;
+  }
+
+  renderSuccessPanel(props) {
+    return <SuccessPanel {...props} />;
   }
 }
 
