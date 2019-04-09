@@ -9,10 +9,8 @@ const SuccessPanel = ({ donation }) => (
     </Card.Header>
 
     <Card.Body>
-      <Card.Text>
-        <p>Thank you for your kind donation to The Human Fund, your generosity is greatly appreciated. A receipt has be sent to your email address. All donations over $2 are tax deductible.</p>
-        <p>If you have any issues or inquiries please don't hesitate to email <a href="mailto:gcostanza@humanfund.org">gcostanza@humanfund.org</a>.</p>
-      </Card.Text>
+      <Card.Text>Thank you for your kind donation to The Human Fund, your generosity is greatly appreciated. A receipt has be sent to your email address. All donations over $2 are tax deductible.</Card.Text>
+      <Card.Text>If you have any issues or inquiries please don't hesitate to email <a href="mailto:gcostanza@humanfund.org">gcostanza@humanfund.org</a>.</Card.Text>
     </Card.Body>
 
     <Table className="mb-0">
