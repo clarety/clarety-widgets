@@ -17,8 +17,15 @@ export class DonateWidget extends React.Component {
   async componentWillMount() {
     const { setCurrency, setElements, setStatus } = this.props;
     const { setDonationOffers, selectDefaults } = this.props;
+    const { storeCode, onceOfferId, recurringOfferId } = this.props;
 
-    const explain = await ClaretyApi.explain('donate');
+    const params = {
+      store: storeCode,
+      once: onceOfferId,
+      recurring: recurringOfferId,
+    };
+    const explain = await ClaretyApi.explain('donations', params);
+
     setCurrency(explain.currency);
     setElements(explain.elements);
     setDonationOffers(explain.donationOffers);

@@ -3,12 +3,12 @@ import Config from './clarety-config';
 import { parseNestedElements } from '../utils/element-utils';
 
 class ClaretyApi {
-  static async explain(endpoint) {
+  static async explain(endpoint, params) {
     const apiBase = this._apiBase();
-    const url = `${apiBase}/explain/?endpoint=${endpoint}`;
+    const url = `${apiBase}/widgets/${endpoint}`;
 
     try {
-      const response = await axios.get(url);
+      const response = await axios.get(url, { params });
       return response.data.result[0];
     } catch (error) {
       throw new Error(`[Clarety API] Failed to explain endpoint '${endpoint}': ${error.message}`);

@@ -10,8 +10,9 @@ import paymentErrorResponse from '../mock-data/payment-error.json';
 export const setupAxiosMock = () => {
   const mock = new MockAdapter(axios, { delayResponse: 500 });
 
+  const params = { store: 'AU', once: '1234', recurring: '9876' };
   mock
-    .onGet('http://dev-clarety-baseline.clarety.io/api/explain/?endpoint=donate')
+    .onGet('http://dev-clarety-baseline.clarety.io/api/widgets/donations', { params })
     .reply(200, explainResponse);
 
   mock

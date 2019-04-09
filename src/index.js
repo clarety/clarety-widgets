@@ -12,4 +12,10 @@ ClaretyConfig.init({
   stripeKey: 'pk_test_5AVvhyJrg3yIEnWSMQVBl3mQ00mK2D2SOD',
 });
 
-renderWidget('donate-widget', <DonateWidget />);
+renderWidget('donate-widget',
+  <DonateWidget
+    storeCode="AU"
+    onceOfferId="1234"
+    recurringOfferId="9876"
+  />
+);
