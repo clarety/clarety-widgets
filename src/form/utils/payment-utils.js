@@ -43,9 +43,19 @@ export const cleanExpiry = expiry => {
   if (month) month = _cleanDigits(month, 2);
   if (year) year = _cleanDigits(year, 2);
 
-  if (month.length === 1 && month > 1) month = `0${month}`;
-  if (month > 12) month = '1';
-  if (month === '00') month = '0';
+  if (month.length === 1 && month > 1) {
+    month = `0${month}`;
+  }
+
+  if (month > 12) {
+    month = '1';
+    year = null;
+  }
+
+  if (month === '00') {
+    month = '0';
+    year = null;
+  }
 
   return { month, year };
 };

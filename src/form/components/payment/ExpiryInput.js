@@ -19,6 +19,12 @@ class ExpiryInput extends React.Component {
         const newValue = value[0] === '0' ? '' : value.substring(0, 1);
         event.target.value = newValue;
       }
+
+      const position = event.target.selectionStart;
+      if (position !== value.length) {
+        event.preventDefault();
+        event.target.value = '';
+      }
     }
 
     // Space or slash.
