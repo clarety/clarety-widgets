@@ -7,7 +7,7 @@ const initialState = {
 
 export const saleReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.addToSale:
+    case actionTypes.addSaleLine:
       const saleLines = [
         ...state.saleLines,
         action.saleLine,
@@ -20,7 +20,7 @@ export const saleReducer = (state = initialState, action) => {
         total,
       };
 
-    case actionTypes.clearSale:
+    case actionTypes.clearSaleLines:
       return initialState;
 
     default:

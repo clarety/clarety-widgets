@@ -9,6 +9,6 @@ export const actionTypes = {
   setElements: 'SET_ELEMENTS',
 
   // Sale Actions
-  addToSale: 'ADD_TO_SALE',
-  clearSale: 'CLEAR_SALE',
+  addSaleLine: 'ADD_SALE_LINE',
+  clearSaleLines: 'CLEAR_SALE_LINES',
 };

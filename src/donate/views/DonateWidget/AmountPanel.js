@@ -10,13 +10,13 @@ import * as sharedActions from '../../../shared/actions';
 
 class AmountPanel extends React.Component {
   componentWillMount() {
-    this.props.clearSale();
+    this.props.clearSaleLines();
   }
 
   onSubmit = event => {
     const { status, setStatus } = this.props;
     const { selections, frequency, history } = this.props;
-    const { updateFormData, addToSale } = this.props;
+    const { updateFormData, addSaleLine } = this.props;
     const { setErrors, clearErrors } = this.props;
 
     event.preventDefault();
@@ -29,11 +29,10 @@ class AmountPanel extends React.Component {
     if (selections[frequency].amount) {
       const offer = this._getOffer(frequency);
 
-      addToSale({
+      addSaleLine({
         offerId: offer.offerId,
         offerPaymentId: offer.offerPaymentId,
         amount: selections[frequency].amount,
-        qty: 1,
       });
 
       updateFormData('saleLine.offerId', offer.offerId);
@@ -134,8 +133,8 @@ const mapStateToProps = state => {
 
 const actions = {
   setStatus: sharedActions.setStatus,
-  addToSale: sharedActions.addToSale,
-  clearSale: sharedActions.clearSale,
+  addSaleLine: sharedActions.addSaleLine,
+  clearSaleLines: sharedActions.clearSaleLines,
 
   setErrors: formActions.setErrors,
   clearErrors: formActions.clearErrors,
