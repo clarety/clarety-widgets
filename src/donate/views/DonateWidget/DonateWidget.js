@@ -15,9 +15,11 @@ setupAxiosMock();
 
 export class DonateWidget extends React.Component {
   async componentWillMount() {
-    const { setCurrency, setElements, setStatus } = this.props;
+    const { setCurrency, setElements, setStatus, updateFormData } = this.props;
     const { setDonationOffers, selectDefaults } = this.props;
     const { storeCode, onceOfferId, recurringOfferId } = this.props;
+
+    updateFormData('store', storeCode);
 
     const params = {
       store: storeCode,
