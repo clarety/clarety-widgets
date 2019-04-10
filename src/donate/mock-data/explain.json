@@ -5,6 +5,8 @@
     {
       "resource": "donate",
 
+      "stripePublishableKey": "pk_test_5AVvhyJrg3yIEnWSMQVBl3mQ00mK2D2SOD",
+
       "currency": {
         "symbol": "$",
         "code": "AUD"

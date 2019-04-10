@@ -32,12 +32,12 @@ class PaymentPanel extends React.Component {
   };
 
   onValidate = async cardDetails => {
-    const { payment, setStatus, setErrors, setPayment } = this.props;
+    const { payment, stripeKey, setStatus, setErrors, setPayment } = this.props;
 
     if (payment.stripeToken) {
       this.attemptPayment();
     } else {
-      const result = await createStripeToken(cardDetails);
+      const result = await createStripeToken(cardDetails, stripeKey);
 
       if (result.error) {
         const errors = parseStripeError(result.error);
@@ -124,6 +124,7 @@ const mapStateToProps = state => {
   return {
     status: state.status,
 
+    stripeKey: state.explain.stripePublishableKey,
     cardDetails: state.panels.paymentPanel,
 
     formData: state.formData,

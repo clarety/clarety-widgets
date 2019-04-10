@@ -9,7 +9,6 @@ import './index.css';
 ClaretyConfig.init({
   env: 'dev',
   instanceKey: 'clarety-baseline',
-  stripeKey: 'pk_test_5AVvhyJrg3yIEnWSMQVBl3mQ00mK2D2SOD',
 });
 
 renderWidget('donate-widget',

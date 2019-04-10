@@ -1,21 +1,16 @@
-import ClaretyConfig from '../../shared/services/clarety-config';
-
-export const createStripeToken = ({ cardNumber, expiryMonth, expiryYear, ccv }) => {
+export const createStripeToken = ({ cardNumber, expiryMonth, expiryYear, ccv }, stripeKey) => {
   const { Stripe } = window;
-
-  const stripeKey = ClaretyConfig.get('stripeKey');
-  if (!stripeKey) throw new Error("[Clarety] 'stripeKey' not found in ClaretyConfig");
 
   Stripe.setPublishableKey(stripeKey);
 
-  return new Promise((resolve, reject) => {
-    const card = {
-      number: cardNumber,
-      exp_month: expiryMonth,
-      exp_year: expiryYear,
-      cvc: ccv,
-    };
+  const card = {
+    number: cardNumber,
+    exp_month: expiryMonth,
+    exp_year: expiryYear,
+    cvc: ccv,
+  };
 
+  return new Promise((resolve, reject) => {
     Stripe.card.createToken(card, (status, response) => resolve(response));
   });
 };
