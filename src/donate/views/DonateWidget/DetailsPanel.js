@@ -13,9 +13,9 @@ export class DetailsPanel extends React.Component {
 
   onSubmit = async event => {
     const { status, setStatus } = this.props;
-    const { formData, updateFormData, saleLines } = this.props;
+    const { formData, updateFormData, saleLines, jwt } = this.props;
     const { clearErrors, setErrors } = this.props;
-    const { history, setDonation } = this.props
+    const { history, setDonation, setJwt } = this.props
 
     event.preventDefault();
 
@@ -28,13 +28,13 @@ export class DetailsPanel extends React.Component {
 
     const postData = { ...formData, saleLines };
     
-    const result = await ClaretyApi.post(endpoint, postData);
+    const result = await ClaretyApi.post(endpoint, postData, jwt);
     if (result) {
       if (result.status === 'error') {
         setErrors(result.validationErrors);
       } else {
         updateFormData('donation.uuid', result.donation.uuid);
-        updateFormData('jwt', result.jwt);
+        setJwt(result.jwt);
         setDonation(result.donation);
         history.push('/payment');
       }
@@ -94,6 +94,7 @@ export class DetailsPanel extends React.Component {
 const mapStateToProps = state => {
   return {
     status: state.status,
+    jwt: state.jwt,
     formData: state.formData,
     saleLines: state.sale.saleLines,
   };
@@ -105,6 +106,7 @@ const actions = {
   clearErrors: formActions.clearErrors,
   updateFormData: formActions.updateFormData,
   setDonation: donateActions.setDonation,
+  setJwt: donateActions.setJwt,
 };
 
 export default connect(mapStateToProps, actions)(DetailsPanel);

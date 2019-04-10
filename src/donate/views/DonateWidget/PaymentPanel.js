@@ -51,7 +51,7 @@ class PaymentPanel extends React.Component {
   };
 
   attemptPayment = async () => {
-    const { formData, saleLines, payment } = this.props;
+    const { formData, saleLines, payment, jwt } = this.props;
     const { setStatus, setErrors, setDonation, history } = this.props;
 
     const uuid = formData['donation.uuid'];
@@ -59,7 +59,7 @@ class PaymentPanel extends React.Component {
 
     const postData = { ...formData, saleLines, payment };
 
-    const result = await ClaretyApi.post(endpoint, postData);
+    const result = await ClaretyApi.post(endpoint, postData, jwt);
     if (result) {
       if (result.status === 'error') {
         setErrors(result.validationErrors);
@@ -127,6 +127,7 @@ const mapStateToProps = state => {
     stripeKey: state.explain.stripePublishableKey,
     cardDetails: state.panels.paymentPanel,
 
+    jwt: state.jwt,
     formData: state.formData,
     saleLines: state.sale.saleLines,
     payment: state.sale.payment,

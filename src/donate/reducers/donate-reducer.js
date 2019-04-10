@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { formDataReducer, errorsReducer, paymentDataReducer } from '../../form/reducers';
 import { statusReducer, saleReducer, explainReducer } from '../../shared/reducers';
-import { successPanelReducer, amountPanelReducer }  from '.';
+import { jwtReducer, successPanelReducer, amountPanelReducer }  from '.';
 
 const donateReducer = combineReducers({
   status: statusReducer,
@@ -9,6 +9,7 @@ const donateReducer = combineReducers({
 
   explain: explainReducer,
 
+  jwt: jwtReducer,
   formData: formDataReducer,
   sale: saleReducer,
 

@@ -15,7 +15,7 @@ class ClaretyApi {
     }
   }
 
-  // TEMP: The subscribe explain still uses the old explain endpoint.
+  // TEMP: SubscribeWidget still uses the old explain endpoint.
   static async __old__explain(endpoint) {
     const apiBase = this._apiBase();
     const url = `${apiBase}/explain/?endpoint=${endpoint}`;
@@ -28,14 +28,17 @@ class ClaretyApi {
     }
   }
 
-  static async post(endpoint, data) {
-    const postData = parseNestedElements(data);
-
+  static async post(endpoint, data, jwt) {
     const apiBase = this._apiBase();
     const url = `${apiBase}/${endpoint}/`;
 
+    const postData = parseNestedElements(data);
+
+    const config = {};
+    if (jwt) config.headers = { Authorization: `Bearer ${jwt}` };
+
     try {
-      const response = await axios.post(url, postData);
+      const response = await axios.post(url, postData, config);
       return response.data.result[0];
     } catch (error) {
       throw new Error(`[Clarety API] Something went wrong posting data to endpoint '${endpoint}': ${error.message}`);
@@ -51,3 +54,6 @@ class ClaretyApi {
 }
 
 export default ClaretyApi;
+
+
+// axios({ method: 'get', url: 'your URL', headers: { Authorization: `Bearer ${token}` } })
