@@ -1,13 +1,11 @@
 import { combineReducers } from 'redux';
 import { explainReducer, statusReducer } from '../../shared/reducers';
-import { formErrorsReducer, formDataReducer } from '.';
+import { errorsReducer, formDataReducer } from '.';
 
 const formReducer = combineReducers({
   status: statusReducer,
-  errors: formErrorsReducer,
-
+  errors: errorsReducer,
   explain: explainReducer,
-
   formData: formDataReducer,
 });
 

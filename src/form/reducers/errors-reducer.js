@@ -2,12 +2,12 @@ import { actionTypes } from '../actions';
 
 const initialState = [];
 
-export const formErrorsReducer = (state = initialState, action) => {
+export const errorsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.setFormErrors:
+    case actionTypes.setErrors:
       return action.errors;
 
-    case actionTypes.clearFormErrors:
+    case actionTypes.clearErrors:
       return [];
 
     default:
