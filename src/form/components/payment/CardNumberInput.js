@@ -24,7 +24,7 @@ const CardNumberInput = ({ cardNumber, placeholder, testId, onChange, error }) =
 
 const mapStateToProps = state => {
   return {
-    cardNumber: formatCardNumber(state.paymentPanel.cardNumber),
+    cardNumber: formatCardNumber(state.panels.paymentPanel.cardNumber),
     error: getValidationError('cardNumber', state.errors),
   };
 };
