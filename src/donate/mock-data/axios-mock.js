@@ -16,7 +16,7 @@ export const setupAxiosMock = () => {
     .reply(200, explainResponse);
 
   mock
-    .onPost('http://dev-clarety-baseline.clarety.io/api/donate/')
+    .onPost('http://dev-clarety-baseline.clarety.io/api/donations/')
     .reply(config => {
       const data = JSON.parse(config.data);
       const { saleLine, customer } = data;
@@ -31,7 +31,7 @@ export const setupAxiosMock = () => {
     });
 
   mock
-    .onPost('http://dev-clarety-baseline.clarety.io/api/donate/bd9385e3-6bc4-4885-88d4-b5200d496f33/')
+    .onPost('http://dev-clarety-baseline.clarety.io/api/donations/bd9385e3-6bc4-4885-88d4-b5200d496f33/')
     .reply(config => {
       const data = JSON.parse(config.data);
       const { saleLines, customer, payment } = data;

@@ -24,7 +24,7 @@ export class DetailsPanel extends React.Component {
     clearErrors();
 
     const uuid = formData['donation.uuid'];
-    const endpoint = uuid ? `donate/${uuid}` : 'donate';
+    const endpoint = uuid ? `donations/${uuid}` : 'donations';
 
     const postData = { ...formData, saleLines };
     

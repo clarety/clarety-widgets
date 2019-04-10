@@ -55,7 +55,7 @@ class PaymentPanel extends React.Component {
     const { setStatus, setErrors, setDonation, history } = this.props;
 
     const uuid = formData['donation.uuid'];
-    const endpoint = uuid ? `donate/${uuid}` : 'donate';
+    const endpoint = uuid ? `donations/${uuid}` : 'donations';
 
     const postData = { ...formData, saleLines, payment };
 
