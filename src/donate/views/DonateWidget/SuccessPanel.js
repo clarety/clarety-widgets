@@ -43,7 +43,7 @@ const SuccessPanel = ({ donation }) => (
 
 const mapStateToProps = state => {
   return {
-    donation: state.successPanel.donation,
+    donation: state.panels.successPanel.donation,
   };
 };
 

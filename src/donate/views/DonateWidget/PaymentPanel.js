@@ -124,7 +124,7 @@ const mapStateToProps = state => {
   return {
     status: state.status,
 
-    cardDetails: state.paymentPanel,
+    cardDetails: state.panels.paymentPanel,
 
     formData: state.formData,
     saleLines: state.sale.saleLines,

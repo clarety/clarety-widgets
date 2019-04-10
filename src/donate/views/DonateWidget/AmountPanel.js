@@ -111,13 +111,15 @@ class AmountPanel extends React.Component {
 }
 
 const mapStateToProps = state => {
+  const { amountPanel } = state.panels;
+
   return {
     status: state.status,
 
     donationOffers: state.explain.donationOffers,
 
-    frequency: state.amountPanel.frequency,
-    selections: state.amountPanel.selections,
+    frequency: amountPanel.frequency,
+    selections: amountPanel.selections,
   };
 };
 

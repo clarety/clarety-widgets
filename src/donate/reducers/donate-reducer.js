@@ -12,9 +12,11 @@ const donateReducer = combineReducers({
   formData: formDataReducer,
   sale: saleReducer,
 
-  amountPanel: amountPanelReducer,
-  paymentPanel: paymentDataReducer,
-  successPanel: successPanelReducer,
+  panels: combineReducers({
+    amountPanel: amountPanelReducer,
+    paymentPanel: paymentDataReducer,
+    successPanel: successPanelReducer,
+  }),
 });
 
 export default donateReducer;
