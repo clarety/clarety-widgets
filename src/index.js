@@ -6,6 +6,9 @@ import DonateWidget from './donate/views/DonateWidget/DonateWidget';
 // import SubscribeFormView from './subscribe/views/SubscribeFormView';
 import './index.css';
 
+import { setupAxiosMock } from './donate/mock-data/axios-mock';
+setupAxiosMock();
+
 ClaretyConfig.init({
   env: 'dev',
   instanceKey: 'clarety-baseline',

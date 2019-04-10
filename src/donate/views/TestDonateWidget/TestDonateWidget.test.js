@@ -16,14 +16,23 @@ describe('<TestDonateWidget>', () => {
       instanceKey: 'test',
     });
 
+    const params = { store: 'TEST', once: '123', recurring: '321' };
     mock
-      .onGet('http://dev-test.clarety.io/api/explain/?endpoint=donate')
+      .onGet('http://dev-test.clarety.io/api/widgets/donations', { params })
       .reply(200, explainResponse);
   });
 
   afterEach(cleanup);
 
-  it('renders without crashing', () => {
-    render(<TestDonateWidget />);
+  it('renders without crashing', async () => {
+    const { getByTestId } = render(
+      <TestDonateWidget
+        storeCode="TEST"
+        onceOfferId="123"
+        recurringOfferId="321"
+      />
+    );
+
+    await waitForElement(() => getByTestId('test-panel'));
   });
 });

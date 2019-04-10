@@ -8,11 +8,6 @@ import DetailsPanel from './DetailsPanel';
 import PaymentPanel from './PaymentPanel';
 import SuccessPanel from './SuccessPanel';
 
-
-import { setupAxiosMock } from '../../mock-data/axios-mock';
-setupAxiosMock();
-
-
 export class DonateWidget extends React.Component {
   async componentWillMount() {
     const { setStatus, setExplain, selectDefaults, updateFormData } = this.props;
