@@ -13,7 +13,7 @@ export class DetailsPanel extends React.Component {
 
   onSubmit = async event => {
     const { status, setStatus } = this.props;
-    const { formData, updateFormData, saleLines, jwt } = this.props;
+    const { formData, saleLines, jwt, donation } = this.props;
     const { clearErrors, setErrors } = this.props;
     const { history, setDonation, setJwt } = this.props
 
@@ -23,8 +23,7 @@ export class DetailsPanel extends React.Component {
     setStatus(statuses.busy);
     clearErrors();
 
-    const uuid = formData['donation.uuid'];
-    const endpoint = uuid ? `donations/${uuid}` : 'donations';
+    const endpoint = donation ? `donations/${donation.uuid}` : 'donations';
 
     const postData = { ...formData, saleLines };
     
@@ -33,7 +32,6 @@ export class DetailsPanel extends React.Component {
       if (result.status === 'error') {
         setErrors(result.validationErrors);
       } else {
-        updateFormData('donation.uuid', result.donation.uuid);
         setJwt(result.jwt);
         setDonation(result.donation);
         history.push('/payment');
@@ -97,6 +95,7 @@ const mapStateToProps = state => {
     jwt: state.jwt,
     formData: state.formData,
     saleLines: state.sale.saleLines,
+    donation: state.panels.successPanel.donation,
   };
 };
 

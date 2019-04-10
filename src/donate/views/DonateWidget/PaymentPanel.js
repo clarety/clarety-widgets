@@ -51,11 +51,10 @@ class PaymentPanel extends React.Component {
   };
 
   attemptPayment = async () => {
-    const { formData, saleLines, payment, jwt } = this.props;
+    const { formData, saleLines, payment, jwt, donation } = this.props;
     const { setStatus, setErrors, setDonation, history } = this.props;
 
-    const uuid = formData['donation.uuid'];
-    const endpoint = uuid ? `donations/${uuid}` : 'donations';
+    const endpoint = donation ? `donations/${donation.uuid}` : 'donations';
 
     const postData = { ...formData, saleLines, payment };
 
@@ -131,6 +130,8 @@ const mapStateToProps = state => {
     formData: state.formData,
     saleLines: state.sale.saleLines,
     payment: state.sale.payment,
+
+    donation: state.panels.successPanel.donation,
   };
 };
 
