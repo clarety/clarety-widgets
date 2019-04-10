@@ -35,6 +35,7 @@ const VariableAmount = ({ value, data, isSelected, amountChange, currency }) => 
                 min="0"
                 onFocus={event => amountChange(parseFloat(event.target.value))}
                 onChange={event => amountChange(parseFloat(event.target.value))}
+                data-testid="variable-amount-input"
               />
             </InputGroup>
           </Card.Text>

@@ -58,7 +58,7 @@ class AmountPanel extends React.Component {
               onChange={selectFrequency}
             />
 
-            <div className="mt-3 text-left">
+            <div className="mt-3 text-left" data-testid="suggested-amounts">
               {offer.suggestedAmounts.map(this.renderSuggestedAmount)}
             </div>
           </Card.Body>
