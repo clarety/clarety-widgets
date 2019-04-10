@@ -30,7 +30,7 @@ const SuggestedAmount = ({ data, isSelected, selectAmount, currency }) => {
 
 const mapStateToProps = state => {
   return {
-    currency: state.currency,
+    currency: state.explain.currency,
   };
 };
 

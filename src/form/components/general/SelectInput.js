@@ -25,7 +25,7 @@ const SelectInput = ({ value, options, placeholder, testId, error, onChange }) =
 );
 
 const mapStateToProps = (state, { property }) => {
-  const element = findElement(property, state.elements);
+  const element = findElement(property, state.explain.elements);
   if (!element.options) throw new Error(`[Clarety] SelectInput could not find options for property '${property}'.`);
 
   return {

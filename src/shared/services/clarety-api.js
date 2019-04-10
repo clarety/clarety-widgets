@@ -15,6 +15,19 @@ class ClaretyApi {
     }
   }
 
+  // TEMP: The subscribe explain still uses the old explain endpoint.
+  static async __old__explain(endpoint) {
+    const apiBase = this._apiBase();
+    const url = `${apiBase}/explain/?endpoint=${endpoint}`;
+
+    try {
+      const response = await axios.get(url);
+      return response.data.result[0];
+    } catch (error) {
+      throw new Error(`[Clarety API] Failed to explain endpoint '${endpoint}': ${error.message}`);
+    }
+  }
+
   static async post(endpoint, data) {
     const postData = parseNestedElements(data);
 

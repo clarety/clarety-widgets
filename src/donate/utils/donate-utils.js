@@ -15,12 +15,8 @@ export function connectDonateWidgetToStore(ViewComponent) {
 
   const actions = {
     setStatus: sharedActions.setStatus,
-    setCurrency: sharedActions.setCurrency,
-    setElements: sharedActions.setElements,
-
+    setExplain: sharedActions.setExplain,
     updateFormData: formActions.updateFormData,
-    
-    setDonationOffers: donateActions.setDonationOffers,
     selectDefaults: donateActions.selectDefaults,
   };
 
