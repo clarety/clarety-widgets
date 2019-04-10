@@ -18,6 +18,10 @@ export class DonateWidget extends React.Component {
     const { setStatus, setExplain, selectDefaults, updateFormData } = this.props;
     const { storeCode, onceOfferId, recurringOfferId } = this.props;
 
+    if (!storeCode) throw new Error('[Clarety] storeCode prop is required');
+    if (!onceOfferId) throw new Error('[Clarety] onceOfferId prop is required');
+    if (!recurringOfferId) throw new Error('[Clarety] recurringOfferId prop is required');
+
     updateFormData('store', storeCode);
 
     const params = {
