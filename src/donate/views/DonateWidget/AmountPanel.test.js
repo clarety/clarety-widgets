@@ -69,7 +69,7 @@ describe('<AmountPanel>', () => {
     expect(recurringAmounts.children[2].className).not.toContain('bg-primary text-white');
   });
 
-  it('presists selections when switching between frequencies', () => {
+  it('persists selections when switching between frequencies', () => {
     const { getByTestId, getByLabelText } = renderComponent();
 
     // Select a single amount.

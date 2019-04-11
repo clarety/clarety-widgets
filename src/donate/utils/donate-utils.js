@@ -24,8 +24,11 @@ export function connectDonateWidgetToStore(ViewComponent) {
 
   class StoreWrapper extends React.Component {
     render() {
+      const store = createStore(donateReducer);
+      if (window.Cypress) window.store = store;
+
       return (
-        <Provider store={createStore(donateReducer)}>
+        <Provider store={store}>
           <ConnectedComponent { ...this.props } />
         </Provider>
       );

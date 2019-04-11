@@ -13,6 +13,7 @@ const FrequencySelect = ({ options, value, onChange }) => (
         value={option.value}
         key={option.value}
         variant="outline-primary"
+        data-testid={option.value}
       >
         {option.label}
       </ToggleButton>

@@ -43,7 +43,7 @@ export class DetailsPanel extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.onSubmit}>
+      <form onSubmit={this.onSubmit} data-testid="details-panel">
         <Card>
           <Card.Header className="text-center">
             Personal Details

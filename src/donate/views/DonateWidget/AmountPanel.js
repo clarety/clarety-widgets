@@ -45,7 +45,7 @@ class AmountPanel extends React.Component {
     const offer = this._getOffer(frequency);
 
     return (
-      <form onSubmit={this.onSubmit}>
+      <form onSubmit={this.onSubmit} data-testid="amount-panel">
         <Card className="text-center">
           <Card.Header>Choose Amount</Card.Header>
 
@@ -64,7 +64,7 @@ class AmountPanel extends React.Component {
           </Card.Body>
 
           <Card.Footer>
-            <SubmitButton block title="Next" />
+            <SubmitButton block title="Next" testId="next-button" />
           </Card.Footer>
         </Card>
       </form>
