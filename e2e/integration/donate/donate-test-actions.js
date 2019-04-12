@@ -13,9 +13,8 @@ export class DonateTestActions {
     const updateDonationUrl = 'http://dev-clarety-baseline.clarety.io/api/donations/bd9385e3-6bc4-4885-88d4-b5200d496f33/';
     const updateDonationFixture = config.isVariable ? 'fixture:donate/variable-payment-ok.json' : 'fixture:donate/single-payment-ok.json';
     cy.route('POST', updateDonationUrl, updateDonationFixture);
-
-    // TODO: setup url http://localhost:3000/donate-widget
-    cy.visit('http://localhost:3000/');
+    
+    cy.visit('http://localhost:3000/e2e/donate-widget.html');
   }
 
   clickNext() {
