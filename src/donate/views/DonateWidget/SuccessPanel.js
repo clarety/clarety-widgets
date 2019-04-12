@@ -21,7 +21,7 @@ const SuccessPanel = ({ donation }) => (
         </tr>
         <tr>
           <th scope="row">Email</th>
-          <td>{donation.email}</td>
+          <td data-testid="result-email">{donation.email}</td>
         </tr>
         <tr>
           <th scope="row">Frequency</th>
@@ -29,11 +29,11 @@ const SuccessPanel = ({ donation }) => (
         </tr>
         <tr>
           <th scope="row">Amount</th>
-          <td>{donation.amount}</td>
+          <td data-testid="result-amount">{donation.amount}</td>
         </tr>
         <tr>
           <th scope="row">Payment Method</th>
-          <td>Card ending in {donation.last4}</td>
+          <td data-testid="result-last4">Card ending in {donation.last4}</td>
         </tr>
       </tbody>
     </Table>

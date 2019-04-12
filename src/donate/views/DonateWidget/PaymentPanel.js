@@ -73,7 +73,7 @@ class PaymentPanel extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.onSubmit}>
+      <form onSubmit={this.onSubmit} data-testid="payment-panel">
         <Card>
           <Card.Header className="text-center">
             Payment Details
@@ -84,20 +84,20 @@ class PaymentPanel extends React.Component {
 
             <Form.Group controlId="cardNumber">
               <Form.Label>Card Number</Form.Label>
-              <CardNumberInput />
+              <CardNumberInput testId="card-number-input" />
             </Form.Group>
 
             <Form.Row>
               <Col>
                 <Form.Group controlId="cardExpMonth">
                   <Form.Label>Expiry</Form.Label>
-                  <ExpiryInput />
+                  <ExpiryInput testId="expiry-input" />
                 </Form.Group>
               </Col>
               <Col>
                 <Form.Group controlId="ccv">
                   <Form.Label>CCV</Form.Label>
-                  <CcvInput />
+                  <CcvInput testId="ccv-input" />
                 </Form.Group>
               </Col>
             </Form.Row>
@@ -109,7 +109,7 @@ class PaymentPanel extends React.Component {
                 <Button variant="secondary" onClick={this.onPrev} block>Back</Button>
               </Col>
               <Col xs={8}>
-                <SubmitButton title="Donate" block />
+                <SubmitButton title="Donate" block testId="donate-button" />
               </Col>
             </Form.Row>
           </Card.Footer>

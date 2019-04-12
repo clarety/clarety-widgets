@@ -12,6 +12,7 @@ const SuggestedAmount = ({ data, isSelected, selectAmount, currency }) => {
       bg={isSelected ? 'primary' : 'light'}
       text={isSelected ? 'white' : null}
       onClick={() => selectAmount(data.amount)}
+      data-testid={`amount-${data.amount}`}
     >
       <Row noGutters>
         <Col xs={4}>

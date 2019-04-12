@@ -56,20 +56,20 @@ export class DetailsPanel extends React.Component {
               <Col>
                 <Form.Group controlId="firstName">
                   <Form.Label>First Name</Form.Label>
-                  <TextInput property="customer.firstName" />
+                  <TextInput property="customer.firstName" testId="first-name-input" />
                 </Form.Group>
               </Col>
               <Col>
                 <Form.Group controlId="lastName">
                   <Form.Label>Last Name</Form.Label>
-                  <TextInput property="customer.lastName" />
+                  <TextInput property="customer.lastName" testId="last-name-input" />
                 </Form.Group>
               </Col>
             </Form.Row>
     
             <Form.Group controlId="email">
               <Form.Label>Email</Form.Label>
-              <TextInput property="customer.email" type="email" />
+              <TextInput property="customer.email" type="email" testId="email-input" />
             </Form.Group>
           </Card.Body>
       
@@ -79,7 +79,7 @@ export class DetailsPanel extends React.Component {
                 <Button variant="secondary" onClick={this.onPrev} block>Back</Button>
               </Col>
               <Col xs={8}>
-                <SubmitButton title="Next" block />
+                <SubmitButton title="Next" block testId="next-button" />
               </Col>
             </Form.Row>
           </Card.Footer>

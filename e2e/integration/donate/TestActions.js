@@ -1,15 +1,21 @@
-export class TestActions {
+/* eslint-disable no-unused-expressions */
 
+export class TestActions {
   launch() {
-    // TODO: fixed donate widget url.
+    // TODO: setup url http://localhost:3000/donate-widget
     cy.visit('http://localhost:3000/');
   }
 
-  nextPanel() {
+  clickNext() {
     cy.testId('next-button').click();
   }
 
+  clickDonate() {
+    cy.testId('donate-button').click();
+  }
+
   fillAmountPanel(config, data) {
+    cy.testId('amount-panel');
     this.setFrequency(config.frequency);
     this.selectAmount(config.isVariable, data);
   }
@@ -26,23 +32,37 @@ export class TestActions {
     }
   }
 
+  fillDetailsPanel(config, data) {
+    cy.testId('details-panel');
+    cy.testId('first-name-input').type(data.firstName);
+    cy.testId('last-name-input').type(data.lastName);
+    cy.testId('email-input').type(data.email);
+  }
+
+  fillPaymentPanel(config, data) {
+    cy.testId('payment-panel');
+    cy.testId('card-number-input').type(data.cardNumber);
+    cy.testId('expiry-input').type(data.cardExpiry);
+    cy.testId('ccv-input').type(data.ccv);
+  }
+
   expectAmountInStore(config, data) {
     const amount = config.isVariable ? data.variableAmount : data.amount;
 
     cy.window()
       .its('store')
       .then(store => {
-        const saleLine = store.getState().sale.saleLines[0];
-        expect(saleLine.amount).to.equal(amount);
-        // assert.equal(saleLine.amount, amount);
+        const saleLines = store.getState().sale.saleLines;
+        expect(saleLines).to.have.lengthOf(1);
+        expect(saleLines[0].amount).to.equal(amount);
       });
   }
 
-  expectAmountPanel() {
-    cy.testId('amount-panel');
-  }
+  expectSuccess(config, data) {
+    const expectedAmount = config.isVariable ? data.variableAmount : data.amount;
 
-  expectDetailsPanel() {
-    cy.testId('details-panel');
+    cy.testId('result-email').should('contain', data.email);
+    cy.testId('result-amount').should('contain', expectedAmount);
+    cy.testId('result-last4').should('contain', data.cardNumber.substring(0, 4));
   }
 }
