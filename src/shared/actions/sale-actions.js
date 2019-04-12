@@ -6,7 +6,7 @@ export const addSaleLine = ({ offerId, offerPaymentId, quantity = 1, amount = un
     offerId,
     offerPaymentId,
     quantity,
-    amount,
+    amount: Number(amount),
   },
 });
 

@@ -62,6 +62,10 @@ export const cleanExpiry = expiry => {
 
 export const cleanCcv = ccv => _cleanDigits(ccv, 4);
 
+export const cleanDecimal = number => {
+  return number.replace(/[^0-9.]/g, '');
+};
+
 const _cleanDigits = (string, maxLength) => {
   return string.replace(/[^0-9]/g, '')
                .substring(0, maxLength);

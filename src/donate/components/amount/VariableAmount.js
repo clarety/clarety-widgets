@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Row, Col, Card, InputGroup } from 'react-bootstrap';
+import { cleanDecimal } from '../../../form/utils/payment-utils';
 
 const VariableAmount = ({ value, data, isSelected, amountChange, currency }) => {
   let input = React.createRef();
@@ -31,10 +32,9 @@ const VariableAmount = ({ value, data, isSelected, amountChange, currency }) => 
                 ref={input}
                 value={value}
                 className="text-right"
-                type="number"
-                min="0"
-                onFocus={event => amountChange(parseFloat(event.target.value))}
-                onChange={event => amountChange(parseFloat(event.target.value))}
+                type="text"
+                onFocus={event => amountChange(event.target.value)}
+                onChange={event => amountChange(cleanDecimal(event.target.value))}
                 data-testid="variable-amount-input"
               />
             </InputGroup>
