@@ -1,7 +1,7 @@
-import { TestActions } from './donate/TestActions';
-import { donateWidgetTests, testData } from './donate/donateWidgetTests';
+import { DonateTestActions } from './donate-test-actions';
+import { donateWidgetTests, testData } from './donate-widget-tests';
 
-class InstanceTestActions extends TestActions {
+class InstanceTestActions extends DonateTestActions {
   clickNext() {
     cy.log('click next from instance!');
     super.clickNext();

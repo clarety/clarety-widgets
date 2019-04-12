@@ -1,17 +1,17 @@
 /* eslint-disable no-unused-expressions */
 
-export class TestActions {
+export class DonateTestActions {
   launch(config, data) {
     cy.server();
 
     const explainUrl = 'http://dev-clarety-baseline.clarety.io/api/widgets/donations?store=AU&once=1234&recurring=9876';
-    cy.route('GET', explainUrl, 'fixture:explain.json');
+    cy.route('GET', explainUrl, 'fixture:donate/explain.json');
 
     const createDonationUrl = 'http://dev-clarety-baseline.clarety.io/api/donations/';
-    cy.route('POST', createDonationUrl, 'fixture:validation-ok.json');
+    cy.route('POST', createDonationUrl, 'fixture:donate/validation-ok.json');
 
     const updateDonationUrl = 'http://dev-clarety-baseline.clarety.io/api/donations/bd9385e3-6bc4-4885-88d4-b5200d496f33/';
-    const updateDonationFixture = config.isVariable ? 'fixture:variable-payment-ok.json' : 'fixture:single-payment-ok.json';
+    const updateDonationFixture = config.isVariable ? 'fixture:donate/variable-payment-ok.json' : 'fixture:donate/single-payment-ok.json';
     cy.route('POST', updateDonationUrl, updateDonationFixture);
 
     // TODO: setup url http://localhost:3000/donate-widget
