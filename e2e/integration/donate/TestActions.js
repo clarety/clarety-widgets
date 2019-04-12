@@ -73,8 +73,13 @@ export class TestActions {
   expectSuccess(config, data) {
     const expectedAmount = config.isVariable ? data.variableAmount : data.amount;
 
-    cy.testId('result-email').should('contain', data.email);
-    cy.testId('result-amount').should('contain', expectedAmount);
-    cy.testId('result-last4').should('contain', data.cardNumber.substring(0, 4));
+    cy.testId('result')
+      .should('have.attr', 'data-testdata')
+      .then(jsonData => {
+        const result = JSON.parse(jsonData);
+        expect(result.email).to.equal(data.email);
+        expect(result.amount).to.equal(expectedAmount);
+        expect(result.last4).to.equal(data.cardNumber.substring(0, 4));
+      });
   }
 }

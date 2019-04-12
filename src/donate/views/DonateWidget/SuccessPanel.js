@@ -1,9 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Card, Table } from 'react-bootstrap';
+import { TestData } from '../../../shared/components';
 
 const SuccessPanel = ({ donation }) => (
   <Card>
+    <TestData testId="result" data={donation} />
+
     <Card.Header className="text-center">
       Donation Received
     </Card.Header>
@@ -21,7 +24,7 @@ const SuccessPanel = ({ donation }) => (
         </tr>
         <tr>
           <th scope="row">Email</th>
-          <td data-testid="result-email">{donation.email}</td>
+          <td>{donation.email}</td>
         </tr>
         <tr>
           <th scope="row">Frequency</th>
@@ -29,11 +32,11 @@ const SuccessPanel = ({ donation }) => (
         </tr>
         <tr>
           <th scope="row">Amount</th>
-          <td data-testid="result-amount">{donation.amount}</td>
+          <td>{donation.amount}</td>
         </tr>
         <tr>
           <th scope="row">Payment Method</th>
-          <td data-testid="result-last4">Card ending in {donation.last4}</td>
+          <td>Card ending in {donation.last4}</td>
         </tr>
       </tbody>
     </Table>
