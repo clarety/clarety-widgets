@@ -1,0 +1,115 @@
+{
+  "requestId": "",
+  "success": true,
+  "result": [
+    {
+      "resource": "donate",
+
+      "stripePublishableKey": "pk_test_5AVvhyJrg3yIEnWSMQVBl3mQ00mK2D2SOD",
+
+      "currency": {
+        "symbol": "$",
+        "code": "AUD"
+      },
+      
+      "donationOffers": [
+        {
+          "offerId": "111",
+          "offerPaymentId": "222",
+          "frequency": "single",
+          "label": "One-Time",
+          "suggestedAmounts": [
+            {
+              "amount": 30,
+              "desc": "Can provide bandages and painkillers in an emergency.",
+              "image": "https://placeimg.com/160/130/nature"
+            },
+            {
+              "amount": 60,
+              "desc": "Could save a life by providing antivenom after a snakebite.",
+              "image": "https://placeimg.com/160/130/people"
+            },
+            {
+              "amount": 100,
+              "desc": "Can help keep a flight nurse on board an aircraft.",
+              "image": "https://placeimg.com/160/130/tech",
+              "default": true
+            },
+            {
+              "variable": true,
+              "desc": "Enter one-time amount",
+              "image": "https://placeimg.com/160/130/arch"
+            }
+          ]
+        },
+        {
+          "offerId": "333",
+          "offerPaymentId": "444",
+          "frequency": "monthly",
+          "label": "Monthly",
+          "suggestedAmounts": [
+            {
+              "amount": 20,
+              "desc": "Can provide bandages and painkillers in an emergency.",
+              "image": "https://placeimg.com/160/130/tech"
+            },
+            {
+              "amount": 40,
+              "desc": "Can help keep a flight nurse on board an aircraft.",
+              "image": "https://placeimg.com/160/130/nature",
+              "default": true
+            },
+            {
+              "variable": true,
+              "desc": "Enter monthly amount",
+              "image": "https://placeimg.com/160/130/people"
+            }
+          ]
+        },
+        {
+          "offerId": "555",
+          "offerPaymentId": "666",
+          "frequency": "annual",
+          "label": "Yearly",
+          "suggestedAmounts": [
+            {
+              "variable": true,
+              "desc": "Enter yearly amount",
+              "image": "https://placeimg.com/160/130/nature"
+            }
+          ]
+        }
+      ],
+
+      "elements": {
+        "offerId": {
+          "required": true
+        },
+
+        "offerPaymentId": {
+          "required": true
+        },
+
+        "ammount": {
+          "required": true
+        },
+
+        "firstName": {
+          "required": true
+        },
+
+        "lastName": {
+          "required": true
+        },
+
+        "email": {
+          "required": true
+        },
+
+        "cardToken": {
+          "required": true
+        }
+      }
+    }
+  ]
+}

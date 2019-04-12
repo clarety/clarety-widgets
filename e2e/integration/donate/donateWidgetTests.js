@@ -18,7 +18,7 @@ export const donateWidgetTests = (TestActions, config, data) => {
   describe(`Donate Widget: ${config.testName}`, () => {
 
     it('Successfully makes a donation', () => {
-      act.launch();
+      act.launch(config, data);
 
       act.fillAmountPanel(config, data);
       act.clickNext();

@@ -1,7 +1,19 @@
 /* eslint-disable no-unused-expressions */
 
 export class TestActions {
-  launch() {
+  launch(config, data) {
+    cy.server();
+
+    const explainUrl = 'http://dev-clarety-baseline.clarety.io/api/widgets/donations?store=AU&once=1234&recurring=9876';
+    cy.route('GET', explainUrl, 'fixture:explain.json');
+
+    const createDonationUrl = 'http://dev-clarety-baseline.clarety.io/api/donations/';
+    cy.route('POST', createDonationUrl, 'fixture:validation-ok.json');
+
+    const updateDonationUrl = 'http://dev-clarety-baseline.clarety.io/api/donations/bd9385e3-6bc4-4885-88d4-b5200d496f33/';
+    const updateDonationFixture = config.isVariable ? 'fixture:variable-payment-ok.json' : 'fixture:single-payment-ok.json';
+    cy.route('POST', updateDonationUrl, updateDonationFixture);
+
     // TODO: setup url http://localhost:3000/donate-widget
     cy.visit('http://localhost:3000/');
   }
