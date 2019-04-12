@@ -49,12 +49,12 @@
           "label": "Monthly",
           "suggestedAmounts": [
             {
-              "amount": 20,
+              "amount": 10,
               "desc": "Can provide bandages and painkillers in an emergency.",
               "image": "https://placeimg.com/160/130/tech"
             },
             {
-              "amount": 40,
+              "amount": 30,
               "desc": "Can help keep a flight nurse on board an aircraft.",
               "image": "https://placeimg.com/160/130/nature",
               "default": true
