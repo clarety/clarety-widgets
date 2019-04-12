@@ -54,6 +54,3 @@ class ClaretyApi {
 }
 
 export default ClaretyApi;
-
-
-// axios({ method: 'get', url: 'your URL', headers: { Authorization: `Bearer ${token}` } })
