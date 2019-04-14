@@ -7,6 +7,9 @@ import { connectFormToStore } from './form/utils/form-utils';
 
 import SubscribeWidget from './subscribe/views/SubscribeWidget';
 
+import DonateWidget from './donate/views/DonateWidget';
+import { setupAxiosMock } from './donate/mock-data/axios-mock';
+
 export default {
   // Shared
   config: ClaretyConfig.init,
@@ -23,4 +26,8 @@ export default {
 
   // Subscribe
   SubscribeWidget,
+
+  // Donate
+  DonateWidget,
+  setupDonateAxiosMock: setupAxiosMock, // TEMP
 };
