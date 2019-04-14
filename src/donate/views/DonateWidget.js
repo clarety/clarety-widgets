@@ -17,6 +17,8 @@ export class DonateWidget extends React.Component {
     if (!onceOfferId) throw new Error('[Clarety] onceOfferId prop is required');
     if (!recurringOfferId) throw new Error('[Clarety] recurringOfferId prop is required');
 
+    if (!window.Stripe) throw new Error('[Clarety] Stripe not found');
+
     updateFormData('store', storeCode);
 
     const params = {

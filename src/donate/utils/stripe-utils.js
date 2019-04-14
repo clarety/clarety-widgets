@@ -1,5 +1,6 @@
 export const createStripeToken = ({ cardNumber, expiryMonth, expiryYear, ccv }, stripeKey) => {
   const { Stripe } = window;
+  if (!Stripe) throw new Error('[Clarety] Stripe not found');
 
   Stripe.setPublishableKey(stripeKey);
 
@@ -17,6 +18,7 @@ export const createStripeToken = ({ cardNumber, expiryMonth, expiryYear, ccv }, 
 
 export const validateCard = ({ cardNumber, expiryMonth, expiryYear, ccv }) => {
   const { Stripe } = window;
+  if (!Stripe) throw new Error('[Clarety] Stripe not found');
 
   const errors = [];
 
