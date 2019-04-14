@@ -9,6 +9,7 @@ class SubscribeFormView extends BaseFormView {
 
   renderForm() {
     const { listCode } = this.props;
+    if (!listCode) throw new Error('[Clarety] listCode prop is required');
 
     return (
       <div>
