@@ -5,7 +5,7 @@ import { BaseFormView } from './form/views/BaseFormView';
 import { ErrorMessages, TextInput, SelectInput, FormElement, SubmitButton } from './form/components';
 import { connectFormToStore } from './form/utils/form-utils';
 
-import SubscribeFormView from './subscribe/views/SubscribeFormView';
+import SubscribeWidget from './subscribe/views/SubscribeWidget';
 
 export default {
   // Shared
@@ -22,5 +22,5 @@ export default {
   connectFormToStore,
 
   // Subscribe
-  SubscribeFormView,
+  SubscribeWidget,
 };
