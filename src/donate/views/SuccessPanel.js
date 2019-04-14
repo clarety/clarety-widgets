@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Card, Table } from 'react-bootstrap';
-import { TestData } from '../../../shared/components';
+import { TestData } from '../../shared/components';
 
 const SuccessPanel = ({ donation }) => (
   <Card>

@@ -1,14 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Card, Form, Col, Button } from 'react-bootstrap';
-import ClaretyApi from '../../../shared/services/clarety-api';
-import { statuses } from '../../../shared/actions';
-import { SubmitButton, ErrorMessages } from '../../../form/components';
-import { CardNumberInput, ExpiryInput, CcvInput } from '../../../form/components';
-import { createStripeToken, parseStripeError, validateCard } from '../../utils/stripe-utils';
-import * as sharedActions from '../../../shared/actions';
-import * as formActions from '../../../form/actions';
-import * as donateActions from '../../actions';
+import ClaretyApi from '../../shared/services/clarety-api';
+import { statuses } from '../../shared/actions';
+import { SubmitButton, ErrorMessages } from '../../form/components';
+import { CardNumberInput, ExpiryInput, CcvInput } from '../../form/components';
+import { createStripeToken, parseStripeError, validateCard } from '../utils/stripe-utils';
+import * as sharedActions from '../../shared/actions';
+import * as formActions from '../../form/actions';
+import * as donateActions from '../actions';
 
 class PaymentPanel extends React.Component {
   onPrev = () => this.props.history.goBack();

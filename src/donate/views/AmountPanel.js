@@ -1,12 +1,12 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { statuses } from '../../../shared/actions';
-import { FrequencySelect, SuggestedAmount, VariableAmount } from '../../components';
-import { SubmitButton, ErrorMessages } from '../../../form/components';
-import * as donateActions from '../../actions';
-import * as formActions from '../../../form/actions';
-import * as sharedActions from '../../../shared/actions';
+import { statuses } from '../../shared/actions';
+import { FrequencySelect, SuggestedAmount, VariableAmount } from '../components';
+import { SubmitButton, ErrorMessages } from '../../form/components';
+import * as donateActions from '../actions';
+import * as formActions from '../../form/actions';
+import * as sharedActions from '../../shared/actions';
 
 class AmountPanel extends React.Component {
   componentWillMount() {

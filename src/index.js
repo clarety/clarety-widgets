@@ -1,7 +1,7 @@
 import React from 'react';
 import ClaretyConfig from './shared/services/clarety-config';
 import { renderWidget } from './shared/utils/widget-utils';
-import DonateWidget from './donate/views/DonateWidget/DonateWidget';
+import DonateWidget from './donate/views/DonateWidget';
 // import SubscribeWidget from './subscribe/views/SubscribeWidget';
 import './index.css';
 

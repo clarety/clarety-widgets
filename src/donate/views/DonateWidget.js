@@ -1,8 +1,8 @@
 import React from 'react';
 import { MemoryRouter, Switch, Route } from 'react-router-dom';
-import ClaretyApi from '../../../shared/services/clarety-api';
-import { statuses } from '../../../shared/actions';
-import { connectDonateWidgetToStore } from '../../utils/donate-utils.js';
+import ClaretyApi from '../../shared/services/clarety-api';
+import { statuses } from '../../shared/actions';
+import { connectDonateWidgetToStore } from '../utils/donate-utils.js';
 import AmountPanel from './AmountPanel';
 import DetailsPanel from './DetailsPanel';
 import PaymentPanel from './PaymentPanel';
