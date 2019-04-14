@@ -44,6 +44,8 @@
     "build": "webpack",
     "test": "react-scripts test --no-watch",
     "test:watch": "react-scripts test",
+    "e2e": "cypress run",
+    "e2e:open": "cypress open",
     "prepare": "yarn run build",
     "release": "np",
     "eject": "react-scripts eject"

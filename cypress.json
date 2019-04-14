@@ -4,5 +4,6 @@
   "pluginsFile": "e2e/plugins/index.js",
   "screenshotsFolder": "e2e/screenshots",
   "videosFolder": "e2e/videos",
-  "supportFile": "e2e/support/index.js"
+  "supportFile": "e2e/support/index.js",
+  "video": false
 }
