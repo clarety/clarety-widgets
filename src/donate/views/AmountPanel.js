@@ -1,14 +1,11 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
-import { connect } from 'react-redux';
 import { statuses } from '../../shared/actions';
 import { FrequencySelect, SuggestedAmount, VariableAmount } from '../components';
 import { SubmitButton, ErrorMessages } from '../../form/components';
-import * as donateActions from '../actions';
-import * as formActions from '../../form/actions';
-import * as sharedActions from '../../shared/actions';
+import { connectAmountPanel } from '../utils/donate-utils';
 
-class AmountPanel extends React.Component {
+export class AmountPanel extends React.Component {
   componentWillMount() {
     this.props.clearSaleLines();
   }
@@ -38,36 +35,41 @@ class AmountPanel extends React.Component {
   };
 
   render() {
-    const { frequency, selectFrequency } = this.props;
-
-    if (frequency === null) return null;
-
-    const offer = this._getOffer(frequency);
+    if (this.props.frequency === null) return null;
 
     return (
       <form onSubmit={this.onSubmit} data-testid="amount-panel">
-        <Card className="text-center">
-          <Card.Header>Choose Amount</Card.Header>
-
-          <Card.Body>
-            <ErrorMessages />
-
-            <FrequencySelect
-              options={this._getFrequencyOptions()}
-              value={frequency}
-              onChange={selectFrequency}
-            />
-
-            <div className="mt-3 text-left" data-testid="suggested-amounts">
-              {offer.suggestedAmounts.map(this.renderSuggestedAmount)}
-            </div>
-          </Card.Body>
-
-          <Card.Footer>
-            <SubmitButton block title="Next" testId="next-button" />
-          </Card.Footer>
-        </Card>
+        {this.renderContent()}
       </form>
+    );
+  }
+
+  renderContent() {
+    const { frequency, selectFrequency } = this.props;
+    const offer = this._getOffer(frequency);
+
+    return (
+      <Card className="text-center">
+        <Card.Header>Choose Amount</Card.Header>
+
+        <Card.Body>
+          <ErrorMessages />
+
+          <FrequencySelect
+            options={this._getFrequencyOptions()}
+            value={frequency}
+            onChange={selectFrequency}
+          />
+
+          <div className="mt-3 text-left" data-testid="suggested-amounts">
+            {offer.suggestedAmounts.map(this.renderSuggestedAmount)}
+          </div>
+        </Card.Body>
+
+        <Card.Footer>
+          <SubmitButton block title="Next" testId="next-button" />
+        </Card.Footer>
+      </Card>
     );
   }
 
@@ -110,30 +112,4 @@ class AmountPanel extends React.Component {
   };
 }
 
-const mapStateToProps = state => {
-  const { amountPanel } = state.panels;
-
-  return {
-    status: state.status,
-
-    donationOffers: state.explain.donationOffers,
-
-    frequency: amountPanel.frequency,
-    selections: amountPanel.selections,
-  };
-};
-
-const actions = {
-  setStatus: sharedActions.setStatus,
-  
-  addSaleLine: sharedActions.addSaleLine,
-  clearSaleLines: sharedActions.clearSaleLines,
-
-  setErrors: formActions.setErrors,
-  clearErrors: formActions.clearErrors,
-
-  selectFrequency: donateActions.selectFrequency,
-  selectAmount: donateActions.selectAmount,
-};
-
-export default connect(mapStateToProps, actions)(AmountPanel);
+export default connectAmountPanel(AmountPanel);

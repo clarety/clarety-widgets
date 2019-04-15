@@ -40,6 +40,36 @@ export function connectDonateWidget(ViewComponent) {
   return StoreWrapper;
 };
 
+export function connectAmountPanel(ViewComponent) {
+  const mapStateToProps = state => {
+    const { amountPanel } = state.panels;
+  
+    return {
+      status: state.status,
+  
+      donationOffers: state.explain.donationOffers,
+  
+      frequency: amountPanel.frequency,
+      selections: amountPanel.selections,
+    };
+  };
+  
+  const actions = {
+    setStatus: sharedActions.setStatus,
+    
+    addSaleLine: sharedActions.addSaleLine,
+    clearSaleLines: sharedActions.clearSaleLines,
+  
+    setErrors: formActions.setErrors,
+    clearErrors: formActions.clearErrors,
+  
+    selectFrequency: donateActions.selectFrequency,
+    selectAmount: donateActions.selectAmount,
+  };
+
+  return connect(mapStateToProps, actions)(ViewComponent);
+}
+
 export function connectDetailsPanel(ViewComponent) {
   const mapStateToProps = state => {
     return {
@@ -61,4 +91,44 @@ export function connectDetailsPanel(ViewComponent) {
   };
   
   return connect(mapStateToProps, actions)(ViewComponent);
+}
+
+export function connectPaymentPanel(ViewComponent) {
+  const mapStateToProps = state => {
+    return {
+      status: state.status,
+  
+      stripeKey: state.explain.stripePublishableKey,
+      cardDetails: state.panels.paymentPanel,
+  
+      jwt: state.jwt,
+      formData: state.formData,
+      saleLines: state.sale.saleLines,
+      payment: state.sale.payment,
+  
+      donation: state.panels.successPanel.donation,
+    };
+  };
+  
+  const actions = {
+    setStatus: sharedActions.setStatus,
+  
+    setErrors: formActions.setErrors,
+    clearErrors: formActions.clearErrors,
+  
+    setPayment: sharedActions.setPayment,
+    setDonation: donateActions.setDonation,
+  };
+
+  return connect(mapStateToProps, actions)(ViewComponent);
+}
+
+export function connectSuccessPanel(ViewComponent) {
+  const mapStateToProps = state => {
+    return {
+      donation: state.panels.successPanel.donation,
+    };
+  };
+
+  return connect(mapStateToProps)(ViewComponent);
 }
