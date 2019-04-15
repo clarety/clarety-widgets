@@ -6,7 +6,7 @@ import * as sharedActions from '../../shared/actions';
 import * as formActions from '../../form/actions';
 import * as donateActions from '../actions';
 
-export function connectDonateWidgetToStore(ViewComponent) {
+export function connectDonateWidget(ViewComponent) {
   const mapStateToProps = state => {
     return {
       status: state.status,
@@ -39,3 +39,26 @@ export function connectDonateWidgetToStore(ViewComponent) {
 
   return StoreWrapper;
 };
+
+export function connectDetailsPanel(ViewComponent) {
+  const mapStateToProps = state => {
+    return {
+      status: state.status,
+      jwt: state.jwt,
+      formData: state.formData,
+      saleLines: state.sale.saleLines,
+      donation: state.panels.successPanel.donation,
+    };
+  };
+  
+  const actions = {
+    setStatus: sharedActions.setStatus,
+    setErrors: formActions.setErrors,
+    clearErrors: formActions.clearErrors,
+    updateFormData: formActions.updateFormData,
+    setDonation: donateActions.setDonation,
+    setJwt: donateActions.setJwt,
+  };
+  
+  return connect(mapStateToProps, actions)(ViewComponent);
+}

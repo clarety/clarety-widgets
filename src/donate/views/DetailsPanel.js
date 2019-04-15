@@ -1,12 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Card, Form, Col, Button } from 'react-bootstrap';
 import ClaretyApi from '../../shared/services/clarety-api';
 import { statuses } from '../../shared/actions';
 import { TextInput, SubmitButton, ErrorMessages } from '../../form/components';
-import * as sharedActions from '../../shared/actions';
-import * as formActions from '../../form/actions';
-import * as donateActions from '../actions';
+import { connectDetailsPanel } from '../utils/donate-utils';
 
 export class DetailsPanel extends React.Component {
   onPrev = () => this.props.history.goBack();
@@ -44,68 +41,55 @@ export class DetailsPanel extends React.Component {
   render() {
     return (
       <form onSubmit={this.onSubmit} data-testid="details-panel">
-        <Card>
-          <Card.Header className="text-center">
-            Personal Details
-          </Card.Header>
-      
-          <Card.Body>
-            <ErrorMessages />
-
-            <Form.Row>
-              <Col>
-                <Form.Group controlId="firstName">
-                  <Form.Label>First Name</Form.Label>
-                  <TextInput property="customer.firstName" testId="first-name-input" />
-                </Form.Group>
-              </Col>
-              <Col>
-                <Form.Group controlId="lastName">
-                  <Form.Label>Last Name</Form.Label>
-                  <TextInput property="customer.lastName" testId="last-name-input" />
-                </Form.Group>
-              </Col>
-            </Form.Row>
-    
-            <Form.Group controlId="email">
-              <Form.Label>Email</Form.Label>
-              <TextInput property="customer.email" type="email" testId="email-input" />
-            </Form.Group>
-          </Card.Body>
-      
-          <Card.Footer>
-            <Form.Row>
-              <Col xs={4}>
-                <Button variant="secondary" onClick={this.onPrev} block>Back</Button>
-              </Col>
-              <Col xs={8}>
-                <SubmitButton title="Next" block testId="next-button" />
-              </Col>
-            </Form.Row>
-          </Card.Footer>
-        </Card>
+        {this.renderContent()}
       </form>
+    );
+  }
+
+  renderContent() {
+    return (
+      <Card>
+        <Card.Header className="text-center">
+          Personal Details
+        </Card.Header>
+    
+        <Card.Body>
+          <ErrorMessages />
+
+          <Form.Row>
+            <Col>
+              <Form.Group controlId="firstName">
+                <Form.Label>First Name</Form.Label>
+                <TextInput property="customer.firstName" testId="first-name-input" />
+              </Form.Group>
+            </Col>
+            <Col>
+              <Form.Group controlId="lastName">
+                <Form.Label>Last Name</Form.Label>
+                <TextInput property="customer.lastName" testId="last-name-input" />
+              </Form.Group>
+            </Col>
+          </Form.Row>
+  
+          <Form.Group controlId="email">
+            <Form.Label>Email</Form.Label>
+            <TextInput property="customer.email" type="email" testId="email-input" />
+          </Form.Group>
+        </Card.Body>
+    
+        <Card.Footer>
+          <Form.Row>
+            <Col xs={4}>
+              <Button variant="secondary" onClick={this.onPrev} block>Back</Button>
+            </Col>
+            <Col xs={8}>
+              <SubmitButton title="Next" block testId="next-button" />
+            </Col>
+          </Form.Row>
+        </Card.Footer>
+      </Card>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    status: state.status,
-    jwt: state.jwt,
-    formData: state.formData,
-    saleLines: state.sale.saleLines,
-    donation: state.panels.successPanel.donation,
-  };
-};
-
-const actions = {
-  setStatus: sharedActions.setStatus,
-  setErrors: formActions.setErrors,
-  clearErrors: formActions.clearErrors,
-  updateFormData: formActions.updateFormData,
-  setDonation: donateActions.setDonation,
-  setJwt: donateActions.setJwt,
-};
-
-export default connect(mapStateToProps, actions)(DetailsPanel);
+export default connectDetailsPanel(DetailsPanel);

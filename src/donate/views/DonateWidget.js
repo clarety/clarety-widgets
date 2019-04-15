@@ -2,7 +2,7 @@ import React from 'react';
 import { MemoryRouter, Switch, Route } from 'react-router-dom';
 import ClaretyApi from '../../shared/services/clarety-api';
 import { statuses } from '../../shared/actions';
-import { connectDonateWidgetToStore } from '../utils/donate-utils.js';
+import { connectDonateWidget } from '../utils/donate-utils.js';
 import AmountPanel from './AmountPanel';
 import DetailsPanel from './DetailsPanel';
 import PaymentPanel from './PaymentPanel';
@@ -67,4 +67,4 @@ export class DonateWidget extends React.Component {
 }
 
 // Note: An un-wrapped DonateWidget is also exported above.
-export default connectDonateWidgetToStore(DonateWidget);
+export default connectDonateWidget(DonateWidget);

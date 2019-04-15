@@ -7,7 +7,10 @@ import { connectFormToStore } from './form/utils/form-utils';
 
 import SubscribeWidget from './subscribe/views/SubscribeWidget';
 
-import DonateWidget from './donate/views/DonateWidget';
+import { DonateWidget } from './donate/views/DonateWidget';
+import { connectDonateWidget } from './donate/utils/donate-utils';
+import { DetailsPanel } from './donate/views/DetailsPanel';
+import { connectDetailsPanel } from './donate/utils/donate-utils';
 import { setupAxiosMock } from './donate/mock-data/axios-mock';
 
 export default {
@@ -29,5 +32,8 @@ export default {
 
   // Donate
   DonateWidget,
-  setupDonateAxiosMock: setupAxiosMock, // TEMP
+  DetailsPanel,
+  connectDonateWidget,
+  connectDetailsPanel,
+  setupAxiosMock, // TEMP
 };
