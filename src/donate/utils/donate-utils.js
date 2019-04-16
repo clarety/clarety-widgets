@@ -5,6 +5,7 @@ import donateReducer from '../reducers/donate-reducer';
 import * as sharedActions from '../../shared/actions';
 import * as formActions from '../../form/actions';
 import * as donateActions from '../actions';
+import { formatPrice } from '../../form/utils/payment-utils';
 
 export function connectDonateWidget(ViewComponent) {
   const mapStateToProps = state => {
@@ -96,6 +97,8 @@ export function connectPaymentPanel(ViewComponent) {
   const mapStateToProps = state => {
     return {
       status: state.status,
+
+      amount: formatPrice(state.sale.saleLines[0].amount),
 
       jwt: state.jwt,
       stripeKey: state.explain.stripePublishableKey,

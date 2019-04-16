@@ -85,6 +85,10 @@ export class PaymentPanel extends React.Component {
   
         <Card.Body>
           <ErrorMessages />
+
+          <Card.Text className="text-center">
+            Donation Amount: <b>{this.props.amount}</b>
+          </Card.Text>
   
           <Form.Group controlId="cardNumber">
             <Form.Label>Card Number</Form.Label>

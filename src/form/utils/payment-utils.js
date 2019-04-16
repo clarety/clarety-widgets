@@ -66,6 +66,10 @@ export const cleanDecimal = number => {
   return number.replace(/[^0-9.]/g, '');
 };
 
+export const formatPrice = price => {
+  return '$' + price.toFixed(2);
+}
+
 const _cleanDigits = (string, maxLength) => {
   return string.replace(/[^0-9]/g, '')
                .substring(0, maxLength);
