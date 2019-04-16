@@ -1,5 +1,5 @@
 import { DonateTestActions } from './donate-test-actions';
-import { donateWidgetTests, testData } from './donate-widget-tests';
+import { donateWidgetTests, donateTestData } from './donate-widget-tests';
 
 class InstanceTestActions extends DonateTestActions {
   clickNext() {
@@ -13,14 +13,14 @@ const config1 = {
   frequency: 'single',
   isVariable: false,
 };
-donateWidgetTests(InstanceTestActions, config1, testData);
+donateWidgetTests(InstanceTestActions, config1, donateTestData);
 
 const config2 = {
   testName: 'One-off donation of variable amount',
   frequency: 'single',
   isVariable: true,
 };
-donateWidgetTests(InstanceTestActions, config2, testData);
+donateWidgetTests(InstanceTestActions, config2, donateTestData);
 
 // TODO: setup mock data that has 'recurring' instead of 'monthly'.
 
@@ -29,11 +29,11 @@ const config3 = {
   frequency: 'monthly',
   isVariable: false,
 };
-donateWidgetTests(InstanceTestActions, config3, testData);
+donateWidgetTests(InstanceTestActions, config3, donateTestData);
 
 const config4 = {
   testName: 'Monthly donation of variable amount',
   frequency: 'monthly',
   isVariable: true,
 };
-donateWidgetTests(InstanceTestActions, config4, testData);
+donateWidgetTests(InstanceTestActions, config4, donateTestData);

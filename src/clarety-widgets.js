@@ -17,6 +17,9 @@ import { SuccessPanel } from './donate/views/SuccessPanel';
 import { FrequencySelect, SuggestedAmount, VariableAmount } from './donate/components';
 import { setupAxiosMock } from './donate/mock-data/axios-mock';
 
+import { DonateTestActions } from '../e2e/integration/donate/donate-test-actions';
+import { donateWidgetTests, donateTestData } from '../e2e/integration/donate/donate-widget-tests';
+
 export default {
   // Shared
   config: ClaretyConfig.init,
@@ -55,4 +58,10 @@ export default {
   connectPaymentPanel,
   connectSuccessPanel,
   setupAxiosMock, // TEMP
+
+  // Donate - e2e
+  // TODO: namespacing.
+  DonateTestActions,
+  donateWidgetTests,
+  donateTestData,
 };

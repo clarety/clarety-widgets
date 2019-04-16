@@ -1,4 +1,4 @@
-export const testData = {
+export const donateTestData = {
   amount: 30,
   variableAmount: 12.34,
 
