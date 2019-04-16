@@ -42,7 +42,7 @@ class ExpiryInput extends React.Component {
     return (
       <>
         <Form.Control
-          type="tel"
+          type="text"
           placeholder={'MM / YY'}
           value={expiry}
           onChange={onChange}

@@ -10,7 +10,7 @@ import './CardNumberInput.css';
 const CardNumberInput = ({ cardNumber, placeholder, testId, onChange, error }) => (
   <>
     <Form.Control
-      type="tel"
+      type="text"
       className={'card-number ' + getCardType(cardNumber)}
       placeholder={placeholder || '•••• •••• •••• ••••'}
       value={cardNumber}

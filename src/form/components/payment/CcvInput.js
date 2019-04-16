@@ -10,7 +10,7 @@ import './CcvInput.css';
 const CcvInput = ({ ccv, placeholder, testId, onChange, error }) => (
   <>
     <Form.Control
-      type="tel"
+      type="text"
       placeholder={placeholder || '•••'}
       value={ccv}
       onChange={onChange}
