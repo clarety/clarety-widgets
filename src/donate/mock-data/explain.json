@@ -81,35 +81,33 @@
         }
       ],
 
-      "elements": {
-        "offerId": {
-          "required": true
+      "elements": [
+        {
+          "property": "customer",
+          "resource": "customer",
+          "elements": [
+            { "property": "firstName" },
+            { "property": "lastName" },
+            { "property": "email" }
+          ]
         },
-
-        "offerPaymentId": {
-          "required": true
+        {
+          "property": "payment",
+          "resource": "payment",
+          "elements": [
+            { "property": "cardToken" }
+          ]
         },
-
-        "ammount": {
-          "required": true
-        },
-
-        "firstName": {
-          "required": true
-        },
-
-        "lastName": {
-          "required": true
-        },
-
-        "email": {
-          "required": true
-        },
-
-        "cardToken": {
-          "required": true
+        {
+          "property": "saleLines",
+          "resource": "saleLine",
+          "elements": [
+            { "property": "offerId" },
+            { "property": "offerPaymentId" },
+            { "property": "amount" }
+          ]
         }
-      }
+      ]
     }
   ]
 }

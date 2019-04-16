@@ -16,8 +16,8 @@ const SelectInput = ({ value, options, placeholder, testId, error, onChange }) =
       isInvalid={error !== null}
     >
       <option>{placeholder}</option>
-      {Object.keys(options).map(value =>
-        <option key={value} value={value}>{options[value]}</option>
+      {options.map(option =>
+        <option key={option.value} value={option.value}>{option.label}</option>
       )}
     </Form.Control>
     <FieldError error={error} />
