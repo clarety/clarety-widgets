@@ -7,5 +7,6 @@ export { default as SubmitButton } from './general/SubmitButton';
 export { default as TextInput } from './general/TextInput';
 
 export { default as CardNumberInput } from './payment/CardNumberInput';
+export { default as CardNameInput } from './payment/CardNameInput';
 export { default as CcvInput } from './payment/CcvInput';
 export { default as ExpiryInput } from './payment/ExpiryInput';

@@ -3,7 +3,7 @@ import { renderWidget } from './shared/utils/widget-utils';
 import { TestData } from './shared/components';
 
 import { BaseFormView } from './form/views/BaseFormView';
-import { ErrorMessages, TextInput, SelectInput, FormElement, SubmitButton, CardNumberInput, ExpiryInput, CcvInput } from './form/components';
+import { ErrorMessages, TextInput, SelectInput, FormElement, SubmitButton, CardNumberInput, CardNameInput, ExpiryInput, CcvInput } from './form/components';
 import { connectFormToStore } from './form/utils/form-utils';
 
 import SubscribeWidget from './subscribe/views/SubscribeWidget';
@@ -31,6 +31,7 @@ export default {
   FormElement,
   SubmitButton,
   CardNumberInput,
+  CardNameInput,
   ExpiryInput,
   CcvInput,
   connectFormToStore,
