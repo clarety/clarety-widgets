@@ -9,6 +9,11 @@ import PaymentPanel from './PaymentPanel';
 import SuccessPanel from './SuccessPanel';
 
 export class DonateWidget extends React.Component {
+  AmountPanelClass  = AmountPanel;
+  DetailsPanelClass = DetailsPanel;
+  PaymentPanelClass = PaymentPanel;
+  SuccessPanelClass = SuccessPanel;
+
   async componentWillMount() {
     const { setStatus, setExplain, selectDefaults, updateFormData } = this.props;
     const { storeCode, onceOfferId, recurringOfferId } = this.props;
@@ -16,10 +21,9 @@ export class DonateWidget extends React.Component {
     if (!storeCode) throw new Error('[Clarety] storeCode prop is required');
     if (!onceOfferId) throw new Error('[Clarety] onceOfferId prop is required');
     if (!recurringOfferId) throw new Error('[Clarety] recurringOfferId prop is required');
-
     if (!window.Stripe) throw new Error('[Clarety] Stripe not found');
 
-    updateFormData('store', storeCode);
+    if (storeCode) updateFormData('store', storeCode);
 
     const params = {
       store: storeCode,
@@ -40,29 +44,13 @@ export class DonateWidget extends React.Component {
     return (
       <MemoryRouter>
         <Switch>
-          <Route exact path="/" render={this.renderAmountPanel} />
-          <Route path="/details" render={this.renderDetailsPanel} />
-          <Route path="/payment" render={this.renderPaymentPanel} />
-          <Route path="/success" render={this.renderSuccessPanel} />
+          <Route exact path="/"  component={this.AmountPanelClass} />
+          <Route path="/details" component={this.DetailsPanelClass} />
+          <Route path="/payment" component={this.PaymentPanelClass} />
+          <Route path="/success" component={this.SuccessPanelClass} />
         </Switch>
       </MemoryRouter>
     );
-  }
-
-  renderAmountPanel(props) {
-    return <AmountPanel {...props} />;
-  }
-
-  renderDetailsPanel(props) {
-    return <DetailsPanel {...props} />;
-  }
-
-  renderPaymentPanel(props) {
-    return <PaymentPanel {...props} />;
-  }
-
-  renderSuccessPanel(props) {
-    return <SuccessPanel {...props} />;
   }
 }
 
