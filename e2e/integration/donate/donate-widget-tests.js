@@ -13,7 +13,7 @@ export const donateTestData = {
   ccv: '123',
 };
 
-export const donateWidgetTests = (TestActions, config, data) => {
+export const donateWidgetTests = (TestActions, data, config) => {
 
   const act = new TestActions();
 

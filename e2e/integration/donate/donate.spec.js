@@ -8,30 +8,26 @@ class InstanceTestActions extends DonateTestActions {
   }
 }
 
-const config1 = {
+donateWidgetTests(InstanceTestActions, donateTestData, {
   testName: 'One-off donation of suggested amount',
   frequency: 'single',
   isVariable: false,
-};
-donateWidgetTests(InstanceTestActions, config1, donateTestData);
+});
 
-const config2 = {
+donateWidgetTests(InstanceTestActions, donateTestData, {
   testName: 'One-off donation of variable amount',
   frequency: 'single',
   isVariable: true,
-};
-donateWidgetTests(InstanceTestActions, config2, donateTestData);
+});
 
-const config3 = {
+donateWidgetTests(InstanceTestActions, donateTestData, {
   testName: 'Monthly donation of suggested amount',
   frequency: 'monthly',
   isVariable: false,
-};
-donateWidgetTests(InstanceTestActions, config3, donateTestData);
+});
 
-const config4 = {
+donateWidgetTests(InstanceTestActions, donateTestData, {
   testName: 'Monthly donation of variable amount',
   frequency: 'monthly',
   isVariable: true,
-};
-donateWidgetTests(InstanceTestActions, config4, donateTestData);
+});
