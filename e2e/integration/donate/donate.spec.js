@@ -22,8 +22,6 @@ const config2 = {
 };
 donateWidgetTests(InstanceTestActions, config2, donateTestData);
 
-// TODO: setup mock data that has 'recurring' instead of 'monthly'.
-
 const config3 = {
   testName: 'Monthly donation of suggested amount',
   frequency: 'monthly',

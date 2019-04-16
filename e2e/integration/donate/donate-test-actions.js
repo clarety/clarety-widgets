@@ -14,7 +14,7 @@ export class DonateTestActions {
     const updateDonationFixture = config.isVariable ? 'fixture:donate/variable-payment-ok.json' : 'fixture:donate/single-payment-ok.json';
     cy.route('POST', updateDonationUrl, updateDonationFixture);
     
-    cy.visit('http://localhost:3000/e2e/donate-widget.html');
+    cy.visit(data.url);
   }
 
   clickNext() {

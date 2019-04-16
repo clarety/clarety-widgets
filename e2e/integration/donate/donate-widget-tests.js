@@ -1,4 +1,6 @@
 export const donateTestData = {
+  url: 'http://localhost:3000/e2e/donate-widget.html',
+
   amount: 30,
   variableAmount: 12.34,
 
