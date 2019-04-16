@@ -62,8 +62,7 @@ export function connectAmountPanel(ViewComponent) {
   
     setErrors: formActions.setErrors,
     clearErrors: formActions.clearErrors,
-  
-    selectFrequency: donateActions.selectFrequency,
+    
     selectAmount: donateActions.selectAmount,
   };
 

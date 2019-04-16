@@ -45,8 +45,7 @@ export class AmountPanel extends React.Component {
   }
 
   renderContent() {
-    const { frequency, selectFrequency } = this.props;
-    const offer = this._getOffer(frequency);
+    const offer = this._getOffer(this.props.frequency);
 
     return (
       <Card className="text-center">
@@ -55,11 +54,7 @@ export class AmountPanel extends React.Component {
         <Card.Body>
           <ErrorMessages />
 
-          <FrequencySelect
-            options={this._getFrequencyOptions()}
-            value={frequency}
-            onChange={selectFrequency}
-          />
+          <FrequencySelect />
 
           <div className="mt-3 text-left" data-testid="suggested-amounts">
             {offer.suggestedAmounts.map(this.renderSuggestedAmount)}
@@ -98,13 +93,6 @@ export class AmountPanel extends React.Component {
         isSelected={isSelected}
       />
     );
-  };
-
-  _getFrequencyOptions = () => {
-    return this.props.donationOffers.map(offer => ({
-      value: offer.frequency,
-      label: offer.label,
-    }));
   };
 
   _getOffer = frequency => {
