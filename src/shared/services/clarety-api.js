@@ -28,17 +28,14 @@ class ClaretyApi {
     }
   }
 
-  static async post(endpoint, data, jwt) {
+  static async post(endpoint, data) {
     const apiBase = this._apiBase();
     const url = `${apiBase}/${endpoint}/`;
 
     const postData = parseNestedElements(data);
 
-    const config = {};
-    if (jwt) config.headers = { Authorization: `Bearer ${jwt}` };
-
     try {
-      const response = await axios.post(url, postData, config);
+      const response = await axios.post(url, postData);
       return response.data.result[0];
     } catch (error) {
       throw new Error(`[Clarety API] Something went wrong posting data to endpoint '${endpoint}': ${error.message}`);

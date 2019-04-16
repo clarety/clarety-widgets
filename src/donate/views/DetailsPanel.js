@@ -22,9 +22,9 @@ export class DetailsPanel extends React.Component {
 
     const endpoint = donation ? `donations/${donation.uuid}` : 'donations';
 
-    const postData = { ...formData, saleLines };
+    const postData = { ...formData, saleLines, jwt };
     
-    const result = await ClaretyApi.post(endpoint, postData, jwt);
+    const result = await ClaretyApi.post(endpoint, postData);
     if (result) {
       if (result.status === 'error') {
         setErrors(result.validationErrors);
