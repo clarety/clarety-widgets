@@ -97,12 +97,13 @@ export function connectPaymentPanel(ViewComponent) {
   const mapStateToProps = state => {
     return {
       status: state.status,
-  
-      stripeKey: state.explain.stripePublishableKey,
-      cardDetails: state.panels.paymentPanel,
-  
+
       jwt: state.jwt,
+      stripeKey: state.explain.stripePublishableKey,
+
+      paymentData: state.paymentData,
       formData: state.formData,
+
       saleLines: state.sale.saleLines,
       payment: state.sale.payment,
   

@@ -25,7 +25,7 @@ const CcvInput = ({ ccv, placeholder, testId, onChange, error }) => (
 
 const mapStateToProps = state => {
   return {
-    ccv: state.panels.paymentPanel.ccv,
+    ccv: state.paymentData.ccv,
     error: getValidationError('ccv', state.errors),
   };
 };

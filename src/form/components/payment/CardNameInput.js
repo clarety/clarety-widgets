@@ -21,7 +21,7 @@ const CardNameInput = ({ cardName, placeholder, testId, onChange, error }) => (
 
 const mapStateToProps = state => {
   return {
-    cardName: state.panels.paymentPanel.cardName || '',
+    cardName: state.paymentData.cardName || '',
     error: getValidationError('cardName', state.errors),
   };
 };

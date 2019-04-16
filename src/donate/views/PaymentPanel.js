@@ -11,7 +11,7 @@ export class PaymentPanel extends React.Component {
   onPrev = () => this.props.history.goBack();
 
   onSubmit = event => {
-    const { status, cardDetails, setStatus, setErrors, clearErrors } = this.props;
+    const { status, paymentData, setStatus, setErrors, clearErrors } = this.props;
 
     event.preventDefault();
 
@@ -19,22 +19,22 @@ export class PaymentPanel extends React.Component {
     setStatus(statuses.busy);
     clearErrors();
 
-    const errors = validateCard(cardDetails);
+    const errors = validateCard(paymentData);
     if (errors) {
       setErrors(errors);
       setStatus(statuses.ready);
     } else {
-      this.onValidate(cardDetails);
+      this.onValidate(paymentData);
     }
   };
 
-  onValidate = async cardDetails => {
+  onValidate = async paymentData => {
     const { payment, stripeKey, setStatus, setErrors, setPayment } = this.props;
 
     if (payment.stripeToken) {
       this.attemptPayment();
     } else {
-      const result = await createStripeToken(cardDetails, stripeKey);
+      const result = await createStripeToken(paymentData, stripeKey);
 
       if (result.error) {
         const errors = parseStripeError(result.error);

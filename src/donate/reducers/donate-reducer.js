@@ -11,11 +11,11 @@ const donateReducer = combineReducers({
 
   jwt: jwtReducer,
   formData: formDataReducer,
+  paymentData: paymentDataReducer,
   sale: saleReducer,
 
   panels: combineReducers({
     amountPanel: amountPanelReducer,
-    paymentPanel: paymentDataReducer,
     successPanel: successPanelReducer,
   }),
 });

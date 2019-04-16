@@ -58,7 +58,7 @@ class ExpiryInput extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { expiryMonth, expiryYear } = state.panels.paymentPanel;
+  const { expiryMonth, expiryYear } = state.paymentData;
 
   return {
     expiry: formatExpiry(expiryMonth, expiryYear),
