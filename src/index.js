@@ -13,7 +13,15 @@ ClaretyConfig.init({
   instanceKey: 'clarety-baseline',
 });
 
-renderWidget('donate-widget',
+renderWidget('donate-widget-1',
+  <DonateWidget
+    storeCode="AU"
+    onceOfferId="1234"
+    recurringOfferId="9876"
+  />
+);
+
+renderWidget('donate-widget-2',
   <DonateWidget
     storeCode="AU"
     onceOfferId="1234"
