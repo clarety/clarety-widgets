@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from 'react-bootstrap';
+import { Card, Form, Row, Col } from 'react-bootstrap';
 import { statuses } from '../../shared/actions';
 import { StepIndicator, FrequencySelect, SuggestedAmount, VariableAmount } from '../components';
 import { SubmitButton, ErrorMessages } from '../../form/components';
@@ -48,25 +48,31 @@ export class AmountPanel extends React.Component {
     const offer = this._getOffer(this.props.frequency);
 
     return (
-      <Card className="text-center">
-        <Card.Header>
-          <StepIndicator currentStep="amount" />
-        </Card.Header>
+      <div className="container my-4">
+        <Card className="text-center">
+          <Card.Header>
+            <StepIndicator currentStep="amount" />
+          </Card.Header>
 
-        <Card.Body>
-          <ErrorMessages />
+          <Card.Body>
+            <ErrorMessages />
 
-          <FrequencySelect />
+            <FrequencySelect />
 
-          <div className="mt-3 text-left" data-testid="suggested-amounts">
-            {offer.suggestedAmounts.map(this.renderSuggestedAmount)}
-          </div>
-        </Card.Body>
+            <div className="card-deck flex-column flex-md-row mt-3 text-left" data-testid="suggested-amounts">
+              {offer.suggestedAmounts.map(this.renderSuggestedAmount)}
+            </div>
+          </Card.Body>
 
-        <Card.Footer>
-          <SubmitButton block title="Next" testId="next-button" />
-        </Card.Footer>
-      </Card>
+          <Card.Footer>
+          <Form.Row className="justify-content-md-center">
+              <Col md={5}>
+                <SubmitButton title="Next" block testId="next-button" />
+              </Col>
+            </Form.Row>
+          </Card.Footer>
+        </Card>
+      </div>
     );
   }
 

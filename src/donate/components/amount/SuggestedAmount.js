@@ -1,30 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Row, Col, Card } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 
 const SuggestedAmount = ({ data, isSelected, selectAmount, currency }) => {
   const label = `${currency.code} ${currency.symbol}${data.amount}`;
 
   return (
     <Card
-      className="mt-2"
+      className="mx-1 mb-2 mb-md-0"
       style={{ cursor: 'pointer' }}
       bg={isSelected ? 'primary' : 'light'}
       text={isSelected ? 'white' : null}
       onClick={() => selectAmount(data.amount)}
       data-testid={`amount-${data.amount}`}
     >
-      <Row noGutters>
-        <Col xs={4}>
-          <Card.Img src={data.image} />
-        </Col>
-        <Col xs={8}>
-        <Card.Body>
-          <Card.Title className="mb-1">{label}</Card.Title>
-          <Card.Text>{data.desc}</Card.Text>
-        </Card.Body>
-        </Col>
-      </Row>
+      <Card.Img src={data.image} variant="top" className="d-none d-md-block" />
+      <Card.Body>
+        <Card.Title className="mb-2">{label}</Card.Title>
+        <Card.Text>{data.desc}</Card.Text>
+      </Card.Body>
     </Card>
   );
 };

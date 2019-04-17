@@ -37,7 +37,7 @@
             },
             {
               "variable": true,
-              "desc": "Enter one-time amount",
+              "desc": "Your Amount",
               "image": "https://placeimg.com/160/130/arch"
             }
           ]
@@ -61,21 +61,8 @@
             },
             {
               "variable": true,
-              "desc": "Enter monthly amount",
+              "desc": "Your Amount",
               "image": "https://placeimg.com/160/130/people"
-            }
-          ]
-        },
-        {
-          "offerId": "555",
-          "offerPaymentId": "666",
-          "frequency": "annual",
-          "label": "Yearly",
-          "suggestedAmounts": [
-            {
-              "variable": true,
-              "desc": "Enter yearly amount",
-              "image": "https://placeimg.com/160/130/nature"
             }
           ]
         }

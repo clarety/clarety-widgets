@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Form, Col, Button } from 'react-bootstrap';
+import { Card, Form, Row, Col, Button } from 'react-bootstrap';
 import ClaretyApi from '../../shared/services/clarety-api';
 import { statuses } from '../../shared/actions';
 import { TextInput, SubmitButton, ErrorMessages } from '../../form/components';
@@ -49,46 +49,54 @@ export class DetailsPanel extends React.Component {
 
   renderContent() {
     return (
-      <Card>
-        <Card.Header className="text-center">
-          <StepIndicator currentStep="details" />
-        </Card.Header>
-    
-        <Card.Body>
-          <ErrorMessages />
+      <div className="container my-4">
+        <Card>
+          <Card.Header className="text-center">
+            <StepIndicator currentStep="details" />
+          </Card.Header>
+      
+          <Card.Body>
+            <Row className="justify-content-center">
+              <Col md={6}>
 
-          <Form.Row>
-            <Col>
-              <Form.Group controlId="firstName">
-                <Form.Label>First Name</Form.Label>
-                <TextInput property="customer.firstName" testId="first-name-input" />
-              </Form.Group>
-            </Col>
-            <Col>
-              <Form.Group controlId="lastName">
-                <Form.Label>Last Name</Form.Label>
-                <TextInput property="customer.lastName" testId="last-name-input" />
-              </Form.Group>
-            </Col>
-          </Form.Row>
-  
-          <Form.Group controlId="email">
-            <Form.Label>Email</Form.Label>
-            <TextInput property="customer.email" type="email" testId="email-input" />
-          </Form.Group>
-        </Card.Body>
-    
-        <Card.Footer>
-          <Form.Row>
-            <Col xs={4}>
-              <Button variant="secondary" onClick={this.onPrev} block>Back</Button>
-            </Col>
-            <Col xs={8}>
-              <SubmitButton title="Next" block testId="next-button" />
-            </Col>
-          </Form.Row>
-        </Card.Footer>
-      </Card>
+                <ErrorMessages />
+              
+                <Form.Row>
+                  <Col sm>
+                    <Form.Group controlId="firstName">
+                      <Form.Label>First Name</Form.Label>
+                      <TextInput property="customer.firstName" testId="first-name-input" />
+                    </Form.Group>
+                  </Col>
+                  <Col sm>
+                    <Form.Group controlId="lastName">
+                      <Form.Label>Last Name</Form.Label>
+                      <TextInput property="customer.lastName" testId="last-name-input" />
+                    </Form.Group>
+                  </Col>
+                </Form.Row>
+        
+                <Form.Group controlId="email">
+                  <Form.Label>Email</Form.Label>
+                  <TextInput property="customer.email" type="email" testId="email-input" />
+                </Form.Group>
+
+              </Col>
+            </Row>
+          </Card.Body>
+      
+          <Card.Footer>
+            <Form.Row className="justify-content-md-center">
+              <Col xs={4} md={2}>
+                <Button variant="secondary" onClick={this.onPrev} block>Back</Button>
+              </Col>
+              <Col xs={8} md={3}>
+                <SubmitButton title="Next" block testId="next-button" />
+              </Col>
+            </Form.Row>
+          </Card.Footer>
+        </Card>
+      </div>
     );
   }
 }

@@ -1,14 +1,17 @@
-
 .step-indicator {
   margin-bottom: 0.2em;
+  font-size: 0.9em;
 }
 
 .step-indicator li {
   display: inline-block;
   position: relative;
   margin: 0.4em 40px 0.4em 0;
-  width: 80px;
   text-align: center;
+}
+
+@media (min-width: 576px) {
+  .step-indicator li { width: 80px; }
 }
 
 .step-indicator li::after {
