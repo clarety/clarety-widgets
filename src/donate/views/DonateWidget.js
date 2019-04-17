@@ -37,15 +37,37 @@ export class DonateWidget extends React.Component {
   }
 
   render() {
-    if (this.props.status === statuses.uninitialized) return null;
+    const { status, forceMobileLayout } = this.props;
+
+    if (status === statuses.uninitialized) return null;
 
     return (
       <MemoryRouter>
         <Switch>
-          <Route exact path="/"  component={this.AmountPanelClass} />
-          <Route path="/details" component={this.DetailsPanelClass} />
-          <Route path="/payment" component={this.PaymentPanelClass} />
-          <Route path="/success" component={this.SuccessPanelClass} />
+          <Route exact path="/"  render={props => (
+            <this.AmountPanelClass
+              {...props}
+              forceMobileLayout={forceMobileLayout}
+            />)}
+          />
+          <Route path="/details"  render={props => (
+            <this.DetailsPanelClass
+              {...props}
+              forceMobileLayout={forceMobileLayout}
+            />)}
+          />
+          <Route path="/payment"  render={props => (
+            <this.PaymentPanelClass
+              {...props}
+              forceMobileLayout={forceMobileLayout}
+            />)}
+          />
+          <Route path="/success"  render={props => (
+            <this.SuccessPanelClass
+              {...props}
+              forceMobileLayout={forceMobileLayout}
+            />)}
+          />
         </Switch>
       </MemoryRouter>
     );

@@ -3,9 +3,11 @@ import { connect } from 'react-redux';
 import { Form, Card, InputGroup } from 'react-bootstrap';
 import { cleanDecimal } from '../../../form/utils/payment-utils';
 
-const VariableAmount = ({ value, data, isSelected, amountChange, currency }) => {
+const VariableAmount = ({ value, data, isSelected, amountChange, currency, forceMobileLayout }) => {
   let input = React.createRef();
   const label = `${currency.symbol}`;
+
+  const imageClassName = forceMobileLayout ? 'd-none' : 'd-none d-md-block';
 
   return (
     <Card
@@ -15,7 +17,7 @@ const VariableAmount = ({ value, data, isSelected, amountChange, currency }) => 
       text={isSelected ? 'white' : null}
       onClick={() => input.current.focus()}
     >
-      <Card.Img src={data.image} variant="top" className="d-none d-md-block" />
+      <Card.Img src={data.image} variant="top" className={imageClassName} />
       <Card.Body>
         <Card.Title className="mb-3">{data.desc}</Card.Title>
         <Card.Text as="div">

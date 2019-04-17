@@ -78,6 +78,8 @@ export class PaymentPanel extends React.Component {
   }
 
   renderContent() {
+    const mobile = this.props.forceMobileLayout;
+
     return (
       <div className="container my-4">
         <Card>
@@ -87,7 +89,7 @@ export class PaymentPanel extends React.Component {
     
           <Card.Body>
             <Row className="justify-content-center">
-              <Col md={6}>
+              <Col md={mobile ? null : 6}>
 
                 <ErrorMessages />
 
@@ -121,10 +123,10 @@ export class PaymentPanel extends React.Component {
     
           <Card.Footer>
             <Form.Row className="justify-content-md-center">
-              <Col xs={4} md={2}>
+              <Col xs={4} md={mobile ? null : 2}>
                 <Button variant="secondary" onClick={this.onPrev} block>Back</Button>
               </Col>
-              <Col xs={8} md={3}>
+              <Col xs={8} md={mobile ? null : 3}>
                 <SubmitButton title="Donate" block testId="next-button" />
               </Col>
             </Form.Row>

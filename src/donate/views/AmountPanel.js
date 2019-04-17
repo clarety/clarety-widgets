@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Form, Row, Col } from 'react-bootstrap';
+import { Card, Form, Col } from 'react-bootstrap';
 import { statuses } from '../../shared/actions';
 import { StepIndicator, FrequencySelect, SuggestedAmount, VariableAmount } from '../components';
 import { SubmitButton, ErrorMessages } from '../../form/components';
@@ -47,6 +47,10 @@ export class AmountPanel extends React.Component {
   renderContent() {
     const offer = this._getOffer(this.props.frequency);
 
+    const mobile = this.props.forceMobileLayout;
+    let deckClassName = 'card-deck flex-column mt-3 text-left';
+    if (!mobile) deckClassName += ' flex-md-row';
+
     return (
       <div className="container my-4">
         <Card className="text-center">
@@ -59,14 +63,14 @@ export class AmountPanel extends React.Component {
 
             <FrequencySelect />
 
-            <div className="card-deck flex-column flex-md-row mt-3 text-left" data-testid="suggested-amounts">
+            <div className={deckClassName} data-testid="suggested-amounts">
               {offer.suggestedAmounts.map(this.renderSuggestedAmount)}
             </div>
           </Card.Body>
 
           <Card.Footer>
           <Form.Row className="justify-content-md-center">
-              <Col md={5}>
+              <Col md={mobile ? null : 5}>
                 <SubmitButton title="Next" block testId="next-button" />
               </Col>
             </Form.Row>
@@ -77,7 +81,7 @@ export class AmountPanel extends React.Component {
   }
 
   renderSuggestedAmount = suggestedAmount => {
-    const { selections, frequency, selectAmount } = this.props;
+    const { selections, frequency, selectAmount, forceMobileLayout } = this.props;
     const currentSelection = selections[frequency];
 
     if (suggestedAmount.variable) {
@@ -88,6 +92,7 @@ export class AmountPanel extends React.Component {
           amountChange={amount => selectAmount(frequency, amount, true)}
           isSelected={currentSelection.isVariableAmount}
           value={currentSelection.variableAmount || ''}
+          forceMobileLayout={forceMobileLayout}
         />
       );
     }
@@ -99,6 +104,7 @@ export class AmountPanel extends React.Component {
         data={suggestedAmount}
         selectAmount={amount => selectAmount(frequency, amount)}
         isSelected={isSelected}
+        forceMobileLayout={forceMobileLayout}
       />
     );
   };
