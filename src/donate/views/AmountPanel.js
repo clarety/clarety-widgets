@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import { statuses } from '../../shared/actions';
-import { FrequencySelect, SuggestedAmount, VariableAmount } from '../components';
+import { StepIndicator, FrequencySelect, SuggestedAmount, VariableAmount } from '../components';
 import { SubmitButton, ErrorMessages } from '../../form/components';
 import { connectAmountPanel } from '../utils/donate-utils';
 
@@ -49,7 +49,9 @@ export class AmountPanel extends React.Component {
 
     return (
       <Card className="text-center">
-        <Card.Header>Choose Amount</Card.Header>
+        <Card.Header>
+          <StepIndicator currentStep="amount" />
+        </Card.Header>
 
         <Card.Body>
           <ErrorMessages />

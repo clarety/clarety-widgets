@@ -3,6 +3,7 @@ import { Card, Form, Col, Button } from 'react-bootstrap';
 import ClaretyApi from '../../shared/services/clarety-api';
 import { statuses } from '../../shared/actions';
 import { TextInput, SubmitButton, ErrorMessages } from '../../form/components';
+import { StepIndicator } from '../components';
 import { connectDetailsPanel } from '../utils/donate-utils';
 
 export class DetailsPanel extends React.Component {
@@ -50,7 +51,7 @@ export class DetailsPanel extends React.Component {
     return (
       <Card>
         <Card.Header className="text-center">
-          Personal Details
+          <StepIndicator currentStep="details" />
         </Card.Header>
     
         <Card.Body>

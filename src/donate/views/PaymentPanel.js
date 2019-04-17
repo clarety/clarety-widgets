@@ -4,6 +4,7 @@ import ClaretyApi from '../../shared/services/clarety-api';
 import { statuses } from '../../shared/actions';
 import { SubmitButton, ErrorMessages } from '../../form/components';
 import { CardNumberInput, ExpiryInput, CcvInput } from '../../form/components';
+import { StepIndicator } from '../components';
 import { createStripeToken, parseStripeError, validateCard } from '../utils/stripe-utils';
 import { connectPaymentPanel } from '../utils/donate-utils';
 
@@ -80,7 +81,7 @@ export class PaymentPanel extends React.Component {
     return (
       <Card>
         <Card.Header className="text-center">
-          Payment Details
+          <StepIndicator currentStep="payment" />
         </Card.Header>
   
         <Card.Body>
