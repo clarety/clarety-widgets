@@ -5,8 +5,8 @@ import { Card } from 'react-bootstrap';
 const SuggestedAmount = ({ amountInfo, isSelected, onClick, currency, forceMobileLayout }) => {
   const label = `${currency.code} ${currency.symbol}${amountInfo.amount}`;
 
-  let cardClassName = 'mx-1 d-none';
-  if (!forceMobileLayout) cardClassName += ' d-lg-block';
+  let cardClassName = 'flex-row mx-1 mb-2';
+  if (!forceMobileLayout) cardClassName += ' d-lg-none';
 
   return (
     <Card
@@ -17,8 +17,8 @@ const SuggestedAmount = ({ amountInfo, isSelected, onClick, currency, forceMobil
       onClick={() => onClick(amountInfo.amount)}
       data-testid={`amount-${amountInfo.amount}`}
     >
-      <Card.Img src={amountInfo.image} variant="top" />
-      <Card.Body>
+      <div style={{ width: '30%', background: `url(${amountInfo.image}) center center / cover`}}></div>
+      <Card.Body style={{ width: '70%' }}>
         <Card.Title className="mb-2">{label}</Card.Title>
         <Card.Text>{amountInfo.desc}</Card.Text>
       </Card.Body>

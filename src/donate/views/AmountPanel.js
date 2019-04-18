@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Form, Col } from 'react-bootstrap';
 import { statuses } from '../../shared/actions';
-import { StepIndicator, FrequencySelect, SuggestedAmount, SuggestedAmountMobile, VariableAmount, VariableAmountMobile } from '../components';
+import { StepIndicator, FrequencySelect, SuggestedAmount, SuggestedAmountLg, VariableAmount, VariableAmountLg } from '../components';
 import { SubmitButton, ErrorMessages } from '../../form/components';
 import { connectAmountPanel } from '../utils/donate-utils';
 
@@ -85,7 +85,7 @@ export class AmountPanel extends React.Component {
     if (suggestedAmount.variable) {
       return (
         <>
-          <VariableAmountMobile
+          <VariableAmount
             key="variable-mobile"
             value={currentSelection.variableAmount || ''}
             amountInfo={suggestedAmount}
@@ -93,7 +93,7 @@ export class AmountPanel extends React.Component {
             isSelected={currentSelection.isVariableAmount}
             forceMobileLayout={forceMobileLayout}
           />
-          <VariableAmount
+          <VariableAmountLg
             key="variable"
             value={currentSelection.variableAmount || ''}
             amountInfo={suggestedAmount}
@@ -108,14 +108,14 @@ export class AmountPanel extends React.Component {
     const isSelected = !currentSelection.isVariableAmount && currentSelection.amount === suggestedAmount.amount;
     return (
       <>
-        <SuggestedAmountMobile
+        <SuggestedAmount
           key={`${suggestedAmount.amount}-mobile`}
           amountInfo={suggestedAmount}
           onClick={amount => selectAmount(frequency, amount)}
           isSelected={isSelected}
           forceMobileLayout={forceMobileLayout}
         />
-        <SuggestedAmount
+        <SuggestedAmountLg
           key={suggestedAmount.amount}
           amountInfo={suggestedAmount}
           onClick={amount => selectAmount(frequency, amount)}

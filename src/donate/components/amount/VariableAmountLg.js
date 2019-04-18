@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { Form, Card, InputGroup } from 'react-bootstrap';
 import { cleanDecimal } from '../../../form/utils/payment-utils';
 
-const VariableAmountMobile = ({ value, amountInfo, isSelected, onChange, currency, forceMobileLayout }) => {
+const VariableAmountLg = ({ value, amountInfo, isSelected, onChange, currency, forceMobileLayout }) => {
   let input = React.createRef();
   const label = `${currency.code}${currency.symbol}`;
 
-  let cardClassName = 'flex-row mx-1';
-  if (!forceMobileLayout) cardClassName += ' d-lg-none';
+  let cardClassName = 'mx-1 d-none';
+  if (!forceMobileLayout) cardClassName += ' d-lg-block';
 
   return (
     <Card
@@ -18,8 +18,8 @@ const VariableAmountMobile = ({ value, amountInfo, isSelected, onChange, currenc
       text={isSelected ? 'white' : null}
       onClick={() => input.current.focus()}
     >
-      <div style={{ width: '30%', background: `url(${amountInfo.image}) center center / cover`}}></div>
-      <Card.Body style={{ width: '70%' }}>
+      <Card.Img src={amountInfo.image} variant="top" />
+      <Card.Body>
         <Card.Title className="mb-3">{amountInfo.desc}</Card.Title>
         <Card.Text as="div">
           <InputGroup>
@@ -49,4 +49,4 @@ const mapStateToProps = state => {
   }
 };
 
-export default connect(mapStateToProps)(VariableAmountMobile);
+export default connect(mapStateToProps)(VariableAmountLg);

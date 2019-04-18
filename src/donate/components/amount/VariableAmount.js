@@ -7,8 +7,8 @@ const VariableAmount = ({ value, amountInfo, isSelected, onChange, currency, for
   let input = React.createRef();
   const label = `${currency.code}${currency.symbol}`;
 
-  let cardClassName = 'mx-1 d-none';
-  if (!forceMobileLayout) cardClassName += ' d-lg-block';
+  let cardClassName = 'flex-row mx-1';
+  if (!forceMobileLayout) cardClassName += ' d-lg-none';
 
   return (
     <Card
@@ -18,8 +18,8 @@ const VariableAmount = ({ value, amountInfo, isSelected, onChange, currency, for
       text={isSelected ? 'white' : null}
       onClick={() => input.current.focus()}
     >
-      <Card.Img src={amountInfo.image} variant="top" />
-      <Card.Body>
+      <div style={{ width: '30%', background: `url(${amountInfo.image}) center center / cover`}}></div>
+      <Card.Body style={{ width: '70%' }}>
         <Card.Title className="mb-3">{amountInfo.desc}</Card.Title>
         <Card.Text as="div">
           <InputGroup>
