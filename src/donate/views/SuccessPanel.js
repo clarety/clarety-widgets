@@ -22,7 +22,7 @@ export class SuccessPanel extends React.Component {
           </Card.Header>
 
           <Row className="justify-content-center">
-            <Col md={mobile ? null : 8}>
+            <Col lg={mobile ? null : 8}>
 
               <Card.Body>
                 <Card.Text>Thank you for your kind donation to Human Fund, your generosity is greatly appreciated. A receipt has be sent to your email address. All donations over $2 are tax deductible.</Card.Text>

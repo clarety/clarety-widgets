@@ -6,7 +6,7 @@ const SuggestedAmountMobile = ({ amountInfo, isSelected, onClick, currency, forc
   const label = `${currency.code} ${currency.symbol}${amountInfo.amount}`;
 
   let cardClassName = 'flex-row mx-1 mb-2';
-  if (!forceMobileLayout) cardClassName += ' d-md-none';
+  if (!forceMobileLayout) cardClassName += ' d-lg-none';
 
   return (
     <Card

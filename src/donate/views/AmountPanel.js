@@ -49,7 +49,7 @@ export class AmountPanel extends React.Component {
 
     const mobile = this.props.forceMobileLayout;
     let deckClassName = 'card-deck flex-column mt-3 text-left';
-    if (!mobile) deckClassName += ' flex-md-row';
+    if (!mobile) deckClassName += ' flex-lg-row';
 
     return (
       <div className="container my-4">
@@ -69,7 +69,7 @@ export class AmountPanel extends React.Component {
           </Card.Body>
 
           <Card.Footer>
-          <Form.Row className="justify-content-md-center">
+          <Form.Row className="justify-content-center">
               <Col md={mobile ? null : 5}>
                 <SubmitButton title="Next" block testId="next-button" />
               </Col>

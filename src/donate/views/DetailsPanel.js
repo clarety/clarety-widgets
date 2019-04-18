@@ -59,7 +59,7 @@ export class DetailsPanel extends React.Component {
       
           <Card.Body>
             <Row className="justify-content-center">
-              <Col md={mobile ? null : 6}>
+              <Col lg={mobile ? null : 8}>
 
                 <ErrorMessages />
               
@@ -88,11 +88,11 @@ export class DetailsPanel extends React.Component {
           </Card.Body>
       
           <Card.Footer>
-            <Form.Row className="justify-content-md-center">
-              <Col xs={4} md={mobile ? null : 2}>
+            <Form.Row className="justify-content-center">
+              <Col xs={4} lg={mobile ? null : 2}>
                 <Button variant="secondary" onClick={this.onPrev} block>Back</Button>
               </Col>
-              <Col xs={8} md={mobile ? null : 3}>
+              <Col xs={8} lg={mobile ? null : 3}>
                 <SubmitButton title="Next" block testId="next-button" />
               </Col>
             </Form.Row>

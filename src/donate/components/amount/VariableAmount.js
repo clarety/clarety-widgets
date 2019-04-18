@@ -5,10 +5,10 @@ import { cleanDecimal } from '../../../form/utils/payment-utils';
 
 const VariableAmount = ({ value, amountInfo, isSelected, onChange, currency, forceMobileLayout }) => {
   let input = React.createRef();
-  const label = `${currency.symbol}`;
+  const label = `${currency.code}${currency.symbol}`;
 
   let cardClassName = 'mx-1 d-none';
-  if (!forceMobileLayout) cardClassName += ' d-md-block';
+  if (!forceMobileLayout) cardClassName += ' d-lg-block';
 
   return (
     <Card
