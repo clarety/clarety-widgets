@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Card, Image } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 
 const SuggestedAmountMobile = ({ amountInfo, isSelected, onClick, currency, forceMobileLayout }) => {
   const label = `${currency.code} ${currency.symbol}${amountInfo.amount}`;
@@ -17,8 +17,8 @@ const SuggestedAmountMobile = ({ amountInfo, isSelected, onClick, currency, forc
       onClick={() => onClick(amountInfo.amount)}
       data-testid={`amount-${amountInfo.amount}`}
     >
-      <Image src={amountInfo.image} />
-      <Card.Body>
+      <div style={{ width: '30%', background: `url(${amountInfo.image}) center center / cover`}}></div>
+      <Card.Body style={{ width: '70%' }}>
         <Card.Title className="mb-2">{label}</Card.Title>
         <Card.Text>{amountInfo.desc}</Card.Text>
       </Card.Body>

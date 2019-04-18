@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Form, Card, InputGroup, Image } from 'react-bootstrap';
+import { Form, Card, InputGroup } from 'react-bootstrap';
 import { cleanDecimal } from '../../../form/utils/payment-utils';
 
 const VariableAmountMobile = ({ value, amountInfo, isSelected, onChange, currency, forceMobileLayout }) => {
@@ -18,8 +18,8 @@ const VariableAmountMobile = ({ value, amountInfo, isSelected, onChange, currenc
       text={isSelected ? 'white' : null}
       onClick={() => input.current.focus()}
     >
-      <Image src={amountInfo.image} />
-      <Card.Body>
+      <div style={{ width: '30%', background: `url(${amountInfo.image}) center center / cover`}}></div>
+      <Card.Body style={{ width: '70%' }}>
         <Card.Title className="mb-3">{amountInfo.desc}</Card.Title>
         <Card.Text as="div">
           <InputGroup>
