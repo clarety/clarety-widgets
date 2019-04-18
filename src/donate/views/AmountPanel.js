@@ -48,35 +48,33 @@ export class AmountPanel extends React.Component {
     const offer = this._getOffer(this.props.frequency);
 
     const mobile = this.props.forceMobileLayout;
-    let deckClassName = 'card-deck flex-column mt-3 text-left';
+    let deckClassName = 'card-deck flex-column mt-3 mx-n3 text-left';
     if (!mobile) deckClassName += ' flex-lg-row';
 
     return (
-      <div className="container my-4">
-        <Card className="text-center">
-          <Card.Header>
-            <StepIndicator currentStep="amount" />
-          </Card.Header>
+      <Card className="text-center">
+        <Card.Header>
+          <StepIndicator currentStep="amount" />
+        </Card.Header>
 
-          <Card.Body>
-            <ErrorMessages />
+        <Card.Body>
+          <ErrorMessages />
 
-            <FrequencySelect />
+          <FrequencySelect />
 
-            <div className={deckClassName} data-testid="suggested-amounts">
-              {offer.suggestedAmounts.map(this.renderSuggestedAmount)}
-            </div>
-          </Card.Body>
+          <div className={deckClassName} data-testid="suggested-amounts">
+            {offer.suggestedAmounts.map(this.renderSuggestedAmount)}
+          </div>
+        </Card.Body>
 
-          <Card.Footer>
-          <Form.Row className="justify-content-center">
-              <Col md={mobile ? null : 5}>
-                <SubmitButton title="Next" block testId="next-button" />
-              </Col>
-            </Form.Row>
-          </Card.Footer>
-        </Card>
-      </div>
+        <Card.Footer>
+        <Form.Row className="justify-content-center">
+            <Col lg={mobile ? null : 5}>
+              <SubmitButton title="Next" block testId="next-button" />
+            </Col>
+          </Form.Row>
+        </Card.Footer>
+      </Card>
     );
   }
 

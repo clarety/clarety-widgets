@@ -51,54 +51,52 @@ export class DetailsPanel extends React.Component {
     const mobile = this.props.forceMobileLayout;
 
     return (
-      <div className="container my-4">
-        <Card>
-          <Card.Header className="text-center">
-            <StepIndicator currentStep="details" />
-          </Card.Header>
-      
-          <Card.Body>
-            <Row className="justify-content-center">
-              <Col lg={mobile ? null : 8}>
+      <Card>
+        <Card.Header className="text-center">
+          <StepIndicator currentStep="details" />
+        </Card.Header>
+    
+        <Card.Body>
+          <Row className="justify-content-center">
+            <Col lg={mobile ? null : 8}>
 
-                <ErrorMessages />
-              
-                <Form.Row>
-                  <Col sm>
-                    <Form.Group controlId="firstName">
-                      <Form.Label>First Name</Form.Label>
-                      <TextInput property="customer.firstName" testId="first-name-input" />
-                    </Form.Group>
-                  </Col>
-                  <Col sm>
-                    <Form.Group controlId="lastName">
-                      <Form.Label>Last Name</Form.Label>
-                      <TextInput property="customer.lastName" testId="last-name-input" />
-                    </Form.Group>
-                  </Col>
-                </Form.Row>
-        
-                <Form.Group controlId="email">
-                  <Form.Label>Email</Form.Label>
-                  <TextInput property="customer.email" type="email" testId="email-input" />
-                </Form.Group>
-
-              </Col>
-            </Row>
-          </Card.Body>
+              <ErrorMessages />
+            
+              <Form.Row>
+                <Col sm>
+                  <Form.Group controlId="firstName">
+                    <Form.Label>First Name</Form.Label>
+                    <TextInput property="customer.firstName" testId="first-name-input" />
+                  </Form.Group>
+                </Col>
+                <Col sm>
+                  <Form.Group controlId="lastName">
+                    <Form.Label>Last Name</Form.Label>
+                    <TextInput property="customer.lastName" testId="last-name-input" />
+                  </Form.Group>
+                </Col>
+              </Form.Row>
       
-          <Card.Footer>
-            <Form.Row className="justify-content-center">
-              <Col xs={4} lg={mobile ? null : 2}>
-                <Button variant="secondary" onClick={this.onPrev} block>Back</Button>
-              </Col>
-              <Col xs={8} lg={mobile ? null : 3}>
-                <SubmitButton title="Next" block testId="next-button" />
-              </Col>
-            </Form.Row>
-          </Card.Footer>
-        </Card>
-      </div>
+              <Form.Group controlId="email">
+                <Form.Label>Email</Form.Label>
+                <TextInput property="customer.email" type="email" testId="email-input" />
+              </Form.Group>
+
+            </Col>
+          </Row>
+        </Card.Body>
+    
+        <Card.Footer>
+          <Form.Row className="justify-content-center">
+            <Col xs={4} lg={mobile ? null : 2}>
+              <Button variant="secondary" onClick={this.onPrev} block>Back</Button>
+            </Col>
+            <Col xs={8} lg={mobile ? null : 3}>
+              <SubmitButton title="Next" block testId="next-button" />
+            </Col>
+          </Form.Row>
+        </Card.Footer>
+      </Card>
     );
   }
 }

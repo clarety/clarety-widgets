@@ -81,58 +81,56 @@ export class PaymentPanel extends React.Component {
     const mobile = this.props.forceMobileLayout;
 
     return (
-      <div className="container my-4">
-        <Card>
-          <Card.Header className="text-center">
-            <StepIndicator currentStep="payment" />
-          </Card.Header>
-    
-          <Card.Body>
-            <Row className="justify-content-center">
-              <Col lg={mobile ? null : 8}>
+      <Card>
+        <Card.Header className="text-center">
+          <StepIndicator currentStep="payment" />
+        </Card.Header>
+  
+        <Card.Body>
+          <Row className="justify-content-center">
+            <Col lg={mobile ? null : 8}>
 
-                <ErrorMessages />
+              <ErrorMessages />
 
-                <Card.Text className="text-center">
-                  Donation Amount: <b>{this.props.amount}</b>
-                </Card.Text>
-        
-                <Form.Group controlId="cardNumber">
-                  <Form.Label>Card Number</Form.Label>
-                  <CardNumberInput testId="card-number-input" />
-                </Form.Group>
-        
-                <Form.Row>
-                  <Col>
-                    <Form.Group controlId="cardExpMonth">
-                      <Form.Label>Expiry</Form.Label>
-                      <ExpiryInput testId="expiry-input" />
-                    </Form.Group>
-                  </Col>
-                  <Col>
-                    <Form.Group controlId="ccv">
-                      <Form.Label>CCV</Form.Label>
-                      <CcvInput testId="ccv-input" />
-                    </Form.Group>
-                  </Col>
-                </Form.Row>
+              <Card.Text className="text-center">
+                Donation Amount: <b>{this.props.amount}</b>
+              </Card.Text>
+      
+              <Form.Group controlId="cardNumber">
+                <Form.Label>Card Number</Form.Label>
+                <CardNumberInput testId="card-number-input" />
+              </Form.Group>
+      
+              <Form.Row>
+                <Col>
+                  <Form.Group controlId="cardExpMonth">
+                    <Form.Label>Expiry</Form.Label>
+                    <ExpiryInput testId="expiry-input" />
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group controlId="ccv">
+                    <Form.Label>CCV</Form.Label>
+                    <CcvInput testId="ccv-input" />
+                  </Form.Group>
+                </Col>
+              </Form.Row>
 
-              </Col>
-            </Row>
-          </Card.Body>
-    
-          <Card.Footer>
-            <Form.Row className="justify-content-center">
-              <Col xs={4} lg={mobile ? null : 2}>
-                <Button variant="secondary" onClick={this.onPrev} block>Back</Button>
-              </Col>
-              <Col xs={8} lg={mobile ? null : 3}>
-                <SubmitButton title="Donate" block testId="next-button" />
-              </Col>
-            </Form.Row>
-          </Card.Footer>
-        </Card>
-      </div>
+            </Col>
+          </Row>
+        </Card.Body>
+  
+        <Card.Footer>
+          <Form.Row className="justify-content-center">
+            <Col xs={4} lg={mobile ? null : 2}>
+              <Button variant="secondary" onClick={this.onPrev} block>Back</Button>
+            </Col>
+            <Col xs={8} lg={mobile ? null : 3}>
+              <SubmitButton title="Donate" block testId="next-button" />
+            </Col>
+          </Form.Row>
+        </Card.Footer>
+      </Card>
     );
   }
 }
