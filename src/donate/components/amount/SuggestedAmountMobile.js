@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Card } from 'react-bootstrap';
+import { Card, Image } from 'react-bootstrap';
 
-const SuggestedAmount = ({ amountInfo, isSelected, onClick, currency, forceMobileLayout }) => {
+const SuggestedAmountMobile = ({ amountInfo, isSelected, onClick, currency, forceMobileLayout }) => {
   const label = `${currency.code} ${currency.symbol}${amountInfo.amount}`;
 
-  let cardClassName = 'mx-1 mb-2 d-none';
-  if (!forceMobileLayout) cardClassName += ' mb-md-0 d-md-block';
+  let cardClassName = 'flex-row mx-1 mb-2';
+  if (!forceMobileLayout) cardClassName += ' d-md-none';
 
   return (
     <Card
@@ -17,7 +17,7 @@ const SuggestedAmount = ({ amountInfo, isSelected, onClick, currency, forceMobil
       onClick={() => onClick(amountInfo.amount)}
       data-testid={`amount-${amountInfo.amount}`}
     >
-      <Card.Img src={amountInfo.image} variant="top" />
+      <Image src={amountInfo.image} />
       <Card.Body>
         <Card.Title className="mb-2">{label}</Card.Title>
         <Card.Text>{amountInfo.desc}</Card.Text>
@@ -32,4 +32,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(SuggestedAmount);
+export default connect(mapStateToProps)(SuggestedAmountMobile);

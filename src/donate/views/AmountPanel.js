@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Form, Col } from 'react-bootstrap';
 import { statuses } from '../../shared/actions';
-import { StepIndicator, FrequencySelect, SuggestedAmount, VariableAmount } from '../components';
+import { StepIndicator, FrequencySelect, SuggestedAmount, SuggestedAmountMobile, VariableAmount, VariableAmountMobile } from '../components';
 import { SubmitButton, ErrorMessages } from '../../form/components';
 import { connectAmountPanel } from '../utils/donate-utils';
 
@@ -86,26 +86,45 @@ export class AmountPanel extends React.Component {
 
     if (suggestedAmount.variable) {
       return (
-        <VariableAmount
-          key="variable"
-          data={suggestedAmount}
-          amountChange={amount => selectAmount(frequency, amount, true)}
-          isSelected={currentSelection.isVariableAmount}
-          value={currentSelection.variableAmount || ''}
-          forceMobileLayout={forceMobileLayout}
-        />
+        <>
+          <VariableAmountMobile
+            key="variable-mobile"
+            value={currentSelection.variableAmount || ''}
+            amountInfo={suggestedAmount}
+            onChange={amount => selectAmount(frequency, amount, true)}
+            isSelected={currentSelection.isVariableAmount}
+            forceMobileLayout={forceMobileLayout}
+          />
+          <VariableAmount
+            key="variable"
+            value={currentSelection.variableAmount || ''}
+            amountInfo={suggestedAmount}
+            onChange={amount => selectAmount(frequency, amount, true)}
+            isSelected={currentSelection.isVariableAmount}
+            forceMobileLayout={forceMobileLayout}
+          />
+        </>
       );
     }
 
     const isSelected = !currentSelection.isVariableAmount && currentSelection.amount === suggestedAmount.amount;
     return (
-      <SuggestedAmount
-        key={suggestedAmount.amount}
-        data={suggestedAmount}
-        selectAmount={amount => selectAmount(frequency, amount)}
-        isSelected={isSelected}
-        forceMobileLayout={forceMobileLayout}
-      />
+      <>
+        <SuggestedAmountMobile
+          key={`${suggestedAmount.amount}-mobile`}
+          amountInfo={suggestedAmount}
+          onClick={amount => selectAmount(frequency, amount)}
+          isSelected={isSelected}
+          forceMobileLayout={forceMobileLayout}
+        />
+        <SuggestedAmount
+          key={suggestedAmount.amount}
+          amountInfo={suggestedAmount}
+          onClick={amount => selectAmount(frequency, amount)}
+          isSelected={isSelected}
+          forceMobileLayout={forceMobileLayout}
+        />
+      </>
     );
   };
 

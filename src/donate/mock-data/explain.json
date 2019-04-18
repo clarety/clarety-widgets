@@ -37,7 +37,7 @@
             },
             {
               "variable": true,
-              "desc": "Your Amount",
+              "desc": "Other Amount",
               "image": "https://placeimg.com/160/130/arch"
             }
           ]
@@ -61,7 +61,7 @@
             },
             {
               "variable": true,
-              "desc": "Your Amount",
+              "desc": "Other Amount",
               "image": "https://placeimg.com/160/130/people"
             }
           ]
