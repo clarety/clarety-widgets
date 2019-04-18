@@ -18,7 +18,7 @@ renderWidget('donate-widget-1',
     storeCode="AU"
     onceOfferId="1234"
     recurringOfferId="9876"
-    forceMobileLayout
+    forceMdLayout
   />
 );
 

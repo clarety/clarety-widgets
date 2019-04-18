@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { Form, Card, InputGroup } from 'react-bootstrap';
 import { cleanDecimal } from '../../../form/utils/payment-utils';
 
-const VariableAmount = ({ value, amountInfo, isSelected, onChange, currency, forceMobileLayout }) => {
+const VariableAmount = ({ value, amountInfo, isSelected, onChange, currency, forceMd }) => {
   let input = React.createRef();
   const label = `${currency.code}${currency.symbol}`;
 
   let cardClassName = 'flex-row mx-1';
-  if (!forceMobileLayout) cardClassName += ' d-lg-none';
+  if (!forceMd) cardClassName += ' d-lg-none';
 
   return (
     <Card

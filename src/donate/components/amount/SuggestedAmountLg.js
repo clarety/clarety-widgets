@@ -2,11 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Card } from 'react-bootstrap';
 
-const SuggestedAmountLg = ({ amountInfo, isSelected, onClick, currency, forceMobileLayout }) => {
+const SuggestedAmountLg = ({ amountInfo, isSelected, onClick, currency, forceMd }) => {
   const label = `${currency.code} ${currency.symbol}${amountInfo.amount}`;
 
   let cardClassName = 'mx-1 d-none';
-  if (!forceMobileLayout) cardClassName += ' d-lg-block';
+  if (!forceMd) cardClassName += ' d-lg-block';
 
   return (
     <Card

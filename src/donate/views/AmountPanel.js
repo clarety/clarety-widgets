@@ -45,11 +45,12 @@ export class AmountPanel extends React.Component {
   }
 
   renderContent() {
-    const offer = this._getOffer(this.props.frequency);
+    const { frequency, forceMd } = this.props;
 
-    const mobile = this.props.forceMobileLayout;
+    const offer = this._getOffer(frequency);
+
     let deckClassName = 'card-deck flex-column mt-3 mx-n3 text-left';
-    if (!mobile) deckClassName += ' flex-lg-row';
+    if (!forceMd) deckClassName += ' flex-lg-row';
 
     return (
       <Card className="text-center">
@@ -69,7 +70,7 @@ export class AmountPanel extends React.Component {
 
         <Card.Footer>
         <Form.Row className="justify-content-center">
-            <Col lg={mobile ? null : 5}>
+            <Col lg={forceMd ? null : 5}>
               <SubmitButton title="Next" block testId="next-button" />
             </Col>
           </Form.Row>
@@ -79,7 +80,7 @@ export class AmountPanel extends React.Component {
   }
 
   renderSuggestedAmount = suggestedAmount => {
-    const { selections, frequency, selectAmount, forceMobileLayout } = this.props;
+    const { selections, frequency, selectAmount, forceMd } = this.props;
     const currentSelection = selections[frequency];
 
     if (suggestedAmount.variable) {
@@ -91,7 +92,7 @@ export class AmountPanel extends React.Component {
             amountInfo={suggestedAmount}
             onChange={amount => selectAmount(frequency, amount, true)}
             isSelected={currentSelection.isVariableAmount}
-            forceMobileLayout={forceMobileLayout}
+            forceMd={forceMd}
           />
           <VariableAmountLg
             key="variable"
@@ -99,7 +100,7 @@ export class AmountPanel extends React.Component {
             amountInfo={suggestedAmount}
             onChange={amount => selectAmount(frequency, amount, true)}
             isSelected={currentSelection.isVariableAmount}
-            forceMobileLayout={forceMobileLayout}
+            forceMd={forceMd}
           />
         </>
       );
@@ -113,14 +114,14 @@ export class AmountPanel extends React.Component {
           amountInfo={suggestedAmount}
           onClick={amount => selectAmount(frequency, amount)}
           isSelected={isSelected}
-          forceMobileLayout={forceMobileLayout}
+          forceMd={forceMd}
         />
         <SuggestedAmountLg
           key={suggestedAmount.amount}
           amountInfo={suggestedAmount}
           onClick={amount => selectAmount(frequency, amount)}
           isSelected={isSelected}
-          forceMobileLayout={forceMobileLayout}
+          forceMd={forceMd}
         />
       </>
     );
