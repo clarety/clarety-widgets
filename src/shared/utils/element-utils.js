@@ -1,24 +1,22 @@
-export const findElement = (propertyName, elements) => {
-  const properties = propertyName.split('.');
+export const findElement = (field, elements) => {
+  const element = _recursiveFindElement(field, elements);
+  if (!element) throw new Error(`[Clarety] element for field "${field}" not found.`);
+  return element;
+};
 
-  let resultElement = { elements };
-
-  for (let property of properties) {
-    const testElements = resultElement.elements;
-    let found = false;
-
-    for (let testElement of testElements) {
-      if (testElement.property === property) {
-        resultElement = testElement;
-        found = true;
-        break;
-      }
+const _recursiveFindElement = (field, elements) => {
+  for (let element of elements) {
+    if (element.field && element.field === field) {
+      return element;
     }
 
-    if (!found) throw new Error(`[Clarety] property "${propertyName}" not found.`);
+    if (element.elements) {
+      const nestedElement = _recursiveFindElement(field, element.elements);
+      if (nestedElement) return nestedElement;
+    }
   }
 
-  return resultElement;
+  return null;
 };
 
 export const parseNestedElements = (data) => {

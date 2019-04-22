@@ -4,8 +4,8 @@ import { updateFormData } from '../../actions';
 
 class FormElement extends React.Component {
   componentWillMount() {
-    const { property, value, updateFormData } = this.props;
-    updateFormData(property, value);
+    const { field, value, updateFormData } = this.props;
+    updateFormData(field, value);
   }
 
   render() {

@@ -41,9 +41,9 @@ export function connectFormToStore(ViewComponent) {
   return StoreWrapper;
 }
 
-export const getValidationError = (property, errors) => {
+export const getValidationError = (field, errors) => {
   for (let error of errors) {
-    if (error.field === property) return error;
+    if (error.field === field) return error;
   }
 
   return null;

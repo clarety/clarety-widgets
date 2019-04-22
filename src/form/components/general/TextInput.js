@@ -19,16 +19,16 @@ const TextInput = ({ value, type, placeholder, testId, error, onChange }) => (
   </>
 );
 
-const mapStateToProps = (state, { property }) => {
+const mapStateToProps = (state, { field }) => {
   return {
-    value: state.formData[property] || '',
-    error: getValidationError(property, state.errors),
+    value: state.formData[field] || '',
+    error: getValidationError(field, state.errors),
   };
 };
 
-const mapDispatchToProps = (dispatch, { property }) => {
+const mapDispatchToProps = (dispatch, { field }) => {
   return {
-    onChange: event => dispatch(updateFormData(property, event.target.value)),
+    onChange: event => dispatch(updateFormData(field, event.target.value)),
   };
 };
 

@@ -10,10 +10,10 @@ class TestFormView extends BaseFormView {
     return (
       <div data-testid="test-form">
         <ErrorMessages />
-        <TextInput property="firstName" placeholder="Name" testId="name-input" />
-        <TextInput property="email" type="email" placeholder="Email" testId="email-input" />
-        <SelectInput property="country" placeholder="(Please Select)" testId="country-input" />
-        <FormElement property="code" value="test-newsletter" />
+        <TextInput field="firstName" placeholder="Name" testId="name-input" />
+        <TextInput field="email" type="email" placeholder="Email" testId="email-input" />
+        <SelectInput field="country" placeholder="(Please Select)" testId="country-input" />
+        <FormElement field="code" value="test-newsletter" />
         <SubmitButton title="Subscribe" testId="submit-button" />
       </div>
     );

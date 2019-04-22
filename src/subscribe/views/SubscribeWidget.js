@@ -15,19 +15,19 @@ class SubscribeFormView extends BaseFormView {
       <div>
         <ErrorMessages />
 
-        <FormElement property="code" value={listCode} />
+        <FormElement field="code" value={listCode} />
 
         <Form.Row className="mr-0 align-items-start">
           <Col>
-            <TextInput property="firstName" placeholder="Name" />
+            <TextInput field="firstName" placeholder="Name" />
           </Col>
 
           <Col>
-            <TextInput property="email" type="email" placeholder="Email" />
+            <TextInput field="email" type="email" placeholder="Email" />
           </Col>
 
           <Col>
-            <SelectInput property="country" placeholder="(Select Country)" testId="hello-test" />
+            <SelectInput field="country" placeholder="(Select Country)" testId="hello-test" />
           </Col>
 
           <SubmitButton title="Subscribe" className="ml-1" />

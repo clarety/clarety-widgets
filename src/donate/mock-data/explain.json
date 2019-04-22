@@ -73,25 +73,46 @@
           "property": "customer",
           "resource": "customer",
           "elements": [
-            { "property": "firstName" },
-            { "property": "lastName" },
-            { "property": "email" }
+            {
+              "property": "firstName",
+              "field": "customer.firstName"
+            },
+            {
+              "property": "lastName",
+              "field": "customer.lastName"
+            },
+            {
+              "property": "email",
+              "field": "customer.email"
+            }
           ]
         },
         {
           "property": "payment",
           "resource": "payment",
           "elements": [
-            { "property": "cardToken" }
+            {
+              "property": "cardToken",
+              "field": "payment.cardToken"
+            }
           ]
         },
         {
           "property": "saleLines",
           "resource": "saleLine",
           "elements": [
-            { "property": "offerId" },
-            { "property": "offerPaymentId" },
-            { "property": "amount" }
+            {
+              "property": "offerId",
+              "field": "saleLine.offerId"
+            },
+            {
+              "property": "offerPaymentId",
+              "field": "saleLine.offerPaymentId"
+            },
+            {
+              "property": "amount",
+              "field": "saleLine.amount"
+            }
           ]
         }
       ]

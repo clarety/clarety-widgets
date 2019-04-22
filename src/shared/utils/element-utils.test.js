@@ -1,41 +1,50 @@
 import { findElement, parseNestedElements } from './element-utils';
 
 describe('findElement', () => {
-  it('gets a non-nested element', () => {
+  it('finds a non-nested element', () => {
     const elements = [
-      { property: "firstName" },
+      {
+        'property': 'firstName',
+        'field': 'firstName',
+      },
     ];
 
     const element = findElement('firstName', elements);
-    expect(element.property).toBe('firstName');
+    expect(element.field).toBe('firstName');
   });
 
-  it('gets a one level nested element', () => {
+  it('finds a one level nested element', () => {
     const elements = [
       {
-        property: "customer",
-        resource: "customer",
-        elements: [
-          { property: "firstName" },
+        'property': 'customer',
+        'resource': 'customer',
+        'elements': [
+          {
+            'property': 'firstName',
+            'field': 'customer.firstName',
+          },
         ],
       }
     ];
 
     const element = findElement('customer.firstName', elements);
-    expect(element.property).toBe('firstName');
+    expect(element.field).toBe('customer.firstName');
   });
 
-  it('gets a two level nested element', () => {
+  it('finds a two level nested element', () => {
     const elements = [
       {
-        "property": "customer",
-        "resource": "customer",
-        "elements": [
+        'property': 'customer',
+        'resource': 'customer',
+        'elements': [
           {
-            "property": "billing",
-            "resource": "address",
-            "elements": [
-              { "property": "address1" }
+            'property': 'billing',
+            'resource': 'address',
+            'elements': [
+              {
+                'property': 'address1',
+                'field': 'customer.billing.address1',
+              }
             ]
           }
         ]
@@ -43,12 +52,12 @@ describe('findElement', () => {
     ];
 
     const element = findElement('customer.billing.address1', elements);
-    expect(element.property).toBe('address1');
+    expect(element.field).toBe('customer.billing.address1');
   });
 
   it('throws an error when a non-nested element does not exist', () => {
     const elements = [
-      { property: "firstName" },
+      { property: 'firstName' },
     ];
 
     expect(() => findElement('lastName', elements))
@@ -58,10 +67,10 @@ describe('findElement', () => {
   it('throws an error when a nested element does not exist', () => {
     const elements = [
       {
-        property: "customer",
-        resource: "customer",
-        elements: [
-          { property: "firstName" },
+        'property': 'customer',
+        'resource': 'customer',
+        'elements': [
+          { 'property': 'firstName' },
         ],
       }
     ];

@@ -7,12 +7,15 @@ export default {
       elements: [
         {
           property: 'name',
+          field: 'name',
         },
         {
           property: 'email',
+          field: 'email',
         },
         {
           property: 'country',
+          field: 'country',
           options : [
             {
               value: 'AU',

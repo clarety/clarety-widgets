@@ -24,20 +24,20 @@ const SelectInput = ({ value, options, placeholder, testId, error, onChange }) =
   </>
 );
 
-const mapStateToProps = (state, { property }) => {
-  const element = findElement(property, state.explain.elements);
-  if (!element.options) throw new Error(`[Clarety] SelectInput could not find options for property '${property}'.`);
+const mapStateToProps = (state, { field }) => {
+  const element = findElement(field, state.explain.elements);
+  if (!element.options) throw new Error(`[Clarety] SelectInput could not find options for field '${field}'.`);
 
   return {
     options: element.options,
-    value: state.formData[property] || '',
-    error: getValidationError(property, state.errors),
+    value: state.formData[field] || '',
+    error: getValidationError(field, state.errors),
   }
 };
 
-const mapDispatchToProps = (dispatch, { property }) => {
+const mapDispatchToProps = (dispatch, { field }) => {
   return {
-    onChange: event => dispatch(updateFormData(property, event.target.value)),
+    onChange: event => dispatch(updateFormData(field, event.target.value)),
   };
 };
 

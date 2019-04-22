@@ -66,20 +66,20 @@ export class DetailsPanel extends React.Component {
                 <Col sm>
                   <Form.Group controlId="firstName">
                     <Form.Label>First Name</Form.Label>
-                    <TextInput property="customer.firstName" testId="first-name-input" />
+                    <TextInput field="customer.firstName" testId="first-name-input" />
                   </Form.Group>
                 </Col>
                 <Col sm>
                   <Form.Group controlId="lastName">
                     <Form.Label>Last Name</Form.Label>
-                    <TextInput property="customer.lastName" testId="last-name-input" />
+                    <TextInput field="customer.lastName" testId="last-name-input" />
                   </Form.Group>
                 </Col>
               </Form.Row>
       
               <Form.Group controlId="email">
                 <Form.Label>Email</Form.Label>
-                <TextInput property="customer.email" type="email" testId="email-input" />
+                <TextInput field="customer.email" type="email" testId="email-input" />
               </Form.Group>
 
             </Col>
