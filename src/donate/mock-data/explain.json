@@ -5,63 +5,77 @@
     {
       "resource": "donate",
 
-      "stripePublishableKey": "pk_test_5AVvhyJrg3yIEnWSMQVBl3mQ00mK2D2SOD",
+      "payment": {
+        "type": "stripe",
+        "publicKey": "pk_test_5AVvhyJrg3yIEnWSMQVBl3mQ00mK2D2SOD"
+      },
 
       "currency": {
         "symbol": "$",
         "code": "AUD"
       },
       
-      "donationOffers": [
+      "offers": [
         {
-          "offerId": "111",
-          "offerPaymentId": "222",
+          "offerUid": "111",
+          "offerPaymentUid": "222",
+          "name": "Sample One Time Donation",
+          "code": "widget-single",
           "frequency": "single",
           "label": "One-Time",
-          "suggestedAmounts": [
+          "amounts": [
             {
-              "amount": 30,
-              "desc": "Can provide bandages and painkillers in an emergency.",
+              "amount": "30.00",
+              "title": "Title One",
+              "description": "Can provide bandages and painkillers in an emergency.",
               "image": "https://placeimg.com/160/130/nature"
             },
             {
-              "amount": 60,
-              "desc": "Could save a life by providing antivenom after a snakebite.",
+              "amount": "60.00",
+              "title": "Title Two",
+              "description": "Could save a life by providing antivenom after a snakebite.",
               "image": "https://placeimg.com/160/130/people"
             },
             {
-              "amount": 100,
-              "desc": "Can help keep a flight nurse on board an aircraft.",
+              "amount": "100.00",
+              "title": "Title Three",
+              "description": "Can help keep a flight nurse on board an aircraft.",
               "image": "https://placeimg.com/160/130/tech",
               "default": true
             },
             {
               "variable": true,
-              "desc": "Other Amount",
+              "title": "Title Four",
+              "description": "Other Amount",
               "image": "https://placeimg.com/160/130/arch"
             }
           ]
         },
         {
-          "offerId": "333",
-          "offerPaymentId": "444",
-          "frequency": "monthly",
+          "offerUid": "333",
+          "offerPaymentUid": "444",
+          "code": "widget-recurring",
+          "name": "Sample Donation Recurring",
+          "frequency": "recurring",
           "label": "Monthly",
-          "suggestedAmounts": [
+          "amounts": [
             {
-              "amount": 20,
-              "desc": "Can provide bandages and painkillers in an emergency.",
+              "amount": "20.00",
+              "title": "Title One",
+              "description": "Can provide bandages and painkillers in an emergency.",
               "image": "https://placeimg.com/160/130/tech"
             },
             {
-              "amount": 40,
-              "desc": "Can help keep a flight nurse on board an aircraft.",
+              "amount": "40.00",
+              "title": "Title Two",
+              "description": "Can help keep a flight nurse on board an aircraft.",
               "image": "https://placeimg.com/160/130/nature",
               "default": true
             },
             {
               "variable": true,
-              "desc": "Other Amount",
+              "title": "Title Three",
+              "description": "Other Amount",
               "image": "https://placeimg.com/160/130/people"
             }
           ]

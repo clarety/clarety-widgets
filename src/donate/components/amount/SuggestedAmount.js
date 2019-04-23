@@ -20,7 +20,7 @@ const SuggestedAmount = ({ amountInfo, isSelected, onClick, currency, forceMd })
       <div style={{ width: '30%', background: `url(${amountInfo.image}) center center / cover`}}></div>
       <Card.Body style={{ width: '70%' }}>
         <Card.Title className="mb-2">{label}</Card.Title>
-        <Card.Text>{amountInfo.desc}</Card.Text>
+        <Card.Text>{amountInfo.description}</Card.Text>
       </Card.Body>
     </Card>
   );

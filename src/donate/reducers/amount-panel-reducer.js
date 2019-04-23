@@ -39,12 +39,12 @@ const _selectAmount = (state, { frequency, amount, isVariableAmount }) => {
   };
 };
 
-const _selectDefaults = (state, { donationOffers }) => {
-  const defaultFrequency = donationOffers[0].frequency;
+const _selectDefaults = (state, { offers }) => {
+  const defaultFrequency = offers[0].frequency;
   const defaultSelections = {};
 
-  for (let offer of donationOffers) {
-    const defaultAmount = offer.suggestedAmounts.find(amount => amount.default);
+  for (let offer of offers) {
+    const defaultAmount = offer.amounts.find(amount => amount.default);
 
     defaultSelections[offer.frequency] = {
       amount: defaultAmount ? defaultAmount.amount : 0,

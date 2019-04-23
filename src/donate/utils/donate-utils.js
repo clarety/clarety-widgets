@@ -48,7 +48,7 @@ export function connectAmountPanel(ViewComponent) {
     return {
       status: state.status,
   
-      donationOffers: state.explain.donationOffers,
+      offers: state.explain.offers,
   
       frequency: amountPanel.frequency,
       selections: amountPanel.selections,
@@ -101,7 +101,7 @@ export function connectPaymentPanel(ViewComponent) {
       amount: formatPrice(state.sale.saleLines[0].amount),
 
       jwt: state.jwt,
-      stripeKey: state.explain.stripePublishableKey,
+      stripeKey: state.explain.payment.publicKey,
 
       paymentData: state.paymentData,
       formData: state.formData,

@@ -20,7 +20,7 @@ const VariableAmountLg = ({ value, amountInfo, isSelected, onChange, currency, f
     >
       <Card.Img src={amountInfo.image} variant="top" />
       <Card.Body>
-        <Card.Title className="mb-3">{amountInfo.desc}</Card.Title>
+        <Card.Title className="mb-3">{amountInfo.description}</Card.Title>
         <Card.Text as="div">
           <InputGroup>
             <InputGroup.Prepend>

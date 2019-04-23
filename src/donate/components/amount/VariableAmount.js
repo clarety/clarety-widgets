@@ -20,7 +20,7 @@ const VariableAmount = ({ value, amountInfo, isSelected, onChange, currency, for
     >
       <div style={{ width: '30%', background: `url(${amountInfo.image}) center center / cover`}}></div>
       <Card.Body style={{ width: '70%' }}>
-        <Card.Title className="mb-3">{amountInfo.desc}</Card.Title>
+        <Card.Title className="mb-3">{amountInfo.description}</Card.Title>
         <Card.Text as="div">
           <InputGroup>
             <InputGroup.Prepend>

@@ -24,8 +24,8 @@ export class AmountPanel extends React.Component {
     // Make sure an amount has been selected.
     const { amount } = selections[frequency];
     if (amount) {
-      const { offerId, offerPaymentId } = this._getOffer(frequency);
-      addSaleLine({ offerId, offerPaymentId, amount });
+      const { offerUid, offerPaymentUid } = this._getOffer(frequency);
+      addSaleLine({ offerUid, offerPaymentUid, price: amount });
       history.push('/details');
     } else {
       setErrors([{ message: 'Please select a donation amount.' }]);
@@ -64,7 +64,7 @@ export class AmountPanel extends React.Component {
           <FrequencySelect />
 
           <div className={deckClassName} data-testid="suggested-amounts">
-            {offer.suggestedAmounts.map(this.renderSuggestedAmount)}
+            {offer.amounts.map(this.renderSuggestedAmount)}
           </div>
         </Card.Body>
 
@@ -128,7 +128,7 @@ export class AmountPanel extends React.Component {
   };
 
   _getOffer = frequency => {
-    return this.props.donationOffers.find(offer => offer.frequency === frequency);
+    return this.props.offers.find(offer => offer.frequency === frequency);
   };
 }
 

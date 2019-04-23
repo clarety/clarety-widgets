@@ -20,7 +20,7 @@ const SuggestedAmountLg = ({ amountInfo, isSelected, onClick, currency, forceMd 
       <Card.Img src={amountInfo.image} variant="top" />
       <Card.Body>
         <Card.Title className="mb-2">{label}</Card.Title>
-        <Card.Text>{amountInfo.desc}</Card.Text>
+        <Card.Text>{amountInfo.description}</Card.Text>
       </Card.Body>
     </Card>
   );

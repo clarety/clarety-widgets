@@ -12,7 +12,7 @@ export const selectAmount = (frequency, amount, isVariableAmount = false) => ({
   isVariableAmount,
 });
 
-export const selectDefaults = donationOffers => ({
+export const selectDefaults = offers => ({
   type: actionTypes.selectDefaults,
-  donationOffers,
+  offers,
 });

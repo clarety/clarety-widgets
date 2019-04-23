@@ -31,7 +31,7 @@ export class DonateWidget extends React.Component {
     const explain = await ClaretyApi.explain('donations', params);
     if (explain) {
       setExplain(explain);
-      selectDefaults(explain.donationOffers);
+      selectDefaults(explain.offers);
       setStatus(statuses.ready);
     }
   }
