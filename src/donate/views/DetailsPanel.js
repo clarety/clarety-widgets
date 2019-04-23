@@ -10,10 +10,8 @@ export class DetailsPanel extends React.Component {
   onPrev = () => this.props.history.goBack();
 
   onSubmit = async event => {
-    const { status, setStatus } = this.props;
-    const { formData, saleLines, jwt, donation } = this.props;
-    const { clearErrors, setErrors } = this.props;
-    const { history, setDonation, setJwt } = this.props
+    const { status, setStatus, clearErrors, setErrors } = this.props;
+    const { formData, updateFormData, saleline, history } = this.props;
 
     event.preventDefault();
 
@@ -21,17 +19,15 @@ export class DetailsPanel extends React.Component {
     setStatus(statuses.busy);
     clearErrors();
 
-    const endpoint = donation ? `donations/${donation.uuid}` : 'donations';
-
-    const postData = { ...formData, saleLines, jwt };
+    const postData = { ...formData, saleline };
     
-    const result = await ClaretyApi.post(endpoint, postData);
+    const result = await ClaretyApi.post('donations', postData);
     if (result) {
-      if (result.status === 'error') {
+      if (result.validationErrors) {
         setErrors(result.validationErrors);
       } else {
-        setJwt(result.jwt);
-        setDonation(result.donation);
+        updateFormData('uid', result.uid);
+        updateFormData('jwt', result.jwt);
         history.push('/payment');
       }
     }

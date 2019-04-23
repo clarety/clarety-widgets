@@ -2,25 +2,25 @@ import { actionTypes } from '../actions';
 import { actionTypes as formActionTypes } from '../../form/actions';
 
 const initialState = {
-  saleLines: [],
+  salelines: [],
   payment: {},
 };
 
 export const saleReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.addSaleLine:
+    case actionTypes.addSaleline:
       return {
         ...state,
-        saleLines: [
-          ...state.saleLines,
-          action.saleLine,
+        salelines: [
+          ...state.salelines,
+          action.saleline,
         ],
       };
 
-    case actionTypes.clearSaleLines:
+    case actionTypes.clearSalelines:
       return {
         ...state,
-        saleLines: [],
+        salelines: [],
       };
 
     case actionTypes.setPayment:

@@ -7,11 +7,11 @@ import { connectAmountPanel } from '../utils/donate-utils';
 
 export class AmountPanel extends React.Component {
   componentWillMount() {
-    this.props.clearSaleLines();
+    this.props.clearSalelines();
   }
 
   onSubmit = event => {
-    const { status, setStatus, addSaleLine } = this.props;
+    const { status, setStatus, addSaleline } = this.props;
     const { selections, frequency, history } = this.props;
     const { setErrors, clearErrors } = this.props;
 
@@ -25,7 +25,7 @@ export class AmountPanel extends React.Component {
     const { amount } = selections[frequency];
     if (amount) {
       const { offerUid, offerPaymentUid } = this._getOffer(frequency);
-      addSaleLine({ offerUid, offerPaymentUid, price: amount });
+      addSaleline({ offerUid, offerPaymentUid, price: amount });
       history.push('/details');
     } else {
       setErrors([{ message: 'Please select a donation amount.' }]);

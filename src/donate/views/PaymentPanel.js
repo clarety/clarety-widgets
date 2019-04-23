@@ -32,7 +32,7 @@ export class PaymentPanel extends React.Component {
   onValidate = async paymentData => {
     const { payment, stripeKey, setStatus, setErrors, setPayment } = this.props;
 
-    if (payment.stripeToken) {
+    if (payment.gatewayToken) {
       this.attemptPayment();
     } else {
       const result = await createStripeToken(paymentData, stripeKey);
@@ -42,26 +42,23 @@ export class PaymentPanel extends React.Component {
         setErrors(errors);
         setStatus(statuses.ready);
       } else {
-        setPayment({ stripeToken: result.id });
+        setPayment({ gatewayToken: result.id });
         this.attemptPayment();
       }
     }
   };
 
   attemptPayment = async () => {
-    const { formData, saleLines, payment, jwt, donation } = this.props;
-    const { setStatus, setErrors, setDonation, history } = this.props;
+    const { formData, saleline, payment } = this.props;
+    const { setStatus, setErrors, history } = this.props;
 
-    const endpoint = donation ? `donations/${donation.uuid}` : 'donations';
+    const postData = { ...formData, saleline, payment };
 
-    const postData = { ...formData, saleLines, payment, jwt };
-
-    const result = await ClaretyApi.post(endpoint, postData);
+    const result = await ClaretyApi.post('donations', postData);
     if (result) {
-      if (result.status === 'error') {
+      if (result.validationErrors) {
         setErrors(result.validationErrors);
       } else {
-        setDonation(result.donation);
         history.push('/success');
       }
     }

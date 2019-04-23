@@ -19,7 +19,7 @@ export const setupAxiosMock = () => {
     .onPost('http://dev-clarety-baseline.clarety.io/api/donations/')
     .reply(config => {
       const data = JSON.parse(config.data);
-      const { saleLine, customer } = data;
+      const { saleline, customer } = data;
 
       console.log(data);
 
@@ -34,12 +34,12 @@ export const setupAxiosMock = () => {
     .onPost('http://dev-clarety-baseline.clarety.io/api/donations/bd9385e3-6bc4-4885-88d4-b5200d496f33/')
     .reply(config => {
       const data = JSON.parse(config.data);
-      const { saleLines, customer, payment } = data;
+      const { salelines, customer, payment } = data;
 
       console.log(data);
 
       if (payment) {
-        if (saleLines[0].amount > 60) {
+        if (salelines[0].amount > 60) {
           return [200, paymentErrorResponse];
         } else {
           return [200, paymentOkResponse];

@@ -5,7 +5,7 @@ import { parseNestedElements } from '../utils/element-utils';
 class ClaretyApi {
   static async explain(endpoint, params) {
     const apiBase = this._apiBase();
-    const url = `${apiBase}/widgets/${endpoint}`;
+    const url = `${apiBase}/widgets/${endpoint}/`;
 
     try {
       const response = await axios.get(url, { params });

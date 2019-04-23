@@ -1,8 +1,8 @@
 import { actionTypes } from './types';
 
-export const addSaleLine = ({ offerUid, offerPaymentUid, quantity = 1, price = undefined }) => ({
-  type: actionTypes.addSaleLine,
-  saleLine: {
+export const addSaleline = ({ offerUid, offerPaymentUid, quantity = 1, price = undefined }) => ({
+  type: actionTypes.addSaleline,
+  saleline: {
     offerUid,
     offerPaymentUid,
     quantity,
@@ -10,8 +10,8 @@ export const addSaleLine = ({ offerUid, offerPaymentUid, quantity = 1, price = u
   },
 });
 
-export const clearSaleLines = () => ({
-  type: actionTypes.clearSaleLines,
+export const clearSalelines = () => ({
+  type: actionTypes.clearSalelines,
 });
 
 export const setPayment = payment => ({

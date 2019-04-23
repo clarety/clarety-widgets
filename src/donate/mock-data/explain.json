@@ -112,20 +112,20 @@
           ]
         },
         {
-          "property": "saleLines",
-          "resource": "saleLine",
+          "property": "salelines",
+          "resource": "saleline",
           "elements": [
             {
               "property": "offerId",
-              "field": "saleLine.offerId"
+              "field": "saleline.offerId"
             },
             {
               "property": "offerPaymentId",
-              "field": "saleLine.offerPaymentId"
+              "field": "saleline.offerPaymentId"
             },
             {
               "property": "amount",
-              "field": "saleLine.amount"
+              "field": "saleline.amount"
             }
           ]
         }

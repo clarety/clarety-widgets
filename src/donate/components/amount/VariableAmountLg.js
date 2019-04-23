@@ -7,7 +7,7 @@ const VariableAmountLg = ({ value, amountInfo, isSelected, onChange, currency, f
   let input = React.createRef();
   const label = `${currency.code}${currency.symbol}`;
 
-  let cardClassName = 'mx-1 d-none';
+  let cardClassName = 'mx-1 mb-2 d-none';
   if (!forceMd) cardClassName += ' d-lg-block';
 
   return (

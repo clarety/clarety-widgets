@@ -58,8 +58,8 @@ export function connectAmountPanel(ViewComponent) {
   const actions = {
     setStatus: sharedActions.setStatus,
     
-    addSaleLine: sharedActions.addSaleLine,
-    clearSaleLines: sharedActions.clearSaleLines,
+    addSaleline: sharedActions.addSaleline,
+    clearSalelines: sharedActions.clearSalelines,
   
     setErrors: formActions.setErrors,
     clearErrors: formActions.clearErrors,
@@ -74,10 +74,8 @@ export function connectDetailsPanel(ViewComponent) {
   const mapStateToProps = state => {
     return {
       status: state.status,
-      jwt: state.jwt,
       formData: state.formData,
-      saleLines: state.sale.saleLines,
-      donation: state.panels.successPanel.donation,
+      saleline: state.sale.salelines[0],
     };
   };
   
@@ -86,8 +84,6 @@ export function connectDetailsPanel(ViewComponent) {
     setErrors: formActions.setErrors,
     clearErrors: formActions.clearErrors,
     updateFormData: formActions.updateFormData,
-    setDonation: donateActions.setDonation,
-    setJwt: donateActions.setJwt,
   };
   
   return connect(mapStateToProps, actions)(ViewComponent);
@@ -98,7 +94,7 @@ export function connectPaymentPanel(ViewComponent) {
     return {
       status: state.status,
 
-      amount: formatPrice(state.sale.saleLines[0].amount),
+      amount: formatPrice(state.sale.salelines[0].price),
 
       jwt: state.jwt,
       stripeKey: state.explain.payment.publicKey,
@@ -106,7 +102,7 @@ export function connectPaymentPanel(ViewComponent) {
       paymentData: state.paymentData,
       formData: state.formData,
 
-      saleLines: state.sale.saleLines,
+      saleline: state.sale.salelines[0],
       payment: state.sale.payment,
   
       donation: state.panels.successPanel.donation,

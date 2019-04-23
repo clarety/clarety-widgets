@@ -7,7 +7,7 @@ const VariableAmount = ({ value, amountInfo, isSelected, onChange, currency, for
   let input = React.createRef();
   const label = `${currency.code}${currency.symbol}`;
 
-  let cardClassName = 'flex-row mx-1';
+  let cardClassName = 'flex-row mx-1 mb-2';
   if (!forceMd) cardClassName += ' d-lg-none';
 
   return (

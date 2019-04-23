@@ -3,8 +3,8 @@ export const actionTypes = {
   setExplain: 'SET_EXPLAIN',
 
   // Sale Actions
-  addSaleLine: 'ADD_SALE_LINE',
-  clearSaleLines: 'CLEAR_SALE_LINES',
+  addSaleline: 'ADD_SALELINE',
+  clearSalelines: 'CLEAR_SALELINES',
   setPayment: 'SET_PAYMENT',
   clearPayment: 'CLEAR_PAYMENT',
 

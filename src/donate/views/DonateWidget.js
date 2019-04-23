@@ -16,18 +16,19 @@ export class DonateWidget extends React.Component {
 
   async componentWillMount() {
     const { setStatus, setExplain, selectDefaults, updateFormData } = this.props;
-    const { storeCode, onceOfferId, recurringOfferId } = this.props;
+    const { storeCode, singleOfferCode, recurringOfferCode } = this.props;
 
-    if (!onceOfferId && !recurringOfferId) throw new Error('[Clarety] Either a onceOfferId or recurringOfferId prop is required');
+    if (!singleOfferCode && !recurringOfferCode) throw new Error('[Clarety] Either a singleOfferCode or recurringOfferCode prop is required');
     if (!window.Stripe) throw new Error('[Clarety] Stripe not found');
 
     if (storeCode) updateFormData('store', storeCode);
 
     const params = {
       store: storeCode,
-      once: onceOfferId,
-      recurring: recurringOfferId,
+      offerSingle: singleOfferCode,
+      offerRecurring: recurringOfferCode,
     };
+    
     const explain = await ClaretyApi.explain('donations', params);
     if (explain) {
       setExplain(explain);
