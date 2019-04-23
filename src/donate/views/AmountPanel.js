@@ -85,16 +85,8 @@ export class AmountPanel extends React.Component {
 
     if (suggestedAmount.variable) {
       return (
-        <>
+        <React.Fragment key="variable">
           <VariableAmount
-            key="variable-mobile"
-            value={currentSelection.variableAmount || ''}
-            amountInfo={suggestedAmount}
-            onChange={amount => selectAmount(frequency, amount, true)}
-            isSelected={currentSelection.isVariableAmount}
-            forceMd={forceMd}
-          />
-          <VariableAmountLg
             key="variable"
             value={currentSelection.variableAmount || ''}
             amountInfo={suggestedAmount}
@@ -102,28 +94,36 @@ export class AmountPanel extends React.Component {
             isSelected={currentSelection.isVariableAmount}
             forceMd={forceMd}
           />
-        </>
+          <VariableAmountLg
+            key="variable-lg"
+            value={currentSelection.variableAmount || ''}
+            amountInfo={suggestedAmount}
+            onChange={amount => selectAmount(frequency, amount, true)}
+            isSelected={currentSelection.isVariableAmount}
+            forceMd={forceMd}
+          />
+        </React.Fragment>
       );
     }
 
     const isSelected = !currentSelection.isVariableAmount && currentSelection.amount === suggestedAmount.amount;
     return (
-      <>
+      <React.Fragment key={suggestedAmount.amount}>
         <SuggestedAmount
-          key={`${suggestedAmount.amount}-mobile`}
-          amountInfo={suggestedAmount}
-          onClick={amount => selectAmount(frequency, amount)}
-          isSelected={isSelected}
-          forceMd={forceMd}
-        />
-        <SuggestedAmountLg
           key={suggestedAmount.amount}
           amountInfo={suggestedAmount}
           onClick={amount => selectAmount(frequency, amount)}
           isSelected={isSelected}
           forceMd={forceMd}
         />
-      </>
+        <SuggestedAmountLg
+          key={`${suggestedAmount.amount}-lg`}
+          amountInfo={suggestedAmount}
+          onClick={amount => selectAmount(frequency, amount)}
+          isSelected={isSelected}
+          forceMd={forceMd}
+        />
+      </React.Fragment>
     );
   };
 
