@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Form, Row, Col, Button } from 'react-bootstrap';
 import ClaretyApi from '../../shared/services/clarety-api';
 import { statuses } from '../../shared/actions';
-import { TextInput, SubmitButton, ErrorMessages } from '../../form/components';
+import { TextInput, SubmitButton, ErrorMessages, FormElement } from '../../form/components';
 import { StepIndicator } from '../components';
 import { connectDetailsPanel } from '../utils/donate-utils';
 
@@ -77,6 +77,38 @@ export class DetailsPanel extends React.Component {
                 <Form.Label>Email</Form.Label>
                 <TextInput field="customer.email" type="email" testId="email-input" />
               </Form.Group>
+
+              <Form.Row>
+                <Col sm>
+                  <Form.Group controlId="street">
+                    <Form.Label>Street</Form.Label>
+                    <TextInput field="customer.billing.address1" type="street" testId="street-input" />
+                  </Form.Group>
+                </Col>
+                <Col sm>
+                  <Form.Group controlId="suburb">
+                    <Form.Label>Suburb</Form.Label>
+                    <TextInput field="customer.billing.suburb" testId="suburb-input" />
+                  </Form.Group>
+                </Col>
+              </Form.Row>
+
+              <Form.Row>
+                <Col sm>
+                  <Form.Group controlId="state">
+                    <Form.Label>State</Form.Label>
+                    <TextInput field="customer.billing.state" testId="state-input" />
+                  </Form.Group>
+                </Col>
+                <Col sm>
+                  <Form.Group controlId="postcode">
+                    <Form.Label>Postcode</Form.Label>
+                    <TextInput field="customer.billing.postcode" testId="postcode-input" />
+                  </Form.Group>
+                </Col>
+              </Form.Row>
+
+              <FormElement field="customer.billing.country" value="AU" />
 
             </Col>
           </Row>

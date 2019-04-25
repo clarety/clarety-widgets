@@ -46,17 +46,17 @@ export class DonateWidget extends React.Component {
       <MemoryRouter>
         <Switch>
           <Route exact path="/"  render={props => (
-            <this.AmountPanelClass {...props} forceMd={forceMdLayout} />)}
-          />
+            <this.AmountPanelClass {...props} forceMd={forceMdLayout} />
+          )}/>
           <Route path="/details"  render={props => (
-            <this.DetailsPanelClass {...props} forceMd={forceMdLayout} />)}
-          />
+            <this.DetailsPanelClass {...props} forceMd={forceMdLayout} />
+          )}/>
           <Route path="/payment"  render={props => (
-            <this.PaymentPanelClass {...props} forceMd={forceMdLayout} />)}
-          />
+            <this.PaymentPanelClass {...props} forceMd={forceMdLayout} />
+          )}/>
           <Route path="/success"  render={props => (
-            <this.SuccessPanelClass {...props} forceMd={forceMdLayout} />)}
-          />
+            <this.SuccessPanelClass {...props} forceMd={forceMdLayout} />
+          )}/>
         </Switch>
       </MemoryRouter>
     );
