@@ -1,13 +1,15 @@
 import { actionTypes } from '../actions';
 
-const initialState = {};
+const initialState = {
+  result: null,
+};
 
 export const successPanelReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.setDonation:
+    case actionTypes.setSuccessResult:
       return {
         ...state,
-        donation: action.donation,
+        result: action.result,
       };
 
     default:

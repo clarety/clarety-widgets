@@ -1,6 +1,6 @@
 import { actionTypes } from './types';
 
-export const setDonation = donation => ({
-  type: actionTypes.setDonation,
-  donation,
+export const setSuccessResult = result => ({
+  type: actionTypes.setSuccessResult,
+  result,
 });

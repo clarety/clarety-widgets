@@ -8,5 +8,5 @@ export const actionTypes = {
   setJwt: 'SET_JWT',
 
   // Success Panel Actions
-  setDonation: 'SET_DONATION',
+  setSuccessResult: 'SET_SUCCESS_RESULT',
 };

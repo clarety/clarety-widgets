@@ -104,8 +104,6 @@ export function connectPaymentPanel(ViewComponent) {
 
       saleline: state.sale.salelines[0],
       payment: state.sale.payment,
-  
-      donation: state.panels.successPanel.donation,
     };
   };
   
@@ -116,7 +114,7 @@ export function connectPaymentPanel(ViewComponent) {
     clearErrors: formActions.clearErrors,
   
     setPayment: sharedActions.setPayment,
-    setDonation: donateActions.setDonation,
+    setSuccessResult: donateActions.setSuccessResult,
   };
 
   return connect(mapStateToProps, actions)(ViewComponent);
@@ -124,10 +122,26 @@ export function connectPaymentPanel(ViewComponent) {
 
 export function connectSuccessPanel(ViewComponent) {
   const mapStateToProps = state => {
+    const result = state.panels.successPanel.result;
+    const saleline = result.salelines[0];
+
     return {
-      donation: state.panels.successPanel.donation,
+      result,
+      customer : result.customer,
+      donation: {
+        frequency: _getFrequencyLabel(state, saleline.offerUid),
+        amount: formatPrice(saleline.price),
+      }
     };
   };
 
   return connect(mapStateToProps)(ViewComponent);
+}
+
+function _getFrequencyLabel(state, offerUid) {
+  for (let offer of state.explain.offers) {
+    if (offer.offerUid === offerUid) return offer.label;
+  }
+
+  return '';
 }

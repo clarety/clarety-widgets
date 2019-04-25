@@ -9,11 +9,11 @@ export class SuccessPanel extends React.Component {
   }
 
   renderContent() {
-    const { donation, forceMd } = this.props;
+    const { result, customer, donation, forceMd } = this.props;
 
     return (
       <Card>
-        <TestData testId="result" data={donation} />
+        <TestData testId="result" data={result} />
 
         <Card.Header className="text-center">
           Donation Received
@@ -30,12 +30,8 @@ export class SuccessPanel extends React.Component {
             <Table className="mb-0">
               <tbody>
                 <tr>
-                  <th scope="row">Date</th>
-                  <td>{donation.date}</td>
-                </tr>
-                <tr>
                   <th scope="row">Email</th>
-                  <td>{donation.email}</td>
+                  <td>{customer.email}</td>
                 </tr>
                 <tr>
                   <th scope="row">Frequency</th>
@@ -44,10 +40,6 @@ export class SuccessPanel extends React.Component {
                 <tr>
                   <th scope="row">Amount</th>
                   <td>{donation.amount}</td>
-                </tr>
-                <tr>
-                  <th scope="row">Payment Method</th>
-                  <td>Card ending in {donation.last4}</td>
                 </tr>
               </tbody>
             </Table>

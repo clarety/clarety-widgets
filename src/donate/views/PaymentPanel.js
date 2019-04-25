@@ -49,8 +49,8 @@ export class PaymentPanel extends React.Component {
   };
 
   attemptPayment = async () => {
-    const { formData, saleline, payment } = this.props;
-    const { setStatus, setErrors, history } = this.props;
+    const { formData, saleline, payment, history } = this.props;
+    const { setStatus, setErrors, setSuccessResult } = this.props;
 
     const postData = { ...formData, saleline, payment };
 
@@ -59,6 +59,7 @@ export class PaymentPanel extends React.Component {
       if (result.validationErrors) {
         setErrors(result.validationErrors);
       } else {
+        setSuccessResult(result);
         history.push('/success');
       }
     }
