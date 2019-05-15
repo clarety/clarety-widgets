@@ -117,7 +117,7 @@ export class DetailsPanel extends React.Component {
         <Card.Footer>
           <Form.Row className="justify-content-center">
             <Col xs={4} lg={forceMd ? null : 2}>
-              <Button variant="secondary" onClick={this.onPrev} block>Back</Button>
+              <Button variant="link" onClick={this.onPrev} block>Back</Button>
             </Col>
             <Col xs={8} lg={forceMd ? null : 3}>
               <SubmitButton title="Next" block testId="next-button" />
