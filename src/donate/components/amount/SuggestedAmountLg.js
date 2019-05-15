@@ -12,7 +12,7 @@ const SuggestedAmountLg = ({ amountInfo, isSelected, onClick, currency, forceMd 
     <Card
       className={cardClassName}
       style={{ cursor: 'pointer' }}
-      bg={isSelected ? 'primary' : 'light'}
+      bg={isSelected ? 'info' : 'light'}
       text={isSelected ? 'white' : null}
       onClick={() => onClick(amountInfo.amount)}
       data-testid={`amount-${amountInfo.amount}`}

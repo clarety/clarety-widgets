@@ -14,7 +14,7 @@ const VariableAmountLg = ({ value, amountInfo, isSelected, onChange, currency, f
     <Card
       className={cardClassName}
       style={{ cursor: 'pointer' }}
-      bg={isSelected ? 'primary' : 'light'}
+      bg={isSelected ? 'info' : 'light'}
       text={isSelected ? 'white' : null}
       onClick={() => input.current.focus()}
     >
