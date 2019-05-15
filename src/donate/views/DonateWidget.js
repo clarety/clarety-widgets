@@ -43,22 +43,24 @@ export class DonateWidget extends React.Component {
     if (status === statuses.uninitialized) return null;
 
     return (
-      <MemoryRouter>
-        <Switch>
-          <Route exact path="/"  render={props => (
-            <this.AmountPanelClass {...props} forceMd={forceMdLayout} />
-          )}/>
-          <Route path="/details"  render={props => (
-            <this.DetailsPanelClass {...props} forceMd={forceMdLayout} />
-          )}/>
-          <Route path="/payment"  render={props => (
-            <this.PaymentPanelClass {...props} forceMd={forceMdLayout} />
-          )}/>
-          <Route path="/success"  render={props => (
-            <this.SuccessPanelClass {...props} forceMd={forceMdLayout} />
-          )}/>
-        </Switch>
-      </MemoryRouter>
+      <div className="clarety-donate-widget">
+        <MemoryRouter>
+          <Switch>
+            <Route exact path="/"  render={props => (
+              <this.AmountPanelClass {...props} forceMd={forceMdLayout} />
+            )}/>
+            <Route path="/details"  render={props => (
+              <this.DetailsPanelClass {...props} forceMd={forceMdLayout} />
+            )}/>
+            <Route path="/payment"  render={props => (
+              <this.PaymentPanelClass {...props} forceMd={forceMdLayout} />
+            )}/>
+            <Route path="/success"  render={props => (
+              <this.SuccessPanelClass {...props} forceMd={forceMdLayout} />
+            )}/>
+          </Switch>
+        </MemoryRouter>
+      </div>
     );
   }
 }
