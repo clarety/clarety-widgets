@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Form } from 'react-bootstrap';
+import { Form, InputGroup } from 'react-bootstrap';
 import { cleanDecimal } from '../../../form/utils/payment-utils';
 
 const VariableAmount = ({ value, amountInfo, isSelected, onChange, currency, forceMd }) => {
@@ -11,16 +11,21 @@ const VariableAmount = ({ value, amountInfo, isSelected, onChange, currency, for
 
   return (
     <div className={className}>
-      <Form.Control
-        placeholder="Other Amount"
-        required={isSelected}
-        ref={input}
-        value={value}
-        type="text"
-        onFocus={event => onChange(event.target.value)}
-        onChange={event => onChange(cleanDecimal(event.target.value))}
-        data-testid="variable-amount-input"
-      />
+      <InputGroup>
+        <InputGroup.Prepend>
+          <InputGroup.Text>{currency.symbol}</InputGroup.Text>
+        </InputGroup.Prepend>
+        <Form.Control
+          placeholder="Other Amount"
+          required={isSelected}
+          ref={input}
+          value={value}
+          type="text"
+          onFocus={event => onChange(event.target.value)}
+          onChange={event => onChange(cleanDecimal(event.target.value))}
+          data-testid="variable-amount-input"
+        />
+      </InputGroup>
     </div>
   );
 };

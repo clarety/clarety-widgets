@@ -5,7 +5,6 @@ import { cleanDecimal } from '../../../form/utils/payment-utils';
 
 const VariableAmountLg = ({ value, amountInfo, isSelected, onChange, currency, forceMd }) => {
   let input = React.createRef();
-  const label = `${currency.code}${currency.symbol}`;
 
   let cardClassName = 'mx-1 d-none';
   if (!forceMd) cardClassName += ' d-lg-block';
@@ -24,13 +23,13 @@ const VariableAmountLg = ({ value, amountInfo, isSelected, onChange, currency, f
         <Card.Text as="div">
           <InputGroup>
             <InputGroup.Prepend>
-              <InputGroup.Text>{label}</InputGroup.Text>
+              <InputGroup.Text>{currency.symbol}</InputGroup.Text>
             </InputGroup.Prepend>
             <Form.Control
+              placeholder="Other Amount"
               required={isSelected}
               ref={input}
               value={value}
-              className="text-right"
               type="text"
               onFocus={event => onChange(event.target.value)}
               onChange={event => onChange(cleanDecimal(event.target.value))}

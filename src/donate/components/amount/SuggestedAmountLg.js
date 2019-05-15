@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Card } from 'react-bootstrap';
 
 const SuggestedAmountLg = ({ amountInfo, isSelected, onClick, currency, forceMd }) => {
-  const label = `${currency.code} ${currency.symbol}${amountInfo.amount}`;
+  const label = `${currency.symbol}${amountInfo.amount}`;
 
   let cardClassName = 'mx-1 d-none';
   if (!forceMd) cardClassName += ' d-lg-block';
