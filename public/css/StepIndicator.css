@@ -1,15 +1,15 @@
-.step-indicator {
+.widget-step-indicator {
   margin: 0;
   font-size: 14px;
 }
 
-.step-indicator::after {
+.widget-step-indicator::after {
   clear: both;
   content: "";
   display: table;
 }
 
-.step-indicator li {
+.widget-step-indicator li {
   display: inline-block;
   position: relative;
   margin: .4em 40px .4em 0;
@@ -17,7 +17,7 @@
   counter-increment: steps;
 }
 
-.step-indicator li::after {
+.widget-step-indicator li::after {
   display: inline-block;
   content: "";
   position: absolute;
@@ -29,20 +29,20 @@
   background: #cccccc;
 }
 
-.step-indicator li:last-of-type::after {
+.widget-step-indicator li:last-of-type::after {
   display: none;
 }
 
-.step-indicator li > * {
+.widget-step-indicator li > * {
   display: inline-block;
   padding-top: 34px;
 }
 
-.step-indicator li:last-of-type {
+.widget-step-indicator li:last-of-type {
   margin-right: 0;
 }
 
-.step-indicator li > ::before {
+.widget-step-indicator li > ::before {
   position: absolute;
   content: counter(steps);
   z-index: 1;
@@ -59,8 +59,8 @@
   font-weight: bold;
 }
 
-.step-indicator li.visited::after,
-.step-indicator li.visited > ::before,
-.step-indicator li.current > ::before {
+.widget-step-indicator li.visited::after,
+.widget-step-indicator li.visited > ::before,
+.widget-step-indicator li.current > ::before {
   background-color: #415964;
 }
