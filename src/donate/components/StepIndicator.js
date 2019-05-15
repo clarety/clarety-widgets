@@ -5,7 +5,7 @@ const StepIndicator = ({ currentStep }) => {
   const styles = _getStyles(currentStep);
 
   return (
-    <ol className="step-indicator">
+    <ol className="widget-step-indicator">
       <li className={styles.amount}><span>Amount</span></li>
       <li className={styles.details}><span>Details</span></li>
       <li className={styles.payment}><span>Payment</span></li>
