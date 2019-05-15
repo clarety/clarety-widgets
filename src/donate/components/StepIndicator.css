@@ -1,60 +1,66 @@
 .step-indicator {
-  margin-bottom: 0.2em;
-  font-size: 0.9em;
+  margin: 0;
+  font-size: 14px;
+}
+
+.step-indicator::after {
+  clear: both;
+  content: "";
+  display: table;
 }
 
 .step-indicator li {
   display: inline-block;
   position: relative;
-  margin: 0.4em 40px 0.4em 0;
-  text-align: center;
-}
-
-@media (min-width: 576px) {
-  .step-indicator li { width: 80px; }
+  margin: .4em 40px .4em 0;
+  width: 80px;
+  counter-increment: steps;
 }
 
 .step-indicator li::after {
-  position: absolute;
+  display: inline-block;
   content: "";
-  height: 4px;
-  background: #e1e5e7;
+  position: absolute;
   left: 50%;
-  bottom: 4px;
+  top: 11px;
+  margin: 0;
   width: calc(100% + 40px);
-}
-
-.step-indicator li:last-of-type {
-  margin-right: 0;
+  height: 4px;
+  background: #cccccc;
 }
 
 .step-indicator li:last-of-type::after {
   display: none;
 }
 
-.step-indicator li > span {
+.step-indicator li > * {
   display: inline-block;
-  padding-bottom: 24px;
+  padding-top: 34px;
 }
 
-.step-indicator li.visited::after {
-  background-color: #007bff;
+.step-indicator li:last-of-type {
+  margin-right: 0;
 }
 
-.step-indicator li > span::before {
-  content: "";
+.step-indicator li > ::before {
   position: absolute;
+  content: counter(steps);
   z-index: 1;
   left: 50%;
+  right: auto;
+  top: 0;
+  width: 26px;
+  height: 26px;
+  line-height: 26px;
   transform: translateX(-50%);
-  height: 12px;
-  width: 12px;
   border-radius: 50%;
-  background-color: #e1e5e7;
-  bottom: 0;
+  background-color: #cccccc;
+  color: #ffffff;
+  font-weight: bold;
 }
 
-.step-indicator li.visited > span::before,
-.step-indicator li.current > span::before {
-  background-color: #007bff;
+.step-indicator li.visited::after,
+.step-indicator li.visited > ::before,
+.step-indicator li.current > ::before {
+  background-color: #415964;
 }

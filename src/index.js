@@ -15,6 +15,7 @@ ClaretyConfig.init({
 
 renderWidget('donate-widget-1',
   <DonateWidget
+    storeCode="AU"
     singleOfferCode="widget-single"
     recurringOfferCode="widget-recurring"
     forceMdLayout
@@ -23,6 +24,7 @@ renderWidget('donate-widget-1',
 
 renderWidget('donate-widget-2',
   <DonateWidget
+    storeCode="AU"
     singleOfferCode="widget-single"
     recurringOfferCode="widget-recurring"
   />
