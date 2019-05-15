@@ -1,5 +1,5 @@
 import React from 'react';
-import './StepIndicator.css';
+// import './StepIndicator.css';
 
 const StepIndicator = ({ currentStep }) => {
   const styles = _getStyles(currentStep);
