@@ -46,8 +46,9 @@ export class AmountPanel extends React.Component {
 
   renderContent() {
     const { frequency, forceMd } = this.props;
-
+    
     const offer = this._getOffer(frequency);
+    const variableAmount = this._getVariableAmount(offer);
 
     let deckClassName = 'card-deck flex-column mt-3 mx-n3 text-left';
     if (!forceMd) deckClassName += ' flex-lg-row';
@@ -65,7 +66,9 @@ export class AmountPanel extends React.Component {
 
           <div className={deckClassName} data-testid="suggested-amounts">
             {offer.amounts.map(this.renderSuggestedAmount)}
+            {this.renderVariableAmount(variableAmount)}
           </div>
+
         </Card.Body>
 
         <Card.Footer>
@@ -83,28 +86,8 @@ export class AmountPanel extends React.Component {
     const { selections, frequency, selectAmount, forceMd } = this.props;
     const currentSelection = selections[frequency];
 
-    if (suggestedAmount.variable) {
-      return (
-        <React.Fragment key="variable">
-          <VariableAmount
-            key="variable"
-            value={currentSelection.variableAmount || ''}
-            amountInfo={suggestedAmount}
-            onChange={amount => selectAmount(frequency, amount, true)}
-            isSelected={currentSelection.isVariableAmount}
-            forceMd={forceMd}
-          />
-          <VariableAmountLg
-            key="variable-lg"
-            value={currentSelection.variableAmount || ''}
-            amountInfo={suggestedAmount}
-            onChange={amount => selectAmount(frequency, amount, true)}
-            isSelected={currentSelection.isVariableAmount}
-            forceMd={forceMd}
-          />
-        </React.Fragment>
-      );
-    }
+    // Ignore variable amount, we'll add a field below the suggested amounts.
+    if (suggestedAmount.variable) return null;
 
     const isSelected = !currentSelection.isVariableAmount && currentSelection.amount === suggestedAmount.amount;
     return (
@@ -127,8 +110,37 @@ export class AmountPanel extends React.Component {
     );
   };
 
+  renderVariableAmount(variableAmount) {
+    if (!variableAmount) return null;
+
+    const { selections, frequency, selectAmount, forceMd } = this.props;
+    const currentSelection = selections[frequency];
+
+    return (
+      <>
+        <VariableAmount
+          value={currentSelection.variableAmount || ''}
+          onChange={amount => selectAmount(frequency, amount, true)}
+          isSelected={currentSelection.isVariableAmount}
+          forceMd={forceMd}
+        />
+        <VariableAmountLg
+          value={currentSelection.variableAmount || ''}
+          amountInfo={variableAmount}
+          onChange={amount => selectAmount(frequency, amount, true)}
+          isSelected={currentSelection.isVariableAmount}
+          forceMd={forceMd}
+        />
+      </>
+    );
+  }
+
   _getOffer = frequency => {
     return this.props.offers.find(offer => offer.frequency === frequency);
+  };
+
+  _getVariableAmount = offer => {
+    return offer.amounts.find(amount => amount.variable === true);
   };
 }
 
