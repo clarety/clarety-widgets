@@ -44,9 +44,10 @@ class ClaretyApi {
 
   static _apiBase() {
     const env = Config.env();
+    const protocol = env === 'dev' ? 'http': 'https';
     const prefix = env === 'prod' ?  '' : env + '-';
     const instanceKey = Config.get('instanceKey') || 'NO_INSTANCE_KEY';
-    return `http://${prefix}${instanceKey}.clarety.io/api`;
+    return `${protocol}://${prefix}${instanceKey}.clarety.io/api`;
   }
 }
 
