@@ -43,8 +43,8 @@ class ClaretyApi {
   }
 
   static _apiBase() {
-    const env = Config.get('env');
-    const prefix = env ? env + '-' : '';
+    const env = Config.env();
+    const prefix = env === 'prod' ?  '' : env + '-';
     const instanceKey = Config.get('instanceKey') || 'NO_INSTANCE_KEY';
     return `http://${prefix}${instanceKey}.clarety.io/api`;
   }
