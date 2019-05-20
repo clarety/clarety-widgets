@@ -2,8 +2,13 @@ import React from 'react';
 import { Card, Col, Row, Table } from 'react-bootstrap';
 import { TestData } from '../../shared/components';
 import { connectSuccessPanel } from '../utils/donate-utils';
+import { scrollIntoView } from '../../shared/utils/widget-utils';
 
 export class SuccessPanel extends React.Component {
+  componentDidMount() {
+    scrollIntoView(this);
+  }
+
   render() {
     return this.renderContent();
   }
