@@ -1,4 +1,5 @@
 import ReactDOM from 'react-dom';
+import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed';
 import ClaretyConfig from '../services/clarety-config';
 
 export function renderWidget(elementId, component) {
@@ -11,3 +12,12 @@ export function renderWidget(elementId, component) {
     }
   }
 };
+
+export function scrollIntoView(component) {
+  const node = ReactDOM.findDOMNode(component);
+  scrollIntoViewIfNeeded(node, {
+    scrollMode: 'if-needed',
+    block: 'start',
+    behavior: 'smooth',
+  });
+}

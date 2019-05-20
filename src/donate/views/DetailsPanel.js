@@ -5,8 +5,13 @@ import { statuses } from '../../shared/actions';
 import { TextInput, SubmitButton, ErrorMessages, FormElement } from '../../form/components';
 import { StepIndicator } from '../components';
 import { connectDetailsPanel } from '../utils/donate-utils';
+import { scrollIntoView } from '../../shared/utils/widget-utils';
 
 export class DetailsPanel extends React.Component {
+  componentDidMount() {
+    scrollIntoView(this);
+  }
+
   onPrev = () => this.props.history.goBack();
 
   onSubmit = async event => {

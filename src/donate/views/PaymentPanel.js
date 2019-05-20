@@ -7,8 +7,13 @@ import { CardNumberInput, ExpiryInput, CcvInput } from '../../form/components';
 import { StepIndicator } from '../components';
 import { createStripeToken, parseStripeError, validateCard } from '../utils/stripe-utils';
 import { connectPaymentPanel } from '../utils/donate-utils';
+import { scrollIntoView } from '../../shared/utils/widget-utils';
 
 export class PaymentPanel extends React.Component {
+  componentDidMount() {
+    scrollIntoView(this);
+  }
+
   onPrev = () => this.props.history.goBack();
 
   onSubmit = event => {

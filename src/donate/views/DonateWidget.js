@@ -40,7 +40,14 @@ export class DonateWidget extends React.Component {
   render() {
     const { status, forceMdLayout } = this.props;
 
-    if (status === statuses.uninitialized) return null;
+    // Show a loading indicator while we init.
+    if (status === statuses.uninitialized) {
+      return (
+        <div className="d-flex justify-content-center align-items-center h-100">
+          <div className="spinner-border text-primary"></div>
+        </div>
+      );
+    }
 
     return (
       <div className="clarety-donate-widget">
