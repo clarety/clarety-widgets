@@ -1,8 +1,8 @@
 import React from 'react';
-import { Card, Form, Row, Col, Button } from 'react-bootstrap';
+import { Card, Form, Row, Col } from 'react-bootstrap';
 import ClaretyApi from '../../shared/services/clarety-api';
 import { statuses } from '../../shared/actions';
-import { SubmitButton, ErrorMessages } from '../../form/components';
+import { SubmitButton, BackButton, ErrorMessages } from '../../form/components';
 import { CardNumberInput, ExpiryInput, CcvInput } from '../../form/components';
 import { StepIndicator } from '../components';
 import { createStripeToken, parseStripeError, validateCard } from '../utils/stripe-utils';
@@ -126,7 +126,7 @@ export class PaymentPanel extends React.Component {
         <Card.Footer>
           <Form.Row className="justify-content-center">
             <Col xs={4} lg={forceMd ? null : 2}>
-              <Button variant="link" onClick={this.onPrev} block>Back</Button>
+              <BackButton title="Back" onClick={this.onPrev} block />
             </Col>
             <Col xs={8} lg={forceMd ? null : 3}>
               <SubmitButton title="Donate" block testId="next-button" />

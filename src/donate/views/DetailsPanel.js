@@ -1,8 +1,8 @@
 import React from 'react';
-import { Card, Form, Row, Col, Button } from 'react-bootstrap';
+import { Card, Form, Row, Col } from 'react-bootstrap';
 import ClaretyApi from '../../shared/services/clarety-api';
 import { statuses } from '../../shared/actions';
-import { TextInput, SubmitButton, ErrorMessages, FormElement } from '../../form/components';
+import { TextInput, SubmitButton, BackButton, ErrorMessages, FormElement } from '../../form/components';
 import { StepIndicator } from '../components';
 import { connectDetailsPanel } from '../utils/donate-utils';
 import { scrollIntoView } from '../../shared/utils/widget-utils';
@@ -122,7 +122,7 @@ export class DetailsPanel extends React.Component {
         <Card.Footer>
           <Form.Row className="justify-content-center">
             <Col xs={4} lg={forceMd ? null : 2}>
-              <Button variant="link" onClick={this.onPrev} block>Back</Button>
+              <BackButton title="Back" block onClick={this.onPrev} />
             </Col>
             <Col xs={8} lg={forceMd ? null : 3}>
               <SubmitButton title="Next" block testId="next-button" />
