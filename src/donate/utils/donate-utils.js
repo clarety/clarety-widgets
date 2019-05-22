@@ -1,5 +1,6 @@
 import React from 'react';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import { Provider, connect } from 'react-redux';
 import donateReducer from '../reducers/donate-reducer';
 import * as sharedActions from '../../shared/actions';
@@ -26,7 +27,7 @@ export function connectDonateWidget(ViewComponent) {
 
   class StoreWrapper extends React.Component {
     render() {
-      const store = createStore(donateReducer);
+      const store = createStore(donateReducer, applyMiddleware(thunk));
       if (window.Cypress) window.store = store;
 
       return (
