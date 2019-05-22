@@ -1,8 +1,10 @@
 import React from 'react';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import { Provider, connect } from 'react-redux';
 import donateReducer from '../reducers/donate-reducer';
 import * as sharedActions from '../../shared/actions';
+import { statuses } from '../../shared/actions';
 import * as formActions from '../../form/actions';
 import * as donateActions from '../actions';
 import { formatPrice } from '../../form/utils/payment-utils';
@@ -25,7 +27,7 @@ export function connectDonateWidget(ViewComponent) {
 
   class StoreWrapper extends React.Component {
     render() {
-      const store = createStore(donateReducer);
+      const store = createStore(donateReducer, applyMiddleware(thunk));
       if (window.Cypress) window.store = store;
 
       return (
@@ -75,7 +77,8 @@ export function connectDetailsPanel(ViewComponent) {
     return {
       status: state.status,
       formData: state.formData,
-      saleline: state.sale.salelines[0],
+      saleline: getSaleline(state),
+      isBusy: getIsBusy(state),
     };
   };
   
@@ -91,10 +94,13 @@ export function connectDetailsPanel(ViewComponent) {
 
 export function connectPaymentPanel(ViewComponent) {
   const mapStateToProps = state => {
+    const saleline = getSaleline(state);
+
     return {
       status: state.status,
+      isBusy: getIsBusy(state),
 
-      amount: formatPrice(state.sale.salelines[0].price),
+      amount: formatPrice(saleline.price),
 
       jwt: state.jwt,
       stripeKey: state.explain.payment.publicKey,
@@ -102,7 +108,7 @@ export function connectPaymentPanel(ViewComponent) {
       paymentData: state.paymentData,
       formData: state.formData,
 
-      saleline: state.sale.salelines[0],
+      saleline: saleline,
       payment: state.sale.payment,
     };
   };
@@ -129,7 +135,7 @@ export function connectSuccessPanel(ViewComponent) {
       result,
       customer : result.customer,
       donation: {
-        frequency: _getFrequencyLabel(state, saleline.offerUid),
+        frequency: getFrequencyLabel(state, saleline.offerUid),
         amount: formatPrice(saleline.price),
       }
     };
@@ -138,7 +144,18 @@ export function connectSuccessPanel(ViewComponent) {
   return connect(mapStateToProps)(ViewComponent);
 }
 
-function _getFrequencyLabel(state, offerUid) {
+
+// Selectors
+
+function getIsBusy(state) {
+  return state.status !== statuses.ready;
+}
+
+function getSaleline(state) {
+  return state.sale.salelines[0];
+}
+
+function getFrequencyLabel(state, offerUid) {
   for (let offer of state.explain.offers) {
     if (offer.offerUid === offerUid) return offer.label;
   }

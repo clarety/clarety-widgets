@@ -1,13 +1,15 @@
 import React from 'react';
-import { Card, Form, Row, Col, Button } from 'react-bootstrap';
+import { Card, Form, Row, Col } from 'react-bootstrap';
+import BlockUi from 'react-block-ui';
 import ClaretyApi from '../../shared/services/clarety-api';
 import { statuses } from '../../shared/actions';
-import { SubmitButton, ErrorMessages } from '../../form/components';
+import { SubmitButton, BackButton, ErrorMessages } from '../../form/components';
 import { CardNumberInput, ExpiryInput, CcvInput } from '../../form/components';
 import { StepIndicator } from '../components';
 import { createStripeToken, parseStripeError, validateCard } from '../utils/stripe-utils';
-import { connectPaymentPanel } from '../utils/donate-utils';
+import { connectPaymentPanel } from '../utils/connect-utils';
 import { scrollIntoView } from '../../shared/utils/widget-utils';
+import 'react-block-ui/style.css';
 
 export class PaymentPanel extends React.Component {
   componentDidMount() {
@@ -81,7 +83,7 @@ export class PaymentPanel extends React.Component {
   }
 
   renderContent() {
-    const { forceMd } = this.props;
+    const { forceMd, isBusy } = this.props;
 
     return (
       <Card>
@@ -95,29 +97,33 @@ export class PaymentPanel extends React.Component {
 
               <ErrorMessages />
 
-              <Card.Text className="text-center">
-                Donation Amount: <b>{this.props.amount}</b>
-              </Card.Text>
-      
-              <Form.Group controlId="cardNumber">
-                <Form.Label>Card Number</Form.Label>
-                <CardNumberInput testId="card-number-input" />
-              </Form.Group>
-      
-              <Form.Row>
-                <Col>
-                  <Form.Group controlId="cardExpMonth">
-                    <Form.Label>Expiry</Form.Label>
-                    <ExpiryInput testId="expiry-input" />
-                  </Form.Group>
-                </Col>
-                <Col>
-                  <Form.Group controlId="ccv">
-                    <Form.Label>CCV</Form.Label>
-                    <CcvInput testId="ccv-input" />
-                  </Form.Group>
-                </Col>
-              </Form.Row>
+              <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
+
+                <Card.Text className="text-center">
+                  Donation Amount: <b>{this.props.amount}</b>
+                </Card.Text>
+        
+                <Form.Group controlId="cardNumber">
+                  <Form.Label>Card Number</Form.Label>
+                  <CardNumberInput testId="card-number-input" />
+                </Form.Group>
+        
+                <Form.Row>
+                  <Col>
+                    <Form.Group controlId="cardExpMonth">
+                      <Form.Label>Expiry</Form.Label>
+                      <ExpiryInput testId="expiry-input" />
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Form.Group controlId="ccv">
+                      <Form.Label>CCV</Form.Label>
+                      <CcvInput testId="ccv-input" />
+                    </Form.Group>
+                  </Col>
+                </Form.Row>
+
+              </BlockUi>
 
             </Col>
           </Row>
@@ -126,7 +132,7 @@ export class PaymentPanel extends React.Component {
         <Card.Footer>
           <Form.Row className="justify-content-center">
             <Col xs={4} lg={forceMd ? null : 2}>
-              <Button variant="link" onClick={this.onPrev} block>Back</Button>
+              <BackButton title="Back" onClick={this.onPrev} block />
             </Col>
             <Col xs={8} lg={forceMd ? null : 3}>
               <SubmitButton title="Donate" block testId="next-button" />
