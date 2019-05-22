@@ -7,7 +7,7 @@ import { SubmitButton, BackButton, ErrorMessages } from '../../form/components';
 import { CardNumberInput, ExpiryInput, CcvInput } from '../../form/components';
 import { StepIndicator } from '../components';
 import { createStripeToken, parseStripeError, validateCard } from '../utils/stripe-utils';
-import { connectPaymentPanel } from '../utils/donate-utils';
+import { connectPaymentPanel } from '../utils/connect-utils';
 import { scrollIntoView } from '../../shared/utils/widget-utils';
 import 'react-block-ui/style.css';
 

@@ -5,7 +5,7 @@ import ClaretyApi from '../../shared/services/clarety-api';
 import { statuses } from '../../shared/actions';
 import { TextInput, SubmitButton, BackButton, ErrorMessages, FormElement } from '../../form/components';
 import { StepIndicator } from '../components';
-import { connectDetailsPanel } from '../utils/donate-utils';
+import { connectDetailsPanel } from '../utils/connect-utils';
 import { scrollIntoView } from '../../shared/utils/widget-utils';
 import 'react-block-ui/style.css';
 

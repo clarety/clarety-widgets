@@ -2,7 +2,7 @@ import React from 'react';
 import { MemoryRouter, Switch, Route } from 'react-router-dom';
 import ClaretyApi from '../../shared/services/clarety-api';
 import { statuses } from '../../shared/actions';
-import { connectDonateWidget } from '../utils/donate-utils.js';
+import { connectDonateWidget } from '../utils/connect-utils';
 import AmountPanel from './AmountPanel';
 import DetailsPanel from './DetailsPanel';
 import PaymentPanel from './PaymentPanel';
