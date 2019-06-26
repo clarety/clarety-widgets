@@ -9,13 +9,13 @@ import { connectFormToStore } from './form/utils/form-utils';
 import SubscribeWidget from './subscribe/views/SubscribeWidget';
 
 import { DonateWidget } from './donate/views/DonateWidget';
-import { connectDonateWidget, connectAmountPanel, connectDetailsPanel, connectPaymentPanel, connectSuccessPanel } from './donate/utils/donate-utils';
+import { connectDonateWidget, connectAmountPanel, connectDetailsPanel, connectPaymentPanel, connectSuccessPanel } from './donate/utils/connect-utils';
 import { AmountPanel } from './donate/views/AmountPanel';
 import { DetailsPanel } from './donate/views/DetailsPanel';
 import { PaymentPanel } from './donate/views/PaymentPanel';
 import { SuccessPanel } from './donate/views/SuccessPanel';
 import { FrequencySelect, SuggestedAmount, VariableAmount } from './donate/components';
-import { setupAxiosMock } from './donate/mock-data/axios-mock';
+import { setupAxiosMock } from './donate/mocks/axios-mock';
 
 import { DonateTestActions } from '../e2e/integration/donate/donate-test-actions';
 import { donateWidgetTests, donateTestData } from '../e2e/integration/donate/donate-widget-tests';

@@ -1,5 +1,6 @@
 import React from 'react';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import thunkMiddleware from 'redux-thunk';
 import { Provider, connect } from 'react-redux';
 import formReducer from '../reducers/form-reducer';
 import * as sharedActions from '../../shared/actions';
@@ -26,11 +27,15 @@ export function connectFormToStore(ViewComponent) {
 
   const ConnectedComponent = connect(mapStateToProps, actions)(ViewComponent);
 
+  const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  const store = createStore(formReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
+  if (window.Cypress) window.store = store;
+
   class StoreWrapper extends React.Component {
     render() {
       return (
-        <Provider store={createStore(formReducer)}>
-          <ConnectedComponent {...this.props } />
+        <Provider store={store}>
+          <ConnectedComponent {...this.props} />
         </Provider>
       );
     }

@@ -2,7 +2,7 @@ var path = require('path');
 
 module.exports = [
   {
-    mode: 'production',
+    mode: 'development',
     entry: './src/clarety-widgets.js',
     output: {
       path: path.resolve('lib'),

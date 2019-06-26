@@ -4,8 +4,8 @@ import { BaseFormView } from '../../form/views/BaseFormView';
 import { connectFormToStore } from '../../form/utils/form-utils';
 import { TextInput, SelectInput, FormElement, ErrorMessages, SubmitButton } from '../../form/components';
 
-class SubscribeFormView extends BaseFormView {
-  endpoint = 'subscribe';
+class SubscribeWidget extends BaseFormView {
+  endpoint = 'subscriptions';
 
   renderForm() {
     const { listCode } = this.props;
@@ -19,7 +19,7 @@ class SubscribeFormView extends BaseFormView {
 
         <Form.Row className="mr-0 align-items-start">
           <Col>
-            <TextInput field="firstName" placeholder="Name" />
+            <TextInput field="firstName" placeholder="First Name" />
           </Col>
 
           <Col>
@@ -45,4 +45,4 @@ class SubscribeFormView extends BaseFormView {
   }
 }
 
-export default connectFormToStore(SubscribeFormView);
+export default connectFormToStore(SubscribeWidget);

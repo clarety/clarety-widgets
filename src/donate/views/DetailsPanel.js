@@ -29,6 +29,8 @@ export class DetailsPanel extends React.Component {
     const postData = { ...formData, saleline };
     
     const result = await ClaretyApi.post('donations', postData);
+    setStatus(statuses.ready);
+
     if (result) {
       if (result.validationErrors) {
         setErrors(result.validationErrors);
@@ -38,8 +40,6 @@ export class DetailsPanel extends React.Component {
         history.push('/payment');
       }
     }
-
-    setStatus(statuses.ready);
   };
 
   render() {

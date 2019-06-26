@@ -1,6 +1,6 @@
 import React from 'react';
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
+import { createStore, applyMiddleware, compose } from 'redux';
+import thunkMiddleware from 'redux-thunk';
 import { Provider, connect } from 'react-redux';
 import donateReducer from '../reducers/donate-reducer';
 import * as sharedActions from '../../shared/actions';
@@ -25,14 +25,15 @@ export function connectDonateWidget(ViewComponent) {
 
   const ConnectedComponent = connect(mapStateToProps, actions)(ViewComponent);
 
+  const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  const store = createStore(donateReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
+  if (window.Cypress) window.store = store;
+
   class StoreWrapper extends React.Component {
     render() {
-      const store = createStore(donateReducer, applyMiddleware(thunk));
-      if (window.Cypress) window.store = store;
-
       return (
         <Provider store={store}>
-          <ConnectedComponent { ...this.props } />
+          <ConnectedComponent {...this.props} />
         </Provider>
       );
     }
