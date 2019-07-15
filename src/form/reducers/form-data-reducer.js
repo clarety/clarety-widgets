@@ -1,10 +1,10 @@
-import { actionTypes } from '../actions';
+import { types } from '../actions';
 
 const initialState = {};
 
 export const formDataReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.updateFormData:
+    case types.updateFormData:
       const { field, value } = action;
       return {
         ...state,

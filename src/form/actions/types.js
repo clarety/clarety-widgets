@@ -1,4 +1,4 @@
-export const actionTypes = {
+export const types = {
   // Errors Actions
   setErrors: 'SET_FORM_ERRORS',
   clearErrors: 'CLEAR_FORM_ERRORS',

@@ -1,4 +1,4 @@
-import { actionTypes } from '../actions';
+import { types } from '../actions';
 
 const initialState = {
   cardNumber: '',
@@ -9,7 +9,7 @@ const initialState = {
 
 export const paymentDataReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.updatePaymentData:
+    case types.updatePaymentData:
       const { field, value } = action;
       return {
         ...state,
