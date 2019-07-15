@@ -1,4 +1,4 @@
-import { actionTypes } from './types';
+import { types } from './types';
 
 export const statuses = {
   uninitialized: 'uninitialized',
@@ -7,6 +7,6 @@ export const statuses = {
 };
 
 export const setStatus = status => ({
-  type: actionTypes.setStatus,
+  type: types.setStatus,
   status,
 });

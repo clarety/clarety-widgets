@@ -1,10 +1,10 @@
-import { actionTypes } from '../actions';
+import { types } from '../actions';
 
 const initialState = {};
 
 export const explainReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.setExplain:
+    case types.setExplain:
       return action.explain;
 
     default:

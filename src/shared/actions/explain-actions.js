@@ -1,6 +1,6 @@
-import { actionTypes } from './types';
+import { types } from './types';
 
 export const setExplain = explain => ({
-  type: actionTypes.setExplain,
+  type: types.setExplain,
   explain,
 });
