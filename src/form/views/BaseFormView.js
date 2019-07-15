@@ -1,5 +1,6 @@
 import React from 'react';
-import { MemoryRouter, Switch, Route } from 'react-router-dom';
+import { ConnectedRouter } from 'connected-react-router'
+import { Switch, Route } from 'react-router-dom';
 import { statuses } from 'shared/actions';
 import { connectFormToStore } from 'form/utils';
 
@@ -24,7 +25,7 @@ export class _BaseFormView extends React.Component {
     }
 
     return (
-      <MemoryRouter>
+      <ConnectedRouter history={this.props.history}>
         <Switch>
           <Route path="/success" render={this.renderSuccess} />
           <Route default render={route => (
@@ -33,7 +34,7 @@ export class _BaseFormView extends React.Component {
             </form>
           )} />
         </Switch>
-      </MemoryRouter>
+      </ConnectedRouter>
     );
   }
 

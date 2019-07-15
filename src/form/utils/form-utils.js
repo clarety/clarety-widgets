@@ -1,9 +1,11 @@
 import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
+import { createBrowserHistory } from 'history';
 import thunkMiddleware from 'redux-thunk';
+import { routerMiddleware } from 'connected-react-router';
 import { Provider, connect } from 'react-redux';
 import { fetchExplain } from 'shared/actions';
-import { formReducer } from 'form/reducers';
+import { createFormReducer } from 'form/reducers';
 import { submitForm } from 'form/actions';
 
 export function connectFormToStore(ViewComponent) {
@@ -22,15 +24,21 @@ export function connectFormToStore(ViewComponent) {
 
   const ConnectedComponent = connect(mapStateToProps, actions)(ViewComponent);
 
+  const history = createBrowserHistory();
+  const middleware = applyMiddleware(routerMiddleware(history), thunkMiddleware);
   const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-  const store = createStore(formReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
+  const store = createStore(createFormReducer(history), composeDevTools(middleware));
+
   if (window.Cypress) window.store = store;
 
   class StoreWrapper extends React.Component {
     render() {
       return (
         <Provider store={store}>
-          <ConnectedComponent {...this.props} />
+          <ConnectedComponent
+            {...this.props}
+            history={history}
+          />
         </Provider>
       );
     }

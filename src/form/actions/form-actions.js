@@ -1,3 +1,4 @@
+import { push as pushRoute } from 'connected-react-router';
 import { ClaretyApi } from 'shared/services';
 import { statuses, setStatus } from 'shared/actions';
 import { types, setErrors, clearErrors } from 'form/actions';
@@ -15,7 +16,7 @@ export const submitForm = (endpoint, formData) => {
       dispatch(setStatus(statuses.ready));
     } else {
       dispatch(formSubmitSuccess(result));
-      // dispatch(push('/success')); // TODO: setup connected-react-router
+      dispatch(pushRoute('/success'));
     }
   };
 };
