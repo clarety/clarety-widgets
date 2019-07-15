@@ -1,5 +1,6 @@
 import React from 'react';
-import { MemoryRouter, Switch, Route } from 'react-router-dom';
+import { ConnectedRouter } from 'connected-react-router'
+import { Switch, Route } from 'react-router-dom';
 import { statuses } from 'shared/actions';
 import { connectDonateWidget } from 'donate/utils';
 import { AmountPanel, DetailsPanel, PaymentPanel, SuccessPanel } from 'donate/views';
@@ -40,7 +41,7 @@ export class _DonateWidget extends React.Component {
 
     return (
       <div className="clarety-donate-widget h-100">
-        <MemoryRouter>
+        <ConnectedRouter history={this.props.history}>
           <Switch>
             <Route exact path="/"  render={props => (
               <this.AmountPanelClass {...props} forceMd={forceMdLayout} />
@@ -55,7 +56,7 @@ export class _DonateWidget extends React.Component {
               <this.SuccessPanelClass {...props} forceMd={forceMdLayout} />
             )}/>
           </Switch>
-        </MemoryRouter>
+        </ConnectedRouter>
       </div>
     );
   }

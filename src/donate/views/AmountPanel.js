@@ -1,6 +1,5 @@
 import React from 'react';
 import { Card, Form, Col } from 'react-bootstrap';
-import { statuses } from 'shared/actions';
 import { SubmitButton, ErrorMessages } from 'form/components';
 import { StepIndicator, FrequencySelect, SuggestedAmount, SuggestedAmountLg, VariableAmount, VariableAmountLg } from 'donate/components';
 import { connectAmountPanel } from 'donate/utils';
@@ -11,27 +10,8 @@ export class _AmountPanel extends React.Component {
   }
 
   onSubmit = event => {
-    const { status, setStatus, addSaleline } = this.props;
-    const { selections, frequency, history } = this.props;
-    const { setErrors, clearErrors } = this.props;
-
     event.preventDefault();
-
-    if (status !== statuses.ready) return;
-    clearErrors();
-    setStatus(statuses.busy);
-
-    // Make sure an amount has been selected.
-    const { amount } = selections[frequency];
-    if (amount) {
-      const { offerUid, offerPaymentUid } = this._getOffer(frequency);
-      addSaleline({ offerUid, offerPaymentUid, price: amount });
-      history.push('/details');
-    } else {
-      setErrors([{ message: 'Please select a donation amount.' }]);
-    }
-
-    setStatus(statuses.ready);
+    this.props.submitAmountPanel();
   };
 
   render() {

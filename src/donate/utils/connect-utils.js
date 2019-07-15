@@ -1,12 +1,14 @@
 import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
+import { routerMiddleware } from 'connected-react-router';
 import { Provider, connect } from 'react-redux';
-import { statuses, setStatus, fetchExplain, addSaleline, clearSalelines, setPayment } from 'shared/actions';
+import { createMemoryHistory } from 'history';
+import { statuses, setStatus, fetchExplain, clearSalelines, setPayment } from 'shared/actions';
 import { updateFormData, setErrors, clearErrors } from 'form/actions';
 import { formatPrice } from 'form/utils';
-import { donateReducer } from 'donate/reducers';
-import { selectAmount, setSuccessResult } from 'donate/actions';
+import { createDonateReducer } from 'donate/reducers';
+import { selectAmount, setSuccessResult, submitAmountPanel } from 'donate/actions';
 
 export function connectDonateWidget(ViewComponent) {
   const mapStateToProps = state => {
@@ -23,15 +25,21 @@ export function connectDonateWidget(ViewComponent) {
 
   const ConnectedComponent = connect(mapStateToProps, actions)(ViewComponent);
 
+  const history = createMemoryHistory();
+  const middleware = applyMiddleware(routerMiddleware(history), thunkMiddleware);
   const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-  const store = createStore(donateReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
+  const store = createStore(createDonateReducer(history), composeDevTools(middleware));
+
   if (window.Cypress) window.store = store;
 
   class StoreWrapper extends React.Component {
     render() {
       return (
         <Provider store={store}>
-          <ConnectedComponent {...this.props} />
+          <ConnectedComponent
+            {...this.props}
+            history={history}
+          />
         </Provider>
       );
     }
@@ -47,25 +55,16 @@ export function connectAmountPanel(ViewComponent) {
     const { amountPanel } = state.panels;
   
     return {
-      status: state.status,
-  
       offers: state.explain.offers,
-  
       frequency: amountPanel.frequency,
       selections: amountPanel.selections,
     };
   };
   
   const actions = {
-    setStatus: setStatus,
-    
-    addSaleline: addSaleline,
-    clearSalelines: clearSalelines,
-  
-    setErrors: setErrors,
-    clearErrors: clearErrors,
-    
     selectAmount: selectAmount,
+    submitAmountPanel: submitAmountPanel,
+    clearSalelines: clearSalelines,
   };
 
   return connect(mapStateToProps, actions)(ViewComponent);

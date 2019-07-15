@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
-import { createBrowserHistory } from 'history';
+import { createMemoryHistory } from 'history';
 import thunkMiddleware from 'redux-thunk';
 import { routerMiddleware } from 'connected-react-router';
 import { Provider, connect } from 'react-redux';
@@ -24,7 +24,7 @@ export function connectFormToStore(ViewComponent) {
 
   const ConnectedComponent = connect(mapStateToProps, actions)(ViewComponent);
 
-  const history = createBrowserHistory();
+  const history = createMemoryHistory();
   const middleware = applyMiddleware(routerMiddleware(history), thunkMiddleware);
   const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   const store = createStore(createFormReducer(history), composeDevTools(middleware));
