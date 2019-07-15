@@ -5,7 +5,7 @@ import { StepIndicator, FrequencySelect, SuggestedAmount, SuggestedAmountLg, Var
 import { SubmitButton, ErrorMessages } from '../../form/components';
 import { connectAmountPanel } from '../utils/connect-utils';
 
-export class AmountPanel extends React.Component {
+export class _AmountPanel extends React.Component {
   componentWillMount() {
     this.props.clearSalelines();
   }
@@ -144,4 +144,4 @@ export class AmountPanel extends React.Component {
   };
 }
 
-export default connectAmountPanel(AmountPanel);
+export const AmountPanel = connectAmountPanel(_AmountPanel);

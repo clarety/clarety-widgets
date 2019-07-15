@@ -3,12 +3,9 @@ import { MemoryRouter, Switch, Route } from 'react-router-dom';
 import ClaretyApi from '../../shared/services/clarety-api';
 import { statuses } from '../../shared/actions';
 import { connectDonateWidget } from '../utils/connect-utils';
-import AmountPanel from './AmountPanel';
-import DetailsPanel from './DetailsPanel';
-import PaymentPanel from './PaymentPanel';
-import SuccessPanel from './SuccessPanel';
+import { AmountPanel, DetailsPanel, PaymentPanel, SuccessPanel } from '.';
 
-export class DonateWidget extends React.Component {
+export class _DonateWidget extends React.Component {
   AmountPanelClass  = AmountPanel;
   DetailsPanelClass = DetailsPanel;
   PaymentPanelClass = PaymentPanel;
@@ -72,5 +69,4 @@ export class DonateWidget extends React.Component {
   }
 }
 
-// Note: An un-wrapped DonateWidget is also exported above.
-export default connectDonateWidget(DonateWidget);
+export const DonateWidget = connectDonateWidget(_DonateWidget);

@@ -9,7 +9,7 @@ import { connectDetailsPanel } from '../utils/connect-utils';
 import { scrollIntoView } from '../../shared/utils/widget-utils';
 import 'react-block-ui/style.css';
 
-export class DetailsPanel extends React.Component {
+export class _DetailsPanel extends React.Component {
   componentDidMount() {
     scrollIntoView(this);
   }
@@ -140,4 +140,4 @@ export class DetailsPanel extends React.Component {
   }
 }
 
-export default connectDetailsPanel(DetailsPanel);
+export const DetailsPanel = connectDetailsPanel(_DetailsPanel);

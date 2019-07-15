@@ -4,7 +4,7 @@ import { TestData } from '../../shared/components';
 import { connectSuccessPanel } from '../utils/connect-utils';
 import { scrollIntoView } from '../../shared/utils/widget-utils';
 
-export class SuccessPanel extends React.Component {
+export class _SuccessPanel extends React.Component {
   componentDidMount() {
     scrollIntoView(this);
   }
@@ -58,4 +58,4 @@ export class SuccessPanel extends React.Component {
   }
 }
 
-export default connectSuccessPanel(SuccessPanel);
+export const SuccessPanel = connectSuccessPanel(_SuccessPanel);

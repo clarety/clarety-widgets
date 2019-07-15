@@ -11,7 +11,7 @@ import { connectPaymentPanel } from '../utils/connect-utils';
 import { scrollIntoView } from '../../shared/utils/widget-utils';
 import 'react-block-ui/style.css';
 
-export class PaymentPanel extends React.Component {
+export class _PaymentPanel extends React.Component {
   componentDidMount() {
     scrollIntoView(this);
   }
@@ -144,4 +144,4 @@ export class PaymentPanel extends React.Component {
   }
 }
 
-export default connectPaymentPanel(PaymentPanel);
+export const PaymentPanel = connectPaymentPanel(_PaymentPanel);
