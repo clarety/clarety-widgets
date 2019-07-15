@@ -1,8 +1,8 @@
 export { ClaretyConfig } from './shared/services';
-export { renderWidget } from './shared/utils/widget-utils';
+export { renderWidget } from './shared/utils';
 
-export * from './subscribe/views/SubscribeWidget';
-export * from './subscribe/mocks/axios-mock';
+export { SubscribeWidget } from './subscribe/views';
+export { setupSubscribeAxiosMock } from './subscribe/mocks';
 
-export * from './donate/views/DonateWidget';
-export * from './donate/mocks/axios-mock';
+export { DonateWidget } from './donate/views';
+export { setupDonateAxiosMock } from './donate/mocks';
