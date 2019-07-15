@@ -6,7 +6,7 @@ import { statuses, setStatus, fetchExplain, addSaleline, clearSalelines, setPaym
 import { updateFormData, setErrors, clearErrors } from 'form/actions';
 import { formatPrice } from 'form/utils';
 import { donateReducer } from 'donate/reducers';
-import { selectDefaults, selectAmount, setSuccessResult } from 'donate/actions';
+import { selectAmount, setSuccessResult } from 'donate/actions';
 
 export function connectDonateWidget(ViewComponent) {
   const mapStateToProps = state => {
@@ -19,7 +19,6 @@ export function connectDonateWidget(ViewComponent) {
     setStatus: setStatus,
     fetchExplain: fetchExplain,
     updateFormData: updateFormData,
-    selectDefaults: selectDefaults,
   };
 
   const ConnectedComponent = connect(mapStateToProps, actions)(ViewComponent);
