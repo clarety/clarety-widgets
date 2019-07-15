@@ -6,7 +6,7 @@ import { donateReducer } from '../reducers/donate-reducer';
 import { statuses, setStatus, setExplain, addSaleline, clearSalelines, setPayment } from '../../shared/actions';
 import { updateFormData, setErrors, clearErrors } from '../../form/actions';
 import { selectDefaults, selectAmount, setSuccessResult } from '../actions';
-import { formatPrice } from '../../form/utils/payment-utils';
+import { formatPrice } from '../../form/utils';
 
 export function connectDonateWidget(ViewComponent) {
   const mapStateToProps = state => {

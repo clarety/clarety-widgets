@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { updatePaymentData } from '../../../form/actions';
-import { cleanCcv } from '../../utils/payment-utils';
-import { getValidationError } from '../../../form/utils/form-utils';
-import { FieldError } from '../../../form/components';
+import { updatePaymentData } from '../../actions';
+import { getValidationError, cleanCcv } from '../../utils';
+import { FieldError } from '..';
 import './CcvInput.css';
 
 const _CcvInput = ({ ccv, placeholder, testId, onChange, error }) => (

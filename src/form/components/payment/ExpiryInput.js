@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { updatePaymentData } from '../../../form/actions';
-import { formatExpiry, cleanExpiry } from '../../utils/payment-utils';
-import { getValidationError } from '../../../form/utils/form-utils';
-import { FieldError } from '../../../form/components';
+import { updatePaymentData } from '../../actions';
+import { getValidationError, formatExpiry, cleanExpiry } from '../../utils';
+import { FieldError } from '..';
 import './ExpiryInput.css';
 
 class _ExpiryInput extends React.Component {

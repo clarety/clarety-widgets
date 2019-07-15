@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import { updateFormData } from '../../actions';
-import { getValidationError } from '../../utils/form-utils';
+import { getValidationError } from '../../utils';
 import { FieldError } from '..';
 
 const _TextInput = ({ value, type, placeholder, testId, error, onChange }) => (

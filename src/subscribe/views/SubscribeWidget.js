@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Form, Alert } from 'react-bootstrap';
 import { _BaseFormView } from '../../form/views';
-import { connectFormToStore } from '../../form/utils/form-utils';
+import { connectFormToStore } from '../../form/utils';
 import { TextInput, SelectInput, FormElement, ErrorMessages, SubmitButton } from '../../form/components';
 
 export class _SubscribeWidget extends _BaseFormView {

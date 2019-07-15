@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Card, InputGroup } from 'react-bootstrap';
-import { cleanDecimal } from '../../../form/utils/payment-utils';
+import { cleanDecimal } from '../../../form/utils';
 
 const _VariableAmountLg = ({ value, amountInfo, isSelected, onChange, currency, forceMd }) => {
   let input = React.createRef();
