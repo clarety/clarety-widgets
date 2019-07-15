@@ -1,8 +1,7 @@
 import React from 'react';
-import Clarety, { setupSubscribeAxiosMock } from '../../src';
+import { ClaretyConfig, SubscribeWidget, setupSubscribeAxiosMock } from '../../src';
 
-Clarety.config({
-  env: 'dev',
+ClaretyConfig.init({
   instanceKey: 'clarety-baseline',
 });
 
@@ -14,7 +13,7 @@ export default class SubscribeDemo extends React.Component {
   render() {
     return (
       <div className="m-5">
-        <Clarety.SubscribeWidget
+        <SubscribeWidget
           listCode="newsletter"
         />
       </div>

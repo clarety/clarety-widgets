@@ -1,8 +1,7 @@
 import React from 'react';
-import Clarety from '../../src';
+import { ClaretyConfig, DonateWidget } from '../../src';
 
-Clarety.config({
-  env: 'dev',
+ClaretyConfig.init({
   instanceKey: 'clarety-baseline',
 });
 
@@ -29,14 +28,12 @@ const DonateDemo = () => (
             <p className="lead">Fusce dapibus, tellus ac cursus commodo. Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
           </div>
           <div className="col-lg-6">
-              {/* <div id="donate-widget-1" className="h-100"></div> */}
-
-              <Clarety.DonateWidget
-                storeCode="AU"
-                singleOfferCode="widget-single"
-                recurringOfferCode="widget-recurring"
-                forceMdLayout
-              />
+            <DonateWidget
+              storeCode="AU"
+              singleOfferCode="widget-single"
+              recurringOfferCode="widget-recurring"
+              forceMdLayout
+            />
           </div>
         </div>
 
@@ -59,7 +56,7 @@ const DonateDemo = () => (
       <div className="container">
         <h2 className="featurette-heading" style={{"fontWeight":"400","fontSize":"50px","margin":"7rem 0 3rem","textAlign":"center"}}>Donate now. <span className="text-muted">Human Fund needs your help.</span></h2>
 
-        <Clarety.DonateWidget
+        <DonateWidget
           storeCode="AU"
           singleOfferCode="widget-single"
           recurringOfferCode="widget-recurring"
