@@ -1,4 +1,4 @@
-export { default as ClaretyConfig } from './shared/services/clarety-config';
+export { ClaretyConfig } from './shared/services';
 export { renderWidget } from './shared/utils/widget-utils';
 
 export * from './subscribe/views/SubscribeWidget';

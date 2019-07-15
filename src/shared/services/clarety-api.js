@@ -1,8 +1,8 @@
 import axios from 'axios';
-import Config from './clarety-config';
+import { ClaretyConfig } from '.';
 import { parseNestedElements } from '../utils/element-utils';
 
-class ClaretyApi {
+export class ClaretyApi {
   static async explain(endpoint, params) {
     const apiBase = this._apiBase();
     const url = `${apiBase}/widgets/${endpoint}/`;
@@ -30,12 +30,10 @@ class ClaretyApi {
   }
 
   static _apiBase() {
-    const env = Config.env();
+    const env = ClaretyConfig.env();
     const protocol = env === 'dev' ? 'http': 'https';
     const prefix = env === 'prod' ?  '' : env + '-';
-    const instanceKey = Config.get('instanceKey') || 'NO_INSTANCE_KEY';
+    const instanceKey = ClaretyConfig.get('instanceKey') || 'NO_INSTANCE_KEY';
     return `${protocol}://${prefix}${instanceKey}.clarety.io/api`;
   }
 }
-
-export default ClaretyApi;

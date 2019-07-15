@@ -1,6 +1,6 @@
 let _config = null;
 
-class ClaretyConfig {
+export class ClaretyConfig {
   static init = config => {
     _config = config;
   }
@@ -19,5 +19,3 @@ class ClaretyConfig {
     return 'prod';
   }  
 }
-
-export default ClaretyConfig;

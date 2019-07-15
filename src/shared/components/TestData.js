@@ -1,8 +1,8 @@
 import React from 'react';
-import ClarityConfig from '../services/clarety-config';
+import { ClaretyConfig } from '../services';
 
 export const TestData = ({ testId, data }) => {
-  if (ClarityConfig.get('env') !== 'dev') return null;
+  if (ClaretyConfig.get('env') !== 'dev') return null;
 
   return <div data-testid={testId} data-testdata={JSON.stringify(data)}></div>
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Form, Row, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
-import ClaretyApi from '../../shared/services/clarety-api';
+import { ClaretyApi } from '../../shared/services';
 import { statuses } from '../../shared/actions';
 import { SubmitButton, BackButton, ErrorMessages } from '../../form/components';
 import { CardNumberInput, ExpiryInput, CcvInput } from '../../form/components';
