@@ -15,6 +15,7 @@ module.exports = {
         'alias': {
           'shared': './src/shared',
           'form': './src/form',
+          'subscribe': './src/subscribe',
         },
       }],
     ],
