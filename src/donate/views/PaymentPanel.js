@@ -1,14 +1,14 @@
 import React from 'react';
 import { Card, Form, Row, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
-import { ClaretyApi } from '../../shared/services';
-import { statuses } from '../../shared/actions';
+import { ClaretyApi } from 'shared/services';
+import { statuses } from 'shared/actions';
 import { SubmitButton, BackButton, ErrorMessages } from '../../form/components';
 import { CardNumberInput, ExpiryInput, CcvInput } from '../../form/components';
 import { StepIndicator } from '../components';
 import { createStripeToken, parseStripeError, validateCard } from '../utils/stripe-utils';
 import { connectPaymentPanel } from '../utils/connect-utils';
-import { scrollIntoView } from '../../shared/utils/widget-utils';
+import { scrollIntoView } from 'shared/utils/widget-utils';
 import 'react-block-ui/style.css';
 
 export class _PaymentPanel extends React.Component {

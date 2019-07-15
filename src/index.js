@@ -1,5 +1,5 @@
-export { ClaretyConfig } from './shared/services';
-export { renderWidget } from './shared/utils';
+export { ClaretyConfig } from 'shared/services';
+export { renderWidget } from 'shared/utils';
 
 export { SubscribeWidget } from './subscribe/views';
 export { setupSubscribeAxiosMock } from './subscribe/mocks';

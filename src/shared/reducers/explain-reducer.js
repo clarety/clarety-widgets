@@ -1,4 +1,4 @@
-import { types } from '../actions';
+import { types } from 'shared/actions';
 
 const initialState = {};
 

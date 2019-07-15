@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
-import { statuses } from '../../../shared/actions';
+import { statuses } from 'shared/actions';
 
 const _BackButton = ({ title, onClick, variant, className, block, testId, disabled }) => (
   <Button

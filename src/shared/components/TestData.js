@@ -1,5 +1,5 @@
 import React from 'react';
-import { ClaretyConfig } from '../services';
+import { ClaretyConfig } from 'shared/services';
 
 export const TestData = ({ testId, data }) => {
   if (ClaretyConfig.get('env') !== 'dev') return null;

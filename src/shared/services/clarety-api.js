@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { ClaretyConfig } from '.';
-import { parseNestedElements } from '../utils';
+import { parseNestedElements } from 'shared/utils';
 
 export class ClaretyApi {
   static async explain(endpoint, params) {

@@ -1,4 +1,4 @@
-import { types, statuses } from '../actions';
+import { types, statuses } from 'shared/actions';
 
 const initialState = statuses.uninitialized;
 

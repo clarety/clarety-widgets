@@ -9,4 +9,13 @@ module.exports = {
       template: 'demo/src/index.html',
     },
   },
+  babel: {
+    plugins: [
+      ['module-resolver', {
+        'alias': {
+          'shared': './src/shared',
+        },
+      }],
+    ],
+  },
 };

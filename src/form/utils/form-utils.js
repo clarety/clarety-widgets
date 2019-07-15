@@ -3,7 +3,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { Provider, connect } from 'react-redux';
 import { formReducer } from '../reducers';
-import { setStatus, setExplain } from '../../shared/actions';
+import { setStatus, setExplain } from 'shared/actions';
 import { updateFormData, setErrors, clearErrors } from '../actions';
 
 export function connectFormToStore(ViewComponent) {

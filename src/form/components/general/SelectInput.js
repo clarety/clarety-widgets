@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { findElement } from '../../../shared/utils';
+import { findElement } from 'shared/utils';
 import { updateFormData } from '../../actions';
 import { getValidationError } from '../../utils';
 import { FieldError } from '..';

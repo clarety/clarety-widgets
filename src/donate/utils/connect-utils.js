@@ -3,7 +3,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { Provider, connect } from 'react-redux';
 import { donateReducer } from '../reducers/donate-reducer';
-import { statuses, setStatus, setExplain, addSaleline, clearSalelines, setPayment } from '../../shared/actions';
+import { statuses, setStatus, setExplain, addSaleline, clearSalelines, setPayment } from 'shared/actions';
 import { updateFormData, setErrors, clearErrors } from '../../form/actions';
 import { selectDefaults, selectAmount, setSuccessResult } from '../actions';
 import { formatPrice } from '../../form/utils';
