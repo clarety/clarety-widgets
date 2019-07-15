@@ -6,7 +6,7 @@ import { getValidationError } from '../../../form/utils/form-utils';
 import { FieldError } from '../../../form/components';
 
 const CardNameInput = ({ cardName, placeholder, testId, onChange, error }) => (
-  <>
+  <React.Fragment>
     <Form.Control
       type="text"
       placeholder={placeholder}
@@ -16,7 +16,7 @@ const CardNameInput = ({ cardName, placeholder, testId, onChange, error }) => (
       isInvalid={error !== null}
     />
     <FieldError error={error} />
-  </>
+  </React.Fragment>
 );
 
 const mapStateToProps = state => {

@@ -8,7 +8,7 @@ import { FieldError } from '../../../form/components';
 import './CardNumberInput.css';
 
 const CardNumberInput = ({ cardNumber, placeholder, testId, onChange, error }) => (
-  <>
+  <React.Fragment>
     <Form.Control
       type="text"
       className={'card-number ' + getCardType(cardNumber)}
@@ -19,7 +19,7 @@ const CardNumberInput = ({ cardNumber, placeholder, testId, onChange, error }) =
       isInvalid={error !== null}
     />
     <FieldError error={error} />
-  </>
+  </React.Fragment>
 );
 
 const mapStateToProps = state => {

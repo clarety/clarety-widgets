@@ -1,12 +1,12 @@
-class ClaretyConfig {
-  static _config = null;
+let _config = null;
 
+class ClaretyConfig {
   static init = config => {
-    this._config = config;
+    _config = config;
   }
 
   static get = key => {
-    return this._config[key];
+    return _config[key];
   }
 
   static env = () => {

@@ -40,7 +40,7 @@ class ExpiryInput extends React.Component {
   render() {
     const { expiry, testId, onChange, error } = this.props;
     return (
-      <>
+      <React.Fragment>
         <Form.Control
           type="text"
           placeholder={'MM / YY'}
@@ -52,7 +52,7 @@ class ExpiryInput extends React.Component {
           className="expiry-input"
         />
         <FieldError error={error} />
-      </>
+      </React.Fragment>
     );
   }
 }

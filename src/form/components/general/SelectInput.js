@@ -7,7 +7,7 @@ import { getValidationError } from '../../utils/form-utils';
 import FieldError from '../errors/FieldError';
 
 const SelectInput = ({ value, options, placeholder, testId, error, onChange }) => (
-  <>
+  <React.Fragment>
     <Form.Control
       as="select"
       value={value}
@@ -21,7 +21,7 @@ const SelectInput = ({ value, options, placeholder, testId, error, onChange }) =
       )}
     </Form.Control>
     <FieldError error={error} />
-  </>
+  </React.Fragment>
 );
 
 const mapStateToProps = (state, { field }) => {

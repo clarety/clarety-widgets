@@ -8,7 +8,7 @@ import { FieldError } from '../../../form/components';
 import './CcvInput.css';
 
 const CcvInput = ({ ccv, placeholder, testId, onChange, error }) => (
-  <>
+  <React.Fragment>
     <Form.Control
       type="text"
       placeholder={placeholder || '•••'}
@@ -20,7 +20,7 @@ const CcvInput = ({ ccv, placeholder, testId, onChange, error }) => (
       className="ccv-input"
     />
     <FieldError error={error} />
-  </>
+  </React.Fragment>
 );
 
 const mapStateToProps = state => {

@@ -50,7 +50,7 @@ export class DonateWidget extends React.Component {
     }
 
     return (
-      <div className="clarety-donate-widget">
+      <div className="clarety-donate-widget h-100">
         <MemoryRouter>
           <Switch>
             <Route exact path="/"  render={props => (

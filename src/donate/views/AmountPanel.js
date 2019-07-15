@@ -117,7 +117,7 @@ export class AmountPanel extends React.Component {
     const currentSelection = selections[frequency];
 
     return (
-      <>
+      <React.Fragment>
         <VariableAmount
           value={currentSelection.variableAmount || ''}
           onChange={amount => selectAmount(frequency, amount, true)}
@@ -131,7 +131,7 @@ export class AmountPanel extends React.Component {
           isSelected={currentSelection.isVariableAmount}
           forceMd={forceMd}
         />
-      </>
+      </React.Fragment>
     );
   }
 

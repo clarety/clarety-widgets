@@ -6,7 +6,7 @@ import { getValidationError } from '../../utils/form-utils';
 import FieldError from '../errors/FieldError';
 
 const TextInput = ({ value, type, placeholder, testId, error, onChange }) => (
-  <>
+  <React.Fragment>
     <Form.Control
       type={type || 'text'}
       placeholder={placeholder}
@@ -16,7 +16,7 @@ const TextInput = ({ value, type, placeholder, testId, error, onChange }) => (
       isInvalid={error !== null}
     />
     <FieldError error={error} />
-  </>
+  </React.Fragment>
 );
 
 const mapStateToProps = (state, { field }) => {
