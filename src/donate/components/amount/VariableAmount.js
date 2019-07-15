@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form, InputGroup } from 'react-bootstrap';
 import { cleanDecimal } from '../../../form/utils/payment-utils';
 
-const VariableAmount = ({ value, amountInfo, isSelected, onChange, currency, forceMd }) => {
+const _VariableAmount = ({ value, amountInfo, isSelected, onChange, currency, forceMd }) => {
   let input = React.createRef();
 
   let className = 'mt-3 mb-1 mx-3';
@@ -36,4 +36,4 @@ const mapStateToProps = state => {
   }
 };
 
-export default connect(mapStateToProps)(VariableAmount);
+export const VariableAmount = connect(mapStateToProps)(_VariableAmount);

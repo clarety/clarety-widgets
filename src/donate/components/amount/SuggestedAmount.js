@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Card } from 'react-bootstrap';
 
-const SuggestedAmount = ({ amountInfo, isSelected, onClick, currency, forceMd }) => {
+const _SuggestedAmount = ({ amountInfo, isSelected, onClick, currency, forceMd }) => {
   const label = `${currency.symbol}${amountInfo.amount}`;
 
   let cardClassName = 'flex-row mx-1 mb-2';
@@ -32,4 +32,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(SuggestedAmount);
+export const SuggestedAmount = connect(mapStateToProps)(_SuggestedAmount);
