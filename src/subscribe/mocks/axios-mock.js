@@ -4,7 +4,7 @@ import explainOk from './explain-ok';
 import validationError from './validation-error';
 import validationOk from './validation-ok';
 
-export const setupAxiosMock = () => {
+export const setupSubscribeAxiosMock = () => {
   const mock = new MockAdapter(axios, { delayResponse: 500 });
 
   mock.onGet('http://dev-clarety-baseline.clarety.io/api/widgets/subscriptions/')

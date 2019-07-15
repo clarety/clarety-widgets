@@ -6,7 +6,7 @@ import validationErrorResponse from './validation-error.json';
 import paymentOkResponse from './payment-ok.json';
 import paymentErrorResponse from './payment-error.json';
 
-export const setupAxiosMock = () => {
+export const setupDonateAxiosMock = () => {
   const mock = new MockAdapter(axios, { delayResponse: 500 });
 
   const params = { store: 'AU', offerSingle: 'widget-single', offerRecurring: 'widget-recurring' };

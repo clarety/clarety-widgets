@@ -4,7 +4,7 @@ import { BaseFormView } from '../../form/views/BaseFormView';
 import { connectFormToStore } from '../../form/utils/form-utils';
 import { TextInput, SelectInput, FormElement, ErrorMessages, SubmitButton } from '../../form/components';
 
-class SubscribeWidget extends BaseFormView {
+export class _SubscribeWidget extends BaseFormView {
   endpoint = 'subscriptions';
 
   renderForm() {
@@ -45,4 +45,4 @@ class SubscribeWidget extends BaseFormView {
   }
 }
 
-export default connectFormToStore(SubscribeWidget);
+export const SubscribeWidget = connectFormToStore(_SubscribeWidget);
