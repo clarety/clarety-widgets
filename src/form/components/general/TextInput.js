@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import { updateFormData } from '../../actions';
 import { getValidationError } from '../../utils/form-utils';
-import FieldError from '../errors/FieldError';
+import { FieldError } from '..';
 
-const TextInput = ({ value, type, placeholder, testId, error, onChange }) => (
+const _TextInput = ({ value, type, placeholder, testId, error, onChange }) => (
   <React.Fragment>
     <Form.Control
       type={type || 'text'}
@@ -32,4 +32,4 @@ const mapDispatchToProps = (dispatch, { field }) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TextInput);
+export const TextInput = connect(mapStateToProps, mapDispatchToProps)(_TextInput);

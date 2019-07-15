@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import { statuses } from '../../../shared/actions';
 
-const BackButton = ({ title, onClick, variant, className, block, testId, disabled }) => (
+const _BackButton = ({ title, onClick, variant, className, block, testId, disabled }) => (
   <Button
     type="button"
     variant={variant || 'link'}
@@ -23,4 +23,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(BackButton);
+export const BackButton = connect(mapStateToProps)(_BackButton);

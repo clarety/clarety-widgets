@@ -7,7 +7,7 @@ import { getValidationError } from '../../../form/utils/form-utils';
 import { FieldError } from '../../../form/components';
 import './ExpiryInput.css';
 
-class ExpiryInput extends React.Component {
+class _ExpiryInput extends React.Component {
   onKeyDown = event => {
     const { value } = event.target;
 
@@ -76,4 +76,4 @@ const mapDispatchToProps = dispatch => {
   }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExpiryInput);
+export const ExpiryInput = connect(mapStateToProps, mapDispatchToProps)(_ExpiryInput);

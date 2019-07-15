@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 
-const FieldError = ({ error }) => {
+export const FieldError = ({ error }) => {
   if (!error) return null;
 
   return (
@@ -10,5 +10,3 @@ const FieldError = ({ error }) => {
     </Form.Control.Feedback>
   );
 };
-
-export default FieldError;

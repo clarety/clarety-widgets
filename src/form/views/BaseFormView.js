@@ -4,7 +4,7 @@ import ClaretyApi from '../../shared/services/clarety-api';
 import { statuses } from '../../shared/actions';
 import { connectFormToStore } from '../utils/form-utils';
 
-export class BaseFormView extends React.Component {
+export class _BaseFormView extends React.Component {
   endpoint = null;
 
   async componentDidMount() {
@@ -72,5 +72,4 @@ export class BaseFormView extends React.Component {
   }
 }
 
-// Note: An un-wrapped BaseFormView is also exported above.
-export default connectFormToStore(BaseFormView);
+export const BaseFormView = connectFormToStore(_BaseFormView);

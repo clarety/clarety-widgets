@@ -7,7 +7,7 @@ import { getValidationError } from '../../../form/utils/form-utils';
 import { FieldError } from '../../../form/components';
 import './CcvInput.css';
 
-const CcvInput = ({ ccv, placeholder, testId, onChange, error }) => (
+const _CcvInput = ({ ccv, placeholder, testId, onChange, error }) => (
   <React.Fragment>
     <Form.Control
       type="text"
@@ -34,4 +34,4 @@ const actions = {
   onChange: event => updatePaymentData('ccv', cleanCcv(event.target.value)),
 };
 
-export default connect(mapStateToProps, actions)(CcvInput);
+export const CcvInput = connect(mapStateToProps, actions)(_CcvInput);

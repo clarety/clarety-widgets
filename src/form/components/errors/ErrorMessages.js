@@ -21,4 +21,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(_ErrorMessages);
+export const ErrorMessages = connect(mapStateToProps)(_ErrorMessages);

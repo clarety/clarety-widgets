@@ -4,9 +4,9 @@ import { Form } from 'react-bootstrap';
 import { findElement } from '../../../shared/utils/element-utils';
 import { updateFormData } from '../../actions';
 import { getValidationError } from '../../utils/form-utils';
-import FieldError from '../errors/FieldError';
+import { FieldError } from '..';
 
-const SelectInput = ({ value, options, placeholder, testId, error, onChange }) => (
+const _SelectInput = ({ value, options, placeholder, testId, error, onChange }) => (
   <React.Fragment>
     <Form.Control
       as="select"
@@ -41,4 +41,4 @@ const mapDispatchToProps = (dispatch, { field }) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SelectInput);
+export const SelectInput = connect(mapStateToProps, mapDispatchToProps)(_SelectInput);

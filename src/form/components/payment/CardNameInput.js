@@ -5,7 +5,7 @@ import { updatePaymentData } from '../../../form/actions';
 import { getValidationError } from '../../../form/utils/form-utils';
 import { FieldError } from '../../../form/components';
 
-const CardNameInput = ({ cardName, placeholder, testId, onChange, error }) => (
+const _CardNameInput = ({ cardName, placeholder, testId, onChange, error }) => (
   <React.Fragment>
     <Form.Control
       type="text"
@@ -30,4 +30,4 @@ const actions = {
   onChange: event => updatePaymentData('cardName', event.target.value),
 };
 
-export default connect(mapStateToProps, actions)(CardNameInput);
+export const CardNameInput = connect(mapStateToProps, actions)(_CardNameInput);

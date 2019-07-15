@@ -1,10 +1,10 @@
 import React from 'react';
 import { Col, Form, Alert } from 'react-bootstrap';
-import { BaseFormView } from '../../form/views/BaseFormView';
+import { _BaseFormView } from '../../form/views';
 import { connectFormToStore } from '../../form/utils/form-utils';
 import { TextInput, SelectInput, FormElement, ErrorMessages, SubmitButton } from '../../form/components';
 
-export class _SubscribeWidget extends BaseFormView {
+export class _SubscribeWidget extends _BaseFormView {
   endpoint = 'subscriptions';
 
   renderForm() {
