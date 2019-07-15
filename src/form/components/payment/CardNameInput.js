@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { updatePaymentData } from '../../actions';
-import { getValidationError } from '../../utils';
-import { FieldError } from '..';
+import { updatePaymentData } from 'form/actions';
+import { getValidationError } from 'form/utils';
+import { FieldError } from 'form/components';
 
 const _CardNameInput = ({ cardName, placeholder, testId, onChange, error }) => (
   <React.Fragment>

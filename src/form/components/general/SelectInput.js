@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import { findElement } from 'shared/utils';
-import { updateFormData } from '../../actions';
-import { getValidationError } from '../../utils';
-import { FieldError } from '..';
+import { updateFormData } from 'form/actions';
+import { getValidationError } from 'form/utils';
+import { FieldError } from 'form/components';
 
 const _SelectInput = ({ value, options, placeholder, testId, error, onChange }) => (
   <React.Fragment>

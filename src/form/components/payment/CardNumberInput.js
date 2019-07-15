@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { updatePaymentData } from '../../actions';
-import { getValidationError, getCardType, formatCardNumber, cleanCardNumber } from '../../utils';
-import { FieldError } from '..';
+import { updatePaymentData } from 'form/actions';
+import { getValidationError, getCardType, formatCardNumber, cleanCardNumber } from 'form/utils';
+import { FieldError } from 'form/components';
 import './CardNumberInput.css';
 
 const _CardNumberInput = ({ cardNumber, placeholder, testId, onChange, error }) => (

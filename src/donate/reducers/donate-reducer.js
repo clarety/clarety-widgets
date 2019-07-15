@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { formDataReducer, errorsReducer, paymentDataReducer } from '../../form/reducers';
+import { formDataReducer, errorsReducer, paymentDataReducer } from 'form/reducers';
 import { statusReducer, saleReducer, explainReducer } from 'shared/reducers';
 import { jwtReducer, successPanelReducer, amountPanelReducer }  from '.';
 

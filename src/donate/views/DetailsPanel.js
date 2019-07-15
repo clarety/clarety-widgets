@@ -4,7 +4,7 @@ import BlockUi from 'react-block-ui';
 import { ClaretyApi } from 'shared/services';
 import { statuses } from 'shared/actions';
 import { scrollIntoView } from 'shared/utils';
-import { TextInput, SubmitButton, BackButton, ErrorMessages, FormElement } from '../../form/components';
+import { TextInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
 import { StepIndicator } from '../components';
 import { connectDetailsPanel } from '../utils';
 import 'react-block-ui/style.css';

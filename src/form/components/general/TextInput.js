@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { updateFormData } from '../../actions';
-import { getValidationError } from '../../utils';
-import { FieldError } from '..';
+import { updateFormData } from 'form/actions';
+import { getValidationError } from 'form/utils';
+import { FieldError } from 'form/components';
 
 const _TextInput = ({ value, type, placeholder, testId, error, onChange }) => (
   <React.Fragment>

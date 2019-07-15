@@ -14,6 +14,7 @@ module.exports = {
       ['module-resolver', {
         'alias': {
           'shared': './src/shared',
+          'form': './src/form',
         },
       }],
     ],

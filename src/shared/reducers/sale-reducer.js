@@ -1,5 +1,5 @@
 import { types } from 'shared/actions';
-import { types as formActionTypes } from '../../form/actions';
+import { types as formActionTypes } from 'form/actions';
 
 const initialState = {
   salelines: [],

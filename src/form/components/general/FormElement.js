@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateFormData } from '../../actions';
+import { updateFormData } from 'form/actions';
 
 class _FormElement extends React.Component {
   componentWillMount() {
