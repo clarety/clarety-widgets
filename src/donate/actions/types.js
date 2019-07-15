@@ -2,7 +2,6 @@ export const types = {
   // Amount Panel Actions
   selectFrequency: 'SELECT_FREQUENCY',
   selectAmount: 'SELECT_AMOUNT',
-  selectDefaults: 'SELECT_DEFAULTS',
 
   // JWT Actions
   setJwt: 'SET_JWT',

@@ -2,7 +2,7 @@ import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { Provider, connect } from 'react-redux';
-import { statuses, setStatus, setExplain, addSaleline, clearSalelines, setPayment } from 'shared/actions';
+import { statuses, setStatus, fetchExplain, addSaleline, clearSalelines, setPayment } from 'shared/actions';
 import { updateFormData, setErrors, clearErrors } from 'form/actions';
 import { formatPrice } from 'form/utils';
 import { donateReducer } from 'donate/reducers';
@@ -17,7 +17,7 @@ export function connectDonateWidget(ViewComponent) {
 
   const actions = {
     setStatus: setStatus,
-    setExplain: setExplain,
+    fetchExplain: fetchExplain,
     updateFormData: updateFormData,
     selectDefaults: selectDefaults,
   };

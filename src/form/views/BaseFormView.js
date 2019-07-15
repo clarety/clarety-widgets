@@ -9,14 +9,7 @@ export class _BaseFormView extends React.Component {
 
   async componentDidMount() {
     if (!this.endpoint) throw new Error('[Clarety] BaseFormView "endpoint" must be overridden.');
-
-    const { setExplain, setStatus } = this.props;
-
-    const explain = await ClaretyApi.explain(this.endpoint);
-    if (explain) {
-      setExplain(explain);
-      setStatus(statuses.ready);
-    }
+    this.props.fetchExplain(this.endpoint);
   }
 
   onSubmit = async (event, route) => {

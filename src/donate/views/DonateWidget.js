@@ -1,6 +1,5 @@
 import React from 'react';
 import { MemoryRouter, Switch, Route } from 'react-router-dom';
-import { ClaretyApi } from 'shared/services';
 import { statuses } from 'shared/actions';
 import { connectDonateWidget } from 'donate/utils';
 import { AmountPanel, DetailsPanel, PaymentPanel, SuccessPanel } from 'donate/views';
@@ -12,7 +11,7 @@ export class _DonateWidget extends React.Component {
   SuccessPanelClass = SuccessPanel;
 
   async componentWillMount() {
-    const { setStatus, setExplain, selectDefaults, updateFormData } = this.props;
+    const { fetchExplain, updateFormData } = this.props;
     const { storeCode, singleOfferCode, recurringOfferCode } = this.props;
 
     if (!singleOfferCode && !recurringOfferCode) throw new Error('[Clarety] Either a singleOfferCode or recurringOfferCode prop is required');
@@ -20,18 +19,11 @@ export class _DonateWidget extends React.Component {
 
     if (storeCode) updateFormData('store', storeCode);
 
-    const params = {
+    fetchExplain('donations', {
       store: storeCode,
       offerSingle: singleOfferCode,
       offerRecurring: recurringOfferCode,
-    };
-    
-    const explain = await ClaretyApi.explain('donations', params);
-    if (explain) {
-      setExplain(explain);
-      selectDefaults(explain.offers);
-      setStatus(statuses.ready);
-    }
+    });
   }
 
   render() {
