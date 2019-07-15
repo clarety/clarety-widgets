@@ -1,6 +1,5 @@
 import React from 'react';
 import { MemoryRouter, Switch, Route } from 'react-router-dom';
-import { ClaretyApi } from 'shared/services';
 import { statuses } from 'shared/actions';
 import { connectFormToStore } from 'form/utils';
 
@@ -12,30 +11,12 @@ export class _BaseFormView extends React.Component {
     this.props.fetchExplain(this.endpoint);
   }
 
-  onSubmit = async (event, route) => {
-    const { status, formData } = this.props;
-    const { setStatus, clearErrors, setErrors } = this.props;
+  onSubmit = async event => {
+    const { submitForm, formData } = this.props;
 
     event.preventDefault();
-    if (status !== statuses.ready) return;
-
-    setStatus(statuses.busy);
-    clearErrors();
-    
-    const result = await ClaretyApi.post(this.endpoint, formData);
-    if (result) {
-      if (result.status === 'error') {
-        setErrors(result.validationErrors);
-        setStatus(statuses.ready);
-      } else {
-        this.onSuccess(route);
-      }
-    }
+    submitForm(this.endpoint, formData);
   };
-
-  onSuccess(route) {
-    route.history.push('/success');
-  }
 
   render() {
     if (this.props.status === statuses.uninitialized) {
@@ -47,7 +28,7 @@ export class _BaseFormView extends React.Component {
         <Switch>
           <Route path="/success" render={this.renderSuccess} />
           <Route default render={route => (
-            <form onSubmit={event => this.onSubmit(event, route)}>
+            <form onSubmit={this.onSubmit}>
               {this.renderForm()}
             </form>
           )} />
