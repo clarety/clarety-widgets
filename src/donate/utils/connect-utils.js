@@ -2,11 +2,10 @@ import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { Provider, connect } from 'react-redux';
-import donateReducer from '../reducers/donate-reducer';
-import * as sharedActions from '../../shared/actions';
-import { statuses } from '../../shared/actions';
-import * as formActions from '../../form/actions';
-import * as donateActions from '../actions';
+import { donateReducer } from '../reducers/donate-reducer';
+import { statuses, setStatus, setExplain, addSaleline, clearSalelines, setPayment } from '../../shared/actions';
+import { updateFormData, setErrors, clearErrors } from '../../form/actions';
+import { selectDefaults, selectAmount, setSuccessResult } from '../actions';
 import { formatPrice } from '../../form/utils/payment-utils';
 
 export function connectDonateWidget(ViewComponent) {
@@ -17,10 +16,10 @@ export function connectDonateWidget(ViewComponent) {
   };
 
   const actions = {
-    setStatus: sharedActions.setStatus,
-    setExplain: sharedActions.setExplain,
-    updateFormData: formActions.updateFormData,
-    selectDefaults: donateActions.selectDefaults,
+    setStatus: setStatus,
+    setExplain: setExplain,
+    updateFormData: updateFormData,
+    selectDefaults: selectDefaults,
   };
 
   const ConnectedComponent = connect(mapStateToProps, actions)(ViewComponent);
@@ -59,15 +58,15 @@ export function connectAmountPanel(ViewComponent) {
   };
   
   const actions = {
-    setStatus: sharedActions.setStatus,
+    setStatus: setStatus,
     
-    addSaleline: sharedActions.addSaleline,
-    clearSalelines: sharedActions.clearSalelines,
+    addSaleline: addSaleline,
+    clearSalelines: clearSalelines,
   
-    setErrors: formActions.setErrors,
-    clearErrors: formActions.clearErrors,
+    setErrors: setErrors,
+    clearErrors: clearErrors,
     
-    selectAmount: donateActions.selectAmount,
+    selectAmount: selectAmount,
   };
 
   return connect(mapStateToProps, actions)(ViewComponent);
@@ -84,10 +83,10 @@ export function connectDetailsPanel(ViewComponent) {
   };
   
   const actions = {
-    setStatus: sharedActions.setStatus,
-    setErrors: formActions.setErrors,
-    clearErrors: formActions.clearErrors,
-    updateFormData: formActions.updateFormData,
+    setStatus: setStatus,
+    setErrors: setErrors,
+    clearErrors: clearErrors,
+    updateFormData: updateFormData,
   };
   
   return connect(mapStateToProps, actions)(ViewComponent);
@@ -115,13 +114,13 @@ export function connectPaymentPanel(ViewComponent) {
   };
   
   const actions = {
-    setStatus: sharedActions.setStatus,
+    setStatus: setStatus,
   
-    setErrors: formActions.setErrors,
-    clearErrors: formActions.clearErrors,
+    setErrors: setErrors,
+    clearErrors: clearErrors,
   
-    setPayment: sharedActions.setPayment,
-    setSuccessResult: donateActions.setSuccessResult,
+    setPayment: setPayment,
+    setSuccessResult: setSuccessResult,
   };
 
   return connect(mapStateToProps, actions)(ViewComponent);

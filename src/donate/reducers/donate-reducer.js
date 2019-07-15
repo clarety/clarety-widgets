@@ -3,7 +3,7 @@ import { formDataReducer, errorsReducer, paymentDataReducer } from '../../form/r
 import { statusReducer, saleReducer, explainReducer } from '../../shared/reducers';
 import { jwtReducer, successPanelReducer, amountPanelReducer }  from '.';
 
-const donateReducer = combineReducers({
+export const donateReducer = combineReducers({
   status: statusReducer,
   errors: errorsReducer,
 
@@ -19,5 +19,3 @@ const donateReducer = combineReducers({
     successPanel: successPanelReducer,
   }),
 });
-
-export default donateReducer;
