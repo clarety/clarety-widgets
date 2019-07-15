@@ -2,9 +2,9 @@ import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { Provider, connect } from 'react-redux';
-import formReducer from '../reducers/form-reducer';
-import * as sharedActions from '../../shared/actions';
-import * as formActions from '../actions';
+import { formReducer } from '../reducers';
+import { setStatus, setExplain } from '../../shared/actions';
+import { updateFormData, setErrors, clearErrors } from '../actions';
 
 export function connectFormToStore(ViewComponent) {
   const mapStateToProps = state => {
@@ -16,13 +16,13 @@ export function connectFormToStore(ViewComponent) {
   };
 
   const actions = {
-    setStatus: sharedActions.setStatus,
-    setExplain: sharedActions.setExplain,
+    setStatus: setStatus,
+    setExplain: setExplain,
 
-    setErrors: formActions.setErrors,
-    clearErrors: formActions.clearErrors,
+    setErrors: setErrors,
+    clearErrors: clearErrors,
     
-    updateFormData: formActions.updateFormData,
+    updateFormData: updateFormData,
   };
 
   const ConnectedComponent = connect(mapStateToProps, actions)(ViewComponent);
