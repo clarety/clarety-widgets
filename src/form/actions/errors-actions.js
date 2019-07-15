@@ -1,4 +1,4 @@
-import { types } from './types';
+import { types } from 'form/actions';
 
 export const setErrors = errors => ({
   type: types.setErrors,

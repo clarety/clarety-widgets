@@ -1,4 +1,4 @@
-import { types } from './types';
+import { types } from 'donate/actions';
 
 export const selectFrequency = frequency => ({
   type: types.selectFrequency,

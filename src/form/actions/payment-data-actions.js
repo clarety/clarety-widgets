@@ -1,5 +1,5 @@
-import { types } from './types';
 import { statuses } from 'shared/actions';
+import { types } from 'form/actions';
 
 export const updatePaymentData = (field, value) => {
   return (dispatch, getState) => {

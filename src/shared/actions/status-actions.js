@@ -1,4 +1,4 @@
-import { types } from './types';
+import { types } from 'shared/actions';
 
 export const statuses = {
   uninitialized: 'uninitialized',

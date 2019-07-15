@@ -1,4 +1,4 @@
-import { types } from './types';
+import { types } from 'shared/actions';
 
 export const addSaleline = ({ offerUid, offerPaymentUid, quantity = 1, price = undefined }) => ({
   type: types.addSaleline,
