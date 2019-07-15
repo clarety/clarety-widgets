@@ -5,8 +5,8 @@ import { ClaretyApi } from 'shared/services';
 import { statuses } from 'shared/actions';
 import { scrollIntoView } from 'shared/utils';
 import { TextInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
-import { StepIndicator } from '../components';
-import { connectDetailsPanel } from '../utils';
+import { StepIndicator } from 'donate/components';
+import { connectDetailsPanel } from 'donate/utils';
 import 'react-block-ui/style.css';
 
 export class _DetailsPanel extends React.Component {

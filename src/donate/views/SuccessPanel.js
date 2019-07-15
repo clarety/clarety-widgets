@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Col, Row, Table } from 'react-bootstrap';
 import { TestData } from 'shared/components';
 import { scrollIntoView } from 'shared/utils';
-import { connectSuccessPanel } from '../utils';
+import { connectSuccessPanel } from 'donate/utils';
 
 export class _SuccessPanel extends React.Component {
   componentDidMount() {

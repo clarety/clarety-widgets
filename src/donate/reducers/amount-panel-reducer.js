@@ -1,4 +1,4 @@
-import { types } from '../actions';
+import { types } from 'donate/actions';
 
 const initialState = {
   frequency: null,

@@ -5,8 +5,8 @@ import { Provider, connect } from 'react-redux';
 import { statuses, setStatus, setExplain, addSaleline, clearSalelines, setPayment } from 'shared/actions';
 import { updateFormData, setErrors, clearErrors } from 'form/actions';
 import { formatPrice } from 'form/utils';
-import { donateReducer } from '../reducers';
-import { selectDefaults, selectAmount, setSuccessResult } from '../actions';
+import { donateReducer } from 'donate/reducers';
+import { selectDefaults, selectAmount, setSuccessResult } from 'donate/actions';
 
 export function connectDonateWidget(ViewComponent) {
   const mapStateToProps = state => {

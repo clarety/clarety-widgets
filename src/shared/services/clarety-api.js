@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ClaretyConfig } from '.';
+import { ClaretyConfig } from 'shared/services';
 import { parseNestedElements } from 'shared/utils';
 
 export class ClaretyApi {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
-import { selectFrequency } from '../../actions';
+import { selectFrequency } from 'donate/actions';
 
 const _FrequencySelect = ({ value, options, onChange }) => (
   <ToggleButtonGroup

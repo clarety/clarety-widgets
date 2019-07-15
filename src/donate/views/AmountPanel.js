@@ -1,9 +1,9 @@
 import React from 'react';
 import { Card, Form, Col } from 'react-bootstrap';
 import { statuses } from 'shared/actions';
-import { StepIndicator, FrequencySelect, SuggestedAmount, SuggestedAmountLg, VariableAmount, VariableAmountLg } from '../components';
 import { SubmitButton, ErrorMessages } from 'form/components';
-import { connectAmountPanel } from '../utils';
+import { StepIndicator, FrequencySelect, SuggestedAmount, SuggestedAmountLg, VariableAmount, VariableAmountLg } from 'donate/components';
+import { connectAmountPanel } from 'donate/utils';
 
 export class _AmountPanel extends React.Component {
   componentWillMount() {

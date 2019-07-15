@@ -2,8 +2,8 @@ import React from 'react';
 import { MemoryRouter, Switch, Route } from 'react-router-dom';
 import { ClaretyApi } from 'shared/services';
 import { statuses } from 'shared/actions';
-import { connectDonateWidget } from '../utils/connect-utils';
-import { AmountPanel, DetailsPanel, PaymentPanel, SuccessPanel } from '.';
+import { connectDonateWidget } from 'donate/utils';
+import { AmountPanel, DetailsPanel, PaymentPanel, SuccessPanel } from 'donate/views';
 
 export class _DonateWidget extends React.Component {
   AmountPanelClass  = AmountPanel;

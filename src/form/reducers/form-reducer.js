@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { explainReducer, statusReducer } from 'shared/reducers';
-import { errorsReducer, formDataReducer } from '.';
+import { errorsReducer, formDataReducer } from 'form/reducers';
 
 export const formReducer = combineReducers({
   status: statusReducer,
