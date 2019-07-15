@@ -1,6 +1,6 @@
-import { actionTypes } from './types';
+import { types } from './types';
 
 export const setJwt = jwt => ({
-  type: actionTypes.setJwt,
+  type: types.setJwt,
   jwt,
 });

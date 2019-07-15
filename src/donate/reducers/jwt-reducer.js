@@ -1,10 +1,10 @@
-import { actionTypes } from '../actions';
+import { types } from '../actions';
 
 const initialState = null;
 
 export const jwtReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.setJwt:
+    case types.setJwt:
       return action.jwt;
 
     default:

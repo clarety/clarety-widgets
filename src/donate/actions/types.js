@@ -1,4 +1,4 @@
-export const actionTypes = {
+export const types = {
   // Amount Panel Actions
   selectFrequency: 'SELECT_FREQUENCY',
   selectAmount: 'SELECT_AMOUNT',

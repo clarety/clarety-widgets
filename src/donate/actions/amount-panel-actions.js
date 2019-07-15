@@ -1,18 +1,18 @@
-import { actionTypes } from './types';
+import { types } from './types';
 
 export const selectFrequency = frequency => ({
-  type: actionTypes.selectFrequency,
+  type: types.selectFrequency,
   frequency,
 });
 
 export const selectAmount = (frequency, amount, isVariableAmount = false) => ({
-  type: actionTypes.selectAmount,
+  type: types.selectAmount,
   frequency,
   amount,
   isVariableAmount,
 });
 
 export const selectDefaults = offers => ({
-  type: actionTypes.selectDefaults,
+  type: types.selectDefaults,
   offers,
 });

@@ -1,4 +1,4 @@
-import { actionTypes } from '../actions';
+import { types } from '../actions';
 
 const initialState = {
   frequency: null,
@@ -7,9 +7,9 @@ const initialState = {
 
 export const amountPanelReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.selectFrequency: return _selectFrequency(state, action);
-    case actionTypes.selectAmount:    return _selectAmount(state, action);
-    case actionTypes.selectDefaults:  return _selectDefaults(state, action);
+    case types.selectFrequency: return _selectFrequency(state, action);
+    case types.selectAmount:    return _selectAmount(state, action);
+    case types.selectDefaults:  return _selectDefaults(state, action);
     default:                          return state;
   }
 };
