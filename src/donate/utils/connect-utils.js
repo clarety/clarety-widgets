@@ -94,7 +94,6 @@ export function connectPaymentPanel(ViewComponent) {
 
       amount: formatPrice(saleline.price),
 
-      jwt: state.jwt,
       stripeKey: state.explain.payment.publicKey,
 
       paymentData: state.paymentData,
