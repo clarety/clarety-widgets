@@ -4,11 +4,11 @@ import thunkMiddleware from 'redux-thunk';
 import { routerMiddleware } from 'connected-react-router';
 import { Provider, connect } from 'react-redux';
 import { createMemoryHistory } from 'history';
-import { statuses, setStatus, fetchExplain, clearSalelines, setPayment } from 'shared/actions';
-import { updateFormData, setErrors, clearErrors } from 'form/actions';
+import { statuses, fetchExplain, clearSalelines } from 'shared/actions';
+import { updateFormData } from 'form/actions';
 import { formatPrice } from 'form/utils';
 import { createDonateReducer } from 'donate/reducers';
-import { selectAmount, setSuccessResult, submitAmountPanel, submitDetailsPanel } from 'donate/actions';
+import { selectAmount, submitAmountPanel, submitDetailsPanel, submitPaymentPanel } from 'donate/actions';
 
 export function connectDonateWidget(ViewComponent) {
   const mapStateToProps = state => {
@@ -18,7 +18,6 @@ export function connectDonateWidget(ViewComponent) {
   };
 
   const actions = {
-    setStatus: setStatus,
     fetchExplain: fetchExplain,
     updateFormData: updateFormData,
   };
@@ -89,29 +88,13 @@ export function connectPaymentPanel(ViewComponent) {
     const saleline = getSaleline(state);
 
     return {
-      status: state.status,
       isBusy: getIsBusy(state),
-
       amount: formatPrice(saleline.price),
-
-      stripeKey: state.explain.payment.publicKey,
-
-      paymentData: state.paymentData,
-      formData: state.formData,
-
-      saleline: saleline,
-      payment: state.sale.payment,
     };
   };
   
   const actions = {
-    setStatus: setStatus,
-  
-    setErrors: setErrors,
-    clearErrors: clearErrors,
-  
-    setPayment: setPayment,
-    setSuccessResult: setSuccessResult,
+    submitPaymentPanel: submitPaymentPanel,
   };
 
   return connect(mapStateToProps, actions)(ViewComponent);
