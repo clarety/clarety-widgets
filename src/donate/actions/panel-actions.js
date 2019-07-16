@@ -1,6 +1,7 @@
 import { push as pushRoute } from 'connected-react-router';
+import { ClaretyApi } from 'shared/services';
 import { statuses, setStatus, addSaleline } from 'shared/actions';
-import { setErrors, clearErrors } from 'form/actions';
+import { updateFormData, setErrors, clearErrors } from 'form/actions';
 
 export const submitAmountPanel = () => {
   return (dispatch, getState) => {
@@ -30,5 +31,36 @@ export const submitAmountPanel = () => {
     }
 
     dispatch(setStatus(statuses.ready));
+  };
+};
+
+export const submitDetailsPanel = () => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const { status, formData, sale } = state;
+
+    if (status !== statuses.ready) return;
+
+    dispatch(setStatus(statuses.busy));
+    dispatch(clearErrors());
+
+    const postData = {
+      ...formData,
+      saleline: sale.salelines[0],
+    };
+    
+    const result = await ClaretyApi.post('donations', postData);
+
+    dispatch(setStatus(statuses.ready));
+
+    if (result) {
+      if (result.validationErrors) {
+        dispatch(setErrors(result.validationErrors));
+      } else {
+        dispatch(updateFormData('uid', result.uid));
+        dispatch(updateFormData('jwt', result.jwt));
+        dispatch(pushRoute('/payment'));
+      }
+    }
   };
 };

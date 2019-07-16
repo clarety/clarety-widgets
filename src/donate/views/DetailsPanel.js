@@ -1,8 +1,6 @@
 import React from 'react';
 import { Card, Form, Row, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
-import { ClaretyApi } from 'shared/services';
-import { statuses } from 'shared/actions';
 import { scrollIntoView } from 'shared/utils';
 import { TextInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
 import { StepIndicator } from 'donate/components';
@@ -17,29 +15,8 @@ export class _DetailsPanel extends React.Component {
   onPrev = () => this.props.history.goBack();
 
   onSubmit = async event => {
-    const { status, setStatus, clearErrors, setErrors } = this.props;
-    const { formData, updateFormData, saleline, history } = this.props;
-
     event.preventDefault();
-
-    if (status !== statuses.ready) return;
-    setStatus(statuses.busy);
-    clearErrors();
-
-    const postData = { ...formData, saleline };
-    
-    const result = await ClaretyApi.post('donations', postData);
-    setStatus(statuses.ready);
-
-    if (result) {
-      if (result.validationErrors) {
-        setErrors(result.validationErrors);
-      } else {
-        updateFormData('uid', result.uid);
-        updateFormData('jwt', result.jwt);
-        history.push('/payment');
-      }
-    }
+    this.props.submitDetailsPanel();
   };
 
   render() {

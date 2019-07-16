@@ -8,7 +8,7 @@ import { statuses, setStatus, fetchExplain, clearSalelines, setPayment } from 's
 import { updateFormData, setErrors, clearErrors } from 'form/actions';
 import { formatPrice } from 'form/utils';
 import { createDonateReducer } from 'donate/reducers';
-import { selectAmount, setSuccessResult, submitAmountPanel } from 'donate/actions';
+import { selectAmount, setSuccessResult, submitAmountPanel, submitDetailsPanel } from 'donate/actions';
 
 export function connectDonateWidget(ViewComponent) {
   const mapStateToProps = state => {
@@ -73,18 +73,12 @@ export function connectAmountPanel(ViewComponent) {
 export function connectDetailsPanel(ViewComponent) {
   const mapStateToProps = state => {
     return {
-      status: state.status,
-      formData: state.formData,
-      saleline: getSaleline(state),
       isBusy: getIsBusy(state),
     };
   };
   
   const actions = {
-    setStatus: setStatus,
-    setErrors: setErrors,
-    clearErrors: clearErrors,
-    updateFormData: updateFormData,
+    submitDetailsPanel: submitDetailsPanel,
   };
   
   return connect(mapStateToProps, actions)(ViewComponent);
