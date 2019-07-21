@@ -6,6 +6,7 @@ import { types, setErrors, clearErrors } from 'form/actions';
 export const submitForm = (endpoint, formData) => {
   return async dispatch => {
     dispatch(formSubmitRequest(endpoint, formData));
+    dispatch(setStatus(statuses.busy));
     dispatch(clearErrors());
 
     const result = await ClaretyApi.post(endpoint, formData);

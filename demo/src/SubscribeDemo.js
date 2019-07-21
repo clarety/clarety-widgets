@@ -7,7 +7,7 @@ ClaretyConfig.init({
 
 export default class SubscribeDemo extends React.Component {
   componentWillMount() {
-    setupSubscribeAxiosMock();
+    // setupSubscribeAxiosMock();
   }
 
   render() {

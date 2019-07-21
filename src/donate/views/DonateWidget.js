@@ -11,7 +11,7 @@ export class _DonateWidget extends React.Component {
   PaymentPanelClass = PaymentPanel;
   SuccessPanelClass = SuccessPanel;
 
-  async componentWillMount() {
+  componentWillMount() {
     const { fetchExplain, updateFormData } = this.props;
     const { storeCode, singleOfferCode, recurringOfferCode } = this.props;
 
