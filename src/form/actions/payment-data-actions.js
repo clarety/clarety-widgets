@@ -1,5 +1,5 @@
-import { actionTypes } from './types';
-import { statuses } from '../../shared/actions';
+import { statuses } from 'shared/actions';
+import { types } from 'form/actions';
 
 export const updatePaymentData = (field, value) => {
   return (dispatch, getState) => {
@@ -7,7 +7,7 @@ export const updatePaymentData = (field, value) => {
     if (getState().status === statuses.busy) return;
 
     dispatch({
-      type: actionTypes.updatePaymentData,
+      type: types.updatePaymentData,
       field,
       value,
     });

@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
-import { statuses } from '../../../shared/actions';
+import { statuses } from 'shared/actions';
 
-const SubmitButton = ({ title, className, block, testId, isReady }) => (
+const _SubmitButton = ({ title, className, block, testId, isReady }) => (
   <Button className={className} block={block} disabled={!isReady} type="submit" data-testid={testId}>
     {isReady ? title : <Spinner />} 
   </Button>
@@ -19,4 +19,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(SubmitButton);
+export const SubmitButton = connect(mapStateToProps)(_SubmitButton);

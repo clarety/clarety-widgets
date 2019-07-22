@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Card, InputGroup } from 'react-bootstrap';
-import { cleanDecimal } from '../../../form/utils/payment-utils';
+import { cleanDecimal } from 'form/utils';
 
-const VariableAmountLg = ({ value, amountInfo, isSelected, onChange, currency, forceMd }) => {
+const _VariableAmountLg = ({ value, amountInfo, isSelected, onChange, currency, forceMd }) => {
   let input = React.createRef();
 
   let cardClassName = 'mx-1 d-none';
@@ -48,4 +48,4 @@ const mapStateToProps = state => {
   }
 };
 
-export default connect(mapStateToProps)(VariableAmountLg);
+export const VariableAmountLg = connect(mapStateToProps)(_VariableAmountLg);

@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
-import { explainReducer, statusReducer } from '../../shared/reducers';
-import { errorsReducer, formDataReducer } from '.';
+import { connectRouter } from 'connected-react-router';
+import { explainReducer, statusReducer } from 'shared/reducers';
+import { errorsReducer, formDataReducer } from 'form/reducers';
 
-const formReducer = combineReducers({
+export const createFormReducer = history => combineReducers({
+  router: connectRouter(history),
   status: statusReducer,
   errors: errorsReducer,
   explain: explainReducer,
   formData: formDataReducer,
 });
-
-export default formReducer;

@@ -1,5 +1,5 @@
-import { actionTypes } from './types';
-import { statuses } from '../../shared/actions';
+import { statuses } from 'shared/actions';
+import { types } from 'form/actions';
 
 export const updateFormData = (field, value) => {
   return (dispatch, getState) => {
@@ -7,7 +7,7 @@ export const updateFormData = (field, value) => {
     if (getState().status === statuses.busy) return;
 
     dispatch({
-      type: actionTypes.updateFormData,
+      type: types.updateFormData,
       field,
       value,
     });

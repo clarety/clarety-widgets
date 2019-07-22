@@ -1,0 +1,11 @@
+{
+  "requestId": "",
+  "success": true,
+  "result": [
+    {
+      "status":"pending",
+      "uid":"ae194fa1-97b0-11e9-b70b-005056b73ca0",
+      "jwt":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhZTE5NGZhMS05N2IwLTExZTktYjcwYi0wMDUwNTZiNzNjYTAiLCJpc3MiOiJkZXYiLCJleHAiOjE1NjE1MTU2NzMsInN1YiI6IiIsImF1ZCI6IiJ9.UwQFsuxNq_sowNJJlyifuWQ0yeEhA0YZszS-INRS2sM"
+    }
+  ]
+}

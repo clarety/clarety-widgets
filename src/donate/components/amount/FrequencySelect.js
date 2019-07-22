@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
-import * as donateActions from '../../actions';
+import { selectFrequency } from 'donate/actions';
 
-const FrequencySelect = ({ value, options, onChange }) => (
+const _FrequencySelect = ({ value, options, onChange }) => (
   <ToggleButtonGroup
     type="radio"
     name="frequency"
@@ -34,7 +34,7 @@ const mapStateToProps = state => {
 };
 
 const actions = {
-  onChange: donateActions.selectFrequency,
+  onChange: selectFrequency,
 };
 
-export default connect(mapStateToProps, actions)(FrequencySelect);
+export const FrequencySelect = connect(mapStateToProps, actions)(_FrequencySelect);

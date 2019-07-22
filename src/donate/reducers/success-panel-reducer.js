@@ -1,4 +1,4 @@
-import { actionTypes } from '../actions';
+import { types } from 'donate/actions';
 
 const initialState = {
   result: null,
@@ -6,7 +6,7 @@ const initialState = {
 
 export const successPanelReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.setSuccessResult:
+    case types.setSuccessResult:
       return {
         ...state,
         result: action.result,

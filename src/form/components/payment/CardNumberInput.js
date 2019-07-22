@@ -1,14 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { updatePaymentData } from '../../../form/actions';
-import { getCardType, formatCardNumber, cleanCardNumber } from '../../utils/payment-utils';
-import { getValidationError } from '../../../form/utils/form-utils';
-import { FieldError } from '../../../form/components';
+import { updatePaymentData } from 'form/actions';
+import { getValidationError, getCardType, formatCardNumber, cleanCardNumber } from 'form/utils';
+import { FieldError } from 'form/components';
 import './CardNumberInput.css';
 
-const CardNumberInput = ({ cardNumber, placeholder, testId, onChange, error }) => (
-  <>
+const _CardNumberInput = ({ cardNumber, placeholder, testId, onChange, error }) => (
+  <React.Fragment>
     <Form.Control
       type="text"
       className={'card-number ' + getCardType(cardNumber)}
@@ -19,7 +18,7 @@ const CardNumberInput = ({ cardNumber, placeholder, testId, onChange, error }) =
       isInvalid={error !== null}
     />
     <FieldError error={error} />
-  </>
+  </React.Fragment>
 );
 
 const mapStateToProps = state => {
@@ -33,4 +32,4 @@ const actions = {
   onChange: event => updatePaymentData('cardNumber', cleanCardNumber(event.target.value)),
 };
 
-export default connect(mapStateToProps, actions)(CardNumberInput);
+export const CardNumberInput = connect(mapStateToProps, actions)(_CardNumberInput);

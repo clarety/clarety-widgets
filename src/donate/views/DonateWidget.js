@@ -1,21 +1,18 @@
 import React from 'react';
-import { MemoryRouter, Switch, Route } from 'react-router-dom';
-import ClaretyApi from '../../shared/services/clarety-api';
-import { statuses } from '../../shared/actions';
-import { connectDonateWidget } from '../utils/connect-utils';
-import AmountPanel from './AmountPanel';
-import DetailsPanel from './DetailsPanel';
-import PaymentPanel from './PaymentPanel';
-import SuccessPanel from './SuccessPanel';
+import { ConnectedRouter } from 'connected-react-router'
+import { Switch, Route } from 'react-router-dom';
+import { statuses } from 'shared/actions';
+import { connectDonateWidget } from 'donate/utils';
+import { AmountPanel, DetailsPanel, PaymentPanel, SuccessPanel } from 'donate/views';
 
-export class DonateWidget extends React.Component {
+export class _DonateWidget extends React.Component {
   AmountPanelClass  = AmountPanel;
   DetailsPanelClass = DetailsPanel;
   PaymentPanelClass = PaymentPanel;
   SuccessPanelClass = SuccessPanel;
 
-  async componentWillMount() {
-    const { setStatus, setExplain, selectDefaults, updateFormData } = this.props;
+  componentWillMount() {
+    const { fetchExplain, updateFormData } = this.props;
     const { storeCode, singleOfferCode, recurringOfferCode } = this.props;
 
     if (!singleOfferCode && !recurringOfferCode) throw new Error('[Clarety] Either a singleOfferCode or recurringOfferCode prop is required');
@@ -23,18 +20,11 @@ export class DonateWidget extends React.Component {
 
     if (storeCode) updateFormData('store', storeCode);
 
-    const params = {
+    fetchExplain('donations', {
       store: storeCode,
       offerSingle: singleOfferCode,
       offerRecurring: recurringOfferCode,
-    };
-    
-    const explain = await ClaretyApi.explain('donations', params);
-    if (explain) {
-      setExplain(explain);
-      selectDefaults(explain.offers);
-      setStatus(statuses.ready);
-    }
+    });
   }
 
   render() {
@@ -50,8 +40,8 @@ export class DonateWidget extends React.Component {
     }
 
     return (
-      <div className="clarety-donate-widget">
-        <MemoryRouter>
+      <div className="clarety-donate-widget h-100">
+        <ConnectedRouter history={this.props.history}>
           <Switch>
             <Route exact path="/"  render={props => (
               <this.AmountPanelClass {...props} forceMd={forceMdLayout} />
@@ -66,11 +56,10 @@ export class DonateWidget extends React.Component {
               <this.SuccessPanelClass {...props} forceMd={forceMdLayout} />
             )}/>
           </Switch>
-        </MemoryRouter>
+        </ConnectedRouter>
       </div>
     );
   }
 }
 
-// Note: An un-wrapped DonateWidget is also exported above.
-export default connectDonateWidget(DonateWidget);
+export const DonateWidget = connectDonateWidget(_DonateWidget);

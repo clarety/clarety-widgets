@@ -1,4 +1,5 @@
-import { actionTypes } from '../actions';
+import { types as sharedActionTypes } from 'shared/actions';
+import { types } from 'donate/actions';
 
 const initialState = {
   frequency: null,
@@ -7,10 +8,17 @@ const initialState = {
 
 export const amountPanelReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.selectFrequency: return _selectFrequency(state, action);
-    case actionTypes.selectAmount:    return _selectAmount(state, action);
-    case actionTypes.selectDefaults:  return _selectDefaults(state, action);
-    default:                          return state;
+    case types.selectFrequency:
+      return _selectFrequency(state, action);
+
+    case types.selectAmount:
+      return _selectAmount(state, action);
+
+    case sharedActionTypes.explainFetchSuccess:
+      return _selectDefaults(state, action);
+
+    default:
+      return state;
   }
 };
 
@@ -39,11 +47,11 @@ const _selectAmount = (state, { frequency, amount, isVariableAmount }) => {
   };
 };
 
-const _selectDefaults = (state, { offers }) => {
-  const defaultFrequency = offers[0].frequency;
+const _selectDefaults = (state, { explain }) => {
+  const defaultFrequency = explain.offers[0].frequency;
   const defaultSelections = {};
 
-  for (let offer of offers) {
+  for (let offer of explain.offers) {
     const defaultAmount = offer.amounts.find(amount => amount.default);
 
     defaultSelections[offer.frequency] = {

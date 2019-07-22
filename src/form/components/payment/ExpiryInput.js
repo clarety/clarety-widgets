@@ -1,13 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { updatePaymentData } from '../../../form/actions';
-import { formatExpiry, cleanExpiry } from '../../utils/payment-utils';
-import { getValidationError } from '../../../form/utils/form-utils';
-import { FieldError } from '../../../form/components';
+import { updatePaymentData } from 'form/actions';
+import { getValidationError, formatExpiry, cleanExpiry } from 'form/utils';
+import { FieldError } from 'form/components';
 import './ExpiryInput.css';
 
-class ExpiryInput extends React.Component {
+class _ExpiryInput extends React.Component {
   onKeyDown = event => {
     const { value } = event.target;
 
@@ -40,7 +39,7 @@ class ExpiryInput extends React.Component {
   render() {
     const { expiry, testId, onChange, error } = this.props;
     return (
-      <>
+      <React.Fragment>
         <Form.Control
           type="text"
           placeholder={'MM / YY'}
@@ -52,7 +51,7 @@ class ExpiryInput extends React.Component {
           className="expiry-input"
         />
         <FieldError error={error} />
-      </>
+      </React.Fragment>
     );
   }
 }
@@ -76,4 +75,4 @@ const mapDispatchToProps = dispatch => {
   }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExpiryInput);
+export const ExpiryInput = connect(mapStateToProps, mapDispatchToProps)(_ExpiryInput);

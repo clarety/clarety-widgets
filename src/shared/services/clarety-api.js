@@ -1,27 +1,14 @@
 import axios from 'axios';
-import Config from './clarety-config';
-import { parseNestedElements } from '../utils/element-utils';
+import { ClaretyConfig } from 'shared/services';
+import { parseNestedElements } from 'shared/utils';
 
-class ClaretyApi {
+export class ClaretyApi {
   static async explain(endpoint, params) {
     const apiBase = this._apiBase();
     const url = `${apiBase}/widgets/${endpoint}/`;
 
     try {
       const response = await axios.get(url, { params });
-      return response.data.result[0];
-    } catch (error) {
-      throw new Error(`[Clarety API] Failed to explain endpoint '${endpoint}': ${error.message}`);
-    }
-  }
-
-  // TEMP: SubscribeWidget still uses the old explain endpoint.
-  static async __old__explain(endpoint) {
-    const apiBase = this._apiBase();
-    const url = `${apiBase}/explain/?endpoint=${endpoint}`;
-
-    try {
-      const response = await axios.get(url);
       return response.data.result[0];
     } catch (error) {
       throw new Error(`[Clarety API] Failed to explain endpoint '${endpoint}': ${error.message}`);
@@ -43,12 +30,10 @@ class ClaretyApi {
   }
 
   static _apiBase() {
-    const env = Config.env();
+    const env = ClaretyConfig.env();
     const protocol = env === 'dev' ? 'http': 'https';
     const prefix = env === 'prod' ?  '' : env + '-';
-    const instanceKey = Config.get('instanceKey') || 'NO_INSTANCE_KEY';
+    const instanceKey = ClaretyConfig.get('instanceKey') || 'NO_INSTANCE_KEY';
     return `${protocol}://${prefix}${instanceKey}.clarety.io/api`;
   }
 }
-
-export default ClaretyApi;

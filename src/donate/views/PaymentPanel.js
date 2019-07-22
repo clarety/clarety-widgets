@@ -1,17 +1,13 @@
 import React from 'react';
 import { Card, Form, Row, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
-import ClaretyApi from '../../shared/services/clarety-api';
-import { statuses } from '../../shared/actions';
-import { SubmitButton, BackButton, ErrorMessages } from '../../form/components';
-import { CardNumberInput, ExpiryInput, CcvInput } from '../../form/components';
-import { StepIndicator } from '../components';
-import { createStripeToken, parseStripeError, validateCard } from '../utils/stripe-utils';
-import { connectPaymentPanel } from '../utils/connect-utils';
-import { scrollIntoView } from '../../shared/utils/widget-utils';
+import { scrollIntoView } from 'shared/utils';
+import { SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput } from 'form/components';
+import { StepIndicator } from 'donate/components';
+import { connectPaymentPanel } from 'donate/utils';
 import 'react-block-ui/style.css';
 
-export class PaymentPanel extends React.Component {
+export class _PaymentPanel extends React.Component {
   componentDidMount() {
     scrollIntoView(this);
   }
@@ -19,59 +15,8 @@ export class PaymentPanel extends React.Component {
   onPrev = () => this.props.history.goBack();
 
   onSubmit = event => {
-    const { status, paymentData, setStatus, setErrors, clearErrors } = this.props;
-
     event.preventDefault();
-
-    if (status !== statuses.ready) return;
-    setStatus(statuses.busy);
-    clearErrors();
-
-    const errors = validateCard(paymentData);
-    if (errors) {
-      setErrors(errors);
-      setStatus(statuses.ready);
-    } else {
-      this.onValidate(paymentData);
-    }
-  };
-
-  onValidate = async paymentData => {
-    const { payment, stripeKey, setStatus, setErrors, setPayment } = this.props;
-
-    if (payment.gatewayToken) {
-      this.attemptPayment();
-    } else {
-      const result = await createStripeToken(paymentData, stripeKey);
-
-      if (result.error) {
-        const errors = parseStripeError(result.error);
-        setErrors(errors);
-        setStatus(statuses.ready);
-      } else {
-        setPayment({ gatewayToken: result.id });
-        this.attemptPayment();
-      }
-    }
-  };
-
-  attemptPayment = async () => {
-    const { formData, saleline, payment, history } = this.props;
-    const { setStatus, setErrors, setSuccessResult } = this.props;
-
-    const postData = { ...formData, saleline, payment };
-
-    const result = await ClaretyApi.post('donations', postData);
-    if (result) {
-      if (result.validationErrors) {
-        setErrors(result.validationErrors);
-      } else {
-        setSuccessResult(result);
-        history.push('/success');
-      }
-    }
-
-    setStatus(statuses.ready);
+    this.props.submitPaymentPanel();
   };
 
   render() {
@@ -144,4 +89,4 @@ export class PaymentPanel extends React.Component {
   }
 }
 
-export default connectPaymentPanel(PaymentPanel);
+export const PaymentPanel = connectPaymentPanel(_PaymentPanel);

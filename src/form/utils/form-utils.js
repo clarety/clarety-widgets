@@ -1,9 +1,12 @@
 import React from 'react';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import { createMemoryHistory } from 'history';
+import thunkMiddleware from 'redux-thunk';
+import { routerMiddleware } from 'connected-react-router';
 import { Provider, connect } from 'react-redux';
-import formReducer from '../reducers/form-reducer';
-import * as sharedActions from '../../shared/actions';
-import * as formActions from '../actions';
+import { fetchExplain } from 'shared/actions';
+import { createFormReducer } from 'form/reducers';
+import { submitForm } from 'form/actions';
 
 export function connectFormToStore(ViewComponent) {
   const mapStateToProps = state => {
@@ -15,22 +18,27 @@ export function connectFormToStore(ViewComponent) {
   };
 
   const actions = {
-    setStatus: sharedActions.setStatus,
-    setExplain: sharedActions.setExplain,
-
-    setErrors: formActions.setErrors,
-    clearErrors: formActions.clearErrors,
-    
-    updateFormData: formActions.updateFormData,
+    fetchExplain: fetchExplain,
+    submitForm: submitForm,
   };
 
   const ConnectedComponent = connect(mapStateToProps, actions)(ViewComponent);
 
+  const history = createMemoryHistory();
+  const middleware = applyMiddleware(routerMiddleware(history), thunkMiddleware);
+  const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  const store = createStore(createFormReducer(history), composeDevTools(middleware));
+
+  if (window.Cypress) window.store = store;
+
   class StoreWrapper extends React.Component {
     render() {
       return (
-        <Provider store={createStore(formReducer)}>
-          <ConnectedComponent {...this.props } />
+        <Provider store={store}>
+          <ConnectedComponent
+            {...this.props}
+            history={history}
+          />
         </Provider>
       );
     }

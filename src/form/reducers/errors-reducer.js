@@ -1,13 +1,13 @@
-import { actionTypes } from '../actions';
+import { types } from 'form/actions';
 
 const initialState = [];
 
 export const errorsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.setErrors:
+    case types.setErrors:
       return action.errors;
 
-    case actionTypes.clearErrors:
+    case types.clearErrors:
       return [];
 
     default:

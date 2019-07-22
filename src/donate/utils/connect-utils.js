@@ -1,13 +1,14 @@
 import React from 'react';
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
+import { createStore, applyMiddleware, compose } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import { routerMiddleware } from 'connected-react-router';
 import { Provider, connect } from 'react-redux';
-import donateReducer from '../reducers/donate-reducer';
-import * as sharedActions from '../../shared/actions';
-import { statuses } from '../../shared/actions';
-import * as formActions from '../../form/actions';
-import * as donateActions from '../actions';
-import { formatPrice } from '../../form/utils/payment-utils';
+import { createMemoryHistory } from 'history';
+import { statuses, fetchExplain, clearSalelines } from 'shared/actions';
+import { updateFormData } from 'form/actions';
+import { formatPrice } from 'form/utils';
+import { createDonateReducer } from 'donate/reducers';
+import { selectAmount, submitAmountPanel, submitDetailsPanel, submitPaymentPanel } from 'donate/actions';
 
 export function connectDonateWidget(ViewComponent) {
   const mapStateToProps = state => {
@@ -17,22 +18,27 @@ export function connectDonateWidget(ViewComponent) {
   };
 
   const actions = {
-    setStatus: sharedActions.setStatus,
-    setExplain: sharedActions.setExplain,
-    updateFormData: formActions.updateFormData,
-    selectDefaults: donateActions.selectDefaults,
+    fetchExplain: fetchExplain,
+    updateFormData: updateFormData,
   };
 
   const ConnectedComponent = connect(mapStateToProps, actions)(ViewComponent);
 
+  const history = createMemoryHistory();
+  const middleware = applyMiddleware(routerMiddleware(history), thunkMiddleware);
+  const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  const store = createStore(createDonateReducer(history), composeDevTools(middleware));
+
+  if (window.Cypress) window.store = store;
+
   class StoreWrapper extends React.Component {
     render() {
-      const store = createStore(donateReducer, applyMiddleware(thunk));
-      if (window.Cypress) window.store = store;
-
       return (
         <Provider store={store}>
-          <ConnectedComponent { ...this.props } />
+          <ConnectedComponent
+            {...this.props}
+            history={history}
+          />
         </Provider>
       );
     }
@@ -48,25 +54,16 @@ export function connectAmountPanel(ViewComponent) {
     const { amountPanel } = state.panels;
   
     return {
-      status: state.status,
-  
       offers: state.explain.offers,
-  
       frequency: amountPanel.frequency,
       selections: amountPanel.selections,
     };
   };
   
   const actions = {
-    setStatus: sharedActions.setStatus,
-    
-    addSaleline: sharedActions.addSaleline,
-    clearSalelines: sharedActions.clearSalelines,
-  
-    setErrors: formActions.setErrors,
-    clearErrors: formActions.clearErrors,
-    
-    selectAmount: donateActions.selectAmount,
+    selectAmount: selectAmount,
+    submitAmountPanel: submitAmountPanel,
+    clearSalelines: clearSalelines,
   };
 
   return connect(mapStateToProps, actions)(ViewComponent);
@@ -75,18 +72,12 @@ export function connectAmountPanel(ViewComponent) {
 export function connectDetailsPanel(ViewComponent) {
   const mapStateToProps = state => {
     return {
-      status: state.status,
-      formData: state.formData,
-      saleline: getSaleline(state),
       isBusy: getIsBusy(state),
     };
   };
   
   const actions = {
-    setStatus: sharedActions.setStatus,
-    setErrors: formActions.setErrors,
-    clearErrors: formActions.clearErrors,
-    updateFormData: formActions.updateFormData,
+    submitDetailsPanel: submitDetailsPanel,
   };
   
   return connect(mapStateToProps, actions)(ViewComponent);
@@ -97,30 +88,13 @@ export function connectPaymentPanel(ViewComponent) {
     const saleline = getSaleline(state);
 
     return {
-      status: state.status,
       isBusy: getIsBusy(state),
-
       amount: formatPrice(saleline.price),
-
-      jwt: state.jwt,
-      stripeKey: state.explain.payment.publicKey,
-
-      paymentData: state.paymentData,
-      formData: state.formData,
-
-      saleline: saleline,
-      payment: state.sale.payment,
     };
   };
   
   const actions = {
-    setStatus: sharedActions.setStatus,
-  
-    setErrors: formActions.setErrors,
-    clearErrors: formActions.clearErrors,
-  
-    setPayment: sharedActions.setPayment,
-    setSuccessResult: donateActions.setSuccessResult,
+    submitPaymentPanel: submitPaymentPanel,
   };
 
   return connect(mapStateToProps, actions)(ViewComponent);

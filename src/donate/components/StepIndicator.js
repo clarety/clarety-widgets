@@ -1,6 +1,6 @@
 import React from 'react';
 
-const StepIndicator = ({ currentStep }) => {
+export const StepIndicator = ({ currentStep }) => {
   const styles = _getStyles(currentStep);
 
   return (
@@ -35,5 +35,3 @@ const _getStyles = currentStep => {
     default: return null;
   }
 };
-
-export default StepIndicator;

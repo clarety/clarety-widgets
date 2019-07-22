@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { findElement } from '../../../shared/utils/element-utils';
-import { updateFormData } from '../../actions';
-import { getValidationError } from '../../utils/form-utils';
-import FieldError from '../errors/FieldError';
+import { findElement } from 'shared/utils';
+import { updateFormData } from 'form/actions';
+import { getValidationError } from 'form/utils';
+import { FieldError } from 'form/components';
 
-const SelectInput = ({ value, options, placeholder, testId, error, onChange }) => (
-  <>
+const _SelectInput = ({ value, options, placeholder, testId, error, onChange }) => (
+  <React.Fragment>
     <Form.Control
       as="select"
       value={value}
@@ -21,7 +21,7 @@ const SelectInput = ({ value, options, placeholder, testId, error, onChange }) =
       )}
     </Form.Control>
     <FieldError error={error} />
-  </>
+  </React.Fragment>
 );
 
 const mapStateToProps = (state, { field }) => {
@@ -41,4 +41,4 @@ const mapDispatchToProps = (dispatch, { field }) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SelectInput);
+export const SelectInput = connect(mapStateToProps, mapDispatchToProps)(_SelectInput);

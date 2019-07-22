@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom';
 import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed';
-import ClaretyConfig from '../services/clarety-config';
+import { ClaretyConfig } from 'shared/services';
 
 export function renderWidget(elementId, component) {
   const element = document.getElementById(elementId);

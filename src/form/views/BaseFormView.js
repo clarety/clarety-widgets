@@ -1,48 +1,23 @@
 import React from 'react';
-import { MemoryRouter, Switch, Route } from 'react-router-dom';
-import ClaretyApi from '../../shared/services/clarety-api';
-import { statuses } from '../../shared/actions';
-import { connectFormToStore } from '../utils/form-utils';
+import { ConnectedRouter } from 'connected-react-router'
+import { Switch, Route } from 'react-router-dom';
+import { statuses } from 'shared/actions';
+import { connectFormToStore } from 'form/utils';
 
-export class BaseFormView extends React.Component {
+export class _BaseFormView extends React.Component {
   endpoint = null;
 
   async componentDidMount() {
     if (!this.endpoint) throw new Error('[Clarety] BaseFormView "endpoint" must be overridden.');
-
-    const { setExplain, setStatus } = this.props;
-
-    const explain = await ClaretyApi.__old__explain(this.endpoint);
-    if (explain) {
-      setExplain(explain);
-      setStatus(statuses.ready);
-    }
+    this.props.fetchExplain(this.endpoint);
   }
 
-  onSubmit = async (event, route) => {
-    const { status, formData } = this.props;
-    const { setStatus, clearErrors, setErrors } = this.props;
+  onSubmit = async event => {
+    const { submitForm, formData } = this.props;
 
     event.preventDefault();
-    if (status !== statuses.ready) return;
-
-    setStatus(statuses.busy);
-    clearErrors();
-    
-    const result = await ClaretyApi.post(this.endpoint, formData);
-    if (result) {
-      if (result.status === 'error') {
-        setErrors(result.validationErrors);
-        setStatus(statuses.ready);
-      } else {
-        this.onSuccess(route);
-      }
-    }
+    submitForm(this.endpoint, formData);
   };
-
-  onSuccess(route) {
-    route.history.push('/success');
-  }
 
   render() {
     if (this.props.status === statuses.uninitialized) {
@@ -50,16 +25,16 @@ export class BaseFormView extends React.Component {
     }
 
     return (
-      <MemoryRouter>
+      <ConnectedRouter history={this.props.history}>
         <Switch>
           <Route path="/success" render={this.renderSuccess} />
           <Route default render={route => (
-            <form onSubmit={event => this.onSubmit(event, route)}>
+            <form onSubmit={this.onSubmit}>
               {this.renderForm()}
             </form>
           )} />
         </Switch>
-      </MemoryRouter>
+      </ConnectedRouter>
     );
   }
 
@@ -72,5 +47,4 @@ export class BaseFormView extends React.Component {
   }
 }
 
-// Note: An un-wrapped BaseFormView is also exported above.
-export default connectFormToStore(BaseFormView);
+export const BaseFormView = connectFormToStore(_BaseFormView);

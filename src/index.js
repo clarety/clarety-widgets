@@ -1,31 +1,8 @@
-import React from 'react';
-import ClaretyConfig from './shared/services/clarety-config';
-import { renderWidget } from './shared/utils/widget-utils';
-import DonateWidget from './donate/views/DonateWidget';
-// import SubscribeWidget from './subscribe/views/SubscribeWidget';
-import './index.css';
+export { ClaretyConfig } from 'shared/services';
+export { renderWidget } from 'shared/utils';
 
-// import { setupAxiosMock } from './donate/mock-data/axios-mock';
-// setupAxiosMock();
+export { SubscribeWidget } from 'subscribe/views';
+export { setupSubscribeAxiosMock } from 'subscribe/mocks';
 
-ClaretyConfig.init({
-  env: 'dev',
-  instanceKey: 'clarety-baseline',
-});
-
-renderWidget('donate-widget-1',
-  <DonateWidget
-    storeCode="AU"
-    singleOfferCode="widget-single"
-    recurringOfferCode="widget-recurring"
-    forceMdLayout
-  />
-);
-
-renderWidget('donate-widget-2',
-  <DonateWidget
-    storeCode="AU"
-    singleOfferCode="widget-single"
-    recurringOfferCode="widget-recurring"
-  />
-);
+export { DonateWidget } from 'donate/views';
+export { setupDonateAxiosMock } from 'donate/mocks';

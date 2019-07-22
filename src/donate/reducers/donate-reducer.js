@@ -1,15 +1,17 @@
 import { combineReducers } from 'redux';
-import { formDataReducer, errorsReducer, paymentDataReducer } from '../../form/reducers';
-import { statusReducer, saleReducer, explainReducer } from '../../shared/reducers';
-import { jwtReducer, successPanelReducer, amountPanelReducer }  from '.';
+import { connectRouter } from 'connected-react-router';
+import { statusReducer, saleReducer, explainReducer } from 'shared/reducers';
+import { formDataReducer, errorsReducer, paymentDataReducer } from 'form/reducers';
+import { successPanelReducer, amountPanelReducer }  from 'donate/reducers';
 
-const donateReducer = combineReducers({
+export const createDonateReducer = history => combineReducers({
+  router: connectRouter(history),
+
   status: statusReducer,
   errors: errorsReducer,
 
   explain: explainReducer,
 
-  jwt: jwtReducer,
   formData: formDataReducer,
   paymentData: paymentDataReducer,
   sale: saleReducer,
@@ -19,5 +21,3 @@ const donateReducer = combineReducers({
     successPanel: successPanelReducer,
   }),
 });
-
-export default donateReducer;

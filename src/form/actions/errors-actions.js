@@ -1,10 +1,10 @@
-import { actionTypes } from './types';
+import { types } from 'form/actions';
 
 export const setErrors = errors => ({
-  type: actionTypes.setErrors,
+  type: types.setErrors,
   errors,
 });
 
 export const clearErrors = () => ({
-  type: actionTypes.clearErrors,
+  type: types.clearErrors,
 });
