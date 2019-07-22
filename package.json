@@ -18,7 +18,7 @@
     "release": "np"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "axios-mock-adapter": "^1.16.0",
     "connected-react-router": "^6.5.2",
     "credit-card-type": "^8.2.0",
