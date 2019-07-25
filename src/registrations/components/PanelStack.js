@@ -17,7 +17,7 @@ class _PanelStack extends React.Component {
     const PanelComponent = this.resolvePanelComponent(panel.name);
 
     return (
-      <ScrollIntoViewIfNeeded active={isLast} key={index}>
+      <ScrollIntoViewIfNeeded active={isLast} key={index} className="section">
         {index !== 0 && <hr />}
         <PanelComponent
           isDone={!isLast}
