@@ -30,6 +30,7 @@
     "node-sass": "^4.12.0",
     "react-block-ui": "^1.1.4",
     "react-intl": "^2.9.0",
+    "react-phone-number-input": "^2.3.20",
     "react-redux": "^7.1.0",
     "react-router-dom": "^4.3.1",
     "react-scroll-into-view-if-needed": "^2.1.7",
