@@ -184,6 +184,7 @@ const mapStateToProps = (state, ownProps) => {
   const { participantIndex } = ownProps;
 
   return {
+    init: state.init,
     participant: state.panelData.participants[participantIndex],
     extendFields: getExtendFields(state),
     errors: state.registration.errors,
