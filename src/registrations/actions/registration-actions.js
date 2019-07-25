@@ -1,0 +1,78 @@
+import { ClaretyApi } from 'clarety-utils';
+import { getCreateRegistrationPostData, getSubmitRegistrationPostData } from 'registrations/selectors';
+import { types, pushPanel, panels } from 'registrations/actions';
+
+export const createRegistration = () => {
+  return async (dispatch, getState) => {
+    dispatch(registrationCreateRequest());
+
+    const state = getState();
+    const postData = getCreateRegistrationPostData(state);
+
+    console.log(postData);
+
+    const result = await ClaretyApi.post('registration-sale/', postData);
+
+    if (result[0] && result[0].status !== 'error') {
+      dispatch(registrationCreateSuccess(result[0]));
+      dispatch(pushPanel({
+        panel: panels.reviewPanel,
+        progress: 100,
+      }));
+    } else {
+      dispatch(registrationCreateFailure(result[0]));
+    }
+  };
+};
+
+export const submitRegistration = () => {
+  return async (dispatch, getState) => {
+    dispatch(registrationSubmitRequest());
+
+    const state = getState();
+    const postData = getSubmitRegistrationPostData(state);
+
+    // TODO: need to pass JWT...
+    const result = await ClaretyApi.post('registration-payment/', postData);
+
+    if (result[0] && result[0].status !== 'error') {
+      dispatch(registrationSubmitSuccess(result[0]));
+    } else {
+      dispatch(registrationSubmitFailure(result[0]));
+    }
+  };
+};
+
+
+// Create
+
+const registrationCreateRequest = () => ({
+  type: types.registrationCreateRequest,
+});
+
+const registrationCreateSuccess = result => ({
+  type: types.registrationCreateSuccess,
+  result,
+});
+
+const registrationCreateFailure = result => ({
+  type: types.registrationCreateFailure,
+  result,
+});
+
+
+// Submit
+
+const registrationSubmitRequest = () => ({
+  type: types.registrationSubmitRequest,
+});
+
+const registrationSubmitSuccess = result => ({
+  type: types.registrationSubmitSuccess,
+  result,
+});
+
+const registrationSubmitFailure = result => ({
+  type: types.registrationSubmitFailure,
+  result,
+});
