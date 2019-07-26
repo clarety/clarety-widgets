@@ -21,13 +21,15 @@ class _PureDobInput extends React.PureComponent {
   }
 
   renderDayInput() {
-    const { day, dayField, onChange, intl } = this.props;
+    const { day, dayField, onChange, intl, required } = this.props;
 
     const onChangeDay = event => onChange(dayField, event.target.value);
 
     return (
-      <Form.Control as="select" value={day} onChange={onChangeDay}>
-        <option>{intl.formatMessage({ id: 'date.day' })}</option>
+      <Form.Control as="select" value={day} onChange={onChangeDay} required={required}>
+        <option value="" disabled selected hidden>
+          {intl.formatMessage({ id: 'date.day' })}
+        </option>
 
         {iterate(1, 31, value => 
           <option key={value} value={value}>{value}</option>
@@ -37,13 +39,15 @@ class _PureDobInput extends React.PureComponent {
   }
 
   renderMonthInput() {
-    const { month, monthField, onChange, intl } = this.props;
+    const { month, monthField, onChange, intl, required } = this.props;
 
     const onChangeMonth = event => onChange(monthField, event.target.value);
 
     return (
-      <Form.Control as="select" value={month} onChange={onChangeMonth}>
-        <option>{intl.formatMessage({ id: 'date.month' })}</option>
+      <Form.Control as="select" value={month} onChange={onChangeMonth} required={required}>
+        <option value="" disabled selected hidden>
+          {intl.formatMessage({ id: 'date.month' })}
+        </option>
         
         {iterate(1, 12, value => 
           <option key={value} value={value}>
@@ -55,13 +59,15 @@ class _PureDobInput extends React.PureComponent {
   }
 
   renderYearInput() {
-    const { year, yearField, onChange, intl } = this.props;
+    const { year, yearField, onChange, intl, required } = this.props;
 
     const onChangeYear = event => onChange(yearField, event.target.value);
 
     return (
-      <Form.Control as="select" value={year} onChange={onChangeYear}>
-        <option>{intl.formatMessage({ id: 'date.year' })}</option>
+      <Form.Control as="select" value={year} onChange={onChangeYear} required={required}>
+        <option value="" disabled selected hidden>
+          {intl.formatMessage({ id: 'date.year' })}
+        </option>
 
         {iterate(currentYear, 1900, value => 
           <option key={value} value={value}>{value}</option>

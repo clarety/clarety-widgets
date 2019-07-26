@@ -5,7 +5,7 @@ import { FormContext } from 'registrations/utils';
 
 class PureTextInput extends React.PureComponent {
   render() {
-    const { field, type, value, onChange } = this.props;
+    const { field, type, value, onChange, required } = this.props;
 
     return (
       <Form.Group controlId={field}>
@@ -16,6 +16,7 @@ class PureTextInput extends React.PureComponent {
           value={value}
           onChange={event => onChange(field, event.target.value)}
           type={type}
+          required={required}
         />
       </Form.Group>
     );

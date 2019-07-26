@@ -46,7 +46,7 @@ class _ReviewPanel extends React.Component {
           )}
         </div>
 
-        <Button onClick={this.onClickNext} style={{ width: 170 }}>
+        <Button onClick={this.onClickNext}>
           <FormattedMessage id="btn.submit" />
         </Button>
       </Container>

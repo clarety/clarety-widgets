@@ -10,7 +10,7 @@ class PureSelectInput extends React.PureComponent {
 
     const { value, options } = props;
 
-    const initialValue = options.find(
+    const initialValue = value && options.find(
       option => option.value === value
     );
 
@@ -25,7 +25,7 @@ class PureSelectInput extends React.PureComponent {
   };
 
   render () {
-    const { field, options } = this.props;
+    const { field, options, required } = this.props;
 
     return (
       <Form.Group controlId={field}>
@@ -39,6 +39,15 @@ class PureSelectInput extends React.PureComponent {
           getOptionLabel={option => option.label}
           getOptionValue={option => option.value}
           classNamePrefix="react-select"
+        />
+        {/* Gross hack to add html5 'required' functionality */}
+        {/* See: https://github.com/JedWatson/react-select/issues/3140 */}
+        <input
+          tabIndex={-1}
+          autoComplete="off"
+          style={{ position: 'absolute', width: 0, height: 0, left: '50%', opacity: 0 }}
+          value={this.state.value}
+          required={required}
         />
       </Form.Group>
     );

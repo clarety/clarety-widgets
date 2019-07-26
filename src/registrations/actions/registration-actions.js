@@ -9,8 +9,6 @@ export const createRegistration = () => {
     const state = getState();
     const postData = getCreateRegistrationPostData(state);
 
-    console.log(postData);
-
     const result = await ClaretyApi.post('registration-sale/', postData);
 
     if (result[0] && result[0].status !== 'error') {

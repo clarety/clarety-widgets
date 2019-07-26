@@ -7,7 +7,7 @@ import { FormContext } from 'registrations/utils';
 
 class PurePhoneInput extends React.PureComponent {
   render() {
-    const { field, value, onChange } = this.props;
+    const { field, value, onChange, required } = this.props;
     const country = "IN"; // TODO: get from config...
     const length = 10; // TODO: get from config...
     const maxLength = length + 3; // Add 3 to allow for country code.
@@ -26,6 +26,7 @@ class PurePhoneInput extends React.PureComponent {
           // countries={['IN']}
           // international={false}
           country={country}
+          required={required}
         />
       </Form.Group>
     );
