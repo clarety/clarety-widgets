@@ -17,5 +17,6 @@ export * from './MiniCart';
 export * from './PanelStack';
 export * from './Qty';
 export * from './ResultsPage';
+export * from './ScrollIntoView';
 
 export * from './RegistrationsApp';

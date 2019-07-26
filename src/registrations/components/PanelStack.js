@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import ScrollIntoViewIfNeeded from 'react-scroll-into-view-if-needed';
-import { EventPanel, QtysPanel, NamesPanel, DetailsPanel, ReviewPanel } from 'registrations/components';
+import { ScrollIntoView, EventPanel, QtysPanel, NamesPanel, DetailsPanel, ReviewPanel } from 'registrations/components';
 import { pushPanel, popToPanel, panels } from 'registrations/actions';
 import { OverrideContext } from 'registrations/utils';
 
@@ -17,15 +16,14 @@ class _PanelStack extends React.Component {
     const PanelComponent = this.resolvePanelComponent(panel.name);
 
     return (
-      <ScrollIntoViewIfNeeded active={isLast} key={index} className="section">
-        {index !== 0 && <hr />}
+      <ScrollIntoView isActive={isLast} key={index} className="section">
         <PanelComponent
           isDone={!isLast}
           pushPanel={pushPanel}
           popToPanel={() => popToPanel(index)}
           {...panel.props}
         />
-      </ScrollIntoViewIfNeeded>
+      </ScrollIntoView>
     );
   }
 
