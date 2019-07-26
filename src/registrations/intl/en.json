@@ -72,7 +72,7 @@
   "detailsPanel.editTitle": "Registration Details For {firstName}",
   "detailsPanel.customerFormTitle": "Personal Details",
   "detailsPanel.extendFormTitle": "Event Details",
-  "detailsPanel.doneTitle": "{firstName}'s Details",
+  "detailsPanel.doneTitle": "Registration Details For {firstName}",
   
   "reviewPanel.errorTitle": "We Found Some Problems With Your Registration",
   "reviewPanel.errorSubtitle": "Please correct the issues and try again.",

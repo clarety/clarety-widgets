@@ -161,16 +161,11 @@ export class _DetailsPanel extends React.Component {
   };
 
   renderDone() {
-    const { firstName, lastName, email } = this.props.participant.customer;
+    const { firstName } = this.props.participant.customer;
 
     return (
       <Container>
         <FormattedMessage id="detailsPanel.doneTitle" values={{ firstName }} tagName="h4" />
-
-        <p className="lead">
-          <b>Name:</b> {firstName} {lastName}<br />
-          <b>Email:</b> {email}<br />
-        </p>
 
         <Button onClick={this.onClickEdit}>
           <FormattedMessage id="btn.edit" />
