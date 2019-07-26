@@ -6,7 +6,7 @@ import { IntlProvider, FormattedMessage } from 'react-intl';
 import { Spinner, Modal } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { MiniCart, PanelStack, ResultsPage } from 'registrations/components';
+import { MiniCart, PanelStack } from 'registrations/components';
 import { fetchInit, statuses } from 'registrations/actions';
 import { rootReducer } from 'registrations/reducers';
 import { getMessages } from 'registrations/intl';
@@ -32,12 +32,8 @@ class _Root extends React.Component {
   }
 
   render() {
-    const { isBlocking, isComplete } = this.props;
-
-    if (isComplete) return <ResultsPage />;
-
     return (
-      <BlockUi blocking={isBlocking} loader={this.getLoader()}>
+      <BlockUi blocking={this.props.isBlocking} loader={this.getLoader()}>
         <MiniCart />
         <PanelStack />
       </BlockUi>
@@ -57,11 +53,10 @@ class _Root extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    isBlocking: state.status !== statuses.ready && state.status !== statuses.complete,
+    isBlocking: state.status !== statuses.ready,
     isInitializing: state.status === statuses.initializing,
     isValidating: state.status === statuses.validating,
     isSubmitting: state.status === statuses.submitting,
-    isComplete: state.status === statuses.complete,
   };
 };
 

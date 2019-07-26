@@ -36,7 +36,8 @@ export const submitRegistration = () => {
     const result = await ClaretyApi.post('registration-payment/', postData);
 
     if (result[0] && result[0].status !== 'error') {
-      dispatch(registrationSubmitSuccess(result[0]));
+      // Redirect on success.
+      window.location.href = result[0].redirect;
     } else {
       dispatch(registrationSubmitFailure(result[0]));
     }
@@ -65,11 +66,6 @@ const registrationCreateFailure = result => ({
 
 const registrationSubmitRequest = () => ({
   type: types.registrationSubmitRequest,
-});
-
-const registrationSubmitSuccess = result => ({
-  type: types.registrationSubmitSuccess,
-  result,
 });
 
 const registrationSubmitFailure = result => ({

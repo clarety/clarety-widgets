@@ -27,7 +27,7 @@ export const types = {
   registrationCreateFailure: 'REGISTRATION_CREATE_FAILURE',
 
   registrationSubmitRequest: 'REGISTRATION_SUBMIT_REQUEST',
-  registrationSubmitSuccess: 'REGISTRATION_SUBMIT_SUCCESS',
+  // NOTE: there's no registrationSubmitSuccess action, we just redirect.
   registrationSubmitFailure: 'REGISTRATION_SUBMIT_FAILURE',
 };
 
@@ -36,5 +36,4 @@ export const statuses = {
   validating:   'VALIDATING',
   submitting:   'SUBMITTING',
   ready:        'READY',
-  complete:     'COMPLETE',
 };

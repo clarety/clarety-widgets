@@ -20,9 +20,6 @@ export const statusReducer = (state = initialState, action) => {
     case types.registrationSubmitRequest:
       return statuses.submitting;
 
-    case types.registrationSubmitSuccess:
-      return statuses.complete;
-
     case types.registrationSubmitFailure:
       return statuses.ready;
 
