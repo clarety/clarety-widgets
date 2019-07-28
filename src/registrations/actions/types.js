@@ -19,6 +19,7 @@ export const types = {
   panelDataSetFirstNames:   'PANEL_DATA_SET_FIRST_NAMES',
   panelDataResetFirstNames: 'PANEL_DATA_RESET_FIRST_NAMES',
   panelDataSetDetails:      'PANEL_DATA_SET_DETAILS',
+  panelDataSetErrors:       'PANEL_DATA_SET_ERRORS',
   panelDataResetDetails:    'PANEL_DATA_RESET_DETAILS',
 
   // Registration Action Types

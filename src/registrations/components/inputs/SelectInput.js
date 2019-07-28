@@ -3,6 +3,8 @@ import { Form } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 import Select from 'react-select';
 import { FormContext } from 'registrations/utils';
+import { FieldError } from 'form/components';
+import { getValidationError } from 'form/utils';
 
 class PureSelectInput extends React.PureComponent {
   constructor(props) {
@@ -25,7 +27,7 @@ class PureSelectInput extends React.PureComponent {
   };
 
   render () {
-    const { field, options, required } = this.props;
+    const { field, options, required, error } = this.props;
 
     return (
       <Form.Group controlId={field}>
@@ -49,6 +51,7 @@ class PureSelectInput extends React.PureComponent {
           value={this.state.value}
           required={required}
         />
+        <FieldError error={error} />
       </Form.Group>
     );
   }
@@ -56,13 +59,15 @@ class PureSelectInput extends React.PureComponent {
 
 export class SelectInput extends React.Component {
   render() {
-    const { formData, onChange } = this.context;
+    const { formData, errors, onChange } = this.context;
+    const error = getValidationError(this.props.field, errors);
 
     return (
       <PureSelectInput
         {...this.props}
         value={formData[this.props.field] || ''}
         onChange={onChange}
+        error={error}
       />
     );
   }

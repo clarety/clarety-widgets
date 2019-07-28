@@ -34,6 +34,12 @@ export const setDetails = (index, customerForm, extendForm) => ({
   extendForm,
 });
 
+export const setErrors = (index, errors) => ({
+  type: types.panelDataSetErrors,
+  index,
+  errors,
+});
+
 export const resetDetails = index => ({
   type: types.panelDataResetDetails,
   index,

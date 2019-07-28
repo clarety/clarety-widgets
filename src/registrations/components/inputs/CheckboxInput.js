@@ -2,10 +2,12 @@ import React from 'react';
 import { Form, FormCheck } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 import { FormContext } from 'registrations/utils';
+import { FieldError } from 'form/components';
+import { getValidationError } from 'form/utils';
 
 class PureCheckboxInput extends React.PureComponent {
   render() {
-    const { field, checked, onChange } = this.props;
+    const { field, checked, error, onChange } = this.props;
 
     return (
       <Form.Group controlId={field}>
@@ -18,6 +20,7 @@ class PureCheckboxInput extends React.PureComponent {
             <FormattedMessage id={`label.${field}`} />
           </FormCheck.Label>
         </FormCheck>
+        <FieldError error={error} />
       </Form.Group>
     );
   }
@@ -25,13 +28,15 @@ class PureCheckboxInput extends React.PureComponent {
 
 export class CheckboxInput extends React.Component {
   render() {
-    const { formData, onChange } = this.context;
+    const { formData, errors, onChange } = this.context;
+    const error = getValidationError(this.props.field, errors);
 
     return (
       <PureCheckboxInput
         {...this.props}
         checked={formData[this.props.field] || false}
         onChange={onChange}
+        error={error}
       />
     );
   }

@@ -1,6 +1,5 @@
 export * from './inputs/CheckboxInput';
 export * from './inputs/DobInput';
-export * from './inputs/GenderInput';
 export * from './inputs/PhoneInput';
 export * from './inputs/QtyInput';
 export * from './inputs/SelectInput';

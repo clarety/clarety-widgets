@@ -2,6 +2,8 @@ import React from 'react';
 import { Form, Col } from 'react-bootstrap';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { FormContext, currentYear, iterate } from 'registrations/utils';
+import { FieldError } from 'form/components';
+import { getValidationError } from 'form/utils';
 
 class _PureDobInput extends React.PureComponent {
   render() {
@@ -16,6 +18,8 @@ class _PureDobInput extends React.PureComponent {
           <Col>{this.renderMonthInput()}</Col>
           <Col>{this.renderYearInput()}</Col>
         </Form.Row>
+
+        <FieldError error={this.props.error} />
       </Form.Group>
     );
   }
@@ -81,8 +85,10 @@ const PureDobInput = injectIntl(_PureDobInput);
 
 export class DobInput extends React.Component {
   render() {
-    const { formData, onChange } = this.context;
-    const { dayField, monthField, yearField } = this.props;
+    const { formData, errors, onChange } = this.context;
+    const { field, dayField, monthField, yearField } = this.props;
+
+    const error = getValidationError(field, errors);
 
     return (
       <PureDobInput
@@ -91,6 +97,7 @@ export class DobInput extends React.Component {
         month={formData[monthField] || ''}
         year={formData[yearField] || ''}
         onChange={onChange}
+        error={error}
       />
     );
   }

@@ -69,6 +69,22 @@ export const panelDataReducer = (state = initialState, action) => {
               ...participant,
               customer: action.customerForm,
               extendForm: action.extendForm,
+              errors: [],
+            };
+          } else {
+            return participant;
+          }
+        }),
+      };
+
+    case types.panelDataSetErrors:
+      return {
+        ...state,
+        participants: state.participants.map((participant, index) => {
+          if (index === action.index) {
+            return {
+              ...participant,
+              errors: action.errors,
             };
           } else {
             return participant;

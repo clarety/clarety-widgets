@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Button, Form, Row, Col } from 'react-bootstrap';
-import { TextInput, DobInput, CheckboxInput, SelectInput, GenderInput, PhoneInput } from 'registrations/components';
-import { setDetails, resetDetails, pushNextDetailsPanel } from 'registrations/actions';
+import { TextInput, DobInput, CheckboxInput, SelectInput, PhoneInput } from 'registrations/components';
+import { setDetails, setErrors, resetDetails, pushNextDetailsPanel } from 'registrations/actions';
 import { getExtendFields } from 'registrations/selectors';
 import { FormContext } from 'registrations/utils';
 
@@ -14,23 +14,44 @@ export class _DetailsPanel extends React.Component {
     this.state = {
       customerFormContext: {
         formData: { ...props.participant.customer },
+        errors: [],
         onChange: this.onCustomerFormChange,
       },
       extendFormContext: {
         formData: { ...props.participant.extendForm },
+        errors: [],
         onChange: this.onExtendFormChange,
       },
     };
   }
 
-  onClickNext = event => {
-    event.preventDefault();
+  componentDidUpdate(prevProps) {
+    const { errors } = this.props.participant;
 
+    if (prevProps.participant.errors !== errors) {
+      this.setState({
+        customerFormContext: {
+          ...this.state.customerFormContext,
+          errors: errors,
+        },
+        extendFormContext: {
+          ...this.state.extendFormContext,
+          errors: errors,
+        },
+      });
+    }
+  }
+
+  onClickNext = event => {
     const { participantIndex, setDetails, pushNextDetailsPanel } = this.props;
     const { customerFormContext, extendFormContext } = this.state;
 
-    setDetails(participantIndex, customerFormContext.formData, extendFormContext.formData);
-    pushNextDetailsPanel(participantIndex + 1);
+    event.preventDefault();
+
+    if (this.validateForm()) {
+      setDetails(participantIndex, customerFormContext.formData, extendFormContext.formData);
+      pushNextDetailsPanel(participantIndex + 1);
+    }
   };
 
   onClickEdit = () => {
@@ -60,6 +81,12 @@ export class _DetailsPanel extends React.Component {
       }
     }));
   };
+
+  validateForm() {
+    // No validation in the base implementation for now,
+    // but can be overridden in the instance.
+    return true;
+  }
 
   componentWillUnmount() {
     const { resetDetails, participantIndex } = this.props;
@@ -104,6 +131,8 @@ export class _DetailsPanel extends React.Component {
   }
 
   renderCustomerForm() {
+    const genderOptions = getElementOptions('customer.gender', this.props.init);
+
     return (
       <FormContext.Provider value={this.state.customerFormContext}>
         <Form.Row>
@@ -117,12 +146,13 @@ export class _DetailsPanel extends React.Component {
         </Form.Row>
         <Form.Row>
           <Col>
-            <GenderInput field="gender" required />
+            <SelectInput field="gender" options={genderOptions} required />
           </Col>
         </Form.Row>
         <Form.Row>
           <Col>
             <DobInput
+              field="dateOfBirth"
               dayField="dateOfBirthDay"
               monthField="dateOfBirthMonth"
               yearField="dateOfBirthYear"
@@ -186,12 +216,12 @@ const mapStateToProps = (state, ownProps) => {
     init: state.init,
     participant: state.panelData.participants[participantIndex],
     extendFields: getExtendFields(state),
-    errors: state.registration.errors,
   };
 };
 
 const actions = {
   setDetails: setDetails,
+  setErrors: setErrors,
   resetDetails: resetDetails,
   pushNextDetailsPanel: pushNextDetailsPanel,
 };

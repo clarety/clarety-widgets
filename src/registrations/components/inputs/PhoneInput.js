@@ -4,13 +4,13 @@ import { FormattedMessage } from 'react-intl';
 import ReactPhoneNumberInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { FormContext } from 'registrations/utils';
+import { FieldError } from 'form/components';
+import { getValidationError } from 'form/utils';
 
 class PurePhoneInput extends React.PureComponent {
   render() {
-    const { field, value, onChange, required } = this.props;
+    const { field, value, onChange, required, error } = this.props;
     const country = "IN"; // TODO: get from config...
-    const length = 10; // TODO: get from config...
-    const maxLength = length + 3; // Add 3 to allow for country code.
 
     return (
       <Form.Group controlId={field}>
@@ -21,13 +21,11 @@ class PurePhoneInput extends React.PureComponent {
           value={value}
           onChange={value => onChange(field, value)}
           limitMaxLength={true}
-          // maxlength="12" // TODO: GET FROM CONFIG .....
           inputClassName="form-control"
-          // countries={['IN']}
-          // international={false}
           country={country}
           required={required}
         />
+        <FieldError error={error} />
       </Form.Group>
     );
   }
@@ -35,13 +33,15 @@ class PurePhoneInput extends React.PureComponent {
 
 export class PhoneInput extends React.Component {
   render() {
-    const { formData, onChange } = this.context;
+    const { formData, errors, onChange } = this.context;
+    const error = getValidationError(this.props.field, errors);
 
     return (
       <PurePhoneInput
         {...this.props}
         value={formData[this.props.field] || ''}
         onChange={onChange}
+        error={error}
       />
     );
   }
