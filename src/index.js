@@ -9,3 +9,5 @@ export { setupDonateAxiosMock } from 'donate/mocks';
 
 export { RegistrationsApp } from 'registrations/components';
 export { withOverrides } from 'registrations/utils';
+
+export { Checkout } from 'checkout/components';
