@@ -13,9 +13,9 @@ export function setupMockEndpoints() {
   mock.onGet(`${apiBase}registration-full/`)
       .reply(200, registrationFull);
 
-  mock.onPost(`${apiBase}registration-sale/`)
+  mock.onPost(`${apiBase}registration-sale-widget/`)
       .reply(200, registrationSaleSuccess);
 
-  mock.onPost(`${apiBase}registration-payment/`)
+  mock.onPost(`${apiBase}registration-payment-widget/`)
       .reply(200, registrationPaymentSuccess);
 }
