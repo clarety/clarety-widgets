@@ -9,7 +9,7 @@ export const createRegistration = () => {
     const state = getState();
     const postData = getCreateRegistrationPostData(state);
 
-    const result = await ClaretyApi.post('registration-sale-public/', postData);
+    const result = await ClaretyApi.post('registration-sale-widget/', postData);
 
     if (result[0] && result[0].status !== 'error') {
       dispatch(registrationCreateSuccess(result[0]));
@@ -31,7 +31,7 @@ export const submitRegistration = () => {
     const postData = getSubmitRegistrationPostData(state);
 
     // TODO: need to pass JWT...
-    const result = await ClaretyApi.post('registration-zero-payment/', postData);
+    const result = await ClaretyApi.post('registration-payment-widget/', postData);
 
     if (result[0] && result[0].status !== 'error') {
       // Redirect on success.
