@@ -64,7 +64,8 @@ export const getCreateRegistrationPostData = state => {
 export const getSubmitRegistrationPostData = state => {
   // TODO: need to add $0 payment info.
   return {
-    saleId: state.registration.sale.id,
+    uid: state.registration.uid,
+    jwt: state.registration.jwt,
   };
 };
 

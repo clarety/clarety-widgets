@@ -1,8 +1,10 @@
 import { types } from 'registrations/actions';
 
 const initialState = {
-  errors: null,
+  uid: null,
+  jwt: null,
   sale: null,
+  errors: null,
 };
 
 export const registrationReducer = (state = initialState, action) => {
@@ -10,13 +12,15 @@ export const registrationReducer = (state = initialState, action) => {
     case types.registrationCreateSuccess:
       return {
         errors: null,
-        sale: action.result,
+        uid: action.result.uid,
+        jwt: action.result.jwt,
+        sale: action.result.sale,
       };
 
     case types.registrationCreateFailure:
       return {
+        ...state,
         errors: action.result.validationErrors,
-        sale: null,
       };
 
     default:
