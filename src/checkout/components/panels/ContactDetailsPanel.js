@@ -57,11 +57,11 @@ class _ContactDetailsPanel extends BasePanel {
   }
 
   renderDone() {
-    const { contactDetails } = this.props;
+    const { email } = this.props.contactDetails;
 
     return (
       <div>
-        <h2 style={{ display: 'inline', opacity: 0.3 }}>1.</h2> {contactDetails.email} <button onClick={this.onPressEdit}>Edit</button>
+        <h2 style={{ display: 'inline', opacity: 0.3 }}>1.</h2> {email} <Button onClick={this.onPressEdit}>Edit</Button>
         <hr />
       </div>
     );
