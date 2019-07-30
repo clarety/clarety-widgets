@@ -1,3 +1,6 @@
+export * from './inputs/CheckboxInput';
+export * from './inputs/TextInput';
+
 export * from './panels/BasePanel';
 export * from './panels/ContactDetailsPanel';
 export * from './panels/PaymentDetailsPanel';
