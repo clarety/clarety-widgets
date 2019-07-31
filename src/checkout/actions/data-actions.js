@@ -14,3 +14,8 @@ export const setShippingDetails = data => ({
   type: types.setShippingDetails,
   data: data,
 });
+
+export const selectShippingOption = id => ({
+  type: types.selectShippingOption,
+  id: id,
+});

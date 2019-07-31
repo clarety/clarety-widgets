@@ -5,7 +5,8 @@ export const types = {
   editPanel: 'EDIT_PANEL',
 
   // Data Action Types
-  setContactDetails:  'SET_CONTACT_DETAILS',
-  setPersonalDetails: 'SET_PERSONAL_DETAILS',
-  setShippingDetails: 'SET_SHIPPING_DETAILS',
+  setContactDetails:    'SET_CONTACT_DETAILS',
+  setPersonalDetails:   'SET_PERSONAL_DETAILS',
+  setShippingDetails:   'SET_SHIPPING_DETAILS',
+  selectShippingOption: 'SELECT_SHIPPING_OPTION',
 };

@@ -4,6 +4,7 @@ const initialState = {
   contactDetails: null,
   personalDetails: null,
   shippingDetails: null,
+  selectedShippingOptionId: null,
 };
 
 export const dataReducer = (state = initialState, action) => {
@@ -24,6 +25,12 @@ export const dataReducer = (state = initialState, action) => {
       return {
         ...state,
         shippingDetails: action.data,
+      };
+
+    case types.selectShippingOption:
+      return {
+        ...state,
+        selectedShippingOptionId: action.id,
       };
 
     default:
