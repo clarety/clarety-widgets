@@ -5,6 +5,7 @@ const initialState = {
   personalDetails: null,
   shippingDetails: null,
   selectedShippingOptionId: null,
+  paymentDetails: null,
 };
 
 export const dataReducer = (state = initialState, action) => {
@@ -31,6 +32,12 @@ export const dataReducer = (state = initialState, action) => {
       return {
         ...state,
         selectedShippingOptionId: action.id,
+      };
+
+    case types.setPaymentDetails:
+      return {
+        ...state,
+        paymentDetails: action.data,
       };
 
     default:

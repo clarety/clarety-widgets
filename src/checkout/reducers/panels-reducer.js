@@ -47,11 +47,11 @@ function nextPanel(state, action) {
 
 function editPanel(state, action) {
   return state.map((panel, index) => {
-    // Set status of current panel to 'done'.
+    // Set status of current panel to 'wait'.
     if (panel.status === panelStatuses.edit) {
       return {
         ...panel,
-        status: panelStatuses.done,
+        status: panelStatuses.wait,
       };
     }
 
