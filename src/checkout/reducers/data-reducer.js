@@ -3,6 +3,7 @@ import { types } from 'checkout/actions';
 const initialState = {
   contactDetails: null,
   personalDetails: null,
+  shippingDetails: null,
 };
 
 export const dataReducer = (state = initialState, action) => {
@@ -14,10 +15,16 @@ export const dataReducer = (state = initialState, action) => {
       };
 
     case types.setPersonalDetails:
-        return {
-          ...state,
-          personalDetails: action.data,
-        };
+      return {
+        ...state,
+        personalDetails: action.data,
+      };
+
+    case types.setShippingDetails:
+      return {
+        ...state,
+        shippingDetails: action.data,
+      };
 
     default:
       return state;

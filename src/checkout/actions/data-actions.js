@@ -9,3 +9,8 @@ export const setPersonalDetails = data => ({
   type: types.setPersonalDetails,
   data: data,
 });
+
+export const setShippingDetails = data => ({
+  type: types.setShippingDetails,
+  data: data,
+});
