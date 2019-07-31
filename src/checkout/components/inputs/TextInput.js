@@ -16,6 +16,7 @@ class PureTextInput extends React.PureComponent {
           placeholder={placeholder}
           type={type}
           required={required}
+          isInvalid={!!error}
         />
         <FieldError error={error} />
       </Form.Group>

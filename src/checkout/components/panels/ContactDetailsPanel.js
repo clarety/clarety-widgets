@@ -17,8 +17,26 @@ class _ContactDetailsPanel extends BasePanel {
   };
 
   validate() {
-    // TODO: validate fields...
-    return true;
+    const errors = [];
+    this.setState({ errors });
+
+    const { email } = this.state.formData;
+    
+    if (!email) {
+      errors.push({
+        field: 'email',
+        message: 'Please enter your email address',
+      });
+    }
+
+    // TODO: check that email is valid.
+
+    if (errors.length === 0) {
+      return true;
+    } else {
+      this.setState({ errors });
+      return false;
+    }
   }
 
   renderWait() {
