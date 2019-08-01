@@ -4,7 +4,7 @@ const initialState = {
   contactDetails: null,
   personalDetails: null,
   shippingDetails: null,
-  selectedShippingOptionId: null,
+  shippingOption: null,
   paymentDetails: null,
 };
 
@@ -31,7 +31,7 @@ export const dataReducer = (state = initialState, action) => {
     case types.selectShippingOption:
       return {
         ...state,
-        selectedShippingOptionId: action.id,
+        shippingOption: action.key,
       };
 
     case types.setPaymentDetails:

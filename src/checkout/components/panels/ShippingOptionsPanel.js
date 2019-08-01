@@ -20,37 +20,47 @@ class _ShippingOptionsPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { shippingOptions, selectShippingOption, selectedId, canContinue } = this.props;
+    const { shippingOptions, canContinue } = this.props;
 
     return (
       <div>
         <h2>4. Shipping Options</h2>
         <hr />
 
-        {shippingOptions.map(option =>
-          <Form.Check type="radio" id={option.id} key={option.id}>
-            <Form.Check.Input
-              type="radio"
-              name="shippingOption"
-              checked={selectedId === option.id}
-              onChange={() => selectShippingOption(option.id)}
-            />
-            <Form.Check.Label>{option.name} ${option.price}</Form.Check.Label>
-            <p>Estimated Delivery Date: {option.estimatedDeliveryDate}</p>
-          </Form.Check>
-        )}
+        {shippingOptions && shippingOptions.map(this.renderShippingOption)}
 
         <Button onClick={this.onPressContinue} disabled={!canContinue}>Continue</Button>
       </div>
     );
   }
 
+  renderShippingOption = (option, index) => {
+    const { selectShippingOption, selectedKey } = this.props;
+
+    return (
+      <Form.Check type="radio" id={option.key} key={option.key}>
+        <Form.Check.Input
+          type="radio"
+          name="shippingOption"
+          checked={selectedKey === option.key}
+          onChange={() => selectShippingOption(option.key)}
+        />
+
+        <Form.Check.Label>{option.label} ${option.cost}</Form.Check.Label>
+
+        {option.date &&
+          <p>Estimated Delivery Date: {option.date}</p>
+        }
+      </Form.Check>
+    );
+  };
+
   renderDone() {
-    const { shippingOptionName } = this.props;
+    const { selectedOptionName } = this.props;
 
     return (
       <div>
-        <h2 style={{ display: 'inline', opacity: 0.3 }}>4.</h2> {shippingOptionName} <Button onClick={this.onPressEdit}>Edit</Button>
+        <h2 style={{ display: 'inline', opacity: 0.3 }}>4.</h2> {selectedOptionName} <Button onClick={this.onPressEdit}>Edit</Button>
         <hr />
       </div>
     );
@@ -59,33 +69,10 @@ class _ShippingOptionsPanel extends BasePanel {
 
 const mapStateToProps = state => {
   return {
-    selectedId: state.data.selectedShippingOptionId,
-    canContinue: state.data.selectedShippingOptionId !== null,
-
-    // TODO: select this somehow...
-    shippingOptionName: 'Australia Post',
-
-    // TODO: load these from somewhere...
-    shippingOptions: [
-      {
-        id: '123',
-        name: 'Australia Post',
-        estimatedDeliveryDate: '7 May 2020',
-        price: 20,
-      },
-      {
-        id: '456',
-        name: 'UPS Express',
-        estimatedDeliveryDate: '6 May 2020',
-        price: 25,
-      },
-      {
-        id: '789',
-        name: 'UPS Express Premium',
-        estimatedDeliveryDate: '4 May 2020',
-        price: 35,
-      },
-    ],
+    selectedKey: state.data.shippingOption,
+    canContinue: !!state.data.shippingOption,
+    shippingOptions: state.cart.shippingOptions,
+    selectedOptionName: getSelectedShippingOptionLabel(state),
   };
 };
 
@@ -96,3 +83,17 @@ const actions = {
 };
 
 export const ShippingOptionsPanel = connect(mapStateToProps, actions)(_ShippingOptionsPanel);
+
+// TODO: move to selectors...
+const getSelectedShippingOptionLabel = state => {
+  const { shippingOptions } = state.cart;
+  const { shippingOption } = state.data;
+
+  if (shippingOptions && shippingOption) {
+    const option = shippingOptions.find(option => option.key === shippingOption);
+
+    if (option) return option.label;
+  }
+
+  return '';
+};
