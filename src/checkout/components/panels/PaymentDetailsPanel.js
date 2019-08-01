@@ -2,14 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Col, Button } from 'react-bootstrap';
 import { BasePanel, TextInput } from 'checkout/components';
-import { setPaymentDetails, createSale, editPanel } from 'checkout/actions';
+import { setPaymentDetails, editPanel } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _PaymentDetailsPanel extends BasePanel {
   onPressContinue = () => {
     if (this.validate()) {
       this.props.setPaymentDetails(this.state.formData);
-      this.props.createSale();
+      // TODO: attempt to make payment...
     }
   };
 
@@ -97,7 +97,6 @@ const mapStateToProps = state => {
 
 const actions = {
   setPaymentDetails: setPaymentDetails,
-  createSale: createSale,
   editPanel: editPanel,
 };
 

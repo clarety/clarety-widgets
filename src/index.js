@@ -11,3 +11,4 @@ export { RegistrationsApp } from 'registrations/components';
 export { withOverrides } from 'registrations/utils';
 
 export { Checkout } from 'checkout/components';
+export { setupCheckoutAxiosMock } from 'checkout/mocks';

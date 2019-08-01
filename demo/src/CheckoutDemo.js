@@ -1,13 +1,14 @@
 import React from 'react';
-import { ClaretyConfig, Checkout, setupCheckoutAxiosMock } from '../../src';
+import { Config } from 'clarety-utils';
+import { Checkout, setupCheckoutAxiosMock } from '../../src';
 
-ClaretyConfig.init({
+Config.init({
   instanceKey: 'clarety-baseline',
 });
 
 export default class CheckoutDemo extends React.Component {
   componentWillMount() {
-    // setupCheckoutAxiosMock();
+    setupCheckoutAxiosMock();
   }
 
   render() {
