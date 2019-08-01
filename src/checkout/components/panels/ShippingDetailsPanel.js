@@ -2,13 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Col, Button } from 'react-bootstrap';
 import { BasePanel, TextInput, CheckboxInput } from 'checkout/components';
-import { setShippingDetails, nextPanel, editPanel } from 'checkout/actions';
+import { updateFormData, nextPanel, editPanel } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _ShippingDetailsPanel extends BasePanel {
   onPressContinue = () => {
     if (this.validate()) {
-      this.props.setShippingDetails(this.state.formData);
+      this.props.updateFormData(this.state.formData);
       this.props.nextPanel();
     }
   };
@@ -38,25 +38,25 @@ class _ShippingDetailsPanel extends BasePanel {
             <h5>Shipping Address</h5>
             <Form.Row>
               <Col>
-                <TextInput field="shipping.address" placeholder="Address *" />
+                <TextInput field="customer.shipping.address" placeholder="Address *" />
               </Col>
             </Form.Row>
 
             <Form.Row>
               <Col>
-                <TextInput field="shipping.suburb" placeholder="Suburb *" />
+                <TextInput field="customer.shipping.suburb" placeholder="Suburb *" />
               </Col>
               <Col>
-                <TextInput field="shipping.state" placeholder="State *" />
+                <TextInput field="customer.shipping.state" placeholder="State *" />
               </Col>
             </Form.Row>
 
             <Form.Row>
               <Col>
-                <TextInput field="shipping.postcode" placeholder="Postcode *" />
+                <TextInput field="customer.shipping.postcode" placeholder="Postcode *" />
               </Col>
               <Col>
-                <TextInput field="shipping.country" placeholder="Country *" />
+                <TextInput field="customer.shipping.country" placeholder="Country *" />
               </Col>
             </Form.Row>
 
@@ -69,25 +69,25 @@ class _ShippingDetailsPanel extends BasePanel {
             <h5>Billing Address</h5>
             <Form.Row>
               <Col>
-                <TextInput field="billing.address" placeholder="Address *" />
+                <TextInput field="customer.billing.address" placeholder="Address *" />
               </Col>
             </Form.Row>
 
             <Form.Row>
               <Col>
-                <TextInput field="billing.suburb" placeholder="Suburb *" />
+                <TextInput field="customer.billing.suburb" placeholder="Suburb *" />
               </Col>
               <Col>
-                <TextInput field="billing.state" placeholder="State *" />
+                <TextInput field="customer.billing.state" placeholder="State *" />
               </Col>
             </Form.Row>
 
             <Form.Row>
               <Col>
-                <TextInput field="billing.postcode" placeholder="Postcode *" />
+                <TextInput field="customer.billing.postcode" placeholder="Postcode *" />
               </Col>
               <Col>
-                <TextInput field="billing.country" placeholder="Country *" />
+                <TextInput field="customer.billing.country" placeholder="Country *" />
               </Col>
             </Form.Row>
           </Form>
@@ -99,8 +99,9 @@ class _ShippingDetailsPanel extends BasePanel {
   }
 
   renderDone() {
-    const address = this.props.shippingDetails['shipping.address'];
-    const suburb = this.props.shippingDetails['shipping.suburb'];
+    const { formData } = this.state;
+    const address = formData['customer.shipping.address'];
+    const suburb = formData['customer.shipping.suburb'];
 
     return (
       <div>
@@ -118,7 +119,7 @@ const mapStateToProps = state => {
 };
 
 const actions = {
-  setShippingDetails: setShippingDetails,
+  updateFormData: updateFormData,
   nextPanel: nextPanel,
   editPanel: editPanel,
 };

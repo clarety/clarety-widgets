@@ -1,26 +1,11 @@
 import { types } from '.';
 
-export const setContactDetails = data => ({
-  type: types.setContactDetails,
-  data: data,
+export const updateFormData = formData => ({
+  type: types.updateFormData,
+  formData: formData,
 });
 
-export const setPersonalDetails = data => ({
-  type: types.setPersonalDetails,
-  data: data,
-});
-
-export const setShippingDetails = data => ({
-  type: types.setShippingDetails,
-  data: data,
-});
-
-export const selectShippingOption = key => ({
-  type: types.selectShippingOption,
-  key: key,
-});
-
-export const setPaymentDetails = data => ({
-  type: types.setPaymentDetails,
-  data: data,
+export const updatePaymentData = paymentData => ({
+  type: types.updatePaymentData,
+  paymentData: paymentData,
 });

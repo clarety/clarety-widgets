@@ -2,13 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Col, Button } from 'react-bootstrap';
 import { BasePanel, TextInput } from 'checkout/components';
-import { setPersonalDetails, nextPanel, editPanel } from 'checkout/actions';
+import { updateFormData, nextPanel, editPanel } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _PersonalDetailsPanel extends BasePanel {
   onPressContinue = () => {
     if (this.validate()) {
-      this.props.setPersonalDetails(this.state.formData);
+      this.props.updateFormData(this.state.formData);
       this.props.nextPanel();
     }
   };
@@ -37,25 +37,25 @@ class _PersonalDetailsPanel extends BasePanel {
           <Form>
             <Form.Row>
               <Col>
-                <TextInput field="firstName" placeholder="First Name *" />
+                <TextInput field="customer.firstName" placeholder="First Name *" />
               </Col>
               <Col>
-                <TextInput field="lastName" placeholder="Last Name *" />
-              </Col>
-            </Form.Row>
-
-            <Form.Row>
-              <Col>
-                <TextInput field="homePhone" placeholder="Home Phone" />
-              </Col>
-              <Col>
-                <TextInput field="workPhone" placeholder="Work Phone" />
+                <TextInput field="customer.lastName" placeholder="Last Name *" />
               </Col>
             </Form.Row>
 
             <Form.Row>
               <Col>
-                <TextInput field="mobilePhone" placeholder="Mobile Phone" />
+                <TextInput field="customer.homePhone" placeholder="Home Phone" />
+              </Col>
+              <Col>
+                <TextInput field="customer.workPhone" placeholder="Work Phone" />
+              </Col>
+            </Form.Row>
+
+            <Form.Row>
+              <Col>
+                <TextInput field="customer.mobilePhone" placeholder="Mobile Phone" />
               </Col>
               <Col>
               </Col>
@@ -67,19 +67,19 @@ class _PersonalDetailsPanel extends BasePanel {
 
             <Form.Row>
               <Col>
-                <TextInput field="dobDay" placeholder="DD" />
+                <TextInput field="customer.dobDay" placeholder="DD" />
               </Col>
               <Col>
-                <TextInput field="dobMonth" placeholder="MM" />
+                <TextInput field="customer.dobMonth" placeholder="MM" />
               </Col>
               <Col>
-                <TextInput field="dobYear" placeholder="YYYY" />
+                <TextInput field="customer.dobYear" placeholder="YYYY" />
               </Col>
             </Form.Row>
 
             <Form.Row>
               <Col>
-                <TextInput field="source" placeholder="How did you hear about us? *" />
+                <TextInput field="sale.source" placeholder="How did you hear about us? *" />
               </Col>
             </Form.Row>
           </Form>
@@ -91,8 +91,10 @@ class _PersonalDetailsPanel extends BasePanel {
   }
 
   renderDone() {
-    const { firstName, lastName, homePhone, workPhone, mobilePhone } = this.props.personalDetails;
-    const phone = homePhone || workPhone || mobilePhone;
+    const { formData } = this.state;
+    const firstName = formData['customer.firstName'];
+    const lastName = formData['customer.lastName'];
+    const phone = formData['customer.homePhone'] || formData['customer.workPhone'] || formData['customer.mobilePhone'];
 
     return (
       <div>
@@ -105,12 +107,11 @@ class _PersonalDetailsPanel extends BasePanel {
 
 const mapStateToProps = state => {
   return {
-    personalDetails: state.data.personalDetails,
   };
 };
 
 const actions = {
-  setPersonalDetails: setPersonalDetails,
+  updateFormData: updateFormData,
   nextPanel: nextPanel,
   editPanel: editPanel,
 };

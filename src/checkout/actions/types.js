@@ -5,11 +5,8 @@ export const types = {
   editPanel: 'EDIT_PANEL',
 
   // Data Action Types
-  setContactDetails:    'SET_CONTACT_DETAILS',
-  setPersonalDetails:   'SET_PERSONAL_DETAILS',
-  setShippingDetails:   'SET_SHIPPING_DETAILS',
-  selectShippingOption: 'SELECT_SHIPPING_OPTION',
-  setPaymentDetails:    'SET_PAYMENT_DETAILS',
+  updateFormData:    'UPDATE_FORM_DATA',
+  updatePaymentData: 'UPDATE_PAYMENT_DATA',
 
   // API Action Types
   fetchCartRequest: 'FETCH_CART_REQUEST',

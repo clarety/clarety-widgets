@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Col, Button } from 'react-bootstrap';
 import { BasePanel } from 'checkout/components';
-import { selectShippingOption, updateCheckout, nextPanel, editPanel } from 'checkout/actions';
+import { updateFormData, updateCheckout, nextPanel, editPanel } from 'checkout/actions';
 
 class _ShippingOptionsPanel extends BasePanel {
   onPressContinue = () => {
@@ -11,7 +11,7 @@ class _ShippingOptionsPanel extends BasePanel {
   };
 
   onSelectOption = key => {
-    this.props.selectShippingOption(key);
+    this.props.updateFormData({ shippingOption: key });
     this.props.updateCheckout();
   };
 
@@ -72,15 +72,15 @@ class _ShippingOptionsPanel extends BasePanel {
 
 const mapStateToProps = state => {
   return {
-    selectedKey: state.data.shippingOption,
-    canContinue: !!state.data.shippingOption,
+    selectedKey: state.data.formData.shippingOption,
+    canContinue: !!state.data.formData.shippingOption,
     shippingOptions: state.cart.shippingOptions,
     selectedOptionName: getSelectedShippingOptionLabel(state),
   };
 };
 
 const actions = {
-  selectShippingOption: selectShippingOption,
+  updateFormData: updateFormData,
   updateCheckout: updateCheckout,
   nextPanel: nextPanel,
   editPanel: editPanel,
@@ -91,7 +91,7 @@ export const ShippingOptionsPanel = connect(mapStateToProps, actions)(_ShippingO
 // TODO: move to selectors...
 const getSelectedShippingOptionLabel = state => {
   const { shippingOptions } = state.cart;
-  const { shippingOption } = state.data;
+  const { shippingOption } = state.data.formData;
 
   if (shippingOptions && shippingOption) {
     const option = shippingOptions.find(option => option.key === shippingOption);

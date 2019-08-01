@@ -1,44 +1,29 @@
 import { types } from 'checkout/actions';
 
 const initialState = {
-  contactDetails: null,
-  personalDetails: null,
-  shippingDetails: null,
-  shippingOption: null,
-  paymentDetails: null,
+  formData: {},
+  paymentData: {},
 };
 
 export const dataReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.setContactDetails:
+    case types.updateFormData:
       return {
         ...state,
-        contactDetails: action.data,
+        formData: {
+          ...state.formData,
+          ...action.formData,
+        }
       };
 
-    case types.setPersonalDetails:
-      return {
-        ...state,
-        personalDetails: action.data,
-      };
-
-    case types.setShippingDetails:
-      return {
-        ...state,
-        shippingDetails: action.data,
-      };
-
-    case types.selectShippingOption:
-      return {
-        ...state,
-        shippingOption: action.key,
-      };
-
-    case types.setPaymentDetails:
-      return {
-        ...state,
-        paymentDetails: action.data,
-      };
+    case types.updatePaymentData:
+        return {
+          ...state,
+          paymentData: {
+            ...state.paymentData,
+            ...action.paymentData,
+          }
+        };
 
     default:
       return state;

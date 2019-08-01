@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Col, Button } from 'react-bootstrap';
 import { BasePanel, TextInput, CheckboxInput } from 'checkout/components';
-import { setContactDetails, nextPanel, editPanel } from 'checkout/actions';
+import { updateFormData, nextPanel, editPanel } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _ContactDetailsPanel extends BasePanel {
@@ -11,7 +11,7 @@ class _ContactDetailsPanel extends BasePanel {
       // TODO: check if email has account
       // TODO: show password input
       // TODO: show create account checkbox
-      this.props.setContactDetails(this.state.formData);
+      this.props.updateFormData(this.state.formData);
       this.props.nextPanel();
     }
   };
@@ -20,11 +20,11 @@ class _ContactDetailsPanel extends BasePanel {
     const errors = [];
     this.setState({ errors });
 
-    const { email } = this.state.formData;
+    const email = this.state.formData['customer.email'];
     
     if (!email) {
       errors.push({
-        field: 'email',
+        field: 'customer.email',
         message: 'Please enter your email address',
       });
     }
@@ -58,12 +58,12 @@ class _ContactDetailsPanel extends BasePanel {
           <Form>
             <Form.Row>
               <Col>
-                <TextInput field="email" type="email" placeholder="Email *" />
+                <TextInput field="customer.email" type="email" placeholder="Email *" />
               </Col>
             </Form.Row>
             <Form.Row>
               <Col>
-                <CheckboxInput field="subscribeOptIn" label="Keep me up to date on news and exclusive offers" />
+                <CheckboxInput field="customer.subscribeOptIn" label="Keep me up to date on news and exclusive offers" />
               </Col>
             </Form.Row>
           </Form>
@@ -75,7 +75,7 @@ class _ContactDetailsPanel extends BasePanel {
   }
 
   renderDone() {
-    const { email } = this.props.contactDetails;
+    const email = this.state.formData['customer.email'];
 
     return (
       <div>
@@ -88,12 +88,11 @@ class _ContactDetailsPanel extends BasePanel {
 
 const mapStateToProps = state => {
   return {
-    contactDetails: state.data.contactDetails,
   };
 };
 
 const actions = {
-  setContactDetails: setContactDetails,
+  updateFormData: updateFormData,
   nextPanel: nextPanel,
   editPanel: editPanel,
 };
