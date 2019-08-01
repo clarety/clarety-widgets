@@ -2,12 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Col, Button } from 'react-bootstrap';
 import { BasePanel } from 'checkout/components';
-import { selectShippingOption, nextPanel, editPanel } from 'checkout/actions';
+import { selectShippingOption, updateCheckout, nextPanel, editPanel } from 'checkout/actions';
 
 class _ShippingOptionsPanel extends BasePanel {
   onPressContinue = () => {
     const { canContinue, nextPanel } = this.props;
     if (canContinue) nextPanel();
+  };
+
+  onSelectOption = key => {
+    this.props.selectShippingOption(key);
+    this.props.updateCheckout();
   };
 
   renderWait() {
@@ -35,15 +40,13 @@ class _ShippingOptionsPanel extends BasePanel {
   }
 
   renderShippingOption = (option, index) => {
-    const { selectShippingOption, selectedKey } = this.props;
-
     return (
       <Form.Check type="radio" id={option.key} key={option.key}>
         <Form.Check.Input
           type="radio"
           name="shippingOption"
-          checked={selectedKey === option.key}
-          onChange={() => selectShippingOption(option.key)}
+          checked={this.props.selectedKey === option.key}
+          onChange={() => this.onSelectOption(option.key)}
         />
 
         <Form.Check.Label>{option.label} ${option.cost}</Form.Check.Label>
@@ -78,6 +81,7 @@ const mapStateToProps = state => {
 
 const actions = {
   selectShippingOption: selectShippingOption,
+  updateCheckout: updateCheckout,
   nextPanel: nextPanel,
   editPanel: editPanel,
 };

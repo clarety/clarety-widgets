@@ -11,8 +11,12 @@ export const types = {
   selectShippingOption: 'SELECT_SHIPPING_OPTION',
   setPaymentDetails:    'SET_PAYMENT_DETAILS',
 
-  // Checkout Action Types
+  // API Action Types
   fetchCartRequest: 'FETCH_CART_REQUEST',
   fetchCartSuccess: 'FETCH_CART_SUCCESS',
   fetchCartFailure: 'FETCH_CART_FAILURE',
+
+  updateCheckoutRequest: 'UPDATE_CHECKOUT_REQUEST',
+  updateCheckoutSuccess: 'UPDATE_CHECKOUT_SUCCESS',
+  updateCheckoutFailure: 'UPDATE_CHECKOUT_FAILURE',
 };
