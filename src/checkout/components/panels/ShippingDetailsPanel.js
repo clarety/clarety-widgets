@@ -18,6 +18,30 @@ class _ShippingDetailsPanel extends BasePanel {
     return true;
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.customer !== prevProps.customer) {
+      this.prefillCustomerData(this.props.customer);
+    }
+  }
+
+  prefillCustomerData(customer) {
+    this.setState({
+      formData: {
+        'customer.delivery.address1': customer.delivery.address1,
+        'customer.delivery.suburb':   customer.delivery.suburb,
+        'customer.delivery.state':    customer.delivery.state,
+        'customer.delivery.postcode': customer.delivery.postcode,
+        'customer.delivery.country':  customer.delivery.country,
+
+        'customer.billing.address1': customer.billing.address1,
+        'customer.billing.suburb':   customer.billing.suburb,
+        'customer.billing.state':    customer.billing.state,
+        'customer.billing.postcode': customer.billing.postcode,
+        'customer.billing.country':  customer.billing.country,
+      }
+    })
+  }
+
   renderWait() {
     return (
       <div>
@@ -38,25 +62,25 @@ class _ShippingDetailsPanel extends BasePanel {
             <h5>Shipping Address</h5>
             <Form.Row>
               <Col>
-                <TextInput field="customer.shipping.address" placeholder="Address *" />
+                <TextInput field="customer.delivery.address1" placeholder="Address *" />
               </Col>
             </Form.Row>
 
             <Form.Row>
               <Col>
-                <TextInput field="customer.shipping.suburb" placeholder="Suburb *" />
+                <TextInput field="customer.delivery.suburb" placeholder="Suburb *" />
               </Col>
               <Col>
-                <TextInput field="customer.shipping.state" placeholder="State *" />
+                <TextInput field="customer.delivery.state" placeholder="State *" />
               </Col>
             </Form.Row>
 
             <Form.Row>
               <Col>
-                <TextInput field="customer.shipping.postcode" placeholder="Postcode *" />
+                <TextInput field="customer.delivery.postcode" placeholder="Postcode *" />
               </Col>
               <Col>
-                <TextInput field="customer.shipping.country" placeholder="Country *" />
+                <TextInput field="customer.delivery.country" placeholder="Country *" />
               </Col>
             </Form.Row>
 
@@ -69,7 +93,7 @@ class _ShippingDetailsPanel extends BasePanel {
             <h5>Billing Address</h5>
             <Form.Row>
               <Col>
-                <TextInput field="customer.billing.address" placeholder="Address *" />
+                <TextInput field="customer.billing.address1" placeholder="Address *" />
               </Col>
             </Form.Row>
 
@@ -100,8 +124,8 @@ class _ShippingDetailsPanel extends BasePanel {
 
   renderDone() {
     const { formData } = this.state;
-    const address = formData['customer.shipping.address'];
-    const suburb = formData['customer.shipping.suburb'];
+    const address = formData['customer.delivery.address1'];
+    const suburb = formData['customer.delivery.suburb'];
 
     return (
       <div>
@@ -114,7 +138,7 @@ class _ShippingDetailsPanel extends BasePanel {
 
 const mapStateToProps = state => {
   return {
-    shippingDetails: state.data.shippingDetails,
+    customer: state.login.customer,
   };
 };
 

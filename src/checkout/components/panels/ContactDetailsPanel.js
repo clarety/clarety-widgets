@@ -61,8 +61,6 @@ class _ContactDetailsPanel extends BasePanel {
         <hr />
 
         {this.renderForm()}
-
-        
       </div>
     );
   }

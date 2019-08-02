@@ -18,6 +18,27 @@ class _PersonalDetailsPanel extends BasePanel {
     return true;
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.customer !== prevProps.customer) {
+      this.prefillCustomerData(this.props.customer);
+    }
+  }
+
+  prefillCustomerData(customer) {
+    this.setState({
+      formData: {
+        'customer.firstName':        customer.firstName,
+        'customer.lastName':         customer.lastName,
+        'customer.phone1':           customer.phone1,
+        'customer.phone2':           customer.phone2,
+        'customer.mobile':           customer.mobile,
+        'customer.dateOfBirthDay':   customer.dateOfBirthDay,
+        'customer.dateOfBirthMonth': customer.dateOfBirthMonth,
+        'customer.dateOfBirthYear':  customer.dateOfBirthYear,
+      }
+    })
+  }
+
   renderWait() {
     return (
       <div>
@@ -46,16 +67,16 @@ class _PersonalDetailsPanel extends BasePanel {
 
             <Form.Row>
               <Col>
-                <TextInput field="customer.homePhone" placeholder="Home Phone" />
+                <TextInput field="customer.phone1" placeholder="Home Phone" />
               </Col>
               <Col>
-                <TextInput field="customer.workPhone" placeholder="Work Phone" />
+                <TextInput field="customer.phone2" placeholder="Work Phone" />
               </Col>
             </Form.Row>
 
             <Form.Row>
               <Col>
-                <TextInput field="customer.mobilePhone" placeholder="Mobile Phone" />
+                <TextInput field="customer.mobile" placeholder="Mobile Phone" />
               </Col>
               <Col>
               </Col>
@@ -67,13 +88,13 @@ class _PersonalDetailsPanel extends BasePanel {
 
             <Form.Row>
               <Col>
-                <TextInput field="customer.dobDay" placeholder="DD" />
+                <TextInput field="customer.dateOfBirthDay" placeholder="DD" />
               </Col>
               <Col>
-                <TextInput field="customer.dobMonth" placeholder="MM" />
+                <TextInput field="customer.dateOfBirthMonth" placeholder="MM" />
               </Col>
               <Col>
-                <TextInput field="customer.dobYear" placeholder="YYYY" />
+                <TextInput field="customer.dateOfBirthYear" placeholder="YYYY" />
               </Col>
             </Form.Row>
 
@@ -94,7 +115,7 @@ class _PersonalDetailsPanel extends BasePanel {
     const { formData } = this.state;
     const firstName = formData['customer.firstName'];
     const lastName = formData['customer.lastName'];
-    const phone = formData['customer.homePhone'] || formData['customer.workPhone'] || formData['customer.mobilePhone'];
+    const phone = formData['customer.phone1'] || formData['customer.phone2'] || formData['customer.mobile'];
 
     return (
       <div>
@@ -107,6 +128,7 @@ class _PersonalDetailsPanel extends BasePanel {
 
 const mapStateToProps = state => {
   return {
+    customer: state.login.customer,
   };
 };
 
