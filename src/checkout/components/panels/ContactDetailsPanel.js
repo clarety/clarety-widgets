@@ -1,18 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Form, Col, Button } from 'react-bootstrap';
-import { BasePanel, TextInput, CheckboxInput } from 'checkout/components';
-import { updateFormData, nextPanel, editPanel } from 'checkout/actions';
+import { Form, Col } from 'react-bootstrap';
+import { BasePanel, TextInput, CheckboxInput, Button, EditButton } from 'checkout/components';
+import { customerSearch, login, editPanel, emailStatuses } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _ContactDetailsPanel extends BasePanel {
-  onPressContinue = () => {
+  onPressCheckEmail = () => {
     if (this.validate()) {
-      // TODO: check if email has account
-      // TODO: show password input
-      // TODO: show create account checkbox
-      this.props.updateFormData(this.state.formData);
-      this.props.nextPanel();
+      const { email } = this.state.formData;
+      this.props.customerSearch(email);
+    }
+  };
+
+  onPressLogin = () => {
+    if (this.validate()) {
+      const { email, password } = this.state.formData;
+      this.props.login(email, password);
     }
   };
 
@@ -20,16 +24,18 @@ class _ContactDetailsPanel extends BasePanel {
     const errors = [];
     this.setState({ errors });
 
-    const email = this.state.formData['customer.email'];
+    const { email } = this.state.formData;
     
     if (!email) {
       errors.push({
-        field: 'customer.email',
+        field: 'email',
         message: 'Please enter your email address',
       });
     }
 
     // TODO: check that email is valid.
+
+    // TODO: validate that password is not empty...
 
     if (errors.length === 0) {
       return true;
@@ -54,32 +60,96 @@ class _ContactDetailsPanel extends BasePanel {
         <h2>1. Contact Details</h2>
         <hr />
 
-        <FormContext.Provider value={this.state}>
-          <Form>
-            <Form.Row>
-              <Col>
-                <TextInput field="customer.email" type="email" placeholder="Email *" />
-              </Col>
-            </Form.Row>
-            <Form.Row>
-              <Col>
-                <CheckboxInput field="customer.subscribeOptIn" label="Keep me up to date on news and exclusive offers" />
-              </Col>
-            </Form.Row>
-          </Form>
-        </FormContext.Provider>
+        {this.renderForm()}
 
-        <Button onClick={this.onPressContinue}>Continue</Button>
+        
       </div>
     );
   }
 
+  renderForm() {
+    switch (this.props.emailStatus) {
+      case emailStatuses.notChecked: return this.renderEmailCheckForm();
+      case emailStatuses.noAccount:  return this.renderNoAccountForm();
+      case emailStatuses.hasAccount: return this.renderLoginForm();
+    }
+  }
+
+  renderEmailCheckForm() {
+    return (
+      <FormContext.Provider value={this.state}>
+        <Form>
+          <Form.Row>
+            <Col>
+              <TextInput field="email" type="email" placeholder="Email *" />
+            </Col>
+          </Form.Row>
+        </Form>
+
+        <Button
+          title="Continue"
+          onClick={this.onPressCheckEmail}
+          isBusy={this.props.isBusy}
+        />
+      </FormContext.Provider>
+    );
+  }
+
+  renderLoginForm() {
+    return (
+      <FormContext.Provider value={this.state}>
+        <Form>
+
+          <p>You already have an account, please login to continue.</p>
+
+          <Form.Row>
+            <Col>
+              <TextInput field="email" type="email" placeholder="Email *" />
+            </Col>
+          </Form.Row>
+
+          <Form.Row>
+            <Col>
+              <TextInput field="password" type="password" placeholder="Password *" />
+            </Col>
+          </Form.Row>
+
+        </Form>
+
+        <Button
+          title="Login"
+          onClick={this.onPressLogin}
+          isBusy={this.props.isBusy}
+        />
+
+      </FormContext.Provider>
+    );
+  }
+
+  renderNoAccountForm() {
+    return (
+      <FormContext.Provider value={this.state}>
+        <Form>
+
+          {/* TODO: No account form... */}
+
+        </Form>
+
+        <Button
+          title="Continue"
+          isBusy={this.props.isBusy}
+        />
+
+      </FormContext.Provider>
+    );
+  }
+
   renderDone() {
-    const email = this.state.formData['customer.email'];
+    const email = this.state.formData['email'];
 
     return (
       <div>
-        <h2 style={{ display: 'inline', opacity: 0.3 }}>1.</h2> {email} <Button onClick={this.onPressEdit}>Edit</Button>
+        <h2 style={{ display: 'inline', opacity: 0.3 }}>1.</h2> {email} <EditButton onClick={this.onPressEdit} />
         <hr />
       </div>
     );
@@ -88,12 +158,14 @@ class _ContactDetailsPanel extends BasePanel {
 
 const mapStateToProps = state => {
   return {
+    isBusy: state.login.isBusy,
+    emailStatus: state.login.emailStatus,
   };
 };
 
 const actions = {
-  updateFormData: updateFormData,
-  nextPanel: nextPanel,
+  customerSearch: customerSearch,
+  login: login,
   editPanel: editPanel,
 };
 

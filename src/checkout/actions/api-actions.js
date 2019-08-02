@@ -1,5 +1,13 @@
 import { ClaretyApi } from 'clarety-utils';
-import { types } from '.';
+import { types, nextPanel } from '.';
+
+const clientId = '82ee4a2479780256c9bf9b951f5d1cfb';
+
+export const emailStatuses = {
+  notChecked: 'NOT_CHECKED',
+  noAccount:  'NO_ACCOUNT',
+  hasAccount: 'HAS_ACCOUNT',
+};
 
 export const fetchCart = () => {
   return async dispatch => {
@@ -17,6 +25,54 @@ export const fetchCart = () => {
       dispatch(fetchCartSuccess(result));
     }
   };
+};
+
+export const customerSearch = email => {
+  return async dispatch => {
+    dispatch(customerSearchRequest(email));
+
+    const results = await ClaretyApi.get('customer-search/', { email });
+    const result = results[0];
+
+    if (result.status === 'error') {
+      dispatch(customerSearchFailure(result));
+    } else {
+      dispatch(customerSearchSuccess(result));
+    }
+  };
+};
+
+export const login = (email, password) => {
+  return async dispatch => {
+    let result;
+
+    // Login.
+    dispatch(loginRequest(email, password));
+    result = await ClaretyApi.auth(email, password, clientId);
+
+    if (result.error) {
+      dispatch(loginFailure(result));
+      return;
+    } else {
+      dispatch(loginSuccess(result));
+    }
+
+    // Fetch customer.
+    dispatch(fetchCustomerRequest());
+    // TODO: use shop endpoint, not registration.
+    const results = await ClaretyApi.get('registration-customer/');
+    result = results[0];
+
+    if (result.status === 'error') {
+      dispatch(fetchCustomerFailure(result));
+      return;
+    } else {
+      dispatch(fetchCustomerSuccess(result));
+
+      // We've logged in successfully, proceed to the next panel.
+      dispatch(nextPanel());
+    }
+  }
 };
 
 export const updateCheckout = () => {
@@ -54,6 +110,60 @@ const fetchCartSuccess = result => ({
 
 const fetchCartFailure = result => ({
   type: types.fetchCartFailure,
+  result: result,
+});
+
+
+// Customer Search
+
+const customerSearchRequest = email => ({
+  type: types.customerSearchRequest,
+  email: email,
+});
+
+const customerSearchSuccess = result => ({
+  type: types.customerSearchSuccess,
+  result: result,
+});
+
+const customerSearchFailure = result => ({
+  type: types.customerSearchFailure,
+  result: result,
+});
+
+
+// Login
+
+const loginRequest = (email, password) => ({
+  type: types.loginRequest,
+  email: email,
+  password: password,
+});
+
+const loginSuccess = result => ({
+  type: types.loginSuccess,
+  result: result,
+});
+
+const loginFailure = result => ({
+  type: types.loginFailure,
+  result: result,
+});
+
+
+// Fetch Customer
+
+const fetchCustomerRequest = () => ({
+  type: types.fetchCustomerRequest,
+});
+
+const fetchCustomerSuccess = result => ({
+  type: types.fetchCustomerSuccess,
+  result: result,
+});
+
+const fetchCustomerFailure = result => ({
+  type: types.fetchCustomerFailure,
   result: result,
 });
 

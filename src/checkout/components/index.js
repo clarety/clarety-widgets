@@ -1,3 +1,4 @@
+export * from './inputs/Button';
 export * from './inputs/CheckboxInput';
 export * from './inputs/TextInput';
 
