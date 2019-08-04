@@ -25,21 +25,33 @@ class _ShippingDetailsPanel extends BasePanel {
   }
 
   prefillCustomerData(customer) {
-    this.setState({
-      formData: {
-        'customer.delivery.address1': customer.delivery.address1,
-        'customer.delivery.suburb':   customer.delivery.suburb,
-        'customer.delivery.state':    customer.delivery.state,
-        'customer.delivery.postcode': customer.delivery.postcode,
-        'customer.delivery.country':  customer.delivery.country,
+    if (!customer) return;
 
-        'customer.billing.address1': customer.billing.address1,
-        'customer.billing.suburb':   customer.billing.suburb,
-        'customer.billing.state':    customer.billing.state,
-        'customer.billing.postcode': customer.billing.postcode,
-        'customer.billing.country':  customer.billing.country,
-      }
-    })
+    if (customer.delivery) {
+      this.setState(prevState => ({
+        formData: {
+          ...prevState.formData,
+          'customer.delivery.address1': customer.delivery.address1,
+          'customer.delivery.suburb':   customer.delivery.suburb,
+          'customer.delivery.state':    customer.delivery.state,
+          'customer.delivery.postcode': customer.delivery.postcode,
+          'customer.delivery.country':  customer.delivery.country,
+        }
+      }));
+    }
+
+    if (customer.billing) {
+      this.setState(prevState => ({
+        formData: {
+          ...prevState.formData,  
+          'customer.billing.address1': customer.billing.address1,
+          'customer.billing.suburb':   customer.billing.suburb,
+          'customer.billing.state':    customer.billing.state,
+          'customer.billing.postcode': customer.billing.postcode,
+          'customer.billing.country':  customer.billing.country,
+        }
+      }));
+    }
   }
 
   renderWait() {
