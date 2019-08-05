@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
-import { BasePanel, TextInput, Button } from 'checkout/components';
+import { BasePanel, TextInput, CardNumberInput, Button } from 'checkout/components';
 import { makePayment, editPanel } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
@@ -43,7 +43,7 @@ class _PaymentDetailsPanel extends BasePanel {
           <Form>
             <Form.Row>
               <Col>
-                <TextInput field="cardNumber" placeholder="Card Number *" />
+                <CardNumberInput field="cardNumber" placeholder="Card Number *" />
               </Col>
             </Form.Row>
 

@@ -1,4 +1,5 @@
 export * from './inputs/Button';
+export * from './inputs/CardNumberInput';
 export * from './inputs/CheckboxInput';
 export * from './inputs/TextInput';
 
