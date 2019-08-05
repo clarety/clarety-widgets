@@ -5,7 +5,7 @@ export const types = {
   nextPanel: 'NEXT_PANEL',
   editPanel: 'EDIT_PANEL',
 
-  // Data Action Types
+  // Form Data Action Types
 
   updateFormData: 'UPDATE_FORM_DATA',
 
@@ -36,4 +36,6 @@ export const types = {
   updateCheckoutFailure: 'UPDATE_CHECKOUT_FAILURE',
 
   stripeTokenRequest: 'STRIPE_TOKEN_REQUEST',
+  stripeTokenSuccess: 'STRIPE_TOKEN_SUCCESS',
+  stripeTokenFailure: 'STRIPE_TOKEN_FAILURE',
 };

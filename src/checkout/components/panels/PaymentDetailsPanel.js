@@ -17,6 +17,13 @@ class _PaymentDetailsPanel extends BasePanel {
     return true;
   }
 
+  componentDidUpdate(prevProps) {
+    const { errors } = this.props;
+    if (prevProps.errors !== errors) {
+      this.setState({ errors });
+    }
+  }
+
   renderWait() {
     return (
       <div>
@@ -95,6 +102,7 @@ class _PaymentDetailsPanel extends BasePanel {
 const mapStateToProps = state => {
   return {
     isBusy: state.cart.isBusy,
+    errors: state.cart.errors,
   };
 };
 

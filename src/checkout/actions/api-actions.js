@@ -1,5 +1,5 @@
 import { ClaretyApi } from 'clarety-utils';
-import { createStripeToken } from 'donate/utils';
+import { createStripeToken, parseStripeError } from 'donate/utils';
 import { types, nextPanel, updateFormData } from '.';
 
 const clientId = '82ee4a2479780256c9bf9b951f5d1cfb';
@@ -96,10 +96,10 @@ export const createAccount = (firstName, lastName, email, password) => {
 
 export const updateCheckout = () => {
   return async (dispatch, getState) => {
-    const { data } = getState();
+    const { formData } = getState();
 
     // TODO: inflate form data...
-    const postData = data;
+    const postData = formData;
 
     dispatch(updateCheckoutRequest(postData));
 
@@ -116,7 +116,7 @@ export const updateCheckout = () => {
 };
 
 export const makePayment = formData => {
-  return async (dispatch, getState) => {
+  return async dispatch => {
     const stripeKey = 'pk_test_5AVvhyJrg3yIEnWSMQVBl3mQ00mK2D2SOD'; // TODO: get stripe key from somewhere... maybe the config???
     const stripeData = {
       cardNumber:  formData.cardNumber,
@@ -129,11 +129,14 @@ export const makePayment = formData => {
 
     const token = await createStripeToken(stripeData, stripeKey);
 
-    dispatch(updateFormData({
-      'payment.gatewayToken': token.id,
-    }));
-
-    dispatch(updateCheckout());
+    if (token.error) {
+      const errors = parseStripeError(token.error);
+      dispatch(stripeTokenFailure(errors));
+    } else {
+      dispatch(stripeTokenSuccess(token));
+      dispatch(updateFormData({ 'payment.gatewayToken': token.id }));
+      dispatch(updateCheckout());
+    }
   };
 };
 
@@ -245,10 +248,21 @@ const updateCheckoutFailure = result => ({
   result: result,
 });
 
+
 // Stripe Token
 
 const stripeTokenRequest = (stripeData, stripeKey) => ({
   type: types.stripeTokenRequest,
   stripeData: stripeData,
   stripeKey: stripeKey,
+});
+
+const stripeTokenSuccess = token => ({
+  type: types.stripeTokenSuccess,
+  token: token,
+});
+
+const stripeTokenFailure = errors => ({
+  type: types.stripeTokenFailure,
+  errors: errors,
 });

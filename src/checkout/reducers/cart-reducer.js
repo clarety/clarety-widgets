@@ -3,7 +3,7 @@ import { types } from 'checkout/actions';
 const initialState = {
   isBusy: false,
   cart: {},
-  errors: null,
+  errors: [],
 };
 
 export const cartReducer = (state = initialState, action) => {
@@ -14,7 +14,7 @@ export const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         isBusy: true,
-        errors: null,
+        errors: [],
       };
 
     case types.fetchCartSuccess:
@@ -23,6 +23,13 @@ export const cartReducer = (state = initialState, action) => {
         ...state,
         isBusy: false,
         cart: action.result.cart,
+      };
+
+    case types.stripeTokenFailure:
+      return {
+        ...state,
+        isBusy: false,
+        errors: action.errors,
       };
 
     default:
