@@ -1,6 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { panelStatuses, nextPanel, editPanel } from 'checkout/actions';
+import { panelStatuses } from 'checkout/actions';
 
 export class BasePanel extends React.Component {
   constructor(props) {
@@ -20,18 +19,6 @@ export class BasePanel extends React.Component {
         [field]: value,
       },
     }));
-  };
-
-  onPressContinue = () => {
-    // TODO: remove base implementation & throw.
-    if (this.validate()) {
-      this.props.nextPanel();
-    }
-  }
-
-  onPressEdit = () => {
-    // TODO: remove base implementation & throw.
-    this.props.editPanel(this.props.index);
   };
 
   render() {
@@ -56,20 +43,3 @@ export class BasePanel extends React.Component {
     throw new Error('renderDone not implemented');
   }
 }
-
-
-
-// TODO: delete...
-
-const mapStateToProps = state => {
-  return {
-
-  };
-};
-
-const actions = {
-  nextPanel: nextPanel,
-  editPanel: editPanel,
-};
-
-export const connectPanel = connect(mapStateToProps, actions);
