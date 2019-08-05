@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import { BasePanel, TextInput, Button, EditButton } from 'checkout/components';
-import { customerSearch, login, createAccount, nextPanel, editPanel, emailStatuses } from 'checkout/actions';
+import { customerSearch, login, createAccount, updateFormData, nextPanel, editPanel, emailStatuses } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _ContactDetailsPanel extends BasePanel {
@@ -32,6 +32,7 @@ class _ContactDetailsPanel extends BasePanel {
   };
 
   onPressGuestCheckout = () => {
+    this.props.updateFormData({ 'customer.email': this.state.formData.email });
     this.props.nextPanel();
   };
 
@@ -215,6 +216,7 @@ const actions = {
   customerSearch: customerSearch,
   login: login,
   createAccount: createAccount,
+  updateFormData: updateFormData,
   nextPanel: nextPanel,
   editPanel: editPanel,
 };

@@ -74,7 +74,7 @@ const mapStateToProps = state => {
   return {
     selectedKey: state.data.formData.shippingOption,
     canContinue: !!state.data.formData.shippingOption,
-    shippingOptions: state.cart.shippingOptions,
+    shippingOptions: state.cart.cart.shippingOptions,
     selectedOptionName: getSelectedShippingOptionLabel(state),
   };
 };

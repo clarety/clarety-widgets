@@ -1,15 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Form, Col, Button } from 'react-bootstrap';
-import { BasePanel, TextInput } from 'checkout/components';
-import { updatePaymentData, editPanel } from 'checkout/actions';
+import { Form, Col } from 'react-bootstrap';
+import { BasePanel, TextInput, Button } from 'checkout/components';
+import { makePayment, editPanel } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _PaymentDetailsPanel extends BasePanel {
-  onPressContinue = () => {
+  onPressPayNow = () => {
     if (this.validate()) {
-      this.props.updatePaymentData(this.state.formData);
-      // TODO: attempt to make payment...
+      this.props.makePayment(this.state.formData);
     }
   };
 
@@ -72,7 +71,11 @@ class _PaymentDetailsPanel extends BasePanel {
           </Form>
         </FormContext.Provider>
 
-        <Button onClick={this.onPressContinue}>Pay Now</Button>
+        <Button
+          title="Pay Now"
+          onClick={this.onPressPayNow}
+          isBusy={this.props.isBusy}
+        />
       </div>
     );
   }
@@ -91,11 +94,12 @@ class _PaymentDetailsPanel extends BasePanel {
 
 const mapStateToProps = state => {
   return {
+    isBusy: state.cart.isBusy,
   };
 };
 
 const actions = {
-  updatePaymentData: updatePaymentData,
+  makePayment: makePayment,
   editPanel: editPanel,
 };
 

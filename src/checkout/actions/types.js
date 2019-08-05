@@ -35,4 +35,6 @@ export const types = {
   updateCheckoutRequest: 'UPDATE_CHECKOUT_REQUEST',
   updateCheckoutSuccess: 'UPDATE_CHECKOUT_SUCCESS',
   updateCheckoutFailure: 'UPDATE_CHECKOUT_FAILURE',
+
+  stripeTokenRequest: 'STRIPE_TOKEN_REQUEST',
 };

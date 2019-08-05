@@ -1,5 +1,6 @@
 import { ClaretyApi } from 'clarety-utils';
-import { types, nextPanel } from '.';
+import { createStripeToken } from 'donate/utils';
+import { types, nextPanel, updateFormData } from '.';
 
 const clientId = '82ee4a2479780256c9bf9b951f5d1cfb';
 
@@ -108,8 +109,31 @@ export const updateCheckout = () => {
     if (result.status === 'error') {
       dispatch(updateCheckoutFailure(result));
     } else {
+      // TODO: redirect on success.
       dispatch(updateCheckoutSuccess(result));
     }
+  };
+};
+
+export const makePayment = formData => {
+  return async (dispatch, getState) => {
+    const stripeKey = 'pk_test_5AVvhyJrg3yIEnWSMQVBl3mQ00mK2D2SOD'; // TODO: get stripe key from somewhere... maybe the config???
+    const stripeData = {
+      cardNumber:  formData.cardNumber,
+      expiryMonth: formData.expiryMonth,
+      expiryYear:  formData.expiryYear,
+      ccv:         formData.ccv,
+    };
+
+    dispatch(stripeTokenRequest(stripeData, stripeKey));
+
+    const token = await createStripeToken(stripeData, stripeKey);
+
+    dispatch(updateFormData({
+      'payment.gatewayToken': token.id,
+    }));
+
+    dispatch(updateCheckout());
   };
 };
 
@@ -219,4 +243,12 @@ const updateCheckoutSuccess = result => ({
 const updateCheckoutFailure = result => ({
   type: types.updateCheckoutFailure,
   result: result,
+});
+
+// Stripe Token
+
+const stripeTokenRequest = (stripeData, stripeKey) => ({
+  type: types.stripeTokenRequest,
+  stripeData: stripeData,
+  stripeKey: stripeKey,
 });
