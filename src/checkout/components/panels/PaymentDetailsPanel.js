@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
-import { BasePanel, TextInput, CardNumberInput, Button } from 'checkout/components';
+import { BasePanel, TextInput, CardNumberInput, CcvInput, Button } from 'checkout/components';
 import { makePayment, editPanel } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
@@ -66,7 +66,7 @@ class _PaymentDetailsPanel extends BasePanel {
                 <TextInput field="expiryYear" placeholder="YYYY" />
               </Col>
               <Col>
-                <TextInput field="ccv" placeholder="CCV" />
+                <CcvInput field="ccv" />
               </Col>
             </Form.Row>
 
