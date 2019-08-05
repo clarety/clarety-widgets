@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
-import { panelsReducer, formDataReducer, cartReducer, loginReducer } from '.';
+import { panelsReducer, loginReducer, checkoutReducer, formDataReducer } from '.';
 
 export const rootReducer = combineReducers({
-  panels: panelsReducer,
+  panels:   panelsReducer,
+  login:    loginReducer,
+  checkout: checkoutReducer,
   formData: formDataReducer,
-  cart: cartReducer,
-  login: loginReducer,
 });

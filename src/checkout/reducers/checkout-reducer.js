@@ -6,7 +6,7 @@ const initialState = {
   errors: [],
 };
 
-export const cartReducer = (state = initialState, action) => {
+export const checkoutReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.fetchCartRequest:
     case types.updateCheckoutRequest:
@@ -23,6 +23,13 @@ export const cartReducer = (state = initialState, action) => {
         ...state,
         isBusy: false,
         cart: action.result.cart,
+      };
+
+    case types.updateCheckoutFailure:
+      return {
+        ...state,
+        isBusy: false,
+        errors: action.result.validationErrors,
       };
 
     case types.stripeTokenFailure:

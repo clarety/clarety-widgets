@@ -98,8 +98,8 @@ class _PaymentDetailsPanel extends BasePanel {
 
 const mapStateToProps = state => {
   return {
-    isBusy: state.cart.isBusy,
-    errors: state.cart.errors,
+    isBusy: state.checkout.isBusy,
+    errors: state.checkout.errors,
   };
 };
 

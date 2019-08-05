@@ -1,4 +1,4 @@
-export * from './cart-reducer';
+export * from './checkout-reducer';
 export * from './form-data-reducer';
 export * from './login-reducer';
 export * from './panels-reducer';
