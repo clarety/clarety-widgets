@@ -24,6 +24,10 @@ export const types = {
   loginSuccess: 'LOGIN_SUCCESS',
   loginFailure: 'LOGIN_FAILURE',
 
+  createAccountRequest: 'CREATE_ACCOUNT_REQUEST',
+  createAccountSuccess: 'CREATE_ACCOUNT_SUCCESS',
+  createAccountFailure: 'CREATE_ACCOUNT_FAILURE',
+
   fetchCustomerRequest: 'FETCH_CUSTOMER_REQUEST',
   fetchCustomerSuccess: 'FETCH_CUSTOMER_SUCCESS',
   fetchCustomerFailure: 'FETCH_CUSTOMER_FAILURE',

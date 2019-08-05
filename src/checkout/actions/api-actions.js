@@ -75,6 +75,24 @@ export const login = (email, password) => {
   }
 };
 
+export const createAccount = (firstName, lastName, email, password) => {
+  return async dispatch => {
+    const postData = { firstName, lastName, email, password };
+
+    dispatch(createAccountRequest(postData));
+    const result = await ClaretyApi.post('customer-new/', postData);
+
+    if (result.status === 'error') {
+      dispatch(createAccountFailure(result));
+      return;
+    } else {
+      dispatch(createAccountSuccess(result));
+      // We've created an account, now login.
+      dispatch(login(email, password));
+    }
+  };
+};
+
 export const updateCheckout = () => {
   return async (dispatch, getState) => {
     const { data } = getState();
@@ -147,6 +165,24 @@ const loginSuccess = result => ({
 
 const loginFailure = result => ({
   type: types.loginFailure,
+  result: result,
+});
+
+
+// Create Account
+
+const createAccountRequest = (postData) => ({
+  type: types.createAccountRequest,
+  postData: postData,
+});
+
+const createAccountSuccess = result => ({
+  type: types.createAccountSuccess,
+  result: result,
+});
+
+const createAccountFailure = result => ({
+  type: types.createAccountFailure,
   result: result,
 });
 

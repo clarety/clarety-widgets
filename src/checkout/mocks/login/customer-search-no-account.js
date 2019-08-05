@@ -1,10 +1,10 @@
-export const customerSearchSuccess = {
+export const customerSearchNoAccount = {
   "requestId": "",
   "success": true,
   "result": [
     {
       "email": "customer@email.com",
-      "exists": true
+      "exists": false
     }
   ]
 };

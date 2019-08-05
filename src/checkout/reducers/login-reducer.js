@@ -43,6 +43,21 @@ export const loginReducer = (state = initialState, action) => {
         jwt: action.result,
       };
 
+    // Create Account
+
+    case types.createAccountRequest:
+      return {
+        ...state,
+        isBusy: true,
+        errors: null,
+      };
+
+    case types.createAccountSuccess:
+      return {
+        ...state,
+        isBusy: false,
+      };
+
     // Fetch Customer
 
     case types.fetchCustomerRequest:
@@ -64,6 +79,7 @@ export const loginReducer = (state = initialState, action) => {
 
     case types.customerSearchFailure:
     case types.loginFailure:
+    case types.createAccountFailure:
     case types.fetchCustomerFailure:
       return {
         ...state,
