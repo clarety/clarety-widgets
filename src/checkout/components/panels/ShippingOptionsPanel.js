@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Form, Col, Button } from 'react-bootstrap';
-import { BasePanel } from 'checkout/components';
+import { Form } from 'react-bootstrap';
+import { BasePanel, EditButton, Button } from 'checkout/components';
 import { updateFormData, updateCheckout, nextPanel, editPanel } from 'checkout/actions';
 
 class _ShippingOptionsPanel extends BasePanel {
@@ -25,7 +25,7 @@ class _ShippingOptionsPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { shippingOptions, canContinue } = this.props;
+    const { shippingOptions, canContinue, isBusy } = this.props;
 
     return (
       <div>
@@ -34,7 +34,12 @@ class _ShippingOptionsPanel extends BasePanel {
 
         {shippingOptions && shippingOptions.map(this.renderShippingOption)}
 
-        <Button onClick={this.onPressContinue} disabled={!canContinue}>Continue</Button>
+        <Button
+          title="Continue"
+          onClick={this.onPressContinue}
+          isBusy={isBusy}
+          disabled={!canContinue}
+        />
       </div>
     );
   }
@@ -63,7 +68,7 @@ class _ShippingOptionsPanel extends BasePanel {
 
     return (
       <div>
-        <h2 style={{ display: 'inline', opacity: 0.3 }}>4.</h2> {selectedOptionName} <Button onClick={this.onPressEdit}>Edit</Button>
+        <h2 style={{ display: 'inline', opacity: 0.3 }}>4.</h2> {selectedOptionName} <EditButton onClick={this.onPressEdit} />
         <hr />
       </div>
     );
@@ -72,6 +77,7 @@ class _ShippingOptionsPanel extends BasePanel {
 
 const mapStateToProps = state => {
   return {
+    isBusy: state.checkout.isBusy,
     selectedKey: state.formData.shippingOption,
     canContinue: !!state.formData.shippingOption,
     shippingOptions: state.checkout.cart.shippingOptions,
