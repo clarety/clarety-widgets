@@ -7,8 +7,7 @@ export const types = {
 
   // Data Action Types
 
-  updateFormData:    'UPDATE_FORM_DATA',
-  updatePaymentData: 'UPDATE_PAYMENT_DATA',
+  updateFormData: 'UPDATE_FORM_DATA',
 
   // API Action Types
 

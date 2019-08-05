@@ -72,8 +72,8 @@ class _ShippingOptionsPanel extends BasePanel {
 
 const mapStateToProps = state => {
   return {
-    selectedKey: state.data.formData.shippingOption,
-    canContinue: !!state.data.formData.shippingOption,
+    selectedKey: state.formData.shippingOption,
+    canContinue: !!state.formData.shippingOption,
     shippingOptions: state.cart.cart.shippingOptions,
     selectedOptionName: getSelectedShippingOptionLabel(state),
   };
@@ -91,7 +91,7 @@ export const ShippingOptionsPanel = connect(mapStateToProps, actions)(_ShippingO
 // TODO: move to selectors...
 const getSelectedShippingOptionLabel = state => {
   const { shippingOptions } = state.cart;
-  const { shippingOption } = state.data.formData;
+  const { shippingOption } = state.formData;
 
   if (shippingOptions && shippingOption) {
     const option = shippingOptions.find(option => option.key === shippingOption);
