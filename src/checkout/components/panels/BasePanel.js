@@ -12,6 +12,11 @@ export class BasePanel extends React.Component {
     };
   }
 
+  onPressEdit = () => {
+    const { index, editPanel } = this.props;
+    editPanel(index);
+  };
+
   onChangeField = (field, value) => {
     this.setState(prevState => ({
       formData: {
