@@ -42,3 +42,13 @@ export function iterate(from, to, callback) {
 export function calcProgress(participantCount, participantIndex) {
   return 40 + (40 / participantCount) * (participantIndex + 1);
 }
+
+export function scrollIntoView(elementRef) {
+  // TODO: querySelector isn't very react-y...
+  // Can we get a ref from the MiniCart component or something?
+  const navbarElement = document.querySelector('.navbar');
+  const navbarHeight = navbarElement ? navbarElement.offsetHeight : 0;
+
+  var scrollTarget = elementRef.offsetTop - navbarHeight;
+  window.scroll({ top: scrollTarget, behavior: 'smooth' });
+};

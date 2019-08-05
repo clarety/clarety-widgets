@@ -5,9 +5,11 @@ import { Container, Button, Form, Row, Col } from 'react-bootstrap';
 import { TextInput, DobInput, CheckboxInput, SelectInput, PhoneInput } from 'registrations/components';
 import { setDetails, setErrors, resetDetails, pushNextDetailsPanel } from 'registrations/actions';
 import { getExtendFields } from 'registrations/selectors';
-import { FormContext } from 'registrations/utils';
+import { FormContext, scrollIntoView } from 'registrations/utils';
 
 export class _DetailsPanel extends React.Component {
+  ref = React.createRef();
+
   constructor(props) {
     super(props);
 
@@ -88,6 +90,12 @@ export class _DetailsPanel extends React.Component {
     return true;
   }
 
+  setErrors(errors) {
+    const { setErrors, participantIndex } = this.props;
+    setErrors(participantIndex, errors);
+    scrollIntoView(this.ref);
+  }
+
   componentWillUnmount() {
     const { resetDetails, participantIndex } = this.props;
     resetDetails(participantIndex);
@@ -105,7 +113,7 @@ export class _DetailsPanel extends React.Component {
     const { firstName } = this.state.customerFormContext.formData;
 
     return (
-      <Container>
+      <Container ref={ref => this.ref = ref}>
         <FormattedMessage id="detailsPanel.editTitle" values={{ firstName }} tagName="h2" />
 
         <Form onSubmit={this.onClickNext}>
