@@ -1,4 +1,5 @@
 import { ClaretyApi } from 'clarety-utils';
+import { parseNestedElements } from 'shared/utils';
 import { createStripeToken, parseStripeError } from 'donate/utils';
 import { types, nextPanel, updateFormData } from '.';
 
@@ -98,8 +99,7 @@ export const updateCheckout = () => {
   return async (dispatch, getState) => {
     const { formData } = getState();
 
-    // TODO: inflate form data...
-    const postData = formData;
+    const postData = parseNestedElements(formData);
 
     dispatch(updateCheckoutRequest(postData));
 
@@ -109,7 +109,11 @@ export const updateCheckout = () => {
     if (result.status === 'error') {
       dispatch(updateCheckoutFailure(result));
     } else {
-      // TODO: redirect on success.
+      // Redirect on success.
+      if (result.cart.status === 'complete') {
+        window.location.href = result.redirect;
+      }
+
       dispatch(updateCheckoutSuccess(result));
     }
   };
@@ -117,7 +121,8 @@ export const updateCheckout = () => {
 
 export const makePayment = formData => {
   return async dispatch => {
-    const stripeKey = 'pk_test_5AVvhyJrg3yIEnWSMQVBl3mQ00mK2D2SOD'; // TODO: get stripe key from somewhere... maybe the config???
+    // TODO: get stripe key from somewhere... maybe the config???
+    const stripeKey = 'pk_test_5AVvhyJrg3yIEnWSMQVBl3mQ00mK2D2SOD';
     const stripeData = {
       cardNumber:  formData.cardNumber,
       expiryMonth: formData.expiryMonth,
