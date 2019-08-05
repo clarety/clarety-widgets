@@ -12,6 +12,7 @@ export * from './panels/PersonalDetailsPanel';
 export * from './panels/ShippingDetailsPanel';
 export * from './panels/ShippingOptionsPanel';
 
+export * from './CartSummary';
 export * from './PanelStack';
 
 export * from './Checkout';

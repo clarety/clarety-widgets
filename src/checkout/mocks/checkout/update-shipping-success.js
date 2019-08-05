@@ -6,7 +6,22 @@ export const updateShippingSuccess = {
       "cart": {
         "sale": {},
 
-        "lines": [],
+        "lines": [
+          {
+            "id": "9875654",
+            "description": "Human Fund Crew T-Shirt",
+            "price": 39.90,
+            "quantity": 2,
+            "total": 79.80
+          },
+          {
+            "id": "9875655",
+            "description": "Human Kind Coffee Mug",
+            "price": 14.95,
+            "quantity": 1,
+            "total": 14.95
+          }
+        ],
 
         "shippingOption": "789",
         
@@ -31,7 +46,12 @@ export const updateShippingSuccess = {
           }
         ],
 
-        "summary": {}
+        "summary": {
+          "subtotal": 94.97,
+          "shipping": 20.00,
+          "discount": 9.48,
+          "total": 85.27
+        }
       }
     }
   ]
