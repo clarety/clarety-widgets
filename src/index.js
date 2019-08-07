@@ -1,4 +1,5 @@
-export { ClaretyConfig } from 'shared/services';
+export { Config } from 'clarety-utils';
+
 export { renderWidget, getElementOptions } from 'shared/utils';
 
 export { SubscribeWidget } from 'subscribe/views';
