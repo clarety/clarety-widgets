@@ -63,7 +63,10 @@ class _PureDobInput extends React.PureComponent {
   }
 
   renderYearInput() {
-    const { year, yearField, onChange, intl, required } = this.props;
+    const { year, yearField, onChange, intl, required, maxYear } = this.props;
+
+    const startYear = maxYear || currentYear;
+    const endYear = 1900;
 
     const onChangeYear = event => onChange(yearField, event.target.value);
 
@@ -73,7 +76,7 @@ class _PureDobInput extends React.PureComponent {
           {intl.formatMessage({ id: 'date.year' })}
         </option>
 
-        {iterate(currentYear, 1900, value => 
+        {iterate(startYear, endYear, value => 
           <option key={value} value={value}>{value}</option>
         )}
       </Form.Control>

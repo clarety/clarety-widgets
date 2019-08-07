@@ -24,7 +24,6 @@ export const getRegistrationTypes = state => {
 
 export const getExtendFields = state => {
   try {
-    // TODO: what if we have multiple extend forms?
     return state.init.extendForms[0].extendFields;
   } catch (error) {
     return null;
@@ -33,7 +32,6 @@ export const getExtendFields = state => {
 
 const getExtendFormId = state => {
   try {
-    // TODO: what if we have multiple extend forms?
     return state.init.extendForms[0].formId;
   } catch (error) {
     return null;
@@ -62,7 +60,6 @@ export const getCreateRegistrationPostData = state => {
 };
 
 export const getSubmitRegistrationPostData = state => {
-  // TODO: need to add $0 payment info.
   return {
     uid: state.registration.uid,
     jwt: state.registration.jwt,
