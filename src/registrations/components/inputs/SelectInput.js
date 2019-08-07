@@ -49,6 +49,7 @@ class PureSelectInput extends React.PureComponent {
           autoComplete="off"
           style={{ position: 'absolute', width: 0, height: 0, left: '50%', opacity: 0 }}
           value={this.state.value}
+          onChange={() => {}}
           required={required}
         />
         <FieldError error={error} />

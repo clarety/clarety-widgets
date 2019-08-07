@@ -6,7 +6,10 @@ export const fetchInit = () => {
     dispatch(initFetchRequest());
 
     const seriesId = Config.get('seriesId');
-    const result = await ClaretyApi.get('registration-full/', { seriesId });
+    const storeId = Config.get('storeId');
+    const endpoint = Config.get('initEndpoint') || 'registration-intl/';
+
+    const result = await ClaretyApi.get(endpoint, { seriesId, storeId });
 
     if (result[0] && result[0].status !== 'error') {
       dispatch(initFetchSuccess(result[0]));

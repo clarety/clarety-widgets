@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Button, Form, Row, Col } from 'react-bootstrap';
+import { getElementOptions } from 'shared/utils';
 import { TextInput, DobInput, CheckboxInput, SelectInput, PhoneInput } from 'registrations/components';
 import { setDetails, setErrors, resetDetails, pushNextDetailsPanel } from 'registrations/actions';
 import { getExtendFields } from 'registrations/selectors';
