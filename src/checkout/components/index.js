@@ -13,6 +13,7 @@ export * from './panels/ShippingDetailsPanel';
 export * from './panels/ShippingOptionsPanel';
 
 export * from './CartSummary';
+export * from './DiscountCodeForm';
 export * from './PanelStack';
 
 export * from './Checkout';

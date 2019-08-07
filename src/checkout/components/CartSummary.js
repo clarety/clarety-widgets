@@ -1,21 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Col, Form } from 'react-bootstrap';
-import { TextInput, Button } from 'checkout/components';
-import { FormContext } from 'checkout/utils';
+import { DiscountCodeForm } from 'checkout/components';
 
 class _CartSummary extends React.Component {
-  state = {
-    formData: {},
-    errors: [],
-    onChange: () => {},
-  };
-
-  onPressApplyDiscount = () => {
-    // TODO:
-    console.log('apply discount...');
-  };
-
   render() {
     const { cart } = this.props;
     if (!cart || !cart.lines) return null;
@@ -25,29 +12,9 @@ class _CartSummary extends React.Component {
         {cart.lines.map(saleline =>
           <Saleline saleline={saleline} key={saleline.id} />
         )}
-
         <hr />
-
-        <FormContext.Provider value={this.state}>
-          <Form>
-            <Form.Row>
-              <Col>
-                <TextInput field="discountCode" placeholder="Discount Code" />
-              </Col>
-              <Col xs="auto">
-                <Button
-                  title="Apply"
-                  onClick={this.onPressApplyDiscount}
-                  // isBusy={} TODO:
-                  // disabled={} TODO:
-                />
-              </Col>
-            </Form.Row>
-          </Form>
-        </FormContext.Provider>
-
+        <DiscountCodeForm />
         <hr />
-
         <CartTotals summary={cart.summary} />
       </div>
     );
@@ -68,7 +35,6 @@ export const CartSummary = connect(mapStateToProps, actions)(_CartSummary);
 const Saleline = ({ saleline }) => (
   <p>{saleline.description}</p>
 );
-
 
 const CartTotals = ({ summary }) => (
   <React.Fragment>
@@ -101,4 +67,3 @@ const TotalLine = ({ label, value }) => {
 function currency(number) {
   return `$${number.toFixed(2)}`;
 }
-

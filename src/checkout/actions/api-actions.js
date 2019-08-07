@@ -95,13 +95,13 @@ export const createAccount = (firstName, lastName, email, password) => {
   };
 };
 
-export const updateCheckout = () => {
+export const updateCheckout = ({ isDiscountCode = false } = {}) => {
   return async (dispatch, getState) => {
     const { formData } = getState();
 
     const postData = parseNestedElements(formData);
 
-    dispatch(updateCheckoutRequest(postData));
+    dispatch(updateCheckoutRequest(postData, isDiscountCode));
 
     const results = await ClaretyApi.post('checkout/', postData);
     const result = results[0];
@@ -238,9 +238,10 @@ const fetchCustomerFailure = result => ({
 
 // Update Checkout
 
-const updateCheckoutRequest = postData => ({
+const updateCheckoutRequest = (postData, isDiscountCode) => ({
   type: types.updateCheckoutRequest,
   postData: postData,
+  isDiscountCode: isDiscountCode,
 });
 
 const updateCheckoutSuccess = result => ({
