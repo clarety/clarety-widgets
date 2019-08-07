@@ -10,7 +10,7 @@ import { getValidationError } from 'form/utils';
 class PurePhoneInput extends React.PureComponent {
   render() {
     const { field, value, onChange, required, error } = this.props;
-    const country = "IN"; // TODO: get from config...
+    const country = "AU"; // TODO: get from config...
 
     return (
       <Form.Group controlId={field}>

@@ -12,6 +12,8 @@ class _EventPanel extends React.Component {
   };
 
   onClickNext = () => {
+    if (!this.state.event) return;
+
     this.props.setEvent(this.state.event.eventId);
 
     this.props.pushPanel({
@@ -44,7 +46,7 @@ class _EventPanel extends React.Component {
       <Container>
         <FormattedMessage id="eventPanel.editTitle" tagName="h2" />
 
-        <Form className="panel-body">
+        <div className="panel-body">
           <Form.Group>
             <Select
               options={events}
@@ -55,7 +57,7 @@ class _EventPanel extends React.Component {
               classNamePrefix="react-select"
             />
           </Form.Group>
-        </Form>
+        </div>
 
         <Button
           onClick={this.onClickNext}
