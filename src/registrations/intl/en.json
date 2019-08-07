@@ -1,0 +1,88 @@
+{
+  "app.title": "Registrations",
+
+  "btn.next": "Continue",
+  "btn.edit": "Modify",
+  "btn.reset": "Start Over",
+  "btn.submit": "Submit Registration",
+  "btn.retry": "Try Again",
+
+  "label.firstName": "First Name",
+  "label.lastName": "Last Name",
+  "label.email": "Email",
+  "label.gender": "Gender",
+  "label.dateOfBirth": "Date Of Birth",
+  "label.phone": "Phone",
+
+  "A21 TEMP!": "TEMPORARY STUFF THAT DOESNT GO HERE...",
+  "label.2019walkforfreedomformhowdidyouhearaboutthewalkforfreedom": "How did you hear about the Walk For Freedom?",
+  "label.2019walkforfreedomformhaveyouparticipatedinawalkforfreedombefore": "Have you participated in a Walk For Freedom before?",
+  "label.2019walkforfreedomformemergencycontactname": "Emergency Contact Name",
+  "label.2019walkforfreedomformemergencycontactnumber": "Emergency Contact Number",
+  "label.2019walkforfreedomformsignuptoreceiveupdates": "Sign up to receive updates",
+  "label.2019walkforfreedomformreleasewaiver": "I agree to the A21 Release and Waiver",
+
+  "THE MOVEMENT TEMP!": "TEMPORARY STUFF THAT DOESNT GO HERE...",
+  "label.additional1": "Occupation",
+  "label.organisationid": "Organisation / Institution",
+  "label.registrationformformemergencycontact": "Emergency Contact Name",
+  "label.registrationformformemergencycontact1": "Emergency Contact Number",
+  "label.registrationformformsupportsocial": "Are you willing to support the Walk for Freedom efforts through social media?",
+  "label.registrationformformsupportvolunteer": "Are you willing to volunteer at the Walk for Freedom event?",
+  "label.registrationformformsupportresources": "Are you willing to sponsor/mobilize resources for the walk?",
+
+  "busy.init": "Just A Moment",
+  "busy.validate": "Checking Your Registration Details",
+  "busy.submit": "Submitting Your Registration",
+
+  "date.day": "Day",
+  "date.month": "Month",
+  "date.year": "Year",
+  "date.month1": "January",
+  "date.month2": "February",
+  "date.month3": "March",
+  "date.month4": "April",
+  "date.month5": "May",
+  "date.month6": "June",
+  "date.month7": "July",
+  "date.month8": "August",
+  "date.month9": "September",
+  "date.month10": "October",
+  "date.month11": "November",
+  "date.month12": "December",
+
+  "qtys.adult": "{qty, plural, one {# × Adult} other {# × Adults}}",
+  "qtys.child": "{qty, plural, one {# × Child} other {# × Children}}",
+
+  "eventPanel.editTitle": "Which Location Are You Registering For?",
+  "eventPanel.doneTitle": "Location",
+
+  "qtysPanel.editTitle": "Participant Selection",
+  "qtysPanel.doneTitle": "Registration",
+  "qtysPanel.adult.title": "Adults",
+  "qtysPanel.adult.subtitle": "Ages 17+",
+  "qtysPanel.child.title": "Children",
+  "qtysPanel.child.subtitle": "Ages 13 - 17",
+
+  "namesPanel.editTitle": "Participant Names",
+  "namesPanel.doneTitle": "Participants",
+  "namesPanel.adult.title": "Adult Registration",
+  "namesPanel.child.title": "Child Registration",
+
+  "detailsPanel.editTitle": "Registration Details For {firstName}",
+  "detailsPanel.customerFormTitle": "Personal Details",
+  "detailsPanel.extendFormTitle": "Event Details",
+  "detailsPanel.doneTitle": "Registration Details For {firstName}",
+  
+  "reviewPanel.errorTitle": "We Found Some Problems With Your Registration",
+  "reviewPanel.errorSubtitle": "Please correct the issues and try again.",
+  "reviewPanel.reviewTitle": "Please Review Your Registration",
+
+  "resultsPage.title": "You're Officially Registered!",
+  "resultsPage.message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. \n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  "resultsPage.orderId": "Order ID: {id}",
+  "resultsPage.items": "Items",
+  "resultsPage.price": "Price",
+  "resultsPage.qty": "Qty",
+  "resultsPage.total": "Total"
+}

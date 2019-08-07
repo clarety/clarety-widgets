@@ -1,3 +1,5 @@
+import mem from 'mem';
+
 export const findElement = (field, elements) => {
   const element = _recursiveFindElement(field, elements);
   if (!element) throw new Error(`[Clarety] element for field "${field}" not found.`);
@@ -42,3 +44,8 @@ const _addNestedElement = (properties, value, output) => {
     }
   }
 }
+
+export const getElementOptions = mem((field, init) => {
+  const element = findElement(field, init.elements);
+  return element.options;
+});

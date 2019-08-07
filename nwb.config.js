@@ -13,10 +13,11 @@ module.exports = {
     plugins: [
       ['module-resolver', {
         'alias': {
-          'shared':    './src/shared',
-          'form':      './src/form',
-          'subscribe': './src/subscribe',
-          'donate':    './src/donate',
+          'shared':        './src/shared',
+          'form':          './src/form',
+          'subscribe':     './src/subscribe',
+          'donate':        './src/donate',
+          'registrations': './src/registrations',
         },
       }],
     ],
