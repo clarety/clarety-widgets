@@ -31,7 +31,7 @@ class _PureDobInput extends React.PureComponent {
 
     return (
       <Form.Control as="select" value={day} onChange={onChangeDay} required={required}>
-        <option value="" disabled selected hidden>
+        <option value="" disabled hidden>
           {intl.formatMessage({ id: 'date.day' })}
         </option>
 
@@ -49,7 +49,7 @@ class _PureDobInput extends React.PureComponent {
 
     return (
       <Form.Control as="select" value={month} onChange={onChangeMonth} required={required}>
-        <option value="" disabled selected hidden>
+        <option value="" disabled hidden>
           {intl.formatMessage({ id: 'date.month' })}
         </option>
         
@@ -69,7 +69,7 @@ class _PureDobInput extends React.PureComponent {
 
     return (
       <Form.Control as="select" value={year} onChange={onChangeYear} required={required}>
-        <option value="" disabled selected hidden>
+        <option value="" disabled hidden>
           {intl.formatMessage({ id: 'date.year' })}
         </option>
 
