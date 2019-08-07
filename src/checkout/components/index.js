@@ -14,6 +14,7 @@ export * from './panels/ShippingOptionsPanel';
 
 export * from './CartSummary';
 export * from './DiscountCodeForm';
+export * from './PanelHeader';
 export * from './PanelStack';
 
 export * from './Checkout';

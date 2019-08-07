@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
-import { BasePanel, TextInput, Button, EditButton } from 'checkout/components';
+import { BasePanel, TextInput, Button } from 'checkout/components';
+import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { customerSearch, login, createAccount, updateFormData, nextPanel, editPanel, emailStatuses } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
@@ -63,18 +64,14 @@ class _ContactDetailsPanel extends BasePanel {
 
   renderWait() {
     return (
-      <div>
-        <h2 style={{ opacity: 0.3 }}>1. Contact Details</h2>
-        <hr />
-      </div>
+      <WaitPanelHeader number="1" title="Contact Details" />
     );
   }
 
   renderEdit() {
     return (
-      <div>
-        <h2>1. Contact Details</h2>
-        <hr />
+      <div className="panel">
+        <EditPanelHeader number="1" title="Contact Details" />
 
         {this.renderForm()}
       </div>
@@ -197,10 +194,11 @@ class _ContactDetailsPanel extends BasePanel {
     const email = this.state.formData['email'];
 
     return (
-      <div>
-        <h2 style={{ display: 'inline', opacity: 0.3 }}>1.</h2> {email} <EditButton onClick={this.onPressEdit} />
-        <hr />
-      </div>
+      <DonePanelHeader
+        number="1"
+        title={email}
+        onPressEdit={this.onPressEdit}
+      />
     );
   }
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Col, Button } from 'react-bootstrap';
 import { BasePanel, TextInput, CheckboxInput } from 'checkout/components';
+import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { updateFormData, nextPanel, editPanel } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
@@ -56,18 +57,14 @@ class _ShippingDetailsPanel extends BasePanel {
 
   renderWait() {
     return (
-      <div>
-        <h2 style={{ opacity: 0.3 }}>3. Shipping Details</h2>
-        <hr />
-      </div>
+      <WaitPanelHeader number="3" title="Shipping Details" />
     );
   }
 
   renderEdit() {
     return (
-      <div>
-        <h2>3. Shipping Details</h2>
-        <hr />
+      <div className="panel">
+        <EditPanelHeader number="3" title="Shipping Details" />
         
         <FormContext.Provider value={this.state}>
           <Form>
@@ -139,11 +136,14 @@ class _ShippingDetailsPanel extends BasePanel {
     const address = formData['customer.delivery.address1'];
     const suburb = formData['customer.delivery.suburb'];
 
+    const title = `${address}, ${suburb}`;
+
     return (
-      <div>
-        <h2 style={{ display: 'inline', opacity: 0.3 }}>3.</h2> {address}, {suburb} <Button onClick={this.onPressEdit}>Edit</Button>
-        <hr />
-      </div>
+      <DonePanelHeader
+        number="3"
+        title={title}
+        onPressEdit={this.onPressEdit}
+      />
     );
   }
 }

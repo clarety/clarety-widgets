@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import { BasePanel, TextInput, CardNumberInput, CcvInput, ExpiryInput, Button } from 'checkout/components';
+import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { makePayment, editPanel } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
@@ -26,18 +27,14 @@ class _PaymentDetailsPanel extends BasePanel {
 
   renderWait() {
     return (
-      <div>
-        <h2 style={{ opacity: 0.3 }}>5. Payment Details</h2>
-        <hr />
-      </div>
+      <WaitPanelHeader number="5" title="Payment Details" />
     );
   }
 
   renderEdit() {
     return (
-      <div>
-        <h2>5. Payment Details</h2>
-        <hr />
+      <div className="panel">
+        <EditPanelHeader number="5" title="Payment Details" />
 
         <FormContext.Provider value={this.state}>
           <Form>
@@ -88,10 +85,11 @@ class _PaymentDetailsPanel extends BasePanel {
     const cardNumber = this.state.formData['cardNumber'];
 
     return (
-      <div>
-        <h2 style={{ display: 'inline', opacity: 0.3 }}>5.</h2> {cardNumber} <Button onClick={this.onPressEdit}>Edit</Button>
-        <hr />
-      </div>
+      <DonePanelHeader
+        number="5"
+        title={cardNumber}
+        onPressEdit={this.onPressEdit}
+      />
     );
   }
 }

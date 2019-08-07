@@ -2263,9 +2263,9 @@ circular-json@^0.5.4:
   integrity sha512-4ivwqHpIFJZBuhN3g/pEcdbnGUywkBblloGbkglyloVjjR3uT6tieI89MVOfbP2tHX5sgb01FuLgAOzebNlJNQ==
 
 clarety-utils@^1.0.0:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/clarety-utils/-/clarety-utils-1.0.2.tgz#cdb762fbb3345e0f2ae749af9f5020c79e7bd51e"
-  integrity sha512-EckGSV/hyzScc9qnHD3fSJKtXQ/tgDTE7JDzLEUls+6WMdqxnUNrQqtJxOkfg//WQHgDtjDUjnI7PwWl4iRuqw==
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/clarety-utils/-/clarety-utils-1.0.3.tgz#62aae1b04bd45c6640b1a88cdb8b1aacd4176e02"
+  integrity sha512-uGr0t16viRGrFVJjU9X/OyE7VTrl51u3AANCQtqfbrMGAQZDnCYTE5reXHDIc1s5cJmEOOjMcKNTvSOqc1VYqQ==
   dependencies:
     js-cookie "^2.2.0"
 
@@ -5503,9 +5503,9 @@ js-base64@^2.1.8:
   integrity sha512-M7kLczedRMYX4L8Mdh4MzyAMM9O5osx+4FcOQuTvr3A9F2D9S5JXheN0ewNbrvK2UatkTRhL5ejGmGSjNMiZuw==
 
 js-cookie@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-2.2.0.tgz#1b2c279a6eece380a12168b92485265b35b1effb"
-  integrity sha1-Gywnmm7s44ChIWi5JIUmWzWx7/s=
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-2.2.1.tgz#69e106dc5d5806894562902aa5baec3744e9b2b8"
+  integrity sha512-HvdH2LzI/EAZcUwA8+0nKNtWHqS+ZmijLA30RwZA0bo7ToCckjK5MkGhjED9KoRcXO6BaGI3I9UIzSA1FKFPOQ==
 
 "js-tokens@^3.0.0 || ^4.0.0":
   version "4.0.0"

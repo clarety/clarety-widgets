@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Col, Button } from 'react-bootstrap';
 import { BasePanel, TextInput } from 'checkout/components';
+import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { updateFormData, nextPanel, editPanel } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
@@ -41,18 +42,14 @@ class _PersonalDetailsPanel extends BasePanel {
 
   renderWait() {
     return (
-      <div>
-        <h2 style={{ opacity: 0.3 }}>2. Personal Details</h2>
-        <hr />
-      </div>
+      <WaitPanelHeader number="2" title="Personal Details" />
     );
   }
 
   renderEdit() {
     return (
-      <div>
-        <h2>2. Personal Details</h2>
-        <hr />
+      <div className="panel">
+        <EditPanelHeader number="2" title="Personal Details" />
         
         <FormContext.Provider value={this.state}>
           <Form>
@@ -117,11 +114,14 @@ class _PersonalDetailsPanel extends BasePanel {
     const lastName = formData['customer.lastName'];
     const phone = formData['customer.phone1'] || formData['customer.phone2'] || formData['customer.mobile'];
 
+    const title = `${firstName} ${lastName}, ${phone}`;
+
     return (
-      <div>
-        <h2 style={{ display: 'inline', opacity: 0.3 }}>2.</h2> {firstName} {lastName}, {phone} <Button onClick={this.onPressEdit}>Edit</Button>
-        <hr />
-      </div>
+      <DonePanelHeader
+        number="2"
+        title={title}
+        onPressEdit={this.onPressEdit}
+      />
     );
   }
 }

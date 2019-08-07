@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { BasePanel, EditButton, Button } from 'checkout/components';
+import { BasePanel, Button } from 'checkout/components';
+import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { updateFormData, updateCheckout, nextPanel, editPanel } from 'checkout/actions';
 
 class _ShippingOptionsPanel extends BasePanel {
@@ -17,10 +18,7 @@ class _ShippingOptionsPanel extends BasePanel {
 
   renderWait() {
     return (
-      <div>
-        <h2 style={{ opacity: 0.3 }}>4. Shipping Options</h2>
-        <hr />
-      </div>
+      <WaitPanelHeader number="4" title="Shipping Options" />
     );
   }
 
@@ -28,9 +26,8 @@ class _ShippingOptionsPanel extends BasePanel {
     const { shippingOptions, canContinue, isBusy } = this.props;
 
     return (
-      <div>
-        <h2>4. Shipping Options</h2>
-        <hr />
+      <div className="panel">
+        <EditPanelHeader number="4" title="Shipping Options" />
 
         {shippingOptions && shippingOptions.map(this.renderShippingOption)}
 
@@ -67,10 +64,11 @@ class _ShippingOptionsPanel extends BasePanel {
     const { selectedOptionName } = this.props;
 
     return (
-      <div>
-        <h2 style={{ display: 'inline', opacity: 0.3 }}>4.</h2> {selectedOptionName} <EditButton onClick={this.onPressEdit} />
-        <hr />
-      </div>
+      <DonePanelHeader
+        number="4"
+        title={selectedOptionName}
+        onPressEdit={this.onPressEdit}
+      />
     );
   }
 }
