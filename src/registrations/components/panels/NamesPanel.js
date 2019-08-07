@@ -19,6 +19,8 @@ class _NamesPanel extends React.Component {
   };
 
   onClickNext = () => {
+    if (!this.canContinue()) return;
+
     const { setFirstNames, pushPanel } = this.props;
 
     setFirstNames(this.state.names);
@@ -59,13 +61,15 @@ class _NamesPanel extends React.Component {
       <Container>
         <FormattedMessage id="namesPanel.editTitle" tagName="h2" />
 
-        <Form className="panel-body panel-body-names">
+        <Form onSubmit={this.onClickNext} className="panel-body panel-body-names">
           {this.renderRows()}
-        </Form>
 
-        <Button onClick={this.onClickNext} disabled={!this.canContinue()}>
-          <FormattedMessage id="btn.next" />
-        </Button>
+          <div className="text-center">
+            <Button type="submit" disabled={!this.canContinue()}>
+              <FormattedMessage id="btn.next" />
+            </Button>
+          </div>
+        </Form>
       </Container>
     );
   }

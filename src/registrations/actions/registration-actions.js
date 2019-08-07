@@ -30,7 +30,6 @@ export const submitRegistration = () => {
     const state = getState();
     const postData = getSubmitRegistrationPostData(state);
 
-    // TODO: need to pass JWT...
     const result = await ClaretyApi.post('registration-payment-widget/', postData);
 
     if (result[0] && result[0].status !== 'error') {
