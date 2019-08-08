@@ -1,7 +1,7 @@
 import React from 'react';
-import { ClaretyConfig, DonateWidget } from '../../src';
+import { Config, DonateWidget } from '../../src';
 
-ClaretyConfig.init({
+Config.init({
   instanceKey: 'clarety-baseline',
 });
 

@@ -1,6 +1,5 @@
 import React from 'react';
-import { Config } from 'clarety-utils';
-import { Checkout, setupCheckoutAxiosMock } from '../../src';
+import { Config, Checkout, setupCheckoutAxiosMock } from '../../src';
 
 Config.init({
   instanceKey: 'clarety-baseline',
