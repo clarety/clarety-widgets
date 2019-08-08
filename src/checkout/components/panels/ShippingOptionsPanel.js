@@ -4,6 +4,7 @@ import { Form } from 'react-bootstrap';
 import { BasePanel, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { updateFormData, updateCheckout, nextPanel, editPanel } from 'checkout/actions';
+import { currency } from 'checkout/utils';
 
 class _ShippingOptionsPanel extends BasePanel {
   onPressContinue = () => {
@@ -31,19 +32,21 @@ class _ShippingOptionsPanel extends BasePanel {
 
         {shippingOptions && shippingOptions.map(this.renderShippingOption)}
 
-        <Button
-          title="Continue"
-          onClick={this.onPressContinue}
-          isBusy={isBusy}
-          disabled={!canContinue}
-        />
+        <div className="text-right mt-3">
+          <Button
+            title="Continue"
+            onClick={this.onPressContinue}
+            isBusy={isBusy}
+            disabled={!canContinue}
+          />
+        </div>
       </div>
     );
   }
 
   renderShippingOption = (option, index) => {
     return (
-      <Form.Check type="radio" id={option.key} key={option.key}>
+      <Form.Check type="radio" id={option.key} key={option.key} className="shipping-option">
         <Form.Check.Input
           type="radio"
           name="shippingOption"
@@ -51,11 +54,12 @@ class _ShippingOptionsPanel extends BasePanel {
           onChange={() => this.onSelectOption(option.key)}
         />
 
-        <Form.Check.Label>{option.label} ${option.cost}</Form.Check.Label>
+        <Form.Check.Label>
+          <span className="name">{option.label}</span>
+          <span className="cost">{currency(option.cost)}</span>
+        </Form.Check.Label>
 
-        {option.date &&
-          <p>Estimated Delivery Date: {option.date}</p>
-        }
+        {option.date && <p className="date">Estimated Delivery Date: {option.date}</p>}
       </Form.Check>
     );
   };

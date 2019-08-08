@@ -139,7 +139,7 @@ class _ContactDetailsPanel extends BasePanel {
 
   renderCheckEmailButton() {
     return (
-      <div className="text-right">
+      <div className="text-right mt-3">
         <Button
           title="Continue"
           onClick={this.onPressCheckEmail}
@@ -153,7 +153,7 @@ class _ContactDetailsPanel extends BasePanel {
     return (
       <React.Fragment>
         <p>There is no account associated with this email, would you like to create one or checkout as a guest?</p>
-        <div className="text-right">
+        <div className="text-right mt-3">
           <Button title="Guest Checkout" onClick={this.onPressGuestCheckout} variant="link" />
           <Button title="Create Account" onClick={this.onPressShowCreateAccountForm} />
         </div>
@@ -182,7 +182,7 @@ class _ContactDetailsPanel extends BasePanel {
 
         </Form>
 
-        <div className="text-right">
+        <div className="text-right mt-3">
           <Button
             title="Login"
             onClick={this.onPressLogin}
@@ -225,7 +225,7 @@ class _ContactDetailsPanel extends BasePanel {
 
         </Form>
 
-        <div className="text-right">
+        <div className="text-right mt-3">
           <Button title="Cancel" onClick={this.onPressCancelCreateAccount} variant="link" />
           <Button title="Create Account" onClick={this.onPressCreateAccount} isBusy={this.props.isBusy} />
         </div>
@@ -238,7 +238,7 @@ class _ContactDetailsPanel extends BasePanel {
     return (
       <React.Fragment>
         <p>You're currently logged-in as {this.props.loggedInEmail}</p>
-        <div className="text-right">
+        <div className="text-right mt-3">
           <Button title="Logout" onClick={this.onPressLogout} variant="link" />
           <Button title="Continue" onClick={this.onPressStayLoggedIn} />
         </div>

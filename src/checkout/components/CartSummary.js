@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { DiscountCodeForm } from 'checkout/components';
+import { currency } from 'checkout/utils';
 
 class _CartSummary extends React.Component {
   render() {
@@ -64,8 +65,3 @@ const TotalLine = ({ label, value, fallback }) => {
     </React.Fragment>
   );
 };
-
-// TODO: move to shared utils...
-function currency(number) {
-  return `$${number.toFixed(2)}`;
-}

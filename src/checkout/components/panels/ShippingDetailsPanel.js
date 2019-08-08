@@ -107,7 +107,9 @@ class _ShippingDetailsPanel extends BasePanel {
           </Form>
         </FormContext.Provider>
 
-        <Button onClick={this.onPressContinue}>Continue</Button>
+        <div className="text-right mt-3">
+          <Button onClick={this.onPressContinue}>Continue</Button>
+        </div>
       </div>
     );
   }

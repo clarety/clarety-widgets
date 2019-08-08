@@ -72,11 +72,13 @@ class _PaymentDetailsPanel extends BasePanel {
           </Form>
         </FormContext.Provider>
 
-        <Button
-          title="Pay Now"
-          onClick={this.onPressPayNow}
-          isBusy={this.props.isBusy}
-        />
+        <div className="text-right mt-3">
+          <Button
+            title="Pay Now"
+            onClick={this.onPressPayNow}
+            isBusy={this.props.isBusy}
+          />
+        </div>
       </div>
     );
   }
