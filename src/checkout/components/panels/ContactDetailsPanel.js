@@ -97,11 +97,13 @@ class _ContactDetailsPanel extends BasePanel {
           </Form.Row>
         </Form>
 
-        <Button
-          title="Continue"
-          onClick={this.onPressCheckEmail}
-          isBusy={this.props.isBusy}
-        />
+        <div className="text-right">
+          <Button
+            title="Continue"
+            onClick={this.onPressCheckEmail}
+            isBusy={this.props.isBusy}
+          />
+        </div>
       </FormContext.Provider>
     );
   }
@@ -127,11 +129,13 @@ class _ContactDetailsPanel extends BasePanel {
 
         </Form>
 
-        <Button
-          title="Login"
-          onClick={this.onPressLogin}
-          isBusy={this.props.isBusy}
-        />
+        <div className="text-right">
+          <Button
+            title="Login"
+            onClick={this.onPressLogin}
+            isBusy={this.props.isBusy}
+          />
+        </div>
 
       </FormContext.Provider>
     );
@@ -141,11 +145,21 @@ class _ContactDetailsPanel extends BasePanel {
     if (this.state.shouldCreateAccount) return this.renderCreateAccountForm();
 
     return (
-      <div>
+      <FormContext.Provider value={this.state}>
+        <Form>
+          <Form.Row>
+            <Col>
+              <TextInput field="email" type="email" placeholder="Email *" />
+            </Col>
+          </Form.Row>
+        </Form>
+
         <p>There is no account associated with this email, would you like to create one or checkout as a guest?</p>
-        <Button title="Create Account" onClick={this.onPressShowCreateAccountForm} />
-        <Button title="Guest Checkout" onClick={this.onPressGuestCheckout} />
-      </div>
+        <div className="text-right">
+          <Button title="Create Account" onClick={this.onPressShowCreateAccountForm} />
+          <Button title="Guest Checkout" onClick={this.onPressGuestCheckout} />
+        </div>
+      </FormContext.Provider>
     );
   }
 
@@ -180,11 +194,13 @@ class _ContactDetailsPanel extends BasePanel {
 
         </Form>
 
-        <Button
-          title="Create Account"
-          onClick={this.onPressCreateAccount}
-          isBusy={this.props.isBusy}
-        />
+        <div className="text-right">
+          <Button
+            title="Create Account"
+            onClick={this.onPressCreateAccount}
+            isBusy={this.props.isBusy}
+          />
+        </div>
 
       </FormContext.Provider>
     );
