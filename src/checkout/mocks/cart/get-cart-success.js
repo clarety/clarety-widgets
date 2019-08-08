@@ -46,7 +46,6 @@ export const getCartSuccess = {
 
         "summary": {
           "subtotal": 94.97,
-          "shipping": 20.00,
           "discount": 9.48,
           "total": 85.27
         }
