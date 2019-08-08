@@ -1,9 +1,14 @@
-import { ClaretyApi } from 'clarety-utils';
+import { ClaretyApi, Config } from 'clarety-utils';
 import { parseNestedElements } from 'shared/utils';
 import { createStripeToken, parseStripeError } from 'donate/utils';
 import { types, nextPanel, updateFormData } from '.';
 
 const clientId = '82ee4a2479780256c9bf9b951f5d1cfb';
+
+export const gateways = {
+  clarety: 'clarety',
+  stripe:  'stripe',
+};
 
 export const emailStatuses = {
   notChecked: 'NOT_CHECKED',
@@ -119,15 +124,39 @@ export const updateCheckout = ({ isDiscountCode = false } = {}) => {
   };
 };
 
-export const makePayment = formData => {
+export const makePayment = paymentData => {
+  const gateway = Config.get('gateway');
+
+  switch (gateway) {
+    case gateways.stripe: return makeStripePayment(paymentData);
+    default:              return makeClaretyPayment(paymentData);
+  }
+};
+
+const makeClaretyPayment = paymentData => {
   return async dispatch => {
-    // TODO: get stripe key from somewhere... maybe the config???
+    const formData = {
+      'payment.cardNumber':       paymentData.cardNumber,
+      'payment.cardName':         paymentData.cardName,
+      'payment.cardExpiryMonth':  paymentData.expiryMonth,
+      'payment.cardExpiryYear':   paymentData.expiryYear,
+      'payment.cardSecurityCode': paymentData.ccv,
+    };
+
+    dispatch(updateFormData(formData));
+    dispatch(updateCheckout());
+  };
+};
+
+const makeStripePayment = paymentData => {
+  return async dispatch => {
+    // TODO: get stripe key from init...
     const stripeKey = 'pk_test_5AVvhyJrg3yIEnWSMQVBl3mQ00mK2D2SOD';
     const stripeData = {
-      cardNumber:  formData.cardNumber,
-      expiryMonth: formData.expiryMonth,
-      expiryYear:  formData.expiryYear,
-      ccv:         formData.ccv,
+      cardNumber:  paymentData.cardNumber,
+      expiryMonth: paymentData.expiryMonth,
+      expiryYear:  paymentData.expiryYear,
+      ccv:         paymentData.ccv,
     };
 
     dispatch(stripeTokenRequest(stripeData, stripeKey));
