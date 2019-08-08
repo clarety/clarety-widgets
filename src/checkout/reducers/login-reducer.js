@@ -51,6 +51,16 @@ export const loginReducer = (state = initialState, action) => {
         jwt: action.result,
       };
 
+    // Logout
+
+    case types.logout:
+      return {
+        ...state,
+        jwt: null,
+        customer: null,
+        emailStatus: emailStatuses.notChecked,
+      };
+
     // Create Account
 
     case types.createAccountRequest:

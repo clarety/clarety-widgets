@@ -26,8 +26,10 @@ class _PersonalDetailsPanel extends BasePanel {
   }
 
   prefillCustomerData(customer) {
-    this.setState({
-      formData: {
+    let formData = {};
+
+    if (customer) {
+      formData = {
         'customer.firstName':        customer.firstName,
         'customer.lastName':         customer.lastName,
         'customer.phone1':           customer.phone1,
@@ -36,8 +38,10 @@ class _PersonalDetailsPanel extends BasePanel {
         'customer.dateOfBirthDay':   customer.dateOfBirthDay,
         'customer.dateOfBirthMonth': customer.dateOfBirthMonth,
         'customer.dateOfBirthYear':  customer.dateOfBirthYear,
-      }
-    })
+      };
+    }
+
+    this.setState({ formData });
   }
 
   renderWait() {

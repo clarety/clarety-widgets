@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import { BasePanel, TextInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { customerSearch, login, createAccount, updateFormData, nextPanel, editPanel, emailStatuses, resetEmailStatus } from 'checkout/actions';
+import { customerSearch, login, logout, createAccount, updateFormData, nextPanel, editPanel, emailStatuses, resetEmailStatus } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _ContactDetailsPanel extends BasePanel {
@@ -25,6 +25,10 @@ class _ContactDetailsPanel extends BasePanel {
     this.setState({ isCreatingAccount: true });
   };
 
+  onPressCancelCreateAccount = () => {
+    this.setState({ isCreatingAccount: false });
+  }
+
   onPressCreateAccount = () => {
     if (this.validate()) {
       const { firstName, lastName, email, password } = this.state.formData;
@@ -37,10 +41,22 @@ class _ContactDetailsPanel extends BasePanel {
     this.props.nextPanel();
   };
 
+  onPressLogout = () => {
+    this.onChangeField('email', '');
+    this.onChangeField('password', '');
+    this.setState({ isCreatingAccount: false });
+    this.props.logout();
+  }
+
+  onPressStayLoggedIn = () => {
+    this.props.nextPanel();
+  }
+
   componentDidUpdate(prevProps, prevState) {
     // Check if email has been modified, and reset status.
     if (this.state.formData.email !== prevState.formData.email) {
       this.props.resetEmailStatus();
+      this.onChangeField('password', '');
     }
   }
 
@@ -86,6 +102,10 @@ class _ContactDetailsPanel extends BasePanel {
   }
 
   renderForm() {
+    if (this.props.isLoggedIn) {
+      return this.renderIsLoggedInForm();
+    }
+
     if (this.state.isCreatingAccount) {
       return this.renderCreateAccountForm();
     }
@@ -133,10 +153,10 @@ class _ContactDetailsPanel extends BasePanel {
     return (
       <React.Fragment>
         <p>There is no account associated with this email, would you like to create one or checkout as a guest?</p>
-          <div className="text-right">
-            <Button title="Create Account" onClick={this.onPressShowCreateAccountForm} />
-            <Button title="Guest Checkout" onClick={this.onPressGuestCheckout} />
-          </div>
+        <div className="text-right">
+          <Button title="Guest Checkout" onClick={this.onPressGuestCheckout} variant="link" />
+          <Button title="Create Account" onClick={this.onPressShowCreateAccountForm} />
+        </div>
       </React.Fragment>
     );
   }
@@ -179,7 +199,7 @@ class _ContactDetailsPanel extends BasePanel {
       <FormContext.Provider value={this.state}>
         <Form>
 
-          <p>You already have an account, please login to continue.</p>
+          <p>Please enter your details.</p>
 
           <Form.Row>
             <Col>
@@ -206,14 +226,23 @@ class _ContactDetailsPanel extends BasePanel {
         </Form>
 
         <div className="text-right">
-          <Button
-            title="Create Account"
-            onClick={this.onPressCreateAccount}
-            isBusy={this.props.isBusy}
-          />
+          <Button title="Cancel" onClick={this.onPressCancelCreateAccount} variant="link" />
+          <Button title="Create Account" onClick={this.onPressCreateAccount} isBusy={this.props.isBusy} />
         </div>
 
       </FormContext.Provider>
+    );
+  }
+
+  renderIsLoggedInForm() {
+    return (
+      <React.Fragment>
+        <p>You're currently logged-in as {this.props.loggedInEmail}</p>
+        <div className="text-right">
+          <Button title="Logout" onClick={this.onPressLogout} variant="link" />
+          <Button title="Continue" onClick={this.onPressStayLoggedIn} />
+        </div>
+      </React.Fragment>
     );
   }
 
@@ -231,15 +260,20 @@ class _ContactDetailsPanel extends BasePanel {
 }
 
 const mapStateToProps = state => {
+  const { customer } = state.login;
+
   return {
     isBusy: state.login.isBusy,
     emailStatus: state.login.emailStatus,
+    isLoggedIn: !!customer,
+    loggedInEmail: customer ? customer.email : null,
   };
 };
 
 const actions = {
   customerSearch: customerSearch,
   login: login,
+  logout: logout,
   createAccount: createAccount,
   resetEmailStatus: resetEmailStatus,
   updateFormData: updateFormData,

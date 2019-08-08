@@ -82,6 +82,11 @@ export const login = (email, password) => {
   }
 };
 
+export const logout = () => ({
+  // TODO: do we need to logout via the API?
+  type: types.logout,
+});
+
 export const createAccount = (firstName, lastName, email, password) => {
   return async dispatch => {
     const postData = { firstName, lastName, email, password };

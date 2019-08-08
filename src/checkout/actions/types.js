@@ -19,11 +19,13 @@ export const types = {
   customerSearchSuccess: 'CUSTOMER_SEARCH_SUCCESS',
   customerSearchFailure: 'CUSTOMER_SEARCH_FAILURE',
 
+  resetEmailStatus: 'RESET_EMAIL_STATUS',
+
   loginRequest: 'LOGIN_REQUEST',
   loginSuccess: 'LOGIN_SUCCESS',
   loginFailure: 'LOGIN_FAILURE',
 
-  resetEmailStatus: 'RESET_EMAIL_STATUS',
+  logout: 'LOGOUT',
 
   createAccountRequest: 'CREATE_ACCOUNT_REQUEST',
   createAccountSuccess: 'CREATE_ACCOUNT_SUCCESS',
