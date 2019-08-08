@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import { BasePanel, TextInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { customerSearch, login, createAccount, updateFormData, nextPanel, editPanel, emailStatuses } from 'checkout/actions';
+import { customerSearch, login, createAccount, updateFormData, nextPanel, editPanel, emailStatuses, resetEmailStatus } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _ContactDetailsPanel extends BasePanel {
@@ -22,7 +22,7 @@ class _ContactDetailsPanel extends BasePanel {
   };
 
   onPressShowCreateAccountForm = () => {
-    this.setState({ shouldCreateAccount: true });
+    this.setState({ isCreatingAccount: true });
   };
 
   onPressCreateAccount = () => {
@@ -36,6 +36,13 @@ class _ContactDetailsPanel extends BasePanel {
     this.props.updateFormData({ 'customer.email': this.state.formData.email });
     this.props.nextPanel();
   };
+
+  componentDidUpdate(prevProps, prevState) {
+    // Check if email has been modified, and reset status.
+    if (this.state.formData.email !== prevState.formData.email) {
+      this.props.resetEmailStatus();
+    }
+  }
 
   validate() {
     const errors = [];
@@ -79,14 +86,19 @@ class _ContactDetailsPanel extends BasePanel {
   }
 
   renderForm() {
-    switch (this.props.emailStatus) {
-      case emailStatuses.notChecked: return this.renderEmailCheckForm();
-      case emailStatuses.noAccount:  return this.renderNoAccountForm();
-      case emailStatuses.hasAccount: return this.renderLoginForm();
+    if (this.state.isCreatingAccount) {
+      return this.renderCreateAccountForm();
     }
+
+    if (this.props.emailStatus === emailStatuses.hasAccount) {
+      return this.renderLoginForm();
+    }
+
+    const hasNoAccount = this.props.emailStatus === emailStatuses.noAccount;
+    return this.renderEmailCheckForm(hasNoAccount);
   }
 
-  renderEmailCheckForm() {
+  renderEmailCheckForm(hasNoAccount) {
     return (
       <FormContext.Provider value={this.state}>
         <Form>
@@ -97,17 +109,38 @@ class _ContactDetailsPanel extends BasePanel {
           </Form.Row>
         </Form>
 
-        <div className="text-right">
-          <Button
-            title="Continue"
-            onClick={this.onPressCheckEmail}
-            isBusy={this.props.isBusy}
-          />
-        </div>
+        {hasNoAccount
+          ? this.renderNoAccountButtons()
+          : this.renderCheckEmailButton()
+        }
       </FormContext.Provider>
     );
   }
 
+  renderCheckEmailButton() {
+    return (
+      <div className="text-right">
+        <Button
+          title="Continue"
+          onClick={this.onPressCheckEmail}
+          isBusy={this.props.isBusy}
+        />
+      </div>
+    );
+  }
+  
+  renderNoAccountButtons() {
+    return (
+      <React.Fragment>
+        <p>There is no account associated with this email, would you like to create one or checkout as a guest?</p>
+          <div className="text-right">
+            <Button title="Create Account" onClick={this.onPressShowCreateAccountForm} />
+            <Button title="Guest Checkout" onClick={this.onPressGuestCheckout} />
+          </div>
+      </React.Fragment>
+    );
+  }
+  
   renderLoginForm() {
     return (
       <FormContext.Provider value={this.state}>
@@ -137,28 +170,6 @@ class _ContactDetailsPanel extends BasePanel {
           />
         </div>
 
-      </FormContext.Provider>
-    );
-  }
-
-  renderNoAccountForm() {
-    if (this.state.shouldCreateAccount) return this.renderCreateAccountForm();
-
-    return (
-      <FormContext.Provider value={this.state}>
-        <Form>
-          <Form.Row>
-            <Col>
-              <TextInput field="email" type="email" placeholder="Email *" />
-            </Col>
-          </Form.Row>
-        </Form>
-
-        <p>There is no account associated with this email, would you like to create one or checkout as a guest?</p>
-        <div className="text-right">
-          <Button title="Create Account" onClick={this.onPressShowCreateAccountForm} />
-          <Button title="Guest Checkout" onClick={this.onPressGuestCheckout} />
-        </div>
       </FormContext.Provider>
     );
   }
@@ -230,6 +241,7 @@ const actions = {
   customerSearch: customerSearch,
   login: login,
   createAccount: createAccount,
+  resetEmailStatus: resetEmailStatus,
   updateFormData: updateFormData,
   nextPanel: nextPanel,
   editPanel: editPanel,

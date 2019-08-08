@@ -100,6 +100,10 @@ export const createAccount = (firstName, lastName, email, password) => {
   };
 };
 
+export const resetEmailStatus = () => ({
+  type: types.resetEmailStatus,
+});
+
 export const updateCheckout = ({ isDiscountCode = false } = {}) => {
   return async (dispatch, getState) => {
     const { formData } = getState();

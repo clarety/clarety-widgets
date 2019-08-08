@@ -25,7 +25,15 @@ export const loginReducer = (state = initialState, action) => {
         ...state,
         isBusy: false,
         emailStatus: action.result.exists ? emailStatuses.hasAccount : emailStatuses.noAccount,
-      };    
+      };
+
+    // Reset Email Status
+
+    case types.resetEmailStatus:
+      return {
+        ...state,
+        emailStatus: emailStatuses.notChecked,
+      };
 
     // Login
 
