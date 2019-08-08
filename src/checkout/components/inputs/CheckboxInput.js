@@ -4,7 +4,7 @@ import { FormContext } from 'checkout/utils';
 import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
 
-class PureCheckboxInput extends React.PureComponent {
+export class PureCheckboxInput extends React.PureComponent {
   render() {
     const { field, checked, label, error, onChange } = this.props;
 

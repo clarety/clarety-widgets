@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Col, Button } from 'react-bootstrap';
-import { BasePanel, TextInput, CheckboxInput } from 'checkout/components';
+import { BasePanel, TextInput, PureCheckboxInput } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { updateFormData, nextPanel, editPanel } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
@@ -19,7 +19,37 @@ class _ShippingDetailsPanel extends BasePanel {
     return true;
   }
 
-  componentDidUpdate(prevProps) {
+  onChangeBillingIsSameAsShipping = (field, isChecked) => {
+    this.setState({ billingIsSameAsShipping: isChecked });
+
+    if (isChecked) {
+      // Copy billing fields.
+      this.setState(prevState => ({
+        formData: {
+          ...prevState.formData,
+          'customer.billing.address1': prevState.formData['customer.delivery.address1'],
+          'customer.billing.suburb':   prevState.formData['customer.delivery.suburb'],
+          'customer.billing.state':    prevState.formData['customer.delivery.state'],
+          'customer.billing.postcode': prevState.formData['customer.delivery.postcode'],
+          'customer.billing.country':  prevState.formData['customer.delivery.country'],
+        }
+      }));
+    } else {
+      // Clear billing fields.
+      this.setState(prevState => ({
+        formData: {
+          ...prevState.formData,
+          'customer.billing.address1': '',
+          'customer.billing.suburb':   '',
+          'customer.billing.state':    '',
+          'customer.billing.postcode': '',
+          'customer.billing.country':  '',
+        }
+      }));
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
     if (this.props.customer !== prevProps.customer) {
       this.prefillCustomerData(this.props.customer);
     }
@@ -28,31 +58,20 @@ class _ShippingDetailsPanel extends BasePanel {
   prefillCustomerData(customer) {
     if (!customer) return;
 
-    if (customer.delivery) {
-      this.setState(prevState => ({
-        formData: {
-          ...prevState.formData,
-          'customer.delivery.address1': customer.delivery.address1,
-          'customer.delivery.suburb':   customer.delivery.suburb,
-          'customer.delivery.state':    customer.delivery.state,
-          'customer.delivery.postcode': customer.delivery.postcode,
-          'customer.delivery.country':  customer.delivery.country,
-        }
-      }));
-    }
-
-    if (customer.billing) {
-      this.setState(prevState => ({
-        formData: {
-          ...prevState.formData,  
-          'customer.billing.address1': customer.billing.address1,
-          'customer.billing.suburb':   customer.billing.suburb,
-          'customer.billing.state':    customer.billing.state,
-          'customer.billing.postcode': customer.billing.postcode,
-          'customer.billing.country':  customer.billing.country,
-        }
-      }));
-    }
+    this.setState({
+      formData: {
+        'customer.delivery.address1': customer.delivery.address1,
+        'customer.delivery.suburb':   customer.delivery.suburb,
+        'customer.delivery.state':    customer.delivery.state,
+        'customer.delivery.postcode': customer.delivery.postcode,
+        'customer.delivery.country':  customer.delivery.country,
+        'customer.billing.address1':  customer.billing.address1,
+        'customer.billing.suburb':    customer.billing.suburb,
+        'customer.billing.state':     customer.billing.state,
+        'customer.billing.postcode':  customer.billing.postcode,
+        'customer.billing.country':   customer.billing.country,
+      }
+    });
   }
 
   renderWait() {
@@ -62,72 +81,65 @@ class _ShippingDetailsPanel extends BasePanel {
   }
 
   renderEdit() {
+    const { billingIsSameAsShipping } = this.state;
+
     return (
       <div className="panel">
         <EditPanelHeader number="3" title="Shipping Details" />
         
         <FormContext.Provider value={this.state}>
           <Form>
-            <h5>Shipping Address</h5>
-            <Form.Row>
-              <Col>
-                <TextInput field="customer.delivery.address1" placeholder="Address *" />
-              </Col>
-            </Form.Row>
+            {this.renderAddressForm('Shipping Address', 'customer.delivery')}
 
             <Form.Row>
               <Col>
-                <TextInput field="customer.delivery.suburb" placeholder="Suburb *" />
-              </Col>
-              <Col>
-                <TextInput field="customer.delivery.state" placeholder="State *" />
-              </Col>
-            </Form.Row>
-
-            <Form.Row>
-              <Col>
-                <TextInput field="customer.delivery.postcode" placeholder="Postcode *" />
-              </Col>
-              <Col>
-                <TextInput field="customer.delivery.country" placeholder="Country *" />
+                <PureCheckboxInput
+                  field="billingIsSameAsShipping"
+                  label="Billing Address is the same as Shipping Address"
+                  checked={billingIsSameAsShipping || false}
+                  onChange={this.onChangeBillingIsSameAsShipping}
+                />
               </Col>
             </Form.Row>
 
-            <Form.Row>
-              <Col>
-                <CheckboxInput field="billingSameAsShipping" label="Billing Address is the same as Shipping Address" />
-              </Col>
-            </Form.Row>
-
-            <h5>Billing Address</h5>
-            <Form.Row>
-              <Col>
-                <TextInput field="customer.billing.address1" placeholder="Address *" />
-              </Col>
-            </Form.Row>
-
-            <Form.Row>
-              <Col>
-                <TextInput field="customer.billing.suburb" placeholder="Suburb *" />
-              </Col>
-              <Col>
-                <TextInput field="customer.billing.state" placeholder="State *" />
-              </Col>
-            </Form.Row>
-
-            <Form.Row>
-              <Col>
-                <TextInput field="customer.billing.postcode" placeholder="Postcode *" />
-              </Col>
-              <Col>
-                <TextInput field="customer.billing.country" placeholder="Country *" />
-              </Col>
-            </Form.Row>
+            {!billingIsSameAsShipping && this.renderAddressForm('Billing Address', 'customer.billing')}
+            
           </Form>
         </FormContext.Provider>
 
         <Button onClick={this.onPressContinue}>Continue</Button>
       </div>
+    );
+  }
+
+  renderAddressForm(title, fieldPrefix) {
+    return (
+      <React.Fragment>
+        <h5>{title}</h5>
+        <Form.Row>
+          <Col>
+            <TextInput field={`${fieldPrefix}.address1`} placeholder="Address *" />
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col>
+            <TextInput field={`${fieldPrefix}.suburb`} placeholder="Suburb *" />
+          </Col>
+          <Col>
+            <TextInput field={`${fieldPrefix}.state`} placeholder="State *" />
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col>
+            <TextInput field={`${fieldPrefix}.postcode`} placeholder="Postcode *" />
+          </Col>
+          <Col>
+            <TextInput field={`${fieldPrefix}.country`} placeholder="Country *" />
+          </Col>
+        </Form.Row>
+      </React.Fragment>
     );
   }
 
