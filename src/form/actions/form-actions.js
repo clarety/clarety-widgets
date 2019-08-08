@@ -1,5 +1,5 @@
 import { push as pushRoute } from 'connected-react-router';
-import { ClaretyApi } from 'shared/services';
+import { ClaretyApi } from 'clarety-utils';
 import { statuses, setStatus } from 'shared/actions';
 import { types, setErrors, clearErrors } from 'form/actions';
 

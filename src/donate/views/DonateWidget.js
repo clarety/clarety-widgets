@@ -20,7 +20,7 @@ export class _DonateWidget extends React.Component {
 
     if (storeCode) updateFormData('store', storeCode);
 
-    fetchExplain('donations', {
+    fetchExplain('donations/', {
       store: storeCode,
       offerSingle: singleOfferCode,
       offerRecurring: recurringOfferCode,

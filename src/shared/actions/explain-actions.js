@@ -1,13 +1,14 @@
-import { ClaretyApi } from 'shared/services';
+import { ClaretyApi } from 'clarety-utils';
 import { types, statuses, setStatus } from 'shared/actions';
 
 export const fetchExplain = (endpoint, params) => {
   return async dispatch => {
     dispatch(explainFetchRequest(endpoint));
 
-    const explain = await ClaretyApi.explain(endpoint, params);
-    if (explain) {
-      dispatch(explainFetchSuccess(explain));
+    const results = await ClaretyApi.get(`widgets/${endpoint}`, params);
+    const result = results[0];
+    if (result) {
+      dispatch(explainFetchSuccess(result));
       dispatch(setStatus(statuses.ready));
     } else {
       dispatch(explainFetchFailure());

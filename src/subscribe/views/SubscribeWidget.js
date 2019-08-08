@@ -5,7 +5,7 @@ import { connectFormToStore } from 'form/utils';
 import { TextInput, SelectInput, FormElement, ErrorMessages, SubmitButton } from 'form/components';
 
 export class _SubscribeWidget extends _BaseFormView {
-  endpoint = 'subscriptions';
+  endpoint = 'subscriptions/';
 
   renderForm() {
     const { listCode } = this.props;
