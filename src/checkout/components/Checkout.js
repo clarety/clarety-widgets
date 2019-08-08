@@ -6,7 +6,7 @@ import { Row, Col } from 'react-bootstrap';
 import { panels, setPanels, fetchCart } from 'checkout/actions';
 import { rootReducer } from 'checkout/reducers';
 import { PanelStack, CartSummary } from 'checkout/components';
-import 'checkout/style.css';
+import 'checkout/style.scss';
 
 const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));

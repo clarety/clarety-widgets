@@ -13,7 +13,7 @@ export default class CheckoutDemo extends React.Component {
 
   render() {
     return (
-      <div className="m-5">
+      <div className="checkout m-5">
         <Checkout />
       </div>
     );
