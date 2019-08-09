@@ -77,6 +77,21 @@ export const panelDataReducer = (state = initialState, action) => {
         }),
       };
 
+    case types.panelDataSetAdditionalData:
+      return {
+        ...state,
+        participants: state.participants.map((participant, index) => {
+          if (index === action.index) {
+            return {
+              ...participant,
+              additionalData: action.additionalData,
+            };
+          } else {
+            return participant;
+          }
+        }),
+      };
+
     case types.panelDataSetErrors:
       return {
         ...state,

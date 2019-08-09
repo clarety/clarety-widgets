@@ -12,15 +12,16 @@ export const types = {
   panelStackPop:  'PANEL_STACK_POP',
 
   // Panel Data Action Types
-  panelDataSetEvent:        'PANEL_DATA_SET_EVENT',
-  panelDataResetEvent:      'PANEL_DATA_RESET_EVENT',
-  panelDataSetQtys:         'PANEL_DATA_SET_QTYS',
-  panelDataResetQtys:       'PANEL_DATA_RESET_QTYS',
-  panelDataSetFirstNames:   'PANEL_DATA_SET_FIRST_NAMES',
-  panelDataResetFirstNames: 'PANEL_DATA_RESET_FIRST_NAMES',
-  panelDataSetDetails:      'PANEL_DATA_SET_DETAILS',
-  panelDataSetErrors:       'PANEL_DATA_SET_ERRORS',
-  panelDataResetDetails:    'PANEL_DATA_RESET_DETAILS',
+  panelDataSetEvent:          'PANEL_DATA_SET_EVENT',
+  panelDataResetEvent:        'PANEL_DATA_RESET_EVENT',
+  panelDataSetQtys:           'PANEL_DATA_SET_QTYS',
+  panelDataResetQtys:         'PANEL_DATA_RESET_QTYS',
+  panelDataSetFirstNames:     'PANEL_DATA_SET_FIRST_NAMES',
+  panelDataResetFirstNames:   'PANEL_DATA_RESET_FIRST_NAMES',
+  panelDataSetDetails:        'PANEL_DATA_SET_DETAILS',
+  panelDataSetAdditionalData: 'PANEL_DATA_SET_ADDITIONAL_DATA',
+  panelDataSetErrors:         'PANEL_DATA_SET_ERRORS',
+  panelDataResetDetails:      'PANEL_DATA_RESET_DETAILS',
 
   // Registration Action Types
   registrationCreateRequest: 'REGISTRATION_CREATE_REQUEST',

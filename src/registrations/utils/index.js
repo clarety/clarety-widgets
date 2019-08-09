@@ -52,3 +52,7 @@ export function scrollIntoView(elementRef) {
   var scrollTarget = elementRef.offsetTop - navbarHeight;
   window.scroll({ top: scrollTarget, behavior: 'smooth' });
 };
+
+export const getExtendField = (columnKey, init) => {
+  return init.extendForms[0].extendFields.find(field => field.columnKey === columnKey);
+};

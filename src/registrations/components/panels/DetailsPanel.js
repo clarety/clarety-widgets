@@ -4,8 +4,8 @@ import { FormattedMessage } from 'react-intl';
 import { Container, Button, Form, Row, Col } from 'react-bootstrap';
 import { getElementOptions } from 'shared/utils';
 import { TextInput, DobInput, CheckboxInput, SelectInput, PhoneInput } from 'registrations/components';
-import { setDetails, setErrors, resetDetails, pushNextDetailsPanel } from 'registrations/actions';
-import { getExtendFields } from 'registrations/selectors';
+import { setDetails, setAdditionalData, setErrors, resetDetails, pushNextDetailsPanel } from 'registrations/actions';
+import { getEvent, getExtendFields } from 'registrations/selectors';
 import { FormContext, scrollIntoView } from 'registrations/utils';
 
 export class _DetailsPanel extends React.Component {
@@ -52,6 +52,7 @@ export class _DetailsPanel extends React.Component {
     event.preventDefault();
 
     if (this.validateForm()) {
+      this.onSubmitForm();
       setDetails(participantIndex, customerFormContext.formData, extendFormContext.formData);
       pushNextDetailsPanel(participantIndex + 1);
     }
@@ -91,10 +92,23 @@ export class _DetailsPanel extends React.Component {
     return true;
   }
 
+  onSubmitForm() {
+    // Left empty in the base implementation,
+    // but can be overridden in the instance.
+  }
+
   setErrors(errors) {
     const { setErrors, participantIndex } = this.props;
     setErrors(participantIndex, errors);
     scrollIntoView(this.ref);
+  }
+
+  getCustomerFieldValue(field) {
+    return this.state.customerFormContext.formData[field];
+  }
+
+  getExtendFieldValue(field) {
+    return this.state.extendFormContext.formData[field];
   }
 
   componentWillUnmount() {
@@ -223,6 +237,7 @@ const mapStateToProps = (state, ownProps) => {
 
   return {
     init: state.init,
+    event: getEvent(state),
     participant: state.panelData.participants[participantIndex],
     extendFields: getExtendFields(state),
   };
@@ -230,6 +245,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const actions = {
   setDetails: setDetails,
+  setAdditionalData: setAdditionalData,
   setErrors: setErrors,
   resetDetails: resetDetails,
   pushNextDetailsPanel: pushNextDetailsPanel,
