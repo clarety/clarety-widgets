@@ -18,7 +18,9 @@ class _NamesPanel extends React.Component {
     });
   };
 
-  onClickNext = () => {
+  onClickNext = event => {
+    event.preventDefault();
+
     if (!this.canContinue()) return;
 
     const { setFirstNames, pushPanel } = this.props;
