@@ -4,7 +4,7 @@ import { Form, Col } from 'react-bootstrap';
 import { BasePanel, TextInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { customerSearch, login, logout, createAccount, updateFormData, resetFormData, nextPanel, editPanel, resetPanels, emailStatuses, resetEmailStatus } from 'checkout/actions';
-import { FormContext } from 'checkout/utils';
+import { FormContext, validateRequired, validateEmail, validatePassword } from 'checkout/utils';
 
 class _ContactDetailsPanel extends BasePanel {
   onPressCheckEmail = event => {
@@ -76,18 +76,28 @@ class _ContactDetailsPanel extends BasePanel {
     const errors = [];
     this.setState({ errors });
 
-    const { email } = this.state.formData;
-    
-    if (!email) {
-      errors.push({
-        field: 'email',
-        message: 'Please enter your email address',
-      });
+    const { emailStatus } = this.props;
+    const { formData, isCreatingAccount } = this.state;
+
+    // Create Account
+    if (isCreatingAccount) {
+      const { firstName, lastName, password } = formData;
+      validateRequired(firstName, 'firstName', errors);
+      validateRequired(lastName, 'lastName', errors);
+      validatePassword(password, 'password', errors);
     }
 
-    // TODO: check that email is valid.
+    // Login
+    if (emailStatus === emailStatuses.hasAccount) {
+      const { password } = formData;
+      validateRequired(password, 'password', errors);
+    }
 
-    // TODO: validate that password is not empty...
+    // Check Email
+    if (emailStatus === emailStatuses.notChecked) {
+      const { email } = formData;
+      validateEmail(email, 'email', errors);
+    }
 
     if (errors.length === 0) {
       return true;
