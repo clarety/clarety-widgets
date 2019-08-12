@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import { BasePanel, TextInput, PureCheckboxInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { updateFormData, updateCheckout, editPanel } from 'checkout/actions';
+import { updateFormData, updateCheckout, editPanel, resetShippingOptionsPanel } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _ShippingDetailsPanel extends BasePanel {
@@ -11,8 +11,12 @@ class _ShippingDetailsPanel extends BasePanel {
     event.preventDefault();
 
     if (this.validate()) {
-      this.props.updateFormData(this.state.formData);
+      this.props.updateFormData({ 
+        ...this.state.formData,
+        shippingOption: undefined,
+      });
       this.props.updateCheckout();
+      this.props.resetShippingOptionsPanel();
     }
   };
 
@@ -174,6 +178,7 @@ const mapStateToProps = state => {
 const actions = {
   updateFormData: updateFormData,
   updateCheckout: updateCheckout,
+  resetShippingOptionsPanel: resetShippingOptionsPanel,
   editPanel: editPanel,
 };
 

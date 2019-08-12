@@ -5,6 +5,8 @@ export const types = {
   nextPanel: 'NEXT_PANEL',
   editPanel: 'EDIT_PANEL',
 
+  resetShippingOptionsPanel: 'RESET_SHIPPING_OPTIONS_PANEL',
+
   // Form Data Action Types
 
   updateFormData: 'UPDATE_FORM_DATA',

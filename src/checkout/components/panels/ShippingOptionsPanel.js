@@ -14,7 +14,7 @@ class _ShippingOptionsPanel extends BasePanel {
 
   onSelectOption = key => {
     this.props.updateFormData({ shippingOption: key });
-    this.props.updateCheckout();
+    this.props.updateCheckout({ shouldAdvance: false });
   };
 
   renderWait() {

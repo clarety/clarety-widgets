@@ -1,4 +1,4 @@
-import { types, panelStatuses } from 'checkout/actions';
+import { types, panels, panelStatuses } from 'checkout/actions';
 
 const initialState = [];
 
@@ -7,7 +7,10 @@ export const panelsReducer = (state = initialState, action) => {
     case types.setPanels: return setPanels(state, action);
     case types.nextPanel: return nextPanel(state, action);
     case types.editPanel: return editPanel(state, action);
-    default:              return state;
+
+    case types.resetShippingOptionsPanel: return resetShippingOptionsPanel(state, action);
+
+    default: return state;
   }
 };
 
@@ -60,6 +63,20 @@ function editPanel(state, action) {
       return {
         ...panel,
         status: panelStatuses.edit,
+        isValid: false,
+      };
+    }
+
+    return panel;
+  });
+}
+
+function resetShippingOptionsPanel(state, action) {
+  return state.map(panel => {
+    if (panel.name === panels.shippingOptionsPanel) {
+      return {
+        ...panel,
+        status: panelStatuses.wait,
         isValid: false,
       };
     }

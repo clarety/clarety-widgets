@@ -109,7 +109,7 @@ export const resetEmailStatus = () => ({
   type: types.resetEmailStatus,
 });
 
-export const updateCheckout = ({ isDiscountCode = false } = {}) => {
+export const updateCheckout = ({ isDiscountCode = false, shouldAdvance = true } = {}) => {
   return async (dispatch, getState) => {
     const { formData } = getState();
 
@@ -127,7 +127,7 @@ export const updateCheckout = ({ isDiscountCode = false } = {}) => {
         window.location.href = result.redirect;
       } else {
         dispatch(updateCheckoutSuccess(result));
-        dispatch(nextPanel());
+        if (shouldAdvance) dispatch(nextPanel());
       }      
     }
   };
