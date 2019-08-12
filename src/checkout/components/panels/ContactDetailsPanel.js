@@ -98,7 +98,12 @@ class _ContactDetailsPanel extends BasePanel {
   }
 
   resetPanelData() {
-    // Override base to prevent reset.
+    // Clear all form data except email.
+    this.setState(prevState => ({
+      formData: {
+        email: prevState.formData.email,
+      },
+    }));
   }
 
   renderWait() {
