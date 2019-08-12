@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import { BasePanel, TextInput, PureCheckboxInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { updateFormData, nextPanel, editPanel } from 'checkout/actions';
+import { updateFormData, updateCheckout, editPanel } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _ShippingDetailsPanel extends BasePanel {
@@ -12,7 +12,7 @@ class _ShippingDetailsPanel extends BasePanel {
 
     if (this.validate()) {
       this.props.updateFormData(this.state.formData);
-      this.props.nextPanel();
+      this.props.updateCheckout();
     }
   };
 
@@ -83,6 +83,7 @@ class _ShippingDetailsPanel extends BasePanel {
   }
 
   renderEdit() {
+    const { isBusy } = this.props;
     const { billingIsSameAsShipping } = this.state;
 
     return (
@@ -107,7 +108,7 @@ class _ShippingDetailsPanel extends BasePanel {
             {!billingIsSameAsShipping && this.renderAddressForm('Billing Address', 'customer.billing')}
             
             <div className="text-right mt-3">
-              <Button title="Continue" type="submit" />
+              <Button title="Continue" type="submit" isBusy={isBusy} />
             </div>
           </Form>
         </FormContext.Provider>
@@ -165,13 +166,14 @@ class _ShippingDetailsPanel extends BasePanel {
 
 const mapStateToProps = state => {
   return {
+    isBusy: state.checkout.isBusy,
     customer: state.login.customer,
   };
 };
 
 const actions = {
   updateFormData: updateFormData,
-  nextPanel: nextPanel,
+  updateCheckout: updateCheckout,
   editPanel: editPanel,
 };
 

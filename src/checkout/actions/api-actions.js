@@ -123,12 +123,12 @@ export const updateCheckout = ({ isDiscountCode = false } = {}) => {
     if (result.status === 'error') {
       dispatch(updateCheckoutFailure(result));
     } else {
-      // Redirect on success.
       if (result.cart.status === 'complete') {
         window.location.href = result.redirect;
-      }
-
-      dispatch(updateCheckoutSuccess(result));
+      } else {
+        dispatch(updateCheckoutSuccess(result));
+        dispatch(nextPanel());
+      }      
     }
   };
 };
