@@ -1,3 +1,5 @@
+// TODO: move to 'form' or 'shared'...
+
 export function validateRequired(value, field, errors) {
   if (!value) {
     errors.push({
@@ -23,6 +25,36 @@ export function validatePassword(password, field, errors) {
     errors.push({
       'field': field,
       'message': 'Password must contain at least 8 characters including 2 numbers.',
+    });
+  }
+}
+
+export function validateCardNumber(cardNumber, field, errors) {
+  // TODO: don't depend on stripe, not all checkouts will use it...
+  if (!window.Stripe.card.validateCardNumber(cardNumber)) {
+    errors.push({
+      field: field,
+      message: 'Please enter a valid card number.',
+    });
+  }
+}
+
+export function validateCardExpiry(expiryMonth, expiryYear, field, errors) {
+  // TODO: don't depend on stripe, not all checkouts will use it...
+  if (!window.Stripe.card.validateExpiry(expiryMonth, expiryYear)) {
+    errors.push({
+      field: field,
+      message: 'Please enter a valid expiry date.',
+    });
+  }
+}
+
+export function validateCcv(ccv, field, errors) {
+  // TODO: don't depend on stripe, not all checkouts will use it...
+  if (!window.Stripe.card.validateCVC(ccv)) {
+    errors.push({
+      field: field,
+      message: 'Please enter a valid CCV.',
     });
   }
 }

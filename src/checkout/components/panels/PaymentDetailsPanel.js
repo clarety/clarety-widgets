@@ -4,7 +4,7 @@ import { Form, Col } from 'react-bootstrap';
 import { BasePanel, TextInput, CardNumberInput, CcvInput, ExpiryInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { makePayment, editPanel } from 'checkout/actions';
-import { FormContext } from 'checkout/utils';
+import { FormContext, validateRequired, validateCardNumber, validateCardExpiry, validateCcv } from 'checkout/utils';
 
 class _PaymentDetailsPanel extends BasePanel {
   onPressPayNow = event => {
@@ -16,8 +16,21 @@ class _PaymentDetailsPanel extends BasePanel {
   };
 
   validate() {
-    // TODO: validate fields...
-    return true;
+    const errors = [];
+    this.setState({ errors });
+
+    const { cardName, cardNumber, expiryMonth, expiryYear, ccv } = this.state.formData;
+    validateRequired(cardName, 'cardName', errors);
+    validateCardNumber(cardNumber, 'cardNumber', errors);
+    validateCardExpiry(expiryMonth, expiryYear, 'expiry', errors);
+    validateCcv(ccv, 'ccv', errors);
+
+    if (errors.length === 0) {
+      return true;
+    } else {
+      this.setState({ errors });
+      return false;
+    }
   }
 
   componentDidUpdate(prevProps) {
