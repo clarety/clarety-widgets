@@ -30,12 +30,13 @@ export class Checkout extends React.Component {
     return (
       <Provider store={store}>
         <Row>
-          <Col>
+          <Col lg={6} className="bg-light order-lg-1 mb-5 mb-lg-0">
+            <CartSummary />
+          </Col>
+
+          <Col lg={6}>
             <h1>Checkout</h1>
             <PanelStack />
-          </Col>
-          <Col className="bg-light">
-            <CartSummary />
           </Col>
         </Row>
       </Provider>
