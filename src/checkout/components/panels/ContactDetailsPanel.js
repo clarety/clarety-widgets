@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import { BasePanel, TextInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { customerSearch, login, logout, createAccount, updateFormData, nextPanel, editPanel, emailStatuses, resetEmailStatus } from 'checkout/actions';
+import { customerSearch, login, logout, createAccount, updateFormData, resetFormData, nextPanel, editPanel, resetPanels, emailStatuses, resetEmailStatus } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _ContactDetailsPanel extends BasePanel {
@@ -13,6 +13,8 @@ class _ContactDetailsPanel extends BasePanel {
     if (this.validate()) {
       const { email } = this.state.formData;
       this.props.customerSearch(email);
+      this.props.resetFormData();
+      this.props.resetPanelData();
     }
   };
 
@@ -51,6 +53,9 @@ class _ContactDetailsPanel extends BasePanel {
     this.onChangeField('email', '');
     this.onChangeField('password', '');
     this.setState({ isCreatingAccount: false });
+    this.props.resetPanels();
+    this.props.resetPanelData();
+    this.props.resetFormData();
     this.props.logout();
   }
 
@@ -62,6 +67,7 @@ class _ContactDetailsPanel extends BasePanel {
     // Check if email has been modified, and reset status.
     if (this.state.formData.email !== prevState.formData.email) {
       this.props.resetEmailStatus();
+      this.props.resetPanels();
       this.onChangeField('password', '');
     }
   }
@@ -89,6 +95,10 @@ class _ContactDetailsPanel extends BasePanel {
       this.setState({ errors });
       return false;
     }
+  }
+
+  resetPanelData() {
+    // Override base to prevent reset.
   }
 
   renderWait() {
@@ -271,8 +281,10 @@ const actions = {
   createAccount: createAccount,
   resetEmailStatus: resetEmailStatus,
   updateFormData: updateFormData,
+  resetFormData: resetFormData,
   nextPanel: nextPanel,
   editPanel: editPanel,
+  resetPanels: resetPanels,
 };
 
-export const ContactDetailsPanel = connect(mapStateToProps, actions)(_ContactDetailsPanel);
+export const ContactDetailsPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_ContactDetailsPanel);

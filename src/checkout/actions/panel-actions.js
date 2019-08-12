@@ -28,6 +28,10 @@ export const editPanel = index => ({
   index: index,
 });
 
+export const resetPanels = () => ({
+  type: types.resetPanels,
+});
+
 export const resetShippingOptionsPanel = () => ({
   type: types.resetShippingOptionsPanel,
 });

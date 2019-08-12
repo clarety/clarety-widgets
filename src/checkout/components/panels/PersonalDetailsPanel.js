@@ -146,4 +146,4 @@ const actions = {
   editPanel: editPanel,
 };
 
-export const PersonalDetailsPanel = connect(mapStateToProps, actions)(_PersonalDetailsPanel);
+export const PersonalDetailsPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_PersonalDetailsPanel);

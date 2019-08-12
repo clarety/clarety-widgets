@@ -10,6 +10,9 @@ export const formDataReducer = (state = initialState, action) => {
         ...action.formData,
       };
 
+    case types.resetFormData:
+      return {};
+
     default:
       return state;
   }

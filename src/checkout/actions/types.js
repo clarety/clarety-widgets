@@ -1,15 +1,17 @@
 export const types = {
   // Panel Action Types
 
-  setPanels: 'SET_PANELS',
-  nextPanel: 'NEXT_PANEL',
-  editPanel: 'EDIT_PANEL',
+  setPanels:   'SET_PANELS',
+  nextPanel:   'NEXT_PANEL',
+  editPanel:   'EDIT_PANEL',
+  resetPanels: 'RESET_PANELS',
 
   resetShippingOptionsPanel: 'RESET_SHIPPING_OPTIONS_PANEL',
 
   // Form Data Action Types
 
   updateFormData: 'UPDATE_FORM_DATA',
+  resetFormData:  'RESET_FORM_DATA',
 
   // API Action Types
 

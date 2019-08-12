@@ -106,4 +106,4 @@ const actions = {
   editPanel: editPanel,
 };
 
-export const PaymentDetailsPanel = connect(mapStateToProps, actions)(_PaymentDetailsPanel);
+export const PaymentDetailsPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_PaymentDetailsPanel);
