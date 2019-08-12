@@ -3,6 +3,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider as ReduxProvider, connect } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import { IntlProvider, FormattedMessage } from 'react-intl';
+import 'intl-pluralrules'; // Polyfill for safari 12
 import { Spinner, Modal } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';

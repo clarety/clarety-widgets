@@ -26,6 +26,7 @@
     "clarety-utils": "^1.0.0",
     "connected-react-router": "^6.5.2",
     "credit-card-type": "^8.2.0",
+    "intl-pluralrules": "^1.0.3",
     "mem": "^5.1.1",
     "node-sass": "^4.12.0",
     "react-block-ui": "^1.1.4",
