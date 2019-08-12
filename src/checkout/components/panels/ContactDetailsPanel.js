@@ -7,14 +7,18 @@ import { customerSearch, login, logout, createAccount, updateFormData, nextPanel
 import { FormContext } from 'checkout/utils';
 
 class _ContactDetailsPanel extends BasePanel {
-  onPressCheckEmail = () => {
+  onPressCheckEmail = event => {
+    event.preventDefault();
+
     if (this.validate()) {
       const { email } = this.state.formData;
       this.props.customerSearch(email);
     }
   };
 
-  onPressLogin = () => {
+  onPressLogin = event => {
+    event.preventDefault();
+
     if (this.validate()) {
       const { email, password } = this.state.formData;
       this.props.login(email, password);
@@ -29,7 +33,9 @@ class _ContactDetailsPanel extends BasePanel {
     this.setState({ isCreatingAccount: false });
   }
 
-  onPressCreateAccount = () => {
+  onPressCreateAccount = event => {
+    event.preventDefault();
+
     if (this.validate()) {
       const { firstName, lastName, email, password } = this.state.formData;
       this.props.createAccount(firstName, lastName, email, password);
@@ -121,18 +127,18 @@ class _ContactDetailsPanel extends BasePanel {
   renderEmailCheckForm(hasNoAccount) {
     return (
       <FormContext.Provider value={this.state}>
-        <Form>
+        <Form onSubmit={this.onPressCheckEmail}>
           <Form.Row>
             <Col>
               <TextInput field="email" type="email" placeholder="Email *" />
             </Col>
           </Form.Row>
-        </Form>
 
-        {hasNoAccount
-          ? this.renderNoAccountButtons()
-          : this.renderCheckEmailButton()
-        }
+          {hasNoAccount
+            ? this.renderNoAccountButtons()
+            : this.renderCheckEmailButton()
+          }
+        </Form>
       </FormContext.Provider>
     );
   }
@@ -140,11 +146,7 @@ class _ContactDetailsPanel extends BasePanel {
   renderCheckEmailButton() {
     return (
       <div className="text-right mt-3">
-        <Button
-          title="Continue"
-          onClick={this.onPressCheckEmail}
-          isBusy={this.props.isBusy}
-        />
+        <Button title="Continue" type="submit" isBusy={this.props.isBusy} />
       </div>
     );
   }
@@ -164,8 +166,7 @@ class _ContactDetailsPanel extends BasePanel {
   renderLoginForm() {
     return (
       <FormContext.Provider value={this.state}>
-        <Form>
-
+        <Form onSubmit={this.onPressLogin}>
           <p>You already have an account, please login to continue.</p>
 
           <Form.Row>
@@ -180,16 +181,10 @@ class _ContactDetailsPanel extends BasePanel {
             </Col>
           </Form.Row>
 
+          <div className="text-right mt-3">
+            <Button title="Login" type="submit" isBusy={this.props.isBusy} />
+          </div>
         </Form>
-
-        <div className="text-right mt-3">
-          <Button
-            title="Login"
-            onClick={this.onPressLogin}
-            isBusy={this.props.isBusy}
-          />
-        </div>
-
       </FormContext.Provider>
     );
   }
@@ -197,7 +192,7 @@ class _ContactDetailsPanel extends BasePanel {
   renderCreateAccountForm() {
     return (
       <FormContext.Provider value={this.state}>
-        <Form>
+        <Form onSubmit={this.onPressCreateAccount}>
 
           <p>Please enter your details.</p>
 
@@ -223,13 +218,12 @@ class _ContactDetailsPanel extends BasePanel {
             </Col>
           </Form.Row>
 
+          <div className="text-right mt-3">
+            <Button title="Cancel" onClick={this.onPressCancelCreateAccount} variant="link" />
+            <Button title="Create Account" type="submit" isBusy={this.props.isBusy} />
+          </div>
+
         </Form>
-
-        <div className="text-right mt-3">
-          <Button title="Cancel" onClick={this.onPressCancelCreateAccount} variant="link" />
-          <Button title="Create Account" onClick={this.onPressCreateAccount} isBusy={this.props.isBusy} />
-        </div>
-
       </FormContext.Provider>
     );
   }

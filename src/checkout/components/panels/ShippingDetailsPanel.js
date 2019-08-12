@@ -1,13 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Form, Col, Button } from 'react-bootstrap';
-import { BasePanel, TextInput, PureCheckboxInput } from 'checkout/components';
+import { Form, Col } from 'react-bootstrap';
+import { BasePanel, TextInput, PureCheckboxInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { updateFormData, nextPanel, editPanel } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _ShippingDetailsPanel extends BasePanel {
-  onPressContinue = () => {
+  onPressContinue = event => {
+    event.preventDefault();
+
     if (this.validate()) {
       this.props.updateFormData(this.state.formData);
       this.props.nextPanel();
@@ -88,7 +90,7 @@ class _ShippingDetailsPanel extends BasePanel {
         <EditPanelHeader number="3" title="Shipping Details" />
         
         <FormContext.Provider value={this.state}>
-          <Form>
+          <Form onSubmit={this.onPressContinue}>
             {this.renderAddressForm('Shipping Address', 'customer.delivery')}
 
             <Form.Row>
@@ -104,12 +106,11 @@ class _ShippingDetailsPanel extends BasePanel {
 
             {!billingIsSameAsShipping && this.renderAddressForm('Billing Address', 'customer.billing')}
             
+            <div className="text-right mt-3">
+              <Button title="Continue" type="submit" />
+            </div>
           </Form>
         </FormContext.Provider>
-
-        <div className="text-right mt-3">
-          <Button onClick={this.onPressContinue}>Continue</Button>
-        </div>
       </div>
     );
   }

@@ -25,16 +25,20 @@ class _DiscountCodeForm extends React.Component {
     }));
   };
 
-  onPressApplyDiscount = () => {
+  onPressApplyDiscount = event => {
+    event.preventDefault();
+
     const { promoCode } = this.state.formData;
     this.props.updateFormData({ promoCode });
     this.props.updateCheckout({ isDiscountCode: true });
   };
 
   render() {
+    const { promoCode } = this.state.formData;
+
     return (
       <FormContext.Provider value={this.state}>
-        <Form>
+        <Form onSubmit={this.onPressApplyDiscount}>
           <Form.Row>
             <Col>
               <TextInput field="promoCode" placeholder="Discount Code" />
@@ -42,8 +46,9 @@ class _DiscountCodeForm extends React.Component {
             <Col xs="auto">
               <Button
                 title="Apply"
-                onClick={this.onPressApplyDiscount}
+                type="submit"
                 isBusy={this.props.isBusy}
+                disabled={!promoCode}
               />
             </Col>
           </Form.Row>

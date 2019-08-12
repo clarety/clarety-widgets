@@ -7,7 +7,9 @@ import { makePayment, editPanel } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _PaymentDetailsPanel extends BasePanel {
-  onPressPayNow = () => {
+  onPressPayNow = event => {
+    event.preventDefault();
+
     if (this.validate()) {
       this.props.makePayment(this.state.formData);
     }
@@ -37,7 +39,7 @@ class _PaymentDetailsPanel extends BasePanel {
         <EditPanelHeader number="5" title="Payment Details" />
 
         <FormContext.Provider value={this.state}>
-          <Form>
+          <Form onSubmit={this.onPressPayNow}>
             <Form.Row>
               <Col>
                 <TextInput field="cardName" placeholder="Name On Card *" />
@@ -69,16 +71,12 @@ class _PaymentDetailsPanel extends BasePanel {
                 By clicking the <strong>Pay Now</strong> button, you’re acknowledging that you’ve read and accept the <a href="#">Terms &amp; Conditions</a>.
               </Col>
             </Form.Row>
+
+            <div className="text-right mt-3">
+              <Button title="Pay Now" type="submit" isBusy={this.props.isBusy} />
+            </div>
           </Form>
         </FormContext.Provider>
-
-        <div className="text-right mt-3">
-          <Button
-            title="Pay Now"
-            onClick={this.onPressPayNow}
-            isBusy={this.props.isBusy}
-          />
-        </div>
       </div>
     );
   }

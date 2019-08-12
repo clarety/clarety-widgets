@@ -1,13 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Form, Col, Button } from 'react-bootstrap';
+import { Form, Col } from 'react-bootstrap';
 import { BasePanel, TextInput } from 'checkout/components';
-import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
+import { WaitPanelHeader, EditPanelHeader, DonePanelHeader, Button } from 'checkout/components';
 import { updateFormData, nextPanel, editPanel } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _PersonalDetailsPanel extends BasePanel {
-  onPressContinue = () => {
+  onPressContinue = event => {
+    event.preventDefault();
+
     if (this.validate()) {
       this.props.updateFormData(this.state.formData);
       this.props.nextPanel();
@@ -56,7 +58,7 @@ class _PersonalDetailsPanel extends BasePanel {
         <EditPanelHeader number="2" title="Personal Details" />
         
         <FormContext.Provider value={this.state}>
-          <Form>
+          <Form onSubmit={this.onPressContinue}>
             <Form.Row>
               <Col>
                 <TextInput field="customer.firstName" placeholder="First Name *" />
@@ -104,12 +106,12 @@ class _PersonalDetailsPanel extends BasePanel {
                 <TextInput field="sale.source" placeholder="How did you hear about us? *" />
               </Col>
             </Form.Row>
+
+            <div className="text-right mt-3">
+              <Button title="Continue" type="submit" />
+            </div>
           </Form>
         </FormContext.Provider>
-
-        <div className="text-right mt-3">
-          <Button onClick={this.onPressContinue}>Continue</Button>
-        </div>
       </div>
     );
   }
