@@ -19,6 +19,7 @@ module.exports = {
           'registrations': './src/registrations',
           'shared':        './src/shared',
           'subscribe':     './src/subscribe',
+          'cart':          './src/cart',
         },
       }],
     ],
