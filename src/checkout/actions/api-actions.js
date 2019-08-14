@@ -18,12 +18,12 @@ export const emailStatuses = {
 
 export const fetchCart = () => {
   return async dispatch => {
-    // TODO: where does cart id come from? cookies?
-    const cartId = '123-cart-id';
+    // TODO: decode JWT and get cart uid.
+    const cartUid = '123-cart-uid';
 
-    dispatch(fetchCartRequest(cartId));
+    dispatch(fetchCartRequest(cartUid));
 
-    const results = await ClaretyApi.get('checkout/cart/', cartId);
+    const results = await ClaretyApi.get(`carts/${cartUid}/`);
     const result = results[0];
 
     if (result.status === 'error') {

@@ -12,7 +12,7 @@ export function setupCheckoutAxiosMock() {
   const apiBase = ClaretyApi.getApiBaseUrl();
 
   mock
-    .onGet(`${apiBase}checkout/cart/`)
+    .onGet(`${apiBase}carts/123-cart-uid/`)
     .reply(200, getCartSuccess);
 
   mock
