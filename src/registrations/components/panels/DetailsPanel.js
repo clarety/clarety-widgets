@@ -129,17 +129,27 @@ export class _DetailsPanel extends React.Component {
 
     return (
       <Container ref={ref => this.ref = ref}>
-        <FormattedMessage id="detailsPanel.editTitle" values={{ firstName }} tagName="h2" />
+        <FormattedMessage
+          id="detailsPanel.editTitle"
+          tagName="h2"
+          values={{
+            firstName: <span className="text-primary">{firstName}</span>
+          }}
+        />
 
         <Form onSubmit={this.onClickNext}>
           <div className="panel-body">
             <Row className="mt-5">
               <Col lg={6}>
-                <FormattedMessage id="detailsPanel.customerFormTitle" tagName="h4" />
+                <FormattedMessage id="detailsPanel.customerFormTitle">
+                  {txt => <h4 className="mb-4">{txt}</h4>}
+                </FormattedMessage>
                 {this.renderCustomerForm()}
               </Col>
               <Col lg={6}>
-                <FormattedMessage id="detailsPanel.extendFormTitle" tagName="h4" />
+                <FormattedMessage id="detailsPanel.extendFormTitle">
+                  {txt => <h4 className="mb-4">{txt}</h4>}
+                </FormattedMessage>
                 {this.renderExtendForm()}
               </Col>
             </Row>
