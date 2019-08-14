@@ -4,7 +4,7 @@ import { Form, Col } from 'react-bootstrap';
 import { BasePanel, TextInput } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader, Button } from 'checkout/components';
 import { updateFormData, nextPanel, editPanel } from 'checkout/actions';
-import { FormContext } from 'checkout/utils';
+import { FormContext, validateRequired } from 'checkout/utils';
 
 class _PersonalDetailsPanel extends BasePanel {
   onPressContinue = event => {
@@ -17,8 +17,29 @@ class _PersonalDetailsPanel extends BasePanel {
   };
 
   validate() {
-    // TODO: validate fields...
-    return true;
+    const errors = [];
+
+    const firstName = this.state.formData['customer.firstName'];
+    const lastName  = this.state.formData['customer.lastName'];
+
+    const dobDay    = this.state.formData['customer.dateOfBirthDay'];
+    const dobMonth  = this.state.formData['customer.dateOfBirthMonth'];
+    const dobYear   = this.state.formData['customer.dateOfBirthYear'];
+
+    const source    = this.state.formData['sale.source'];
+
+    validateRequired(firstName, 'customer.firstName', errors);
+    validateRequired(lastName, 'customer.lastName', errors);
+
+    // TODO: a validateDOB method
+    validateRequired(dobDay, 'customer.dateOfBirthDay', errors);
+    validateRequired(dobMonth, 'customer.dateOfBirthMonth', errors);
+    validateRequired(dobYear, 'customer.dateOfBirthYear', errors);
+
+    validateRequired(source, 'sale.source', errors);
+
+    this.setState({ errors });
+    return errors.length === 0;
   }
 
   componentDidUpdate(prevProps) {

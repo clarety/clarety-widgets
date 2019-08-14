@@ -4,7 +4,7 @@ import { Form, Col } from 'react-bootstrap';
 import { BasePanel, TextInput, PureCheckboxInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { updateFormData, updateCheckout, editPanel, resetShippingOptionsPanel } from 'checkout/actions';
-import { FormContext } from 'checkout/utils';
+import { FormContext, validateRequired } from 'checkout/utils';
 
 class _ShippingDetailsPanel extends BasePanel {
   onPressContinue = event => {
@@ -21,8 +21,34 @@ class _ShippingDetailsPanel extends BasePanel {
   };
 
   validate() {
-    // TODO: validate fields...
-    return true;
+    const errors = [];
+
+    const deliveryAddress1 = this.state.formData['customer.delivery.address1'];
+    const deliverySuburb   = this.state.formData['customer.delivery.suburb'];
+    const deliveryState    = this.state.formData['customer.delivery.state'];
+    const deliveryPostcode = this.state.formData['customer.delivery.postcode'];
+    const deliveryCountry  = this.state.formData['customer.delivery.country'];
+
+    const billingAddress1  = this.state.formData['customer.billing.address1'];
+    const billingSuburb    = this.state.formData['customer.billing.suburb'];
+    const billingState     = this.state.formData['customer.billing.state'];
+    const billingPostcode  = this.state.formData['customer.billing.postcode'];
+    const billingCountry   = this.state.formData['customer.billing.country'];
+
+    validateRequired(deliveryAddress1, 'customer.delivery.address1', errors);
+    validateRequired(deliverySuburb, 'customer.delivery.suburb', errors);
+    validateRequired(deliveryState, 'customer.delivery.state', errors);
+    validateRequired(deliveryPostcode, 'customer.delivery.postcode', errors);
+    validateRequired(deliveryCountry, 'customer.delivery.country', errors);
+
+    validateRequired(billingAddress1, 'customer.billing.address1', errors);
+    validateRequired(billingSuburb, 'customer.billing.suburb', errors);
+    validateRequired(billingState, 'customer.billing.state', errors);
+    validateRequired(billingPostcode, 'customer.billing.postcode', errors);
+    validateRequired(billingCountry, 'customer.billing.country', errors);
+
+    this.setState({ errors });
+    return errors.length === 0;
   }
 
   onChangeBillingIsSameAsShipping = (field, isChecked) => {
