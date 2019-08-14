@@ -1,5 +1,6 @@
 import React from 'react';
 import { panelStatuses } from 'checkout/actions';
+import { validateRequired, validateEmail, validatePassword, validateCardNumber, validateCardExpiry, validateCcv } from 'checkout/utils';
 
 export class BasePanel extends React.Component {
   constructor(props) {
@@ -52,5 +53,36 @@ export class BasePanel extends React.Component {
 
   renderDone() {
     throw new Error('renderDone not implemented');
+  }
+
+  validateRequired(field, errors) {
+    const value = this.state.formData[field];
+    validateRequired(value, field, errors);
+  }
+
+  validateEmail(field, errors) {
+    const value = this.state.formData[field];
+    validateEmail(value, field, errors);
+  }
+
+  validatePassword(field, errors) {
+    const value = this.state.formData[field];
+    validatePassword(value, field, errors);
+  }
+
+  validateCardNumber(field, errors) {
+    const value = this.state.formData[field];
+    validateCardNumber(value, field, errors);
+  }
+
+  validateCardExpiry(field, monthField, yearField, errors) {
+    const monthValue = this.state.formData[monthField];
+    const yearValue = this.state.formData[yearField];
+    validateCardExpiry(monthValue, yearValue, field, errors);
+  }
+
+  validateCcv(field, errors) {
+    const value = this.state.formData[field];
+    validateCcv(value, field, errors);
   }
 }
