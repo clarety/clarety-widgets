@@ -26,7 +26,7 @@ export const checkoutReducer = (state = initialState, action) => {
         ...state,
         isBusy: false,
         isBusyDiscountCode: false,
-        cart: action.result.cart,
+        cart: action.result,
       };
 
     case types.updateCheckoutFailure:

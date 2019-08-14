@@ -6,12 +6,12 @@ import { currency } from 'checkout/utils';
 class _CartSummary extends React.Component {
   render() {
     const { cart } = this.props;
-    if (!cart || !cart.lines) return null;
+    if (!cart || !cart.items) return null;
 
     return (
       <div>
-        {cart.lines.map(saleline =>
-          <Saleline saleline={saleline} key={saleline.id} />
+        {cart.items.map(item =>
+          <CartItem item={item} key={item.uid} />
         )}
         <hr />
         <DiscountCodeForm />
@@ -33,8 +33,8 @@ const actions = {};
 export const CartSummary = connect(mapStateToProps, actions)(_CartSummary);
 
 
-const Saleline = ({ saleline }) => (
-  <p>{saleline.description}</p>
+const CartItem = ({ item }) => (
+  <p>{item.description}</p>
 );
 
 const CartTotals = ({ summary }) => (

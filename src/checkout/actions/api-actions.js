@@ -123,7 +123,7 @@ export const updateCheckout = ({ isDiscountCode = false, shouldAdvance = true } 
     if (result.status === 'error') {
       dispatch(updateCheckoutFailure(result));
     } else {
-      if (result.cart.status === 'complete') {
+      if (result.status === 'complete') {
         window.location.href = result.redirect;
       } else {
         dispatch(updateCheckoutSuccess(result));

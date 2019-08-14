@@ -12,8 +12,8 @@ class _ShippingOptionsPanel extends BasePanel {
     if (canContinue) nextPanel();
   };
 
-  onSelectOption = key => {
-    this.props.updateFormData({ shippingOption: key });
+  onSelectOption = uid => {
+    this.props.updateFormData({ shippingOption: uid });
     this.props.updateCheckout({ shouldAdvance: false });
   };
 
@@ -46,12 +46,12 @@ class _ShippingOptionsPanel extends BasePanel {
 
   renderShippingOption = (option, index) => {
     return (
-      <Form.Check type="radio" id={option.key} key={option.key} className="shipping-option">
+      <Form.Check type="radio" id={option.uid} key={option.uid} className="shipping-option">
         <Form.Check.Input
           type="radio"
           name="shippingOption"
-          checked={this.props.selectedKey === option.key}
-          onChange={() => this.onSelectOption(option.key)}
+          checked={this.props.selectedOptionUid === option.uid}
+          onChange={() => this.onSelectOption(option.uid)}
         />
 
         <Form.Check.Label>
@@ -80,9 +80,9 @@ class _ShippingOptionsPanel extends BasePanel {
 const mapStateToProps = state => {
   return {
     isBusy: state.checkout.isBusy,
-    selectedKey: state.formData.shippingOption,
     canContinue: !!state.formData.shippingOption,
     shippingOptions: state.checkout.cart.shippingOptions,
+    selectedOptionUid: state.formData.shippingOption,
     selectedOptionName: getSelectedShippingOptionLabel(state),
   };
 };
@@ -102,7 +102,7 @@ const getSelectedShippingOptionLabel = state => {
   const { shippingOption } = state.formData;
 
   if (shippingOptions && shippingOption) {
-    const option = shippingOptions.find(option => option.key === shippingOption);
+    const option = shippingOptions.find(option => option.uid === shippingOption);
 
     if (option) return option.label;
   }
