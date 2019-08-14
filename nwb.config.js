@@ -13,6 +13,7 @@ module.exports = {
     plugins: [
       ['module-resolver', {
         'alias': {
+          'cart':          './src/cart',
           'checkout':      './src/checkout',
           'donate':        './src/donate',
           'form':          './src/form',
