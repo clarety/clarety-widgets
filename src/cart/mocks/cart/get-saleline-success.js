@@ -1,4 +1,4 @@
-export const getCartSuccess = {
+export const getSalelineSuccess = {
   "requestId": "",
   "success": true,
   "result": [
@@ -11,7 +11,7 @@ export const getCartSuccess = {
             "id": "9875654",
             "description": "Human Fund Crew T-Shirt",
             "price": 39.90,
-            "quantity": 2,
+            "quantity": 100000,
             "total": 79.80
           },
           {
@@ -22,7 +22,7 @@ export const getCartSuccess = {
             "total": 14.95
           }
         ],
-        
+
         "shippingOptions": [
           {
             "key": "123",

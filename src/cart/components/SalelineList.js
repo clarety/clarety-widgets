@@ -4,7 +4,7 @@ import { Saleline } from "cart/components";
 
 class _SalelineList extends React.Component {
     render() {
-        const { cart } = this.props;
+        const { cart, busySalelines } = this.props;
         if (!cart || !cart.lines) return null;
 
         return (
@@ -13,6 +13,7 @@ class _SalelineList extends React.Component {
                     <Saleline
                         saleline={saleline}
                         key={saleline.id}
+                        isBusy={!!busySalelines.find(busySaleline => busySaleline.id === saleline.id)}
                     />
                 )}
             </div>
@@ -23,6 +24,7 @@ class _SalelineList extends React.Component {
 const mapStateToProps = state => {
     return {
         cart: state.cart,
+        busySalelines: state.busySalelines
     };
 };
 

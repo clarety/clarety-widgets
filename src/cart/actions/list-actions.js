@@ -15,12 +15,12 @@ export function fetchSalelines() {
   };
 }
 
-export const updateSalelineQuantity = () => {
-  console.log('updateSalelineQuantity');
-  return async (dispatch, getState) => {
-    console.log('in async');
-    const { saleline } = getState();
+export const updateSalelineQuantity = (saleline, newQuantity) => {
+  return async (dispatch) => {
 
+    //Create an object to give to the api
+
+    console.log('update');
     dispatch(updateSalelineRequest(saleline));
 
     const results = await ClaretyApi.post('update-saleline/', saleline);
@@ -29,7 +29,6 @@ export const updateSalelineQuantity = () => {
     if (result.status === 'error') {
       dispatch(updateSalelineFailure(result));
     } else {
-      dispatch(fetchSalelines());
       dispatch(updateSalelineSuccess(result));
     }
   };
