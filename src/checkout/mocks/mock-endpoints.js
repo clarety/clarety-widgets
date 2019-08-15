@@ -12,15 +12,20 @@ export function setupCheckoutAxiosMock() {
 
   const apiBase = ClaretyApi.getApiBaseUrl();
 
+  // Login.
+  mock
+    .onPost(`${apiBase}jwttoken/`)
+    .reply(200, loginSuccess);
+
   // Get cart.
   mock
     .onGet(`${apiBase}carts/8c2756b2-f018-4c27-a025-c31fca7e482b/`)
     .reply(200, getCartSuccess);
 
-  // Get shipping options.
+  // Get customer.
   mock
-    .onGet(`${apiBase}carts/8c2756b2-f018-4c27-a025-c31fca7e482b/shipping-options/`)
-    .reply(200, getShippingOptionsSuccess);
+    .onGet(`${apiBase}carts/customers/e7fb8831-4a83-468e-8eec-593185909f18/`)
+    .reply(200, getCustomerSuccess);
 
   // Create customer.
   mock
@@ -32,26 +37,26 @@ export function setupCheckoutAxiosMock() {
     .onPut(`${apiBase}carts/8c2756b2-f018-4c27-a025-c31fca7e482b/customers/e7fb8831-4a83-468e-8eec-593185909f18/`)
     .reply(200, createCustomerSuccess);
 
+  // Get shipping options.
+  mock
+    .onGet(`${apiBase}carts/8c2756b2-f018-4c27-a025-c31fca7e482b/shipping-options/`)
+    .reply(200, getShippingOptionsSuccess);
+
+
+
   mock
     .onGet(`${apiBase}customer-search/`)
     .reply(request => {
-      if (request.params.email === 'test@test.com') return [200, customerSearchHasAccount];
+      const response = request.params.email === 'test@test.com'
+                     ? customerSearchHasAccount
+                     : customerSearchNoAccount;
 
-      return [200, customerSearchNoAccount];
+      return [200, response];
     });
 
   mock
     .onPost(`${apiBase}customer-new/`)
     .reply(200, createAccountSuccess);
-
-  mock
-    .onPost(`${apiBase}jwttoken/`)
-    .reply(200, loginSuccess);
-
-  // TODO: use cart endpoint, not registration.
-  mock
-    .onGet(`${apiBase}registration-customer/`)
-    .reply(200, getCustomerSuccess);
 
   mock
     .onPost(`${apiBase}checkout/`)

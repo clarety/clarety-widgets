@@ -64,10 +64,12 @@ export const login = (email, password) => {
       dispatch(loginSuccess(result));
     }
 
+    // TODO: where does customer uid come from? Decode JWT?
+    const customerUid = 'e7fb8831-4a83-468e-8eec-593185909f18';
+
     // Fetch customer.
     dispatch(fetchCustomerRequest());
-    // TODO: use carts endpoint, not registration.
-    const results = await ClaretyApi.get('registration-customer/');
+    const results = await ClaretyApi.get(`carts/customers/${customerUid}/`);
     result = results[0];
 
     if (result.status === 'error') {
@@ -76,7 +78,7 @@ export const login = (email, password) => {
     } else {
       dispatch(fetchCustomerSuccess(result));
 
-      // We've logged in successfully, proceed to the next panel.
+      // Proceed to the customer details panel.
       dispatch(nextPanel());
     }
   }
@@ -138,6 +140,7 @@ export const onSubmitShippingDetails = () => {
     const { checkout, login } = getState();
 
     if (login.customer || checkout.cart.customer) {
+      // TODO: can I use this endpoint without being logged in?
       await updateCustomer(dispatch, getState);
     } else {
       await createCustomer(dispatch, getState);
