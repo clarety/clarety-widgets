@@ -4,15 +4,20 @@ const initialState = {
   isBusy: false,
   cart: {},
   errors: [],
+  busySalelines: [],
 };
 
 export const cartReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.fetchSalelinesRequest:
+      return {
+        ...state,
+        errors: [],
+      };
     case types.updateSalelineRequest:
       return {
         ...state,
-        isBusy: true,
+        busySalelines: [...state.busySalelines, action.item],
         errors: [],
       };
 
@@ -22,6 +27,7 @@ export const cartReducer = (state = initialState, action) => {
         ...state,
         isBusy: false,
         cart: action.result.cart,
+        busySalelines: []
       };
 
     case types.updateSalelineFailure:

@@ -1,41 +1,45 @@
 import React from 'react';
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import { QtyInput } from "cart/components";
 import { updateSalelineQuantity } from "../actions";
 
 class _Saleline extends React.Component {
+    timeout = null;
+    time = 500;
+
     constructor(props) {
         super(props);
-
         this.state = {
-            saleline: this.props.saleline,
-            isBusy: this.props.isBusy
+            quantity: props.saleline.quantity,
         };
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        //TODO wait a moment before checking to check the user is complete.
-        //set a variable to map the timer, if the variable exists, remove it and start the timer again.
+    onQuantityChange = (quantity) => {
+        const { updateSalelineQuantity, saleline } = this.props;
 
-        if (this.state.saleline.quantity !== prevState.saleline.quantity) {
-            updateSalelineQuantity();
+        this.setState({quantity: quantity});
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => updateSalelineQuantity(saleline, quantity), this.time);
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        const { saleline } = this.props;
+
+        if(saleline.quantity !== prevProps.saleline.quantity){
+            this.setState({quantity:saleline.quantity});
         }
     }
 
     render() {
-        const { isBusy, saleline } = this.state;
+        const { saleline, isBusy } = this.props;
+        const { quantity } = this.state;
+
         return (
             <div className={`${isBusy?'busy-processing':''}`}>
                 <p>{saleline.description}</p>
                 <QtyInput
-                    value={saleline.quantity || 0}
-                    onChange={qty =>
-                        this.setState(prevState => {
-                            let saleline = Object.assign({}, prevState.saleline);
-                            saleline.quantity = qty;
-                            return { saleline };
-                        }
-                    )}
+                    value={quantity || 0}
+                    onChange={ this.onQuantityChange }
                 />
             </div>
         );
@@ -45,5 +49,9 @@ class _Saleline extends React.Component {
 const mapStateToProps = state => {
     return {};
 };
-const actions = {};
+
+const actions = {
+    updateSalelineQuantity: updateSalelineQuantity
+};
+
 export const Saleline = connect(mapStateToProps, actions)(_Saleline);
