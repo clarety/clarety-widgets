@@ -39,6 +39,14 @@ export const types = {
   fetchCustomerSuccess: 'FETCH_CUSTOMER_SUCCESS',
   fetchCustomerFailure: 'FETCH_CUSTOMER_FAILURE',
 
+  createCustomerRequest: 'CREATE_CUSTOMER_REQUEST',
+  createCustomerSuccess: 'CREATE_CUSTOMER_SUCCESS',
+  createCustomerFailure: 'CREATE_CUSTOMER_FAILURE',
+
+  updateCustomerRequest: 'UPDATE_CUSTOMER_REQUEST',
+  updateCustomerSuccess: 'UPDATE_CUSTOMER_SUCCESS',
+  updateCustomerFailure: 'UPDATE_CUSTOMER_FAILURE',
+
   fetchShippingOptionsRequest: 'FETCH_SHIPPING_OPTIONS_REQUEST',
   fetchShippingOptionsSuccess: 'FETCH_SHIPPING_OPTIONS_SUCCESS',
   fetchShippingOptionsFailure: 'FETCH_SHIPPING_OPTIONS_FAILURE',

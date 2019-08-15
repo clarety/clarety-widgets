@@ -1,4 +1,4 @@
-export const createCustomerSuccess = {
+export const createAccountSuccess = {
   "requestId": "",
   "success": true,
   "result": [

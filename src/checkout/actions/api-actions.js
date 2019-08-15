@@ -19,7 +19,7 @@ export const emailStatuses = {
 export const fetchCart = () => {
   return async dispatch => {
     // TODO: decode JWT and get cart uid.
-    const cartUid = '123-cart-uid';
+    const cartUid = '8c2756b2-f018-4c27-a025-c31fca7e482b';
 
     dispatch(fetchCartRequest(cartUid));
 
@@ -66,7 +66,7 @@ export const login = (email, password) => {
 
     // Fetch customer.
     dispatch(fetchCustomerRequest());
-    // TODO: use shop endpoint, not registration.
+    // TODO: use carts endpoint, not registration.
     const results = await ClaretyApi.get('registration-customer/');
     result = results[0];
 
@@ -133,20 +133,73 @@ export const updateCheckout = ({ isDiscountCode = false, shouldAdvance = true } 
   };
 };
 
-export const fetchShippingOptions = () => {
+export const onSubmitShippingDetails = () => {
   return async (dispatch, getState) => {
-    const { cart } = getState();
+    const { checkout, login } = getState();
 
-    dispatch(fetchShippingOptionsRequest(cart.uid));
-
-    const results = await ClaretyApi.get(`carts/${cart.uid}/shipping-options/`);
-
-    if (!results) {
-      dispatch(fetchShippingOptionsFailure());
+    if (login.customer || checkout.cart.customer) {
+      await updateCustomer(dispatch, getState);
     } else {
-      dispatch(fetchShippingOptionsSuccess(results));
+      await createCustomer(dispatch, getState);
     }
+
+    await fetchShippingOptions(dispatch, getState);
+
+    // Proceed to shipping options panel.
+    dispatch(nextPanel());
   };
+};
+
+const createCustomer = async (dispatch, getState) => {
+  const { checkout, formData } = getState();
+  const { cart } = checkout;
+
+  const postData = parseNestedElements(formData);
+
+  dispatch(createCustomerRequest(postData));
+
+  let results = await ClaretyApi.post(`carts/${cart.uid}/customers/`, postData);
+  const result = results[0];
+
+  if (result.status === 'error') {
+    dispatch(createCustomerFailure(result));
+  } else {
+    dispatch(createCustomerSuccess(result));
+  }
+};
+
+const updateCustomer = async (dispatch, getState) => {
+  const { checkout, login, formData } = getState();
+  const { cart } = checkout;
+  const customer = login.customer || cart.customer;
+
+  const putData = parseNestedElements(formData);
+
+  dispatch(updateCustomerRequest(putData));
+
+  let results = await ClaretyApi.put(`carts/${cart.uid}/customers/${customer.uid}/`, putData);
+  const result = results[0];
+
+  if (result.status === 'error') {
+    dispatch(updateCustomerFailure(result));
+  } else {
+    dispatch(updateCustomerSuccess(result));
+  }
+};
+
+const fetchShippingOptions = async (dispatch, getState) => {
+  const { checkout } = getState();
+  const { cart } = checkout;
+
+  dispatch(fetchShippingOptionsRequest(cart.uid));
+
+  const results = await ClaretyApi.get(`carts/${cart.uid}/shipping-options/`);
+
+  if (!results) {
+    dispatch(fetchShippingOptionsFailure());
+  } else {
+    dispatch(fetchShippingOptionsSuccess(results));
+  }
 };
 
 export const makePayment = paymentData => {
@@ -290,6 +343,42 @@ const fetchCustomerFailure = result => ({
 });
 
 
+// Create Customer
+
+const createCustomerRequest = postData => ({
+  type: types.createCustomerRequest,
+  postData: postData,
+});
+
+const createCustomerSuccess = result => ({
+  type: types.createCustomerSuccess,
+  result: result,
+});
+
+const createCustomerFailure = result => ({
+  type: types.createCustomerFailure,
+  result: result,
+});
+
+
+// Update Customer
+
+const updateCustomerRequest = putData => ({
+  type: types.updateCustomerRequest,
+  putData: putData,
+});
+
+const updateCustomerSuccess = result => ({
+  type: types.updateCustomerSuccess,
+  result: result,
+});
+
+const updateCustomerFailure = result => ({
+  type: types.updateCustomerFailure,
+  result: result,
+});
+
+
 // Update Checkout
 
 const updateCheckoutRequest = (postData, isDiscountCode) => ({
@@ -306,6 +395,23 @@ const updateCheckoutSuccess = result => ({
 const updateCheckoutFailure = result => ({
   type: types.updateCheckoutFailure,
   result: result,
+});
+
+
+// Fetch Shipping Options
+
+const fetchShippingOptionsRequest = cardUid => ({
+  type: types.fetchShippingOptionsRequest,
+  cardUid: cardUid,
+});
+
+const fetchShippingOptionsSuccess = results => ({
+  type: types.fetchShippingOptionsSuccess,
+  results: results,
+});
+
+const fetchShippingOptionsFailure = () => ({
+  type: types.fetchShippingOptionsFailure,
 });
 
 

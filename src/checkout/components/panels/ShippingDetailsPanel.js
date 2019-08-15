@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import { BasePanel, TextInput, PureCheckboxInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { updateFormData, updateCheckout, editPanel, resetShippingOptionsPanel } from 'checkout/actions';
+import { updateFormData, onSubmitShippingDetails, editPanel, resetShippingOptionsPanel } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _ShippingDetailsPanel extends BasePanel {
@@ -11,10 +11,7 @@ class _ShippingDetailsPanel extends BasePanel {
     event.preventDefault();
 
     if (this.validate()) {
-      const formData = {
-        ...this.state.formData,
-        shippingOption: undefined,
-      };
+      const formData = { ...this.state.formData };
       
       if (this.state.billingIsSameAsShipping) {
         formData['customer.billing.address1'] = formData['customer.delivery.address1'];
@@ -23,10 +20,13 @@ class _ShippingDetailsPanel extends BasePanel {
         formData['customer.billing.postcode'] = formData['customer.delivery.postcode'];
         formData['customer.billing.country']  = formData['customer.delivery.country'];
       }
+      
+      // TODO: clear the selected shipping option...
+      // this.props.clearSelectedShippingOption();
+      this.props.resetShippingOptionsPanel();
 
       this.props.updateFormData(formData);
-      this.props.updateCheckout();
-      this.props.resetShippingOptionsPanel();
+      this.props.onSubmitShippingDetails();
     }
   };
 
@@ -178,7 +178,7 @@ const mapStateToProps = state => {
 
 const actions = {
   updateFormData: updateFormData,
-  updateCheckout: updateCheckout,
+  onSubmitShippingDetails: onSubmitShippingDetails,
   resetShippingOptionsPanel: resetShippingOptionsPanel,
   editPanel: editPanel,
 };

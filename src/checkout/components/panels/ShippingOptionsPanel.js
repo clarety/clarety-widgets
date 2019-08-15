@@ -81,7 +81,7 @@ const mapStateToProps = state => {
   return {
     isBusy: state.checkout.isBusy,
     canContinue: !!state.formData.shippingOption,
-    shippingOptions: state.checkout.cart.shippingOptions,
+    shippingOptions: state.checkout.shippingOptions,
     selectedOptionUid: state.formData.shippingOption,
     selectedOptionName: getSelectedShippingOptionLabel(state),
   };
