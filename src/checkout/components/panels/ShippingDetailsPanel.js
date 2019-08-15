@@ -11,10 +11,20 @@ class _ShippingDetailsPanel extends BasePanel {
     event.preventDefault();
 
     if (this.validate()) {
-      this.props.updateFormData({ 
+      const formData = {
         ...this.state.formData,
         shippingOption: undefined,
-      });
+      };
+      
+      if (this.state.billingIsSameAsShipping) {
+        formData['customer.billing.address1'] = formData['customer.delivery.address1'];
+        formData['customer.billing.suburb']   = formData['customer.delivery.suburb'];
+        formData['customer.billing.state']    = formData['customer.delivery.state'];
+        formData['customer.billing.postcode'] = formData['customer.delivery.postcode'];
+        formData['customer.billing.country']  = formData['customer.delivery.country'];
+      }
+
+      this.props.updateFormData(formData);
       this.props.updateCheckout();
       this.props.resetShippingOptionsPanel();
     }
@@ -29,11 +39,13 @@ class _ShippingDetailsPanel extends BasePanel {
     this.validateRequired('customer.delivery.postcode', errors);
     this.validateRequired('customer.delivery.country', errors);
 
-    this.validateRequired('customer.billing.address1', errors);
-    this.validateRequired('customer.billing.suburb', errors);
-    this.validateRequired('customer.billing.state', errors);
-    this.validateRequired('customer.billing.postcode', errors);
-    this.validateRequired('customer.billing.country', errors);
+    if (!this.state.billingIsSameAsShipping) {
+      this.validateRequired('customer.billing.address1', errors);
+      this.validateRequired('customer.billing.suburb', errors);
+      this.validateRequired('customer.billing.state', errors);
+      this.validateRequired('customer.billing.postcode', errors);
+      this.validateRequired('customer.billing.country', errors);
+    }
 
     this.setState({ errors });
     return errors.length === 0;
@@ -41,32 +53,6 @@ class _ShippingDetailsPanel extends BasePanel {
 
   onChangeBillingIsSameAsShipping = (field, isChecked) => {
     this.setState({ billingIsSameAsShipping: isChecked });
-
-    if (isChecked) {
-      // Copy billing fields.
-      this.setState(prevState => ({
-        formData: {
-          ...prevState.formData,
-          'customer.billing.address1': prevState.formData['customer.delivery.address1'],
-          'customer.billing.suburb':   prevState.formData['customer.delivery.suburb'],
-          'customer.billing.state':    prevState.formData['customer.delivery.state'],
-          'customer.billing.postcode': prevState.formData['customer.delivery.postcode'],
-          'customer.billing.country':  prevState.formData['customer.delivery.country'],
-        }
-      }));
-    } else {
-      // Clear billing fields.
-      this.setState(prevState => ({
-        formData: {
-          ...prevState.formData,
-          'customer.billing.address1': '',
-          'customer.billing.suburb':   '',
-          'customer.billing.state':    '',
-          'customer.billing.postcode': '',
-          'customer.billing.country':  '',
-        }
-      }));
-    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -85,6 +71,7 @@ class _ShippingDetailsPanel extends BasePanel {
         'customer.delivery.state':    customer.delivery.state,
         'customer.delivery.postcode': customer.delivery.postcode,
         'customer.delivery.country':  customer.delivery.country,
+
         'customer.billing.address1':  customer.billing.address1,
         'customer.billing.suburb':    customer.billing.suburb,
         'customer.billing.state':     customer.billing.state,
