@@ -5,15 +5,22 @@ import MockAdapter from 'axios-mock-adapter';
 import { ClaretyApi } from 'clarety-utils';
 import { customerSearchHasAccount, customerSearchNoAccount, createCustomerSuccess, getCustomerSuccess } from 'checkout/mocks';
 import { loginSuccess, getCartSuccess, updateAddressSuccess, updateShippingSuccess, paymentSuccess } from 'checkout/mocks';
+import { getShippingOptionsSuccess } from 'checkout/mocks';
 
 export function setupCheckoutAxiosMock() {
   const mock = new MockAdapter(axios, { delayResponse: 2000 });
 
   const apiBase = ClaretyApi.getApiBaseUrl();
 
+  // Get cart.
   mock
     .onGet(`${apiBase}carts/123-cart-uid/`)
     .reply(200, getCartSuccess);
+
+  // Get shipping options.
+  mock
+    .onGet(`${apiBase}carts/123-cart-uid/shipping-options/`)
+    .reply(200, getShippingOptionsSuccess);
 
   mock
     .onGet(`${apiBase}customer-search/`)
@@ -31,7 +38,7 @@ export function setupCheckoutAxiosMock() {
     .onPost(`${apiBase}jwttoken/`)
     .reply(200, loginSuccess);
 
-  // TODO: use shop endpoint, not registration.
+  // TODO: use cart endpoint, not registration.
   mock
     .onGet(`${apiBase}registration-customer/`)
     .reply(200, getCustomerSuccess);

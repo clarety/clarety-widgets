@@ -133,6 +133,22 @@ export const updateCheckout = ({ isDiscountCode = false, shouldAdvance = true } 
   };
 };
 
+export const fetchShippingOptions = () => {
+  return async (dispatch, getState) => {
+    const { cart } = getState();
+
+    dispatch(fetchShippingOptionsRequest(cart.uid));
+
+    const results = await ClaretyApi.get(`carts/${cart.uid}/shipping-options/`);
+
+    if (!results) {
+      dispatch(fetchShippingOptionsFailure());
+    } else {
+      dispatch(fetchShippingOptionsSuccess(results));
+    }
+  };
+};
+
 export const makePayment = paymentData => {
   const gateway = Config.get('gateway');
 

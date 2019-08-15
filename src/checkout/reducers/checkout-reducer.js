@@ -4,12 +4,14 @@ const initialState = {
   isBusy: false,
   isBusyDiscountCode: false,
   cart: {},
+  shippingOptions: [],
   errors: [],
 };
 
 export const checkoutReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.fetchCartRequest:
+    case types.fetchShippingOptionsRequest:
     case types.updateCheckoutRequest:
     case types.stripeTokenRequest:
       return {
@@ -28,6 +30,13 @@ export const checkoutReducer = (state = initialState, action) => {
         isBusyDiscountCode: false,
         cart: action.result,
       };
+
+    case types.fetchShippingOptionsSuccess:
+      return {
+        ...state,
+        isBusy: false,
+        shippingOptions: action.results,
+      }; 
 
     case types.updateCheckoutFailure:
       return {

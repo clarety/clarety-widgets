@@ -39,6 +39,10 @@ export const types = {
   fetchCustomerSuccess: 'FETCH_CUSTOMER_SUCCESS',
   fetchCustomerFailure: 'FETCH_CUSTOMER_FAILURE',
 
+  fetchShippingOptionsRequest: 'FETCH_SHIPPING_OPTIONS_REQUEST',
+  fetchShippingOptionsSuccess: 'FETCH_SHIPPING_OPTIONS_SUCCESS',
+  fetchShippingOptionsFailure: 'FETCH_SHIPPING_OPTIONS_FAILURE',
+
   updateCheckoutRequest: 'UPDATE_CHECKOUT_REQUEST',
   updateCheckoutSuccess: 'UPDATE_CHECKOUT_SUCCESS',
   updateCheckoutFailure: 'UPDATE_CHECKOUT_FAILURE',
