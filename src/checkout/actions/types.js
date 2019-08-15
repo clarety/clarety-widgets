@@ -55,6 +55,10 @@ export const types = {
   selectShippingSuccess: 'SELECT_SHIPPING_SUCCESS',
   selectShippingFailure: 'SELECT_SHIPPING_FAILURE',
 
+  applyPromoCodeRequest: 'APPLY_PROMO_CODE_REQUEST',
+  applyPromoCodeSuccess: 'APPLY_PROMO_CODE_SUCCESS',
+  applyPromoCodeFailure: 'APPLY_PROMO_CODE_FAILURE',
+
   updateCheckoutRequest: 'UPDATE_CHECKOUT_REQUEST',
   updateCheckoutSuccess: 'UPDATE_CHECKOUT_SUCCESS',
   updateCheckoutFailure: 'UPDATE_CHECKOUT_FAILURE',

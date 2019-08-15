@@ -223,6 +223,24 @@ export const selectShipping = shippingUid => {
   };
 };
 
+export const applyPromoCode = promoCode => {
+  return async (dispatch, getState) => {
+    const { checkout } = getState();
+    const { cart } = checkout;
+
+    dispatch(applyPromoCodeRequest(promoCode));
+
+    const results = await ClaretyApi.put(`carts/${cart.uid}/promo-codes/`);
+    const result = results[0];
+
+    if (result.status === 'error') {
+      dispatch(applyPromoCodeFailure(result));
+    } else {
+      dispatch(applyPromoCodeSuccess(result));
+    }
+  };
+};
+
 export const makePayment = paymentData => {
   const gateway = Config.get('gateway');
 
@@ -450,6 +468,24 @@ const selectShippingSuccess = result => ({
 
 const selectShippingFailure = result => ({
   type: types.selectShippingFailure,
+  result: result,
+});
+
+
+// Apply Promo Code
+
+const applyPromoCodeRequest = promoCode => ({
+  type: types.applyPromoCodeRequest,
+  promoCode: promoCode,
+});
+
+const applyPromoCodeSuccess = result => ({
+  type: types.applyPromoCodeSuccess,
+  result: result,
+});
+
+const applyPromoCodeFailure = result => ({
+  type: types.applyPromoCodeFailure,
   result: result,
 });
 

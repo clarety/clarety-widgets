@@ -2,7 +2,7 @@ import { types } from 'checkout/actions';
 
 const initialState = {
   isBusy: false,
-  isBusyDiscountCode: false,
+  isBusyPromoCode: false,
   cart: {},
   shippingOptions: [],
   errors: [],
@@ -20,7 +20,13 @@ export const checkoutReducer = (state = initialState, action) => {
       return {
         ...state,
         isBusy: true,
-        isBusyDiscountCode: action.isDiscountCode || false,
+        errors: [],
+      };
+
+    case types.applyPromoCodeRequest:
+      return {
+        ...state,
+        isBusyPromoCode: true,
         errors: [],
       };
 
@@ -33,7 +39,13 @@ export const checkoutReducer = (state = initialState, action) => {
       return {
         ...state,
         isBusy: false,
-        isBusyDiscountCode: false,
+        cart: action.result,
+      };
+
+    case types.applyPromoCodeSuccess:
+      return {
+        ...state,
+        isBusyPromoCode: false,
         cart: action.result,
       };
 
@@ -48,7 +60,7 @@ export const checkoutReducer = (state = initialState, action) => {
       return {
         ...state,
         isBusy: false,
-        isBusyDiscountCode: false,
+        isBusyPromoCode: false,
         errors: action.result.validationErrors,
       };
 

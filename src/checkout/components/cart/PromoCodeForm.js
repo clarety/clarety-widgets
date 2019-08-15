@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Col, Form } from 'react-bootstrap';
 import { TextInput, Button } from 'checkout/components';
-import { updateFormData, updateCheckout } from 'checkout/actions';
+import { applyPromoCode } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
-class _DiscountCodeForm extends React.Component {
+class _PromoCodeForm extends React.Component {
   constructor(props) {
     super(props);
 
@@ -29,8 +29,7 @@ class _DiscountCodeForm extends React.Component {
     event.preventDefault();
 
     const { promoCode } = this.state.formData;
-    this.props.updateFormData({ promoCode });
-    this.props.updateCheckout({ isDiscountCode: true });
+    this.props.applyPromoCode(promoCode);
   };
 
   render() {
@@ -60,13 +59,12 @@ class _DiscountCodeForm extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    isBusy: state.checkout.isBusyDiscountCode,
+    isBusy: state.checkout.isBusyPromoCode,
   };
 };
 
 const actions = {
-  updateFormData: updateFormData,
-  updateCheckout: updateCheckout,
+  applyPromoCode: applyPromoCode,
 };
 
-export const DiscountCodeForm = connect(mapStateToProps, actions)(_DiscountCodeForm);
+export const PromoCodeForm = connect(mapStateToProps, actions)(_PromoCodeForm);

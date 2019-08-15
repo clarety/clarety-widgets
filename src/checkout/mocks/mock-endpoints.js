@@ -43,9 +43,16 @@ export function setupCheckoutAxiosMock() {
     .onPut(`${apiBase}carts/8c2756b2-f018-4c27-a025-c31fca7e482b/shipping-options/f5e3ad54-e097-4b6d-8db0-3986916cfb86/`)
     .reply(200, responses.selectShippingOptionSuccess);
 
+  // Select shipping option (alt uid).
   mock
     .onPut(`${apiBase}carts/8c2756b2-f018-4c27-a025-c31fca7e482b/shipping-options/f5e68a7d-22ad-4733-b730-a9ef8c4c6bb0/`)
     .reply(200, responses.selectShippingOptionSuccess);
+
+  // Apply promo code.
+  mock
+    .onPut(`${apiBase}carts/8c2756b2-f018-4c27-a025-c31fca7e482b/promo-codes/`)
+    .reply(200, responses.applyPromoCodeSuccess);
+
 
 
   // TODO: remove these soon...

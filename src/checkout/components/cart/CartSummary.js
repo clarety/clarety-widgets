@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { DiscountCodeForm } from 'checkout/components';
+import { PromoCodeForm } from 'checkout/components';
 import { currency } from 'checkout/utils';
 
 class _CartSummary extends React.Component {
@@ -14,7 +14,7 @@ class _CartSummary extends React.Component {
           <CartItem item={item} key={item.uid} />
         )}
         <hr />
-        <DiscountCodeForm />
+        <PromoCodeForm />
         <hr />
         <CartTotals summary={cart.summary} />
       </div>

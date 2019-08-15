@@ -1,4 +1,4 @@
-export const getCartSuccess = {
+export const applyPromoCodeSuccess = {
   "requestId": "",
   "success": true,
   "result": [
@@ -24,7 +24,8 @@ export const getCartSuccess = {
 
       "summary": {
         "subtotal": 94.97,
-        "total": 94.97
+        "discount": 9.48,
+        "total": 85.27
       }
     }
   ]

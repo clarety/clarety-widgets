@@ -1,5 +1,5 @@
 export * from './cart/CartSummary';
-export * from './cart/DiscountCodeForm';
+export * from './cart/PromoCodeForm';
 
 export * from './inputs/Button';
 export * from './inputs/CardNumberInput';
