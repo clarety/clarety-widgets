@@ -6,6 +6,7 @@ import { Row, Col } from 'react-bootstrap';
 import { panels, setPanels, fetchCart } from 'checkout/actions';
 import { rootReducer } from 'checkout/reducers';
 import { PanelStack, CartSummary } from 'checkout/components';
+import 'checkout/style.scss';
 
 const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
@@ -29,12 +30,13 @@ export class Checkout extends React.Component {
     return (
       <Provider store={store}>
         <Row>
-          <Col>
-            <h1 className="display-4">Checkout</h1>
-            <PanelStack />
-          </Col>
-          <Col className="bg-light">
+          <Col lg={6} className="bg-light order-lg-1 mb-5 mb-lg-0">
             <CartSummary />
+          </Col>
+
+          <Col lg={6}>
+            <h1>Checkout</h1>
+            <PanelStack />
           </Col>
         </Row>
       </Provider>

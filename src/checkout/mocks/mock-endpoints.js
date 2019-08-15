@@ -3,7 +3,8 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { ClaretyApi } from 'clarety-utils';
-import { getCartSuccess, customerSearchHasAccount, customerSearchNoAccount, createCustomerSuccess, loginSuccess, getCustomerSuccess, updateShippingSuccess, paymentSuccess } from 'checkout/mocks';
+import { customerSearchHasAccount, customerSearchNoAccount, createCustomerSuccess, getCustomerSuccess } from 'checkout/mocks';
+import { loginSuccess, getCartSuccess, updateAddressSuccess, updateShippingSuccess, paymentSuccess } from 'checkout/mocks';
 
 export function setupCheckoutAxiosMock() {
   const mock = new MockAdapter(axios, { delayResponse: 2000 });
@@ -11,7 +12,7 @@ export function setupCheckoutAxiosMock() {
   const apiBase = ClaretyApi.getApiBaseUrl();
 
   mock
-    .onGet(`${apiBase}checkout/cart/`)
+    .onGet(`${apiBase}carts/123-cart-uid/`)
     .reply(200, getCartSuccess);
 
   mock
@@ -43,6 +44,8 @@ export function setupCheckoutAxiosMock() {
       if (data.payment) return [200, paymentSuccess];
 
       if (data.shippingOption) return [200, updateShippingSuccess];
+
+      if (data.customer.delivery) return [200, updateAddressSuccess];
 
       return [200, getCartSuccess];
     });

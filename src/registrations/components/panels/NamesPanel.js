@@ -18,7 +18,9 @@ class _NamesPanel extends React.Component {
     });
   };
 
-  onClickNext = () => {
+  onClickNext = event => {
+    event.preventDefault();
+
     if (!this.canContinue()) return;
 
     const { setFirstNames, pushPanel } = this.props;
@@ -64,7 +66,7 @@ class _NamesPanel extends React.Component {
         <Form onSubmit={this.onClickNext} className="panel-body panel-body-names">
           {this.renderRows()}
 
-          <div className="text-center">
+          <div className="text-center mt-5">
             <Button type="submit" disabled={!this.canContinue()}>
               <FormattedMessage id="btn.next" />
             </Button>
@@ -85,7 +87,7 @@ class _NamesPanel extends React.Component {
         </Col>
         <Col>
           <FormattedMessage id={`namesPanel.${participant.type}.title`}>
-            {txt => <span className="lead">{txt}</span>}
+            {txt => <p className="lead m-0">{txt}</p>}
           </FormattedMessage>
         </Col>
         <Col>

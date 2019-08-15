@@ -1,8 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { BasePanel, EditButton, Button } from 'checkout/components';
+import { BasePanel, Button } from 'checkout/components';
+import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { updateFormData, updateCheckout, nextPanel, editPanel } from 'checkout/actions';
+import { currency } from 'checkout/utils';
 
 class _ShippingOptionsPanel extends BasePanel {
   onPressContinue = () => {
@@ -10,17 +12,14 @@ class _ShippingOptionsPanel extends BasePanel {
     if (canContinue) nextPanel();
   };
 
-  onSelectOption = key => {
-    this.props.updateFormData({ shippingOption: key });
-    this.props.updateCheckout();
+  onSelectOption = uid => {
+    this.props.updateFormData({ shippingOption: uid });
+    this.props.updateCheckout({ shouldAdvance: false });
   };
 
   renderWait() {
     return (
-      <div>
-        <h2 style={{ opacity: 0.3 }}>4. Shipping Options</h2>
-        <hr />
-      </div>
+      <WaitPanelHeader number="4" title="Shipping Options" />
     );
   }
 
@@ -28,37 +27,39 @@ class _ShippingOptionsPanel extends BasePanel {
     const { shippingOptions, canContinue, isBusy } = this.props;
 
     return (
-      <div>
-        <h2>4. Shipping Options</h2>
-        <hr />
+      <div className="panel">
+        <EditPanelHeader number="4" title="Shipping Options" />
 
         {shippingOptions && shippingOptions.map(this.renderShippingOption)}
 
-        <Button
-          title="Continue"
-          onClick={this.onPressContinue}
-          isBusy={isBusy}
-          disabled={!canContinue}
-        />
+        <div className="text-right mt-3">
+          <Button
+            title="Continue"
+            onClick={this.onPressContinue}
+            isBusy={isBusy}
+            disabled={!canContinue}
+          />
+        </div>
       </div>
     );
   }
 
   renderShippingOption = (option, index) => {
     return (
-      <Form.Check type="radio" id={option.key} key={option.key}>
+      <Form.Check type="radio" id={option.uid} key={option.uid} className="shipping-option">
         <Form.Check.Input
           type="radio"
           name="shippingOption"
-          checked={this.props.selectedKey === option.key}
-          onChange={() => this.onSelectOption(option.key)}
+          checked={this.props.selectedOptionUid === option.uid}
+          onChange={() => this.onSelectOption(option.uid)}
         />
 
-        <Form.Check.Label>{option.label} ${option.cost}</Form.Check.Label>
+        <Form.Check.Label>
+          <span className="name">{option.label}</span>
+          <span className="cost">{currency(option.cost)}</span>
+        </Form.Check.Label>
 
-        {option.date &&
-          <p>Estimated Delivery Date: {option.date}</p>
-        }
+        {option.date && <p className="date">Estimated Delivery Date: {option.date}</p>}
       </Form.Check>
     );
   };
@@ -67,10 +68,11 @@ class _ShippingOptionsPanel extends BasePanel {
     const { selectedOptionName } = this.props;
 
     return (
-      <div>
-        <h2 style={{ display: 'inline', opacity: 0.3 }}>4.</h2> {selectedOptionName} <EditButton onClick={this.onPressEdit} />
-        <hr />
-      </div>
+      <DonePanelHeader
+        number="4"
+        title={selectedOptionName}
+        onPressEdit={this.onPressEdit}
+      />
     );
   }
 }
@@ -78,9 +80,9 @@ class _ShippingOptionsPanel extends BasePanel {
 const mapStateToProps = state => {
   return {
     isBusy: state.checkout.isBusy,
-    selectedKey: state.formData.shippingOption,
     canContinue: !!state.formData.shippingOption,
     shippingOptions: state.checkout.cart.shippingOptions,
+    selectedOptionUid: state.formData.shippingOption,
     selectedOptionName: getSelectedShippingOptionLabel(state),
   };
 };
@@ -92,7 +94,7 @@ const actions = {
   editPanel: editPanel,
 };
 
-export const ShippingOptionsPanel = connect(mapStateToProps, actions)(_ShippingOptionsPanel);
+export const ShippingOptionsPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_ShippingOptionsPanel);
 
 // TODO: move to selectors...
 const getSelectedShippingOptionLabel = state => {
@@ -100,7 +102,7 @@ const getSelectedShippingOptionLabel = state => {
   const { shippingOption } = state.formData;
 
   if (shippingOptions && shippingOption) {
-    const option = shippingOptions.find(option => option.key === shippingOption);
+    const option = shippingOptions.find(option => option.uid === shippingOption);
 
     if (option) return option.label;
   }

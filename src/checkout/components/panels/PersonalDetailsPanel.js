@@ -1,12 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Form, Col, Button } from 'react-bootstrap';
+import { Form, Col } from 'react-bootstrap';
 import { BasePanel, TextInput } from 'checkout/components';
+import { WaitPanelHeader, EditPanelHeader, DonePanelHeader, Button } from 'checkout/components';
 import { updateFormData, nextPanel, editPanel } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _PersonalDetailsPanel extends BasePanel {
-  onPressContinue = () => {
+  onPressContinue = event => {
+    event.preventDefault();
+
     if (this.validate()) {
       this.props.updateFormData(this.state.formData);
       this.props.nextPanel();
@@ -14,8 +17,21 @@ class _PersonalDetailsPanel extends BasePanel {
   };
 
   validate() {
-    // TODO: validate fields...
-    return true;
+    const errors = [];
+
+    this.validateRequired('customer.firstName', errors);
+    this.validateRequired('customer.lastName', errors);
+
+    // TODO: update this once we're using a proper
+    // dob input component, instead of a text input...
+    this.validateRequired('customer.dateOfBirthDay', errors);
+    this.validateRequired('customer.dateOfBirthMonth', errors);
+    this.validateRequired('customer.dateOfBirthYear', errors);
+
+    this.validateRequired('sale.source', errors);
+
+    this.setState({ errors });
+    return errors.length === 0;
   }
 
   componentDidUpdate(prevProps) {
@@ -25,8 +41,10 @@ class _PersonalDetailsPanel extends BasePanel {
   }
 
   prefillCustomerData(customer) {
-    this.setState({
-      formData: {
+    let formData = {};
+
+    if (customer) {
+      formData = {
         'customer.firstName':        customer.firstName,
         'customer.lastName':         customer.lastName,
         'customer.phone1':           customer.phone1,
@@ -35,27 +53,25 @@ class _PersonalDetailsPanel extends BasePanel {
         'customer.dateOfBirthDay':   customer.dateOfBirthDay,
         'customer.dateOfBirthMonth': customer.dateOfBirthMonth,
         'customer.dateOfBirthYear':  customer.dateOfBirthYear,
-      }
-    })
+      };
+    }
+
+    this.setState({ formData });
   }
 
   renderWait() {
     return (
-      <div>
-        <h2 style={{ opacity: 0.3 }}>2. Personal Details</h2>
-        <hr />
-      </div>
+      <WaitPanelHeader number="2" title="Personal Details" />
     );
   }
 
   renderEdit() {
     return (
-      <div>
-        <h2>2. Personal Details</h2>
-        <hr />
+      <div className="panel">
+        <EditPanelHeader number="2" title="Personal Details" />
         
         <FormContext.Provider value={this.state}>
-          <Form>
+          <Form onSubmit={this.onPressContinue}>
             <Form.Row>
               <Col>
                 <TextInput field="customer.firstName" placeholder="First Name *" />
@@ -103,10 +119,12 @@ class _PersonalDetailsPanel extends BasePanel {
                 <TextInput field="sale.source" placeholder="How did you hear about us? *" />
               </Col>
             </Form.Row>
+
+            <div className="text-right mt-3">
+              <Button title="Continue" type="submit" />
+            </div>
           </Form>
         </FormContext.Provider>
-
-        <Button onClick={this.onPressContinue}>Continue</Button>
       </div>
     );
   }
@@ -117,11 +135,14 @@ class _PersonalDetailsPanel extends BasePanel {
     const lastName = formData['customer.lastName'];
     const phone = formData['customer.phone1'] || formData['customer.phone2'] || formData['customer.mobile'];
 
+    const title = `${firstName} ${lastName}, ${phone}`;
+
     return (
-      <div>
-        <h2 style={{ display: 'inline', opacity: 0.3 }}>2.</h2> {firstName} {lastName}, {phone} <Button onClick={this.onPressEdit}>Edit</Button>
-        <hr />
-      </div>
+      <DonePanelHeader
+        number="2"
+        title={title}
+        onPressEdit={this.onPressEdit}
+      />
     );
   }
 }
@@ -138,4 +159,4 @@ const actions = {
   editPanel: editPanel,
 };
 
-export const PersonalDetailsPanel = connect(mapStateToProps, actions)(_PersonalDetailsPanel);
+export const PersonalDetailsPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_PersonalDetailsPanel);

@@ -1,24 +1,61 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Form, Col, Button } from 'react-bootstrap';
-import { BasePanel, TextInput, CheckboxInput } from 'checkout/components';
-import { updateFormData, nextPanel, editPanel } from 'checkout/actions';
+import { Form, Col } from 'react-bootstrap';
+import { BasePanel, TextInput, PureCheckboxInput, Button } from 'checkout/components';
+import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
+import { updateFormData, updateCheckout, editPanel, resetShippingOptionsPanel } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _ShippingDetailsPanel extends BasePanel {
-  onPressContinue = () => {
+  onPressContinue = event => {
+    event.preventDefault();
+
     if (this.validate()) {
-      this.props.updateFormData(this.state.formData);
-      this.props.nextPanel();
+      const formData = {
+        ...this.state.formData,
+        shippingOption: undefined,
+      };
+      
+      if (this.state.billingIsSameAsShipping) {
+        formData['customer.billing.address1'] = formData['customer.delivery.address1'];
+        formData['customer.billing.suburb']   = formData['customer.delivery.suburb'];
+        formData['customer.billing.state']    = formData['customer.delivery.state'];
+        formData['customer.billing.postcode'] = formData['customer.delivery.postcode'];
+        formData['customer.billing.country']  = formData['customer.delivery.country'];
+      }
+
+      this.props.updateFormData(formData);
+      this.props.updateCheckout();
+      this.props.resetShippingOptionsPanel();
     }
   };
 
   validate() {
-    // TODO: validate fields...
-    return true;
+    const errors = [];
+
+    this.validateRequired('customer.delivery.address1', errors);
+    this.validateRequired('customer.delivery.suburb', errors);
+    this.validateRequired('customer.delivery.state', errors);
+    this.validateRequired('customer.delivery.postcode', errors);
+    this.validateRequired('customer.delivery.country', errors);
+
+    if (!this.state.billingIsSameAsShipping) {
+      this.validateRequired('customer.billing.address1', errors);
+      this.validateRequired('customer.billing.suburb', errors);
+      this.validateRequired('customer.billing.state', errors);
+      this.validateRequired('customer.billing.postcode', errors);
+      this.validateRequired('customer.billing.country', errors);
+    }
+
+    this.setState({ errors });
+    return errors.length === 0;
   }
 
-  componentDidUpdate(prevProps) {
+  onChangeBillingIsSameAsShipping = (field, isChecked) => {
+    this.setState({ billingIsSameAsShipping: isChecked });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
     if (this.props.customer !== prevProps.customer) {
       this.prefillCustomerData(this.props.customer);
     }
@@ -27,110 +64,91 @@ class _ShippingDetailsPanel extends BasePanel {
   prefillCustomerData(customer) {
     if (!customer) return;
 
-    if (customer.delivery) {
-      this.setState(prevState => ({
-        formData: {
-          ...prevState.formData,
-          'customer.delivery.address1': customer.delivery.address1,
-          'customer.delivery.suburb':   customer.delivery.suburb,
-          'customer.delivery.state':    customer.delivery.state,
-          'customer.delivery.postcode': customer.delivery.postcode,
-          'customer.delivery.country':  customer.delivery.country,
-        }
-      }));
-    }
+    this.setState({
+      formData: {
+        'customer.delivery.address1': customer.delivery.address1,
+        'customer.delivery.suburb':   customer.delivery.suburb,
+        'customer.delivery.state':    customer.delivery.state,
+        'customer.delivery.postcode': customer.delivery.postcode,
+        'customer.delivery.country':  customer.delivery.country,
 
-    if (customer.billing) {
-      this.setState(prevState => ({
-        formData: {
-          ...prevState.formData,  
-          'customer.billing.address1': customer.billing.address1,
-          'customer.billing.suburb':   customer.billing.suburb,
-          'customer.billing.state':    customer.billing.state,
-          'customer.billing.postcode': customer.billing.postcode,
-          'customer.billing.country':  customer.billing.country,
-        }
-      }));
-    }
+        'customer.billing.address1':  customer.billing.address1,
+        'customer.billing.suburb':    customer.billing.suburb,
+        'customer.billing.state':     customer.billing.state,
+        'customer.billing.postcode':  customer.billing.postcode,
+        'customer.billing.country':   customer.billing.country,
+      }
+    });
   }
 
   renderWait() {
     return (
-      <div>
-        <h2 style={{ opacity: 0.3 }}>3. Shipping Details</h2>
-        <hr />
-      </div>
+      <WaitPanelHeader number="3" title="Shipping Details" />
     );
   }
 
   renderEdit() {
+    const { isBusy } = this.props;
+    const { billingIsSameAsShipping } = this.state;
+
     return (
-      <div>
-        <h2>3. Shipping Details</h2>
-        <hr />
+      <div className="panel">
+        <EditPanelHeader number="3" title="Shipping Details" />
         
         <FormContext.Provider value={this.state}>
-          <Form>
-            <h5>Shipping Address</h5>
-            <Form.Row>
-              <Col>
-                <TextInput field="customer.delivery.address1" placeholder="Address *" />
-              </Col>
-            </Form.Row>
+          <Form onSubmit={this.onPressContinue}>
+            {this.renderAddressForm('Shipping Address', 'customer.delivery')}
 
             <Form.Row>
               <Col>
-                <TextInput field="customer.delivery.suburb" placeholder="Suburb *" />
-              </Col>
-              <Col>
-                <TextInput field="customer.delivery.state" placeholder="State *" />
-              </Col>
-            </Form.Row>
-
-            <Form.Row>
-              <Col>
-                <TextInput field="customer.delivery.postcode" placeholder="Postcode *" />
-              </Col>
-              <Col>
-                <TextInput field="customer.delivery.country" placeholder="Country *" />
+                <PureCheckboxInput
+                  field="billingIsSameAsShipping"
+                  label="Billing Address is the same as Shipping Address"
+                  checked={billingIsSameAsShipping || false}
+                  onChange={this.onChangeBillingIsSameAsShipping}
+                />
               </Col>
             </Form.Row>
 
-            <Form.Row>
-              <Col>
-                <CheckboxInput field="billingSameAsShipping" label="Billing Address is the same as Shipping Address" />
-              </Col>
-            </Form.Row>
-
-            <h5>Billing Address</h5>
-            <Form.Row>
-              <Col>
-                <TextInput field="customer.billing.address1" placeholder="Address *" />
-              </Col>
-            </Form.Row>
-
-            <Form.Row>
-              <Col>
-                <TextInput field="customer.billing.suburb" placeholder="Suburb *" />
-              </Col>
-              <Col>
-                <TextInput field="customer.billing.state" placeholder="State *" />
-              </Col>
-            </Form.Row>
-
-            <Form.Row>
-              <Col>
-                <TextInput field="customer.billing.postcode" placeholder="Postcode *" />
-              </Col>
-              <Col>
-                <TextInput field="customer.billing.country" placeholder="Country *" />
-              </Col>
-            </Form.Row>
+            {!billingIsSameAsShipping && this.renderAddressForm('Billing Address', 'customer.billing')}
+            
+            <div className="text-right mt-3">
+              <Button title="Continue" type="submit" isBusy={isBusy} />
+            </div>
           </Form>
         </FormContext.Provider>
-
-        <Button onClick={this.onPressContinue}>Continue</Button>
       </div>
+    );
+  }
+
+  renderAddressForm(title, fieldPrefix) {
+    return (
+      <React.Fragment>
+        <h5>{title}</h5>
+        <Form.Row>
+          <Col>
+            <TextInput field={`${fieldPrefix}.address1`} placeholder="Address *" />
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col>
+            <TextInput field={`${fieldPrefix}.suburb`} placeholder="Suburb *" />
+          </Col>
+          <Col>
+            <TextInput field={`${fieldPrefix}.state`} placeholder="State *" />
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col>
+            <TextInput field={`${fieldPrefix}.postcode`} placeholder="Postcode *" />
+          </Col>
+          <Col>
+            <TextInput field={`${fieldPrefix}.country`} placeholder="Country *" />
+          </Col>
+        </Form.Row>
+      </React.Fragment>
     );
   }
 
@@ -139,25 +157,30 @@ class _ShippingDetailsPanel extends BasePanel {
     const address = formData['customer.delivery.address1'];
     const suburb = formData['customer.delivery.suburb'];
 
+    const title = `${address}, ${suburb}`;
+
     return (
-      <div>
-        <h2 style={{ display: 'inline', opacity: 0.3 }}>3.</h2> {address}, {suburb} <Button onClick={this.onPressEdit}>Edit</Button>
-        <hr />
-      </div>
+      <DonePanelHeader
+        number="3"
+        title={title}
+        onPressEdit={this.onPressEdit}
+      />
     );
   }
 }
 
 const mapStateToProps = state => {
   return {
+    isBusy: state.checkout.isBusy,
     customer: state.login.customer,
   };
 };
 
 const actions = {
   updateFormData: updateFormData,
-  nextPanel: nextPanel,
+  updateCheckout: updateCheckout,
+  resetShippingOptionsPanel: resetShippingOptionsPanel,
   editPanel: editPanel,
 };
 
-export const ShippingDetailsPanel = connect(mapStateToProps, actions)(_ShippingDetailsPanel);
+export const ShippingDetailsPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_ShippingDetailsPanel);

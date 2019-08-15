@@ -27,12 +27,12 @@ class PureSelectInput extends React.PureComponent {
   };
 
   render () {
-    const { field, options, required, error } = this.props;
+    const { field, options, translationId, required, error } = this.props;
 
     return (
       <Form.Group controlId={field}>
         <Form.Label>
-          <FormattedMessage id={`label.${field}`} />
+          <FormattedMessage id={translationId || `label.${field}`} />
         </Form.Label>
         <Select
           value={this.state.value}
@@ -49,6 +49,7 @@ class PureSelectInput extends React.PureComponent {
           autoComplete="off"
           style={{ position: 'absolute', width: 0, height: 0, left: '50%', opacity: 0 }}
           value={this.state.value}
+          onChange={() => {}}
           required={required}
         />
         <FieldError error={error} />

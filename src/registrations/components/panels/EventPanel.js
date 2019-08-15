@@ -11,6 +11,17 @@ class _EventPanel extends React.Component {
     event: null,
   };
 
+  componentDidMount() {
+    // Preselect event via url param.
+    const urlParams = new URLSearchParams(window.location.search);
+    const eventId = urlParams.get('event');
+
+    if (eventId) {
+      const event = this.props.events.find(event => event.eventId === eventId);
+      this.setState({ event });
+    }
+  }
+
   onClickNext = () => {
     if (!this.state.event) return;
 

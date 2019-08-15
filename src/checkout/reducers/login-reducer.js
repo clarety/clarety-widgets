@@ -25,7 +25,15 @@ export const loginReducer = (state = initialState, action) => {
         ...state,
         isBusy: false,
         emailStatus: action.result.exists ? emailStatuses.hasAccount : emailStatuses.noAccount,
-      };    
+      };
+
+    // Reset Email Status
+
+    case types.resetEmailStatus:
+      return {
+        ...state,
+        emailStatus: emailStatuses.notChecked,
+      };
 
     // Login
 
@@ -41,6 +49,16 @@ export const loginReducer = (state = initialState, action) => {
       return {
         ...state,
         jwt: action.result,
+      };
+
+    // Logout
+
+    case types.logout:
+      return {
+        ...state,
+        jwt: null,
+        customer: null,
+        emailStatus: emailStatuses.notChecked,
       };
 
     // Create Account

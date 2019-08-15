@@ -13,13 +13,13 @@ module.exports = {
     plugins: [
       ['module-resolver', {
         'alias': {
+          'cart':          './src/cart',
           'checkout':      './src/checkout',
           'donate':        './src/donate',
           'form':          './src/form',
           'registrations': './src/registrations',
           'shared':        './src/shared',
           'subscribe':     './src/subscribe',
-          'cart':          './src/cart',
         },
       }],
     ],

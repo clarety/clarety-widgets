@@ -1,4 +1,4 @@
-export const getCartSuccess = {
+export const updateShippingSuccess = {
   "requestId": "",
   "success": true,
   "result": [
@@ -22,8 +22,32 @@ export const getCartSuccess = {
         }
       ],
 
+      "shippingOption": "789",
+
+      "shippingOptions": [
+        {
+          "uid": "123",
+          "label": "Australia Post",
+          "date": "7 May 2020",
+          "cost": 20.00
+        },
+        {
+          "uid": "456",
+          "label": "UPS Express",
+          "date": "6 May 2020",
+          "cost": 25.00
+        },
+        {
+          "uid": "789",
+          "label": "UPS Express Premium",
+          "date": "4 May 2020",
+          "cost": 35.00
+        }
+      ],
+
       "summary": {
         "subtotal": 94.97,
+        "shipping": 20.00,
         "discount": 9.48,
         "total": 85.27
       }

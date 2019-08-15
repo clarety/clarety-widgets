@@ -3,23 +3,19 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider as ReduxProvider, connect } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import { IntlProvider, FormattedMessage } from 'react-intl';
+import 'intl-pluralrules'; // Polyfill for safari 12
 import { Spinner, Modal } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { MiniCart, PanelStack } from 'registrations/components';
 import { fetchInit, statuses } from 'registrations/actions';
 import { rootReducer } from 'registrations/reducers';
-import { getMessages } from 'registrations/intl';
-
-// TODO: need to set the locale somehow...
-// const locale = navigator.language;
-const locale = 'en';
 
 const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
 
-export const RegistrationsApp = () => (
-  <IntlProvider locale={locale} messages={getMessages(locale)}>
+export const RegistrationsApp = ({ translations }) => (
+  <IntlProvider locale="en" messages={translations}>
     <ReduxProvider store={store}>
       <Root />
     </ReduxProvider>

@@ -1,9 +1,14 @@
-import { ClaretyApi } from 'clarety-utils';
+import { ClaretyApi, Config } from 'clarety-utils';
 import { parseNestedElements } from 'shared/utils';
 import { createStripeToken, parseStripeError } from 'donate/utils';
 import { types, nextPanel, updateFormData } from '.';
 
 const clientId = '82ee4a2479780256c9bf9b951f5d1cfb';
+
+export const gateways = {
+  clarety: 'clarety',
+  stripe:  'stripe',
+};
 
 export const emailStatuses = {
   notChecked: 'NOT_CHECKED',
@@ -13,12 +18,12 @@ export const emailStatuses = {
 
 export const fetchCart = () => {
   return async dispatch => {
-    // TODO: where does cart id come from? cookies?
-    const cartId = '123-cart-id';
+    // TODO: decode JWT and get cart uid.
+    const cartUid = '123-cart-uid';
 
-    dispatch(fetchCartRequest(cartId));
+    dispatch(fetchCartRequest(cartUid));
 
-    const results = await ClaretyApi.get('checkout/cart/', cartId);
+    const results = await ClaretyApi.get(`carts/${cartUid}/`);
     const result = results[0];
 
     if (result.status === 'error') {
@@ -77,6 +82,11 @@ export const login = (email, password) => {
   }
 };
 
+export const logout = () => ({
+  // TODO: do we need to logout via the API?
+  type: types.logout,
+});
+
 export const createAccount = (firstName, lastName, email, password) => {
   return async dispatch => {
     const postData = { firstName, lastName, email, password };
@@ -95,13 +105,17 @@ export const createAccount = (firstName, lastName, email, password) => {
   };
 };
 
-export const updateCheckout = () => {
+export const resetEmailStatus = () => ({
+  type: types.resetEmailStatus,
+});
+
+export const updateCheckout = ({ isDiscountCode = false, shouldAdvance = true } = {}) => {
   return async (dispatch, getState) => {
     const { formData } = getState();
 
     const postData = parseNestedElements(formData);
 
-    dispatch(updateCheckoutRequest(postData));
+    dispatch(updateCheckoutRequest(postData, isDiscountCode));
 
     const results = await ClaretyApi.post('checkout/', postData);
     const result = results[0];
@@ -109,25 +123,49 @@ export const updateCheckout = () => {
     if (result.status === 'error') {
       dispatch(updateCheckoutFailure(result));
     } else {
-      // Redirect on success.
-      if (result.cart.status === 'complete') {
+      if (result.status === 'complete') {
         window.location.href = result.redirect;
-      }
-
-      dispatch(updateCheckoutSuccess(result));
+      } else {
+        dispatch(updateCheckoutSuccess(result));
+        if (shouldAdvance) dispatch(nextPanel());
+      }      
     }
   };
 };
 
-export const makePayment = formData => {
+export const makePayment = paymentData => {
+  const gateway = Config.get('gateway');
+
+  switch (gateway) {
+    case gateways.stripe: return makeStripePayment(paymentData);
+    default:              return makeClaretyPayment(paymentData);
+  }
+};
+
+const makeClaretyPayment = paymentData => {
   return async dispatch => {
-    // TODO: get stripe key from somewhere... maybe the config???
+    const formData = {
+      'payment.cardNumber':       paymentData.cardNumber,
+      'payment.cardName':         paymentData.cardName,
+      'payment.cardExpiryMonth':  paymentData.expiryMonth,
+      'payment.cardExpiryYear':   paymentData.expiryYear,
+      'payment.cardSecurityCode': paymentData.ccv,
+    };
+
+    dispatch(updateFormData(formData));
+    dispatch(updateCheckout());
+  };
+};
+
+const makeStripePayment = paymentData => {
+  return async dispatch => {
+    // TODO: get stripe key from init...
     const stripeKey = 'pk_test_5AVvhyJrg3yIEnWSMQVBl3mQ00mK2D2SOD';
     const stripeData = {
-      cardNumber:  formData.cardNumber,
-      expiryMonth: formData.expiryMonth,
-      expiryYear:  formData.expiryYear,
-      ccv:         formData.ccv,
+      cardNumber:  paymentData.cardNumber,
+      expiryMonth: paymentData.expiryMonth,
+      expiryYear:  paymentData.expiryYear,
+      ccv:         paymentData.ccv,
     };
 
     dispatch(stripeTokenRequest(stripeData, stripeKey));
@@ -238,9 +276,10 @@ const fetchCustomerFailure = result => ({
 
 // Update Checkout
 
-const updateCheckoutRequest = postData => ({
+const updateCheckoutRequest = (postData, isDiscountCode) => ({
   type: types.updateCheckoutRequest,
   postData: postData,
+  isDiscountCode: isDiscountCode,
 });
 
 const updateCheckoutSuccess = result => ({

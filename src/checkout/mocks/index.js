@@ -1,7 +1,7 @@
 export * from './cart/get-cart-success';
-
-export * from './checkout/payment-success';
-export * from './checkout/update-shipping-success';
+export * from './cart/payment-success';
+export * from './cart/update-address-success';
+export * from './cart/update-shipping-success';
 
 export * from './login/create-customer-success';
 export * from './login/customer-search-has-account';

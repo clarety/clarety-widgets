@@ -2,9 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Button, Form, Row, Col } from 'react-bootstrap';
+import { getElementOptions } from 'shared/utils';
 import { TextInput, DobInput, CheckboxInput, SelectInput, PhoneInput } from 'registrations/components';
-import { setDetails, setErrors, resetDetails, pushNextDetailsPanel } from 'registrations/actions';
-import { getExtendFields } from 'registrations/selectors';
+import { setDetails, setAdditionalData, setErrors, resetDetails, pushNextDetailsPanel } from 'registrations/actions';
+import { getEvent, getExtendFields } from 'registrations/selectors';
 import { FormContext, scrollIntoView } from 'registrations/utils';
 
 export class _DetailsPanel extends React.Component {
@@ -51,6 +52,7 @@ export class _DetailsPanel extends React.Component {
     event.preventDefault();
 
     if (this.validateForm()) {
+      this.onSubmitForm();
       setDetails(participantIndex, customerFormContext.formData, extendFormContext.formData);
       pushNextDetailsPanel(participantIndex + 1);
     }
@@ -90,10 +92,23 @@ export class _DetailsPanel extends React.Component {
     return true;
   }
 
+  onSubmitForm() {
+    // Left empty in the base implementation,
+    // but can be overridden in the instance.
+  }
+
   setErrors(errors) {
     const { setErrors, participantIndex } = this.props;
     setErrors(participantIndex, errors);
     scrollIntoView(this.ref);
+  }
+
+  getCustomerFieldValue(field) {
+    return this.state.customerFormContext.formData[field];
+  }
+
+  getExtendFieldValue(field) {
+    return this.state.extendFormContext.formData[field];
   }
 
   componentWillUnmount() {
@@ -114,17 +129,27 @@ export class _DetailsPanel extends React.Component {
 
     return (
       <Container ref={ref => this.ref = ref}>
-        <FormattedMessage id="detailsPanel.editTitle" values={{ firstName }} tagName="h2" />
+        <FormattedMessage
+          id="detailsPanel.editTitle"
+          tagName="h2"
+          values={{
+            firstName: <span className="text-primary">{firstName}</span>
+          }}
+        />
 
         <Form onSubmit={this.onClickNext}>
           <div className="panel-body">
             <Row className="mt-5">
               <Col lg={6}>
-                <FormattedMessage id="detailsPanel.customerFormTitle" tagName="h4" />
+                <FormattedMessage id="detailsPanel.customerFormTitle">
+                  {txt => <h4 className="mb-4">{txt}</h4>}
+                </FormattedMessage>
                 {this.renderCustomerForm()}
               </Col>
               <Col lg={6}>
-                <FormattedMessage id="detailsPanel.extendFormTitle" tagName="h4" />
+                <FormattedMessage id="detailsPanel.extendFormTitle">
+                  {txt => <h4 className="mb-4">{txt}</h4>}
+                </FormattedMessage>
                 {this.renderExtendForm()}
               </Col>
             </Row>
@@ -222,6 +247,7 @@ const mapStateToProps = (state, ownProps) => {
 
   return {
     init: state.init,
+    event: getEvent(state),
     participant: state.panelData.participants[participantIndex],
     extendFields: getExtendFields(state),
   };
@@ -229,6 +255,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const actions = {
   setDetails: setDetails,
+  setAdditionalData: setAdditionalData,
   setErrors: setErrors,
   resetDetails: resetDetails,
   pushNextDetailsPanel: pushNextDetailsPanel,

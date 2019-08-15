@@ -52,6 +52,7 @@ export const getCreateRegistrationPostData = state => {
         customer: participant.customer,
         extendFormId: getExtendFormId(state),
         extendForm: participant.extendForm,
+        ...participant.additionalData,
       }],
     })),
   };

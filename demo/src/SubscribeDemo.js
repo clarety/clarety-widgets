@@ -1,7 +1,7 @@
 import React from 'react';
-import { ClaretyConfig, SubscribeWidget, setupSubscribeAxiosMock } from '../../src';
+import { Config, SubscribeWidget, setupSubscribeAxiosMock } from '../../src';
 
-ClaretyConfig.init({
+Config.init({
   instanceKey: 'clarety-baseline',
 });
 

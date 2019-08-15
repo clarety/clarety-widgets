@@ -1,13 +1,17 @@
 export const types = {
   // Panel Action Types
 
-  setPanels: 'SET_PANELS',
-  nextPanel: 'NEXT_PANEL',
-  editPanel: 'EDIT_PANEL',
+  setPanels:   'SET_PANELS',
+  nextPanel:   'NEXT_PANEL',
+  editPanel:   'EDIT_PANEL',
+  resetPanels: 'RESET_PANELS',
+
+  resetShippingOptionsPanel: 'RESET_SHIPPING_OPTIONS_PANEL',
 
   // Form Data Action Types
 
   updateFormData: 'UPDATE_FORM_DATA',
+  resetFormData:  'RESET_FORM_DATA',
 
   // API Action Types
 
@@ -19,9 +23,13 @@ export const types = {
   customerSearchSuccess: 'CUSTOMER_SEARCH_SUCCESS',
   customerSearchFailure: 'CUSTOMER_SEARCH_FAILURE',
 
+  resetEmailStatus: 'RESET_EMAIL_STATUS',
+
   loginRequest: 'LOGIN_REQUEST',
   loginSuccess: 'LOGIN_SUCCESS',
   loginFailure: 'LOGIN_FAILURE',
+
+  logout: 'LOGOUT',
 
   createAccountRequest: 'CREATE_ACCOUNT_REQUEST',
   createAccountSuccess: 'CREATE_ACCOUNT_SUCCESS',

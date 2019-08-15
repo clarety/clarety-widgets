@@ -1,4 +1,4 @@
-import { ClaretyApi } from 'clarety-utils';
+import { ClaretyApi, Config } from 'clarety-utils';
 import { getCreateRegistrationPostData, getSubmitRegistrationPostData } from 'registrations/selectors';
 import { types, pushPanel, panels } from 'registrations/actions';
 
@@ -6,10 +6,12 @@ export const createRegistration = () => {
   return async (dispatch, getState) => {
     dispatch(registrationCreateRequest());
 
+    const storeId = Config.get('storeId');
+
     const state = getState();
     const postData = getCreateRegistrationPostData(state);
 
-    const result = await ClaretyApi.post('registration-sale-widget/', postData);
+    const result = await ClaretyApi.post('registration-sale-widget/', postData, { storeId });
 
     if (result[0] && result[0].status !== 'error') {
       dispatch(registrationCreateSuccess(result[0]));
@@ -27,10 +29,12 @@ export const submitRegistration = () => {
   return async (dispatch, getState) => {
     dispatch(registrationSubmitRequest());
 
+    const storeId = Config.get('storeId');
+
     const state = getState();
     const postData = getSubmitRegistrationPostData(state);
 
-    const result = await ClaretyApi.post('registration-payment-widget/', postData);
+    const result = await ClaretyApi.post('registration-payment-widget/', postData, { storeId });
 
     if (result[0] && result[0].status !== 'error') {
       // Redirect on success.

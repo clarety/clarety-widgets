@@ -1,5 +1,5 @@
 import { push as pushRoute } from 'connected-react-router';
-import { ClaretyApi } from 'shared/services';
+import { ClaretyApi } from 'clarety-utils';
 import { statuses, setStatus, addSaleline, setPayment } from 'shared/actions';
 import { updateFormData, setErrors, clearErrors } from 'form/actions';
 import { setSuccessResult } from 'donate/actions';
@@ -54,7 +54,7 @@ export const submitDetailsPanel = () => {
       saleline: sale.salelines[0],
     };
     
-    const result = await ClaretyApi.post('donations', postData);
+    const result = await ClaretyApi.post('donations/', postData);
 
     dispatch(setStatus(statuses.ready));
 
@@ -114,7 +114,7 @@ export const submitPaymentPanel = () => {
       payment: { gatewayToken },
     };
 
-    const result = await ClaretyApi.post('donations', postData);
+    const result = await ClaretyApi.post('donations/', postData);
 
     dispatch(setStatus(statuses.ready));
 
