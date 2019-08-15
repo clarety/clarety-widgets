@@ -3,18 +3,22 @@ import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import { BasePanel, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { updateFormData, updateCheckout, nextPanel, editPanel } from 'checkout/actions';
+import { selectShipping, nextPanel, editPanel } from 'checkout/actions';
 import { currency } from 'checkout/utils';
 
 class _ShippingOptionsPanel extends BasePanel {
+  state = {
+    selectedOptionUid: null,
+  };
+
   onPressContinue = () => {
     const { canContinue, nextPanel } = this.props;
     if (canContinue) nextPanel();
   };
 
   onSelectOption = uid => {
-    this.props.updateFormData({ shippingOption: uid });
-    this.props.updateCheckout({ shouldAdvance: false });
+    this.setState({ selectedOptionUid: uid });
+    this.props.selectShipping(uid);
   };
 
   renderWait() {
@@ -50,7 +54,7 @@ class _ShippingOptionsPanel extends BasePanel {
         <Form.Check.Input
           type="radio"
           name="shippingOption"
-          checked={this.props.selectedOptionUid === option.uid}
+          checked={this.state.selectedOptionUid === option.uid}
           onChange={() => this.onSelectOption(option.uid)}
         />
 
@@ -80,16 +84,14 @@ class _ShippingOptionsPanel extends BasePanel {
 const mapStateToProps = state => {
   return {
     isBusy: state.checkout.isBusy,
-    canContinue: !!state.formData.shippingOption,
+    canContinue: !!state.checkout.cart.shippingOption,
     shippingOptions: state.checkout.shippingOptions,
-    selectedOptionUid: state.formData.shippingOption,
     selectedOptionName: getSelectedShippingOptionLabel(state),
   };
 };
 
 const actions = {
-  updateFormData: updateFormData,
-  updateCheckout: updateCheckout,
+  selectShipping: selectShipping,
   nextPanel: nextPanel,
   editPanel: editPanel,
 };
@@ -98,8 +100,8 @@ export const ShippingOptionsPanel = connect(mapStateToProps, actions, null, { fo
 
 // TODO: move to selectors...
 const getSelectedShippingOptionLabel = state => {
-  const { shippingOptions } = state.checkout.cart;
-  const { shippingOption } = state.formData;
+  const { shippingOptions } = state.checkout;
+  const { shippingOption } = state.checkout.cart;
 
   if (shippingOptions && shippingOption) {
     const option = shippingOptions.find(option => option.uid === shippingOption);

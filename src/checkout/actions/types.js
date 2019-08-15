@@ -51,6 +51,10 @@ export const types = {
   fetchShippingOptionsSuccess: 'FETCH_SHIPPING_OPTIONS_SUCCESS',
   fetchShippingOptionsFailure: 'FETCH_SHIPPING_OPTIONS_FAILURE',
 
+  selectShippingRequest: 'SELECT_SHIPPING_REQUEST',
+  selectShippingSuccess: 'SELECT_SHIPPING_SUCCESS',
+  selectShippingFailure: 'SELECT_SHIPPING_FAILURE',
+
   updateCheckoutRequest: 'UPDATE_CHECKOUT_REQUEST',
   updateCheckoutSuccess: 'UPDATE_CHECKOUT_SUCCESS',
   updateCheckoutFailure: 'UPDATE_CHECKOUT_FAILURE',

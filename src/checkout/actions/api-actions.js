@@ -205,6 +205,24 @@ const fetchShippingOptions = async (dispatch, getState) => {
   }
 };
 
+export const selectShipping = shippingUid => {
+  return async (dispatch, getState) => {
+    const { checkout } = getState();
+    const { cart } = checkout;
+
+    dispatch(selectShippingRequest(shippingUid));
+
+    const results = await ClaretyApi.put(`carts/${cart.uid}/shipping-options/${shippingUid}/`);
+    const result = results[0];
+
+    if (result.status === 'error') {
+      dispatch(selectShippingFailure(result));
+    } else {
+      dispatch(selectShippingSuccess(result));
+    }
+  };
+};
+
 export const makePayment = paymentData => {
   const gateway = Config.get('gateway');
 
@@ -415,6 +433,24 @@ const fetchShippingOptionsSuccess = results => ({
 
 const fetchShippingOptionsFailure = () => ({
   type: types.fetchShippingOptionsFailure,
+});
+
+
+// Select Shipping
+
+const selectShippingRequest = shippingUid => ({
+  type: types.selectShippingRequest,
+  shippingUid: shippingUid,
+});
+
+const selectShippingSuccess = result => ({
+  type: types.selectShippingSuccess,
+  result: result,
+});
+
+const selectShippingFailure = result => ({
+  type: types.selectShippingFailure,
+  result: result,
 });
 
 
