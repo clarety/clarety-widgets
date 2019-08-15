@@ -53,6 +53,10 @@ export function setupCheckoutAxiosMock() {
     .onPut(`${apiBase}carts/8c2756b2-f018-4c27-a025-c31fca7e482b/promo-codes/`)
     .reply(200, responses.applyPromoCodeSuccess);
 
+  // Get payment methods.
+  mock
+    .onGet(`${apiBase}carts/8c2756b2-f018-4c27-a025-c31fca7e482b/payment-methods/`)
+    .reply(200, responses.getPaymentMethodsSuccess);
 
 
   // TODO: remove these soon...

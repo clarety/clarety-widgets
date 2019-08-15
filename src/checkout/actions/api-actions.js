@@ -241,6 +241,23 @@ export const applyPromoCode = promoCode => {
   };
 };
 
+export const fetchPaymentMethods = () => {
+  return async (dispatch, getState) => {
+    const { checkout } = getState();
+    const { cart } = checkout;
+
+    dispatch(fetchPaymentMethodsRequest());
+
+    const results = await ClaretyApi.get(`carts/${cart.uid}/payment-methods/`);
+
+    if (!results) {
+      dispatch(fetchPaymentMethodsFailure());
+    } else {
+      dispatch(fetchPaymentMethodsSuccess(results));
+    }
+  };
+};
+
 export const makePayment = paymentData => {
   const gateway = Config.get('gateway');
 
@@ -487,6 +504,22 @@ const applyPromoCodeSuccess = result => ({
 const applyPromoCodeFailure = result => ({
   type: types.applyPromoCodeFailure,
   result: result,
+});
+
+
+// Fetch Payment Methods
+
+const fetchPaymentMethodsRequest = () => ({
+  type: types.fetchPaymentMethodsRequest,
+});
+
+const fetchPaymentMethodsSuccess = results => ({
+  type: types.fetchPaymentMethodsSuccess,
+  results: results,
+});
+
+const fetchPaymentMethodsFailure = () => ({
+  type: types.fetchPaymentMethodsFailure,
 });
 
 

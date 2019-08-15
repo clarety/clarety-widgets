@@ -59,6 +59,10 @@ export const types = {
   applyPromoCodeSuccess: 'APPLY_PROMO_CODE_SUCCESS',
   applyPromoCodeFailure: 'APPLY_PROMO_CODE_FAILURE',
 
+  fetchPaymentMethodsRequest: 'FETCH_PAYMENT_METHODS_REQUEST',
+  fetchPaymentMethodsSuccess: 'FETCH_PAYMENT_METHODS_SUCCESS',
+  fetchPaymentMethodsFailure: 'FETCH_PAYMENT_METHODS_FAILURE',
+
   updateCheckoutRequest: 'UPDATE_CHECKOUT_REQUEST',
   updateCheckoutSuccess: 'UPDATE_CHECKOUT_SUCCESS',
   updateCheckoutFailure: 'UPDATE_CHECKOUT_FAILURE',
