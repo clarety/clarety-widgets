@@ -24,16 +24,15 @@ export function setupCheckoutAxiosMock() {
     .onGet(`${api}/carts/${cartUid}/`)
     .reply(200, responses.getCartSuccess);
 
-  // Customer search.
+  // Customer search (has account).
+  mock
+    .onGet(`${api}/customer-search/`, { params: { email: 'test@test.com' } })
+    .reply(200, responses.customerSearchHasAccount);
+
+  // Customer search (no account).
   mock
     .onGet(`${api}/customer-search/`)
-    .reply(request => {
-      const response = request.params.email === 'test@test.com'
-                     ? responses.customerSearchHasAccount
-                     : responses.customerSearchNoAccount;
-
-      return [200, response];
-    });
+    .reply(200, responses.customerSearchNoAccount);
 
   // Create account.
   mock
