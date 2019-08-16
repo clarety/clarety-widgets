@@ -49,17 +49,17 @@ export const logout = () => ({
   type: types.logout,
 });
 
-export const customerSearch = email => {
+export const hasAccount = email => {
   return async dispatch => {
-    dispatch(customerSearchRequest(email));
+    dispatch(hasAccountRequest(email));
 
-    const results = await ClaretyApi.get('customer-search/', { email });
+    const results = await ClaretyApi.get('/carts/has-account/', { email });
     const result = results[0];
 
     if (result.status === 'error') {
-      dispatch(customerSearchFailure(result));
+      dispatch(hasAccountFailure(result));
     } else {
-      dispatch(customerSearchSuccess(result));
+      dispatch(hasAccountSuccess(result));
     }
   };
 };
@@ -107,18 +107,18 @@ const loginFailure = result => ({
 
 // Customer Search
 
-const customerSearchRequest = email => ({
-  type: types.customerSearchRequest,
+const hasAccountRequest = email => ({
+  type: types.hasAccountRequest,
   email: email,
 });
 
-const customerSearchSuccess = result => ({
-  type: types.customerSearchSuccess,
+const hasAccountSuccess = result => ({
+  type: types.hasAccountSuccess,
   result: result,
 });
 
-const customerSearchFailure = result => ({
-  type: types.customerSearchFailure,
+const hasAccountFailure = result => ({
+  type: types.hasAccountFailure,
   result: result,
 });
 

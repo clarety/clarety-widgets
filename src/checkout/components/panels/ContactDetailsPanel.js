@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import { BasePanel, TextInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { customerSearch, login, logout, createAccount, updateFormData, resetFormData, nextPanel, editPanel, resetPanels, emailStatuses, resetEmailStatus } from 'checkout/actions';
+import { hasAccount, login, logout, createAccount, updateFormData, resetFormData, nextPanel, editPanel, resetPanels, emailStatuses, resetEmailStatus } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _ContactDetailsPanel extends BasePanel {
@@ -12,7 +12,7 @@ class _ContactDetailsPanel extends BasePanel {
 
     if (this.validate()) {
       const { email } = this.state.formData;
-      this.props.customerSearch(email);
+      this.props.hasAccount(email);
       this.props.resetFormData();
       this.props.resetPanelData();
     }
@@ -281,7 +281,7 @@ const mapStateToProps = state => {
 };
 
 const actions = {
-  customerSearch: customerSearch,
+  hasAccount: hasAccount,
   login: login,
   logout: logout,
   createAccount: createAccount,

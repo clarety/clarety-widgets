@@ -1,4 +1,4 @@
-export const customerSearchHasAccount = {
+export const hasAccountTrue = {
   "requestId": "",
   "success": true,
   "result": [

@@ -21,9 +21,9 @@ export const types = {
 
   logout: 'LOGOUT',
 
-  customerSearchRequest: 'CUSTOMER_SEARCH_REQUEST',
-  customerSearchSuccess: 'CUSTOMER_SEARCH_SUCCESS',
-  customerSearchFailure: 'CUSTOMER_SEARCH_FAILURE',
+  hasAccountRequest: 'HAS_ACCOUNT_REQUEST',
+  hasAccountSuccess: 'HAS_ACCOUNT_SUCCESS',
+  hasAccountFailure: 'HAS_ACCOUNT_FAILURE',
 
   resetEmailStatus: 'RESET_EMAIL_STATUS',
 

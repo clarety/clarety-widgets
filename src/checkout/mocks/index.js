@@ -6,8 +6,8 @@ export * from './carts/make-payment-success';
 export * from './carts/select-shipping-option-success';
 
 export * from './customers/create-customer-success';
-export * from './customers/customer-search-has-account';
-export * from './customers/customer-search-no-account';
+export * from './customers/has-account-false';
+export * from './customers/has-account-true';
 export * from './customers/get-customer-success';
 
 export * from './login/create-account-success';

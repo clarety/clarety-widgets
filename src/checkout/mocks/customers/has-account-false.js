@@ -1,4 +1,4 @@
-export const customerSearchNoAccount = {
+export const hasAccountFalse = {
   "requestId": "",
   "success": true,
   "result": [

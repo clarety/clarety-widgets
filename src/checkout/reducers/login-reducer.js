@@ -12,7 +12,7 @@ export const loginReducer = (state = initialState, action) => {
   switch (action.type) {
     // Customer Search
 
-    case types.customerSearchRequest:
+    case types.hasAccountRequest:
       return {
         ...state,
         isBusy: true,
@@ -20,7 +20,7 @@ export const loginReducer = (state = initialState, action) => {
         errors: null,
       };
 
-    case types.customerSearchSuccess:
+    case types.hasAccountSuccess:
       return {
         ...state,
         isBusy: false,
@@ -95,7 +95,7 @@ export const loginReducer = (state = initialState, action) => {
 
     // Failure
 
-    case types.customerSearchFailure:
+    case types.hasAccountFailure:
     case types.loginFailure:
     case types.createAccountFailure:
     case types.fetchCustomerFailure:
