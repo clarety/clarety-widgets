@@ -1,3 +1,4 @@
+import jwtDecode from 'jwt-decode';
 import { ClaretyApi } from 'clarety-utils';
 import { types, nextPanel } from 'checkout/actions';
 
@@ -24,12 +25,11 @@ export const login = (email, password) => {
       dispatch(loginSuccess(result));
     }
 
-    // TODO: where does customer uid come from? Decode JWT?
-    const customerUid = 'e7fb8831-4a83-468e-8eec-593185909f18';
+    const jwt = jwtDecode(result.access_token);
 
     // Fetch customer.
     dispatch(fetchCustomerRequest());
-    const results = await ClaretyApi.get(`carts/customers/${customerUid}/`);
+    const results = await ClaretyApi.get(`carts/customers/${jwt.customerUid}/`);
     result = results[0];
 
     if (result.status === 'error') {
