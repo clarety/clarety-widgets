@@ -1,6 +1,14 @@
 import { ClaretyApi } from 'clarety-utils';
 import { createStripeToken, parseStripeError } from 'donate/utils';
-import { types } from 'checkout/actions';
+import { types, nextPanel } from 'checkout/actions';
+
+export const paymentMethods = {
+  creditCard: 'credit-card',
+};
+
+export const gateways = {
+  stripe: 'stripe',
+};
 
 export const fetchPaymentMethods = () => {
   return async (dispatch, getState) => {
@@ -15,14 +23,35 @@ export const fetchPaymentMethods = () => {
       dispatch(fetchPaymentMethodsFailure());
     } else {
       dispatch(fetchPaymentMethodsSuccess(results));
+      dispatch(nextPanel());
     }
   };
 };
 
-export const makePayment = paymentData => {
+export const makePayment = (paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     const { checkout } = getState();
     const { cart } = checkout;
+
+    const { options } = paymentMethod;
+
+    // Fetch stripe token.
+    if (options && options.gateway === gateways.stripe) {
+      dispatch(stripeTokenRequest(paymentData, options.stripeKey));
+
+      const stripeToken = await createStripeToken(paymentData, options.stripeKey);
+
+      if (stripeToken.error) {
+        const errors = parseStripeError(stripeToken.error);
+        dispatch(stripeTokenFailure(errors));
+        return;
+      }
+
+      dispatch(stripeTokenSuccess(stripeToken));
+
+      // Overwrite payment data with token.
+      paymentData = { gatewayToken: stripeToken.id };
+    }
 
     dispatch(makePaymentRequest(paymentData));
 
@@ -34,31 +63,6 @@ export const makePayment = paymentData => {
     } else {
       // Redirect on success.
       window.location.href = result.redirect;
-    }
-  };
-};
-
-// TODO: move to stripe actions??
-const makeStripePayment = paymentData => {
-  return async dispatch => {
-    // TODO: get stripe key from payment method.
-    const stripeKey = 'pk_test_5AVvhyJrg3yIEnWSMQVBl3mQ00mK2D2SOD';
-    const stripeData = {
-      cardNumber:  paymentData.cardNumber,
-      expiryMonth: paymentData.expiryMonth,
-      expiryYear:  paymentData.expiryYear,
-      ccv:         paymentData.ccv,
-    };
-
-    dispatch(stripeTokenRequest(stripeData, stripeKey));
-
-    const token = await createStripeToken(stripeData, stripeKey);
-
-    if (token.error) {
-      const errors = parseStripeError(token.error);
-      dispatch(stripeTokenFailure(errors));
-    } else {
-      dispatch(stripeTokenSuccess(token));
     }
   };
 };
@@ -92,11 +96,10 @@ const makePaymentFailure = result => ({
 });
 
 // Stripe Token
-// TODO: move to stripe actions??
 
-const stripeTokenRequest = (stripeData, stripeKey) => ({
+const stripeTokenRequest = (paymentData, stripeKey) => ({
   type: types.stripeTokenRequest,
-  stripeData: stripeData,
+  paymentData: paymentData,
   stripeKey: stripeKey,
 });
 

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import { BasePanel, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { selectShipping, nextPanel, editPanel } from 'checkout/actions';
+import { selectShipping, fetchPaymentMethods, editPanel } from 'checkout/actions';
 import { currency } from 'checkout/utils';
 
 class _ShippingOptionsPanel extends BasePanel {
@@ -12,8 +12,8 @@ class _ShippingOptionsPanel extends BasePanel {
   };
 
   onPressContinue = () => {
-    const { canContinue, nextPanel } = this.props;
-    if (canContinue) nextPanel();
+    const { canContinue, fetchPaymentMethods } = this.props;
+    if (canContinue) fetchPaymentMethods();
   };
 
   onSelectOption = uid => {
@@ -92,7 +92,7 @@ const mapStateToProps = state => {
 
 const actions = {
   selectShipping: selectShipping,
-  nextPanel: nextPanel,
+  fetchPaymentMethods: fetchPaymentMethods,
   editPanel: editPanel,
 };
 

@@ -6,7 +6,7 @@ export const getPaymentMethodsSuccess = {
       "method": "credit-card",
       "options": {
         "gateway": "stripe",
-        "stripeKey": "pk_12341234"
+        "stripeKey": "pk_test_5AVvhyJrg3yIEnWSMQVBl3mQ00mK2D2SOD"
       }
     },
     {
