@@ -64,24 +64,6 @@ export const hasAccount = email => {
   };
 };
 
-export const createAccount = (firstName, lastName, email, password) => {
-  return async dispatch => {
-    const postData = { firstName, lastName, email, password };
-
-    dispatch(createAccountRequest(postData));
-    const result = await ClaretyApi.post('customer-new/', postData);
-
-    if (result.status === 'error') {
-      dispatch(createAccountFailure(result));
-      return;
-    } else {
-      dispatch(createAccountSuccess(result));
-      // We've created an account, now login.
-      dispatch(login(email, password));
-    }
-  };
-};
-
 export const resetEmailStatus = () => ({
   type: types.resetEmailStatus,
 });
@@ -135,22 +117,5 @@ const fetchCustomerSuccess = result => ({
 
 const fetchCustomerFailure = result => ({
   type: types.fetchCustomerFailure,
-  result: result,
-});
-
-// Create Account
-
-const createAccountRequest = (postData) => ({
-  type: types.createAccountRequest,
-  postData: postData,
-});
-
-const createAccountSuccess = result => ({
-  type: types.createAccountSuccess,
-  result: result,
-});
-
-const createAccountFailure = result => ({
-  type: types.createAccountFailure,
   result: result,
 });

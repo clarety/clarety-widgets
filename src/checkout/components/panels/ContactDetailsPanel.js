@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import { BasePanel, TextInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { hasAccount, login, logout, createAccount, updateFormData, resetFormData, nextPanel, editPanel, resetPanels, emailStatuses, resetEmailStatus } from 'checkout/actions';
+import { hasAccount, login, logout, updateFormData, resetFormData, nextPanel, editPanel, resetPanels, emailStatuses, resetEmailStatus } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _ContactDetailsPanel extends BasePanel {
@@ -39,13 +39,18 @@ class _ContactDetailsPanel extends BasePanel {
     event.preventDefault();
 
     if (this.validate()) {
-      const { firstName, lastName, email, password } = this.state.formData;
-      this.props.createAccount(firstName, lastName, email, password);
+      const { email, password } = this.state.formData;
+      this.props.updateFormData({
+        'customer.email': email,
+        'customer.password': password,
+      });
+      this.props.nextPanel();
     }
   };
 
   onPressGuestCheckout = () => {
-    this.props.updateFormData({ 'customer.email': this.state.formData.email });
+    const { email } = this.state.formData;
+    this.props.updateFormData({ 'customer.email': email });
     this.props.nextPanel();
   };
 
@@ -79,8 +84,6 @@ class _ContactDetailsPanel extends BasePanel {
 
     // Create Account
     if (this.state.isCreatingAccount) {
-      this.validateRequired('firstName', errors);
-      this.validateRequired('lastName', errors);
       this.validatePassword('password', errors);
     }
 
@@ -214,16 +217,6 @@ class _ContactDetailsPanel extends BasePanel {
 
           <Form.Row>
             <Col>
-              <TextInput field="firstName" placeholder="First Name *" />
-            </Col>
-
-            <Col>
-              <TextInput field="lastName" placeholder="Last Name *" />
-            </Col>
-          </Form.Row>
-
-          <Form.Row>
-            <Col>
               <TextInput field="email" type="email" placeholder="Email *" />
             </Col>
           </Form.Row>
@@ -236,7 +229,7 @@ class _ContactDetailsPanel extends BasePanel {
 
           <div className="text-right mt-3">
             <Button title="Cancel" onClick={this.onPressCancelCreateAccount} variant="link" />
-            <Button title="Create Account" type="submit" isBusy={this.props.isBusy} />
+            <Button title="Continue" type="submit" isBusy={this.props.isBusy} />
           </div>
 
         </Form>
@@ -284,7 +277,6 @@ const actions = {
   hasAccount: hasAccount,
   login: login,
   logout: logout,
-  createAccount: createAccount,
   resetEmailStatus: resetEmailStatus,
   updateFormData: updateFormData,
   resetFormData: resetFormData,

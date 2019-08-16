@@ -31,10 +31,6 @@ export const types = {
   fetchCustomerSuccess: 'FETCH_CUSTOMER_SUCCESS',
   fetchCustomerFailure: 'FETCH_CUSTOMER_FAILURE',
 
-  createAccountRequest: 'CREATE_ACCOUNT_REQUEST',
-  createAccountSuccess: 'CREATE_ACCOUNT_SUCCESS',
-  createAccountFailure: 'CREATE_ACCOUNT_FAILURE',
-
   // Cart Action Types
 
   fetchCartRequest: 'FETCH_CART_REQUEST',

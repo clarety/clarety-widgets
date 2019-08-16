@@ -32,11 +32,6 @@ export function setupCheckoutAxiosMock() {
     .onGet(`${api}/carts/has-account/`)
     .reply(200, responses.hasAccountFalse);
 
-  // Create account.
-  mock
-    .onPost(`${api}/customer-new/`)
-    .reply(200, responses.createAccountSuccess);
-
   // Get customer.
   mock
     .onGet(`${api}/carts/customers/${customerUid}/`)
