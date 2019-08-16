@@ -13,17 +13,7 @@ export const types = {
   updateFormData: 'UPDATE_FORM_DATA',
   resetFormData:  'RESET_FORM_DATA',
 
-  // API Action Types
-
-  fetchCartRequest: 'FETCH_CART_REQUEST',
-  fetchCartSuccess: 'FETCH_CART_SUCCESS',
-  fetchCartFailure: 'FETCH_CART_FAILURE',
-
-  customerSearchRequest: 'CUSTOMER_SEARCH_REQUEST',
-  customerSearchSuccess: 'CUSTOMER_SEARCH_SUCCESS',
-  customerSearchFailure: 'CUSTOMER_SEARCH_FAILURE',
-
-  resetEmailStatus: 'RESET_EMAIL_STATUS',
+  // Auth Action Types
 
   loginRequest: 'LOGIN_REQUEST',
   loginSuccess: 'LOGIN_SUCCESS',
@@ -31,13 +21,25 @@ export const types = {
 
   logout: 'LOGOUT',
 
-  createAccountRequest: 'CREATE_ACCOUNT_REQUEST',
-  createAccountSuccess: 'CREATE_ACCOUNT_SUCCESS',
-  createAccountFailure: 'CREATE_ACCOUNT_FAILURE',
+  customerSearchRequest: 'CUSTOMER_SEARCH_REQUEST',
+  customerSearchSuccess: 'CUSTOMER_SEARCH_SUCCESS',
+  customerSearchFailure: 'CUSTOMER_SEARCH_FAILURE',
+
+  resetEmailStatus: 'RESET_EMAIL_STATUS',
 
   fetchCustomerRequest: 'FETCH_CUSTOMER_REQUEST',
   fetchCustomerSuccess: 'FETCH_CUSTOMER_SUCCESS',
   fetchCustomerFailure: 'FETCH_CUSTOMER_FAILURE',
+
+  createAccountRequest: 'CREATE_ACCOUNT_REQUEST',
+  createAccountSuccess: 'CREATE_ACCOUNT_SUCCESS',
+  createAccountFailure: 'CREATE_ACCOUNT_FAILURE',
+
+  // Cart Action Types
+
+  fetchCartRequest: 'FETCH_CART_REQUEST',
+  fetchCartSuccess: 'FETCH_CART_SUCCESS',
+  fetchCartFailure: 'FETCH_CART_FAILURE',
 
   createCustomerRequest: 'CREATE_CUSTOMER_REQUEST',
   createCustomerSuccess: 'CREATE_CUSTOMER_SUCCESS',
@@ -58,6 +60,8 @@ export const types = {
   applyPromoCodeRequest: 'APPLY_PROMO_CODE_REQUEST',
   applyPromoCodeSuccess: 'APPLY_PROMO_CODE_SUCCESS',
   applyPromoCodeFailure: 'APPLY_PROMO_CODE_FAILURE',
+
+  // Payment Action Types
 
   fetchPaymentMethodsRequest: 'FETCH_PAYMENT_METHODS_REQUEST',
   fetchPaymentMethodsSuccess: 'FETCH_PAYMENT_METHODS_SUCCESS',
