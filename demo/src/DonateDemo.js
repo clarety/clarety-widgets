@@ -1,10 +1,6 @@
 import React from 'react';
 import { Config, DonateWidget } from '../../src';
 
-Config.init({
-  instanceKey: 'clarety-baseline',
-});
-
 const DonateDemo = () => (
   <div className="container my-5">
     <div className="row">

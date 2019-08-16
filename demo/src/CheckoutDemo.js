@@ -1,9 +1,5 @@
 import React from 'react';
-import { Config, Checkout, setupCheckoutAxiosMock } from '../../src';
-
-Config.init({
-  instanceKey: 'clarety-baseline',
-});
+import { Checkout, setupCheckoutAxiosMock } from '../../src';
 
 export default class CheckoutDemo extends React.Component {
   componentWillMount() {

@@ -1,10 +1,5 @@
 import React from 'react';
-import { Config } from 'clarety-utils';
 import { Cart, setupCartAxiosMock } from '../../src';
-
-Config.init({
-  instanceKey: 'clarety-baseline',
-});
 
 export default class CheckoutDemo extends React.Component {
   componentWillMount() {

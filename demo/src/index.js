@@ -1,10 +1,16 @@
 import React from 'react';
 import { render } from 'react-dom';
+import { Config } from '../../src';
 import SubscribeDemo from './SubscribeDemo';
 import DonateDemo from './DonateDemo';
 import CheckoutDemo from './CheckoutDemo';
 import CartDemo from './CartDemo';
 import './styles/StepIndicator.css';
+
+Config.init({
+  instanceKey: 'clarety-baseline',
+  phoneCountry: 'AU',
+});
 
 const Demo = () => {
   const url = window.location.href;

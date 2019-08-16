@@ -1,9 +1,5 @@
 import React from 'react';
-import { Config, SubscribeWidget, setupSubscribeAxiosMock } from '../../src';
-
-Config.init({
-  instanceKey: 'clarety-baseline',
-});
+import { SubscribeWidget, setupSubscribeAxiosMock } from '../../src';
 
 export default class SubscribeDemo extends React.Component {
   componentWillMount() {
