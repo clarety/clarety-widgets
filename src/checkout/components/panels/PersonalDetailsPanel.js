@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
-import { BasePanel, TextInput } from 'checkout/components';
-import { WaitPanelHeader, EditPanelHeader, DonePanelHeader, Button } from 'checkout/components';
+import { BasePanel, TextInput, PhoneInput, Button } from 'checkout/components';
+import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { updateFormData, nextPanel, editPanel } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
@@ -83,16 +83,16 @@ class _PersonalDetailsPanel extends BasePanel {
 
             <Form.Row>
               <Col>
-                <TextInput field="customer.phone1" placeholder="Home Phone" />
+                <PhoneInput field="customer.phone1" placeholder="Home Phone" />
               </Col>
               <Col>
-                <TextInput field="customer.phone2" placeholder="Work Phone" />
+                <PhoneInput field="customer.phone2" placeholder="Work Phone" />
               </Col>
             </Form.Row>
 
             <Form.Row>
               <Col>
-                <TextInput field="customer.mobile" placeholder="Mobile Phone" />
+                <PhoneInput field="customer.mobile" placeholder="Mobile Phone" />
               </Col>
               <Col>
               </Col>
