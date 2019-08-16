@@ -67,10 +67,6 @@ export const types = {
   makePaymentSuccess: 'MAKE_PAYMENT_SUCCESS',
   makePaymentFailure: 'MAKE_PAYMENT_FAILURE',
 
-  updateCheckoutRequest: 'UPDATE_CHECKOUT_REQUEST',
-  updateCheckoutSuccess: 'UPDATE_CHECKOUT_SUCCESS',
-  updateCheckoutFailure: 'UPDATE_CHECKOUT_FAILURE',
-
   stripeTokenRequest: 'STRIPE_TOKEN_REQUEST',
   stripeTokenSuccess: 'STRIPE_TOKEN_SUCCESS',
   stripeTokenFailure: 'STRIPE_TOKEN_FAILURE',

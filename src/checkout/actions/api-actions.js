@@ -1,7 +1,7 @@
-import { ClaretyApi, Config } from 'clarety-utils';
+import { ClaretyApi } from 'clarety-utils';
 import { parseNestedElements } from 'shared/utils';
 import { createStripeToken, parseStripeError } from 'donate/utils';
-import { types, nextPanel, updateFormData } from '.';
+import { types, nextPanel } from 'checkout/actions';
 
 const clientId = '82ee4a2479780256c9bf9b951f5d1cfb';
 
@@ -105,30 +105,6 @@ export const createAccount = (firstName, lastName, email, password) => {
 export const resetEmailStatus = () => ({
   type: types.resetEmailStatus,
 });
-
-export const updateCheckout = ({ isDiscountCode = false, shouldAdvance = true } = {}) => {
-  return async (dispatch, getState) => {
-    const { formData } = getState();
-
-    const postData = parseNestedElements(formData);
-
-    dispatch(updateCheckoutRequest(postData, isDiscountCode));
-
-    const results = await ClaretyApi.post('checkout/', postData);
-    const result = results[0];
-
-    if (result.status === 'error') {
-      dispatch(updateCheckoutFailure(result));
-    } else {
-      if (result.status === 'complete') {
-        window.location.href = result.redirect;
-      } else {
-        dispatch(updateCheckoutSuccess(result));
-        if (shouldAdvance) dispatch(nextPanel());
-      }      
-    }
-  };
-};
 
 export const onSubmitShippingDetails = () => {
   return async (dispatch, getState) => {
@@ -275,7 +251,7 @@ export const makePayment = paymentData => {
 // TODO: move to stripe actions??
 const makeStripePayment = paymentData => {
   return async dispatch => {
-    // TODO: get stripe key from init...
+    // TODO: get stripe key from payment method.
     const stripeKey = 'pk_test_5AVvhyJrg3yIEnWSMQVBl3mQ00mK2D2SOD';
     const stripeData = {
       cardNumber:  paymentData.cardNumber,
@@ -293,8 +269,6 @@ const makeStripePayment = paymentData => {
       dispatch(stripeTokenFailure(errors));
     } else {
       dispatch(stripeTokenSuccess(token));
-      dispatch(updateFormData({ 'payment.gatewayToken': token.id }));
-      dispatch(updateCheckout());
     }
   };
 };
@@ -422,25 +396,6 @@ const updateCustomerSuccess = result => ({
 
 const updateCustomerFailure = result => ({
   type: types.updateCustomerFailure,
-  result: result,
-});
-
-
-// Update Checkout
-
-const updateCheckoutRequest = (postData, isDiscountCode) => ({
-  type: types.updateCheckoutRequest,
-  postData: postData,
-  isDiscountCode: isDiscountCode,
-});
-
-const updateCheckoutSuccess = result => ({
-  type: types.updateCheckoutSuccess,
-  result: result,
-});
-
-const updateCheckoutFailure = result => ({
-  type: types.updateCheckoutFailure,
   result: result,
 });
 
