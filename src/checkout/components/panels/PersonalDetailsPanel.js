@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
-import { BasePanel, TextInput, PhoneInput, Button } from 'checkout/components';
+import { BasePanel, TextInput, PhoneInput, DobInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { updateFormData, nextPanel, editPanel } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
@@ -22,8 +22,6 @@ class _PersonalDetailsPanel extends BasePanel {
     this.validateRequired('customer.firstName', errors);
     this.validateRequired('customer.lastName', errors);
 
-    // TODO: update this once we're using a proper
-    // dob input component, instead of a text input...
     this.validateRequired('customer.dateOfBirthDay', errors);
     this.validateRequired('customer.dateOfBirthMonth', errors);
     this.validateRequired('customer.dateOfBirthYear', errors);
@@ -102,17 +100,12 @@ class _PersonalDetailsPanel extends BasePanel {
               <Col>Date of Birth *</Col>
             </Form.Row>
 
-            <Form.Row>
-              <Col>
-                <TextInput field="customer.dateOfBirthDay" placeholder="DD" />
-              </Col>
-              <Col>
-                <TextInput field="customer.dateOfBirthMonth" placeholder="MM" />
-              </Col>
-              <Col>
-                <TextInput field="customer.dateOfBirthYear" placeholder="YYYY" />
-              </Col>
-            </Form.Row>
+            <DobInput
+              field="customer.dateOfBirth"
+              dayField="customer.dateOfBirthDay"
+              monthField="customer.dateOfBirthMonth"
+              yearField="customer.dateOfBirthYear"
+            />
 
             <Form.Row>
               <Col>
