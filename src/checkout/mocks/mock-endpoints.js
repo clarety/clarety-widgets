@@ -58,6 +58,11 @@ export function setupCheckoutAxiosMock() {
     .onGet(`${apiBase}carts/8c2756b2-f018-4c27-a025-c31fca7e482b/payment-methods/`)
     .reply(200, responses.getPaymentMethodsSuccess);
 
+  // Make payment.
+  mock
+    .onPost(`${apiBase}carts/8c2756b2-f018-4c27-a025-c31fca7e482b/payments/`)
+    .reply(200, responses.makePaymentSuccess);
+
 
   // TODO: remove these soon...
 
@@ -74,14 +79,4 @@ export function setupCheckoutAxiosMock() {
   mock
     .onPost(`${apiBase}customer-new/`)
     .reply(200, responses.createAccountSuccess);
-
-  mock
-    .onPost(`${apiBase}checkout/`)
-    .reply(request => {        
-      const data = JSON.parse(request.data);
-
-      if (data.payment) return [200, responses.paymentSuccess];
-
-      return [200, responses.getCartSuccess];
-    });
 }

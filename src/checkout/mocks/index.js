@@ -2,7 +2,7 @@ export * from './carts/apply-promo-code-success';
 export * from './carts/get-cart-success';
 export * from './carts/get-payment-methods-success';
 export * from './carts/get-shipping-options-success';
-export * from './carts/payment-success';
+export * from './carts/make-payment-success';
 export * from './carts/select-shipping-option-success';
 
 export * from './customers/create-customer-success';

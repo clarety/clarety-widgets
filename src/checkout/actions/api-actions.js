@@ -5,11 +5,6 @@ import { types, nextPanel, updateFormData } from '.';
 
 const clientId = '82ee4a2479780256c9bf9b951f5d1cfb';
 
-export const gateways = {
-  clarety: 'clarety',
-  stripe:  'stripe',
-};
-
 export const emailStatuses = {
   notChecked: 'NOT_CHECKED',
   noAccount:  'NO_ACCOUNT',
@@ -259,29 +254,25 @@ export const fetchPaymentMethods = () => {
 };
 
 export const makePayment = paymentData => {
-  const gateway = Config.get('gateway');
+  return async (dispatch, getState) => {
+    const { checkout } = getState();
+    const { cart } = checkout;
 
-  switch (gateway) {
-    case gateways.stripe: return makeStripePayment(paymentData);
-    default:              return makeClaretyPayment(paymentData);
-  }
-};
+    dispatch(makePaymentRequest(paymentData));
 
-const makeClaretyPayment = paymentData => {
-  return async dispatch => {
-    const formData = {
-      'payment.cardNumber':       paymentData.cardNumber,
-      'payment.cardName':         paymentData.cardName,
-      'payment.cardExpiryMonth':  paymentData.expiryMonth,
-      'payment.cardExpiryYear':   paymentData.expiryYear,
-      'payment.cardSecurityCode': paymentData.ccv,
-    };
+    const results = await ClaretyApi.post(`carts/${cart.uid}/payments/`);
+    const result = results[0];
 
-    dispatch(updateFormData(formData));
-    dispatch(updateCheckout());
+    if (result.status === 'error') {
+      dispatch(makePaymentFailure(result));
+    } else {
+      // Redirect on success.
+      window.location.href = result.redirect;
+    }
   };
 };
 
+// TODO: move to stripe actions??
 const makeStripePayment = paymentData => {
   return async dispatch => {
     // TODO: get stripe key from init...
@@ -523,6 +514,20 @@ const fetchPaymentMethodsFailure = () => ({
 });
 
 
+// Make Payment
+
+const makePaymentRequest = paymentData => ({
+  type: types.makePaymentRequest,
+  paymentData: paymentData,
+});
+
+const makePaymentFailure = result => ({
+  type: types.makePaymentFailure,
+  result: result,
+});
+
+
+// TODO: move to stripe actions??
 // Stripe Token
 
 const stripeTokenRequest = (stripeData, stripeKey) => ({

@@ -11,6 +11,7 @@ class _PaymentDetailsPanel extends BasePanel {
     event.preventDefault();
 
     if (this.validate()) {
+      // TODO: handle payments via stripe.
       this.props.makePayment(this.state.formData);
     }
   };

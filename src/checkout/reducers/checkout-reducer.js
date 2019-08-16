@@ -17,6 +17,7 @@ export const checkoutReducer = (state = initialState, action) => {
     case types.fetchShippingOptionsRequest:
     case types.selectShippingRequest:
     case types.fetchPaymentMethodsRequest:
+    case types.makePaymentRequest:
     case types.updateCheckoutRequest:
     case types.stripeTokenRequest:
       return {
@@ -70,6 +71,13 @@ export const checkoutReducer = (state = initialState, action) => {
         ...state,
         isBusy: false,
         isBusyPromoCode: false,
+        errors: action.result.validationErrors,
+      };
+
+    case types.makePaymentFailure:
+      return {
+        ...state,
+        isBusy: false,
         errors: action.result.validationErrors,
       };
 

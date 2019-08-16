@@ -53,7 +53,6 @@ export const createCustomerSuccess = {
 
       "summary": {
         "subtotal": 94.97,
-        "discount": 9.48,
         "total": 85.27
       }
     }

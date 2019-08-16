@@ -63,6 +63,10 @@ export const types = {
   fetchPaymentMethodsSuccess: 'FETCH_PAYMENT_METHODS_SUCCESS',
   fetchPaymentMethodsFailure: 'FETCH_PAYMENT_METHODS_FAILURE',
 
+  makePaymentRequest: 'MAKE_PAYMENT_REQUEST',
+  makePaymentSuccess: 'MAKE_PAYMENT_SUCCESS',
+  makePaymentFailure: 'MAKE_PAYMENT_FAILURE',
+
   updateCheckoutRequest: 'UPDATE_CHECKOUT_REQUEST',
   updateCheckoutSuccess: 'UPDATE_CHECKOUT_SUCCESS',
   updateCheckoutFailure: 'UPDATE_CHECKOUT_FAILURE',

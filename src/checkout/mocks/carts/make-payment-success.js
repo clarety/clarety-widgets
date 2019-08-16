@@ -1,4 +1,4 @@
-export const paymentSuccess = {
+export const makePaymentSuccess = {
   "requestId": "",
   "success": true,
   "result": [
