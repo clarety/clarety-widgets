@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
-import { BasePanel, TextInput, PureCheckboxInput, Button } from 'checkout/components';
+import { BasePanel, TextInput, PureCheckboxInput, StateInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { updateFormData, onSubmitShippingDetails, editPanel, resetShippingOptionsPanel } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
@@ -18,7 +18,6 @@ class _ShippingDetailsPanel extends BasePanel {
         formData['customer.billing.suburb']   = formData['customer.delivery.suburb'];
         formData['customer.billing.state']    = formData['customer.delivery.state'];
         formData['customer.billing.postcode'] = formData['customer.delivery.postcode'];
-        formData['customer.billing.country']  = formData['customer.delivery.country'];
       }
       
       // TODO: clear the selected shipping option...
@@ -37,14 +36,12 @@ class _ShippingDetailsPanel extends BasePanel {
     this.validateRequired('customer.delivery.suburb', errors);
     this.validateRequired('customer.delivery.state', errors);
     this.validateRequired('customer.delivery.postcode', errors);
-    this.validateRequired('customer.delivery.country', errors);
 
     if (!this.state.billingIsSameAsShipping) {
       this.validateRequired('customer.billing.address1', errors);
       this.validateRequired('customer.billing.suburb', errors);
       this.validateRequired('customer.billing.state', errors);
       this.validateRequired('customer.billing.postcode', errors);
-      this.validateRequired('customer.billing.country', errors);
     }
 
     this.setState({ errors });
@@ -70,13 +67,11 @@ class _ShippingDetailsPanel extends BasePanel {
         'customer.delivery.suburb':   customer.delivery.suburb,
         'customer.delivery.state':    customer.delivery.state,
         'customer.delivery.postcode': customer.delivery.postcode,
-        'customer.delivery.country':  customer.delivery.country,
 
         'customer.billing.address1':  customer.billing.address1,
         'customer.billing.suburb':    customer.billing.suburb,
         'customer.billing.state':     customer.billing.state,
         'customer.billing.postcode':  customer.billing.postcode,
-        'customer.billing.country':   customer.billing.country,
       }
     });
   }
@@ -135,17 +130,14 @@ class _ShippingDetailsPanel extends BasePanel {
           <Col>
             <TextInput field={`${fieldPrefix}.suburb`} placeholder="Suburb *" />
           </Col>
-          <Col>
-            <TextInput field={`${fieldPrefix}.state`} placeholder="State *" />
-          </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <TextInput field={`${fieldPrefix}.postcode`} placeholder="Postcode *" />
+            <StateInput field={`${fieldPrefix}.state`} placeholder="State *" />
           </Col>
           <Col>
-            <TextInput field={`${fieldPrefix}.country`} placeholder="Country *" />
+            <TextInput field={`${fieldPrefix}.postcode`} placeholder="Postcode *" />
           </Col>
         </Form.Row>
       </React.Fragment>

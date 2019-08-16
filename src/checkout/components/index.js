@@ -8,6 +8,7 @@ export * from './inputs/CheckboxInput';
 export * from './inputs/DobInput';
 export * from './inputs/ExpiryInput';
 export * from './inputs/PhoneInput';
+export * from './inputs/StateInput';
 export * from './inputs/TextInput';
 
 export * from './panels/BasePanel';
