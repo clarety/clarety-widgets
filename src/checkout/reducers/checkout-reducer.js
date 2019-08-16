@@ -15,7 +15,7 @@ export const checkoutReducer = (state = initialState, action) => {
     case types.createCustomerRequest:
     case types.updateCustomerRequest:
     case types.fetchShippingOptionsRequest:
-    case types.selectShippingRequest:
+    case types.updateSaleRequest:
     case types.fetchPaymentMethodsRequest:
     case types.makePaymentRequest:
     case types.stripeTokenRequest:
@@ -35,7 +35,7 @@ export const checkoutReducer = (state = initialState, action) => {
     case types.fetchCartSuccess:
     case types.createCustomerSuccess:
     case types.updateCustomerSuccess:
-    case types.selectShippingSuccess:
+    case types.updateSaleSuccess:
     case types.applyDiscountCodeSuccess:
       return {
         ...state,

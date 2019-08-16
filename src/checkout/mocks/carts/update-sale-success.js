@@ -1,9 +1,13 @@
-export const selectShippingOptionSuccess = {
+export const updateSaleSuccess = {
   "requestId": "",
   "success": true,
   "result": [
     {
       "uid": "8c2756b2-f018-4c27-a025-c31fca7e482b",
+
+      "sale": {
+        "shippingOption": "f5e68a7d-22ad-4733-b730-a9ef8c4c6bb0",
+      },
 
       "items": [
         {
@@ -21,8 +25,6 @@ export const selectShippingOptionSuccess = {
           "total": 14.95
         }
       ],
-
-      "shippingOption": "f5e68a7d-22ad-4733-b730-a9ef8c4c6bb0",
 
       "summary": {
         "subtotal": 94.97,

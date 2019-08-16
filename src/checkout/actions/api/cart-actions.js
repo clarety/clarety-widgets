@@ -25,7 +25,6 @@ export const onSubmitShippingDetails = () => {
     const { checkout, login } = getState();
 
     if (login.customer || checkout.cart.customer) {
-      // TODO: can I use this endpoint without being logged in?
       await _updateCustomer(dispatch, getState);
     } else {
       await _createCustomer(dispatch, getState);
@@ -90,20 +89,24 @@ const _fetchShippingOptions = async (dispatch, getState) => {
   }
 };
 
-export const selectShipping = shippingUid => {
+export const updateSale = shippingUid => {
   return async (dispatch, getState) => {
     const { checkout } = getState();
     const { cart } = checkout;
 
-    dispatch(selectShippingRequest(shippingUid));
+    dispatch(updateSaleRequest(shippingUid));
 
-    const results = await ClaretyApi.put(`carts/${cart.uid}/shipping-options/${shippingUid}/`);
+    const putData = {
+      shippingMethod: shippingUid,
+    };
+
+    const results = await ClaretyApi.put(`carts/${cart.uid}/sale/`, putData);
     const result = results[0];
 
     if (result.status === 'error') {
-      dispatch(selectShippingFailure(result));
+      dispatch(updateSaleFailure(result));
     } else {
-      dispatch(selectShippingSuccess(result));
+      dispatch(updateSaleSuccess(result));
     }
   };
 };
@@ -194,20 +197,20 @@ const fetchShippingOptionsFailure = () => ({
   type: types.fetchShippingOptionsFailure,
 });
 
-// Select Shipping
+// Update Sale
 
-const selectShippingRequest = shippingUid => ({
-  type: types.selectShippingRequest,
-  shippingUid: shippingUid,
+const updateSaleRequest = putData => ({
+  type: types.updateSaleRequest,
+  putData: putData,
 });
 
-const selectShippingSuccess = result => ({
-  type: types.selectShippingSuccess,
+const updateSaleSuccess = result => ({
+  type: types.updateSaleSuccess,
   result: result,
 });
 
-const selectShippingFailure = result => ({
-  type: types.selectShippingFailure,
+const updateSaleFailure = result => ({
+  type: types.updateSaleFailure,
   result: result,
 });
 

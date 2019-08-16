@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import { BasePanel, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { selectShipping, fetchPaymentMethods, editPanel } from 'checkout/actions';
+import { updateSale, fetchPaymentMethods, editPanel } from 'checkout/actions';
 import { currency } from 'checkout/utils';
 
 class _ShippingOptionsPanel extends BasePanel {
@@ -18,7 +18,7 @@ class _ShippingOptionsPanel extends BasePanel {
 
   onSelectOption = uid => {
     this.setState({ selectedOptionUid: uid });
-    this.props.selectShipping(uid);
+    this.props.updateSale(uid);
   };
 
   renderWait() {
@@ -84,14 +84,14 @@ class _ShippingOptionsPanel extends BasePanel {
 const mapStateToProps = state => {
   return {
     isBusy: state.checkout.isBusy,
-    canContinue: !!state.checkout.cart.shippingOption,
+    canContinue: hasSelectedShippingOption(state),
     shippingOptions: state.checkout.shippingOptions,
     selectedOptionName: getSelectedShippingOptionLabel(state),
   };
 };
 
 const actions = {
-  selectShipping: selectShipping,
+  updateSale: updateSale,
   fetchPaymentMethods: fetchPaymentMethods,
   editPanel: editPanel,
 };
@@ -99,12 +99,18 @@ const actions = {
 export const ShippingOptionsPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_ShippingOptionsPanel);
 
 // TODO: move to selectors...
+
+const hasSelectedShippingOption = state => {
+  return state.checkout.cart.sale
+      && state.checkout.cart.sale.shippingOption;
+};
+
 const getSelectedShippingOptionLabel = state => {
   const { shippingOptions } = state.checkout;
-  const { shippingOption } = state.checkout.cart;
+  const { sale } = state.checkout.cart;
 
-  if (shippingOptions && shippingOption) {
-    const option = shippingOptions.find(option => option.uid === shippingOption);
+  if (shippingOptions && sale) {
+    const option = shippingOptions.find(option => option.uid === sale.shippingOption);
 
     if (option) return option.label;
   }
