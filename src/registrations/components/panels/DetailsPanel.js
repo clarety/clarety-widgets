@@ -195,7 +195,7 @@ export class _DetailsPanel extends React.Component {
         </Form.Row>
         <Form.Row>
           <Col>
-            <PhoneInput field="phone" required />
+            <PhoneInput field="mobile" required />
           </Col>
         </Form.Row>
       </FormContext.Provider>
