@@ -7,7 +7,7 @@ import { getValidationError } from 'form/utils';
 
 class PureTextInput extends React.PureComponent {
   render() {
-    const { field, type, value, onChange, translationId, error, required } = this.props;
+    const { field, type, value, onChange, translationId, error } = this.props;
 
     return (
       <Form.Group controlId={field}>
@@ -18,7 +18,6 @@ class PureTextInput extends React.PureComponent {
           value={value}
           onChange={event => onChange(field, event.target.value)}
           type={type}
-          required={required}
         />
         <FieldError error={error} />
       </Form.Group>

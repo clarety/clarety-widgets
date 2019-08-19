@@ -7,6 +7,8 @@ import { getValidationError } from 'form/utils';
 
 class _PureDobInput extends React.PureComponent {
   render() {
+    const { error, dayError, monthError, yearError } = this.props;
+
     return (
       <Form.Group controlId="dateOfBirth">
         <Form.Label>
@@ -14,23 +16,32 @@ class _PureDobInput extends React.PureComponent {
         </Form.Label>
 
         <Form.Row>
-          <Col>{this.renderDayInput()}</Col>
-          <Col>{this.renderMonthInput()}</Col>
-          <Col>{this.renderYearInput()}</Col>
+          <Col>
+            {this.renderDayInput()}
+            <FieldError error={dayError} />
+          </Col>
+          <Col>
+            {this.renderMonthInput()}
+            <FieldError error={monthError} />
+          </Col>
+          <Col>
+            {this.renderYearInput()}
+            <FieldError error={yearError} />
+          </Col>
         </Form.Row>
 
-        <FieldError error={this.props.error} />
+        <FieldError error={error} />
       </Form.Group>
     );
   }
 
   renderDayInput() {
-    const { day, dayField, onChange, intl, required } = this.props;
+    const { day, dayField, onChange, intl } = this.props;
 
     const onChangeDay = event => onChange(dayField, event.target.value);
 
     return (
-      <Form.Control as="select" value={day} onChange={onChangeDay} required={required}>
+      <Form.Control as="select" value={day} onChange={onChangeDay}>
         <option value="" disabled hidden>
           {intl.formatMessage({ id: 'date.day' })}
         </option>
@@ -43,12 +54,12 @@ class _PureDobInput extends React.PureComponent {
   }
 
   renderMonthInput() {
-    const { month, monthField, onChange, intl, required } = this.props;
+    const { month, monthField, onChange, intl } = this.props;
 
     const onChangeMonth = event => onChange(monthField, event.target.value);
 
     return (
-      <Form.Control as="select" value={month} onChange={onChangeMonth} required={required}>
+      <Form.Control as="select" value={month} onChange={onChangeMonth}>
         <option value="" disabled hidden>
           {intl.formatMessage({ id: 'date.month' })}
         </option>
@@ -63,7 +74,7 @@ class _PureDobInput extends React.PureComponent {
   }
 
   renderYearInput() {
-    const { year, yearField, onChange, intl, required, maxYear } = this.props;
+    const { year, yearField, onChange, intl, maxYear } = this.props;
 
     const startYear = maxYear || currentYear;
     const endYear = 1900;
@@ -71,7 +82,7 @@ class _PureDobInput extends React.PureComponent {
     const onChangeYear = event => onChange(yearField, event.target.value);
 
     return (
-      <Form.Control as="select" value={year} onChange={onChangeYear} required={required}>
+      <Form.Control as="select" value={year} onChange={onChangeYear}>
         <option value="" disabled hidden>
           {intl.formatMessage({ id: 'date.year' })}
         </option>
@@ -91,16 +102,25 @@ export class DobInput extends React.Component {
     const { formData, errors, onChange } = this.context;
     const { field, dayField, monthField, yearField } = this.props;
 
-    const error = getValidationError(field, errors);
+    const error      = getValidationError(field, errors);
+    const dayError   = getValidationError(dayField, errors);
+    const monthError = getValidationError(monthField, errors);
+    const yearError  = getValidationError(yearField, errors);
 
     return (
       <PureDobInput
         {...this.props}
+
         day={formData[dayField] || ''}
         month={formData[monthField] || ''}
         year={formData[yearField] || ''}
+
         onChange={onChange}
+
         error={error}
+        dayError={dayError}
+        monthError={monthError}
+        yearError={yearError}
       />
     );
   }

@@ -10,7 +10,7 @@ import { getValidationError } from 'form/utils';
 
 class PurePhoneInput extends React.PureComponent {
   render() {
-    const { field, value, onChange, translationId, required, error } = this.props;
+    const { field, value, onChange, translationId, error } = this.props;
     const country = Config.get('phoneCountry');
 
     return (
@@ -24,7 +24,6 @@ class PurePhoneInput extends React.PureComponent {
           limitMaxLength={true}
           inputClassName="form-control"
           country={country}
-          required={required}
         />
         <FieldError error={error} />
       </Form.Group>

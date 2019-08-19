@@ -51,7 +51,7 @@ export class _DetailsPanel extends React.Component {
 
     event.preventDefault();
 
-    if (this.validateForm()) {
+    if (this.validate()) {
       this.onSubmitForm();
       setDetails(participantIndex, customerFormContext.formData, extendFormContext.formData);
       pushNextDetailsPanel(participantIndex + 1);
@@ -86,10 +86,23 @@ export class _DetailsPanel extends React.Component {
     }));
   };
 
-  validateForm() {
-    // No validation in the base implementation for now,
-    // but can be overridden in the instance.
-    return true;
+  validate() {
+    const errors = [];
+    this.validateFields(errors);
+    this.setErrors(errors);
+    return errors.length === 0;
+  }
+
+  validateFields(errors) {
+    const { formData } = this.state.customerFormContext;
+    this.validateRequired('firstName', formData, errors);
+    this.validateRequired('lastName', formData, errors);
+    this.validateEmail('email', formData, errors);
+    this.validateRequired('gender', formData, errors);
+    this.validateRequired('dateOfBirthDay', formData, errors);
+    this.validateRequired('dateOfBirthMonth', formData, errors);
+    this.validateRequired('dateOfBirthYear', formData, errors);
+    this.validateRequired('mobile', formData, errors);
   }
 
   onSubmitForm() {
@@ -169,17 +182,17 @@ export class _DetailsPanel extends React.Component {
     return (
       <FormContext.Provider value={this.state.customerFormContext}>
         <Form.Row>
-          <Col md={6}><TextInput field="firstName" required /></Col>
-          <Col md={6}><TextInput field="lastName" required /></Col>
+          <Col md={6}><TextInput field="firstName" /></Col>
+          <Col md={6}><TextInput field="lastName" /></Col>
         </Form.Row>
         <Form.Row>
           <Col>
-            <TextInput field="email" type="email" required />
+            <TextInput field="email" type="email" />
           </Col>
         </Form.Row>
         <Form.Row>
           <Col>
-            <SelectInput field="gender" options={genderOptions} required />
+            <SelectInput field="gender" options={genderOptions} />
           </Col>
         </Form.Row>
         <Form.Row>
@@ -189,13 +202,12 @@ export class _DetailsPanel extends React.Component {
               dayField="dateOfBirthDay"
               monthField="dateOfBirthMonth"
               yearField="dateOfBirthYear"
-              required
             />
           </Col>
         </Form.Row>
         <Form.Row>
           <Col>
-            <PhoneInput field="mobile" required />
+            <PhoneInput field="mobile" />
           </Col>
         </Form.Row>
       </FormContext.Provider>
@@ -239,6 +251,26 @@ export class _DetailsPanel extends React.Component {
         </Button>
       </Container>
     );
+  }
+
+  validateRequired(field, formData, errors, message) {
+    if (!formData[field]) {
+      errors.push({
+        field: field,
+        message: message || 'This is a required field.',
+      });
+    }
+  }
+
+  validateEmail(field, formData, errors) {
+    const email = formData[field];
+    const isValid = /^.+@.+\..+$/.test(email);
+    if (!isValid) {
+      errors.push({
+        'field': field,
+        'message': 'Please enter a valid email.',
+      });
+    }
   }
 }
 
