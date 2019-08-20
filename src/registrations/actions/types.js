@@ -1,17 +1,25 @@
 export const types = {
   // Status Action Types
+
   statusSet: 'STATUS_SET',
 
   // Init Action Types
-  initFetchRequest: 'INIT_FETCH_REQUEST',
-  initFetchSuccess: 'INIT_FETCH_SUCCESS',
-  initFetchFailure: 'INIT_FETCH_FAILURE',
+
+  fetchEventsRequest: 'FETCH_EVENTS_REQUEST',
+  fetchEventsSuccess: 'FETCH_EVENTS_SUCCESS',
+  fetchEventsFailure: 'FETCH_EVENTS_FAILURE',
+
+  fetchFullEventRequest: 'FETCH_FULL_EVENT_REQUEST',
+  fetchFullEventSuccess: 'FETCH_FULL_EVENT_SUCCESS',
+  fetchFullEventFailure: 'FETCH_FULL_EVENT_FAILURE',
 
   // Panel Stack Action Types
+
   panelStackPush: 'PANEL_STACK_PUSH',
   panelStackPop:  'PANEL_STACK_POP',
 
   // Panel Data Action Types
+
   panelDataSetEvent:          'PANEL_DATA_SET_EVENT',
   panelDataResetEvent:        'PANEL_DATA_RESET_EVENT',
   panelDataSetQtys:           'PANEL_DATA_SET_QTYS',
@@ -24,6 +32,7 @@ export const types = {
   panelDataResetDetails:      'PANEL_DATA_RESET_DETAILS',
 
   // Registration Action Types
+
   registrationCreateRequest: 'REGISTRATION_CREATE_REQUEST',
   registrationCreateSuccess: 'REGISTRATION_CREATE_SUCCESS',
   registrationCreateFailure: 'REGISTRATION_CREATE_FAILURE',

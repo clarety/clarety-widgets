@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Button, Form } from 'react-bootstrap';
 import Select from 'react-select';
-import { setEvent, resetEvent, panels } from 'registrations/actions';
+import { setEvent, resetEvent, fetchFullEvent } from 'registrations/actions';
 import { getEvent } from 'registrations/selectors';
 
 class _EventPanel extends React.Component {
@@ -26,11 +26,7 @@ class _EventPanel extends React.Component {
     if (!this.state.event) return;
 
     this.props.setEvent(this.state.event.eventId);
-
-    this.props.pushPanel({
-      panel: panels.qtysPanel,
-      progress: 20,
-    });
+    this.props.fetchFullEvent(this.state.event.eventId);
   };
 
   onClickEdit = () => {
@@ -105,6 +101,7 @@ const mapStateToProps = state => {
 const actions = {
   setEvent: setEvent,
   resetEvent: resetEvent,
+  fetchFullEvent: fetchFullEvent,
 };
 
 export const EventPanel = connect(mapStateToProps, actions)(_EventPanel);

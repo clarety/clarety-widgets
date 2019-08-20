@@ -8,7 +8,7 @@ import { Spinner, Modal } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { MiniCart, PanelStack } from 'registrations/components';
-import { fetchInit, statuses } from 'registrations/actions';
+import { fetchEvents, statuses } from 'registrations/actions';
 import { rootReducer } from 'registrations/reducers';
 
 const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -24,7 +24,7 @@ export const RegistrationsApp = ({ translations }) => (
 
 class _Root extends React.Component {
   componentDidMount() {
-    this.props.fetchInit();
+    this.props.fetchEvents();
   }
 
   render() {
@@ -57,7 +57,7 @@ const mapStateToProps = state => {
 };
 
 const actions = {
-  fetchInit: fetchInit,
+  fetchEvents: fetchEvents,
 };
 
 const Root = connect(mapStateToProps, actions)(_Root);

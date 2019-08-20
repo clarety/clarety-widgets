@@ -4,10 +4,12 @@ const initialState = statuses.initializing;
 
 export const statusReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.initFetchRequest:
+    case types.fetchEventsRequest:
+    case types.fetchFullEventRequest:
       return statuses.initializing;
 
-    case types.initFetchSuccess:
+    case types.fetchEventsSuccess:
+    case types.fetchFullEventSuccess:
       return statuses.ready;
 
     case types.registrationCreateRequest:

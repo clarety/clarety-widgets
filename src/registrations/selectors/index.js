@@ -1,10 +1,4 @@
-export const getEvent = state => {
-  if (!state.init) return null;
-
-  const { events } = state.init;
-  const { eventId } = state.panelData;
-  return events.find(event => event.eventId === eventId);
-};
+export const getEvent = state => state.init.event;
 
 export const getEventName = state => {
   const event = getEvent(state);

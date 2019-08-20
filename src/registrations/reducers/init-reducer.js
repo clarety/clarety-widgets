@@ -1,11 +1,27 @@
 import { types } from 'registrations/actions';
 
-const initialState = null;
+const initialState = {
+  events: null,
+  event: null,
+  extendForms: null,
+  elements: null,
+};
 
 export const initReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.initFetchSuccess:
-      return convertSelectFields(action.result);
+    case types.fetchEventsSuccess:
+      return {
+        ...state,
+        events: action.results,
+      };
+
+    case types.fetchFullEventSuccess:
+      return {
+        ...state,
+        event: action.result.events[0],
+        extendForms: convertSelectFields(action.result.extendForms),
+        elements: action.result.elements,
+      };
 
     default:
       return state;
@@ -16,8 +32,8 @@ export const initReducer = (state = initialState, action) => {
 // { 'QLD': 'Queensland', 'VIC': 'Victoria' }
 // we want an array of objects containing values and labels
 // [{ value: 'QLD', label: 'Queensland' }, { value: 'VIC', label: 'Victoria' }]
-function convertSelectFields(init) {
-  for (let form of init.extendForms) {
+function convertSelectFields(extendForms) {
+  for (let form of extendForms) {
     for (let field of form.extendFields) {
       // Check if field has an options object.
       if (field.options && typeof field.options === 'object') {
@@ -29,5 +45,5 @@ function convertSelectFields(init) {
     }
   }
 
-  return init;
+  return extendForms;
 }

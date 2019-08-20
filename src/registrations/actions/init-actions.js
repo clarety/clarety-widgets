@@ -1,39 +1,75 @@
 import { ClaretyApi, Config } from 'clarety-utils';
 import { types, pushPanel, panels } from 'registrations/actions';
 
-export const fetchInit = () => {
+export const fetchEvents = () => {
   return async dispatch => {
-    dispatch(initFetchRequest());
+    dispatch(fetchEventsRequest());
 
+    const storeId  = Config.get('storeId');
     const seriesId = Config.get('seriesId');
-    const storeId = Config.get('storeId');
-    const endpoint = Config.get('initEndpoint') || 'registration-intl/';
+    const results = await ClaretyApi.get('registration-events/', { storeId, seriesId });
 
-    const result = await ClaretyApi.get(endpoint, { seriesId, storeId });
-
-    if (result[0] && result[0].status !== 'error') {
-      dispatch(initFetchSuccess(result[0]));
+    if (results) {
+      dispatch(fetchEventsSuccess(results));
       dispatch(pushPanel({
         panel: panels.eventPanel,
         progress: 0,
       }));
     } else {
-      dispatch(initFetchFailure());
+      dispatch(fetchEventsFailure());
     }
   };
 };
 
-const initFetchRequest = () => ({
-  type: types.initFetchRequest,
+export const fetchFullEvent = eventId => {
+  return async dispatch => {
+    dispatch(fetchFullEventRequest(eventId));
+
+    const endpoint = Config.get('fullEventEndpoint') || 'registration-full/';
+    const storeId  = Config.get('storeId');
+    const seriesId = Config.get('seriesId');
+    const results = await ClaretyApi.get(endpoint, { storeId, seriesId, eventId });
+
+    if (results) {
+      dispatch(fetchFullEventSuccess(results[0]));
+      dispatch(pushPanel({
+        panel: panels.qtysPanel,
+        progress: 20,
+      }));
+    } else {
+      dispatch(fetchFullEventFailure());
+    }
+  };
+};
+
+
+// Fetch Events
+
+const fetchEventsRequest = () => ({
+  type: types.fetchEventsRequest,
 });
 
-
-const initFetchSuccess = result => ({
-  type: types.initFetchSuccess,
-  result,
+const fetchEventsSuccess = results => ({
+  type: types.fetchEventsSuccess,
+  results,
 });
 
-const initFetchFailure = result => ({
-  type: types.initFetchFailure,
-  result,
+const fetchEventsFailure = () => ({
+  type: types.fetchEventsFailure,
+});
+
+// Fetch Full Event
+
+const fetchFullEventRequest = eventId => ({
+  type: types.fetchFullEventRequest,
+  eventId: eventId,
+});
+
+const fetchFullEventSuccess = result => ({
+  type: types.fetchFullEventSuccess,
+  result: result,
+});
+
+const fetchFullEventFailure = () => ({
+  type: types.fetchFullEventFailure,
 });
