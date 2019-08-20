@@ -292,7 +292,6 @@ export class _DetailsPanel extends React.Component {
   validateDob({ field, dob, eventDate, minAge, maxAge, errors }) {
     if (minAge && eventDate) {
       const turnsMinAge = new Date(dob.getFullYear() + minAge, dob.getMonth(), dob.getDate());
-      console.log(turnsMinAge);
       if (turnsMinAge > eventDate) {
         errors.push({
           'field': field,
@@ -303,7 +302,6 @@ export class _DetailsPanel extends React.Component {
 
     if (maxAge && eventDate) {
       const turnsMaxAge = new Date(dob.getFullYear() + maxAge, dob.getMonth(), dob.getDate());
-      console.log(turnsMaxAge);
       if (turnsMaxAge < eventDate) {
         errors.push({
           'field': field,
