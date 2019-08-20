@@ -95,6 +95,8 @@ export class _DetailsPanel extends React.Component {
 
   validateFields(errors) {
     const { formData } = this.state.customerFormContext;
+    const { eventDate, minAge, maxAge } = this.props;
+
     this.validateRequired('firstName', formData, errors);
     this.validateRequired('lastName', formData, errors);
     this.validateEmail('email', formData, errors);
@@ -103,6 +105,15 @@ export class _DetailsPanel extends React.Component {
     this.validateRequired('dateOfBirthMonth', formData, errors);
     this.validateRequired('dateOfBirthYear', formData, errors);
     this.validateRequired('mobile', formData, errors);
+
+    this.validateDob({
+      field: 'dateOfBirth',
+      dob: this.getDob(),
+      eventDate: eventDate,
+      minAge: minAge,
+      maxAge: maxAge,
+      errors: errors,
+    });
   }
 
   onSubmitForm() {
@@ -253,6 +264,11 @@ export class _DetailsPanel extends React.Component {
     );
   }
 
+  getDob() {
+    const { dateOfBirthDay, dateOfBirthMonth, dateOfBirthYear } = this.state.customerFormContext.formData;
+    return new Date(Number(dateOfBirthYear), Number(dateOfBirthMonth) - 1, Number(dateOfBirthDay));
+  }
+
   validateRequired(field, formData, errors, message) {
     if (!formData[field]) {
       errors.push({
@@ -272,16 +288,47 @@ export class _DetailsPanel extends React.Component {
       });
     }
   }
+
+  validateDob({ field, dob, eventDate, minAge, maxAge, errors }) {
+    if (minAge && eventDate) {
+      const turnsMinAge = new Date(dob.getFullYear() + minAge, dob.getMonth(), dob.getDate());
+      console.log(turnsMinAge);
+      if (turnsMinAge > eventDate) {
+        errors.push({
+          'field': field,
+          'message': `You must be ${minAge} or older on the day of the event.`,
+        });
+      }
+    }
+
+    if (maxAge && eventDate) {
+      const turnsMaxAge = new Date(dob.getFullYear() + maxAge, dob.getMonth(), dob.getDate());
+      console.log(turnsMaxAge);
+      if (turnsMaxAge < eventDate) {
+        errors.push({
+          'field': field,
+          'message': `You must be younger than ${maxAge} on the day of the event.`,
+        });
+      }
+    }
+  }
 }
 
 const mapStateToProps = (state, ownProps) => {
   const { participantIndex } = ownProps;
 
+  const event = getEvent(state);
+  const participant = state.panelData.participants[participantIndex];
+  const offer = event.registrationTypes[participant.type].offers[0];
+
   return {
     init: state.init,
-    event: getEvent(state),
-    participant: state.panelData.participants[participantIndex],
+    event: event,
+    participant: participant,
     extendFields: getExtendFields(state),
+    eventDate: new Date(offer.ageCalculationDate),
+    minAge: Number(offer.minAgeOver),
+    maxAge: Number(offer.maxAgeUnder),
   };
 };
 
