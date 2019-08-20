@@ -13,6 +13,8 @@ class PurePhoneInput extends React.PureComponent {
     const { field, value, onChange, translationId, error } = this.props;
     const country = Config.get('phoneCountry');
 
+    const className = error ? 'form-control is-invalid' : 'form-control';
+
     return (
       <Form.Group controlId={field}>
         <Form.Label>
@@ -22,7 +24,7 @@ class PurePhoneInput extends React.PureComponent {
           value={value}
           onChange={value => onChange(field, value)}
           limitMaxLength={true}
-          inputClassName="form-control"
+          inputClassName={className}
           country={country}
         />
         <FieldError error={error} />

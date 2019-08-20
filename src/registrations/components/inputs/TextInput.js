@@ -18,6 +18,7 @@ class PureTextInput extends React.PureComponent {
           value={value}
           onChange={event => onChange(field, event.target.value)}
           type={type}
+          isInvalid={!!error}
         />
         <FieldError error={error} />
       </Form.Group>

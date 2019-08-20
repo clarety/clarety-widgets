@@ -36,12 +36,13 @@ class _PureDobInput extends React.PureComponent {
   }
 
   renderDayInput() {
-    const { day, dayField, onChange, intl } = this.props;
+    const { day, dayField, onChange, intl, dayError, error } = this.props;
 
     const onChangeDay = event => onChange(dayField, event.target.value);
+    const isInvalid = !!dayError || !!error;
 
     return (
-      <Form.Control as="select" value={day} onChange={onChangeDay}>
+      <Form.Control as="select" value={day} onChange={onChangeDay} isInvalid={isInvalid}>
         <option value="" disabled hidden>
           {intl.formatMessage({ id: 'date.day' })}
         </option>
@@ -54,12 +55,13 @@ class _PureDobInput extends React.PureComponent {
   }
 
   renderMonthInput() {
-    const { month, monthField, onChange, intl } = this.props;
+    const { month, monthField, onChange, intl, monthError, error } = this.props;
 
     const onChangeMonth = event => onChange(monthField, event.target.value);
+    const isInvalid = !!monthError || !!error;
 
     return (
-      <Form.Control as="select" value={month} onChange={onChangeMonth}>
+      <Form.Control as="select" value={month} onChange={onChangeMonth} isInvalid={isInvalid}>
         <option value="" disabled hidden>
           {intl.formatMessage({ id: 'date.month' })}
         </option>
@@ -74,15 +76,16 @@ class _PureDobInput extends React.PureComponent {
   }
 
   renderYearInput() {
-    const { year, yearField, onChange, intl, maxYear } = this.props;
+    const { year, yearField, onChange, intl, maxYear, yearError, error } = this.props;
 
     const startYear = maxYear || currentYear;
     const endYear = 1900;
 
     const onChangeYear = event => onChange(yearField, event.target.value);
+    const isInvalid = !!yearError || !!error;
 
     return (
-      <Form.Control as="select" value={year} onChange={onChangeYear}>
+      <Form.Control as="select" value={year} onChange={onChangeYear} isInvalid={isInvalid}>
         <option value="" disabled hidden>
           {intl.formatMessage({ id: 'date.year' })}
         </option>

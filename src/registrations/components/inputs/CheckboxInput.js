@@ -15,6 +15,7 @@ class PureCheckboxInput extends React.PureComponent {
           <FormCheck.Input
             checked={checked}
             onChange={event => onChange(field, event.target.checked)}
+            isInvalid={!!error}
           />
           <FormCheck.Label>
             {label || <FormattedMessage id={translationId || `label.${field}`} />}
