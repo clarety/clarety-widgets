@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { Container, Button, Form, Row, Col } from 'react-bootstrap';
 import { getElementOptions } from 'shared/utils';
 import { TextInput, DobInput, CheckboxInput, SelectInput, PhoneInput } from 'registrations/components';
@@ -270,43 +270,37 @@ export class _DetailsPanel extends React.Component {
   }
 
   validateRequired(field, formData, errors, message) {
+    const { intl } = this.props;
     if (!formData[field]) {
-      errors.push({
-        field: field,
-        message: message || 'This is a required field.',
-      });
+      message = message || intl.formatMessage({ id: 'validation.required' });
+      errors.push({ field: field, message: message });
     }
   }
 
   validateEmail(field, formData, errors) {
-    const email = formData[field];
-    const isValid = /^.+@.+\..+$/.test(email);
+    const { intl } = this.props;
+    const isValid = /^.+@.+\..+$/.test(formData[field]);
     if (!isValid) {
-      errors.push({
-        'field': field,
-        'message': 'Please enter a valid email.',
-      });
+      const message = intl.formatMessage({ id: 'validation.email' });
+      errors.push({ field: field, message: message });
     }
   }
 
   validateDob({ field, dob, eventDate, minAge, maxAge, errors }) {
+    const { intl, participant } = this.props;
+    const message = intl.formatMessage({ id: `validation.age.${participant.type}` });
+
     if (minAge && eventDate) {
       const turnsMinAge = new Date(dob.getFullYear() + minAge, dob.getMonth(), dob.getDate());
       if (turnsMinAge > eventDate) {
-        errors.push({
-          'field': field,
-          'message': `You must be ${minAge} or older on the day of the event.`,
-        });
+        errors.push({ 'field': field, 'message': message });
       }
     }
 
     if (maxAge && eventDate) {
       const turnsMaxAge = new Date(dob.getFullYear() + maxAge, dob.getMonth(), dob.getDate());
       if (turnsMaxAge < eventDate) {
-        errors.push({
-          'field': field,
-          'message': `You must be younger than ${maxAge} on the day of the event.`,
-        });
+        errors.push({ 'field': field, 'message': message });
       }
     }
   }
@@ -338,5 +332,5 @@ const actions = {
   pushNextDetailsPanel: pushNextDetailsPanel,
 };
 
-export const connectDetailsPanel = Component => connect(mapStateToProps, actions)(Component);
+export const connectDetailsPanel = Component => injectIntl(connect(mapStateToProps, actions)(Component));
 export const DetailsPanel = connectDetailsPanel(_DetailsPanel);
