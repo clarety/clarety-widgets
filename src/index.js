@@ -1,6 +1,6 @@
 export { Config } from 'clarety-utils';
 
-export { renderWidget, getElementOptions } from 'shared/utils';
+export { renderWidget, getElementOptions, getAssetsPath, loadCss } from 'shared/utils';
 
 export { SubscribeWidget } from 'subscribe/views';
 export { setupSubscribeAxiosMock } from 'subscribe/mocks';
