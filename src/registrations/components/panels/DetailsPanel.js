@@ -188,7 +188,8 @@ export class _DetailsPanel extends React.Component {
   }
 
   renderCustomerForm() {
-    const genderOptions = getElementOptions('customer.gender', this.props.init);
+    let genderOptions = getElementOptions('customer.gender', this.props.init);
+    genderOptions = this.translateOptions(genderOptions);
 
     return (
       <FormContext.Provider value={this.state.customerFormContext}>
@@ -241,10 +242,10 @@ export class _DetailsPanel extends React.Component {
 
   renderExtendField = field => {
     switch (field.type) {
-      case 'select':      return <SelectInput field={field.columnKey} options={field.options} required={field.required} />;
-      case 'text':        return <TextInput field={field.columnKey} required={field.required} />;
-      case 'phonenumber': return <PhoneInput field={field.columnKey} required={field.required} />;
-      case 'checkbox':    return <CheckboxInput field={field.columnKey} required={field.required} />;
+      case 'select':      return <SelectInput field={field.columnKey} options={this.translateOptions(field.options)} />;
+      case 'text':        return <TextInput field={field.columnKey} />;
+      case 'phonenumber': return <PhoneInput field={field.columnKey} />;
+      case 'checkbox':    return <CheckboxInput field={field.columnKey} />;
       
       default: throw new Error(`Extend field type not supported: ${field.type}`);
     }
@@ -303,6 +304,15 @@ export class _DetailsPanel extends React.Component {
         errors.push({ 'field': field, 'message': message });
       }
     }
+  }
+
+  translateOptions(options) {
+    const { intl } = this.props;
+
+    return options.map(option => ({
+      value: option.value,
+      label: intl.formatMessage({ id: `option.${option.label}` }),
+    }));
   }
 }
 
