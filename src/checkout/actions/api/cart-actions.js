@@ -22,14 +22,16 @@ export const fetchCart = () => {
 
 export const onSubmitShippingDetails = () => {
   return async (dispatch, getState) => {
-    const { checkout, login } = getState();
+    const { checkout, login, formData } = getState();
+
+    const postData = parseNestedElements(formData);
 
     if (login.customer || checkout.cart.customer) {
-      await _updateCustomer(dispatch, getState);
+      await _updateCustomer(dispatch, getState, postData.customer);
     } else {
-      await _createCustomer(dispatch, getState);
+      await _createCustomer(dispatch, getState, postData.customer);
     }
-
+    
     await _fetchShippingOptions(dispatch, getState);
 
     // Proceed to shipping options panel.
@@ -37,15 +39,13 @@ export const onSubmitShippingDetails = () => {
   };
 };
 
-const _createCustomer = async (dispatch, getState) => {
-  const { checkout, formData } = getState();
+const _createCustomer = async (dispatch, getState, customerData) => {
+  const { checkout } = getState();
   const { cart } = checkout;
 
-  const postData = parseNestedElements(formData);
+  dispatch(createCustomerRequest(customerData));
 
-  dispatch(createCustomerRequest(postData));
-
-  let results = await ClaretyApi.post(`carts/${cart.uid}/customers/`, postData);
+  let results = await ClaretyApi.post(`carts/${cart.uid}/customers/`, customerData);
   const result = results[0];
 
   if (result.status === 'error') {
@@ -55,16 +55,14 @@ const _createCustomer = async (dispatch, getState) => {
   }
 };
 
-const _updateCustomer = async (dispatch, getState) => {
-  const { checkout, login, formData } = getState();
+const _updateCustomer = async (dispatch, getState, customerData) => {
+  const { checkout, login } = getState();
   const { cart } = checkout;
   const customer = login.customer || cart.customer;
 
-  const putData = parseNestedElements(formData);
+  dispatch(updateCustomerRequest(customerData));
 
-  dispatch(updateCustomerRequest(putData));
-
-  let results = await ClaretyApi.put(`carts/${cart.uid}/customers/${customer.uid}/`, putData);
+  let results = await ClaretyApi.put(`carts/${cart.uid}/customers/${customer.uid}/`, customerData);
   const result = results[0];
 
   if (result.status === 'error') {
@@ -89,18 +87,16 @@ const _fetchShippingOptions = async (dispatch, getState) => {
   }
 };
 
-export const updateSale = shippingUid => {
+export const updateSale = () => {
   return async (dispatch, getState) => {
-    const { checkout } = getState();
+    const { checkout, formData } = getState();
     const { cart } = checkout;
 
-    dispatch(updateSaleRequest(shippingUid));
+    const postData = parseNestedElements(formData);
 
-    const putData = {
-      shippingMethod: shippingUid,
-    };
+    dispatch(updateSaleRequest(postData.sale));
 
-    const results = await ClaretyApi.put(`carts/${cart.uid}/sale/`, putData);
+    const results = await ClaretyApi.put(`carts/${cart.uid}/sale/`, postData.sale);
     const result = results[0];
 
     if (result.status === 'error') {
