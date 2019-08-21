@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { DiscountCodeForm } from 'checkout/components';
-import { currency } from 'checkout/utils';
+import { currency } from 'shared/utils';
 
 class _CartSummary extends React.Component {
   render() {

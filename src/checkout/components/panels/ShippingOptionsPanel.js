@@ -4,7 +4,7 @@ import { Form } from 'react-bootstrap';
 import { BasePanel, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { updateFormData, updateCheckout, nextPanel, editPanel } from 'checkout/actions';
-import { currency } from 'checkout/utils';
+import { currency } from 'shared/utils';
 
 class _ShippingOptionsPanel extends BasePanel {
   onPressContinue = () => {

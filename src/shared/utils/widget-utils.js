@@ -21,3 +21,7 @@ export function scrollIntoView(component) {
     behavior: 'smooth',
   });
 }
+
+export function currency(number) {
+  return `$${number.toFixed(2)}`;
+}
