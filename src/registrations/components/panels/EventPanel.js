@@ -1,8 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { Container, Button, Form } from 'react-bootstrap';
+import { Container, Form } from 'react-bootstrap';
 import Select from 'react-select';
+// TODO: move button into 'form/components'.
+import { Button } from 'checkout/components';
 import { setEvent, resetEvent, fetchFullEvent } from 'registrations/actions';
 import { getEvent } from 'registrations/selectors';
 
@@ -47,7 +49,7 @@ class _EventPanel extends React.Component {
   }
   
   renderEdit() {
-    const { events } = this.props;
+    const { events, isBusy } = this.props;
 
     return (
       <Container>
@@ -67,11 +69,12 @@ class _EventPanel extends React.Component {
         </div>
 
         <Button
+          title={<FormattedMessage id="btn.next" />}
           onClick={this.onClickNext}
           disabled={!this.state.event}
-        >
-          <FormattedMessage id="btn.next" />
-        </Button>
+          isBusy={isBusy}
+          variant="action"
+        />
       </Container>
     );
   }
@@ -83,9 +86,11 @@ class _EventPanel extends React.Component {
       <Container>
         <FormattedMessage id="eventPanel.doneTitle" tagName="h4" />
         <p className="lead">{selectedEvent.name}</p>
-        <Button onClick={this.onClickEdit}>
-          <FormattedMessage id="btn.reset" />
-        </Button>
+        <Button
+          title={<FormattedMessage id="btn.reset" />}
+          onClick={this.onClickEdit}
+          variant="action"
+        />
       </Container>
     );
   }
@@ -93,6 +98,7 @@ class _EventPanel extends React.Component {
 
 const mapStateToProps = state => {
   return {
+    isBusy: state.init.isBusy,
     events: state.init.events,
     selectedEvent: getEvent(state),
   };
