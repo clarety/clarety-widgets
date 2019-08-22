@@ -322,13 +322,14 @@ const mapStateToProps = (state, ownProps) => {
   const event = getEvent(state);
   const participant = state.panelData.participants[participantIndex];
   const offer = event.registrationTypes[participant.type].offers[0];
+  const eventDate = new Date(offer.ageCalculationDate || event.startDate);
 
   return {
     init: state.init,
     event: event,
     participant: participant,
     extendFields: getExtendFields(state),
-    eventDate: new Date(offer.ageCalculationDate),
+    eventDate: eventDate,
     minAge: Number(offer.minAgeOver),
     maxAge: Number(offer.maxAgeUnder),
   };
