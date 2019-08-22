@@ -12,6 +12,7 @@ class _ShippingDetailsPanel extends BasePanel {
 
     if (this.validate()) {
       const formData = { ...this.state.formData };
+      formData['sale.shippingOption'] = undefined;
       
       if (this.state.billingIsSameAsShipping) {
         formData['customer.billing.address1'] = formData['customer.delivery.address1'];
@@ -20,8 +21,6 @@ class _ShippingDetailsPanel extends BasePanel {
         formData['customer.billing.postcode'] = formData['customer.delivery.postcode'];
       }
       
-      // TODO: clear the selected shipping option...
-      // this.props.clearSelectedShippingOption();
       this.props.resetShippingOptionsPanel();
 
       this.props.updateFormData(formData);
@@ -55,6 +54,10 @@ class _ShippingDetailsPanel extends BasePanel {
   componentDidUpdate(prevProps, prevState) {
     if (this.props.customer !== prevProps.customer) {
       this.prefillCustomerData(this.props.customer);
+    }
+
+    if (this.props.errors !== prevProps.errors) {
+      this.setState({ errors: this.props.errors });
     }
   }
 
@@ -165,6 +168,7 @@ const mapStateToProps = state => {
   return {
     isBusy: state.checkout.isBusy,
     customer: state.login.customer,
+    errors: state.checkout.errors,
   };
 };
 

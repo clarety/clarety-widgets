@@ -26,16 +26,22 @@ export const onSubmitShippingDetails = () => {
 
     const postData = parseNestedElements(formData);
 
+    let didSucceed;
     if (login.customer || checkout.cart.customer) {
-      await _updateCustomer(dispatch, getState, postData.customer);
+      didSucceed = await _updateCustomer(dispatch, getState, postData.customer);
     } else {
-      await _createCustomer(dispatch, getState, postData.customer);
+      didSucceed = await _createCustomer(dispatch, getState, postData.customer);
     }
-    
-    await _fetchShippingOptions(dispatch, getState);
 
-    // Proceed to shipping options panel.
-    dispatch(nextPanel());
+    if (didSucceed) {
+      await _fetchShippingOptions(dispatch, getState);
+
+      // Proceed to shipping options panel.
+      dispatch(nextPanel());
+    } else {
+      // Errors will have been set,
+      // and panels containing errors will show automatically.
+    }
   };
 };
 
@@ -53,6 +59,8 @@ const _createCustomer = async (dispatch, getState, customerData) => {
   } else {
     dispatch(createCustomerSuccess(result));
   }
+
+  return result.status !== 'error';
 };
 
 const _updateCustomer = async (dispatch, getState, customerData) => {
@@ -70,6 +78,8 @@ const _updateCustomer = async (dispatch, getState, customerData) => {
   } else {
     dispatch(updateCustomerSuccess(result));
   }
+
+  return result.status !== 'error';
 };
 
 const _fetchShippingOptions = async (dispatch, getState) => {

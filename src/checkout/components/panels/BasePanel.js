@@ -55,6 +55,10 @@ export class BasePanel extends React.Component {
     throw new Error('renderDone not implemented');
   }
 
+  hasError(field) {
+    return !!this.props.errors.find(error => error.field === field);
+  }
+
   validateRequired(field, errors) {
     const value = this.state.formData[field];
     validateRequired(value, field, errors);

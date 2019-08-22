@@ -36,6 +36,29 @@ class _PersonalDetailsPanel extends BasePanel {
     if (this.props.customer !== prevProps.customer) {
       this.prefillCustomerData(this.props.customer);
     }
+
+    if (this.props.errors !== prevProps.errors) {
+      this.setState({ errors: this.props.errors });
+      this.checkForErrors();
+    }
+  }
+
+  checkForErrors() {
+    let foundError = false;
+
+    if (this.hasError('customer.firstName'))        foundError = true;
+    if (this.hasError('customer.lastName'))         foundError = true;
+    if (this.hasError('customer.phone1'))           foundError = true;
+    if (this.hasError('customer.phone2'))           foundError = true;
+    if (this.hasError('customer.mobile'))           foundError = true;
+    if (this.hasError('customer.dateOfBirthDay'))   foundError = true;
+    if (this.hasError('customer.dateOfBirthMonth')) foundError = true;
+    if (this.hasError('customer.dateOfBirthYear'))  foundError = true;
+
+    if (foundError) {
+      const { index, editPanel } = this.props;
+      editPanel(index);
+    }
   }
 
   prefillCustomerData(customer) {
@@ -143,6 +166,7 @@ class _PersonalDetailsPanel extends BasePanel {
 const mapStateToProps = state => {
   return {
     customer: state.login.customer,
+    errors: state.checkout.errors,
   };
 };
 

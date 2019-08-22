@@ -64,6 +64,8 @@ export const checkoutReducer = (state = initialState, action) => {
         paymentMethods: action.results,
       };
 
+    case types.createCustomerFailure:
+    case types.updateCustomerFailure:
     case types.makePaymentFailure:
       return {
         ...state,

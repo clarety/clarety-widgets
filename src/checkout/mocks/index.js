@@ -7,6 +7,7 @@ export * from './carts/get-shipping-options-success';
 export * from './carts/make-payment-success';
 export * from './carts/update-sale-success';
 
+export * from './customers/create-customer-failure';
 export * from './customers/create-customer-success';
 export * from './customers/has-account-false';
 export * from './customers/has-account-true';
