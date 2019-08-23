@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import { BasePanel, TextInput, PureCheckboxInput, StateInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { updateFormData, onSubmitShippingDetails, editPanel, resetShippingOptionsPanel } from 'checkout/actions';
+import { updateFormData, onSubmitShippingDetails, editPanel, resetPanel, panels } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _ShippingDetailsPanel extends BasePanel {
   onPressContinue = event => {
+    const { resetPanel, updateFormData, onSubmitShippingDetails } = this.props;
+
     event.preventDefault();
 
     if (this.validate()) {
@@ -21,10 +23,9 @@ class _ShippingDetailsPanel extends BasePanel {
         formData['customer.billing.postcode'] = formData['customer.delivery.postcode'];
       }
       
-      this.props.resetShippingOptionsPanel();
-
-      this.props.updateFormData(formData);
-      this.props.onSubmitShippingDetails();
+      resetPanel(panels.shippingOptionsPanel);
+      updateFormData(formData);
+      onSubmitShippingDetails();
     }
   };
 
@@ -175,7 +176,7 @@ const mapStateToProps = state => {
 const actions = {
   updateFormData: updateFormData,
   onSubmitShippingDetails: onSubmitShippingDetails,
-  resetShippingOptionsPanel: resetShippingOptionsPanel,
+  resetPanel: resetPanel,
   editPanel: editPanel,
 };
 

@@ -23,10 +23,11 @@ export const editPanel = index => ({
   index: index,
 });
 
-export const resetPanels = () => ({
-  type: types.resetPanels,
+export const resetPanel = panelName => ({
+  type: types.resetPanel,
+  name: panelName,
 });
 
-export const resetShippingOptionsPanel = () => ({
-  type: types.resetShippingOptionsPanel,
+export const resetPanels = () => ({
+  type: types.resetPanels,
 });

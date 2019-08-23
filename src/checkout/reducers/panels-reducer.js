@@ -66,9 +66,8 @@ export const panelsReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.nextPanel:   return nextPanel(state, action);
     case types.editPanel:   return editPanel(state, action);
+    case types.resetPanel:  return resetPanel(state, action);
     case types.resetPanels: return resetPanels(state, action);
-
-    case types.resetShippingOptionsPanel: return resetShippingOptionsPanel(state, action);
 
     default: return state;
   }
@@ -131,9 +130,9 @@ function resetPanels(state, action) {
   }));
 }
 
-function resetShippingOptionsPanel(state, action) {
+function resetPanel(state, action) {
   return state.map(panel => {
-    if (panel.name === panels.shippingOptionsPanel) {
+    if (panel.name === action.name) {
       return {
         ...panel,
         status: panelStatuses.wait,
