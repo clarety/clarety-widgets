@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Container, Button, Form, Row, Col } from 'react-bootstrap';
 import { getElementOptions } from 'shared/utils';
-import { TextInput, DobInput, CheckboxInput, SelectInput, PhoneInput } from 'registrations/components';
+import { TextInput, DobInput, CheckboxInput, SimpleSelectInput, SelectInput, PhoneInput } from 'registrations/components';
 import { setDetails, setAdditionalData, setErrors, resetDetails, pushNextDetailsPanel } from 'registrations/actions';
 import { getEvent, getExtendFields } from 'registrations/selectors';
 import { FormContext, scrollIntoView } from 'registrations/utils';
@@ -204,7 +204,7 @@ export class _DetailsPanel extends React.Component {
         </Form.Row>
         <Form.Row>
           <Col>
-            <SelectInput field="gender" options={genderOptions} />
+            <SimpleSelectInput field="gender" options={genderOptions} />
           </Col>
         </Form.Row>
         <Form.Row>
@@ -322,13 +322,14 @@ const mapStateToProps = (state, ownProps) => {
   const event = getEvent(state);
   const participant = state.panelData.participants[participantIndex];
   const offer = event.registrationTypes[participant.type].offers[0];
+  const eventDate = new Date(offer.ageCalculationDate || event.startDate);
 
   return {
     init: state.init,
     event: event,
     participant: participant,
     extendFields: getExtendFields(state),
-    eventDate: new Date(offer.ageCalculationDate),
+    eventDate: eventDate,
     minAge: Number(offer.minAgeOver),
     maxAge: Number(offer.maxAgeUnder),
   };
