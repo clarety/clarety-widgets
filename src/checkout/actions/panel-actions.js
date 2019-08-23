@@ -23,8 +23,8 @@ export const editPanel = index => ({
   index: index,
 });
 
-export const resetPanel = panelName => ({
-  type: types.resetPanel,
+export const invalidatePanel = panelName => ({
+  type: types.invalidatePanel,
   name: panelName,
 });
 

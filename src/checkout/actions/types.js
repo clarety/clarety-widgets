@@ -1,10 +1,10 @@
 export const types = {
   // Panel Action Types
 
-  nextPanel:   'NEXT_PANEL',
-  editPanel:   'EDIT_PANEL',
-  resetPanel:  'RESET_PANEL',
-  resetPanels: 'RESET_PANELS',
+  nextPanel:       'NEXT_PANEL',
+  editPanel:       'EDIT_PANEL',
+  invalidatePanel: 'INVALIDATE_PANEL',
+  resetPanels:     'RESET_PANELS',
 
   // Form Data Action Types
 
