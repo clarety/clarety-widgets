@@ -16,7 +16,7 @@ class _CartSummary extends React.Component {
         <hr />
         <PromoCodeForm />
         <hr />
-        <CartTotals summary={cart.summary} />
+        {cart.summary && <CartTotals summary={cart.summary} />}
       </div>
     );
   }
@@ -24,7 +24,7 @@ class _CartSummary extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    cart: state.checkout.cart,
+    cart: state.checkout,
   };
 };
 

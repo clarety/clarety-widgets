@@ -137,8 +137,7 @@ const mapStateToProps = state => {
   return {
     isBusy: state.status === statuses.busy,
     errors: state.errors,
-    // TODO: handle multiple payment methods.
-    paymentMethod: state.checkout.paymentMethods[0],
+    paymentMethod: getPaymentMethod(state),
   };
 };
 
@@ -148,3 +147,10 @@ const actions = {
 };
 
 export const PaymentDetailsPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_PaymentDetailsPanel);
+
+const getPaymentMethod = (state) => {
+  const { paymentMethods } = state.checkout;
+  if (!paymentMethods) return null;
+  // TODO: handle multiple payment methods.
+  return paymentMethods[0];
+};

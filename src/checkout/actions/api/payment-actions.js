@@ -13,7 +13,9 @@ export const gateways = {
 export const fetchPaymentMethods = () => {
   return async (dispatch, getState) => {
     const { checkout } = getState();
-    const { cart } = checkout;
+
+    // TODO: remove after rename...
+    const cart = checkout;
 
     dispatch(fetchPaymentMethodsRequest());
 
@@ -31,7 +33,9 @@ export const fetchPaymentMethods = () => {
 export const makePayment = (paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     const { checkout } = getState();
-    const { cart } = checkout;
+    
+    // TODO: remove after rename...
+    const cart = checkout;
 
     const { options } = paymentMethod;
 

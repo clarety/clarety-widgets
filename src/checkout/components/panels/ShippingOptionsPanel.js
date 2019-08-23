@@ -103,13 +103,12 @@ export const ShippingOptionsPanel = connect(mapStateToProps, actions, null, { fo
 // TODO: move to selectors...
 
 const hasSelectedShippingOption = state => {
-  return state.checkout.cart.sale
-      && state.checkout.cart.sale.shippingOption;
+  return state.checkout.sale
+      && state.checkout.sale.shippingOption;
 };
 
 const getSelectedShippingOptionLabel = state => {
-  const { shippingOptions } = state.checkout;
-  const { sale } = state.checkout.cart;
+  const { shippingOptions, sale } = state.checkout;
 
   if (shippingOptions && sale) {
     const option = shippingOptions.find(option => option.uid === sale.shippingOption);

@@ -47,7 +47,9 @@ export const onSubmitShippingDetails = () => {
 
 const _createCustomer = async (dispatch, getState, customerData) => {
   const { checkout } = getState();
-  const { cart } = checkout;
+
+  // TODO: remove after rename...
+  const cart = checkout;
 
   dispatch(createCustomerRequest(customerData));
 
@@ -65,9 +67,10 @@ const _createCustomer = async (dispatch, getState, customerData) => {
 
 const _updateCustomer = async (dispatch, getState, customerData) => {
   const { checkout } = getState();
-  const { cart } = checkout;
-  
-  const customer = checkout.customer || cart.customer;
+  const { customer } = checkout;
+
+  // TODO: remove after rename...
+  const cart = checkout;
 
   dispatch(updateCustomerRequest(customerData));
 
@@ -85,7 +88,9 @@ const _updateCustomer = async (dispatch, getState, customerData) => {
 
 const _fetchShippingOptions = async (dispatch, getState) => {
   const { checkout } = getState();
-  const { cart } = checkout;
+
+  // TODO: remove after rename...
+  const cart = checkout;
 
   dispatch(fetchShippingOptionsRequest(cart.uid));
 
@@ -101,7 +106,9 @@ const _fetchShippingOptions = async (dispatch, getState) => {
 export const updateSale = () => {
   return async (dispatch, getState) => {
     const { checkout, formData } = getState();
-    const { cart } = checkout;
+
+    // TODO: remove after rename...
+    const cart = checkout;
 
     const postData = parseNestedElements(formData);
 
@@ -121,7 +128,9 @@ export const updateSale = () => {
 export const applyPromoCode = promoCode => {
   return async (dispatch, getState) => {
     const { checkout } = getState();
-    const { cart } = checkout;
+
+    // TODO: remove after rename...
+    const cart = checkout;
 
     dispatch(applyPromoCodeRequest(promoCode));
 

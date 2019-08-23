@@ -263,14 +263,14 @@ class _ContactDetailsPanel extends BasePanel {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { customer } = state.checkout;
+  const { customer, jwt } = state.checkout;
   const panel = state.panels[ownProps.index];
 
   return {
     isBusy: state.status === statuses.busy,
     emailStatus: panel.data.emailStatus,
-    isLoggedIn: !!customer,
-    loggedInEmail: customer ? customer.email : null,
+    isLoggedIn: !!(jwt && customer),
+    loggedInEmail: customer && customer.email,
   };
 };
 
