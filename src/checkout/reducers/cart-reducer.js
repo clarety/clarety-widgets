@@ -11,7 +11,7 @@ const initialState = {
   summary: null,
 };
 
-export const checkoutReducer = (state = initialState, action) => {
+export const cartReducer = (state = initialState, action) => {
   switch (action.type) {
     // Cart
 

@@ -263,7 +263,7 @@ class _ContactDetailsPanel extends BasePanel {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { customer, jwt } = state.checkout;
+  const { customer, jwt } = state.cart;
   const panel = state.panels[ownProps.index];
 
   return {

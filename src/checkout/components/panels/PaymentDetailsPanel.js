@@ -149,7 +149,7 @@ const actions = {
 export const PaymentDetailsPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_PaymentDetailsPanel);
 
 const getPaymentMethod = (state) => {
-  const { paymentMethods } = state.checkout;
+  const { paymentMethods } = state.cart;
   if (!paymentMethods) return null;
   // TODO: handle multiple payment methods.
   return paymentMethods[0];

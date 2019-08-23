@@ -6,7 +6,7 @@ import { currency } from 'checkout/utils';
 class _CartSummary extends React.Component {
   render() {
     const { cart } = this.props;
-    if (!cart || !cart.items) return null;
+    if (!cart.items) return null;
 
     return (
       <div>
@@ -24,7 +24,7 @@ class _CartSummary extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    cart: state.checkout,
+    cart: state.cart,
   };
 };
 

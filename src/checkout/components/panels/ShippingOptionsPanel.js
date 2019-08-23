@@ -86,7 +86,7 @@ const mapStateToProps = state => {
   return {
     isBusy: state.status === statuses.busy,
     canContinue: hasSelectedShippingOption(state),
-    shippingOptions: state.checkout.shippingOptions,
+    shippingOptions: state.cart.shippingOptions,
     selectedOptionName: getSelectedShippingOptionLabel(state),
   };
 };
@@ -103,12 +103,12 @@ export const ShippingOptionsPanel = connect(mapStateToProps, actions, null, { fo
 // TODO: move to selectors...
 
 const hasSelectedShippingOption = state => {
-  return state.checkout.sale
-      && state.checkout.sale.shippingOption;
+  return state.cart.sale
+      && state.cart.sale.shippingOption;
 };
 
 const getSelectedShippingOptionLabel = state => {
-  const { shippingOptions, sale } = state.checkout;
+  const { shippingOptions, sale } = state.cart;
 
   if (shippingOptions && sale) {
     const option = shippingOptions.find(option => option.uid === sale.shippingOption);
