@@ -79,7 +79,7 @@ class _QtysPanel extends React.Component {
       <Form.Group key={key}>
         <Form.Row className="align-items-center">
           <Col>
-            <Form.Label>
+            <Form.Label className="form-label-qty">
               <FormattedMessage id={`qtysPanel.${key}.title`} tagName="h4" />
               <FormattedMessage id={`qtysPanel.${key}.subtitle`}>
                 {txt => <span className="text-muted">{txt}</span>}
