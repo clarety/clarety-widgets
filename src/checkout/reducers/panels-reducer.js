@@ -1,4 +1,4 @@
-import { types, panels, panelStatuses } from 'checkout/actions';
+import { types, panels, panelStatuses, emailStatuses } from 'checkout/actions';
 
 const initialState = [
   {
@@ -9,6 +9,9 @@ const initialState = [
       'customer.email',
       'customer.password',
     ],
+    data: {
+      emailStatus: emailStatuses.notChecked,
+    },
   },
   {
     name: panels.personalDetailsPanel,
@@ -25,6 +28,7 @@ const initialState = [
       'customer.dateOfBirthYear',
       'sale.source',
     ],
+    data: {},
   },
   {
     name: panels.shippingDetailsPanel,
@@ -40,6 +44,7 @@ const initialState = [
       'customer.billing.state',
       'customer.billing.postcode',
     ],
+    data: {},
   },
   {
     name: panels.shippingOptionsPanel,
@@ -48,6 +53,7 @@ const initialState = [
     fields: [
       'sale.shippingOption',
     ],
+    data: {},
   },
   {
     name: panels.paymentDetailsPanel,
@@ -59,6 +65,7 @@ const initialState = [
       'payment.cardExpiry',
       'payment.ccv',
     ],
+    data: {},
   },
 ];
 
@@ -69,9 +76,43 @@ export const panelsReducer = (state = initialState, action) => {
     case types.invalidatePanel:  return invalidatePanel(state, action);
     case types.resetPanels:      return resetPanels(state, action);
 
+    // TODO: should the contactDetailsPanel have it's own reducer?
+    case types.hasAccountRequest: return resetEmailStatus(state, action);
+    case types.hasAccountSuccess: return hasAccountSuccess(state, action);
+    case types.resetEmailStatus:  return resetEmailStatus(state, action);
+    case types.logout:            return resetEmailStatus(state, action);
+
     default: return state;
   }
 };
+
+function hasAccountSuccess(state, action) {
+  return state.map(panel => {
+    if (panel.name !== panels.contactDetailsPanel) return panel;
+
+    return {
+      ...panel,
+      data: {
+        ...panel.data,
+        emailStatus: action.result.exists ? emailStatuses.hasAccount : emailStatuses.noAccount,
+      },
+    };
+  });
+}
+
+function resetEmailStatus(state, action) {
+  return state.map(panel => {
+    if (panel.name !== panels.contactDetailsPanel ) return panel;
+    
+    return {
+      ...panel,
+      data: {
+        ...panel.data,
+        emailStatus: emailStatuses.notChecked,
+      },
+    };
+  });
+}
 
 function nextPanel(state, action) {
   let foundNext = false;

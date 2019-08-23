@@ -2,7 +2,6 @@ import { types, emailStatuses } from 'checkout/actions';
 
 const initialState = {
   isBusy: false,
-  emailStatus: emailStatuses.notChecked,
   jwt: null,
   customer: null,
   errors: null,
@@ -16,7 +15,6 @@ export const loginReducer = (state = initialState, action) => {
       return {
         ...state,
         isBusy: true,
-        emailStatus: emailStatuses.notChecked,
         errors: null,
       };
 
@@ -25,14 +23,6 @@ export const loginReducer = (state = initialState, action) => {
         ...state,
         isBusy: false,
         emailStatus: action.result.exists ? emailStatuses.hasAccount : emailStatuses.noAccount,
-      };
-
-    // Reset Email Status
-
-    case types.resetEmailStatus:
-      return {
-        ...state,
-        emailStatus: emailStatuses.notChecked,
       };
 
     // Login
