@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Container, Button, Form, Row, Col } from 'react-bootstrap';
 import { getElementOptions } from 'shared/utils';
-import { TextInput, DobInput, CheckboxInput, SelectInput, PhoneInput } from 'registrations/components';
+import { TextInput, DobInput, CheckboxInput, SimpleSelectInput, SelectInput, PhoneInput } from 'registrations/components';
 import { setDetails, setAdditionalData, setErrors, resetDetails, pushNextDetailsPanel } from 'registrations/actions';
 import { getEvent, getExtendFields } from 'registrations/selectors';
 import { FormContext, scrollIntoView } from 'registrations/utils';
@@ -204,7 +204,7 @@ export class _DetailsPanel extends React.Component {
         </Form.Row>
         <Form.Row>
           <Col>
-            <SelectInput field="gender" options={genderOptions} />
+            <SimpleSelectInput field="gender" options={genderOptions} />
           </Col>
         </Form.Row>
         <Form.Row>
