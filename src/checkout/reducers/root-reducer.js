@@ -7,4 +7,5 @@ export const rootReducer = combineReducers({
   login:    reducers.loginReducer,
   checkout: reducers.checkoutReducer,
   formData: reducers.formDataReducer,
+  errors:   reducers.errorsReducer,
 });
