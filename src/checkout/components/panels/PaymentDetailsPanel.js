@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import { BasePanel, TextInput, CardNumberInput, CcvInput, ExpiryInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { makePayment, editPanel, paymentMethods } from 'checkout/actions';
+import { statuses, makePayment, editPanel, paymentMethods } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _PaymentDetailsPanel extends BasePanel {
@@ -135,8 +135,8 @@ class _PaymentDetailsPanel extends BasePanel {
 
 const mapStateToProps = state => {
   return {
-    isBusy: state.checkout.isBusy,
-    errors: state.checkout.errors,
+    isBusy: state.status === statuses.busy,
+    errors: state.errors,
     // TODO: handle multiple payment methods.
     paymentMethod: state.checkout.paymentMethods[0],
   };

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Col, Form } from 'react-bootstrap';
 import { TextInput, Button } from 'checkout/components';
-import { applyPromoCode } from 'checkout/actions';
+import { statuses, applyPromoCode } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _PromoCodeForm extends React.Component {
@@ -59,7 +59,7 @@ class _PromoCodeForm extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    isBusy: state.checkout.isBusyPromoCode,
+    isBusy: state.status === statuses.busyPromoCode,
   };
 };
 

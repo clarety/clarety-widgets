@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
-import { statuses } from 'shared/actions';
 import { BasePanel, TextInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { hasAccount, login, logout, updateFormData, resetFormData, nextPanel, editPanel, resetPanels, emailStatuses, resetEmailStatus } from 'checkout/actions';
+import { statuses, hasAccount, login, logout, updateFormData, resetFormData, nextPanel, editPanel, resetPanels, emailStatuses, resetEmailStatus } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _ContactDetailsPanel extends BasePanel {
@@ -268,7 +267,7 @@ const mapStateToProps = (state, ownProps) => {
   const panel = state.panels[ownProps.index];
 
   return {
-    isBusy: state.status !== statuses.ready,
+    isBusy: state.status === statuses.busy,
     emailStatus: panel.data.emailStatus,
     isLoggedIn: !!customer,
     loggedInEmail: customer ? customer.email : null,

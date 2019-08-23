@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import { BasePanel, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { updateFormData, updateSale, fetchPaymentMethods, editPanel } from 'checkout/actions';
+import { statuses, updateFormData, updateSale, fetchPaymentMethods, editPanel } from 'checkout/actions';
 import { currency } from 'checkout/utils';
 
 class _ShippingOptionsPanel extends BasePanel {
@@ -84,7 +84,7 @@ class _ShippingOptionsPanel extends BasePanel {
 
 const mapStateToProps = state => {
   return {
-    isBusy: state.checkout.isBusy,
+    isBusy: state.status === statuses.busy,
     canContinue: hasSelectedShippingOption(state),
     shippingOptions: state.checkout.shippingOptions,
     selectedOptionName: getSelectedShippingOptionLabel(state),

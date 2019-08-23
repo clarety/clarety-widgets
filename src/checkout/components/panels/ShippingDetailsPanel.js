@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import { BasePanel, TextInput, PureCheckboxInput, StateInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { updateFormData, onSubmitShippingDetails, editPanel, invalidatePanel, panels } from 'checkout/actions';
+import { statuses, updateFormData, onSubmitShippingDetails, editPanel, invalidatePanel, panels } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _ShippingDetailsPanel extends BasePanel {
@@ -167,9 +167,9 @@ class _ShippingDetailsPanel extends BasePanel {
 
 const mapStateToProps = state => {
   return {
-    isBusy: state.checkout.isBusy,
+    isBusy: state.status === statuses.busy,
     customer: state.checkout.customer,
-    errors: state.checkout.errors,
+    errors: state.errors,
   };
 };
 
