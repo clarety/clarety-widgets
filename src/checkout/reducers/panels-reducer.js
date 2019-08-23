@@ -64,7 +64,6 @@ const initialState = [
 
 export const panelsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.setPanels:   return setPanels(state, action);
     case types.nextPanel:   return nextPanel(state, action);
     case types.editPanel:   return editPanel(state, action);
     case types.resetPanels: return resetPanels(state, action);
@@ -74,14 +73,6 @@ export const panelsReducer = (state = initialState, action) => {
     default: return state;
   }
 };
-
-function setPanels(state, action) {
-  return action.panels.map((name, index) => ({
-    name: name,
-    status: index === 0 ? panelStatuses.edit : panelStatuses.wait,
-    isValid: false,
-  }));
-}
 
 function nextPanel(state, action) {
   let foundNext = false;

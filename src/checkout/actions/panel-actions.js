@@ -14,11 +14,6 @@ export const panelStatuses = {
   done: 'done',
 };
 
-export const setPanels = panels => ({
-  type: types.setPanels,
-  panels: panels,
-});
-
 export const nextPanel = () => ({
   type: types.nextPanel,
 });
