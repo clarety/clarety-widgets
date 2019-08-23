@@ -1,11 +1,11 @@
 import { types } from '.';
 
 export const panels = {
-  contactDetailsPanel:  'CONTACT_DETAILS_PANEL',
-  personalDetailsPanel: 'PERSONAL_DETAILS_PANEL',
-  shippingDetailsPanel: 'SHIPPING_DETAILS_PANEL',
-  shippingOptionsPanel: 'SHIPPING_OPTIONS_PANEL',
-  paymentDetailsPanel:  'PAYMENT_DETAILS_PANEL',
+  contactDetailsPanel:  'contact-details-panel',
+  personalDetailsPanel: 'personal-details-panel',
+  shippingDetailsPanel: 'shipping-details-panel',
+  shippingOptionsPanel: 'shipping-options-panel',
+  paymentDetailsPanel:  'payment-details-panel',
 };
 
 export const panelStatuses = {

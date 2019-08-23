@@ -5,9 +5,9 @@ import { types, nextPanel } from 'checkout/actions';
 const clientId = '82ee4a2479780256c9bf9b951f5d1cfb';
 
 export const emailStatuses = {
-  notChecked: 'NOT_CHECKED',
-  noAccount:  'NO_ACCOUNT',
-  hasAccount: 'HAS_ACCOUNT',
+  notChecked: 'not-checked',
+  noAccount:  'no-account',
+  hasAccount: 'has-account',
 };
 
 export const login = (email, password) => {
