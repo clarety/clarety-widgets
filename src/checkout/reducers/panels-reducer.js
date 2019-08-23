@@ -5,26 +5,60 @@ const initialState = [
     name: panels.contactDetailsPanel,
     status: panelStatuses.edit,
     isValid: false,
+    fields: [
+      'customer.email',
+      'customer.password',
+    ],
   },
   {
     name: panels.personalDetailsPanel,
     status: panelStatuses.wait,
     isValid: false,
+    fields: [
+      'customer.firstName',
+      'customer.lastName',
+      'customer.homePhone',
+      'customer.workPhone',
+      'customer.mobilePhone',
+      'customer.dateOfBirthDay',
+      'customer.dateOfBirthMonth',
+      'customer.dateOfBirthYear',
+      'sale.source',
+    ],
   },
   {
     name: panels.shippingDetailsPanel,
     status: panelStatuses.wait,
     isValid: false,
+    fields: [
+      'customer.delivery.address1',
+      'customer.delivery.suburb',
+      'customer.delivery.state',
+      'customer.delivery.postcode',
+      'customer.billing.address1',
+      'customer.billing.suburb',
+      'customer.billing.state',
+      'customer.billing.postcode',
+    ],
   },
   {
     name: panels.shippingOptionsPanel,
     status: panelStatuses.wait,
     isValid: false,
+    fields: [
+      'sale.shippingOption',
+    ],
   },
   {
     name: panels.paymentDetailsPanel,
     status: panelStatuses.wait,
     isValid: false,
+    fields: [
+      'payment.cardName',
+      'payment.cardNumber',
+      'payment.cardExpiry',
+      'payment.ccv',
+    ],
   },
 ];
 
