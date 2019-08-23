@@ -1,6 +1,32 @@
 import { types, panels, panelStatuses } from 'checkout/actions';
 
-const initialState = [];
+const initialState = [
+  {
+    name: panels.contactDetailsPanel,
+    status: panelStatuses.edit,
+    isValid: false,
+  },
+  {
+    name: panels.personalDetailsPanel,
+    status: panelStatuses.wait,
+    isValid: false,
+  },
+  {
+    name: panels.shippingDetailsPanel,
+    status: panelStatuses.wait,
+    isValid: false,
+  },
+  {
+    name: panels.shippingOptionsPanel,
+    status: panelStatuses.wait,
+    isValid: false,
+  },
+  {
+    name: panels.paymentDetailsPanel,
+    status: panelStatuses.wait,
+    isValid: false,
+  },
+];
 
 export const panelsReducer = (state = initialState, action) => {
   switch (action.type) {
