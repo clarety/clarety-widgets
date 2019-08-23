@@ -22,12 +22,12 @@ export const fetchCart = () => {
 
 export const onSubmitShippingDetails = () => {
   return async (dispatch, getState) => {
-    const { checkout, login, formData } = getState();
+    const { checkout, formData } = getState();
 
     const postData = parseNestedElements(formData);
 
     let didSucceed;
-    if (login.customer || checkout.cart.customer) {
+    if (checkout.customer || checkout.cart.customer) {
       didSucceed = await _updateCustomer(dispatch, getState, postData.customer);
     } else {
       didSucceed = await _createCustomer(dispatch, getState, postData.customer);
@@ -64,9 +64,10 @@ const _createCustomer = async (dispatch, getState, customerData) => {
 };
 
 const _updateCustomer = async (dispatch, getState, customerData) => {
-  const { checkout, login } = getState();
+  const { checkout } = getState();
   const { cart } = checkout;
-  const customer = login.customer || cart.customer;
+  
+  const customer = checkout.customer || cart.customer;
 
   dispatch(updateCustomerRequest(customerData));
 

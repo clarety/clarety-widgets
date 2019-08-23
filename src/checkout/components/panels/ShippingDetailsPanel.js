@@ -168,7 +168,7 @@ class _ShippingDetailsPanel extends BasePanel {
 const mapStateToProps = state => {
   return {
     isBusy: state.checkout.isBusy,
-    customer: state.login.customer,
+    customer: state.checkout.customer,
     errors: state.checkout.errors,
   };
 };

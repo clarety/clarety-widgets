@@ -165,7 +165,7 @@ class _PersonalDetailsPanel extends BasePanel {
 
 const mapStateToProps = state => {
   return {
-    customer: state.login.customer,
+    customer: state.checkout.customer,
     errors: state.checkout.errors,
   };
 };

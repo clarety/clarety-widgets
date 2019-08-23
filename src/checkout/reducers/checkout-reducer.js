@@ -7,6 +7,9 @@ const initialState = {
   shippingOptions: [],
   paymentMethods: [],
   errors: [],
+
+  jwt: null,
+  customer: null,
 };
 
 export const checkoutReducer = (state = initialState, action) => {
@@ -78,6 +81,43 @@ export const checkoutReducer = (state = initialState, action) => {
         ...state,
         isBusy: false,
         errors: action.errors,
+      };
+
+    // Login
+
+    case types.loginRequest:
+      return {
+        ...state,
+        jwt: null,
+      };
+
+    case types.loginSuccess:
+      return {
+        ...state,
+        jwt: action.result,
+      };
+
+    // Logout
+
+    case types.logout:
+      return {
+        ...state,
+        jwt: null,
+        customer: null,
+      };
+
+    // Fetch Customer
+
+    case types.fetchCustomerRequest:
+      return {
+        ...state,
+        customer: null,
+      };
+
+    case types.fetchCustomerSuccess:
+      return {
+        ...state,
+        customer: action.result,
       };
 
     default:

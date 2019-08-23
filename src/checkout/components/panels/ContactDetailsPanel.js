@@ -264,7 +264,7 @@ class _ContactDetailsPanel extends BasePanel {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { customer } = state.login;
+  const { customer } = state.checkout;
   const panel = state.panels[ownProps.index];
 
   return {
