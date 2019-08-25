@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from "react-redux";
 import { QtyInput } from "cart/components";
 import { updateSalelineQuantity } from "../actions";
+import { currency } from "shared/utils";
 
 class _Saleline extends React.Component {
     timeout = null;
@@ -36,11 +37,16 @@ class _Saleline extends React.Component {
 
         return (
             <div className={`${isBusy?'busy-processing':''}`}>
+                <p>##Image##</p>
                 <p>{saleline.description}</p>
+                <p>Amount ##Amount##</p>
+                <p>Size ##Size##</p>
+                <p>Quantity
                 <QtyInput
                     value={quantity || 0}
                     onChange={ this.onQuantityChange }
                 />
+                </p>
             </div>
         );
     }
