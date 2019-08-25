@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
+import BlockUi from 'react-block-ui';
+import 'react-block-ui/style.css';
 import { BasePanel, TextInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { statuses, hasAccount, login, logout, updateFormData, resetFormData, nextPanel, editPanel, resetPanels, emailStatuses, resetEmailStatus } from 'checkout/actions';
@@ -117,11 +119,15 @@ class _LoginPanel extends BasePanel {
   }
 
   renderEdit() {
+    const { isBusy } = this.props;
+
     return (
       <div className="panel">
         <EditPanelHeader number="1" title="Contact Details" />
 
-        {this.renderForm()}
+        <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
+          {this.renderForm()}
+        </BlockUi>
       </div>
     );
   }

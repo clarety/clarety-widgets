@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
+import BlockUi from 'react-block-ui';
+import 'react-block-ui/style.css';
 import { BasePanel, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { statuses, updateFormData, updateSale, fetchPaymentMethods, editPanel } from 'checkout/actions';
@@ -31,16 +33,18 @@ class _ShippingOptionsPanel extends BasePanel {
       <div className="panel">
         <EditPanelHeader number="4" title="Shipping Options" />
 
-        {shippingOptions && shippingOptions.map(this.renderShippingOption)}
+        <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
+          {shippingOptions && shippingOptions.map(this.renderShippingOption)}
 
-        <div className="text-right mt-3">
-          <Button
-            title="Continue"
-            onClick={this.onPressContinue}
-            isBusy={isBusy}
-            disabled={!canContinue}
-          />
-        </div>
+          <div className="text-right mt-3">
+            <Button
+              title="Continue"
+              onClick={this.onPressContinue}
+              isBusy={isBusy}
+              disabled={!canContinue}
+            />
+          </div>
+        </BlockUi>
       </div>
     );
   }

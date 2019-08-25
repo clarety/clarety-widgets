@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
+import BlockUi from 'react-block-ui';
+import 'react-block-ui/style.css';
 import { BasePanel, TextInput, PureCheckboxInput, StateInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { statuses, updateFormData, onSubmitShippingDetails, editPanel, invalidatePanel, panels } from 'checkout/actions';
@@ -94,28 +96,30 @@ class _ShippingDetailsPanel extends BasePanel {
       <div className="panel">
         <EditPanelHeader number="3" title="Shipping Details" />
         
-        <FormContext.Provider value={this.state}>
-          <Form onSubmit={this.onPressContinue}>
-            {this.renderAddressForm('Shipping Address', 'customer.delivery')}
+        <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
+          <FormContext.Provider value={this.state}>
+            <Form onSubmit={this.onPressContinue}>
+              {this.renderAddressForm('Shipping Address', 'customer.delivery')}
 
-            <Form.Row>
-              <Col>
-                <PureCheckboxInput
-                  field="billingIsSameAsShipping"
-                  label="Billing Address is the same as Shipping Address"
-                  checked={billingIsSameAsShipping || false}
-                  onChange={this.onChangeBillingIsSameAsShipping}
-                />
-              </Col>
-            </Form.Row>
+              <Form.Row>
+                <Col>
+                  <PureCheckboxInput
+                    field="billingIsSameAsShipping"
+                    label="Billing Address is the same as Shipping Address"
+                    checked={billingIsSameAsShipping || false}
+                    onChange={this.onChangeBillingIsSameAsShipping}
+                  />
+                </Col>
+              </Form.Row>
 
-            {!billingIsSameAsShipping && this.renderAddressForm('Billing Address', 'customer.billing')}
-            
-            <div className="text-right mt-3">
-              <Button title="Continue" type="submit" isBusy={isBusy} />
-            </div>
-          </Form>
-        </FormContext.Provider>
+              {!billingIsSameAsShipping && this.renderAddressForm('Billing Address', 'customer.billing')}
+              
+              <div className="text-right mt-3">
+                <Button title="Continue" type="submit" isBusy={isBusy} />
+              </div>
+            </Form>
+          </FormContext.Provider>
+        </BlockUi>
       </div>
     );
   }

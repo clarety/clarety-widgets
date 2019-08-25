@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Col, Form } from 'react-bootstrap';
+import BlockUi from 'react-block-ui';
+import 'react-block-ui/style.css';
 import { TextInput, Button } from 'checkout/components';
 import { statuses, applyPromoCode } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
@@ -34,25 +36,28 @@ class _PromoCodeForm extends React.Component {
 
   render() {
     const { promoCode } = this.state.formData;
+    const { isBusy } = this.props;
 
     return (
-      <FormContext.Provider value={this.state}>
-        <Form onSubmit={this.onPressApplyDiscount}>
-          <Form.Row>
-            <Col>
-              <TextInput field="promoCode" placeholder="Discount Code" />
-            </Col>
-            <Col xs="auto">
-              <Button
-                title="Apply"
-                type="submit"
-                isBusy={this.props.isBusy}
-                disabled={!promoCode}
-              />
-            </Col>
-          </Form.Row>
-        </Form>
-      </FormContext.Provider>
+      <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
+        <FormContext.Provider value={this.state}>
+          <Form onSubmit={this.onPressApplyDiscount}>
+            <Form.Row>
+              <Col>
+                <TextInput field="promoCode" placeholder="Discount Code" />
+              </Col>
+              <Col xs="auto">
+                <Button
+                  title="Apply"
+                  type="submit"
+                  isBusy={isBusy}
+                  disabled={!promoCode}
+                />
+              </Col>
+            </Form.Row>
+          </Form>
+        </FormContext.Provider>
+      </BlockUi>
     );
   }
 }

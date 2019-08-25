@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
+import BlockUi from 'react-block-ui';
+import 'react-block-ui/style.css';
 import { BasePanel, TextInput, PhoneInput, DobInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { updateFormData, nextPanel, editPanel } from 'checkout/actions';
+import { statuses, updateFormData, nextPanel, editPanel } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _PersonalDetailsPanel extends BasePanel {
@@ -87,60 +89,64 @@ class _PersonalDetailsPanel extends BasePanel {
   }
 
   renderEdit() {
+    const { isBusy } = this.props;
+
     return (
       <div className="panel">
         <EditPanelHeader number="2" title="Personal Details" />
         
-        <FormContext.Provider value={this.state}>
-          <Form onSubmit={this.onPressContinue}>
-            <Form.Row>
-              <Col>
-                <TextInput field="customer.firstName" placeholder="First Name *" />
-              </Col>
-              <Col>
-                <TextInput field="customer.lastName" placeholder="Last Name *" />
-              </Col>
-            </Form.Row>
+        <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
+          <FormContext.Provider value={this.state}>
+            <Form onSubmit={this.onPressContinue}>
+              <Form.Row>
+                <Col>
+                  <TextInput field="customer.firstName" placeholder="First Name *" />
+                </Col>
+                <Col>
+                  <TextInput field="customer.lastName" placeholder="Last Name *" />
+                </Col>
+              </Form.Row>
 
-            <Form.Row>
-              <Col>
-                <PhoneInput field="customer.phone1" placeholder="Home Phone" />
-              </Col>
-              <Col>
-                <PhoneInput field="customer.phone2" placeholder="Work Phone" />
-              </Col>
-            </Form.Row>
+              <Form.Row>
+                <Col>
+                  <PhoneInput field="customer.phone1" placeholder="Home Phone" />
+                </Col>
+                <Col>
+                  <PhoneInput field="customer.phone2" placeholder="Work Phone" />
+                </Col>
+              </Form.Row>
 
-            <Form.Row>
-              <Col>
-                <PhoneInput field="customer.mobile" placeholder="Mobile Phone" />
-              </Col>
-              <Col>
-              </Col>
-            </Form.Row>
+              <Form.Row>
+                <Col>
+                  <PhoneInput field="customer.mobile" placeholder="Mobile Phone" />
+                </Col>
+                <Col>
+                </Col>
+              </Form.Row>
 
-            <Form.Row>
-              <Col>Date of Birth *</Col>
-            </Form.Row>
+              <Form.Row>
+                <Col>Date of Birth *</Col>
+              </Form.Row>
 
-            <DobInput
-              field="customer.dateOfBirth"
-              dayField="customer.dateOfBirthDay"
-              monthField="customer.dateOfBirthMonth"
-              yearField="customer.dateOfBirthYear"
-            />
+              <DobInput
+                field="customer.dateOfBirth"
+                dayField="customer.dateOfBirthDay"
+                monthField="customer.dateOfBirthMonth"
+                yearField="customer.dateOfBirthYear"
+              />
 
-            <Form.Row>
-              <Col>
-                <TextInput field="sale.source" placeholder="How did you hear about us? *" />
-              </Col>
-            </Form.Row>
+              <Form.Row>
+                <Col>
+                  <TextInput field="sale.source" placeholder="How did you hear about us? *" />
+                </Col>
+              </Form.Row>
 
-            <div className="text-right mt-3">
-              <Button title="Continue" type="submit" />
-            </div>
-          </Form>
-        </FormContext.Provider>
+              <div className="text-right mt-3">
+                <Button title="Continue" type="submit" />
+              </div>
+            </Form>
+          </FormContext.Provider>
+        </BlockUi>
       </div>
     );
   }
@@ -165,6 +171,7 @@ class _PersonalDetailsPanel extends BasePanel {
 
 const mapStateToProps = state => {
   return {
+    isBusy: state.status === statuses.busy,
     customer: state.cart.customer,
     errors: state.errors,
   };
