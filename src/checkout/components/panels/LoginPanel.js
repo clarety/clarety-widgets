@@ -6,7 +6,7 @@ import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/comp
 import { statuses, hasAccount, login, logout, updateFormData, resetFormData, nextPanel, editPanel, resetPanels, emailStatuses, resetEmailStatus } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
-class _ContactDetailsPanel extends BasePanel {
+class _LoginPanel extends BasePanel {
   onPressCheckEmail = event => {
     event.preventDefault();
 
@@ -286,4 +286,4 @@ const actions = {
   resetPanels: resetPanels,
 };
 
-export const ContactDetailsPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_ContactDetailsPanel);
+export const LoginPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_LoginPanel);

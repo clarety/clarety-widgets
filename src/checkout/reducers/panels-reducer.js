@@ -2,7 +2,7 @@ import { types, panels, panelStatuses, emailStatuses } from 'checkout/actions';
 
 const initialState = [
   {
-    name: panels.contactDetailsPanel,
+    name: panels.loginPanel,
     status: panelStatuses.edit,
     isValid: false,
     fields: [
@@ -76,7 +76,7 @@ export const panelsReducer = (state = initialState, action) => {
     case types.invalidatePanel:  return invalidatePanel(state, action);
     case types.resetPanels:      return resetPanels(state, action);
 
-    // TODO: should the contactDetailsPanel have it's own reducer?
+    // TODO: should the LoginPanel have it's own reducer?
     case types.hasAccountRequest: return resetEmailStatus(state, action);
     case types.hasAccountSuccess: return hasAccountSuccess(state, action);
     case types.resetEmailStatus:  return resetEmailStatus(state, action);
@@ -88,7 +88,7 @@ export const panelsReducer = (state = initialState, action) => {
 
 function hasAccountSuccess(state, action) {
   return state.map(panel => {
-    if (panel.name !== panels.contactDetailsPanel) return panel;
+    if (panel.name !== panels.loginPanel) return panel;
 
     return {
       ...panel,
@@ -102,7 +102,7 @@ function hasAccountSuccess(state, action) {
 
 function resetEmailStatus(state, action) {
   return state.map(panel => {
-    if (panel.name !== panels.contactDetailsPanel ) return panel;
+    if (panel.name !== panels.loginPanel ) return panel;
     
     return {
       ...panel,

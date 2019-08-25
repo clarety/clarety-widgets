@@ -1,7 +1,7 @@
 import { types } from '.';
 
 export const panels = {
-  contactDetailsPanel:  'contact-details-panel',
+  loginPanel:           'login-panel',
   personalDetailsPanel: 'personal-details-panel',
   shippingDetailsPanel: 'shipping-details-panel',
   shippingOptionsPanel: 'shipping-options-panel',

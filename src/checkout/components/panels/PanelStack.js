@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { panels } from 'checkout/actions';
-import { ContactDetailsPanel, PersonalDetailsPanel, ShippingDetailsPanel, ShippingOptionsPanel, PaymentDetailsPanel } from 'checkout/components';
+import { LoginPanel, PersonalDetailsPanel, ShippingDetailsPanel, ShippingOptionsPanel, PaymentDetailsPanel } from 'checkout/components';
 
 class _PanelStack extends React.Component {
   constructor(props) {
@@ -37,7 +37,7 @@ class _PanelStack extends React.Component {
 
 function resolvePanelComponent(name) {
   switch (name) {
-    case panels.contactDetailsPanel:  return ContactDetailsPanel;
+    case panels.loginPanel:           return LoginPanel;
     case panels.personalDetailsPanel: return PersonalDetailsPanel;
     case panels.shippingDetailsPanel: return ShippingDetailsPanel;
     case panels.shippingOptionsPanel: return ShippingOptionsPanel;
