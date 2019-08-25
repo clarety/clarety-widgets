@@ -1,6 +1,5 @@
 export const hasSelectedShippingOption = state => {
-  return state.cart.sale
-      && state.cart.sale.shippingOption;
+  return !!state.formData['sale.shippingOption'];
 };
 
 export const getSelectedShippingOptionLabel = state => {

@@ -8,17 +8,12 @@ import { hasSelectedShippingOption, getSelectedShippingOptionLabel } from 'check
 import { currency } from 'shared/utils';
 
 class _ShippingOptionsPanel extends BasePanel {
-  state = {
-    selectedOptionUid: null,
-  };
-
   onPressContinue = () => {
     const { canContinue, fetchPaymentMethods } = this.props;
     if (canContinue) fetchPaymentMethods();
   };
 
   onSelectOption = uid => {
-    this.setState({ selectedOptionUid: uid });
     this.props.updateFormData({ 'sale.shippingOption': uid });
     this.props.updateSale(uid);
   };
@@ -56,7 +51,7 @@ class _ShippingOptionsPanel extends BasePanel {
         <Form.Check.Input
           type="radio"
           name="shippingOption"
-          checked={this.state.selectedOptionUid === option.uid}
+          checked={this.props.selectedOptionUid === option.uid}
           onChange={() => this.onSelectOption(option.uid)}
         />
 
@@ -87,6 +82,7 @@ const mapStateToProps = state => {
   return {
     isBusy: state.status === statuses.busy,
     canContinue: hasSelectedShippingOption(state),
+    selectedOptionUid: state.formData['sale.shippingOption'],
     shippingOptions: state.cart.shippingOptions,
     selectedOptionName: getSelectedShippingOptionLabel(state),
   };
