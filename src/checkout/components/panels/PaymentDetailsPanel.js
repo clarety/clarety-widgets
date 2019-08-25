@@ -64,12 +64,6 @@ class _PaymentDetailsPanel extends BasePanel {
           <Form onSubmit={this.onPressPayNow}>
             {this.renderPaymentMethodFields()}
 
-            <Form.Row>
-              <Col>
-                By clicking the <strong>Pay Now</strong> button, you’re acknowledging that you’ve read and accept the <a href="#">Terms &amp; Conditions</a>.
-              </Col>
-            </Form.Row>
-
             <div className="text-right mt-3">
               <Button title="Pay Now" type="submit" isBusy={this.props.isBusy} />
             </div>
