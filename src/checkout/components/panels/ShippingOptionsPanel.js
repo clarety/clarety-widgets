@@ -4,6 +4,7 @@ import { Form } from 'react-bootstrap';
 import { BasePanel, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { statuses, updateFormData, updateSale, fetchPaymentMethods, editPanel } from 'checkout/actions';
+import { hasSelectedShippingOption, getSelectedShippingOptionLabel } from 'checkout/selectors';
 import { currency } from 'shared/utils';
 
 class _ShippingOptionsPanel extends BasePanel {
@@ -99,22 +100,3 @@ const actions = {
 };
 
 export const ShippingOptionsPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_ShippingOptionsPanel);
-
-// TODO: move to selectors...
-
-const hasSelectedShippingOption = state => {
-  return state.cart.sale
-      && state.cart.sale.shippingOption;
-};
-
-const getSelectedShippingOptionLabel = state => {
-  const { shippingOptions, sale } = state.cart;
-
-  if (shippingOptions && sale) {
-    const option = shippingOptions.find(option => option.uid === sale.shippingOption);
-
-    if (option) return option.label;
-  }
-
-  return '';
-};

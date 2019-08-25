@@ -4,6 +4,7 @@ import { Form, Col } from 'react-bootstrap';
 import { BasePanel, TextInput, CardNumberInput, CcvInput, ExpiryInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { statuses, makePayment, editPanel, paymentMethods } from 'checkout/actions';
+import { getPaymentMethod } from 'checkout/selectors';
 import { FormContext } from 'checkout/utils';
 
 class _PaymentDetailsPanel extends BasePanel {
@@ -141,10 +142,3 @@ const actions = {
 };
 
 export const PaymentDetailsPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_PaymentDetailsPanel);
-
-const getPaymentMethod = (state) => {
-  const { paymentMethods } = state.cart;
-  if (!paymentMethods) return null;
-  // TODO: handle multiple payment methods.
-  return paymentMethods[0];
-};
