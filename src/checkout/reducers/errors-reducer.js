@@ -23,6 +23,7 @@ export const errorsReducer = (state = initialState, action) => {
     case types.createCustomerFailure:
     case types.updateCustomerFailure:
     case types.makePaymentFailure:
+    case types.applyPromoCodeFailure:
       return action.result.validationErrors;
 
     case types.stripeTokenFailure:

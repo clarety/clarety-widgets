@@ -37,6 +37,7 @@ export const statusReducer = (state = initialState, action) => {
     case types.makePaymentFailure:
     case types.stripeTokenFailure:
     case types.applyPromoCodeSuccess:
+    case types.applyPromoCodeFailure:
       return statuses.ready;
 
     default:

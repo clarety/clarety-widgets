@@ -2,6 +2,7 @@ export * from './auth/login-success';
 export * from './auth/login-failure';
 
 export * from './carts/apply-promo-code-success';
+export * from './carts/apply-promo-code-failure';
 export * from './carts/get-cart-success';
 export * from './carts/get-payment-methods-success';
 export * from './carts/get-shipping-options-success';

@@ -34,6 +34,12 @@ class _PromoCodeForm extends React.Component {
     this.props.applyPromoCode(promoCode);
   };
 
+  componentDidUpdate(prevProps) {
+    if (this.props.errors !== prevProps.errors) {
+      this.setState({ errors: this.props.errors });
+    }
+  }
+
   render() {
     const { promoCode } = this.state.formData;
     const { isBusy } = this.props;
@@ -65,6 +71,7 @@ class _PromoCodeForm extends React.Component {
 const mapStateToProps = state => {
   return {
     isBusy: state.status === statuses.busyPromoCode,
+    errors: state.errors,
   };
 };
 
