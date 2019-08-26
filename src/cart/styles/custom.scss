@@ -32,6 +32,9 @@
     padding: 20px 0;
     .checkout{
       background-color: $primary;
+      &:hover{
+        background-color: $white;
+      }
     }
   }
 
