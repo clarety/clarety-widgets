@@ -56,13 +56,6 @@
     .btn-quantity-change {
       min-width: initial;
       width: 25px;
-      &.left {
-        border-radius: 3px 0 0 3px;
-      }
-      &.right{
-        border-radius: 0 3px 3px 0;
-
-      }
     }
     .form-control,
     .btn-quantity-change {

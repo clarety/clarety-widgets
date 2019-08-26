@@ -5,11 +5,7 @@ export const QtyInput = ({ value, onChange, onInputChange }) => (
     <InputGroup className="input-group form-quantity-selector">
       <span className="input-group-prepend">
         <InputGroup.Prepend>
-          <Button
-              className="btn btn-quantity-change left"
-              variant={''}
-              onClick={() => onChange(Math.max(0, value - 1))}
-          >
+          <Button variant="quantity-change" onClick={() => onChange(Math.max(0, value - 1))} >
               -
           </Button>
         </InputGroup.Prepend>
@@ -21,10 +17,7 @@ export const QtyInput = ({ value, onChange, onInputChange }) => (
           />
         </React.Fragment>
         <InputGroup.Append>
-          <Button className="btn btn-quantity-change right"
-                  variant={''}
-                  onClick={() => onChange(value + 1)}
-          >
+          <Button variant="quantity-change" onClick={() => onChange(value + 1)} >
               +
           </Button>
         </InputGroup.Append>
