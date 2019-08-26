@@ -157,7 +157,8 @@ class _PersonalDetailsPanel extends BasePanel {
     const lastName = formData['customer.lastName'];
     const phone = formData['customer.phone1'] || formData['customer.phone2'] || formData['customer.mobile'];
 
-    const title = `${firstName} ${lastName}, ${phone}`;
+    let title = `${firstName} ${lastName}`;
+    if (phone) title += `, ${phone}`;
 
     return (
       <DonePanelHeader

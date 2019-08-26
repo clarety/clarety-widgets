@@ -4,33 +4,31 @@ export const getCustomerSuccess = {
   "result": [
     {
       "uid": "e7fb8831-4a83-468e-8eec-593185909f18",
-      "title": "",
-      "firstName": "Tester",
-      "lastName": "Morgan",
-      "email": "tester@fake-email.com",
-      "gender": "",
-      "mobile": "0421 123 456",
-      "phone1": "",
+      "firstName": "Peter",
+      "lastName": "Sherman",
+      "email": "peter@dentist.io",
+      "mobile": "0421123123",
+      "phone1": "5535987987",
       "phone2": "",
-      "dateOfBirthDay": "01",
+      "dateOfBirthDay": "10",
       "dateOfBirthMonth": "02",
-      "dateOfBirthYear": "1903",
-      "delivery": {
-        "address1": "123 Fake St",
-        "address2": "",
-        "suburb": "Springfield",
-        "state": "QLD",
-        "postcode": "4000",
-        "country": "AU"
-      },
+      "dateOfBirthYear": "1990",
       "billing": {
-        "address1": "",
+        "address1": "42 Wallaby Way",
         "address2": "",
-        "suburb": "",
-        "state": "",
-        "postcode": "",
-        "country": "AU"
+        "suburb": "Sydney",
+        "state": "NSW",
+        "postcode": "2000",
+        "country": "Australia"
       },
+      "delivery": {
+        "address1": "42 Wallaby Way",
+        "address2": "",
+        "suburb": "Sydney",
+        "state": "NSW",
+        "postcode": "2000",
+        "country": "Australia"
+      }
     }
   ]
 };

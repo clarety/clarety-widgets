@@ -7,30 +7,30 @@ export const createCustomerSuccess = {
 
       "customer": {
         "uid": "e7fb8831-4a83-468e-8eec-593185909f18",
-        "firstName": "George",
-        "lastName": "Costanza",
-        "email": "gcostanza@humanfund.org",
+        "firstName": "Peter",
+        "lastName": "Sherman",
+        "email": "peter@dentist.io",
         "mobile": "0421123123",
         "phone1": "5535987987",
         "phone2": "",
-        "dateOfBirthDay": "01",
-        "dateOfBirthMonth": "01",
-        "dateOfBirthYear": "1970",
+        "dateOfBirthDay": "10",
+        "dateOfBirthMonth": "02",
+        "dateOfBirthYear": "1990",
         "billing": {
-          "address1": "123 Fake St",
+          "address1": "42 Wallaby Way",
           "address2": "",
-          "suburb": "Springfield",
-          "state": "QLD",
-          "postcode": "4000",
-          "country": "AU"
+          "suburb": "Sydney",
+          "state": "NSW",
+          "postcode": "2000",
+          "country": "Australia"
         },
         "delivery": {
-          "address1": "123 Fake St",
+          "address1": "42 Wallaby Way",
           "address2": "",
-          "suburb": "Springfield",
-          "state": "QLD",
-          "postcode": "4000",
-          "country": "AU"
+          "suburb": "Sydney",
+          "state": "NSW",
+          "postcode": "2000",
+          "country": "Australia"
         }
       },
 
