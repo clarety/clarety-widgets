@@ -14,7 +14,7 @@ class PureTextInput extends React.PureComponent {
           value={value}
           onChange={event => onChange(field, event.target.value)}
           placeholder={placeholder}
-          type={type}
+          type={type || 'text'}
           required={required}
           isInvalid={!!error}
         />

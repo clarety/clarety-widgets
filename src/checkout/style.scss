@@ -140,6 +140,16 @@ $xl: 1200px;
     }
   }
 
+  // Hide number 'spinner' input controls.
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
   // react-phone-number-input overrides
   .react-phone-number-input__input {
     height: calc(1.5em + 0.75rem + 2px);

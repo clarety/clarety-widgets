@@ -145,7 +145,7 @@ class _ShippingDetailsPanel extends BasePanel {
             <StateInput field={`${fieldPrefix}.state`} placeholder="State *" />
           </Col>
           <Col>
-            <TextInput field={`${fieldPrefix}.postcode`} placeholder="Postcode *" />
+            <TextInput field={`${fieldPrefix}.postcode`} placeholder="Postcode *" type="number" />
           </Col>
         </Form.Row>
       </React.Fragment>
