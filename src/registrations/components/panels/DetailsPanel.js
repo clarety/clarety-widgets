@@ -242,7 +242,7 @@ export class _DetailsPanel extends React.Component {
 
   renderExtendField = field => {
     switch (field.type) {
-      case 'select':      return <SelectInput field={field.columnKey} options={this.translateOptions(field.options)} />;
+      case 'select':      return <SimpleSelectInput field={field.columnKey} options={this.translateOptions(field.options)} />;
       case 'text':        return <TextInput field={field.columnKey} />;
       case 'phonenumber': return <PhoneInput field={field.columnKey} />;
       case 'checkbox':    return <CheckboxInput field={field.columnKey} />;

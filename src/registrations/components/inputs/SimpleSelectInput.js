@@ -7,7 +7,9 @@ import { getValidationError } from 'form/utils';
 
 class PureSimpleSelectInput extends React.PureComponent {
   render () {
-    const { field, value, options, onChange, translationId, error } = this.props;
+    const { field, value, onChange, placeholder, translationId, error } = this.props;
+
+    const options = this.props.options.filter(option => option.label.trim());
 
     return (
       <Form.Group controlId={field}>
@@ -21,10 +23,10 @@ class PureSimpleSelectInput extends React.PureComponent {
           onChange={event => onChange(field, event.target.value)}
           isInvalid={!!error}
         >
+          <option value="" disabled hidden>{placeholder || 'Select'}</option>
+
           {options.map(option =>
-            option.label === ' '
-              ? <option value="" disabled hidden>Select</option>
-              : <option value={option.value}>{option.label}</option>
+            <option value={option.value}>{option.label}</option>
           )}
         </Form.Control>
 
