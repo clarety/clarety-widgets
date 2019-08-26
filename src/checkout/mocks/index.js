@@ -1,4 +1,5 @@
 export * from './auth/login-success';
+export * from './auth/login-failure';
 
 export * from './carts/apply-promo-code-success';
 export * from './carts/get-cart-success';

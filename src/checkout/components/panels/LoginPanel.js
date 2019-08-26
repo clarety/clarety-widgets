@@ -77,6 +77,10 @@ class _LoginPanel extends BasePanel {
       this.props.resetPanels();
       this.onChangeField('password', '');
     }
+
+    if (this.props.errors !== prevProps.errors) {
+      this.setState({ errors: this.props.errors });
+    }
   }
 
   validate() {
@@ -277,6 +281,7 @@ const mapStateToProps = (state, ownProps) => {
     emailStatus: panel.data.emailStatus,
     isLoggedIn: !!(jwt && customer),
     loggedInEmail: customer && customer.email,
+    errors: state.errors,
   };
 };
 

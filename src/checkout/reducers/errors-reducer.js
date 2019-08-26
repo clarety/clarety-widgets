@@ -19,7 +19,6 @@ export const errorsReducer = (state = initialState, action) => {
       return [];
     
     case types.hasAccountFailure:
-    case types.loginFailure:
     case types.fetchCustomerFailure:
     case types.createCustomerFailure:
     case types.updateCustomerFailure:
@@ -28,6 +27,12 @@ export const errorsReducer = (state = initialState, action) => {
 
     case types.stripeTokenFailure:
       return  action.errors;
+
+    case types.loginFailure:
+      return [{
+        field: 'password',
+        message: action.result.error_description,
+      }];
 
     default:
       return state;
