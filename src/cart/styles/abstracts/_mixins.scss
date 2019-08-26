@@ -1,0 +1,23 @@
+$border: 1px solid;
+
+$transparent-white: rgba(255, 255, 255, 0.75);
+$transparent-brand1: rgba(69, 90, 101, 0.2);
+$transparent-brand1Alt: rgba(69, 90, 101, 0.35);
+$transparent-brand1Alt2: rgba(0, 185, 197, 0.1);
+$transparent-brand1Alt3: rgba(69, 90, 101, 0.08);
+
+%rounded-corners {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+%no-rounded-corners {
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+}
+
+%no-box-shadow {
+  box-shadow: none;
+  -moz-box-shadow: none;
+}
