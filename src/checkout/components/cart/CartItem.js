@@ -16,7 +16,7 @@ export const CartItem = ({ item }) => (
         <dd className="col text-right">{currency(item.total)}</dd>
       </Row>
 
-      {item.details.map((detail, index) => 
+      {item.variantDetails.map((detail, index) => 
         <Row as="dl" key={index}>
           <dt className="col">{detail.label}</dt>
           <dd className="col text-right">{detail.value}</dd>
