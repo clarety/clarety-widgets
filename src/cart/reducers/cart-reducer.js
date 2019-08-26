@@ -1,39 +1,33 @@
 import { types } from 'cart/actions';
 
 const initialState = {
-  isBusy: false,
   cart: {},
   errors: [],
-  busySalelines: [],
 };
 
 export const cartReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.fetchSalelinesRequest:
+    case types.fetchItemsRequest:
       return {
         ...state,
         errors: [],
       };
-    case types.updateSalelineRequest:
+    case types.updateItemRequest:
       return {
         ...state,
-        busySalelines: [...state.busySalelines, action.item],
         errors: [],
       };
 
-    case types.fetchSalelinesSuccess:
-    case types.updateSalelineSuccess:
+    case types.fetchItemsSuccess:
+    case types.updateItemSuccess:
       return {
         ...state,
-        isBusy: false,
         cart: action.result.cart,
-        busySalelines: []
       };
 
-    case types.updateSalelineFailure:
+    case types.updateItemFailure:
       return {
         ...state,
-        isBusy: false,
         errors: action.result.validationErrors,
       };
 

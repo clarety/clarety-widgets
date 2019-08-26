@@ -1,79 +1,79 @@
 import { ClaretyApi } from 'clarety-utils';
 import { types } from '../actions';
 
-export function fetchSalelines() {
+export function fetchItems() {
   return async dispatch => {
-    dispatch(fetchSalelinesRequest());
+    dispatch(fetchItemsRequest());
 
-    const result = await ClaretyApi.get('sale/', {id:102010});
+    const result = await ClaretyApi.get('cart/', {id:102010});
 
     if (result[0]) {
-      dispatch(fetchSalelinesSuccess(result[0]));
+      dispatch(fetchItemsSuccess(result[0]));
     } else {
-      dispatch(fetchSalelinesFailure());
+      dispatch(fetchItemsFailure());
     }
   };
 }
 
-export const updateSalelineQuantity = (saleline, newQuantity) => {
+export const updateItemQuantity = (item, newQuantity) => {
   return async (dispatch) => {
 
     //Create an object to give to the api
+    let updateItem = item;
+    updateItem.quantity = newQuantity;
 
-    console.log('update');
-    dispatch(updateSalelineRequest(saleline));
+    dispatch(updateItemRequest(updateItem));
 
-    const results = await ClaretyApi.post('update-saleline/', saleline);
+    const results = await ClaretyApi.post('update-cart-item/', updateItem);
     const result = results[0];
 
     if (result.status === 'error') {
-      dispatch(updateSalelineFailure(result));
+      dispatch(updateItemFailure(result));
     } else {
-      dispatch(updateSalelineSuccess(result));
+      dispatch(updateItemSuccess(result));
     }
   };
 };
 
 //Anything that is within the list actions below of types.*** are found in the types.js as the types.* is used here and in the list-reducer like a constant is used within PHP
 // Fetch List
-function fetchSalelinesRequest(isBusy) {
+function fetchItemsRequest() {
   return {
-    type: types.fetchSalelinesRequest,
-    isBusy: isBusy
+    type: types.fetchItemsRequest,
   };
 }
 
-function fetchSalelinesSuccess(result) {
+function fetchItemsSuccess(result) {
   return {
-    type: types.fetchSalelinesSuccess,
+    type: types.fetchItemsSuccess,
     result: result,
   };
 }
 
-function fetchSalelinesFailure(result) {
+function fetchItemsFailure(result) {
   return {
-    type: types.fetchSalelinesFailure,
+    type: types.fetchItemsFailure,
     result: result,
   };
 }
 
 // Action
-function updateSalelineRequest(item) {
+function updateItemRequest(item) {
   return {
-    type: types.updateSalelineRequest,
+    type: types.updateItemRequest,
     item: item
   };
 }
-function updateSalelineSuccess(result) {
+function updateItemSuccess(result) {
   return {
-    type: types.updateSalelineSuccess,
+    type: types.updateItemSuccess,
     result: result,
   };
 }
 
-function updateSalelineFailure(result) {
+function updateItemFailure(result) {
   return {
-    type: types.updateSalelineFailure,
+    type: types.updateItemFailure,
     result: result,
   };
 }

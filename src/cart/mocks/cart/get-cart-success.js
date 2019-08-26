@@ -6,10 +6,21 @@ export const getCartSuccess = {
       "cart": {
         "sale": {},
 
-        "lines": [
+        "items": [
           {
             "id": "9875654",
             "description": "Human Fund Crew T-Shirt",
+            "image": "https://i.imgur.com/JNtD2gp.jpg",
+            "variantDetails":[
+              {
+                "label":"Size",
+                "value":"2X Large"
+              },
+              {
+                "label":"Colour",
+                "value":"Black"
+              }
+            ],
             "price": 39.90,
             "quantity": 2,
             "total": 79.80
@@ -17,7 +28,9 @@ export const getCartSuccess = {
           {
             "id": "9875655",
             "description": "Human Kind Coffee Mug",
+            "image": "https://i.imgur.com/EfqApSo.jpg",
             "price": 14.95,
+            "variantDetails":[],
             "quantity": 1,
             "total": 14.95
           }

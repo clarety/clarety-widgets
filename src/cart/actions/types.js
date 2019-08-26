@@ -1,9 +1,9 @@
 export const types = {
-  fetchSalelinesRequest: 'FETCH_SALELINES_REQUEST',
-  fetchSalelinesSuccess: 'FETCH_SALELINES_SUCCESS',
-  fetchSalelinesFailure: 'FETCH_SALELINES_FAILURE',
+  fetchItemsRequest: 'FETCH_ITEMS_REQUEST',
+  fetchItemsSuccess: 'FETCH_ITEMS_SUCCESS',
+  fetchItemsFailure: 'FETCH_ITEMS_FAILURE',
 
-  updateSalelineRequest: 'UPDATE_SALELINE_REQUEST',
-  updateSalelineSuccess: 'UPDATE_SALELINE_SUCCESS',
-  updateSalelineFailure: 'UPDATE_SALELINE_FAILURE',
+  updateItemRequest: 'UPDATE_ITEM_REQUEST',
+  updateItemSuccess: 'UPDATE_ITEM_SUCCESS',
+  updateItemFailure: 'UPDATE_ITEM_FAILURE',
 };
