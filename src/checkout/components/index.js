@@ -1,3 +1,4 @@
+export * from './cart/CartItem';
 export * from './cart/CartSummary';
 export * from './cart/PromoCodeForm';
 

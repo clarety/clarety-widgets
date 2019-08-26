@@ -41,7 +41,7 @@ class _PromoCodeForm extends React.Component {
     return (
       <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
         <FormContext.Provider value={this.state}>
-          <Form onSubmit={this.onPressApplyDiscount}>
+          <Form onSubmit={this.onPressApplyDiscount} className="promo-code-form">
             <Form.Row>
               <Col>
                 <TextInput field="promoCode" placeholder="Discount Code" />

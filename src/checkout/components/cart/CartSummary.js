@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { PromoCodeForm } from 'checkout/components';
+import { CartItem, PromoCodeForm } from 'checkout/components';
 import { currency } from 'shared/utils';
 
 class _CartSummary extends React.Component {
@@ -13,9 +13,11 @@ class _CartSummary extends React.Component {
         {cart.items.map(item =>
           <CartItem item={item} key={item.uid} />
         )}
-        <hr />
+
         <PromoCodeForm />
+
         <hr />
+        
         {cart.summary && <CartTotals summary={cart.summary} />}
       </div>
     );
@@ -31,11 +33,6 @@ const mapStateToProps = state => {
 const actions = {};
 
 export const CartSummary = connect(mapStateToProps, actions)(_CartSummary);
-
-
-const CartItem = ({ item }) => (
-  <p>{item.description}</p>
-);
 
 const CartTotals = ({ summary }) => (
   <React.Fragment>
