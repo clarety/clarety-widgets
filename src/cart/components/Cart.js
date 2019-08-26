@@ -53,7 +53,7 @@ const CartFooter = () => (
     <Row className="cart-demo__footer">
         <Col sm={12} className="text-center">
             <p>Shipping, taxes, and discounts are calculated at checkout.</p>
-            <a className="btn btn-primary" href="https://google.com.au">Checkout</a>
+            <a className="btn btn-primary checkout" href="https://google.com.au">Checkout</a>
         </Col>
     </Row>
 );

@@ -30,6 +30,9 @@
   &__footer{
     height: 50px;
     padding: 20px 0;
+    .checkout{
+      background-color: $primary;
+    }
   }
 
   .input-group.form-quantity-selector {
