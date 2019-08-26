@@ -7,7 +7,7 @@ import { getValidationError } from 'form/utils';
 
 class PureCheckboxInput extends React.PureComponent {
   render() {
-    const { field, checked, onChange, label, translationId, error } = this.props;
+    const { field, checked, onChange, label, translationId, error, required } = this.props;
 
     return (
       <Form.Group controlId={field}>
@@ -19,6 +19,7 @@ class PureCheckboxInput extends React.PureComponent {
           />
           <FormCheck.Label>
             {label || <FormattedMessage id={translationId || `label.${field}`} />}
+            {required && ' *'}
           </FormCheck.Label>
         </FormCheck>
         <FieldError error={error} />

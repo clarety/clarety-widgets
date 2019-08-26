@@ -194,17 +194,17 @@ export class _DetailsPanel extends React.Component {
     return (
       <FormContext.Provider value={this.state.customerFormContext}>
         <Form.Row>
-          <Col md={6}><TextInput field="firstName" /></Col>
-          <Col md={6}><TextInput field="lastName" /></Col>
+          <Col md={6}><TextInput field="firstName" required /></Col>
+          <Col md={6}><TextInput field="lastName" required /></Col>
         </Form.Row>
         <Form.Row>
           <Col>
-            <TextInput field="email" type="email" />
+            <TextInput field="email" type="text" required />
           </Col>
         </Form.Row>
         <Form.Row>
           <Col>
-            <SimpleSelectInput field="gender" options={genderOptions} />
+            <SimpleSelectInput field="gender" options={genderOptions} required />
           </Col>
         </Form.Row>
         <Form.Row>
@@ -214,12 +214,13 @@ export class _DetailsPanel extends React.Component {
               dayField="dateOfBirthDay"
               monthField="dateOfBirthMonth"
               yearField="dateOfBirthYear"
+              required
             />
           </Col>
         </Form.Row>
         <Form.Row>
           <Col>
-            <PhoneInput field="mobile" />
+            <PhoneInput field="mobile" required />
           </Col>
         </Form.Row>
       </FormContext.Provider>
@@ -242,10 +243,10 @@ export class _DetailsPanel extends React.Component {
 
   renderExtendField = field => {
     switch (field.type) {
-      case 'select':      return <SimpleSelectInput field={field.columnKey} options={this.translateOptions(field.options)} />;
-      case 'text':        return <TextInput field={field.columnKey} />;
-      case 'phonenumber': return <PhoneInput field={field.columnKey} />;
-      case 'checkbox':    return <CheckboxInput field={field.columnKey} />;
+      case 'select':      return <SimpleSelectInput field={field.columnKey} options={this.translateOptions(field.options)} required={field.required} />;
+      case 'text':        return <TextInput field={field.columnKey} required={field.required} />;
+      case 'phonenumber': return <PhoneInput field={field.columnKey} required={field.required} />;
+      case 'checkbox':    return <CheckboxInput field={field.columnKey} required={field.required} />;
       
       default: throw new Error(`Extend field type not supported: ${field.type}`);
     }

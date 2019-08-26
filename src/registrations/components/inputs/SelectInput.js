@@ -27,7 +27,7 @@ class PureSelectInput extends React.PureComponent {
   };
 
   render () {
-    const { field, options, translationId, error } = this.props;
+    const { field, options, translationId, error, required } = this.props;
 
     const className = error ? 'react-select-invalid' : undefined;
 
@@ -35,6 +35,7 @@ class PureSelectInput extends React.PureComponent {
       <Form.Group controlId={field}>
         <Form.Label>
           <FormattedMessage id={translationId || `label.${field}`} />
+          {required && ' *'}
         </Form.Label>
         <Select
           value={this.state.value}

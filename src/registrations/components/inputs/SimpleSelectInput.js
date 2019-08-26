@@ -7,7 +7,7 @@ import { getValidationError } from 'form/utils';
 
 class PureSimpleSelectInput extends React.PureComponent {
   render () {
-    const { field, value, onChange, placeholder, translationId, error } = this.props;
+    const { field, value, onChange, placeholder, translationId, error, required } = this.props;
 
     const options = this.props.options.filter(option => option.label.trim());
 
@@ -15,6 +15,7 @@ class PureSimpleSelectInput extends React.PureComponent {
       <Form.Group controlId={field}>
         <Form.Label>
           <FormattedMessage id={translationId || `label.${field}`} />
+          {required && ' *'}
         </Form.Label>
 
         <Form.Control

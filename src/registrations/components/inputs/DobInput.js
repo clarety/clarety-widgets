@@ -7,12 +7,13 @@ import { getValidationError } from 'form/utils';
 
 class _PureDobInput extends React.PureComponent {
   render() {
-    const { error, dayError, monthError, yearError } = this.props;
+    const { error, dayError, monthError, yearError, required } = this.props;
 
     return (
       <Form.Group controlId="dateOfBirth">
         <Form.Label>
           <FormattedMessage id="label.dateOfBirth" />
+          {required && ' *'}
         </Form.Label>
 
         <Form.Row>
