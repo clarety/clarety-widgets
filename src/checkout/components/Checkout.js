@@ -2,7 +2,7 @@ import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
-import { Row, Col } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import { fetchCart } from 'checkout/actions';
 import { rootReducer } from 'checkout/reducers';
 import { PanelStack, CartSummary } from 'checkout/components';
@@ -19,16 +19,18 @@ export class Checkout extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <Row>
-          <Col lg={6} className="bg-light order-lg-1 mb-5 mb-lg-0">
-            <CartSummary />
-          </Col>
+        <Container fluid>
+          <Row>
+            <Col lg={6} className="col-summary order-lg-1">
+              <CartSummary />
+            </Col>
 
-          <Col lg={6}>
-            <h1>Checkout</h1>
-            <PanelStack />
-          </Col>
-        </Row>
+            <Col lg={6} className="col-checkout">
+              <h1>Checkout</h1>
+              <PanelStack />
+            </Col>
+          </Row>
+        </Container>
       </Provider>
     );
   }

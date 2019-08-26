@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Row } from 'react-bootstrap';
 import { CartItem, PromoCodeForm } from 'checkout/components';
 import { currency } from 'shared/utils';
 
@@ -35,19 +36,13 @@ const actions = {};
 export const CartSummary = connect(mapStateToProps, actions)(_CartSummary);
 
 const CartTotals = ({ summary }) => (
-  <React.Fragment>
-    <dl className="row">
-      <TotalLine label="Subtotal" value={summary.subtotal} />
-      <TotalLine label="Shipping" value={summary.shipping} fallback="TBD" />
-      <TotalLine label="Discount Code" value={summary.discount} />
-    </dl>
-
+  <div className="cart-totals">
+    <TotalLine label="Subtotal" value={summary.subtotal} />
+    <TotalLine label="Shipping" value={summary.shipping} fallback="TBD" />
+    <TotalLine label="Discount Code" value={summary.discount} />
     <hr />
-
-    <dl className="row">
-      <TotalLine label="Total in AUD" value={summary.total} />
-    </dl>
-  </React.Fragment>
+    <TotalLine label="Total in AUD" value={summary.total} />
+  </div>
 );
 
 const TotalLine = ({ label, value, fallback }) => {
@@ -56,9 +51,9 @@ const TotalLine = ({ label, value, fallback }) => {
   const displayValue = value ? currency(value) : fallback;
 
   return (
-    <React.Fragment>
-      <dt className="col-sm-9">{label}</dt>
-      <dd className="col-sm-3 text-right">{displayValue}</dd>
-    </React.Fragment>
+    <Row as="dl">
+      <dt className="col">{label}</dt>
+      <dd className="col text-right">{displayValue}</dd>
+    </Row>
   );
 };

@@ -99,28 +99,28 @@ class _PersonalDetailsPanel extends BasePanel {
           <FormContext.Provider value={this.state}>
             <Form onSubmit={this.onPressContinue}>
               <Form.Row>
-                <Col>
+                <Col sm={6}>
                   <TextInput field="customer.firstName" placeholder="First Name *" />
                 </Col>
-                <Col>
+                <Col sm={6}>
                   <TextInput field="customer.lastName" placeholder="Last Name *" />
                 </Col>
               </Form.Row>
 
               <Form.Row>
-                <Col>
+                <Col sm={6}>
                   <PhoneInput field="customer.phone1" placeholder="Home Phone" />
                 </Col>
-                <Col>
+                <Col sm={6}>
                   <PhoneInput field="customer.phone2" placeholder="Work Phone" />
                 </Col>
               </Form.Row>
 
               <Form.Row>
-                <Col>
+                <Col sm={6}>
                   <PhoneInput field="customer.mobile" placeholder="Mobile Phone" />
                 </Col>
-                <Col>
+                <Col sm={6}>
                 </Col>
               </Form.Row>
 

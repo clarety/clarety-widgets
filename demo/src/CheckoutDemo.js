@@ -8,7 +8,7 @@ export default class CheckoutDemo extends React.Component {
 
   render() {
     return (
-      <div className="checkout m-5">
+      <div className="checkout">
         <Checkout />
       </div>
     );
