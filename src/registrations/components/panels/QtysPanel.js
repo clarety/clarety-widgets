@@ -40,6 +40,8 @@ class _QtysPanel extends React.Component {
 
         <Form className="panel-body panel-body-qtys">
           {this.renderQtyInputs()}
+
+          <FormattedMessage id="qtysPanel.message" tagName="p" />
         </Form>
 
         <Button
