@@ -91,11 +91,15 @@ class _NamesPanel extends React.Component {
           </FormattedMessage>
         </Col>
         <Col>
-          <Form.Control
-            placeholder="First Name"
-            value={names[index] || ''}
-            onChange={event => this.onChangeName(index, event.target.value)}
-          />
+        <FormattedMessage id={`label.firstName`}>
+          {label =>
+            <Form.Control
+              placeholder={label}
+              value={names[index] || ''}
+              onChange={event => this.onChangeName(index, event.target.value)}
+            />
+          }
+          </FormattedMessage>
         </Col>
       </Row>
     );
