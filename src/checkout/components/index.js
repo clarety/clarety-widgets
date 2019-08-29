@@ -17,6 +17,7 @@ export * from './inputs/BaseInput';
 export * from './inputs/RxTextInput';
 export * from './inputs/RxPhoneInput';
 export * from './inputs/RxDobInput';
+export * from './inputs/RxStateInput';
 
 export * from './panels/BasePanel';
 export * from './panels/RxBasePanel';
