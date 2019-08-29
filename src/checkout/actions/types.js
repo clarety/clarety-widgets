@@ -10,6 +10,7 @@ export const types = {
 
   nextPanel:       'NEXT_PANEL',
   editPanel:       'EDIT_PANEL',
+  updatePanelData: 'UPDATE_PANEL_DATA',
   invalidatePanel: 'INVALIDATE_PANEL',
   resetPanels:     'RESET_PANELS',
 

@@ -73,6 +73,7 @@ export const panelsReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.nextPanel:        return nextPanel(state, action);
     case types.editPanel:        return editPanel(state, action);
+    case types.updatePanelData:  return updatePanelData(state, action);
     case types.invalidatePanel:  return invalidatePanel(state, action);
     case types.resetPanels:      return resetPanels(state, action);
 
@@ -160,6 +161,20 @@ function editPanel(state, action) {
     }
 
     return panel;
+  });
+}
+
+function updatePanelData(state, action) {
+  return state.map((panel, index) => {
+    if (action.index !== index) return panel;
+
+    return {
+      ...panel,
+      data: {
+        ...panel.data,
+        ...action.data,
+      }
+    };
   });
 }
 

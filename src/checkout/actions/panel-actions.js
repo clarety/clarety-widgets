@@ -23,6 +23,12 @@ export const editPanel = index => ({
   index: index,
 });
 
+export const updatePanelData = (index, data) => ({
+  type: types.updatePanelData,
+  index: index,
+  data: data,
+});
+
 export const invalidatePanel = panelName => ({
   type: types.invalidatePanel,
   name: panelName,
