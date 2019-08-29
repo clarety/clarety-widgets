@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { BasePanel, Button } from 'checkout/components';
+import { RxBasePanel, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { statuses, updateFormData, updateSale, fetchPaymentMethods, editPanel } from 'checkout/actions';
 import { hasSelectedShippingOption, getSelectedShippingOptionLabel } from 'checkout/selectors';
 import { currency } from 'shared/utils';
 
-class _ShippingOptionsPanel extends BasePanel {
+class _ShippingOptionsPanel extends RxBasePanel {
   onPressContinue = () => {
     const { canContinue, fetchPaymentMethods } = this.props;
     if (canContinue) fetchPaymentMethods();
