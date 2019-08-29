@@ -19,6 +19,9 @@ export * from './inputs/RxCheckboxInput';
 export * from './inputs/RxPhoneInput';
 export * from './inputs/RxDobInput';
 export * from './inputs/RxStateInput';
+export * from './inputs/RxCardNumberInput';
+export * from './inputs/RxCcvInput';
+export * from './inputs/RxExpiryInput';
 
 export * from './panels/BasePanel';
 export * from './panels/RxBasePanel';
