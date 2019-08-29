@@ -2,35 +2,15 @@ import React from 'react';
 import { panelStatuses } from 'checkout/actions';
 import { validateRequired, validateEmail, validatePassword, validateCardNumber, validateCardExpiry, validateCcv } from 'checkout/utils';
 
-export class BasePanel extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      formData: {},
-      errors: [],
-      onChange: this.onChangeField,
-    };
-  }
-
+export class RxBasePanel extends React.Component {
   onPressEdit = () => {
     const { index, editPanel } = this.props;
     editPanel(index);
   };
 
-  onChangeField = (field, value) => {
-    this.setState(prevState => ({
-      formData: {
-        ...prevState.formData,
-        [field]: value,
-      },
-    }));
-  };
-
-  resetPanelData() {
-    this.setState({
-      formData: {},
-    });
+  updatePanelData(data) {
+    const { index, updatePanelData } = this.props;
+    updatePanelData(index, data);
   }
 
   render() {
@@ -60,33 +40,33 @@ export class BasePanel extends React.Component {
   }
 
   validateRequired(field, errors) {
-    const value = this.state.formData[field];
+    const value = this.props.formData[field];
     validateRequired(value, field, errors);
   }
 
   validateEmail(field, errors) {
-    const value = this.state.formData[field];
+    const value = this.props.formData[field];
     validateEmail(value, field, errors);
   }
 
   validatePassword(field, errors) {
-    const value = this.state.formData[field];
+    const value = this.props.formData[field];
     validatePassword(value, field, errors);
   }
 
   validateCardNumber(field, errors) {
-    const value = this.state.formData[field];
+    const value = this.props.formData[field];
     validateCardNumber(value, field, errors);
   }
 
   validateCardExpiry(field, monthField, yearField, errors) {
-    const monthValue = this.state.formData[monthField];
-    const yearValue = this.state.formData[yearField];
+    const monthValue = this.props.formData[monthField];
+    const yearValue = this.props.formData[yearField];
     validateCardExpiry(monthValue, yearValue, field, errors);
   }
 
   validateCcv(field, errors) {
-    const value = this.state.formData[field];
+    const value = this.props.formData[field];
     validateCcv(value, field, errors);
   }
 }

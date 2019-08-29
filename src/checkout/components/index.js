@@ -14,6 +14,7 @@ export * from './inputs/TextInput';
 
 export * from './inputs/RxTextInput';
 
+export * from './panels/RxBasePanel';
 export * from './panels/BasePanel';
 export * from './panels/PanelHeader';
 export * from './panels/LoginPanel';
