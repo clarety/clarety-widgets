@@ -1,3 +1,5 @@
+export const getPanelData = (state, index) => state.panels[index].data;
+
 export const hasSelectedShippingOption = state => {
   return !!state.formData['sale.shippingOption'];
 };

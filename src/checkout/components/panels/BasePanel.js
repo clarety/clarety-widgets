@@ -27,6 +27,11 @@ export class BasePanel extends React.Component {
     }));
   };
 
+  updatePanelData(data) {
+    const { index, updatePanelData } = this.props;
+    updatePanelData(index, data);
+  }
+
   resetPanelData() {
     this.setState({
       formData: {},

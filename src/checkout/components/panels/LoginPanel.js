@@ -5,7 +5,8 @@ import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { BasePanel, TextInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { statuses, hasAccount, login, logout, updateFormData, resetFormData, nextPanel, editPanel, resetPanels, emailStatuses, resetEmailStatus } from 'checkout/actions';
+import { statuses, hasAccount, login, logout, updateFormData, resetFormData, nextPanel, editPanel, resetPanels, emailStatuses, resetEmailStatus, updatePanelData } from 'checkout/actions';
+import { getPanelData } from 'checkout/selectors';
 import { FormContext } from 'checkout/utils';
 
 class _LoginPanel extends BasePanel {
@@ -30,11 +31,11 @@ class _LoginPanel extends BasePanel {
   };
 
   onPressShowCreateAccountForm = () => {
-    this.setState({ isCreatingAccount: true });
+    this.updatePanelData({ isCreatingAccount: true });
   };
 
   onPressCancelCreateAccount = () => {
-    this.setState({ isCreatingAccount: false });
+    this.updatePanelData({ isCreatingAccount: false });
   }
 
   onPressCreateAccount = event => {
@@ -59,7 +60,7 @@ class _LoginPanel extends BasePanel {
   onPressLogout = () => {
     this.onChangeField('email', '');
     this.onChangeField('password', '');
-    this.setState({ isCreatingAccount: false });
+    this.updatePanelData({ isCreatingAccount: false });
     this.props.resetPanels();
     this.props.resetPanelData();
     this.props.resetFormData();
@@ -89,7 +90,7 @@ class _LoginPanel extends BasePanel {
     const { emailStatus } = this.props;
 
     // Create Account
-    if (this.state.isCreatingAccount) {
+    if (this.props.isCreatingAccount) {
       this.validatePassword('password', errors);
     }
 
@@ -141,7 +142,7 @@ class _LoginPanel extends BasePanel {
       return this.renderIsLoggedInForm();
     }
 
-    if (this.state.isCreatingAccount) {
+    if (this.props.isCreatingAccount) {
       return this.renderCreateAccountForm();
     }
 
@@ -274,11 +275,12 @@ class _LoginPanel extends BasePanel {
 
 const mapStateToProps = (state, ownProps) => {
   const { customer, jwt } = state.cart;
-  const panel = state.panels[ownProps.index];
+  const { emailStatus, isCreatingAccount } = getPanelData(state, ownProps.index);
 
   return {
     isBusy: state.status === statuses.busy,
-    emailStatus: panel.data.emailStatus,
+    emailStatus: emailStatus,
+    isCreatingAccount: isCreatingAccount,
     isLoggedIn: !!(jwt && customer),
     loggedInEmail: customer && customer.email,
     errors: state.errors,
@@ -289,12 +291,16 @@ const actions = {
   hasAccount: hasAccount,
   login: login,
   logout: logout,
-  resetEmailStatus: resetEmailStatus,
+
   updateFormData: updateFormData,
   resetFormData: resetFormData,
+
   nextPanel: nextPanel,
   editPanel: editPanel,
+  updatePanelData: updatePanelData,
   resetPanels: resetPanels,
+
+  resetEmailStatus: resetEmailStatus,
 };
 
 export const LoginPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_LoginPanel);

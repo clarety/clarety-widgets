@@ -11,6 +11,7 @@ const initialState = [
     ],
     data: {
       emailStatus: emailStatuses.notChecked,
+      isCreatingAccount: false,
     },
   },
   {
