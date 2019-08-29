@@ -35,8 +35,6 @@ export const types = {
   hasAccountSuccess: 'HAS_ACCOUNT_SUCCESS',
   hasAccountFailure: 'HAS_ACCOUNT_FAILURE',
 
-  resetEmailStatus: 'RESET_EMAIL_STATUS',
-
   fetchCustomerRequest: 'FETCH_CUSTOMER_REQUEST',
   fetchCustomerSuccess: 'FETCH_CUSTOMER_SUCCESS',
   fetchCustomerFailure: 'FETCH_CUSTOMER_FAILURE',

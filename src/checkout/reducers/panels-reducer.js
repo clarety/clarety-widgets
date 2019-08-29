@@ -81,7 +81,6 @@ export const panelsReducer = (state = initialState, action) => {
     // TODO: should the LoginPanel have it's own reducer?
     case types.hasAccountRequest: return resetEmailStatus(state, action);
     case types.hasAccountSuccess: return hasAccountSuccess(state, action);
-    case types.resetEmailStatus:  return resetEmailStatus(state, action);
     case types.logout:            return resetEmailStatus(state, action);
 
     default: return state;

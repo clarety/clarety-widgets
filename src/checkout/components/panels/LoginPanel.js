@@ -5,7 +5,7 @@ import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { BasePanel, TextInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { statuses, hasAccount, login, logout, updateFormData, resetFormData, nextPanel, editPanel, resetPanels, emailStatuses, resetEmailStatus, updatePanelData } from 'checkout/actions';
+import { statuses, hasAccount, login, logout, updateFormData, resetFormData, nextPanel, editPanel, resetPanels, emailStatuses, updatePanelData } from 'checkout/actions';
 import { getPanelData } from 'checkout/selectors';
 import { FormContext } from 'checkout/utils';
 
@@ -74,7 +74,7 @@ class _LoginPanel extends BasePanel {
   componentDidUpdate(prevProps, prevState) {
     // Check if email has been modified, and reset status.
     if (this.state.formData.email !== prevState.formData.email) {
-      this.props.resetEmailStatus();
+      this.updatePanelData({ emailStatus: emailStatuses.notChecked });
       this.props.resetPanels();
       this.onChangeField('password', '');
     }
@@ -299,8 +299,6 @@ const actions = {
   editPanel: editPanel,
   updatePanelData: updatePanelData,
   resetPanels: resetPanels,
-
-  resetEmailStatus: resetEmailStatus,
 };
 
 export const LoginPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_LoginPanel);

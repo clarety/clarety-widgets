@@ -64,10 +64,6 @@ export const hasAccount = email => {
   };
 };
 
-export const resetEmailStatus = () => ({
-  type: types.resetEmailStatus,
-});
-
 
 // Login
 
