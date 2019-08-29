@@ -1,40 +1,13 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import ReactPhoneNumberInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { Config } from 'clarety-utils';
 import { FieldError } from 'form/components';
-import { getValidationError } from 'form/utils';
-import { updateFormData } from 'checkout/actions';
+import { BaseInput, connectInput } from 'checkout/components';
 
-class _RxPhoneInput extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      value: props.value,
-    };
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.value !== prevProps.value) {
-      this.setState({ value: this.props.value });
-    }
-  }
-
-  onChange = event => {
-    this.setState({ value: event.target.value });
-  };
-
-  onKeyDown = event => {
-    if (event.key === 'Enter') this.updateFormData();
-  };
-
-  updateFormData = () => {
-    const { field, updateFormData } = this.props;
-    updateFormData({ [field]: this.state.value });
-  };
+class _RxPhoneInput extends BaseInput {
+  onChange = value => this.setState({ value });
 
   render() {
     const { field, placeholder, error } = this.props;
@@ -60,15 +33,4 @@ class _RxPhoneInput extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    value: state.formData[ownProps.field] || '',
-    error: getValidationError(ownProps.field, state.errors),
-  };
-};
-
-const actions = {
-  updateFormData: updateFormData,
-};
-
-export const RxPhoneInput = connect(mapStateToProps, actions)(_RxPhoneInput);
+export const RxPhoneInput = connectInput(_RxPhoneInput);

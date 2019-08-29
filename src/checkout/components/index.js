@@ -12,6 +12,8 @@ export * from './inputs/PhoneInput';
 export * from './inputs/StateInput';
 export * from './inputs/TextInput';
 
+export * from './inputs/BaseInput';
+
 export * from './inputs/RxTextInput';
 export * from './inputs/RxPhoneInput';
 export * from './inputs/RxDobInput';
