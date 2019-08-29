@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { RxBasePanel, RxTextInput, PureCheckboxInput, RxStateInput, Button } from 'checkout/components';
+import { RxBasePanel, RxTextInput, RxCheckboxInput, RxStateInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { statuses, updateFormData, onSubmitShippingDetails, editPanel, invalidatePanel, panels, setErrors } from 'checkout/actions';
 
@@ -18,7 +18,7 @@ class _ShippingDetailsPanel extends RxBasePanel {
         'sale.shippingOption': undefined,
       };
       
-      if (this.state.billingIsSameAsShipping) {
+      if (this.props.billingIsSameAsShipping) {
         formData['customer.billing.address1'] = this.props.formData['customer.delivery.address1'];
         formData['customer.billing.suburb']   = this.props.formData['customer.delivery.suburb'];
         formData['customer.billing.state']    = this.props.formData['customer.delivery.state'];
@@ -39,7 +39,7 @@ class _ShippingDetailsPanel extends RxBasePanel {
     this.validateRequired('customer.delivery.state', errors);
     this.validateRequired('customer.delivery.postcode', errors);
 
-    if (!this.state.billingIsSameAsShipping) {
+    if (!this.props.billingIsSameAsShipping) {
       this.validateRequired('customer.billing.address1', errors);
       this.validateRequired('customer.billing.suburb', errors);
       this.validateRequired('customer.billing.state', errors);
@@ -48,10 +48,6 @@ class _ShippingDetailsPanel extends RxBasePanel {
 
     this.props.setErrors(errors);
     return errors.length === 0;
-  }
-
-  onChangeBillingIsSameAsShipping = (field, isChecked) => {
-    this.setState({ billingIsSameAsShipping: isChecked });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -91,7 +87,7 @@ class _ShippingDetailsPanel extends RxBasePanel {
 
   renderEdit() {
     const { isBusy } = this.props;
-    const { billingIsSameAsShipping } = this.state;
+    const { billingIsSameAsShipping } = this.props;
 
     return (
       <div className="panel">
@@ -103,11 +99,9 @@ class _ShippingDetailsPanel extends RxBasePanel {
 
             <Form.Row>
               <Col>
-                <PureCheckboxInput
+                <RxCheckboxInput
                   field="billingIsSameAsShipping"
                   label="Billing Address is the same as Shipping Address"
-                  checked={billingIsSameAsShipping || false}
-                  onChange={this.onChangeBillingIsSameAsShipping}
                 />
               </Col>
             </Form.Row>
@@ -172,6 +166,7 @@ const mapStateToProps = state => {
   return {
     isBusy: state.status === statuses.busy,
     customer: state.cart.customer,
+    billingIsSameAsShipping: state.formData['billingIsSameAsShipping'],
     formData: state.formData,
     errors: state.errors,
   };
