@@ -4,18 +4,6 @@ import { panels } from 'checkout/actions';
 import { LoginPanel, PersonalDetailsPanel, ShippingDetailsPanel, ShippingOptionsPanel, PaymentDetailsPanel } from 'checkout/components';
 
 class _PanelStack extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.panelRefs = props.panels.map(panel => React.createRef());
-  }
-
-  resetPanelData = () => {
-    for (let panelRef of this.panelRefs) {
-      panelRef.current.resetPanelData();
-    }
-  };
-
   render() {
     const { panels } = this.props;
     
@@ -27,8 +15,6 @@ class _PanelStack extends React.Component {
           status={panel.status}
           key={index}
           index={index}
-          ref={this.panelRefs[index]}
-          resetPanelData={this.resetPanelData}
         />
       );
     });
@@ -55,4 +41,4 @@ const mapStateToProps = state => {
 
 const actions = {};
 
-export const PanelStack = connect(mapStateToProps, actions, null, { forwardRef: true })(_PanelStack);
+export const PanelStack = connect(mapStateToProps, actions)(_PanelStack);

@@ -27,12 +27,6 @@ export class BasePanel extends React.Component {
     }));
   };
 
-  resetPanelData() {
-    this.setState({
-      formData: {},
-    });
-  }
-
   render() {
     switch (this.props.status) {
       case panelStatuses.wait: return this.renderWait();

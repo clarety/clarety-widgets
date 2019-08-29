@@ -99,4 +99,4 @@ const actions = {
   editPanel: editPanel,
 };
 
-export const ShippingOptionsPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_ShippingOptionsPanel);
+export const ShippingOptionsPanel = connect(mapStateToProps, actions)(_ShippingOptionsPanel);

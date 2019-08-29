@@ -50,9 +50,9 @@ class _LoginPanel extends RxBasePanel {
   };
 
   onPressLogout = () => {
-    this.updatePanelData({ isCreatingAccount: false });
+    this.updatePanelData({ isCreatingAccount: false }); // TODO: remove this once we have a 'reset panel data' action.
+    // TODO: also reset redux panel data, or make 'resetPanels' reset the data too.
     this.props.resetPanels();
-    this.props.resetPanelData();
     this.props.resetFormData();
     this.props.logout();
   }
@@ -92,10 +92,6 @@ class _LoginPanel extends RxBasePanel {
 
     this.props.setErrors(errors);
     return errors.length === 0;
-  }
-
-  // TODO: remove
-  resetPanelData() {
   }
 
   renderWait() {
@@ -279,4 +275,4 @@ const actions = {
   setErrors: setErrors,
 };
 
-export const LoginPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_LoginPanel);
+export const LoginPanel = connect(mapStateToProps, actions)(_LoginPanel);
