@@ -3,21 +3,19 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { BasePanel, TextInput, Button } from 'checkout/components';
+import { RxBasePanel, RxTextInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { statuses, hasAccount, login, logout, updateFormData, resetFormData, nextPanel, editPanel, resetPanels, emailStatuses, updatePanelData } from 'checkout/actions';
+import { statuses, hasAccount, login, logout, emailStatuses } from 'checkout/actions';
+import { updateFormData, resetFormData, updatePanelData, nextPanel, editPanel, resetPanels, setErrors } from 'checkout/actions';
 import { getPanelData } from 'checkout/selectors';
-import { FormContext } from 'checkout/utils';
 
-class _LoginPanel extends BasePanel {
+class _LoginPanel extends RxBasePanel {
   onPressCheckEmail = event => {
     event.preventDefault();
 
     if (this.validate()) {
-      const { email } = this.state.formData;
+      const email = this.props.formData['customer.email'];
       this.props.hasAccount(email);
-      this.props.resetFormData();
-      this.props.resetPanelData();
     }
   };
 
@@ -25,7 +23,8 @@ class _LoginPanel extends BasePanel {
     event.preventDefault();
 
     if (this.validate()) {
-      const { email, password } = this.state.formData;
+      const email = this.props.formData['customer.email'];
+      const password = this.props.formData['customer.password'];
       this.props.login(email, password);
     }
   };
@@ -42,24 +41,15 @@ class _LoginPanel extends BasePanel {
     event.preventDefault();
 
     if (this.validate()) {
-      const { email, password } = this.state.formData;
-      this.props.updateFormData({
-        'customer.email': email,
-        'customer.password': password,
-      });
       this.props.nextPanel();
     }
   };
 
   onPressGuestCheckout = () => {
-    const { email } = this.state.formData;
-    this.props.updateFormData({ 'customer.email': email });
     this.props.nextPanel();
   };
 
   onPressLogout = () => {
-    this.onChangeField('email', '');
-    this.onChangeField('password', '');
     this.updatePanelData({ isCreatingAccount: false });
     this.props.resetPanels();
     this.props.resetPanelData();
@@ -73,48 +63,39 @@ class _LoginPanel extends BasePanel {
 
   componentDidUpdate(prevProps, prevState) {
     // Check if email has been modified, and reset status.
-    if (this.state.formData.email !== prevState.formData.email) {
+    if (this.props.formData['customer.email'] !== prevProps.formData['customer.email']) {
       this.updatePanelData({ emailStatus: emailStatuses.notChecked });
       this.props.resetPanels();
-      this.onChangeField('password', '');
-    }
-
-    if (this.props.errors !== prevProps.errors) {
-      this.setState({ errors: this.props.errors });
+      this.props.updateFormData({ 'customer.password': '' });
     }
   }
 
   validate() {
     const errors = [];
 
-    const { emailStatus } = this.props;
+    const { emailStatus, isCreatingAccount } = this.props;
 
     // Create Account
-    if (this.props.isCreatingAccount) {
-      this.validatePassword('password', errors);
+    if (isCreatingAccount) {
+      this.validatePassword('customer.password', errors);
     }
 
     // Login
     if (emailStatus === emailStatuses.hasAccount) {
-      this.validateRequired('password', errors);
+      this.validateRequired('customer.password', errors);
     }
 
     // Check Email
     if (emailStatus === emailStatuses.notChecked) {
-      this.validateEmail('email', errors);
+      this.validateEmail('customer.email', errors);
     }
 
-    this.setState({ errors });
+    this.props.setErrors(errors);
     return errors.length === 0;
   }
 
+  // TODO: remove
   resetPanelData() {
-    // Clear all form data except email.
-    this.setState(prevState => ({
-      formData: {
-        email: prevState.formData.email,
-      },
-    }));
   }
 
   renderWait() {
@@ -156,20 +137,18 @@ class _LoginPanel extends BasePanel {
 
   renderEmailCheckForm(hasNoAccount) {
     return (
-      <FormContext.Provider value={this.state}>
-        <Form onSubmit={this.onPressCheckEmail}>
-          <Form.Row>
-            <Col>
-              <TextInput field="email" type="email" placeholder="Email *" />
-            </Col>
-          </Form.Row>
+      <Form onSubmit={this.onPressCheckEmail}>
+        <Form.Row>
+          <Col>
+            <RxTextInput field="customer.email" type="email" placeholder="Email *" />
+          </Col>
+        </Form.Row>
 
-          {hasNoAccount
-            ? this.renderNoAccountButtons()
-            : this.renderCheckEmailButton()
-          }
-        </Form>
-      </FormContext.Provider>
+        {hasNoAccount
+          ? this.renderNoAccountButtons()
+          : this.renderCheckEmailButton()
+        }
+      </Form>
     );
   }
 
@@ -195,56 +174,52 @@ class _LoginPanel extends BasePanel {
   
   renderLoginForm() {
     return (
-      <FormContext.Provider value={this.state}>
-        <Form onSubmit={this.onPressLogin}>
-          <p>You already have an account, please login to continue.</p>
+      <Form onSubmit={this.onPressLogin}>
+        <p>You already have an account, please login to continue.</p>
 
-          <Form.Row>
-            <Col>
-              <TextInput field="email" type="email" placeholder="Email *" />
-            </Col>
-          </Form.Row>
+        <Form.Row>
+          <Col>
+            <RxTextInput field="customer.email" type="email" placeholder="Email *" />
+          </Col>
+        </Form.Row>
 
-          <Form.Row>
-            <Col>
-              <TextInput field="password" type="password" placeholder="Password *" />
-            </Col>
-          </Form.Row>
+        <Form.Row>
+          <Col>
+            <RxTextInput field="customer.password" type="password" placeholder="Password *" />
+          </Col>
+        </Form.Row>
 
-          <div className="text-right mt-3">
-            <Button title="Login" type="submit" isBusy={this.props.isBusy} />
-          </div>
-        </Form>
-      </FormContext.Provider>
+        <div className="text-right mt-3">
+          <Button title="Login" type="submit" isBusy={this.props.isBusy} />
+        </div>
+      </Form>
     );
   }
 
   renderCreateAccountForm() {
     return (
-      <FormContext.Provider value={this.state}>
-        <Form onSubmit={this.onPressCreateAccount}>
+      <Form onSubmit={this.onPressCreateAccount}>
 
-          <p>Please enter your details.</p>
+        <p>Please enter your details.</p>
 
-          <Form.Row>
-            <Col>
-              <TextInput field="email" type="email" placeholder="Email *" />
-            </Col>
-          </Form.Row>
+        <Form.Row>
+          <Col>
+            <RxTextInput field="customer.email" type="email" placeholder="Email *" />
+          </Col>
+        </Form.Row>
 
-          <Form.Row>
-            <Col>
-              <TextInput field="password" type="password" placeholder="Password *" />
-            </Col>
-          </Form.Row>
+        <Form.Row>
+          <Col>
+            <RxTextInput field="customer.password" type="password" placeholder="Password *" />
+          </Col>
+        </Form.Row>
 
-          <div className="text-right mt-3">
-            <Button title="Cancel" onClick={this.onPressCancelCreateAccount} variant="link" />
-            <Button title="Continue" type="submit" isBusy={this.props.isBusy} />
-          </div>
+        <div className="text-right mt-3">
+          <Button title="Cancel" onClick={this.onPressCancelCreateAccount} variant="link" />
+          <Button title="Continue" type="submit" isBusy={this.props.isBusy} />
+        </div>
 
-        </Form>
-      </FormContext.Provider>
+      </Form>
     );
   }
 
@@ -261,7 +236,7 @@ class _LoginPanel extends BasePanel {
   }
 
   renderDone() {
-    const email = this.state.formData['email'];
+    const email = this.props.formData['customer.email'];
 
     return (
       <DonePanelHeader
@@ -283,6 +258,7 @@ const mapStateToProps = (state, ownProps) => {
     isCreatingAccount: isCreatingAccount,
     isLoggedIn: !!(jwt && customer),
     loggedInEmail: customer && customer.email,
+    formData: state.formData,
     errors: state.errors,
   };
 };
@@ -299,6 +275,8 @@ const actions = {
   editPanel: editPanel,
   updatePanelData: updatePanelData,
   resetPanels: resetPanels,
+
+  setErrors: setErrors,
 };
 
 export const LoginPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_LoginPanel);
