@@ -1,5 +1,6 @@
 export * from './types';
 
+export * from './error-actions';
 export * from './panel-actions';
 export * from './form-data-actions';
 

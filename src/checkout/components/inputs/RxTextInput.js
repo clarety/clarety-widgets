@@ -44,7 +44,7 @@ class _RxTextInput extends React.Component {
           onBlur={this.updateFormData}
           onKeyDown={this.onKeyDown}
           placeholder={placeholder}
-          type={type}
+          type={type || 'text'}
           isInvalid={!!error}
         />
         <FieldError error={error} />
@@ -56,7 +56,7 @@ class _RxTextInput extends React.Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     value: state.formData[ownProps.field] || '',
-    error: getValidationError(ownProps.field, state.checkout.errors), // TODO: state.errors...
+    error: getValidationError(ownProps.field, state.errors),
   };
 };
 

@@ -18,6 +18,10 @@ export const types = {
   updateFormData: 'UPDATE_FORM_DATA',
   resetFormData:  'RESET_FORM_DATA',
 
+  // Error Action Types
+
+  setErrors: 'SET_ERRORS',
+
   // Auth Action Types
 
   loginRequest: 'LOGIN_REQUEST',
