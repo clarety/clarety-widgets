@@ -27,14 +27,23 @@ export const fetchPaymentMethods = () => {
   };
 };
 
-export const makePayment = (paymentData, paymentMethod) => {
+export const makePayment = paymentMethod => {
   return async (dispatch, getState) => {
-    const { cart } = getState();
+    const { cart, formData } = getState();
 
     const { options } = paymentMethod;
+    let paymentData;
 
     // Fetch stripe token.
     if (options && options.gateway === gateways.stripe) {
+
+      paymentData = {
+        cardNumber:  formData['payment.cardNumber'],
+        expiryMonth: formData['payment.expiryMonth'],
+        expiryYear:  formData['payment.expiryYear'],
+        ccv:         formData['payment.ccv'],
+      };
+
       dispatch(stripeTokenRequest(paymentData, options.stripeKey));
 
       const stripeToken = await createStripeToken(paymentData, options.stripeKey);
@@ -48,7 +57,9 @@ export const makePayment = (paymentData, paymentMethod) => {
       dispatch(stripeTokenSuccess(stripeToken));
 
       // Overwrite payment data with token.
-      paymentData = { gatewayToken: stripeToken.id };
+      paymentData = {
+        gatewayToken: stripeToken.id
+      };
     }
 
     dispatch(makePaymentRequest(paymentData));

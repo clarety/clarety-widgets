@@ -3,20 +3,19 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { BasePanel, TextInput, CardNumberInput, CcvInput, ExpiryInput, Button } from 'checkout/components';
+import { RxBasePanel, RxTextInput, RxCardNumberInput, RxCcvInput, RxExpiryInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { statuses, makePayment, editPanel, paymentMethods } from 'checkout/actions';
+import { statuses, makePayment, editPanel, paymentMethods, setErrors } from 'checkout/actions';
 import { getPaymentMethod } from 'checkout/selectors';
-import { FormContext } from 'checkout/utils';
 
-class _PaymentDetailsPanel extends BasePanel {
+class _PaymentDetailsPanel extends RxBasePanel {
   onPressPayNow = event => {
     event.preventDefault();
 
     const { paymentMethod, makePayment } = this.props;
 
     if (this.validate()) {
-      makePayment(this.state.formData, paymentMethod);
+      makePayment(paymentMethod);
     }
   };
 
@@ -34,15 +33,15 @@ class _PaymentDetailsPanel extends BasePanel {
         throw new Error(`[Clarety] unhandled payment method ${paymentMethod}`);
     }
 
-    this.setState({ errors });
+    this.props.setErrors(errors);
     return errors.length === 0;
   }
 
   validateCreditCardFields(errors) {
-    this.validateRequired('cardName', errors);
-    this.validateCardNumber('cardNumber', errors);
-    this.validateCardExpiry('expiry', 'expiryMonth', 'expiryYear', errors);
-    this.validateCcv('ccv', errors);
+    this.validateRequired('payment.cardName', errors);
+    this.validateCardNumber('payment.cardNumber', errors);
+    this.validateCardExpiry('payment.expiry', 'payment.expiryMonth', 'payment.expiryYear', errors);
+    this.validateCcv('payment.ccv', errors);
   }
 
   componentDidUpdate(prevProps) {
@@ -66,15 +65,13 @@ class _PaymentDetailsPanel extends BasePanel {
         <EditPanelHeader number="5" title="Payment Details" />
 
         <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
-          <FormContext.Provider value={this.state}>
-            <Form onSubmit={this.onPressPayNow}>
-              {this.renderPaymentMethodFields()}
+          <Form onSubmit={this.onPressPayNow}>
+            {this.renderPaymentMethodFields()}
 
-              <div className="text-right mt-3">
-                <Button title="Pay Now" type="submit" isBusy={isBusy} />
-              </div>
-            </Form>
-          </FormContext.Provider>
+            <div className="text-right mt-3">
+              <Button title="Pay Now" type="submit" isBusy={isBusy} />
+            </div>
+          </Form>
         </BlockUi>
       </div>
     );
@@ -94,13 +91,13 @@ class _PaymentDetailsPanel extends BasePanel {
       <React.Fragment>
         <Form.Row>
           <Col>
-            <TextInput field="cardName" placeholder="Name On Card *" />
+            <RxTextInput field="payment.cardName" placeholder="Name On Card *" />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <CardNumberInput field="cardNumber" placeholder="Card Number *" />
+            <RxCardNumberInput field="payment.cardNumber" placeholder="Card Number *" />
           </Col>
         </Form.Row>
 
@@ -111,10 +108,10 @@ class _PaymentDetailsPanel extends BasePanel {
 
         <Form.Row>
           <Col>
-            <ExpiryInput field="expiry" monthField="expiryMonth" yearField="expiryYear" />
+            <RxExpiryInput field="payment.expiry" monthField="payment.expiryMonth" yearField="payment.expiryYear" />
           </Col>
           <Col>
-            <CcvInput field="ccv" />
+            <RxCcvInput field="payment.ccv" />
           </Col>
         </Form.Row>
       </React.Fragment>
@@ -122,7 +119,7 @@ class _PaymentDetailsPanel extends BasePanel {
   }
 
   renderDone() {
-    const cardNumber = this.state.formData['cardNumber'];
+    const cardNumber = this.props.formData['payment.cardNumber'];
 
     return (
       <DonePanelHeader
@@ -139,12 +136,15 @@ const mapStateToProps = state => {
     isBusy: state.status === statuses.busy,
     errors: state.errors,
     paymentMethod: getPaymentMethod(state),
+    formData: state.formData,
+    errors: state.errors,
   };
 };
 
 const actions = {
   makePayment: makePayment,
   editPanel: editPanel,
+  setErrors: setErrors,
 };
 
 export const PaymentDetailsPanel = connect(mapStateToProps, actions)(_PaymentDetailsPanel);
