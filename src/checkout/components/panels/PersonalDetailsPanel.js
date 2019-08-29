@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { RxBasePanel, RxTextInput, RxPhoneInput, RxDobInput, Button } from 'checkout/components';
+import { BasePanel, TextInput, PhoneInput, DobInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { statuses, nextPanel, editPanel, panelStatuses, updateFormData, setErrors } from 'checkout/actions';
 
-class _PersonalDetailsPanel extends RxBasePanel {
+class _PersonalDetailsPanel extends BasePanel {
   onPressContinue = event => {
     event.preventDefault();
 
@@ -97,25 +97,25 @@ class _PersonalDetailsPanel extends RxBasePanel {
           <Form onSubmit={this.onPressContinue}>
             <Form.Row>
               <Col sm={6}>
-                <RxTextInput field="customer.firstName" placeholder="First Name *" />
+                <TextInput field="customer.firstName" placeholder="First Name *" />
               </Col>
               <Col sm={6}>
-                <RxTextInput field="customer.lastName" placeholder="Last Name *" />
-              </Col>
-            </Form.Row>
-
-            <Form.Row>
-              <Col sm={6}>
-                <RxPhoneInput field="customer.phone1" placeholder="Home Phone" />
-              </Col>
-              <Col sm={6}>
-                <RxPhoneInput field="customer.phone2" placeholder="Work Phone" />
+                <TextInput field="customer.lastName" placeholder="Last Name *" />
               </Col>
             </Form.Row>
 
             <Form.Row>
               <Col sm={6}>
-                <RxPhoneInput field="customer.mobile" placeholder="Mobile Phone" />
+                <PhoneInput field="customer.phone1" placeholder="Home Phone" />
+              </Col>
+              <Col sm={6}>
+                <PhoneInput field="customer.phone2" placeholder="Work Phone" />
+              </Col>
+            </Form.Row>
+
+            <Form.Row>
+              <Col sm={6}>
+                <PhoneInput field="customer.mobile" placeholder="Mobile Phone" />
               </Col>
               <Col sm={6}>
               </Col>
@@ -125,7 +125,7 @@ class _PersonalDetailsPanel extends RxBasePanel {
               <Col>Date of Birth *</Col>
             </Form.Row>
 
-            <RxDobInput
+            <DobInput
               field="customer.dateOfBirth"
               dayField="customer.dateOfBirthDay"
               monthField="customer.dateOfBirthMonth"
@@ -134,7 +134,7 @@ class _PersonalDetailsPanel extends RxBasePanel {
 
             <Form.Row>
               <Col>
-                <RxTextInput field="sale.source" placeholder="How did you hear about us? *" />
+                <TextInput field="sale.source" placeholder="How did you hear about us? *" />
               </Col>
             </Form.Row>
 

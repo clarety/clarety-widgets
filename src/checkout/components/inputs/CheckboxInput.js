@@ -3,7 +3,7 @@ import { Form, FormCheck } from 'react-bootstrap';
 import { FieldError } from 'form/components';
 import { BaseInput, connectInput } from 'checkout/components';
 
-export class _RxCheckboxInput extends BaseInput {
+export class _CheckboxInput extends BaseInput {
   onChange = event => {
     const { field, updateFormData } = this.props;
     updateFormData({ [field]: event.target.checked });
@@ -27,4 +27,4 @@ export class _RxCheckboxInput extends BaseInput {
   }
 }
 
-export const RxCheckboxInput = connectInput(_RxCheckboxInput);
+export const CheckboxInput = connectInput(_CheckboxInput);

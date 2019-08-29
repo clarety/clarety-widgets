@@ -3,7 +3,7 @@ import { Form } from 'react-bootstrap';
 import { FieldError } from 'form/components';
 import { BaseInput, connectInput } from 'checkout/components';
 
-class _RxStateInput extends BaseInput {
+class _StateInput extends BaseInput {
   onChange = event => {
     const { field, updateFormData } = this.props;
     updateFormData({ [field]: event.target.value });
@@ -36,4 +36,4 @@ class _RxStateInput extends BaseInput {
   }
 }
 
-export const RxStateInput = connectInput(_RxStateInput);
+export const StateInput = connectInput(_StateInput);

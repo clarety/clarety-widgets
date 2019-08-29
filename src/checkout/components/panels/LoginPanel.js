@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { RxBasePanel, RxTextInput, Button } from 'checkout/components';
+import { BasePanel, TextInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { statuses, hasAccount, login, logout, emailStatuses } from 'checkout/actions';
 import { updateFormData, resetFormData, updatePanelData, nextPanel, editPanel, resetPanels, setErrors } from 'checkout/actions';
 import { getPanelData } from 'checkout/selectors';
 
-class _LoginPanel extends RxBasePanel {
+class _LoginPanel extends BasePanel {
   onPressCheckEmail = event => {
     event.preventDefault();
 
@@ -136,7 +136,7 @@ class _LoginPanel extends RxBasePanel {
       <Form onSubmit={this.onPressCheckEmail}>
         <Form.Row>
           <Col>
-            <RxTextInput field="customer.email" type="email" placeholder="Email *" />
+            <TextInput field="customer.email" type="email" placeholder="Email *" />
           </Col>
         </Form.Row>
 
@@ -175,13 +175,13 @@ class _LoginPanel extends RxBasePanel {
 
         <Form.Row>
           <Col>
-            <RxTextInput field="customer.email" type="email" placeholder="Email *" />
+            <TextInput field="customer.email" type="email" placeholder="Email *" />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <RxTextInput field="customer.password" type="password" placeholder="Password *" />
+            <TextInput field="customer.password" type="password" placeholder="Password *" />
           </Col>
         </Form.Row>
 
@@ -200,13 +200,13 @@ class _LoginPanel extends RxBasePanel {
 
         <Form.Row>
           <Col>
-            <RxTextInput field="customer.email" type="email" placeholder="Email *" />
+            <TextInput field="customer.email" type="email" placeholder="Email *" />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <RxTextInput field="customer.password" type="password" placeholder="Password *" />
+            <TextInput field="customer.password" type="password" placeholder="Password *" />
           </Col>
         </Form.Row>
 

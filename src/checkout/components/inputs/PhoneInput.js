@@ -6,7 +6,7 @@ import { Config } from 'clarety-utils';
 import { FieldError } from 'form/components';
 import { BaseInput, connectInput } from 'checkout/components';
 
-class _RxPhoneInput extends BaseInput {
+class _PhoneInput extends BaseInput {
   onChange = value => this.setState({ value });
 
   render() {
@@ -33,4 +33,4 @@ class _RxPhoneInput extends BaseInput {
   }
 }
 
-export const RxPhoneInput = connectInput(_RxPhoneInput);
+export const PhoneInput = connectInput(_PhoneInput);

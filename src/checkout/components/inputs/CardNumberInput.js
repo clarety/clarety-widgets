@@ -5,7 +5,7 @@ import { FieldError } from 'form/components';
 import { BaseInput, connectInput } from 'checkout/components';
 import './CardNumberInput.css';
 
-class _RxCardNumberInput extends BaseInput {
+class _CardNumberInput extends BaseInput {
   onChange = event => {
     this.setState({ value: cleanCardNumber(event.target.value) });
   };
@@ -30,4 +30,4 @@ class _RxCardNumberInput extends BaseInput {
   }
 }
 
-export const RxCardNumberInput = connectInput(_RxCardNumberInput);
+export const CardNumberInput = connectInput(_CardNumberInput);

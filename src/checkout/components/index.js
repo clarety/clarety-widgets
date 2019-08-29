@@ -4,16 +4,16 @@ export * from './cart/PromoCodeForm';
 
 export * from './inputs/Button';
 export * from './inputs/BaseInput';
-export * from './inputs/RxTextInput';
-export * from './inputs/RxCheckboxInput';
-export * from './inputs/RxPhoneInput';
-export * from './inputs/RxDobInput';
-export * from './inputs/RxStateInput';
-export * from './inputs/RxCardNumberInput';
-export * from './inputs/RxCcvInput';
-export * from './inputs/RxExpiryInput';
+export * from './inputs/TextInput';
+export * from './inputs/CheckboxInput';
+export * from './inputs/PhoneInput';
+export * from './inputs/DobInput';
+export * from './inputs/StateInput';
+export * from './inputs/CardNumberInput';
+export * from './inputs/CcvInput';
+export * from './inputs/ExpiryInput';
 
-export * from './panels/RxBasePanel';
+export * from './panels/BasePanel';
 export * from './panels/PanelHeader';
 export * from './panels/LoginPanel';
 export * from './panels/PaymentDetailsPanel';

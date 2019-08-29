@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { RxBasePanel, RxTextInput, RxCheckboxInput, RxStateInput, Button } from 'checkout/components';
+import { BasePanel, TextInput, CheckboxInput, StateInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { statuses, updateFormData, onSubmitShippingDetails, editPanel, invalidatePanel, panels, setErrors } from 'checkout/actions';
 
-class _ShippingDetailsPanel extends RxBasePanel {
+class _ShippingDetailsPanel extends BasePanel {
   onPressContinue = event => {
     const { invalidatePanel, updateFormData, onSubmitShippingDetails } = this.props;
 
@@ -99,7 +99,7 @@ class _ShippingDetailsPanel extends RxBasePanel {
 
             <Form.Row>
               <Col>
-                <RxCheckboxInput
+                <CheckboxInput
                   field="billingIsSameAsShipping"
                   label="Billing Address is the same as Shipping Address"
                 />
@@ -123,22 +123,22 @@ class _ShippingDetailsPanel extends RxBasePanel {
         <h5>{title}</h5>
         <Form.Row>
           <Col>
-            <RxTextInput field={`${fieldPrefix}.address1`} placeholder="Address *" />
+            <TextInput field={`${fieldPrefix}.address1`} placeholder="Address *" />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <RxTextInput field={`${fieldPrefix}.suburb`} placeholder="Suburb *" />
+            <TextInput field={`${fieldPrefix}.suburb`} placeholder="Suburb *" />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <RxStateInput field={`${fieldPrefix}.state`} placeholder="State *" />
+            <StateInput field={`${fieldPrefix}.state`} placeholder="State *" />
           </Col>
           <Col>
-            <RxTextInput field={`${fieldPrefix}.postcode`} placeholder="Postcode *" type="number" />
+            <TextInput field={`${fieldPrefix}.postcode`} placeholder="Postcode *" type="number" />
           </Col>
         </Form.Row>
       </React.Fragment>

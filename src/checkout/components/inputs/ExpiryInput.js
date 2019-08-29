@@ -7,7 +7,7 @@ import { getValidationError } from 'form/utils';
 import { updateFormData } from 'checkout/actions';
 import './ExpiryInput.css';
 
-class _RxExpiryInput extends React.Component {
+class _ExpiryInput extends React.Component {
   constructor(props) {
     super(props);
 
@@ -99,4 +99,4 @@ const actions = {
   updateFormData: updateFormData,
 };
 
-export const RxExpiryInput = connect(mapStateToProps, actions)(_RxExpiryInput);
+export const ExpiryInput = connect(mapStateToProps, actions)(_ExpiryInput);

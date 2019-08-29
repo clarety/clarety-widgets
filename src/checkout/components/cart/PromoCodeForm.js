@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Col, Form } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { RxTextInput, Button } from 'checkout/components';
+import { TextInput, Button } from 'checkout/components';
 import { statuses, applyPromoCode } from 'checkout/actions';
 
 class _PromoCodeForm extends React.Component {
@@ -22,7 +22,7 @@ class _PromoCodeForm extends React.Component {
         <Form onSubmit={this.onPressApplyDiscount} className="promo-code-form">
           <Form.Row>
             <Col>
-              <RxTextInput field="promoCode" placeholder="Discount Code" />
+              <TextInput field="promoCode" placeholder="Discount Code" />
             </Col>
             <Col xs="auto">
               <Button

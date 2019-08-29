@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { RxBasePanel, RxTextInput, RxCardNumberInput, RxCcvInput, RxExpiryInput, Button } from 'checkout/components';
+import { BasePanel, TextInput, CardNumberInput, CcvInput, ExpiryInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { statuses, makePayment, editPanel, paymentMethods, setErrors } from 'checkout/actions';
 import { getPaymentMethod } from 'checkout/selectors';
 
-class _PaymentDetailsPanel extends RxBasePanel {
+class _PaymentDetailsPanel extends BasePanel {
   onPressPayNow = event => {
     event.preventDefault();
 
@@ -91,13 +91,13 @@ class _PaymentDetailsPanel extends RxBasePanel {
       <React.Fragment>
         <Form.Row>
           <Col>
-            <RxTextInput field="payment.cardName" placeholder="Name On Card *" />
+            <TextInput field="payment.cardName" placeholder="Name On Card *" />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <RxCardNumberInput field="payment.cardNumber" placeholder="Card Number *" />
+            <CardNumberInput field="payment.cardNumber" placeholder="Card Number *" />
           </Col>
         </Form.Row>
 
@@ -108,10 +108,10 @@ class _PaymentDetailsPanel extends RxBasePanel {
 
         <Form.Row>
           <Col>
-            <RxExpiryInput field="payment.expiry" monthField="payment.expiryMonth" yearField="payment.expiryYear" />
+            <ExpiryInput field="payment.expiry" monthField="payment.expiryMonth" yearField="payment.expiryYear" />
           </Col>
           <Col>
-            <RxCcvInput field="payment.ccv" />
+            <CcvInput field="payment.ccv" />
           </Col>
         </Form.Row>
       </React.Fragment>

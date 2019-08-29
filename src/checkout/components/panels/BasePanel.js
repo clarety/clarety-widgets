@@ -2,7 +2,7 @@ import React from 'react';
 import { panelStatuses } from 'checkout/actions';
 import { validateRequired, validateEmail, validatePassword, validateCardNumber, validateCardExpiry, validateCcv } from 'checkout/utils';
 
-export class RxBasePanel extends React.Component {
+export class BasePanel extends React.Component {
   onPressEdit = () => {
     const { index, editPanel } = this.props;
     editPanel(index);

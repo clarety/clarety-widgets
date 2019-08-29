@@ -7,7 +7,7 @@ import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
 import { updateFormData } from 'checkout/actions';
 
-class _RxDobInput extends React.Component {
+class _DobInput extends React.Component {
   onChangeDay = event => {
     const { dayField, updateFormData } = this.props;
     updateFormData({ [dayField]: event.target.value });
@@ -119,4 +119,4 @@ const actions = {
   updateFormData: updateFormData,
 };
 
-export const RxDobInput = connect(mapStateToProps, actions)(_RxDobInput);
+export const DobInput = connect(mapStateToProps, actions)(_DobInput);
