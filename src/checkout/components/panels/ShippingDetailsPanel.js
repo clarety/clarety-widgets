@@ -3,30 +3,30 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { BasePanel, TextInput, PureCheckboxInput, StateInput, Button } from 'checkout/components';
+import { RxBasePanel, RxTextInput, PureCheckboxInput, RxStateInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { statuses, updateFormData, onSubmitShippingDetails, editPanel, invalidatePanel, panels } from 'checkout/actions';
-import { FormContext } from 'checkout/utils';
+import { statuses, updateFormData, onSubmitShippingDetails, editPanel, invalidatePanel, panels, setErrors } from 'checkout/actions';
 
-class _ShippingDetailsPanel extends BasePanel {
+class _ShippingDetailsPanel extends RxBasePanel {
   onPressContinue = event => {
     const { invalidatePanel, updateFormData, onSubmitShippingDetails } = this.props;
 
     event.preventDefault();
 
     if (this.validate()) {
-      const formData = { ...this.state.formData };
-      formData['sale.shippingOption'] = undefined;
+      const formData = {
+        'sale.shippingOption': undefined,
+      };
       
       if (this.state.billingIsSameAsShipping) {
-        formData['customer.billing.address1'] = formData['customer.delivery.address1'];
-        formData['customer.billing.suburb']   = formData['customer.delivery.suburb'];
-        formData['customer.billing.state']    = formData['customer.delivery.state'];
-        formData['customer.billing.postcode'] = formData['customer.delivery.postcode'];
+        formData['customer.billing.address1'] = this.props.formData['customer.delivery.address1'];
+        formData['customer.billing.suburb']   = this.props.formData['customer.delivery.suburb'];
+        formData['customer.billing.state']    = this.props.formData['customer.delivery.state'];
+        formData['customer.billing.postcode'] = this.props.formData['customer.delivery.postcode'];
       }
       
-      invalidatePanel(panels.shippingOptionsPanel);
       updateFormData(formData);
+      invalidatePanel(panels.shippingOptionsPanel);
       onSubmitShippingDetails();
     }
   };
@@ -46,7 +46,7 @@ class _ShippingDetailsPanel extends BasePanel {
       this.validateRequired('customer.billing.postcode', errors);
     }
 
-    this.setState({ errors });
+    this.props.setErrors(errors);
     return errors.length === 0;
   }
 
@@ -64,6 +64,7 @@ class _ShippingDetailsPanel extends BasePanel {
     }
   }
 
+  // TODO: shouldn't need to do this in the component...
   prefillCustomerData(customer) {
     if (!customer) return;
 
@@ -97,28 +98,26 @@ class _ShippingDetailsPanel extends BasePanel {
         <EditPanelHeader number="3" title="Shipping Details" />
         
         <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
-          <FormContext.Provider value={this.state}>
-            <Form onSubmit={this.onPressContinue}>
-              {this.renderAddressForm('Shipping Address', 'customer.delivery')}
+          <Form onSubmit={this.onPressContinue}>
+            {this.renderAddressForm('Shipping Address', 'customer.delivery')}
 
-              <Form.Row>
-                <Col>
-                  <PureCheckboxInput
-                    field="billingIsSameAsShipping"
-                    label="Billing Address is the same as Shipping Address"
-                    checked={billingIsSameAsShipping || false}
-                    onChange={this.onChangeBillingIsSameAsShipping}
-                  />
-                </Col>
-              </Form.Row>
+            <Form.Row>
+              <Col>
+                <PureCheckboxInput
+                  field="billingIsSameAsShipping"
+                  label="Billing Address is the same as Shipping Address"
+                  checked={billingIsSameAsShipping || false}
+                  onChange={this.onChangeBillingIsSameAsShipping}
+                />
+              </Col>
+            </Form.Row>
 
-              {!billingIsSameAsShipping && this.renderAddressForm('Billing Address', 'customer.billing')}
-              
-              <div className="text-right mt-3">
-                <Button title="Continue" type="submit" isBusy={isBusy} />
-              </div>
-            </Form>
-          </FormContext.Provider>
+            {!billingIsSameAsShipping && this.renderAddressForm('Billing Address', 'customer.billing')}
+            
+            <div className="text-right mt-3">
+              <Button title="Continue" type="submit" isBusy={isBusy} />
+            </div>
+          </Form>
         </BlockUi>
       </div>
     );
@@ -130,22 +129,22 @@ class _ShippingDetailsPanel extends BasePanel {
         <h5>{title}</h5>
         <Form.Row>
           <Col>
-            <TextInput field={`${fieldPrefix}.address1`} placeholder="Address *" />
+            <RxTextInput field={`${fieldPrefix}.address1`} placeholder="Address *" />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <TextInput field={`${fieldPrefix}.suburb`} placeholder="Suburb *" />
+            <RxTextInput field={`${fieldPrefix}.suburb`} placeholder="Suburb *" />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <StateInput field={`${fieldPrefix}.state`} placeholder="State *" />
+            <RxStateInput field={`${fieldPrefix}.state`} placeholder="State *" />
           </Col>
           <Col>
-            <TextInput field={`${fieldPrefix}.postcode`} placeholder="Postcode *" type="number" />
+            <RxTextInput field={`${fieldPrefix}.postcode`} placeholder="Postcode *" type="number" />
           </Col>
         </Form.Row>
       </React.Fragment>
@@ -153,7 +152,7 @@ class _ShippingDetailsPanel extends BasePanel {
   }
 
   renderDone() {
-    const { formData } = this.state;
+    const { formData } = this.props;
     const address = formData['customer.delivery.address1'];
     const suburb = formData['customer.delivery.suburb'];
 
@@ -173,6 +172,7 @@ const mapStateToProps = state => {
   return {
     isBusy: state.status === statuses.busy,
     customer: state.cart.customer,
+    formData: state.formData,
     errors: state.errors,
   };
 };
@@ -182,6 +182,7 @@ const actions = {
   onSubmitShippingDetails: onSubmitShippingDetails,
   invalidatePanel: invalidatePanel,
   editPanel: editPanel,
+  setErrors: setErrors,
 };
 
 export const ShippingDetailsPanel = connect(mapStateToProps, actions)(_ShippingDetailsPanel);
