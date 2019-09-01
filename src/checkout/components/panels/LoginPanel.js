@@ -6,27 +6,27 @@ import 'react-block-ui/style.css';
 import { BasePanel, TextInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { statuses, checkForAccount, login, logout, emailStatuses } from 'checkout/actions';
-import { updateFormData, resetFormData, updatePanelData, nextPanel, editPanel, resetPanels, setErrors } from 'checkout/actions';
+import { updateFormData, resetFormData, updatePanelData, nextPanel, editPanel, resetPanels } from 'checkout/actions';
+import { validateCheckEmail, validateLogin, validateCreateAccount } from 'checkout/actions';
 import { getPanelData } from 'checkout/selectors';
 
 class _LoginPanel extends BasePanel {
   onPressCheckEmail = event => {
     event.preventDefault();
 
-    if (this.validate()) {
-      const email = this.props.formData['customer.email'];
-      this.props.checkForAccount(email);
-    }
+    const { validateCheckEmail, formData, checkForAccount } = this.props;
+    validateCheckEmail({
+      onSuccess: () => checkForAccount(formData['customer.email']),
+    });
   };
 
   onPressLogin = event => {
     event.preventDefault();
 
-    if (this.validate()) {
-      const email = this.props.formData['customer.email'];
-      const password = this.props.formData['customer.password'];
-      this.props.login(email, password);
-    }
+    const { validateLogin, formData, login } = this.props;
+    validateLogin({
+      onSuccess: () => login(formData['customer.email'], formData['customer.password']),
+    });
   };
 
   onPressShowCreateAccountForm = () => {
@@ -40,9 +40,8 @@ class _LoginPanel extends BasePanel {
   onPressCreateAccount = event => {
     event.preventDefault();
 
-    if (this.validate()) {
-      this.props.nextPanel();
-    }
+    const { validateCreateAccount, nextPanel } = this.props;
+    validateCreateAccount({ onSuccess: () => nextPanel() });
   };
 
   onPressGuestCheckout = () => {
@@ -68,30 +67,6 @@ class _LoginPanel extends BasePanel {
       this.props.resetPanels();
       this.props.updateFormData({ 'customer.password': '' });
     }
-  }
-
-  validate() {
-    const errors = [];
-
-    const { emailStatus, isCreatingAccount } = this.props;
-
-    // Create Account
-    if (isCreatingAccount) {
-      this.validatePassword('customer.password', errors);
-    }
-
-    // Login
-    if (emailStatus === emailStatuses.hasAccount) {
-      this.validateRequired('customer.password', errors);
-    }
-
-    // Check Email
-    if (emailStatus === emailStatuses.notChecked) {
-      this.validateEmail('customer.email', errors);
-    }
-
-    this.props.setErrors(errors);
-    return errors.length === 0;
   }
 
   renderWait() {
@@ -272,7 +247,9 @@ const actions = {
   updatePanelData: updatePanelData,
   resetPanels: resetPanels,
 
-  setErrors: setErrors,
+  validateCheckEmail: validateCheckEmail,
+  validateLogin: validateLogin,
+  validateCreateAccount: validateCreateAccount,
 };
 
 export const LoginPanel = connect(mapStateToProps, actions)(_LoginPanel);

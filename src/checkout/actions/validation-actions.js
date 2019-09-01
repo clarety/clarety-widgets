@@ -2,6 +2,44 @@ import { validateRequired, validateEmail, validatePassword } from 'checkout/util
 import { validateCardNumber, validateCardExpiry, validateCcv } from 'checkout/utils';
 import { setErrors } from 'checkout/actions';
 
+export function validateCreateAccount({ onSuccess }) {
+  return (dispatch, getState) => {
+    const { formData } = getState();
+    const errors = [];
+
+    _validateEmail(formData, 'customer.email', errors);
+    _validatePassword(formData, 'customer.password', errors);
+
+    dispatch(setErrors(errors));
+    if (errors.length === 0) onSuccess();
+  };
+}
+
+export function validateLogin({ onSuccess }) {
+  return (dispatch, getState) => {
+    const { formData } = getState();
+    const errors = [];
+
+    _validateEmail(formData, 'customer.email', errors);
+    _validateRequired(formData, 'customer.password', errors);
+
+    dispatch(setErrors(errors));
+    if (errors.length === 0) onSuccess();
+  };
+}
+
+export function validateCheckEmail({ onSuccess }) {
+  return (dispatch, getState) => {
+    const { formData } = getState();
+    const errors = [];
+
+    _validateEmail(formData, 'customer.email', errors);
+
+    dispatch(setErrors(errors));
+    if (errors.length === 0) onSuccess();
+  };
+}
+
 export function validatePersonalDetails({ onSuccess }) {
   return (dispatch, getState) => {
     const { formData } = getState();
@@ -49,4 +87,14 @@ export function validateShippingDetails({ onSuccess }) {
 function _validateRequired(formData, field, errors) {
   const value = formData[field];
   validateRequired(value, field, errors);
+}
+
+function _validateEmail(formData, field, errors) {
+  const value = formData[field];
+  validateEmail(value, field, errors);
+}
+
+function _validatePassword(formData, field, errors) {
+  const value = formData[field];
+  validatePassword(value, field, errors);
 }
