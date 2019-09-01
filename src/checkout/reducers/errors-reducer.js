@@ -20,14 +20,6 @@ export const errorsReducer = (state = initialState, action) => {
     case types.stripeTokenRequest:
     case types.applyPromoCodeRequest:
       return [];
-    
-    case types.checkForAccountFailure:
-    case types.fetchCustomerFailure:
-    case types.createCustomerFailure:
-    case types.updateCustomerFailure:
-    case types.makePaymentFailure:
-    case types.applyPromoCodeFailure:
-      return action.result.validationErrors;
 
     case types.stripeTokenFailure:
       return  action.errors;

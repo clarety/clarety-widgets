@@ -1,6 +1,6 @@
 import { ClaretyApi } from 'clarety-utils';
 import { parseNestedElements } from 'shared/utils';
-import { types, panels, nextPanel, updateFormData, invalidatePanel } from 'checkout/actions';
+import { types, panels, nextPanel, updateFormData, invalidatePanel, setErrors } from 'checkout/actions';
 
 export const fetchCart = () => {
   return async dispatch => {
@@ -72,6 +72,7 @@ const _createCustomer = async (dispatch, getState, customerData) => {
 
   if (result.status === 'error') {
     dispatch(createCustomerFailure(result));
+    dispatch(setErrors(result.validationErrors));
   } else {
     dispatch(createCustomerSuccess(result));
   }
@@ -90,6 +91,7 @@ const _updateCustomer = async (dispatch, getState, customerData) => {
 
   if (result.status === 'error') {
     dispatch(updateCustomerFailure(result));
+    dispatch(setErrors(result.validationErrors));
   } else {
     dispatch(updateCustomerSuccess(result));
   }
@@ -141,6 +143,7 @@ export const applyPromoCode = promoCode => {
 
     if (result.status === 'error') {
       dispatch(applyPromoCodeFailure(result));
+      dispatch(setErrors(result.validationErrors));
     } else {
       dispatch(applyPromoCodeSuccess(result));
     }

@@ -1,6 +1,6 @@
 import jwtDecode from 'jwt-decode';
 import { ClaretyApi } from 'clarety-utils';
-import { types, nextPanel, updateCustomerFormData } from 'checkout/actions';
+import { types, nextPanel, updateCustomerFormData, setErrors } from 'checkout/actions';
 
 const clientId = '82ee4a2479780256c9bf9b951f5d1cfb';
 
@@ -34,6 +34,7 @@ export const login = (email, password) => {
 
     if (result.status === 'error') {
       dispatch(fetchCustomerFailure(result));
+      dispatch(setErrors(result.validationErrors));
       return;
     } else {
       dispatch(fetchCustomerSuccess(result));
@@ -59,6 +60,7 @@ export const checkForAccount = email => {
 
     if (result.status === 'error') {
       dispatch(checkForAccountFailure(result));
+      dispatch(setErrors(result.validationErrors));
     } else {
       dispatch(checkForAccountSuccess(result));
     }

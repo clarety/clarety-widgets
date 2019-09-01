@@ -69,6 +69,7 @@ export const makePayment = paymentMethod => {
 
     if (result.status === 'error') {
       dispatch(makePaymentFailure(result));
+      dispatch(setErrors(result.validationErrors));
     } else {
       // Redirect on success.
       window.location.href = result.redirect;

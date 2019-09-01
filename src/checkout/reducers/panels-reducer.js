@@ -79,16 +79,6 @@ export const panelsReducer = (state = initialState, action) => {
     case types.resetPanels:      return resetPanels(state, action);
     case types.setErrors:        return checkForErrors(state, action);
 
-    // TODO: Update these to use the 'set errors' action,
-    //       checking them individually is annoying...
-    case types.checkForAccountFailure:
-    case types.fetchCustomerFailure:
-    case types.createCustomerFailure:
-    case types.updateCustomerFailure:
-    case types.makePaymentFailure:
-    case types.applyPromoCodeFailure:
-      return checkForErrors(state, { errors: action.result.validationErrors });
-
     // TODO: should the LoginPanel have it's own reducer?
     case types.checkForAccountRequest: return resetEmailStatus(state, action);
     case types.checkForAccountSuccess: return checkForAccountSuccess(state, action);
