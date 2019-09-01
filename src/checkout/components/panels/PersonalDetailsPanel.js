@@ -5,32 +5,15 @@ import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { BasePanel, TextInput, PhoneInput, DobInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { statuses, nextPanel, editPanel, panelStatuses, updateFormData, setErrors } from 'checkout/actions';
+import { statuses, nextPanel, editPanel, panelStatuses, updateFormData, validatePersonalDetails } from 'checkout/actions';
 
 class _PersonalDetailsPanel extends BasePanel {
   onPressContinue = event => {
     event.preventDefault();
 
-    if (this.validate()) {
-      this.props.nextPanel();
-    }
+    const { validate, nextPanel } = this.props;
+    validate({ onSuccess: () => nextPanel() });
   };
-
-  validate() {
-    const errors = [];
-
-    this.validateRequired('customer.firstName', errors);
-    this.validateRequired('customer.lastName', errors);
-
-    this.validateRequired('customer.dateOfBirthDay', errors);
-    this.validateRequired('customer.dateOfBirthMonth', errors);
-    this.validateRequired('customer.dateOfBirthYear', errors);
-
-    this.validateRequired('sale.source', errors);
-
-    this.props.setErrors(errors);
-    return errors.length === 0;
-  }
 
   componentDidUpdate(prevProps) {
     if (this.props.customer !== prevProps.customer) {
@@ -179,7 +162,7 @@ const actions = {
   nextPanel: nextPanel,
   editPanel: editPanel,
   updateFormData: updateFormData,
-  setErrors: setErrors,
+  validate: validatePersonalDetails,
 };
 
 export const PersonalDetailsPanel = connect(mapStateToProps, actions)(_PersonalDetailsPanel);
