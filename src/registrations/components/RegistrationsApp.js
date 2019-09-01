@@ -14,7 +14,7 @@ import { rootReducer } from 'registrations/reducers';
 const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
 
-export const RegistrationsApp = ({ translations }) => (
+export const Registrations = ({ translations }) => (
   <IntlProvider locale="en" messages={translations}>
     <ReduxProvider store={store}>
       <Root />

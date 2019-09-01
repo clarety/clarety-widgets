@@ -8,8 +8,10 @@ export { setupSubscribeAxiosMock } from 'subscribe/mocks';
 export { DonateWidget } from 'donate/views';
 export { setupDonateAxiosMock } from 'donate/mocks';
 
-export { RegistrationsApp } from 'registrations/components';
+export { Registrations } from 'registrations/components';
 export { withOverrides } from 'registrations/utils';
+export { setupRegistrationsAxiosMock } from 'registrations/mocks';
+export { registrationsEnTranslations } from 'registrations/intl';
 
 export { Checkout } from 'checkout/components';
 export { setupCheckoutAxiosMock } from 'checkout/mocks';
