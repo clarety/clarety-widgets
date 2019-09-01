@@ -5,7 +5,7 @@ import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { BasePanel, TextInput, CheckboxInput, StateInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { statuses, updateFormData, onSubmitShippingDetails, editPanel, invalidatePanel, panels, setErrors } from 'checkout/actions';
+import { statuses, updateFormData, onSubmitShippingDetails, editPanel, invalidatePanel, panels, validateShippingDetails } from 'checkout/actions';
 
 class _ShippingDetailsPanel extends BasePanel {
   onPressContinue = event => {
@@ -13,42 +13,25 @@ class _ShippingDetailsPanel extends BasePanel {
 
     event.preventDefault();
 
-    if (this.validate()) {
-      const formData = {
-        'sale.shippingOption': undefined,
-      };
-      
-      if (this.props.billingIsSameAsShipping) {
-        formData['customer.billing.address1'] = this.props.formData['customer.delivery.address1'];
-        formData['customer.billing.suburb']   = this.props.formData['customer.delivery.suburb'];
-        formData['customer.billing.state']    = this.props.formData['customer.delivery.state'];
-        formData['customer.billing.postcode'] = this.props.formData['customer.delivery.postcode'];
-      }
-      
-      updateFormData(formData);
-      invalidatePanel(panels.shippingOptionsPanel);
-      onSubmitShippingDetails();
-    }
+    this.props.validate({
+      onSuccess: () => {
+        const formData = {
+          'sale.shippingOption': undefined,
+        };
+        
+        if (this.props.billingIsSameAsShipping) {
+          formData['customer.billing.address1'] = this.props.formData['customer.delivery.address1'];
+          formData['customer.billing.suburb']   = this.props.formData['customer.delivery.suburb'];
+          formData['customer.billing.state']    = this.props.formData['customer.delivery.state'];
+          formData['customer.billing.postcode'] = this.props.formData['customer.delivery.postcode'];
+        }
+        
+        updateFormData(formData);
+        invalidatePanel(panels.shippingOptionsPanel);
+        onSubmitShippingDetails();
+      },
+    });
   };
-
-  validate() {
-    const errors = [];
-
-    this.validateRequired('customer.delivery.address1', errors);
-    this.validateRequired('customer.delivery.suburb', errors);
-    this.validateRequired('customer.delivery.state', errors);
-    this.validateRequired('customer.delivery.postcode', errors);
-
-    if (!this.props.billingIsSameAsShipping) {
-      this.validateRequired('customer.billing.address1', errors);
-      this.validateRequired('customer.billing.suburb', errors);
-      this.validateRequired('customer.billing.state', errors);
-      this.validateRequired('customer.billing.postcode', errors);
-    }
-
-    this.props.setErrors(errors);
-    return errors.length === 0;
-  }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.customer !== prevProps.customer) {
@@ -177,7 +160,7 @@ const actions = {
   onSubmitShippingDetails: onSubmitShippingDetails,
   invalidatePanel: invalidatePanel,
   editPanel: editPanel,
-  setErrors: setErrors,
+  validate: validateShippingDetails,
 };
 
 export const ShippingDetailsPanel = connect(mapStateToProps, actions)(_ShippingDetailsPanel);
