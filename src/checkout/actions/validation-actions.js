@@ -81,6 +81,22 @@ export function validateShippingDetails({ onSuccess }) {
   };
 }
 
+export function validateCreditCardFields({ onSuccess }) {
+  return (dispatch, getState) => {
+    const { formData } = getState();
+    const errors = [];
+
+    _validateRequired(formData, 'payment.cardName', errors);
+    _validateCardNumber(formData, 'payment.cardNumber', errors);
+    _validateCardExpiry(formData, 'payment.expiry', 'payment.expiryMonth', 'payment.expiryYear', errors);
+    _validateCcv(formData, 'payment.ccv', errors);
+
+    dispatch(setErrors(errors));
+    if (errors.length === 0) onSuccess();
+  };
+}
+
+
 
 // TODO: remove temp wrapper functions.
 
@@ -97,4 +113,20 @@ function _validateEmail(formData, field, errors) {
 function _validatePassword(formData, field, errors) {
   const value = formData[field];
   validatePassword(value, field, errors);
+}
+
+function _validateCardNumber(formData, field, errors) {
+  const value = formData[field];
+  validateCardNumber(value, field, errors);
+}
+
+function _validateCardExpiry(formData, field, monthField, yearField, errors) {
+  const expiryMonth = formData[monthField];
+  const expiryYear  = formData[yearField];
+  validateCardExpiry(expiryMonth, expiryYear, field, errors);
+}
+
+function _validateCcv(formData, field, errors) {
+  const value = formData[field];
+  validateCcv(value, field, errors);
 }

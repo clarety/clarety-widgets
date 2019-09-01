@@ -5,44 +5,24 @@ import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { BasePanel, TextInput, CardNumberInput, CcvInput, ExpiryInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { statuses, makePayment, editPanel, paymentMethods, setErrors } from 'checkout/actions';
+import { statuses, makePayment, editPanel, paymentMethods, validateCreditCardFields } from 'checkout/actions';
 import { getPaymentMethod } from 'checkout/selectors';
 
 class _PaymentDetailsPanel extends BasePanel {
   onPressPayNow = event => {
     event.preventDefault();
 
-    const { paymentMethod, makePayment } = this.props;
-
-    if (this.validate()) {
-      makePayment(paymentMethod);
-    }
-  };
-
-  validate() {
-    const { paymentMethod } = this.props;
-
-    const errors = [];
+    const { paymentMethod, validateCreditCardFields, makePayment } = this.props;
 
     switch (paymentMethod.method) {
       case paymentMethods.creditCard:
-        this.validateCreditCardFields(errors);
+        validateCreditCardFields({ onSuccess: () => makePayment(paymentMethod) });
         break;
       
       default:
         throw new Error(`[Clarety] unhandled payment method ${paymentMethod}`);
     }
-
-    this.props.setErrors(errors);
-    return errors.length === 0;
-  }
-
-  validateCreditCardFields(errors) {
-    this.validateRequired('payment.cardName', errors);
-    this.validateCardNumber('payment.cardNumber', errors);
-    this.validateCardExpiry('payment.expiry', 'payment.expiryMonth', 'payment.expiryYear', errors);
-    this.validateCcv('payment.ccv', errors);
-  }
+  };
 
   componentDidUpdate(prevProps) {
     const { errors } = this.props;
@@ -144,7 +124,7 @@ const mapStateToProps = state => {
 const actions = {
   makePayment: makePayment,
   editPanel: editPanel,
-  setErrors: setErrors,
+  validateCreditCardFields: validateCreditCardFields,
 };
 
 export const PaymentDetailsPanel = connect(mapStateToProps, actions)(_PaymentDetailsPanel);
