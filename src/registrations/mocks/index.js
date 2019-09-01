@@ -1,3 +1,4 @@
+export * from './init/registration-events';
 export * from './init/registration-full';
 
 export * from './registration/registration-payment-success';
