@@ -1,6 +1,6 @@
 import { ClaretyApi } from 'clarety-utils';
 import { parseNestedElements } from 'shared/utils';
-import { types, nextPanel } from 'checkout/actions';
+import { types, panels, nextPanel, updateFormData, invalidatePanel } from 'checkout/actions';
 
 export const fetchCart = () => {
   return async dispatch => {
@@ -22,21 +22,38 @@ export const fetchCart = () => {
 
 export const onSubmitShippingDetails = () => {
   return async (dispatch, getState) => {
-    const { cart, formData } = getState();
+    const state = getState();
+
+    // Update form data and reset shipping options.
+
+    const formData = { ...state.formData };
+
+    formData['sale.shippingOption'] = undefined;
+    
+    if (formData['billingIsSameAsShipping']) {
+      formData['customer.billing.address1'] = formData['customer.delivery.address1'];
+      formData['customer.billing.suburb']   = formData['customer.delivery.suburb'];
+      formData['customer.billing.state']    = formData['customer.delivery.state'];
+      formData['customer.billing.postcode'] = formData['customer.delivery.postcode'];
+    }
+    
+    dispatch(updateFormData(formData));
+    dispatch(invalidatePanel(panels.shippingOptionsPanel));
+
+    // Create or update customer.
 
     const postData = parseNestedElements(formData);
 
     let didSucceed;
-    if (cart.customer) {
+    if (state.cart.customer) {
       didSucceed = await _updateCustomer(dispatch, getState, postData.customer);
     } else {
       didSucceed = await _createCustomer(dispatch, getState, postData.customer);
     }
 
     if (didSucceed) {
+      // Fetch shipping options then Proceed to shipping options panel.
       await _fetchShippingOptions(dispatch, getState);
-
-      // Proceed to shipping options panel.
       dispatch(nextPanel());
     } else {
       // Errors will have been set,

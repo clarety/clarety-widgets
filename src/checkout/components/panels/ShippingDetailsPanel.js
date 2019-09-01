@@ -5,32 +5,14 @@ import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { BasePanel, TextInput, CheckboxInput, StateInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { statuses, updateFormData, onSubmitShippingDetails, editPanel, invalidatePanel, panels, validateShippingDetails } from 'checkout/actions';
+import { statuses, onSubmitShippingDetails, editPanel, validateShippingDetails } from 'checkout/actions';
 
 class _ShippingDetailsPanel extends BasePanel {
   onPressContinue = event => {
-    const { invalidatePanel, updateFormData, onSubmitShippingDetails } = this.props;
-
     event.preventDefault();
 
-    this.props.validate({
-      onSuccess: () => {
-        const formData = {
-          'sale.shippingOption': undefined,
-        };
-        
-        if (this.props.billingIsSameAsShipping) {
-          formData['customer.billing.address1'] = this.props.formData['customer.delivery.address1'];
-          formData['customer.billing.suburb']   = this.props.formData['customer.delivery.suburb'];
-          formData['customer.billing.state']    = this.props.formData['customer.delivery.state'];
-          formData['customer.billing.postcode'] = this.props.formData['customer.delivery.postcode'];
-        }
-        
-        updateFormData(formData);
-        invalidatePanel(panels.shippingOptionsPanel);
-        onSubmitShippingDetails();
-      },
-    });
+    const { validate, onSubmitShippingDetails } = this.props;
+    validate({ onSuccess: onSubmitShippingDetails });
   };
 
   renderWait() {
@@ -40,8 +22,7 @@ class _ShippingDetailsPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { isBusy } = this.props;
-    const { billingIsSameAsShipping } = this.props;
+    const { isBusy, formData } = this.props;
 
     return (
       <div className="panel">
@@ -60,7 +41,7 @@ class _ShippingDetailsPanel extends BasePanel {
               </Col>
             </Form.Row>
 
-            {!billingIsSameAsShipping && this.renderAddressForm('Billing Address', 'customer.billing')}
+            {!formData['billingIsSameAsShipping'] && this.renderAddressForm('Billing Address', 'customer.billing')}
             
             <div className="text-right mt-3">
               <Button title="Continue" type="submit" isBusy={isBusy} />
@@ -120,16 +101,13 @@ const mapStateToProps = state => {
   return {
     isBusy: state.status === statuses.busy,
     customer: state.cart.customer,
-    billingIsSameAsShipping: state.formData['billingIsSameAsShipping'],
     formData: state.formData,
     errors: state.errors,
   };
 };
 
 const actions = {
-  updateFormData: updateFormData,
   onSubmitShippingDetails: onSubmitShippingDetails,
-  invalidatePanel: invalidatePanel,
   editPanel: editPanel,
   validate: validateShippingDetails,
 };
