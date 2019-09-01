@@ -15,30 +15,6 @@ class _PersonalDetailsPanel extends BasePanel {
     validate({ onSuccess: () => nextPanel() });
   };
 
-  componentDidUpdate(prevProps) {
-    if (this.props.errors !== prevProps.errors) {
-      this.checkForErrors();
-    }
-  }
-
-  checkForErrors() {
-    let foundError = false;
-
-    if (this.hasError('customer.firstName'))        foundError = true;
-    if (this.hasError('customer.lastName'))         foundError = true;
-    if (this.hasError('customer.phone1'))           foundError = true;
-    if (this.hasError('customer.phone2'))           foundError = true;
-    if (this.hasError('customer.mobile'))           foundError = true;
-    if (this.hasError('customer.dateOfBirthDay'))   foundError = true;
-    if (this.hasError('customer.dateOfBirthMonth')) foundError = true;
-    if (this.hasError('customer.dateOfBirthYear'))  foundError = true;
-
-    if (foundError && this.props.status !== panelStatuses.edit) {
-      const { index, editPanel } = this.props;
-      editPanel(index);
-    }
-  }
-
   renderWait() {
     return (
       <WaitPanelHeader number="2" title="Personal Details" />

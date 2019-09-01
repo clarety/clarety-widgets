@@ -77,6 +77,17 @@ export const panelsReducer = (state = initialState, action) => {
     case types.updatePanelData:  return updatePanelData(state, action);
     case types.invalidatePanel:  return invalidatePanel(state, action);
     case types.resetPanels:      return resetPanels(state, action);
+    case types.setErrors:        return checkForErrors(state, action);
+
+    // TODO: Update these to use the 'set errors' action,
+    //       checking them individually is annoying...
+    case types.checkForAccountFailure:
+    case types.fetchCustomerFailure:
+    case types.createCustomerFailure:
+    case types.updateCustomerFailure:
+    case types.makePaymentFailure:
+    case types.applyPromoCodeFailure:
+      return checkForErrors(state, { errors: action.result.validationErrors });
 
     // TODO: should the LoginPanel have it's own reducer?
     case types.checkForAccountRequest: return resetEmailStatus(state, action);
@@ -198,4 +209,43 @@ function invalidatePanel(state, action) {
 
     return panel;
   });
+}
+
+function checkForErrors(state, action) {
+  let foundFirstError = false;
+
+  return state.map(panel => {
+    const hasError = _hasError(panel, action.errors);
+
+    if (hasError && !foundFirstError) {
+      foundFirstError = true;
+      return {
+        ...panel,
+        status: panelStatuses.edit,
+        isValid: false,
+      };
+    }
+
+    const isValid = panel.isValid && !hasError;
+    const status = foundFirstError ? panelStatuses.wait : panel.status;
+
+    return {
+      ...panel,
+      isValid,
+      status,
+    };
+  });
+}
+
+
+// TODO: move to utils?
+
+function _hasError(panel, errors) {
+  for (let field of panel.fields) {
+    if (errors.find(error => error.field === field)) {
+      return true;
+    }
+  }
+
+  return false;
 }
