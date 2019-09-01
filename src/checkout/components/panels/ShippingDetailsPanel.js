@@ -33,35 +33,6 @@ class _ShippingDetailsPanel extends BasePanel {
     });
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.customer !== prevProps.customer) {
-      this.prefillCustomerData(this.props.customer);
-    }
-
-    if (this.props.errors !== prevProps.errors) {
-      this.setState({ errors: this.props.errors });
-    }
-  }
-
-  // TODO: shouldn't need to do this in the component...
-  prefillCustomerData(customer) {
-    if (!customer) return;
-
-    this.setState({
-      formData: {
-        'customer.delivery.address1': customer.delivery.address1,
-        'customer.delivery.suburb':   customer.delivery.suburb,
-        'customer.delivery.state':    customer.delivery.state,
-        'customer.delivery.postcode': customer.delivery.postcode,
-
-        'customer.billing.address1':  customer.billing.address1,
-        'customer.billing.suburb':    customer.billing.suburb,
-        'customer.billing.state':     customer.billing.state,
-        'customer.billing.postcode':  customer.billing.postcode,
-      }
-    });
-  }
-
   renderWait() {
     return (
       <WaitPanelHeader number="3" title="Shipping Details" />
