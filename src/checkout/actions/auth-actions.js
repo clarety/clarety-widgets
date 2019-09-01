@@ -1,6 +1,6 @@
 import jwtDecode from 'jwt-decode';
 import { ClaretyApi } from 'clarety-utils';
-import { types, nextPanel } from 'checkout/actions';
+import { types, nextPanel, updateCustomerFormData } from 'checkout/actions';
 
 const clientId = '82ee4a2479780256c9bf9b951f5d1cfb';
 
@@ -37,6 +37,7 @@ export const login = (email, password) => {
       return;
     } else {
       dispatch(fetchCustomerSuccess(result));
+      dispatch(updateCustomerFormData(result));
 
       // Proceed to the customer details panel.
       dispatch(nextPanel());

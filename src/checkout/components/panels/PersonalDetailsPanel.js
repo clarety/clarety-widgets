@@ -5,7 +5,7 @@ import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { BasePanel, TextInput, PhoneInput, DobInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { statuses, nextPanel, editPanel, panelStatuses, updateFormData, validatePersonalDetails } from 'checkout/actions';
+import { statuses, nextPanel, editPanel, panelStatuses, validatePersonalDetails } from 'checkout/actions';
 
 class _PersonalDetailsPanel extends BasePanel {
   onPressContinue = event => {
@@ -16,10 +16,6 @@ class _PersonalDetailsPanel extends BasePanel {
   };
 
   componentDidUpdate(prevProps) {
-    if (this.props.customer !== prevProps.customer) {
-      this.prefillCustomerData(this.props.customer);
-    }
-
     if (this.props.errors !== prevProps.errors) {
       this.checkForErrors();
     }
@@ -41,26 +37,6 @@ class _PersonalDetailsPanel extends BasePanel {
       const { index, editPanel } = this.props;
       editPanel(index);
     }
-  }
-
-  // TODO: this shouldn't be done in the component...
-  prefillCustomerData(customer) {
-    let formData = {};
-
-    if (customer) {
-      formData = {
-        'customer.firstName':        customer.firstName,
-        'customer.lastName':         customer.lastName,
-        'customer.phone1':           customer.phone1,
-        'customer.phone2':           customer.phone2,
-        'customer.mobile':           customer.mobile,
-        'customer.dateOfBirthDay':   customer.dateOfBirthDay,
-        'customer.dateOfBirthMonth': customer.dateOfBirthMonth,
-        'customer.dateOfBirthYear':  customer.dateOfBirthYear,
-      };
-    }
-
-    this.props.updateFormData(formData);
   }
 
   renderWait() {
@@ -161,7 +137,6 @@ const mapStateToProps = state => {
 const actions = {
   nextPanel: nextPanel,
   editPanel: editPanel,
-  updateFormData: updateFormData,
   validate: validatePersonalDetails,
 };
 
