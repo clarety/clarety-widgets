@@ -12,19 +12,8 @@
   "label.email": "Email",
   "label.gender": "Gender",
   "label.dateOfBirth": "Date Of Birth",
-  "label.phone": "Phone",
+  "label.mobile": "Mobile",
 
-  "A21 TEMP!": "TEMPORARY STUFF THAT DOESNT GO HERE...",
-  "label.2019walkforfreedomformhowdidyouhearaboutthewalkforfreedom": "How did you hear about the Walk For Freedom?",
-  "label.2019walkforfreedomformhaveyouparticipatedinawalkforfreedombefore": "Have you participated in a Walk For Freedom before?",
-  "label.2019walkforfreedomformemergencycontactname": "Emergency Contact Name",
-  "label.2019walkforfreedomformemergencycontactnumber": "Emergency Contact Number",
-  "label.2019walkforfreedomformsignuptoreceiveupdates": "Sign up to receive updates",
-  "label.2019walkforfreedomformreleasewaiver": "I agree to the A21 Release and Waiver",
-
-  "THE MOVEMENT TEMP!": "TEMPORARY STUFF THAT DOESNT GO HERE...",
-  "label.additional1": "Occupation",
-  "label.organisationid": "Organisation / Institution",
   "label.registrationformformemergencycontact": "Emergency Contact Name",
   "label.registrationformformemergencycontact1": "Emergency Contact Number",
   "label.registrationformformsupportsocial": "Are you willing to support the Walk for Freedom efforts through social media?",
@@ -63,6 +52,7 @@
   "qtysPanel.adult.subtitle": "Ages 17+",
   "qtysPanel.child.title": "Children",
   "qtysPanel.child.subtitle": "Ages 13 - 17",
+  "qtysPanel.message": " ",
 
   "namesPanel.editTitle": "Participant Names",
   "namesPanel.doneTitle": "Participants",
@@ -84,5 +74,18 @@
   "resultsPage.items": "Items",
   "resultsPage.price": "Price",
   "resultsPage.qty": "Qty",
-  "resultsPage.total": "Total"
+  "resultsPage.total": "Total",
+
+  "validation.required": "This is a required field.",
+  "validation.email": "Please enter a valid email.",
+  "validation.age.adult": "Participant must be 17 years old on the day of the walk to attend.",
+  "validation.phone": "Emergency phone number needs to be different to your mobile number.",
+
+  "option.": " ",
+
+  "option.Yes": "Yes",
+  "option.No": "No",
+
+  "option.Male": "Male",
+  "option.Female": "Female"
 }
