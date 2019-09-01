@@ -1,6 +1,5 @@
 import React from 'react';
 import { panelStatuses } from 'checkout/actions';
-import { validateRequired, validateEmail, validatePassword, validateCardNumber, validateCardExpiry, validateCcv } from 'checkout/utils';
 
 export class BasePanel extends React.Component {
   onPressEdit = () => {
@@ -37,36 +36,5 @@ export class BasePanel extends React.Component {
 
   hasError(field) {
     return !!this.props.errors.find(error => error.field === field);
-  }
-
-  validateRequired(field, errors) {
-    const value = this.props.formData[field];
-    validateRequired(value, field, errors);
-  }
-
-  validateEmail(field, errors) {
-    const value = this.props.formData[field];
-    validateEmail(value, field, errors);
-  }
-
-  validatePassword(field, errors) {
-    const value = this.props.formData[field];
-    validatePassword(value, field, errors);
-  }
-
-  validateCardNumber(field, errors) {
-    const value = this.props.formData[field];
-    validateCardNumber(value, field, errors);
-  }
-
-  validateCardExpiry(field, monthField, yearField, errors) {
-    const monthValue = this.props.formData[monthField];
-    const yearValue = this.props.formData[yearField];
-    validateCardExpiry(monthValue, yearValue, field, errors);
-  }
-
-  validateCcv(field, errors) {
-    const value = this.props.formData[field];
-    validateCcv(value, field, errors);
   }
 }

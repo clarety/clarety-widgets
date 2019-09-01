@@ -97,8 +97,7 @@ export function validateCreditCardFields({ onSuccess }) {
 }
 
 
-
-// TODO: remove temp wrapper functions.
+// Wrapper functions to extract values from form data.
 
 function _validateRequired(formData, field, errors) {
   const value = formData[field];
