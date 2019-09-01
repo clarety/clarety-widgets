@@ -188,7 +188,7 @@ export class _DetailsPanel extends React.Component {
   }
 
   renderCustomerForm() {
-    let genderOptions = getElementOptions('customer.gender', this.props.init);
+    let genderOptions = getElementOptions('customer.gender', this.props.settings);
     genderOptions = this.translateOptions(genderOptions);
 
     return (
@@ -326,7 +326,7 @@ const mapStateToProps = (state, ownProps) => {
   const eventDate = new Date(offer.ageCalculationDate || event.startDate);
 
   return {
-    init: state.init,
+    settings: state.settings,
     event: event,
     participant: participant,
     extendFields: getExtendFields(state),

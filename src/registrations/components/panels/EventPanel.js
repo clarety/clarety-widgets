@@ -98,8 +98,8 @@ class _EventPanel extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    isBusy: state.init.isBusy,
-    events: state.init.events,
+    isBusy: state.settings.isBusy,
+    events: state.settings.events,
     selectedEvent: getEvent(state),
   };
 };

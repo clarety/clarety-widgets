@@ -8,7 +8,7 @@ const initialState = {
   elements: null,
 };
 
-export const initReducer = (state = initialState, action) => {
+export const settingsReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.fetchEventsSuccess:
       return {

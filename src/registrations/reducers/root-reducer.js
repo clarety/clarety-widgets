@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import { statusReducer, initReducer, panelStackReducer, panelDataReducer, registrationReducer } from 'registrations/reducers';
+import * as reducers from 'registrations/reducers';
 
 export const rootReducer = combineReducers({
-  status:       statusReducer,
-  init:         initReducer,
-  panelStack:   panelStackReducer,
-  panelData:    panelDataReducer,
-  registration: registrationReducer,
+  status:       reducers.statusReducer,
+  settings:     reducers.settingsReducer,
+  panelStack:   reducers.panelStackReducer,
+  panelData:    reducers.panelDataReducer,
+  registration: reducers.registrationReducer,
 });

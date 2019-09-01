@@ -3,7 +3,7 @@ export const types = {
 
   statusSet: 'STATUS_SET',
 
-  // Init Action Types
+  // Settings Action Types
 
   fetchEventsRequest: 'FETCH_EVENTS_REQUEST',
   fetchEventsSuccess: 'FETCH_EVENTS_SUCCESS',

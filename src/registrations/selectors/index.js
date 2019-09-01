@@ -1,4 +1,4 @@
-export const getEvent = state => state.init.event;
+export const getEvent = state => state.settings.event;
 
 export const getEventName = state => {
   const event = getEvent(state);
@@ -18,7 +18,7 @@ export const getRegistrationTypes = state => {
 
 export const getExtendFields = state => {
   try {
-    return state.init.extendForms[0].extendFields;
+    return state.settings.extendForms[0].extendFields;
   } catch (error) {
     return null;
   }
@@ -26,7 +26,7 @@ export const getExtendFields = state => {
 
 const getExtendFormId = state => {
   try {
-    return state.init.extendForms[0].formId;
+    return state.settings.extendForms[0].formId;
   } catch (error) {
     return null;
   }
