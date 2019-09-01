@@ -31,9 +31,9 @@ export const types = {
 
   logout: 'LOGOUT',
 
-  hasAccountRequest: 'HAS_ACCOUNT_REQUEST',
-  hasAccountSuccess: 'HAS_ACCOUNT_SUCCESS',
-  hasAccountFailure: 'HAS_ACCOUNT_FAILURE',
+  checkForAccountRequest: 'CHECK_FOR_ACCOUNT_REQUEST',
+  checkForAccountSuccess: 'CHECK_FOR_ACCOUNT_SUCCESS',
+  checkForAccountFailure: 'CHECK_FOR_ACCOUNT_FAILURE',
 
   fetchCustomerRequest: 'FETCH_CUSTOMER_REQUEST',
   fetchCustomerSuccess: 'FETCH_CUSTOMER_SUCCESS',

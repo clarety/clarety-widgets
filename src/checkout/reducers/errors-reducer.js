@@ -7,7 +7,7 @@ export const errorsReducer = (state = initialState, action) => {
     case types.setErrors:
       return action.errors;
 
-    case types.hasAccountRequest:
+    case types.checkForAccountRequest:
     case types.loginRequest:
     case types.fetchCustomerRequest:
     case types.fetchCartRequest:
@@ -21,7 +21,7 @@ export const errorsReducer = (state = initialState, action) => {
     case types.applyPromoCodeRequest:
       return [];
     
-    case types.hasAccountFailure:
+    case types.checkForAccountFailure:
     case types.fetchCustomerFailure:
     case types.createCustomerFailure:
     case types.updateCustomerFailure:

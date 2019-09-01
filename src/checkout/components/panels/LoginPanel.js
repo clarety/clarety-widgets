@@ -5,7 +5,7 @@ import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { BasePanel, TextInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { statuses, hasAccount, login, logout, emailStatuses } from 'checkout/actions';
+import { statuses, checkForAccount, login, logout, emailStatuses } from 'checkout/actions';
 import { updateFormData, resetFormData, updatePanelData, nextPanel, editPanel, resetPanels, setErrors } from 'checkout/actions';
 import { getPanelData } from 'checkout/selectors';
 
@@ -15,7 +15,7 @@ class _LoginPanel extends BasePanel {
 
     if (this.validate()) {
       const email = this.props.formData['customer.email'];
-      this.props.hasAccount(email);
+      this.props.checkForAccount(email);
     }
   };
 
@@ -260,7 +260,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const actions = {
-  hasAccount: hasAccount,
+  checkForAccount: checkForAccount,
   login: login,
   logout: logout,
 

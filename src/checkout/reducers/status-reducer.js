@@ -4,7 +4,7 @@ const initialState = statuses.ready;
 
 export const statusReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.hasAccountRequest:
+    case types.checkForAccountRequest:
     case types.loginRequest:
     case types.fetchCustomerRequest:
     case types.fetchCartRequest:
@@ -20,8 +20,8 @@ export const statusReducer = (state = initialState, action) => {
     case types.applyPromoCodeRequest:
       return statuses.busyPromoCode;
 
-    case types.hasAccountSuccess:
-    case types.hasAccountFailure:
+    case types.checkForAccountSuccess:
+    case types.checkForAccountFailure:
     case types.loginSuccess:
     case types.loginFailure:
     case types.fetchCustomerSuccess:
