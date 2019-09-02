@@ -3,14 +3,26 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Button, Form, Col } from 'react-bootstrap';
 import { Qty, QtyInput } from 'registrations/components';
-import { setQtys, resetQtys, panels } from 'registrations/actions';
+import { panels, updatePanelData } from 'registrations/actions';
 import { getRegistrationTypes } from 'registrations/selectors';
 
 class _QtysPanel extends React.Component {
-  state = {};
+  // TODO: move to base class?
+  updatePanelData(data) {
+    const { index, updatePanelData } = this.props;
+    updatePanelData(index, data);
+  }
+
+  onChange = (type, qty) => {
+    this.updatePanelData({
+      qtys: {
+        ...this.props.qtys,
+        [type]: qty,
+      }
+    });
+  };
 
   onClickNext = () => {
-    this.props.setQtys(this.state);
     this.props.pushPanel({
       name: panels.namesPanel,
       data: {
@@ -24,7 +36,7 @@ class _QtysPanel extends React.Component {
   };
 
   componentWillUnmount() {
-    this.props.resetQtys();
+    this.updatePanelData({ qtys: {} });
   }
 
   render() {
@@ -77,7 +89,7 @@ class _QtysPanel extends React.Component {
   }
 
   renderQtyInputs() {
-    const { types } = this.props;
+    const { types, qtys } = this.props;
 
     return Object.keys(types).map(key =>
       <Form.Group key={key}>
@@ -92,8 +104,8 @@ class _QtysPanel extends React.Component {
           </Col>
           <Col>
             <QtyInput
-              value={this.state[key] || 0}
-              onChange={qty => this.setState({ [key]: qty })}
+              value={qtys ? qtys[key] : 0}
+              onChange={qty => this.onChange(key, qty)}
             />
           </Col>
         </Form.Row>
@@ -102,24 +114,25 @@ class _QtysPanel extends React.Component {
   }
 
   canContinue() {
-    for (let key in this.state) {
-      if (this.state[key]) return true;
+    const { qtys } = this.props;
+
+    for (let key in qtys) {
+      if (qtys[key] > 0) return true;
     }
 
     return false;
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
   return {
     types: getRegistrationTypes(state),
-    qtys: state.panelData.qtys,
+    qtys: ownProps.panel.data.qtys,
   };
 };
 
 const actions = {
-  setQtys: setQtys,
-  resetQtys: resetQtys,
+  updatePanelData: updatePanelData,
 };
 
 export const QtysPanel = connect(mapStateToProps, actions)(_QtysPanel);

@@ -1,14 +1,5 @@
 import { types } from 'registrations/actions';
 
-export const setQtys = qtys => ({
-  type: types.panelDataSetQtys,
-  qtys,
-});
-
-export const resetQtys = () => ({
-  type: types.panelDataResetQtys,
-});
-
 export const setFirstNames = firstNames => ({
   type: types.panelDataSetFirstNames,
   firstNames,

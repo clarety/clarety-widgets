@@ -8,38 +8,6 @@ const initialState = {
 
 export const panelDataReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.panelDataSetEvent:
-      return {
-        ...state,
-        eventId: action.eventId,
-      };
-
-    case types.panelDataResetEvent:
-      return {
-        ...state,
-        eventId: initialState.eventId,
-      };
-
-    case types.panelDataSetQtys:
-      const participants = [];
-      for (const [key, value] of Object.entries(action.qtys)) {
-        for (let index = 0; index < value; index++) {
-          participants.push({ type: key });
-        }
-      }
-
-      return {
-        ...state,
-        qtys: action.qtys,
-        participants,
-      };
-
-    case types.panelDataResetQtys:
-      return {
-        ...state,
-        qtys: initialState.qtys,
-      };
-
     case types.panelDataSetFirstNames:
       return {
         ...state,
