@@ -79,7 +79,7 @@ class _NamesPanel extends React.Component {
           <Col>
           <FormattedMessage id={`label.firstName`}>
             {label =>
-              <TextInput field={`participants[${index}].firstName`} placeholder={label} />
+              <TextInput field={`participants[${index}].customer.firstName`} placeholder={label} />
             }
             </FormattedMessage>
           </Col>
@@ -98,7 +98,7 @@ class _NamesPanel extends React.Component {
     for (let index = 0; index < participantCount; index++) {
       rows.push(
         <React.Fragment key={index}>
-          <span className="lead">{index + 1}. {formData[`participants[${index}].firstName`]}</span>
+          <span className="lead">{index + 1}. {formData[`participants[${index}].customer.firstName`]}</span>
           <br />
         </React.Fragment>
       );
@@ -121,7 +121,7 @@ class _NamesPanel extends React.Component {
     const { participantCount, formData } = this.props;
 
     for (let index = 0; index < participantCount; index++) {
-      if (!formData[`participants[${index}].firstName`]) {
+      if (!formData[`participants[${index}].customer.firstName`]) {
         return false;
       }
     }

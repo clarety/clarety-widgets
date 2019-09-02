@@ -3,58 +3,24 @@ import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Container, Button, Form, Row, Col } from 'react-bootstrap';
 import { getElementOptions } from 'shared/utils';
-import { TextInput, DobInput, CheckboxInput, SimpleSelectInput, SelectInput, PhoneInput } from 'registrations/components';
-import { setDetails, setAdditionalData, setParticipantErrors, resetDetails, pushNextDetailsPanel } from 'registrations/actions';
+import { TextInput, DobInput, CheckboxInput, SelectInput, PhoneInput } from 'checkout/components';
+import { setAdditionalData, resetDetails, pushNextDetailsPanel, setErrors } from 'registrations/actions';
 import { getEvent, getExtendFields } from 'registrations/selectors';
-import { FormContext, scrollIntoView } from 'registrations/utils';
+import { scrollIntoView } from 'registrations/utils';
 
 export class _DetailsPanel extends React.Component {
   ref = React.createRef();
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      customerFormContext: {
-        formData: { ...props.participant.customer },
-        errors: [],
-        onChange: this.onCustomerFormChange,
-      },
-      extendFormContext: {
-        formData: { ...props.participant.extendForm },
-        errors: [],
-        onChange: this.onExtendFormChange,
-      },
-    };
-  }
-
-  componentDidUpdate(prevProps) {
-    const { errors } = this.props.participant;
-
-    if (prevProps.participant.errors !== errors) {
-      this.setState({
-        customerFormContext: {
-          ...this.state.customerFormContext,
-          errors: errors,
-        },
-        extendFormContext: {
-          ...this.state.extendFormContext,
-          errors: errors,
-        },
-      });
-    }
-  }
-
   onClickNext = event => {
-    const { participantIndex, setDetails, pushNextDetailsPanel } = this.props;
-    const { customerFormContext, extendFormContext } = this.state;
-
     event.preventDefault();
+
+    const { participantIndex, pushNextDetailsPanel } = this.props;
 
     if (this.validate()) {
       this.onSubmitForm();
-      setDetails(participantIndex, customerFormContext.formData, extendFormContext.formData);
       pushNextDetailsPanel(participantIndex + 1);
+    } else {
+      scrollIntoView(this.ref);
     }
   };
 
@@ -62,52 +28,28 @@ export class _DetailsPanel extends React.Component {
     this.props.popToPanel();
   };
 
-  onCustomerFormChange = (field, value) => {
-    this.setState(prevState => ({
-      customerFormContext: {
-        ...prevState.customerFormContext,
-        formData: {
-          ...prevState.customerFormContext.formData,
-          [field]: value,
-        }
-      }
-    }));
-  }
-
-  onExtendFormChange = (field, value) => {
-    this.setState(prevState => ({
-      extendFormContext: {
-        ...prevState.extendFormContext,
-        formData: {
-          ...prevState.extendFormContext.formData,
-          [field]: value,
-        }
-      }
-    }));
-  };
-
   validate() {
     const errors = [];
     this.validateFields(errors);
-    this.setErrors(errors);
+    this.props.setErrors(errors);
     return errors.length === 0;
   }
 
   validateFields(errors) {
-    const { formData } = this.state.customerFormContext;
+    const { formData, participantIndex } = this.props;
     const { eventDate, minAge, maxAge } = this.props;
 
-    this.validateRequired('firstName', formData, errors);
-    this.validateRequired('lastName', formData, errors);
-    this.validateEmail('email', formData, errors);
-    this.validateRequired('gender', formData, errors);
-    this.validateRequired('dateOfBirthDay', formData, errors);
-    this.validateRequired('dateOfBirthMonth', formData, errors);
-    this.validateRequired('dateOfBirthYear', formData, errors);
-    this.validateRequired('mobile', formData, errors);
+    this.validateRequired(`participants[${participantIndex}].customer.firstName`, formData, errors);
+    this.validateRequired(`participants[${participantIndex}].customer.lastName`, formData, errors);
+    this.validateEmail(`participants[${participantIndex}].customer.email`, formData, errors);
+    this.validateRequired(`participants[${participantIndex}].customer.gender`, formData, errors);
+    this.validateRequired(`participants[${participantIndex}].customer.dateOfBirthDay`, formData, errors);
+    this.validateRequired(`participants[${participantIndex}].customer.dateOfBirthMonth`, formData, errors);
+    this.validateRequired(`participants[${participantIndex}].customer.dateOfBirthYear`, formData, errors);
+    this.validateRequired(`participants[${participantIndex}].customer.mobile`, formData, errors);
 
     this.validateDob({
-      field: 'dateOfBirth',
+      field: `participants[${participantIndex}].customer.dateOfBirth`,
       dob: this.getDob(),
       eventDate: eventDate,
       minAge: minAge,
@@ -121,23 +63,19 @@ export class _DetailsPanel extends React.Component {
     // but can be overridden in the instance.
   }
 
-  setErrors(errors) {
-    const { setParticipantErrors, participantIndex } = this.props;
-    setParticipantErrors(participantIndex, errors);
-    scrollIntoView(this.ref);
-  }
-
   getCustomerFieldValue(field) {
-    return this.state.customerFormContext.formData[field];
+    const { participantIndex, formData } = this.props;
+    return formData[`participants[${participantIndex}].customer.${field}`];
   }
 
   getExtendFieldValue(field) {
-    return this.state.extendFormContext.formData[field];
+    const { participantIndex, formData } = this.props;
+    return formData[`participants[${participantIndex}].extendForm.${field}`];
   }
 
   componentWillUnmount() {
-    const { resetDetails, participantIndex } = this.props;
-    resetDetails(participantIndex);
+    // TODO: reset form data.
+    // resetDetails(participantIndex);
   }
 
   render() {
@@ -149,7 +87,7 @@ export class _DetailsPanel extends React.Component {
   }
 
   renderEdit() {
-    const { firstName } = this.state.customerFormContext.formData;
+    const firstName = this.getCustomerFieldValue('firstName');
 
     return (
       <Container ref={ref => this.ref = ref}>
@@ -188,72 +126,74 @@ export class _DetailsPanel extends React.Component {
   }
 
   renderCustomerForm() {
-    let genderOptions = getElementOptions('customer.gender', this.props.settings);
+    const { participantIndex, settings } = this.props;
+
+    let genderOptions = getElementOptions('customer.gender', settings);
     genderOptions = this.translateOptions(genderOptions);
 
     return (
-      <FormContext.Provider value={this.state.customerFormContext}>
+      <React.Fragment>
         <Form.Row>
-          <Col md={6}><TextInput field="firstName" required /></Col>
-          <Col md={6}><TextInput field="lastName" required /></Col>
+          <Col md={6}><TextInput field={`participants[${participantIndex}].customer.firstName`} required /></Col>
+          <Col md={6}><TextInput field={`participants[${participantIndex}].customer.lastName`} required /></Col>
         </Form.Row>
         <Form.Row>
           <Col>
-            <TextInput field="email" type="text" required />
+            <TextInput field={`participants[${participantIndex}].customer.email`} type="text" required />
           </Col>
         </Form.Row>
         <Form.Row>
           <Col>
-            <SimpleSelectInput field="gender" options={genderOptions} required />
+            <SelectInput field={`participants[${participantIndex}].customer.gender`} options={genderOptions} required />
           </Col>
         </Form.Row>
         <Form.Row>
           <Col>
             <DobInput
-              field="dateOfBirth"
-              dayField="dateOfBirthDay"
-              monthField="dateOfBirthMonth"
-              yearField="dateOfBirthYear"
+              field={`participants[${participantIndex}].customer.dateOfBirth`}
+              dayField={`participants[${participantIndex}].customer.dateOfBirthDay`}
+              monthField={`participants[${participantIndex}].customer.dateOfBirthMonth`}
+              yearField={`participants[${participantIndex}].customer.dateOfBirthYear`}
               required
             />
           </Col>
         </Form.Row>
         <Form.Row>
           <Col>
-            <PhoneInput field="mobile" required />
+            <PhoneInput field={`participants[${participantIndex}].customer.mobile`} required />
           </Col>
         </Form.Row>
-      </FormContext.Provider>
+      </React.Fragment>
     );
   }
 
   renderExtendForm() {
-    return (
-      <FormContext.Provider value={this.state.extendFormContext}>
-        {this.props.extendFields.map(field =>
-          <Form.Row key={field.columnKey}>
-            <Col>
-              {this.renderExtendField(field)}
-            </Col>
-          </Form.Row>
-        )}
-      </FormContext.Provider>
+    return this.props.extendFields.map(field =>
+      <Form.Row key={field.columnKey}>
+        <Col>
+          {this.renderExtendField(field)}
+        </Col>
+      </Form.Row>
     );
   }
 
   renderExtendField = field => {
+    const { participantIndex } = this.props;
+    const inputField = `participants[${participantIndex}].extendForm.${field.columnKey}`;
+
     switch (field.type) {
-      case 'select':      return <SimpleSelectInput field={field.columnKey} options={this.translateOptions(field.options)} required={field.required} />;
-      case 'text':        return <TextInput field={field.columnKey} required={field.required} />;
-      case 'phonenumber': return <PhoneInput field={field.columnKey} required={field.required} />;
-      case 'checkbox':    return <CheckboxInput field={field.columnKey} required={field.required} />;
+      case 'select':      return <SelectInput field={inputField} options={this.translateOptions(field.options)} required={field.required} />;
+      case 'text':        return <TextInput field={inputField} required={field.required} />;
+      case 'phonenumber': return <PhoneInput field={inputField} required={field.required} />;
+      case 'checkbox':    return <CheckboxInput field={inputField} required={field.required} />;
       
       default: throw new Error(`Extend field type not supported: ${field.type}`);
     }
   };
 
   renderDone() {
-    const { firstName } = this.props.participant.customer;
+    const { participantIndex, formData } = this.props;
+    const firstName = formData[`participants[${participantIndex}].customer.firstName`];
 
     return (
       <Container>
@@ -267,7 +207,12 @@ export class _DetailsPanel extends React.Component {
   }
 
   getDob() {
-    const { dateOfBirthDay, dateOfBirthMonth, dateOfBirthYear } = this.state.customerFormContext.formData;
+    const { participantIndex, formData } = this.props;
+
+    const dateOfBirthDay   = formData[`participants[${participantIndex}].customer.dateOfBirthDay`];
+    const dateOfBirthMonth = formData[`participants[${participantIndex}].customer.dateOfBirthMonth`];
+    const dateOfBirthYear  = formData[`participants[${participantIndex}].customer.dateOfBirthYear`];
+
     return new Date(Number(dateOfBirthYear), Number(dateOfBirthMonth) - 1, Number(dateOfBirthDay));
   }
 
@@ -289,8 +234,8 @@ export class _DetailsPanel extends React.Component {
   }
 
   validateDob({ field, dob, eventDate, minAge, maxAge, errors }) {
-    const { intl, participant } = this.props;
-    const message = intl.formatMessage({ id: `validation.age.${participant.type}` });
+    const { intl, participantType } = this.props;
+    const message = intl.formatMessage({ id: `validation.age.${participantType}` });
 
     if (minAge && eventDate) {
       const turnsMinAge = new Date(dob.getFullYear() + minAge, dob.getMonth(), dob.getDate());
@@ -319,30 +264,30 @@ export class _DetailsPanel extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   const { participantIndex } = ownProps.panel.data;
+  const participantType = state.formData[`participants[${participantIndex}].type`];
 
   const event = getEvent(state);
-  const participant = state.panelData.participants[participantIndex];
-  const offer = event.registrationTypes[participant.type].offers[0];
+  const offer = event.registrationTypes[participantType].offers[0];
   const eventDate = new Date(offer.ageCalculationDate || event.startDate);
 
   return {
     settings: state.settings,
     event: event,
     participantIndex: participantIndex,
-    participant: participant,
+    participantType: participantType,
     extendFields: getExtendFields(state),
     eventDate: eventDate,
     minAge: Number(offer.minAgeOver),
     maxAge: Number(offer.maxAgeUnder),
+    formData: state.formData,
+    errors: state.errors,
   };
 };
 
 const actions = {
-  setDetails: setDetails,
   setAdditionalData: setAdditionalData,
-  setParticipantErrors: setParticipantErrors,
-  resetDetails: resetDetails,
   pushNextDetailsPanel: pushNextDetailsPanel,
+  setErrors: setErrors,
 };
 
 export const connectDetailsPanel = Component => injectIntl(connect(mapStateToProps, actions)(Component));

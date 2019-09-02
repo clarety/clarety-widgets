@@ -1,5 +1,6 @@
 import { calcProgress } from 'registrations/utils';
 import { createRegistration, types } from 'registrations/actions';
+import { getParticipantCount } from 'registrations/selectors';
 
 export const panels = {
   eventPanel:   'event-panel',
@@ -35,10 +36,9 @@ export const updatePanelData = (index, data) => ({
 export const pushNextDetailsPanel = participantIndex => {
   return (dispatch, getState) => {
     const state = getState();
-    const participantCount = state.panelData.participants.length;
-
-    const hasNext = participantIndex < participantCount;
-    if (hasNext) {
+    const participantCount = getParticipantCount(state);
+    
+    if (participantIndex < participantCount) {
       dispatch(pushPanel({
         name: panels.detailsPanel,
         data: {
