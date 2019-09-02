@@ -7,7 +7,7 @@ const initialState = {
   errors: null,
 };
 
-export const registrationReducer = (state = initialState, action) => {
+export const cartReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.registrationCreateSuccess:
       return {
