@@ -1,3 +1,5 @@
+import { panels } from 'registrations/actions';
+
 export const getEvent = state => state.settings.event;
 
 export const getEventName = state => {
@@ -14,6 +16,12 @@ export const getProgress = state => {
 export const getRegistrationTypes = state => {
   const event = getEvent(state);
   return event.registrationTypes;
+};
+
+export const getParticipantCount = state => {
+  const qtysPanel = state.panels.find(panel => panel.name === panels.qtysPanel);
+  const { qtys } = qtysPanel.data;
+  return Object.values(qtys).reduce((value, total) => value + total, 0);
 };
 
 export const getExtendFields = state => {

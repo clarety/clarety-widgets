@@ -2,32 +2,18 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Button, Form, Row, Col } from 'react-bootstrap';
-import { setFirstNames, resetFirstNames, panels } from 'registrations/actions';
+import { TextInput } from 'checkout/components';
+import { panels } from 'registrations/actions';
+import { getParticipantCount } from 'registrations/selectors';
 import { calcProgress } from 'registrations/utils';
 
 class _NamesPanel extends React.Component {
-  state = {
-    names: [],
-  };
-
-  onChangeName = (index, name) => {
-    this.setState(prevState => {
-      const names = [...prevState.names];
-      names[index] = name;
-      return { names };
-    });
-  };
-
   onClickNext = event => {
     event.preventDefault();
 
     if (!this.canContinue()) return;
 
-    const { setFirstNames, pushPanel } = this.props;
-
-    setFirstNames(this.state.names);
-
-    const participantCount = this.state.names.length;
+    const { pushPanel, participantCount } = this.props;
 
     pushPanel({
       name: panels.detailsPanel,
@@ -39,17 +25,12 @@ class _NamesPanel extends React.Component {
   };
 
   onClickEdit = () => {
-    // Update our component state with the names from the store.
-    const { participants } = this.props;
-    this.setState({
-      names: participants.map(participant => participant.customer.firstName),
-    });
-
     this.props.popToPanel();
   };
 
   componentWillUnmount() {
-    this.props.resetFirstNames();
+    // TODO: reset form data...
+    // this.props.resetFirstNames();
   }
 
   render() {
@@ -79,49 +60,55 @@ class _NamesPanel extends React.Component {
   }
 
   renderRows() {
-    const { participants } = this.props;
-    const { names } = this.state;
+    const { participantCount, formData } = this.props;
+    const rows = [];
 
-    return participants.map((participant, index) =>
-      <Row key={index} className="mb-3 align-items-center">
-        <Col xs={2}>
-          <span className="circle">{index + 1}</span>
-        </Col>
-        <Col>
-          <FormattedMessage id={`namesPanel.${participant.type}.title`}>
-            {txt => <p className="lead m-0">{txt}</p>}
-          </FormattedMessage>
-        </Col>
-        <Col>
-        <FormattedMessage id={`label.firstName`}>
-          {label =>
-            <Form.Control
-              placeholder={label}
-              value={names[index] || ''}
-              onChange={event => this.onChangeName(index, event.target.value)}
-            />
-          }
-          </FormattedMessage>
-        </Col>
-      </Row>
-    );
+    for (let index = 0; index < participantCount; index++) {
+      const type = formData[`participants[${index}].type`];
+
+      rows.push(
+        <Row key={index} className="mb-3 align-items-center">
+          <Col xs={2}>
+            <span className="circle">{index + 1}</span>
+          </Col>
+          <Col>
+            <FormattedMessage id={`namesPanel.${type}.title`}>
+              {txt => <p className="lead m-0">{txt}</p>}
+            </FormattedMessage>
+          </Col>
+          <Col>
+          <FormattedMessage id={`label.firstName`}>
+            {label =>
+              <TextInput field={`participants[${index}].firstName`} placeholder={label} />
+            }
+            </FormattedMessage>
+          </Col>
+        </Row>
+      );
+    }
+
+    return rows;
   }
 
   renderDone() {
-    const { participants } = this.props;
+    const { participantCount, formData } = this.props;
+
+    const rows = [];
+
+    for (let index = 0; index < participantCount; index++) {
+      rows.push(
+        <React.Fragment key={index}>
+          <span className="lead">{index + 1}. {formData[`participants[${index}].firstName`]}</span>
+          <br />
+        </React.Fragment>
+      );
+    }
 
     return (
       <Container>
         <FormattedMessage id="namesPanel.doneTitle" tagName="h4" />
 
-        <p>
-          {participants.map((participant, index) =>
-            <React.Fragment key={index}>
-              <span className="lead">{index + 1}. {participant.customer.firstName}</span>
-              <br />
-            </React.Fragment>
-          )}
-        </p>
+        <p>{rows}</p>
 
         <Button onClick={this.onClickEdit}>
           <FormattedMessage id="btn.edit" />
@@ -131,13 +118,12 @@ class _NamesPanel extends React.Component {
   }
 
   canContinue() {
-    const { participants } = this.props;
-    const { names } = this.state;
+    const { participantCount, formData } = this.props;
 
-    if (names.length !== participants.length) return false;
-
-    for (let name of names) {
-      if (!name.trim()) return false;
+    for (let index = 0; index < participantCount; index++) {
+      if (!formData[`participants[${index}].firstName`]) {
+        return false;
+      }
     }
 
     return true;
@@ -146,13 +132,11 @@ class _NamesPanel extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    participants: state.panelData.participants,
+    formData: state.formData,
+    participantCount: getParticipantCount(state),
   };
 };
 
-const actions = {
-  setFirstNames: setFirstNames,
-  resetFirstNames: resetFirstNames,
-};
+const actions = {};
 
 export const NamesPanel = connect(mapStateToProps, actions)(_NamesPanel);

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Button, Form, Col } from 'react-bootstrap';
 import { Qty, QtyInput } from 'registrations/components';
-import { panels, updatePanelData } from 'registrations/actions';
+import { panels, updatePanelData, updateQtysFormData } from 'registrations/actions';
 import { getRegistrationTypes } from 'registrations/selectors';
 
 class _QtysPanel extends React.Component {
@@ -14,12 +14,13 @@ class _QtysPanel extends React.Component {
   }
 
   onChange = (type, qty) => {
-    this.updatePanelData({
-      qtys: {
-        ...this.props.qtys,
-        [type]: qty,
-      }
-    });
+    const qtys = {
+      ...this.props.qtys,
+      [type]: qty,
+    };
+
+    this.updatePanelData({ qtys });
+    this.props.updateQtysFormData(qtys);
   };
 
   onClickNext = () => {
@@ -133,6 +134,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const actions = {
   updatePanelData: updatePanelData,
+  updateQtysFormData: updateQtysFormData,
 };
 
 export const QtysPanel = connect(mapStateToProps, actions)(_QtysPanel);
