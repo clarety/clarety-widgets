@@ -4,9 +4,10 @@ const initialState = [];
 
 export const panelsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.panelsPush: return panelsPush(state, action);
-    case types.panelsPop:  return panelsPop(state, action);
-    default:               return state;
+    case types.panelsPush:      return panelsPush(state, action);
+    case types.panelsPop:       return panelsPop(state, action);
+    case types.updatePanelData: return updatePanelData(state, action);
+    default:                    return state;
   }
 };
 
@@ -34,4 +35,18 @@ function panelsPop(state, action) {
   panels[action.index].status = panelStatuses.edit;
 
   return panels;
+}
+
+function updatePanelData(state, action) {
+  return state.map((panel, index) => {
+    if (action.index !== index) return panel;
+
+    return {
+      ...panel,
+      data: {
+        ...panel.data,
+        ...action.data,
+      }
+    };
+  });
 }

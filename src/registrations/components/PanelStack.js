@@ -17,6 +17,7 @@ class _PanelStack extends React.Component {
     return (
       <ScrollIntoView isActive={panel.status === panelStatuses.edit} key={index} className="section">
         <PanelComponent
+          index={index}
           panel={panel}
           isDone={panel.status === panelStatuses.done}
           pushPanel={pushPanel}

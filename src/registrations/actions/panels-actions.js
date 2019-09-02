@@ -26,6 +26,12 @@ export const popToPanel = index => ({
   index,
 });
 
+export const updatePanelData = (index, data) => ({
+  type: types.updatePanelData,
+  index: index,
+  data: data,
+});
+
 export const pushNextDetailsPanel = participantIndex => {
   return (dispatch, getState) => {
     const state = getState();

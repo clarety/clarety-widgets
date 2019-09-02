@@ -11,8 +11,9 @@ export const types = {
 
   // Panel Action Types
 
-  panelsPush: 'PANELS_PUSH',
-  panelsPop:  'PANELS_POP',
+  panelsPush:      'PANELS_PUSH',
+  panelsPop:       'PANELS_POP',
+  updatePanelData: 'UPDATE_PANEL_DATA',
 
   // Form Data Action Types
 
@@ -20,7 +21,7 @@ export const types = {
   resetFormData:  'RESET_FORM_DATA',
 
   // Panel Data Action Types
-  
+
   panelDataSetQtys:           'PANEL_DATA_SET_QTYS',
   panelDataResetQtys:         'PANEL_DATA_RESET_QTYS',
   panelDataSetFirstNames:     'PANEL_DATA_SET_FIRST_NAMES',
