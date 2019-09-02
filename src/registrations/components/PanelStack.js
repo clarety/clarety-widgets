@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { ScrollIntoView, EventPanel, QtysPanel, NamesPanel, DetailsPanel, ReviewPanel } from 'registrations/components';
-import { pushPanel, popToPanel, panels } from 'registrations/actions';
+import { pushPanel, popToPanel, panels, panelStatuses } from 'registrations/actions';
 import { OverrideContext } from 'registrations/utils';
 
 class _PanelStack extends React.Component {
@@ -10,16 +10,15 @@ class _PanelStack extends React.Component {
   }
 
   renderPanel = (panel, index) => {
-    const { panels, pushPanel, popToPanel } = this.props;
-    const isLast = panels.length - 1 === index;
+    const { pushPanel, popToPanel } = this.props;
 
     const PanelComponent = this.resolvePanelComponent(panel.name);
 
     return (
-      <ScrollIntoView isActive={isLast} key={index} className="section">
+      <ScrollIntoView isActive={panel.status === panelStatuses.edit} key={index} className="section">
         <PanelComponent
           panel={panel}
-          isDone={!isLast}
+          isDone={panel.status === panelStatuses.done}
           pushPanel={pushPanel}
           popToPanel={() => popToPanel(index)}
         />

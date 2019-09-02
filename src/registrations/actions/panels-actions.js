@@ -9,6 +9,12 @@ export const panels = {
   reviewPanel:  'review-panel',
 };
 
+export const panelStatuses = {
+  wait: 'wait',
+  edit: 'edit',
+  done: 'done',
+};
+
 export const pushPanel = ({ name, data }) => ({
   type: types.panelsPush,
   name: name,
