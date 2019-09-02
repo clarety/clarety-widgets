@@ -4,13 +4,12 @@ import { types, pushPanel, panels, setErrors } from 'registrations/actions';
 
 export const createRegistration = () => {
   return async (dispatch, getState) => {
-    dispatch(registrationCreateRequest());
-
-    const storeId = Config.get('storeId');
-
     const state = getState();
     const postData = getCreateRegistrationPostData(state);
 
+    dispatch(registrationCreateRequest(postData));
+
+    const storeId = Config.get('storeId');
     const results = await ClaretyApi.post('registration-sale-widget/', postData, { storeId });
     const result = results[0];
 
@@ -32,13 +31,12 @@ export const createRegistration = () => {
 
 export const submitRegistration = () => {
   return async (dispatch, getState) => {
-    dispatch(registrationSubmitRequest());
-
-    const storeId = Config.get('storeId');
-
     const state = getState();
     const postData = getSubmitRegistrationPostData(state);
 
+    dispatch(registrationSubmitRequest(postData));
+
+    const storeId = Config.get('storeId');
     const results = await ClaretyApi.post('registration-payment-widget/', postData, { storeId });
     const result = results[0];
 
@@ -55,28 +53,30 @@ export const submitRegistration = () => {
 
 // Create
 
-const registrationCreateRequest = () => ({
+const registrationCreateRequest = postData => ({
   type: types.registrationCreateRequest,
+  postData: postData,
 });
 
 const registrationCreateSuccess = result => ({
   type: types.registrationCreateSuccess,
-  result,
+  result: result,
 });
 
 const registrationCreateFailure = result => ({
   type: types.registrationCreateFailure,
-  result,
+  result: result,
 });
 
 
 // Submit
 
-const registrationSubmitRequest = () => ({
+const registrationSubmitRequest = postData => ({
   type: types.registrationSubmitRequest,
+  postData: postData,
 });
 
 const registrationSubmitFailure = result => ({
   type: types.registrationSubmitFailure,
-  result,
+  result: result,
 });

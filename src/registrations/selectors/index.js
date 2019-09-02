@@ -33,11 +33,11 @@ const getExtendFormId = state => {
 };
 
 export const getCreateRegistrationPostData = state => {
-  const { panelData } = state;
-  const { eventId, participants } = panelData;
+  const { panelData, formData } = state;
+  const { participants } = panelData;
 
   const postData = {
-    eventId,
+    eventId: formData['eventId'],
     registrations: participants.map(participant => ({
       quantity: 1,
       offerId: getOfferId(state, participant),

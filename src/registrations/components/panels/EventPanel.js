@@ -5,39 +5,36 @@ import { Container, Form } from 'react-bootstrap';
 import Select from 'react-select';
 // TODO: move button into 'form/components'.
 import { Button } from 'checkout/components';
-import { statuses, setEvent, resetEvent, fetchFullEvent } from 'registrations/actions';
+import { statuses, updateFormData, fetchFullEvent } from 'registrations/actions';
 import { getEvent } from 'registrations/selectors';
 
 class _EventPanel extends React.Component {
-  state = {
-    event: null,
-  };
-
   componentDidMount() {
     // Preselect event via url param.
     const urlParams = new URLSearchParams(window.location.search);
     const eventId = urlParams.get('event');
 
     if (eventId) {
-      const event = this.props.events.find(event => event.eventId === eventId);
-      this.setState({ event });
+      this.props.updateFormData({ eventId });
     }
   }
 
-  onClickNext = () => {
-    if (!this.state.event) return;
+  onChange = event => {
+    this.props.updateFormData({ eventId: event.eventId });
+  };
 
-    this.props.setEvent(this.state.event.eventId);
-    this.props.fetchFullEvent(this.state.event.eventId);
+  onClickNext = () => {
+    const { formData, fetchFullEvent } = this.props;
+    fetchFullEvent(formData['eventId']);
   };
 
   onClickEdit = () => {
     this.props.popToPanel();
-    this.props.resetEvent();
+    this.props.updateFormData({ eventId: undefined });
   };
 
   componentWillUnmount() {
-    this.props.resetEvent();
+    this.props.updateFormData({ eventId: undefined });
   }
 
   render() {
@@ -49,7 +46,8 @@ class _EventPanel extends React.Component {
   }
   
   renderEdit() {
-    const { events, isBusy } = this.props;
+    const { isBusy, events, formData } = this.props;
+    const value = events.find(event => event.eventId === formData['eventId']);
 
     return (
       <Container>
@@ -59,8 +57,8 @@ class _EventPanel extends React.Component {
           <Form.Group>
             <Select
               options={events}
-              value={this.state.event}
-              onChange={event => this.setState({ event })}
+              value={value}
+              onChange={this.onChange}
               getOptionLabel={event => event.name}
               getOptionValue={event => event.eventId}
               classNamePrefix="react-select"
@@ -71,7 +69,7 @@ class _EventPanel extends React.Component {
         <Button
           title={<FormattedMessage id="btn.next" />}
           onClick={this.onClickNext}
-          disabled={!this.state.event}
+          disabled={!value}
           isBusy={isBusy}
           variant="action"
         />
@@ -100,13 +98,13 @@ const mapStateToProps = state => {
   return {
     isBusy: state.status === statuses.fetchingEvent,
     events: state.settings.events,
+    formData: state.formData,
     selectedEvent: getEvent(state),
   };
 };
 
 const actions = {
-  setEvent: setEvent,
-  resetEvent: resetEvent,
+  updateFormData: updateFormData,
   fetchFullEvent: fetchFullEvent,
 };
 
