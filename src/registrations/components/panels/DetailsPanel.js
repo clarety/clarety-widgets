@@ -4,7 +4,7 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import { Container, Button, Form, Row, Col } from 'react-bootstrap';
 import { getElementOptions } from 'shared/utils';
 import { TextInput, DobInput, CheckboxInput, SimpleSelectInput, SelectInput, PhoneInput } from 'registrations/components';
-import { setDetails, setAdditionalData, setErrors, resetDetails, pushNextDetailsPanel } from 'registrations/actions';
+import { setDetails, setAdditionalData, setParticipantErrors, resetDetails, pushNextDetailsPanel } from 'registrations/actions';
 import { getEvent, getExtendFields } from 'registrations/selectors';
 import { FormContext, scrollIntoView } from 'registrations/utils';
 
@@ -122,8 +122,8 @@ export class _DetailsPanel extends React.Component {
   }
 
   setErrors(errors) {
-    const { setErrors, participantIndex } = this.props;
-    setErrors(participantIndex, errors);
+    const { setParticipantErrors, participantIndex } = this.props;
+    setParticipantErrors(participantIndex, errors);
     scrollIntoView(this.ref);
   }
 
@@ -318,7 +318,7 @@ export class _DetailsPanel extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { participantIndex } = ownProps;
+  const { participantIndex } = ownProps.panel.data;
 
   const event = getEvent(state);
   const participant = state.panelData.participants[participantIndex];
@@ -328,6 +328,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     settings: state.settings,
     event: event,
+    participantIndex: participantIndex,
     participant: participant,
     extendFields: getExtendFields(state),
     eventDate: eventDate,
@@ -339,7 +340,7 @@ const mapStateToProps = (state, ownProps) => {
 const actions = {
   setDetails: setDetails,
   setAdditionalData: setAdditionalData,
-  setErrors: setErrors,
+  setParticipantErrors: setParticipantErrors,
   resetDetails: resetDetails,
   pushNextDetailsPanel: pushNextDetailsPanel,
 };

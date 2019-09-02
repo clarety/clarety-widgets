@@ -8,9 +8,8 @@ export const panelsReducer = (state = initialState, action) => {
       return [
         ...state,
         {
-          name: action.panel,
-          progress: action.progress,
-          props: action.props,
+          name: action.name,
+          data: action.data,
         },
       ];
 

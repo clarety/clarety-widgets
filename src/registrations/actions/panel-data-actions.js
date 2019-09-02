@@ -40,7 +40,7 @@ export const setAdditionalData = (index, additionalData) => ({
   additionalData,
 });
 
-export const setErrors = (index, errors) => ({
+export const setParticipantErrors = (index, errors) => ({
   type: types.panelDataSetErrors,
   index,
   errors,

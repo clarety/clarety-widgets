@@ -9,11 +9,10 @@ export const panels = {
   reviewPanel:  'review-panel',
 };
 
-export const pushPanel = ({ panel, progress, props }) => ({
+export const pushPanel = ({ name, data }) => ({
   type: types.panelsPush,
-  panel,
-  progress,
-  props,
+  name: name,
+  data: data,
 });
 
 export const popToPanel = index => ({
@@ -29,9 +28,11 @@ export const pushNextDetailsPanel = participantIndex => {
     const hasNext = participantIndex < participantCount;
     if (hasNext) {
       dispatch(pushPanel({
-        panel: panels.detailsPanel,
-        progress: calcProgress(participantCount, participantIndex),
-        props: { participantIndex },
+        name: panels.detailsPanel,
+        data: {
+          progress: calcProgress(participantCount, participantIndex),
+          participantIndex: participantIndex,
+        },
       }));
     } else {
       dispatch(createRegistration());

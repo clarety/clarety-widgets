@@ -22,8 +22,10 @@ export const createRegistration = () => {
     }
 
     dispatch(pushPanel({
-      panel: panels.reviewPanel,
-      progress: 100,
+      name: panels.reviewPanel,
+      data: {
+        progress: 100,
+      }
     }));
   };
 };

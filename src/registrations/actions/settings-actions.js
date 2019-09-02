@@ -12,8 +12,10 @@ export const fetchEvents = () => {
     if (results) {
       dispatch(fetchEventsSuccess(results));
       dispatch(pushPanel({
-        panel: panels.eventPanel,
-        progress: 0,
+        name: panels.eventPanel,
+        data: {
+          progress: 0,
+        },
       }));
     } else {
       dispatch(fetchEventsFailure());
@@ -33,8 +35,10 @@ export const fetchFullEvent = eventId => {
     if (results) {
       dispatch(fetchFullEventSuccess(results[0]));
       dispatch(pushPanel({
-        panel: panels.qtysPanel,
-        progress: 20,
+        name: panels.qtysPanel,
+        data: {
+          progress: 20,
+        },
       }));
     } else {
       dispatch(fetchFullEventFailure());

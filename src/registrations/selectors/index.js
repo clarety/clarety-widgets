@@ -8,7 +8,7 @@ export const getEventName = state => {
 export const getProgress = state => {
   const lastIndex = state.panels.length - 1;
   const lastPanel = state.panels[lastIndex];
-  return lastPanel ? lastPanel.progress : 0;
+  return lastPanel ? lastPanel.data.progress : 0;
 };
 
 export const getRegistrationTypes = state => {

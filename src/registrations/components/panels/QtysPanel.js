@@ -12,8 +12,10 @@ class _QtysPanel extends React.Component {
   onClickNext = () => {
     this.props.setQtys(this.state);
     this.props.pushPanel({
-      panel: panels.namesPanel,
-      progress: 40,
+      name: panels.namesPanel,
+      data: {
+        progress: 40,
+      },
     });
   };
 

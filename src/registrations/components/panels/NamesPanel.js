@@ -30,9 +30,11 @@ class _NamesPanel extends React.Component {
     const participantCount = this.state.names.length;
 
     pushPanel({
-      panel: panels.detailsPanel,
-      progress: calcProgress(participantCount, 0),
-      props: { participantIndex: 0 },
+      name: panels.detailsPanel,
+      data: {
+        progress: calcProgress(participantCount, 0),
+        participantIndex: 0,
+      },
     });
   };
 
