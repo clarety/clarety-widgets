@@ -1,8 +1,4 @@
 export const types = {
-  // Status Action Types
-
-  statusSet: 'STATUS_SET',
-
   // Settings Action Types
 
   fetchEventsRequest: 'FETCH_EVENTS_REQUEST',
@@ -12,6 +8,10 @@ export const types = {
   fetchFullEventRequest: 'FETCH_FULL_EVENT_REQUEST',
   fetchFullEventSuccess: 'FETCH_FULL_EVENT_SUCCESS',
   fetchFullEventFailure: 'FETCH_FULL_EVENT_FAILURE',
+
+  // Error Action Types
+
+  setErrors: 'SET_ERRORS',
 
   // Panel Stack Action Types
 

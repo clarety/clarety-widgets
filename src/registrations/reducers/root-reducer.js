@@ -7,4 +7,5 @@ export const rootReducer = combineReducers({
   panelStack: reducers.panelStackReducer,
   panelData:  reducers.panelDataReducer,
   cart:       reducers.cartReducer,
+  errors:     reducers.errorsReducer,
 });
