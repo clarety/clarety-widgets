@@ -27,7 +27,7 @@ class PureSimpleSelectInput extends React.PureComponent {
           <option value="" disabled hidden>{placeholder || 'Select'}</option>
 
           {options.map(option =>
-            <option value={option.value}>{option.label}</option>
+            <option key={option.value} value={option.value}>{option.label}</option>
           )}
         </Form.Control>
 
