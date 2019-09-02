@@ -177,17 +177,17 @@ export class _DetailsPanel extends React.Component {
     );
   }
 
-  renderExtendField = field => {
+  renderExtendField = extendField => {
     const { participantIndex } = this.props;
-    const inputField = `participants[${participantIndex}].extendForm.${field.columnKey}`;
+    const inputField = `participants[${participantIndex}].extendForm.${extendField.columnKey}`;
 
-    switch (field.type) {
-      case 'select':      return <SelectInput field={inputField} options={this.translateOptions(field.options)} required={field.required} />;
-      case 'text':        return <TextInput field={inputField} required={field.required} />;
-      case 'phonenumber': return <PhoneInput field={inputField} required={field.required} />;
-      case 'checkbox':    return <CheckboxInput field={inputField} required={field.required} />;
+    switch (extendField.type) {
+      case 'select':      return <SelectInput field={inputField} options={this.translateOptions(extendField.options)} required={extendField.required} />;
+      case 'text':        return <TextInput field={inputField} required={extendField.required} />;
+      case 'phonenumber': return <PhoneInput field={inputField} required={extendField.required} />;
+      case 'checkbox':    return <CheckboxInput field={inputField} required={extendField.required} />;
       
-      default: throw new Error(`Extend field type not supported: ${field.type}`);
+      default: throw new Error(`Extend field type not supported: ${extendField.type}`);
     }
   };
 
