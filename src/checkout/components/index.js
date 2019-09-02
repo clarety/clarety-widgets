@@ -8,6 +8,7 @@ export * from './inputs/TextInput';
 export * from './inputs/CheckboxInput';
 export * from './inputs/PhoneInput';
 export * from './inputs/DobInput';
+export * from './inputs/SelectInput';
 export * from './inputs/StateInput';
 export * from './inputs/CardNumberInput';
 export * from './inputs/CcvInput';
