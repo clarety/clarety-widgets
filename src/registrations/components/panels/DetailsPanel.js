@@ -4,7 +4,7 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import { Container, Button, Form, Row, Col } from 'react-bootstrap';
 import { getElementOptions } from 'shared/utils';
 import { TextInput, DobInput, CheckboxInput, SelectInput, PhoneInput } from 'checkout/components';
-import { setAdditionalData, resetDetails, pushNextDetailsPanel, setErrors } from 'registrations/actions';
+import { setAdditionalData, pushNextDetailsPanel, setErrors } from 'registrations/actions';
 import { getEvent, getExtendFields } from 'registrations/selectors';
 import { scrollIntoView } from 'registrations/utils';
 

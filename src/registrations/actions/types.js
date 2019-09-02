@@ -22,12 +22,7 @@ export const types = {
 
   // Panel Data Action Types
 
-  panelDataSetFirstNames:     'PANEL_DATA_SET_FIRST_NAMES',
-  panelDataResetFirstNames:   'PANEL_DATA_RESET_FIRST_NAMES',
-  panelDataSetDetails:        'PANEL_DATA_SET_DETAILS',
   panelDataSetAdditionalData: 'PANEL_DATA_SET_ADDITIONAL_DATA',
-  panelDataSetErrors:         'PANEL_DATA_SET_ERRORS',
-  panelDataResetDetails:      'PANEL_DATA_RESET_DETAILS',
 
   // Cart Action Types
 
