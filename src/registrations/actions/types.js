@@ -43,8 +43,9 @@ export const types = {
 };
 
 export const statuses = {
-  initializing: 'INITIALIZING',
-  validating:   'VALIDATING',
-  submitting:   'SUBMITTING',
-  ready:        'READY',
+  initializing:  'initializing',
+  fetchingEvent: 'fetching-event',
+  validating:    'validating',
+  submitting:    'submitting',
+  ready:         'ready',
 };

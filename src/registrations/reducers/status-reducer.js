@@ -10,6 +10,12 @@ export const statusReducer = (state = initialState, action) => {
     case types.fetchEventsSuccess:
       return statuses.ready;
 
+    case types.fetchFullEventRequest:
+      return statuses.fetchingEvent;
+
+    case types.fetchFullEventSuccess:
+      return statuses.ready;
+
     case types.registrationCreateRequest:
       return statuses.validating;
 

@@ -5,7 +5,7 @@ import { Container, Form } from 'react-bootstrap';
 import Select from 'react-select';
 // TODO: move button into 'form/components'.
 import { Button } from 'checkout/components';
-import { setEvent, resetEvent, fetchFullEvent } from 'registrations/actions';
+import { statuses, setEvent, resetEvent, fetchFullEvent } from 'registrations/actions';
 import { getEvent } from 'registrations/selectors';
 
 class _EventPanel extends React.Component {
@@ -98,7 +98,7 @@ class _EventPanel extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    isBusy: state.settings.isBusy,
+    isBusy: state.status === statuses.fetchingEvent,
     events: state.settings.events,
     selectedEvent: getEvent(state),
   };

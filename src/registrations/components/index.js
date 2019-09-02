@@ -18,4 +18,4 @@ export * from './PanelStack';
 export * from './Qty';
 export * from './ScrollIntoView';
 
-export * from './RegistrationsApp';
+export * from './Registrations';

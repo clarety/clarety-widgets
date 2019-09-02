@@ -1,7 +1,6 @@
 import { types } from 'registrations/actions';
 
 const initialState = {
-  isBusy: false,
   events: null,
   event: null,
   extendForms: null,
@@ -16,16 +15,9 @@ export const settingsReducer = (state = initialState, action) => {
         events: action.results,
       };
 
-    case types.fetchFullEventRequest:
-      return {
-        ...state,
-        isBusy: true,
-      };
-
     case types.fetchFullEventSuccess:
       return {
         ...state,
-        isBusy: false,
         event: action.result.events[0],
         extendForms: convertSelectFields(action.result.extendForms),
         elements: action.result.elements,
