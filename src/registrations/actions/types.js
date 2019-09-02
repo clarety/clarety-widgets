@@ -13,10 +13,10 @@ export const types = {
 
   setErrors: 'SET_ERRORS',
 
-  // Panel Stack Action Types
+  // Panel Action Types
 
-  panelStackPush: 'PANEL_STACK_PUSH',
-  panelStackPop:  'PANEL_STACK_POP',
+  panelsPush: 'PANELS_PUSH',
+  panelsPop:  'PANELS_POP',
 
   // Panel Data Action Types
 

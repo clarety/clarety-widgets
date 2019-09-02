@@ -2,22 +2,22 @@ import { calcProgress } from 'registrations/utils';
 import { createRegistration, types } from 'registrations/actions';
 
 export const panels = {
-  eventPanel:   'EVENT_PANEL',
-  qtysPanel:    'QTYS_PANEL',
-  namesPanel:   'NAMES_PANEL',
-  detailsPanel: 'DETAILS_PANEL',
-  reviewPanel:  'REVIEW_PANEL',
+  eventPanel:   'event-panel',
+  qtysPanel:    'qtys-panel',
+  namesPanel:   'names-panel',
+  detailsPanel: 'details-panel',
+  reviewPanel:  'review-panel',
 };
 
 export const pushPanel = ({ panel, progress, props }) => ({
-  type: types.panelStackPush,
+  type: types.panelsPush,
   panel,
   progress,
   props,
 });
 
 export const popToPanel = index => ({
-  type: types.panelStackPop,
+  type: types.panelsPop,
   index,
 });
 

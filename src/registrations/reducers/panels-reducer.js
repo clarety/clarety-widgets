@@ -2,9 +2,9 @@ import { types } from 'registrations/actions';
 
 const initialState = [];
 
-export const panelStackReducer = (state = initialState, action) => {
+export const panelsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.panelStackPush:
+    case types.panelsPush:
       return [
         ...state,
         {
@@ -14,7 +14,7 @@ export const panelStackReducer = (state = initialState, action) => {
         },
       ];
 
-    case types.panelStackPop:
+    case types.panelsPop:
       return state.slice(0, action.index + 1);
 
     default:

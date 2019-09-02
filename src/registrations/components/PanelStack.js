@@ -6,12 +6,12 @@ import { OverrideContext } from 'registrations/utils';
 
 class _PanelStack extends React.Component {
   render() {
-    return this.props.panelStack.map(this.renderPanel);
+    return this.props.panels.map(this.renderPanel);
   }
 
   renderPanel = (panel, index) => {
-    const { panelStack, pushPanel, popToPanel } = this.props;
-    const isLast = panelStack.length - 1 === index;
+    const { panels, pushPanel, popToPanel } = this.props;
+    const isLast = panels.length - 1 === index;
 
     const PanelComponent = this.resolvePanelComponent(panel.name);
 
@@ -44,7 +44,7 @@ _PanelStack.contextType = OverrideContext;
 
 const mapStateToProps = state => {
   return {
-    panelStack: state.panelStack,
+    panels: state.panels,
   };
 };
 
