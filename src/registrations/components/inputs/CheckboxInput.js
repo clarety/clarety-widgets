@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, FormCheck } from 'react-bootstrap';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import { FormContext } from 'registrations/utils';
 import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
@@ -21,6 +21,8 @@ class PureCheckboxInput extends React.PureComponent {
             {label || <FormattedMessage id={translationId || `label.${field}`} />}
             {required && ' *'}
           </FormCheck.Label>
+          <br />
+          <FormattedHTMLMessage id={`explanation.${field}`} />
         </FormCheck>
         <FieldError error={error} />
       </Form.Group>
