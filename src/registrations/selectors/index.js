@@ -1,3 +1,4 @@
+import { parseNestedElements } from 'shared/utils';
 import { panels } from 'registrations/actions';
 
 export const getEvent = state => state.settings.event;
@@ -41,25 +42,60 @@ const getExtendFormId = state => {
 };
 
 export const getCreateRegistrationPostData = state => {
-  const { panelData, formData } = state;
-  const { participants } = panelData;
+  const { formData } = state;
 
-  const postData = {
-    eventId: formData['eventId'],
-    registrations: participants.map(participant => ({
+  const participantCount = getParticipantCount(state);
+  const types = getRegistrationTypes(state);
+  const extendFormId = getExtendFormId(state);
+  const participantsData = extractPartcipantsData(state);
+
+  const registrations = [];
+
+  for (let index = 0; index < participantCount; index++) {
+    const participant = participantsData[index];
+    const offer = types[participant.type].offers[0];
+    const product = offer.registrationProducts[0].products[0];
+
+    registrations.push({
       quantity: 1,
-      offerId: getOfferId(state, participant),
+      offerId: offer.offerId,
       participants: [{
-        productId: getProductId(state, participant),
+        productId: product.productId,
         customer: participant.customer,
-        extendFormId: getExtendFormId(state),
+        extendFormId: extendFormId,
         extendForm: participant.extendForm,
         ...participant.additionalData,
       }],
-    })),
+    });
+  }
+
+  const postData = {
+    eventId: formData['eventId'],
+    registrations: registrations,
   };
 
   return postData;
+};
+
+export const extractPartcipantsData = state => {
+  const { formData } = state;
+
+  const participants = [];
+
+  const regex = new RegExp(/^participants\[(\d+)\]\.(.*)$/);
+
+  for (let key in formData) {
+    const match = regex.exec(key);
+    if (match) {
+      const [, index, field] = match;
+      participants[index] = participants[index] || {};
+      participants[index][field] = formData[key];
+    }
+  }
+
+  return participants.map(
+    participant => parseNestedElements(participant)
+  );
 };
 
 export const getSubmitRegistrationPostData = state => {
