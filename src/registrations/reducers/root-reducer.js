@@ -5,7 +5,6 @@ export const rootReducer = combineReducers({
   status:    reducers.statusReducer,
   settings:  reducers.settingsReducer,
   panels:    reducers.panelsReducer,
-  panelData: reducers.panelDataReducer,
   formData:  reducers.formDataReducer,
   cart:      reducers.cartReducer,
   errors:    reducers.errorsReducer,

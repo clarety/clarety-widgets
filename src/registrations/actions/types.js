@@ -20,10 +20,6 @@ export const types = {
   updateFormData: 'UPDATE_FORM_DATA',
   resetFormData:  'RESET_FORM_DATA',
 
-  // Panel Data Action Types
-
-  panelDataSetAdditionalData: 'PANEL_DATA_SET_ADDITIONAL_DATA',
-
   // Cart Action Types
 
   registrationCreateRequest: 'REGISTRATION_CREATE_REQUEST',

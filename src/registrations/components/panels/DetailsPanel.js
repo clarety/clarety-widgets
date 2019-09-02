@@ -4,7 +4,7 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import { Container, Button, Form, Row, Col } from 'react-bootstrap';
 import { getElementOptions } from 'shared/utils';
 import { TextInput, DobInput, CheckboxInput, SelectInput, PhoneInput } from 'checkout/components';
-import { setAdditionalData, pushNextDetailsPanel, setErrors } from 'registrations/actions';
+import { pushNextDetailsPanel, setErrors } from 'registrations/actions';
 import { getEvent, getExtendFields } from 'registrations/selectors';
 import { scrollIntoView } from 'registrations/utils';
 
@@ -285,7 +285,6 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const actions = {
-  setAdditionalData: setAdditionalData,
   pushNextDetailsPanel: pushNextDetailsPanel,
   setErrors: setErrors,
 };
