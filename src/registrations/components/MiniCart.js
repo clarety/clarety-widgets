@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Navbar, ProgressBar, Row, Col } from 'react-bootstrap';
 import { Brand, Qty } from 'registrations/components';
-import { getEventName, getProgress } from 'registrations/selectors';
+import { getEventName, getProgress, getPanel } from 'registrations/selectors';
+import { panels } from 'registrations/actions';
 import { OverrideContext } from 'registrations/utils';
 
 class _MiniCart extends React.Component {
@@ -20,7 +21,7 @@ class _MiniCart extends React.Component {
             {eventName}
           </Col>
           <Col className="d-none d-sm-block">
-            {Object.keys(qtys).map(key =>
+            {qtys && Object.keys(qtys).map(key =>
               <Qty key={key} type={key} qty={qtys[key]} />
             )}
           </Col>
@@ -34,9 +35,11 @@ class _MiniCart extends React.Component {
 _MiniCart.contextType = OverrideContext;
 
 const mapStateToProps = state => {
+  const qtysPanel = getPanel(state, panels.qtysPanel);
+
   return {
     eventName: getEventName(state),
-    qtys: state.panelData.qtys,
+    qtys: qtysPanel && qtysPanel.data.qtys,
     progress: getProgress(state),
   };
 };

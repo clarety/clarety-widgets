@@ -20,9 +20,13 @@ export const getRegistrationTypes = state => {
 };
 
 export const getParticipantCount = state => {
-  const qtysPanel = state.panels.find(panel => panel.name === panels.qtysPanel);
+  const qtysPanel = getPanel(state, panels.qtysPanel);
   const { qtys } = qtysPanel.data;
   return Object.values(qtys).reduce((value, total) => value + total, 0);
+};
+
+export const getPanel = (state, panelName) => {
+  return state.panels.find(panel => panel.name === panelName);
 };
 
 export const getExtendFields = state => {
@@ -103,20 +107,4 @@ export const getSubmitRegistrationPostData = state => {
     uid: state.cart.uid,
     jwt: state.cart.jwt,
   };
-};
-
-const getOfferId = (state, participant) => {
-  const types = getRegistrationTypes(state);
-  return types[participant.type]
-           .offers[0]
-           .offerId;
-};
-
-const getProductId = (state, participant) => {
-  const types = getRegistrationTypes(state);
-  return types[participant.type]
-           .offers[0]
-           .registrationProducts[0]
-           .products[0]
-           .productId;
 };
