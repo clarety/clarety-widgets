@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { BasePanel, TextInput, PhoneInput, DobInput, Button } from 'checkout/components';
-import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { statuses, nextPanel, editPanel, panelStatuses, validatePersonalDetails } from 'checkout/actions';
+import { TextInput, PhoneInput, DobInput, Button } from 'shared/components/inputs';
+import { BasePanel, WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
+import { statuses, nextPanel, editPanel, validatePersonalDetails } from 'checkout/actions';
 
 class _PersonalDetailsPanel extends BasePanel {
   onPressContinue = event => {

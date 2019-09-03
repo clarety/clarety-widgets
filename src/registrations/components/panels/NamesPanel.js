@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Button, Form, Row, Col } from 'react-bootstrap';
-import { TextInput } from 'checkout/components';
+import { TextInput } from 'shared/components/inputs';
 import { panels } from 'registrations/actions';
 import { getParticipantCount } from 'registrations/selectors';
 import { calcProgress } from 'registrations/utils';

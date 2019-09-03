@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { BasePanel, TextInput, CardNumberInput, CcvInput, ExpiryInput, Button } from 'checkout/components';
-import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
+import { TextInput, CardNumberInput, CcvInput, ExpiryInput, Button } from 'shared/components/inputs';
+import { BasePanel, WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { statuses, makePayment, editPanel, paymentMethods, validateCreditCardFields } from 'checkout/actions';
 import { getPaymentMethod } from 'checkout/selectors';
 

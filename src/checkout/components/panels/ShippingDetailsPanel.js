@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { BasePanel, TextInput, CheckboxInput, StateInput, Button } from 'checkout/components';
-import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
+import { TextInput, CheckboxInput, StateInput, Button } from 'shared/components/inputs';
+import { BasePanel, WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { statuses, onSubmitShippingDetails, editPanel, validateShippingDetails } from 'checkout/actions';
 
 class _ShippingDetailsPanel extends BasePanel {

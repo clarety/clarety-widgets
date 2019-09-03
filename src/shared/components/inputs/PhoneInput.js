@@ -4,7 +4,7 @@ import ReactPhoneNumberInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { Config } from 'clarety-utils';
 import { FieldError } from 'form/components';
-import { BaseInput, connectInput } from 'checkout/components';
+import { BaseInput, connectInput } from 'shared/components/inputs';
 
 class _PhoneInput extends BaseInput {
   onChange = value => this.setState({ value });

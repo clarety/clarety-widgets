@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Col, Form } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { TextInput, Button } from 'checkout/components';
+import { TextInput, Button } from 'shared/components/inputs';
 import { statuses, applyPromoCode } from 'checkout/actions';
 
 class _PromoCodeForm extends React.Component {

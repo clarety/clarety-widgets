@@ -2,7 +2,7 @@ import React from 'react';
 import { Form } from 'react-bootstrap';
 import { cleanCcv } from 'form/utils';
 import { FieldError } from 'form/components';
-import { BaseInput, connectInput } from 'checkout/components';
+import { BaseInput, connectInput } from 'shared/components/inputs';
 import './CcvInput.css';
 
 class _CcvInput extends BaseInput {

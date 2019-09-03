@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, FormCheck } from 'react-bootstrap';
 import { FieldError } from 'form/components';
-import { BaseInput, connectInput } from 'checkout/components';
+import { BaseInput, connectInput } from 'shared/components/inputs';
 
 export class _CheckboxInput extends BaseInput {
   onChange = event => {

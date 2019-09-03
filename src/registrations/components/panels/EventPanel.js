@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { Container, Form } from 'react-bootstrap';
 import Select from 'react-select';
 // TODO: move button into 'form/components'.
-import { Button } from 'checkout/components';
+import { Button } from 'shared/components/inputs';
 import { statuses, updateFormData, fetchFullEvent } from 'registrations/actions';
 import { getEvent } from 'registrations/selectors';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { Form } from 'react-bootstrap';
 import { getCardType, formatCardNumber, cleanCardNumber } from 'form/utils';
 import { FieldError } from 'form/components';
-import { BaseInput, connectInput } from 'checkout/components';
+import { BaseInput, connectInput } from 'shared/components/inputs';
 import './CardNumberInput.css';
 
 class _CardNumberInput extends BaseInput {

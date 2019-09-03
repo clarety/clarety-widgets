@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Container, Button, Form, Row, Col } from 'react-bootstrap';
 import { getElementOptions } from 'shared/utils';
-import { TextInput, DobInput, CheckboxInput, SelectInput, PhoneInput } from 'checkout/components';
+import { TextInput, DobInput, CheckboxInput, SelectInput, PhoneInput } from 'shared/components/inputs';
 import { pushNextDetailsPanel, validateParticipantDetails } from 'registrations/actions';
 import { getExtendFields } from 'registrations/selectors';
 import { scrollIntoView } from 'registrations/utils';
