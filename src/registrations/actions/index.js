@@ -5,3 +5,4 @@ export * from './error-actions';
 export * from './form-data-actions';
 export * from './settings-actions';
 export * from './panels-actions';
+export * from './validation-actions';

@@ -4,8 +4,8 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import { Container, Button, Form, Row, Col } from 'react-bootstrap';
 import { getElementOptions } from 'shared/utils';
 import { TextInput, DobInput, CheckboxInput, SelectInput, PhoneInput } from 'checkout/components';
-import { pushNextDetailsPanel, setErrors } from 'registrations/actions';
-import { getEvent, getExtendFields } from 'registrations/selectors';
+import { pushNextDetailsPanel, validateParticipantDetails } from 'registrations/actions';
+import { getExtendFields } from 'registrations/selectors';
 import { scrollIntoView } from 'registrations/utils';
 
 export class _DetailsPanel extends React.Component {
@@ -14,49 +14,24 @@ export class _DetailsPanel extends React.Component {
   onClickNext = event => {
     event.preventDefault();
 
-    const { participantIndex, pushNextDetailsPanel } = this.props;
+    const { participantIndex, pushNextDetailsPanel, validate, intl } = this.props;
 
-    if (this.validate()) {
-      this.onSubmitForm();
-      pushNextDetailsPanel(participantIndex + 1);
-    } else {
-      scrollIntoView(this.ref);
-    }
+    validate({
+      participantIndex: participantIndex,
+      intl: intl,
+      onSuccess: () => {
+        this.onSubmitForm();
+        pushNextDetailsPanel(participantIndex + 1);
+      },
+      onFailure: () => {
+        scrollIntoView(this.ref);
+      },
+    });
   };
 
   onClickEdit = () => {
     this.props.popToPanel();
   };
-
-  validate() {
-    const errors = [];
-    this.validateFields(errors);
-    this.props.setErrors(errors);
-    return errors.length === 0;
-  }
-
-  validateFields(errors) {
-    const { formData, participantIndex } = this.props;
-    const { eventDate, minAge, maxAge } = this.props;
-
-    this.validateRequired(`participants[${participantIndex}].customer.firstName`, formData, errors);
-    this.validateRequired(`participants[${participantIndex}].customer.lastName`, formData, errors);
-    this.validateEmail(`participants[${participantIndex}].customer.email`, formData, errors);
-    this.validateRequired(`participants[${participantIndex}].customer.gender`, formData, errors);
-    this.validateRequired(`participants[${participantIndex}].customer.dateOfBirthDay`, formData, errors);
-    this.validateRequired(`participants[${participantIndex}].customer.dateOfBirthMonth`, formData, errors);
-    this.validateRequired(`participants[${participantIndex}].customer.dateOfBirthYear`, formData, errors);
-    this.validateRequired(`participants[${participantIndex}].customer.mobile`, formData, errors);
-
-    this.validateDob({
-      field: `participants[${participantIndex}].customer.dateOfBirth`,
-      dob: this.getDob(),
-      eventDate: eventDate,
-      minAge: minAge,
-      maxAge: maxAge,
-      errors: errors,
-    });
-  }
 
   onSubmitForm() {
     // Left empty in the base implementation,
@@ -206,52 +181,6 @@ export class _DetailsPanel extends React.Component {
     );
   }
 
-  getDob() {
-    const { participantIndex, formData } = this.props;
-
-    const dateOfBirthDay   = formData[`participants[${participantIndex}].customer.dateOfBirthDay`];
-    const dateOfBirthMonth = formData[`participants[${participantIndex}].customer.dateOfBirthMonth`];
-    const dateOfBirthYear  = formData[`participants[${participantIndex}].customer.dateOfBirthYear`];
-
-    return new Date(Number(dateOfBirthYear), Number(dateOfBirthMonth) - 1, Number(dateOfBirthDay));
-  }
-
-  validateRequired(field, formData, errors, message) {
-    const { intl } = this.props;
-    if (!formData[field]) {
-      message = message || intl.formatMessage({ id: 'validation.required' });
-      errors.push({ field: field, message: message });
-    }
-  }
-
-  validateEmail(field, formData, errors) {
-    const { intl } = this.props;
-    const isValid = /^.+@.+\..+$/.test(formData[field]);
-    if (!isValid) {
-      const message = intl.formatMessage({ id: 'validation.email' });
-      errors.push({ field: field, message: message });
-    }
-  }
-
-  validateDob({ field, dob, eventDate, minAge, maxAge, errors }) {
-    const { intl, participantType } = this.props;
-    const message = intl.formatMessage({ id: `validation.age.${participantType}` });
-
-    if (minAge && eventDate) {
-      const turnsMinAge = new Date(dob.getFullYear() + minAge, dob.getMonth(), dob.getDate());
-      if (turnsMinAge > eventDate) {
-        errors.push({ 'field': field, 'message': message });
-      }
-    }
-
-    if (maxAge && eventDate) {
-      const turnsMaxAge = new Date(dob.getFullYear() + maxAge, dob.getMonth(), dob.getDate());
-      if (turnsMaxAge < eventDate) {
-        errors.push({ 'field': field, 'message': message });
-      }
-    }
-  }
-
   translateOptions(options) {
     const { intl } = this.props;
 
@@ -266,19 +195,11 @@ const mapStateToProps = (state, ownProps) => {
   const { participantIndex } = ownProps.panel.data;
   const participantType = state.formData[`participants[${participantIndex}].type`];
 
-  const event = getEvent(state);
-  const offer = event.registrationTypes[participantType].offers[0];
-  const eventDate = new Date(offer.ageCalculationDate || event.startDate);
-
   return {
     settings: state.settings,
-    event: event,
     participantIndex: participantIndex,
     participantType: participantType,
     extendFields: getExtendFields(state),
-    eventDate: eventDate,
-    minAge: Number(offer.minAgeOver),
-    maxAge: Number(offer.maxAgeUnder),
     formData: state.formData,
     errors: state.errors,
   };
@@ -286,7 +207,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const actions = {
   pushNextDetailsPanel: pushNextDetailsPanel,
-  setErrors: setErrors,
+  validate: validateParticipantDetails,
 };
 
 export const connectDetailsPanel = Component => injectIntl(connect(mapStateToProps, actions)(Component));
