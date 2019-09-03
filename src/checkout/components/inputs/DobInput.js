@@ -49,10 +49,11 @@ class _DobInput extends React.Component {
   }
 
   renderDayInput() {
-    const { day, required, dayError } = this.props;
+    const { day, dayError, error } = this.props;
+    const isInvalid = !!dayError || !!error;
 
     return (
-      <Form.Control as="select" value={day} onChange={this.onChangeDay} required={required} isInvalid={!!dayError}>
+      <Form.Control as="select" value={day} onChange={this.onChangeDay} isInvalid={isInvalid}>
         <option value="" disabled hidden>Day</option>
 
         {iterate(1, 31, value => 
@@ -63,10 +64,11 @@ class _DobInput extends React.Component {
   }
 
   renderMonthInput() {
-    const { month, required, monthError } = this.props;
+    const { month, monthError, error } = this.props;
+    const isInvalid = !!monthError || !!error;
 
     return (
-      <Form.Control as="select" value={month} onChange={this.onChangeMonth} required={required} isInvalid={!!monthError}>
+      <Form.Control as="select" value={month} onChange={this.onChangeMonth} isInvalid={isInvalid}>
         <option value="" disabled hidden>Month</option>
         <option value="1">January</option>
         <option value="2">February</option>
@@ -85,13 +87,14 @@ class _DobInput extends React.Component {
   }
 
   renderYearInput() {
-    const { year, required, maxYear, yearError } = this.props;
+    const { year, maxYear, yearError, error } = this.props;
+    const isInvalid = !!yearError || !!error;
 
     const startYear = maxYear || currentYear;
     const endYear = 1900;
 
     return (
-      <Form.Control as="select" value={year} onChange={this.onChangeYear} required={required} isInvalid={!!yearError}>
+      <Form.Control as="select" value={year} onChange={this.onChangeYear} isInvalid={isInvalid}>
         <option value="" disabled hidden>Year</option>
 
         {iterate(startYear, endYear, value => 
