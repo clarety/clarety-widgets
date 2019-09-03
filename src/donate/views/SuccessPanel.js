@@ -1,6 +1,5 @@
 import React from 'react';
 import { Card, Col, Row, Table } from 'react-bootstrap';
-import { TestData } from 'shared/components';
 import { scrollIntoView } from 'shared/utils';
 import { connectSuccessPanel } from 'donate/utils';
 
@@ -18,8 +17,6 @@ export class _SuccessPanel extends React.Component {
 
     return (
       <Card>
-        <TestData testId="result" data={result} />
-
         <Card.Header className="text-center">
           Donation Received
         </Card.Header>
