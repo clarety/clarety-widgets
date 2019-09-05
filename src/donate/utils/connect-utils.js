@@ -7,7 +7,7 @@ import { createMemoryHistory } from 'history';
 import { statuses, fetchExplain, clearSalelines } from 'shared/actions';
 import { updateFormData } from 'form/actions';
 import { formatPrice } from 'form/utils';
-import { createDonateReducer } from 'donate/reducers';
+import { createRootReducer } from 'donate/reducers';
 import { selectAmount, submitAmountPanel, submitDetailsPanel, submitPaymentPanel } from 'donate/actions';
 
 export function connectDonateWidget(ViewComponent) {
@@ -27,7 +27,7 @@ export function connectDonateWidget(ViewComponent) {
   const history = createMemoryHistory();
   const middleware = applyMiddleware(routerMiddleware(history), thunkMiddleware);
   const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-  const store = createStore(createDonateReducer(history), composeDevTools(middleware));
+  const store = createStore(createRootReducer(history), composeDevTools(middleware));
 
   if (window.Cypress) window.store = store;
 

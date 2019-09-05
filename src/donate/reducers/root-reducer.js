@@ -4,7 +4,7 @@ import { statusReducer, saleReducer, explainReducer } from 'shared/reducers';
 import { formDataReducer, errorsReducer, paymentDataReducer } from 'form/reducers';
 import { successPanelReducer, amountPanelReducer }  from 'donate/reducers';
 
-export const createDonateReducer = history => combineReducers({
+export const createRootReducer = history => combineReducers({
   router: connectRouter(history),
 
   status: statusReducer,
@@ -12,9 +12,10 @@ export const createDonateReducer = history => combineReducers({
 
   explain: explainReducer,
 
+  sale: saleReducer,
+
   formData: formDataReducer,
   paymentData: paymentDataReducer,
-  sale: saleReducer,
 
   panels: combineReducers({
     amountPanel: amountPanelReducer,
