@@ -4,7 +4,6 @@ import { Form } from 'react-bootstrap';
 import { updateFormData } from 'form/actions';
 import { getValidationError, formatExpiry, cleanExpiry } from 'form/utils';
 import { FieldError } from 'form/components';
-import './ExpiryInput.css';
 
 class _ExpiryInput extends React.Component {
   onKeyDown = event => {

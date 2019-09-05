@@ -4,7 +4,6 @@ import { Form } from 'react-bootstrap';
 import { updateFormData } from 'form/actions';
 import { getValidationError, cleanCcv } from 'form/utils';
 import { FieldError } from 'form/components';
-import './CcvInput.css';
 
 const _CcvInput = ({ value, placeholder, testId, onChange, error }) => (
   <React.Fragment>

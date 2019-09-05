@@ -4,7 +4,6 @@ import { Form } from 'react-bootstrap';
 import { updateFormData } from 'form/actions';
 import { getValidationError, getCardType, formatCardNumber, cleanCardNumber } from 'form/utils';
 import { FieldError } from 'form/components';
-import './CardNumberInput.css';
 
 const _CardNumberInput = ({ value, placeholder, testId, onChange, error }) => (
   <React.Fragment>
