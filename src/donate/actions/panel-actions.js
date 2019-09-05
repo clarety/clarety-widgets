@@ -8,7 +8,7 @@ import { validateCard, createStripeToken, parseStripeError } from 'donate/utils'
 export const submitAmountPanel = () => {
   return (dispatch, getState) => {
     const state = getState();
-    const { status, explain, panels } = state;
+    const { status, settings, panels } = state;
     const { amountPanel } = panels;
 
     if (status !== statuses.ready) return;
@@ -24,7 +24,7 @@ export const submitAmountPanel = () => {
       return;
     }
 
-    const offer = explain.offers.find(
+    const offer = settings.offers.find(
       offer => offer.frequency === amountPanel.frequency
     );
 
@@ -71,7 +71,7 @@ export const submitDetailsPanel = () => {
 export const submitPaymentPanel = () => {
   return async (dispatch, getState) => {
     const state = getState();
-    const { status, formData, paymentData, sale, explain } = state;
+    const { status, formData, paymentData, sale, settings } = state;
 
     if (status !== statuses.ready) return;
 
@@ -92,7 +92,7 @@ export const submitPaymentPanel = () => {
     let gatewayToken = sale.payment.gatewayToken;
 
     if (!gatewayToken) {
-      const stripeKey = explain.payment.publicKey;
+      const stripeKey = settings.payment.publicKey;
       const result = await createStripeToken(paymentData, stripeKey);
 
       if (result.error) {

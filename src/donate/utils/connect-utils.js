@@ -54,7 +54,7 @@ export function connectAmountPanel(ViewComponent) {
     const { amountPanel } = state.panels;
   
     return {
-      offers: state.explain.offers,
+      offers: state.settings.offers,
       frequency: amountPanel.frequency,
       selections: amountPanel.selections,
     };
@@ -130,7 +130,7 @@ function getSaleline(state) {
 }
 
 function getFrequencyLabel(state, offerUid) {
-  for (let offer of state.explain.offers) {
+  for (let offer of state.settings.offers) {
     if (offer.offerUid === offerUid) return offer.label;
   }
 

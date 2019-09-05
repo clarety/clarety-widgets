@@ -10,7 +10,7 @@ export const createRootReducer = history => combineReducers({
   status: statusReducer,
   errors: errorsReducer,
 
-  explain: explainReducer,
+  settings: explainReducer,
 
   sale: saleReducer,
 

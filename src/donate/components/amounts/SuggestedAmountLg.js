@@ -28,7 +28,7 @@ const _SuggestedAmountLg = ({ amountInfo, isSelected, onClick, currency, forceMd
 
 const mapStateToProps = state => {
   return {
-    currency: state.explain.currency,
+    currency: state.settings.currency,
   };
 };
 

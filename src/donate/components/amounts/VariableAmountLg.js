@@ -44,7 +44,7 @@ const _VariableAmountLg = ({ value, amountInfo, isSelected, onChange, currency, 
 
 const mapStateToProps = state => {
   return {
-    currency: state.explain.currency,
+    currency: state.settings.currency,
   }
 };
 

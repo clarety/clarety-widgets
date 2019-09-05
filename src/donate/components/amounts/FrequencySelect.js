@@ -26,7 +26,7 @@ const _FrequencySelect = ({ value, options, onChange }) => (
 const mapStateToProps = state => {
   return {
     value: state.panels.amountPanel.frequency,
-    options: state.explain.offers.map(offer => ({
+    options: state.settings.offers.map(offer => ({
       value: offer.frequency,
       label: offer.label,
     })),
