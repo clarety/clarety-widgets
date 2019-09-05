@@ -9,27 +9,28 @@ const initialState = {
 export const amountPanelReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.selectFrequency:
-      return _selectFrequency(state, action);
+      return selectFrequency(state, action);
 
     case types.selectAmount:
-      return _selectAmount(state, action);
+      return selectAmount(state, action);
 
     case sharedActionTypes.explainFetchSuccess:
-      return _selectDefaults(state, action);
+      return selectDefaults(state, action);
 
     default:
       return state;
   }
 };
 
-const _selectFrequency = (state, { frequency }) => {
+const selectFrequency = (state, action) => {
   return {
     ...state,
-    frequency,
+    frequency: action.frequency,
   };
 };
 
-const _selectAmount = (state, { frequency, amount, isVariableAmount }) => {
+const selectAmount = (state, action) => {
+  const { frequency, amount, isVariableAmount } = action;
   const prevVariableAmount = state.selections[frequency].variableAmount;
 
   const selection = {
@@ -47,11 +48,13 @@ const _selectAmount = (state, { frequency, amount, isVariableAmount }) => {
   };
 };
 
-const _selectDefaults = (state, { explain }) => {
-  const defaultFrequency = explain.offers[0].frequency;
+const selectDefaults = (state, action) => {
+  const { offers } = action.explain;
+
+  const defaultFrequency = offers[0].frequency;
   const defaultSelections = {};
 
-  for (let offer of explain.offers) {
+  for (let offer of offers) {
     const defaultAmount = offer.amounts.find(amount => amount.default);
 
     defaultSelections[offer.frequency] = {
