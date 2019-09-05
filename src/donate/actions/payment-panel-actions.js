@@ -1,7 +1,6 @@
 import { push as pushRoute } from 'connected-react-router';
 import { ClaretyApi } from 'clarety-utils';
 import { statuses, setStatus, setPayment } from 'shared/actions';
-import { parseNestedElements } from 'shared/utils';
 import { setErrors, clearErrors } from 'form/actions';
 import { setSuccessResult, makePaymentRequest, makePaymentSuccess, makePaymentFailure } from 'donate/actions';
 import { stripeTokenRequest, stripeTokenSuccess, stripeTokenFailure } from 'donate/actions';
@@ -52,7 +51,7 @@ export const submitPaymentPanel = () => {
 };
 
 async function makeStripeCCPayment(dispatch, getState) {
-  const { formData, cart, settings } = getState();
+  const { formData, settings } = getState();
 
   // Get stripe token.
 
@@ -69,13 +68,13 @@ async function makeStripeCCPayment(dispatch, getState) {
   }
 
   dispatch(stripeTokenSuccess(tokenResult));
+  dispatch(setPayment({ gatewayToken: tokenResult.id }));
+
+  const { cart } = getState();
 
   // Attempt payment.
 
-  const postData = parseNestedElements(formData);
-  postData.saleline = cart.items[0];
-  postData.payment = { gatewayToken: tokenResult.id };
-
+  const postData = getPostData(cart);
   dispatch(makePaymentRequest(postData));
 
   const results = await ClaretyApi.post('donations/', postData);
@@ -83,20 +82,20 @@ async function makeStripeCCPayment(dispatch, getState) {
 }
 
 async function makeClaretyCCPayment(dispatch, getState) {
-  const { formData, cart } = getState();
+  const { formData } = getState();
 
   const paymentData = getPaymentData(formData);
-
-  const postData = parseNestedElements(formData);
-  postData.saleline = cart.items[0];
-  postData.payment = {
+  dispatch(setPayment({
     cardName: getCustomerFullName(formData),
     cardNumber: paymentData.cardNumber,
     cardExpiryMonth: paymentData.expiryMonth,
     cardExpiryYear: '20' + paymentData.expiryYear,
     cardSecurityCode: paymentData.ccv,
-  };
+  }));
 
+  const { cart } = getState();
+
+  const postData = getPostData(cart);
   dispatch(makePaymentRequest(postData));
 
   const results = await ClaretyApi.post('donations/', postData);
@@ -117,3 +116,14 @@ const getCustomerFullName = formData => {
   const lastName  = formData['customer.lastName'];
   return `${firstName} ${lastName}`;
 };
+
+const getPostData = cart => {
+  return {
+    store: cart.store,
+    uid: cart.uid,
+    jwt: cart.jwt,
+    saleline: cart.items[0],
+    customer: cart.customer,
+    payment: cart.payment,
+  };
+}
