@@ -6,7 +6,7 @@ const initialState = {
   payment: {},
 };
 
-export const saleReducer = (state = initialState, action) => {
+export const cartReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.addSaleline:
       return {
