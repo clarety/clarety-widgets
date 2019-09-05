@@ -22,7 +22,7 @@ class PureCheckboxInput extends React.PureComponent {
             {required && ' *'}
           </FormCheck.Label>
           <br />
-          <FormattedHTMLMessage id={`explanation.${field}`} />
+          <FormattedHTMLMessage id={`explanation.${field}`} defaultMessage=" " />
         </FormCheck>
         <FieldError error={error} />
       </Form.Group>
