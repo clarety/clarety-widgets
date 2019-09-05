@@ -4,7 +4,7 @@ export function getIsBusy(state) {
   return state.status !== statuses.ready;
 }
 
-export function getItem(state) {
+export function getCartItem(state) {
   return state.cart.items[0];
 }
 

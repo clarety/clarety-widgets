@@ -14,9 +14,24 @@ export const clearItems = () => ({
   type: types.clearItems,
 });
 
+export const updateCartData = data => ({
+  type: types.updateCartData,
+  data: data,
+});
+
+export const setStore = store => ({
+  type: types.setStore,
+  store: store,
+});
+
+export const setCustomer = customer => ({
+  type: types.setCustomer,
+  customer: customer,
+});
+
 export const setPayment = payment => ({
   type: types.setPayment,
-  payment,
+  payment: payment,
 });
 
 export const clearPayment = () => ({

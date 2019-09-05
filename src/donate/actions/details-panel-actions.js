@@ -1,21 +1,31 @@
 import { push as pushRoute } from 'connected-react-router';
 import { ClaretyApi } from 'clarety-utils';
-import { statuses, setStatus } from 'shared/actions';
+import { statuses, setStatus, setCustomer, updateCartData } from 'shared/actions';
 import { parseNestedElements } from 'shared/utils';
-import { updateFormData, setErrors, clearErrors } from 'form/actions';
+import { setErrors, clearErrors } from 'form/actions';
 import { updateCartRequest, updateCartSuccess, updateCartFailure } from 'donate/actions';
 
 export const submitDetailsPanel = () => {
   return async (dispatch, getState) => {
-    const { status, formData, cart } = getState();
+    const { status, formData } = getState();
 
     if (status !== statuses.ready) return;
 
     dispatch(setStatus(statuses.busy));
     dispatch(clearErrors());
 
-    const postData = parseNestedElements(formData);
-    postData.saleline = cart.items[0];
+    const formDataObjs = parseNestedElements(formData);
+    dispatch(setCustomer(formDataObjs.customer));
+
+    const { cart } = getState();
+
+    const postData = {
+      store: cart.store,
+      uid: cart.uid,
+      jwt: cart.jwt,
+      customer: cart.customer,
+      saleline: cart.items[0],
+    };
 
     dispatch(updateCartRequest(postData));
     
@@ -29,8 +39,13 @@ export const submitDetailsPanel = () => {
       dispatch(updateCartFailure(result));
     } else {
       dispatch(updateCartSuccess(result));
-      dispatch(updateFormData('uid', result.uid));
-      dispatch(updateFormData('jwt', result.jwt));
+      dispatch(updateCartData({
+        uid: result.uid,
+        jwt: result.jwt,
+        status: result.status,
+        customer: result.customer,
+        items: result.salelines,
+      }));
       dispatch(pushRoute('/payment'));
     }
   };

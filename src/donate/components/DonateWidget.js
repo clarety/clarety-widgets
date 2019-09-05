@@ -1,7 +1,7 @@
 import React from 'react';
 import { ConnectedRouter } from 'connected-react-router'
 import { Switch, Route } from 'react-router-dom';
-import { statuses } from 'shared/actions';
+import { statuses, setStore } from 'shared/actions';
 import { connectDonateWidget } from 'donate/utils';
 import { AmountPanel, DetailsPanel, PaymentPanel, SuccessPanel } from 'donate/components';
 
@@ -12,13 +12,13 @@ export class _DonateWidget extends React.Component {
   SuccessPanelClass = SuccessPanel;
 
   componentWillMount() {
-    const { fetchExplain, updateFormData } = this.props;
+    const { fetchExplain, setStore } = this.props;
     const { storeCode, singleOfferCode, recurringOfferCode } = this.props;
 
     if (!singleOfferCode && !recurringOfferCode) throw new Error('[Clarety] Either a singleOfferCode or recurringOfferCode prop is required');
     if (!window.Stripe) throw new Error('[Clarety] Stripe not found');
 
-    if (storeCode) updateFormData('store', storeCode);
+    setStore(storeCode);
 
     fetchExplain('donations/', {
       store: storeCode,

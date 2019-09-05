@@ -4,11 +4,14 @@ export const types = {
   explainFetchSuccess: 'EXPLAIN_FETCH_SUCCESS',
   explainFetchFailure: 'EXPLAIN_FETCH_FAILURE',
 
-  // Sale Action Types
-  addItem:      'ADD_ITEM',
-  clearItems:   'CLEAR_ITEMS',
-  setPayment:   'SET_PAYMENT',
-  clearPayment: 'CLEAR_PAYMENT',
+  // Cart Action Types
+  addItem:        'ADD_ITEM',
+  clearItems:     'CLEAR_ITEMS',
+  updateCartData: 'UPDATE_CART_DATA',
+  setStore:       'SET_STORE',
+  setCustomer:    'SET_CUSTOMER',
+  setPayment:     'SET_PAYMENT',
+  clearPayment:   'CLEAR_PAYMENT',
 
   // Status Action Types
   setStatus: 'SET_STATUS',

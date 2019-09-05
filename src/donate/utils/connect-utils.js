@@ -4,12 +4,11 @@ import thunkMiddleware from 'redux-thunk';
 import { routerMiddleware } from 'connected-react-router';
 import { Provider, connect } from 'react-redux';
 import { createMemoryHistory } from 'history';
-import { fetchExplain, clearItems } from 'shared/actions';
-import { updateFormData } from 'form/actions';
+import { fetchExplain, setStore, clearItems } from 'shared/actions';
 import { formatPrice } from 'form/utils';
 import { createRootReducer } from 'donate/reducers';
 import { selectAmount, submitAmountPanel, submitDetailsPanel, submitPaymentPanel } from 'donate/actions';
-import { getIsBusy, getItem, getFrequencyLabel } from 'donate/selectors';
+import { getIsBusy, getCartItem, getFrequencyLabel } from 'donate/selectors';
 
 export function connectDonateWidget(ViewComponent) {
   const mapStateToProps = state => {
@@ -20,7 +19,7 @@ export function connectDonateWidget(ViewComponent) {
 
   const actions = {
     fetchExplain: fetchExplain,
-    updateFormData: updateFormData,
+    setStore: setStore,
   };
 
   const ConnectedComponent = connect(mapStateToProps, actions)(ViewComponent);
@@ -86,7 +85,7 @@ export function connectDetailsPanel(ViewComponent) {
 
 export function connectPaymentPanel(ViewComponent) {
   const mapStateToProps = state => {
-    const item = getItem(state);
+    const item = getCartItem(state);
 
     return {
       isBusy: getIsBusy(state),

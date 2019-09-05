@@ -3,6 +3,8 @@ import { types } from 'shared/actions';
 const initialState = {
   uid: null,
   jwt: null,
+  store: null,
+  status: null,
   items: [],
   customer: {},
   payment: {},
@@ -23,6 +25,24 @@ export const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         items: [],
+      };
+
+    case types.setStore:
+      return {
+        ...state,
+        store: action.store,
+      };
+
+    case types.updateCartData:
+      return {
+        ...state,
+        ...action.data,
+      };
+
+    case types.setCustomer:
+      return {
+        ...state,
+        customer: action.customer,
       };
 
     case types.setPayment:
