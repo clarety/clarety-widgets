@@ -1,0 +1,68 @@
+.donate-widget {
+  
+}
+
+.widget-step-indicator {
+  margin: 0;
+  font-size: 14px;
+
+  &::after {
+    clear: both;
+    content: "";
+    display: table;
+  }
+
+  li {
+    display: inline-block;
+    position: relative;
+    margin: .4em 40px .4em 0;
+    width: 80px;
+    counter-increment: steps;
+
+    &::after {
+      display: inline-block;
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 11px;
+      margin: 0;
+      width: calc(100% + 40px);
+      height: 4px;
+      background: #cccccc;
+    }
+
+    & > * {
+      display: inline-block;
+      padding-top: 34px;
+    }
+
+    & > ::before {
+      position: absolute;
+      content: counter(steps);
+      z-index: 1;
+      left: 50%;
+      right: auto;
+      top: 0;
+      width: 26px;
+      height: 26px;
+      line-height: 26px;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background-color: #cccccc;
+      color: #ffffff;
+      font-weight: bold;
+    }
+
+    &:last-of-type {
+      margin-right: 0;
+
+      &::after { display: none; }
+    }
+
+    &.visited::after,
+    &.visited > ::before,
+    &.current > ::before {
+      background-color: #415964;
+    }
+  }
+}

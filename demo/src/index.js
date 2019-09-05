@@ -5,7 +5,6 @@ import SubscribeDemo from './SubscribeDemo';
 import DonateDemo from './DonateDemo';
 import CheckoutDemo from './CheckoutDemo';
 import CartDemo from './CartDemo';
-import './styles/StepIndicator.css';
 
 Config.init({
   instanceKey: 'clarety-baseline',

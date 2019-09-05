@@ -1,5 +1,6 @@
 import React from 'react';
 import { Config, DonateWidget } from '../../src';
+import '../../src/donate/style.scss';
 
 const DonateDemo = () => (
   <div className="container my-5">
@@ -13,7 +14,7 @@ const DonateDemo = () => (
         <p className="lead">Fusce dapibus, tellus ac cursus commodo. Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
       </div>
 
-      <div className="col-lg-6">
+      <div className="donate-widget col-lg-6">
         <DonateWidget
           storeCode="AU"
           singleOfferCode="widget-single"
