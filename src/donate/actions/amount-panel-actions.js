@@ -1,5 +1,5 @@
 import { push as pushRoute } from 'connected-react-router';
-import { statuses, setStatus, addSaleline } from 'shared/actions';
+import { statuses, setStatus, addItem } from 'shared/actions';
 import { setErrors, clearErrors } from 'form/actions';
 import { types } from 'donate/actions';
 
@@ -38,7 +38,7 @@ export const submitAmountPanel = () => {
       offer => offer.frequency === amountPanel.frequency
     );
 
-    dispatch(addSaleline({
+    dispatch(addItem({
       offerUid: offer.offerUid,
       offerPaymentUid: offer.offerPaymentUid,
       price: selection.amount,

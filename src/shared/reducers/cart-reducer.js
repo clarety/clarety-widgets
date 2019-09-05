@@ -1,26 +1,28 @@
 import { types } from 'shared/actions';
-import { types as formActionTypes } from 'form/actions';
 
 const initialState = {
-  salelines: [],
+  uid: null,
+  jwt: null,
+  items: [],
+  customer: {},
   payment: {},
 };
 
 export const cartReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.addSaleline:
+    case types.addItem:
       return {
         ...state,
-        salelines: [
-          ...state.salelines,
-          action.saleline,
+        items: [
+          ...state.items,
+          action.item,
         ],
       };
 
-    case types.clearSalelines:
+    case types.clearItems:
       return {
         ...state,
-        salelines: [],
+        items: [],
       };
 
     case types.setPayment:
@@ -30,7 +32,6 @@ export const cartReducer = (state = initialState, action) => {
       };
 
     case types.clearPayment:
-    case formActionTypes.updatePaymentData:
       return {
         ...state,
         payment: {},

@@ -4,8 +4,8 @@ export function getIsBusy(state) {
   return state.status !== statuses.ready;
 }
 
-export function getSaleline(state) {
-  return state.cart.salelines[0];
+export function getItem(state) {
+  return state.cart.items[0];
 }
 
 export function getFrequencyLabel(state, offerUid) {

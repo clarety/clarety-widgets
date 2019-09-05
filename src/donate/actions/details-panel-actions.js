@@ -15,7 +15,7 @@ export const submitDetailsPanel = () => {
     dispatch(clearErrors());
 
     const postData = parseNestedElements(formData);
-    postData.saleline = cart.salelines[0];
+    postData.saleline = cart.items[0];
 
     dispatch(updateCartRequest(postData));
     

@@ -1,15 +1,15 @@
 export const types = {
-  // Explain Actions
+  // Explain Action Types
   explainFetchRequest: 'EXPLAIN_FETCH_REQUEST',
   explainFetchSuccess: 'EXPLAIN_FETCH_SUCCESS',
   explainFetchFailure: 'EXPLAIN_FETCH_FAILURE',
 
-  // Sale Actions
-  addSaleline:    'ADD_SALELINE',
-  clearSalelines: 'CLEAR_SALELINES',
-  setPayment:     'SET_PAYMENT',
-  clearPayment:   'CLEAR_PAYMENT',
+  // Sale Action Types
+  addItem:      'ADD_ITEM',
+  clearItems:   'CLEAR_ITEMS',
+  setPayment:   'SET_PAYMENT',
+  clearPayment: 'CLEAR_PAYMENT',
 
-  // Status Actions
+  // Status Action Types
   setStatus: 'SET_STATUS',
 };

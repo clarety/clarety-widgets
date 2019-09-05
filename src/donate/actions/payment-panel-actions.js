@@ -73,7 +73,7 @@ async function makeStripeCCPayment(dispatch, getState) {
   // Attempt payment.
 
   const postData = parseNestedElements(formData);
-  postData.saleline = cart.salelines[0];
+  postData.saleline = cart.items[0];
   postData.payment = { gatewayToken: tokenResult.id };
 
   dispatch(makePaymentRequest(postData));
@@ -88,7 +88,7 @@ async function makeClaretyCCPayment(dispatch, getState) {
   const paymentData = getPaymentData(formData);
 
   const postData = parseNestedElements(formData);
-  postData.saleline = cart.salelines[0];
+  postData.saleline = cart.items[0];
   postData.payment = {
     cardName: getCustomerFullName(formData),
     cardNumber: paymentData.cardNumber,

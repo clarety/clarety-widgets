@@ -4,12 +4,12 @@ import thunkMiddleware from 'redux-thunk';
 import { routerMiddleware } from 'connected-react-router';
 import { Provider, connect } from 'react-redux';
 import { createMemoryHistory } from 'history';
-import { fetchExplain, clearSalelines } from 'shared/actions';
+import { fetchExplain, clearItems } from 'shared/actions';
 import { updateFormData } from 'form/actions';
 import { formatPrice } from 'form/utils';
 import { createRootReducer } from 'donate/reducers';
 import { selectAmount, submitAmountPanel, submitDetailsPanel, submitPaymentPanel } from 'donate/actions';
-import { getIsBusy, getSaleline, getFrequencyLabel } from 'donate/selectors';
+import { getIsBusy, getItem, getFrequencyLabel } from 'donate/selectors';
 
 export function connectDonateWidget(ViewComponent) {
   const mapStateToProps = state => {
@@ -64,7 +64,7 @@ export function connectAmountPanel(ViewComponent) {
   const actions = {
     selectAmount: selectAmount,
     submitAmountPanel: submitAmountPanel,
-    clearSalelines: clearSalelines,
+    clearItems: clearItems,
   };
 
   return connect(mapStateToProps, actions)(ViewComponent);
@@ -86,11 +86,11 @@ export function connectDetailsPanel(ViewComponent) {
 
 export function connectPaymentPanel(ViewComponent) {
   const mapStateToProps = state => {
-    const saleline = getSaleline(state);
+    const item = getItem(state);
 
     return {
       isBusy: getIsBusy(state),
-      amount: formatPrice(saleline.price),
+      amount: formatPrice(item.price),
     };
   };
   
@@ -104,14 +104,14 @@ export function connectPaymentPanel(ViewComponent) {
 export function connectSuccessPanel(ViewComponent) {
   const mapStateToProps = state => {
     const result = state.panels.successPanel.result;
-    const saleline = result.salelines[0];
+    const item = result.salelines[0];
 
     return {
       result,
       customer : result.customer,
       donation: {
-        frequency: getFrequencyLabel(state, saleline.offerUid),
-        amount: formatPrice(saleline.price),
+        frequency: getFrequencyLabel(state, item.offerUid),
+        amount: formatPrice(item.price),
       }
     };
   };

@@ -6,7 +6,7 @@ import { connectAmountPanel } from 'donate/utils';
 
 export class _AmountPanel extends React.Component {
   componentWillMount() {
-    this.props.clearSalelines();
+    this.props.clearItems();
   }
 
   onSubmit = event => {
