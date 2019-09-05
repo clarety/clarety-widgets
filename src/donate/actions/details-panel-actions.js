@@ -1,6 +1,7 @@
 import { push as pushRoute } from 'connected-react-router';
 import { ClaretyApi } from 'clarety-utils';
 import { statuses, setStatus } from 'shared/actions';
+import { parseNestedElements } from 'shared/utils';
 import { updateFormData, setErrors, clearErrors } from 'form/actions';
 
 export const submitDetailsPanel = () => {
@@ -12,10 +13,8 @@ export const submitDetailsPanel = () => {
     dispatch(setStatus(statuses.busy));
     dispatch(clearErrors());
 
-    const postData = {
-      ...formData,
-      saleline: cart.salelines[0],
-    };
+    const postData = parseNestedElements(formData);
+    postData.saleline = cart.salelines[0];
     
     const results = await ClaretyApi.post('donations/', postData);
     const result = results[0];

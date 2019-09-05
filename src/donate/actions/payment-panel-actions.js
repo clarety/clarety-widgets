@@ -1,6 +1,7 @@
 import { push as pushRoute } from 'connected-react-router';
 import { ClaretyApi } from 'clarety-utils';
 import { statuses, setStatus, setPayment } from 'shared/actions';
+import { parseNestedElements } from 'shared/utils';
 import { setErrors, clearErrors } from 'form/actions';
 import { setSuccessResult } from 'donate/actions';
 import { validateCard, createStripeToken, parseStripeError } from 'donate/utils';
@@ -45,11 +46,9 @@ export const submitPaymentPanel = () => {
 
     // Attempt payment.
 
-    const postData = {
-      ...formData,
-      saleline: cart.salelines[0],
-      payment: { gatewayToken },
-    };
+    const postData = parseNestedElements(formData);
+    postData.saleline = cart.salelines[0];
+    postData.payment = { gatewayToken };
 
     const results = await ClaretyApi.post('donations/', postData);
     const result = results[0];
