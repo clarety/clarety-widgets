@@ -12,7 +12,7 @@ export const createRootReducer = history => combineReducers({
 
   settings: explainReducer,
 
-  sale: saleReducer,
+  cart: saleReducer,
 
   formData: formDataReducer,
   paymentData: paymentDataReducer,

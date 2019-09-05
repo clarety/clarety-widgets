@@ -42,7 +42,7 @@ export const submitAmountPanel = () => {
 export const submitDetailsPanel = () => {
   return async (dispatch, getState) => {
     const state = getState();
-    const { status, formData, sale } = state;
+    const { status, formData, cart } = state;
 
     if (status !== statuses.ready) return;
 
@@ -51,7 +51,7 @@ export const submitDetailsPanel = () => {
 
     const postData = {
       ...formData,
-      saleline: sale.salelines[0],
+      saleline: cart.salelines[0],
     };
     
     const result = await ClaretyApi.post('donations/', postData);
@@ -71,7 +71,7 @@ export const submitDetailsPanel = () => {
 export const submitPaymentPanel = () => {
   return async (dispatch, getState) => {
     const state = getState();
-    const { status, formData, paymentData, sale, settings } = state;
+    const { status, formData, paymentData, cart, settings } = state;
 
     if (status !== statuses.ready) return;
 
@@ -89,7 +89,7 @@ export const submitPaymentPanel = () => {
 
     // Get stripe token.
 
-    let gatewayToken = sale.payment.gatewayToken;
+    let gatewayToken = cart.payment.gatewayToken;
 
     if (!gatewayToken) {
       const stripeKey = settings.payment.publicKey;
@@ -110,7 +110,7 @@ export const submitPaymentPanel = () => {
 
     const postData = {
       ...formData,
-      saleline: sale.salelines[0],
+      saleline: cart.salelines[0],
       payment: { gatewayToken },
     };
 

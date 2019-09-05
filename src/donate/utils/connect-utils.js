@@ -126,7 +126,7 @@ function getIsBusy(state) {
 }
 
 function getSaleline(state) {
-  return state.sale.salelines[0];
+  return state.cart.salelines[0];
 }
 
 function getFrequencyLabel(state, offerUid) {
