@@ -10,7 +10,4 @@ export const types = {
 
   // Form Data Actions
   updateFormData: 'UPDATE_FORM_DATA',
-
-  // Payment Data Actions
-  updatePaymentData: 'UPDATE_PAYMENT_DATA',
 };
