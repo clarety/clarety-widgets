@@ -50,20 +50,25 @@ export class _PaymentPanel extends React.Component {
         
                 <Form.Group controlId="cardNumber">
                   <Form.Label>Card Number</Form.Label>
-                  <CardNumberInput testId="card-number-input" />
+                  <CardNumberInput field="payment.cardNumber" testId="card-number-input" />
                 </Form.Group>
         
                 <Form.Row>
                   <Col>
                     <Form.Group controlId="cardExpMonth">
                       <Form.Label>Expiry</Form.Label>
-                      <ExpiryInput testId="expiry-input" />
+                      <ExpiryInput
+                        field="payment.expiry"
+                        monthField="payment.expiryMonth"
+                        yearField="payment.expiryYear"
+                        testId="expiry-input"
+                      />
                     </Form.Group>
                   </Col>
                   <Col>
                     <Form.Group controlId="ccv">
                       <Form.Label>CCV</Form.Label>
-                      <CcvInput testId="ccv-input" />
+                      <CcvInput field="payment.ccv" testId="ccv-input" />
                     </Form.Group>
                   </Col>
                 </Form.Row>

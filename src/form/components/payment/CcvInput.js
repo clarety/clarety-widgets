@@ -1,17 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { updatePaymentData } from 'form/actions';
+import { updateFormData } from 'form/actions';
 import { getValidationError, cleanCcv } from 'form/utils';
 import { FieldError } from 'form/components';
 import './CcvInput.css';
 
-const _CcvInput = ({ ccv, placeholder, testId, onChange, error }) => (
+const _CcvInput = ({ value, placeholder, testId, onChange, error }) => (
   <React.Fragment>
     <Form.Control
       type="text"
       placeholder={placeholder || '•••'}
-      value={ccv}
+      value={value}
       onChange={onChange}
       data-testid={testId}
       maxLength={4}
@@ -22,15 +22,20 @@ const _CcvInput = ({ ccv, placeholder, testId, onChange, error }) => (
   </React.Fragment>
 );
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
   return {
-    ccv: state.paymentData.ccv,
-    error: getValidationError('ccv', state.errors),
+    value: state.formData[ownProps.field] || '',
+    error: getValidationError(ownProps.field, state.errors),
   };
 };
 
-const actions = {
-  onChange: event => updatePaymentData('ccv', cleanCcv(event.target.value)),
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    onChange: event => {
+      const value = cleanCcv(event.target.value);
+      dispatch(updateFormData(ownProps.field, value));
+    },
+  };
 };
 
-export const CcvInput = connect(mapStateToProps, actions)(_CcvInput);
+export const CcvInput = connect(mapStateToProps, mapDispatchToProps)(_CcvInput);

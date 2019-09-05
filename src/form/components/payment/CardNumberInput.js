@@ -1,18 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { updatePaymentData } from 'form/actions';
+import { updateFormData } from 'form/actions';
 import { getValidationError, getCardType, formatCardNumber, cleanCardNumber } from 'form/utils';
 import { FieldError } from 'form/components';
 import './CardNumberInput.css';
 
-const _CardNumberInput = ({ cardNumber, placeholder, testId, onChange, error }) => (
+const _CardNumberInput = ({ value, placeholder, testId, onChange, error }) => (
   <React.Fragment>
     <Form.Control
       type="text"
-      className={'card-number ' + getCardType(cardNumber)}
+      className={'card-number ' + getCardType(value)}
       placeholder={placeholder || '•••• •••• •••• ••••'}
-      value={cardNumber}
+      value={value}
       onChange={onChange}
       data-testid={testId}
       isInvalid={error !== null}
@@ -21,15 +21,23 @@ const _CardNumberInput = ({ cardNumber, placeholder, testId, onChange, error }) 
   </React.Fragment>
 );
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
+  const { formData, errors } = state;
+  const { field } = ownProps;
+
   return {
-    cardNumber: formatCardNumber(state.paymentData.cardNumber),
-    error: getValidationError('cardNumber', state.errors),
+    value: formatCardNumber(formData[field] || ''),
+    error: getValidationError(field, errors),
   };
 };
 
-const actions = {
-  onChange: event => updatePaymentData('cardNumber', cleanCardNumber(event.target.value)),
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    onChange: event => {
+      const value = cleanCardNumber(event.target.value);
+      dispatch(updateFormData(ownProps.field, value));
+    },
+  };
 };
 
-export const CardNumberInput = connect(mapStateToProps, actions)(_CardNumberInput);
+export const CardNumberInput = connect(mapStateToProps, mapDispatchToProps)(_CardNumberInput);

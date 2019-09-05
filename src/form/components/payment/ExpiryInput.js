@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
-import { updatePaymentData } from 'form/actions';
+import { updateFormData } from 'form/actions';
 import { getValidationError, formatExpiry, cleanExpiry } from 'form/utils';
 import { FieldError } from 'form/components';
 import './ExpiryInput.css';
@@ -37,13 +37,13 @@ class _ExpiryInput extends React.Component {
   };
 
   render() {
-    const { expiry, testId, onChange, error } = this.props;
+    const { value, testId, onChange, error } = this.props;
     return (
       <React.Fragment>
         <Form.Control
           type="text"
           placeholder={'MM / YY'}
-          value={expiry}
+          value={value}
           onChange={onChange}
           onKeyDown={this.onKeyDown}
           data-testid={testId}
@@ -56,21 +56,22 @@ class _ExpiryInput extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  const { expiryMonth, expiryYear } = state.paymentData;
+const mapStateToProps = (state, ownProps) => {
+  const { field, monthField, yearField } = ownProps;
+  const { formData, errors } = state;
 
   return {
-    expiry: formatExpiry(expiryMonth, expiryYear),
-    error: getValidationError('expiry', state.errors),
+    value: formatExpiry(formData[monthField], formData[yearField]),
+    error: getValidationError(field, errors),
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     onChange: event => {
       const { month, year } = cleanExpiry(event.target.value);
-      dispatch(updatePaymentData('expiryMonth', month));
-      dispatch(updatePaymentData('expiryYear', year));
+      dispatch(updateFormData(ownProps.monthField, month));
+      dispatch(updateFormData(ownProps.yearField, year));
     },
   }
 };
