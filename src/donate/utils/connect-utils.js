@@ -4,11 +4,12 @@ import thunkMiddleware from 'redux-thunk';
 import { routerMiddleware } from 'connected-react-router';
 import { Provider, connect } from 'react-redux';
 import { createMemoryHistory } from 'history';
-import { statuses, fetchExplain, clearSalelines } from 'shared/actions';
+import { fetchExplain, clearSalelines } from 'shared/actions';
 import { updateFormData } from 'form/actions';
 import { formatPrice } from 'form/utils';
 import { createRootReducer } from 'donate/reducers';
 import { selectAmount, submitAmountPanel, submitDetailsPanel, submitPaymentPanel } from 'donate/actions';
+import { getIsBusy, getSaleline, getFrequencyLabel } from 'donate/selectors';
 
 export function connectDonateWidget(ViewComponent) {
   const mapStateToProps = state => {
@@ -116,23 +117,4 @@ export function connectSuccessPanel(ViewComponent) {
   };
 
   return connect(mapStateToProps)(ViewComponent);
-}
-
-
-// Selectors
-
-function getIsBusy(state) {
-  return state.status !== statuses.ready;
-}
-
-function getSaleline(state) {
-  return state.cart.salelines[0];
-}
-
-function getFrequencyLabel(state, offerUid) {
-  for (let offer of state.settings.offers) {
-    if (offer.offerUid === offerUid) return offer.label;
-  }
-
-  return '';
 }
