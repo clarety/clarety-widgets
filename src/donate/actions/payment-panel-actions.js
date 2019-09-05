@@ -9,7 +9,7 @@ import { validateCard, createStripeToken, parseStripeError } from 'donate/utils'
 
 export const submitPaymentPanel = () => {
   return async (dispatch, getState) => {
-    const { status, paymentData, settings } = getState();
+    const { status, settings, formData } = getState();
 
     if (status !== statuses.ready) return;
 
@@ -17,6 +17,8 @@ export const submitPaymentPanel = () => {
     dispatch(clearErrors());
 
     // Validate card details.
+
+    const paymentData = getPaymentData(formData);
 
     const errors = validateCard(paymentData);
     if (errors) {
@@ -50,10 +52,11 @@ export const submitPaymentPanel = () => {
 };
 
 async function makeStripeCCPayment(dispatch, getState) {
-  const { formData, paymentData, cart, settings } = getState();
+  const { formData, cart, settings } = getState();
 
   // Get stripe token.
 
+  const paymentData = getPaymentData(formData);
   const stripeKey = settings.payment.publicKey;
   dispatch(stripeTokenRequest(paymentData, stripeKey));
   const tokenResult = await createStripeToken(paymentData, stripeKey);
@@ -80,7 +83,9 @@ async function makeStripeCCPayment(dispatch, getState) {
 }
 
 async function makeClaretyCCPayment(dispatch, getState) {
-  const { formData, paymentData, cart } = getState();
+  const { formData, cart } = getState();
+
+  const paymentData = getPaymentData(formData);
 
   const postData = parseNestedElements(formData);
   postData.saleline = cart.salelines[0];
@@ -98,8 +103,17 @@ async function makeClaretyCCPayment(dispatch, getState) {
   return results[0];
 }
 
+const getPaymentData = formData => {
+  return {
+    cardNumber:  formData['payment.cardNumber'],
+    expiryMonth: formData['payment.expiryMonth'],
+    expiryYear:  formData['payment.expiryYear'],
+    ccv:         formData['payment.ccv'],
+  };
+};
+
 const getCustomerFullName = formData => {
   const firstName = formData['customer.firstName'];
   const lastName  = formData['customer.lastName'];
   return `${firstName} ${lastName}`;
-}
+};
