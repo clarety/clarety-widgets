@@ -3,7 +3,7 @@ import { ConnectedRouter } from 'connected-react-router'
 import { Switch, Route } from 'react-router-dom';
 import { statuses } from 'shared/actions';
 import { connectDonateWidget } from 'donate/utils';
-import { AmountPanel, DetailsPanel, PaymentPanel, SuccessPanel } from 'donate/views';
+import { AmountPanel, DetailsPanel, PaymentPanel, SuccessPanel } from 'donate/components';
 
 export class _DonateWidget extends React.Component {
   AmountPanelClass  = AmountPanel;
@@ -43,16 +43,16 @@ export class _DonateWidget extends React.Component {
       <div className="clarety-donate-widget h-100">
         <ConnectedRouter history={this.props.history}>
           <Switch>
-            <Route exact path="/"  render={props => (
+            <Route exact path="/" render={props => (
               <this.AmountPanelClass {...props} forceMd={forceMdLayout} />
             )}/>
-            <Route path="/details"  render={props => (
+            <Route path="/details" render={props => (
               <this.DetailsPanelClass {...props} forceMd={forceMdLayout} />
             )}/>
-            <Route path="/payment"  render={props => (
+            <Route path="/payment" render={props => (
               <this.PaymentPanelClass {...props} forceMd={forceMdLayout} />
             )}/>
-            <Route path="/success"  render={props => (
+            <Route path="/success" render={props => (
               <this.SuccessPanelClass {...props} forceMd={forceMdLayout} />
             )}/>
           </Switch>

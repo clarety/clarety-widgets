@@ -5,7 +5,7 @@ export { renderWidget, getElementOptions, getAssetsPath, loadCss } from 'shared/
 export { SubscribeWidget } from 'subscribe/views';
 export { setupSubscribeAxiosMock } from 'subscribe/mocks';
 
-export { DonateWidget } from 'donate/views';
+export { DonateWidget } from 'donate/components';
 export { setupDonateAxiosMock } from 'donate/mocks';
 
 export { RegistrationsApp } from 'registrations/components';
