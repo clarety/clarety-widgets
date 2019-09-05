@@ -8,8 +8,7 @@ import { validateCard, createStripeToken, parseStripeError } from 'donate/utils'
 
 export const submitPaymentPanel = () => {
   return async (dispatch, getState) => {
-    const state = getState();
-    const { status, formData, paymentData, cart, settings } = state;
+    const { status, paymentData, settings } = getState();
 
     if (status !== statuses.ready) return;
 
@@ -25,33 +24,16 @@ export const submitPaymentPanel = () => {
       return;
     }
 
-    // Get stripe token.
-
-    let gatewayToken = cart.payment.gatewayToken;
-
-    if (!gatewayToken) {
-      const stripeKey = settings.payment.publicKey;
-      const result = await createStripeToken(paymentData, stripeKey);
-
-      if (result.error) {
-        const errors = parseStripeError(result.error);
-        dispatch(setErrors(errors));
-        dispatch(setStatus(statuses.ready));
-        return;
-      }
-
-      gatewayToken = result.id;
-      dispatch(setPayment({ gatewayToken }));
-    }
-
     // Attempt payment.
 
-    const postData = parseNestedElements(formData);
-    postData.saleline = cart.salelines[0];
-    postData.payment = { gatewayToken };
+    let result;
+    if (settings.payment.type === 'stripe') {
+      result = await makeStripeCCPayment(dispatch, getState);
+    } else {
+      result = await makeClaretyCCPayment(dispatch, getState);
+    }
 
-    const results = await ClaretyApi.post('donations/', postData);
-    const result = results[0];
+    // Dispatch results.
 
     dispatch(setStatus(statuses.ready));
 
@@ -63,3 +45,50 @@ export const submitPaymentPanel = () => {
     }
   };
 };
+
+async function makeStripeCCPayment(dispatch, getState) {
+  const { formData, paymentData, cart, settings } = getState();
+
+  // Get stripe token.
+
+  const stripeKey = settings.payment.publicKey;
+  const tokenResult = await createStripeToken(paymentData, stripeKey);
+
+  if (tokenResult.error) {
+    return {
+      validationErrors: parseStripeError(tokenResult.error),
+    };
+  }
+
+  // Attempt payment.
+
+  const postData = parseNestedElements(formData);
+  postData.saleline = cart.salelines[0];
+  postData.payment = { gatewayToken: tokenResult.id };
+
+  const results = await ClaretyApi.post('donations/', postData);
+  return results[0];
+}
+
+async function makeClaretyCCPayment(dispatch, getState) {
+  const { formData, paymentData, cart } = getState();
+
+  const postData = parseNestedElements(formData);
+  postData.saleline = cart.salelines[0];
+  postData.payment = {
+    cardName: getCustomerFullName(formData),
+    cardNumber: paymentData.cardNumber,
+    cardExpiryMonth: paymentData.expiryMonth,
+    cardExpiryYear: '20' + paymentData.expiryYear,
+    cardSecurityCode: paymentData.ccv,
+  };
+
+  const results = await ClaretyApi.post('donations/', postData);
+  return results[0];
+}
+
+const getCustomerFullName = formData => {
+  const firstName = formData['customer.firstName'];
+  const lastName  = formData['customer.lastName'];
+  return `${firstName} ${lastName}`;
+}
