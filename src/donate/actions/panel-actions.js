@@ -54,7 +54,8 @@ export const submitDetailsPanel = () => {
       saleline: cart.salelines[0],
     };
     
-    const result = await ClaretyApi.post('donations/', postData);
+    const results = await ClaretyApi.post('donations/', postData);
+    const result = results[0];
 
     dispatch(setStatus(statuses.ready));
 
@@ -114,7 +115,8 @@ export const submitPaymentPanel = () => {
       payment: { gatewayToken },
     };
 
-    const result = await ClaretyApi.post('donations/', postData);
+    const results = await ClaretyApi.post('donations/', postData);
+    const result = results[0];
 
     dispatch(setStatus(statuses.ready));
 
