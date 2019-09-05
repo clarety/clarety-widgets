@@ -3,7 +3,8 @@ import { ClaretyApi } from 'clarety-utils';
 import { statuses, setStatus, setPayment } from 'shared/actions';
 import { parseNestedElements } from 'shared/utils';
 import { setErrors, clearErrors } from 'form/actions';
-import { setSuccessResult } from 'donate/actions';
+import { setSuccessResult, makePaymentRequest, makePaymentSuccess, makePaymentFailure } from 'donate/actions';
+import { stripeTokenRequest, stripeTokenSuccess, stripeTokenFailure } from 'donate/actions';
 import { validateCard, createStripeToken, parseStripeError } from 'donate/utils';
 
 export const submitPaymentPanel = () => {
@@ -38,8 +39,10 @@ export const submitPaymentPanel = () => {
     dispatch(setStatus(statuses.ready));
 
     if (result.validationErrors) {
+      dispatch(makePaymentFailure(result));
       dispatch(setErrors(result.validationErrors));
     } else {
+      dispatch(makePaymentSuccess(result));
       dispatch(setSuccessResult(result));
       dispatch(pushRoute('/success'));
     }
@@ -52,19 +55,25 @@ async function makeStripeCCPayment(dispatch, getState) {
   // Get stripe token.
 
   const stripeKey = settings.payment.publicKey;
+  dispatch(stripeTokenRequest(paymentData, stripeKey));
   const tokenResult = await createStripeToken(paymentData, stripeKey);
 
   if (tokenResult.error) {
+    dispatch(stripeTokenFailure(tokenResult));
     return {
       validationErrors: parseStripeError(tokenResult.error),
     };
   }
+
+  dispatch(stripeTokenSuccess(tokenResult));
 
   // Attempt payment.
 
   const postData = parseNestedElements(formData);
   postData.saleline = cart.salelines[0];
   postData.payment = { gatewayToken: tokenResult.id };
+
+  dispatch(makePaymentRequest(postData));
 
   const results = await ClaretyApi.post('donations/', postData);
   return results[0];
@@ -82,6 +91,8 @@ async function makeClaretyCCPayment(dispatch, getState) {
     cardExpiryYear: '20' + paymentData.expiryYear,
     cardSecurityCode: paymentData.ccv,
   };
+
+  dispatch(makePaymentRequest(postData));
 
   const results = await ClaretyApi.post('donations/', postData);
   return results[0];

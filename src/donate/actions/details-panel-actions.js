@@ -3,6 +3,7 @@ import { ClaretyApi } from 'clarety-utils';
 import { statuses, setStatus } from 'shared/actions';
 import { parseNestedElements } from 'shared/utils';
 import { updateFormData, setErrors, clearErrors } from 'form/actions';
+import { updateCartRequest, updateCartSuccess, updateCartFailure } from 'donate/actions';
 
 export const submitDetailsPanel = () => {
   return async (dispatch, getState) => {
@@ -15,6 +16,8 @@ export const submitDetailsPanel = () => {
 
     const postData = parseNestedElements(formData);
     postData.saleline = cart.salelines[0];
+
+    dispatch(updateCartRequest(postData));
     
     const results = await ClaretyApi.post('donations/', postData);
     const result = results[0];
@@ -23,7 +26,9 @@ export const submitDetailsPanel = () => {
 
     if (result.validationErrors) {
       dispatch(setErrors(result.validationErrors));
+      dispatch(updateCartFailure(result));
     } else {
+      dispatch(updateCartSuccess(result));
       dispatch(updateFormData('uid', result.uid));
       dispatch(updateFormData('jwt', result.jwt));
       dispatch(pushRoute('/payment'));
