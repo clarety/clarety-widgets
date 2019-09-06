@@ -1,25 +1,8 @@
 import React from 'react';
 
 export const FormContext = React.createContext();
-export const OverrideContext = React.createContext();
 
 export const currentYear = new Date().getFullYear();
-
-export function withOverrides(Component, overrides) {
-  class Wrapper extends React.Component {
-    render() {
-      return (
-        <OverrideContext.Provider value={overrides}>
-          <Component {...this.props} />
-        </OverrideContext.Provider>
-      );
-    }
-  };
-
-  Wrapper.displayName = `withOverrides(${Component.name})`;
-
-  return Wrapper;
-}
 
 export function iterate(from, to, callback) {
   const results = [];

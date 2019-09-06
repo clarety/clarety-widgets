@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { ScrollIntoView, EventPanel, QtysPanel, NamesPanel, DetailsPanel, ReviewPanel } from 'registrations/components';
 import { pushPanel, popToPanel, panels } from 'registrations/actions';
-import { OverrideContext } from 'registrations/utils';
+import { OverrideContext } from 'shared/utils';
 
 class _PanelStack extends React.Component {
   render() {

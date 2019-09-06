@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Navbar, ProgressBar, Row, Col } from 'react-bootstrap';
 import { Brand, Qty } from 'registrations/components';
 import { getEventName, getProgress } from 'registrations/selectors';
-import { OverrideContext } from 'registrations/utils';
+import { OverrideContext } from 'shared/utils';
 
 class _MiniCart extends React.Component {
   render() {
