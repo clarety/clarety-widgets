@@ -1,8 +1,8 @@
 import { push as pushRoute } from 'connected-react-router';
 import { ClaretyApi } from 'clarety-utils';
-import { statuses, setStatus, setPayment } from 'shared/actions';
+import { statuses, setStatus, setPayment, updateCartData } from 'shared/actions';
 import { setErrors, clearErrors } from 'form/actions';
-import { setSuccessResult, makePaymentRequest, makePaymentSuccess, makePaymentFailure } from 'donate/actions';
+import { makePaymentRequest, makePaymentSuccess, makePaymentFailure } from 'donate/actions';
 import { stripeTokenRequest, stripeTokenSuccess, stripeTokenFailure } from 'donate/actions';
 import { validateCard, createStripeToken, parseStripeError } from 'donate/utils';
 
@@ -44,7 +44,15 @@ export const submitPaymentPanel = () => {
       dispatch(setErrors(result.validationErrors));
     } else {
       dispatch(makePaymentSuccess(result));
-      dispatch(setSuccessResult(result));
+
+      dispatch(updateCartData({
+        uid: result.uid,
+        jwt: result.jwt,
+        status: result.status,
+        customer: result.customer,
+        items: result.salelines,
+      }));
+
       dispatch(pushRoute('/success'));
     }
   };

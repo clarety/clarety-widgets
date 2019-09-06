@@ -4,10 +4,6 @@ export const types = {
   selectFrequency: 'SELECT_FREQUENCY',
   selectAmount:    'SELECT_AMOUNT',
 
-  // Success Panel Action Types
-
-  setSuccessResult: 'SET_SUCCESS_RESULT',
-
   // API Action Types
 
   updateCartRequest: 'UPDATE_CART_REQUEST',

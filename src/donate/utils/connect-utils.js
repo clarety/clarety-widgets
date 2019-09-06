@@ -102,12 +102,11 @@ export function connectPaymentPanel(ViewComponent) {
 
 export function connectSuccessPanel(ViewComponent) {
   const mapStateToProps = state => {
-    const result = state.panels.successPanel.result;
-    const item = result.salelines[0];
+    const { cart } = state;
+    const item = cart.items[0];
 
     return {
-      result,
-      customer : result.customer,
+      customer : cart.customer,
       donation: {
         frequency: getFrequencyLabel(state, item.offerUid),
         amount: formatPrice(item.price),

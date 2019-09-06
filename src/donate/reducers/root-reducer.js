@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 import { statusReducer, cartReducer, explainReducer } from 'shared/reducers';
 import { formDataReducer, errorsReducer } from 'form/reducers';
-import { successPanelReducer, amountPanelReducer }  from 'donate/reducers';
+import { amountPanelReducer }  from 'donate/reducers';
 
 export const createRootReducer = history => combineReducers({
   router: connectRouter(history),
@@ -15,6 +15,5 @@ export const createRootReducer = history => combineReducers({
 
   panels: combineReducers({
     amountPanel: amountPanelReducer,
-    successPanel: successPanelReducer,
   }),
 });
