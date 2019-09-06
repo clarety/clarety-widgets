@@ -3,6 +3,7 @@ import { Card, Form, Col } from 'react-bootstrap';
 import { SubmitButton, ErrorMessages } from 'form/components';
 import { StepIndicator, FrequencySelect, SuggestedAmount, SuggestedAmountLg, VariableAmount, VariableAmountLg } from 'donate/components';
 import { connectAmountPanel } from 'donate/utils';
+import { OverrideContext } from 'shared/utils';
 
 export class _AmountPanel extends React.Component {
   componentWillMount() {
@@ -66,26 +67,30 @@ export class _AmountPanel extends React.Component {
     const { selections, frequency, selectAmount, forceMd } = this.props;
     const currentSelection = selections[frequency];
 
+    const SuggestedAmountComponent = this.context.SuggestedAmount || SuggestedAmount;
+
     // Ignore variable amount, we'll add a field below the suggested amounts.
     if (suggestedAmount.variable) return null;
 
     const isSelected = !currentSelection.isVariableAmount && currentSelection.amount === suggestedAmount.amount;
     return (
       <React.Fragment key={suggestedAmount.amount}>
-        <SuggestedAmount
+        <SuggestedAmountComponent
           key={suggestedAmount.amount}
           amountInfo={suggestedAmount}
           onClick={amount => selectAmount(frequency, amount)}
           isSelected={isSelected}
           forceMd={forceMd}
         />
-        <SuggestedAmountLg
-          key={`${suggestedAmount.amount}-lg`}
-          amountInfo={suggestedAmount}
-          onClick={amount => selectAmount(frequency, amount)}
-          isSelected={isSelected}
-          forceMd={forceMd}
-        />
+        {!forceMd &&
+          <SuggestedAmountLg
+            key={`${suggestedAmount.amount}-lg`}
+            amountInfo={suggestedAmount}
+            onClick={amount => selectAmount(frequency, amount)}
+            isSelected={isSelected}
+            forceMd={forceMd}
+          />
+        }
       </React.Fragment>
     );
   };
@@ -96,21 +101,25 @@ export class _AmountPanel extends React.Component {
     const { selections, frequency, selectAmount, forceMd } = this.props;
     const currentSelection = selections[frequency];
 
+    const VariableAmountComponent = this.context.VariableAmount || VariableAmount;
+
     return (
       <React.Fragment>
-        <VariableAmount
+        <VariableAmountComponent
           value={currentSelection.variableAmount || ''}
           onChange={amount => selectAmount(frequency, amount, true)}
           isSelected={currentSelection.isVariableAmount}
           forceMd={forceMd}
         />
-        <VariableAmountLg
-          value={currentSelection.variableAmount || ''}
-          amountInfo={variableAmount}
-          onChange={amount => selectAmount(frequency, amount, true)}
-          isSelected={currentSelection.isVariableAmount}
-          forceMd={forceMd}
-        />
+        {!forceMd &&
+          <VariableAmountLg
+            value={currentSelection.variableAmount || ''}
+            amountInfo={variableAmount}
+            onChange={amount => selectAmount(frequency, amount, true)}
+            isSelected={currentSelection.isVariableAmount}
+            forceMd={forceMd}
+          />
+        }
       </React.Fragment>
     );
   }
@@ -123,5 +132,7 @@ export class _AmountPanel extends React.Component {
     return offer.amounts.find(amount => amount.variable === true);
   };
 }
+
+_AmountPanel.contextType = OverrideContext;
 
 export const AmountPanel = connectAmountPanel(_AmountPanel);
