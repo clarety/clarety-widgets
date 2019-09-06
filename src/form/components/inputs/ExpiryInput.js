@@ -36,12 +36,12 @@ class _ExpiryInput extends React.Component {
   };
 
   render() {
-    const { value, testId, onChange, error } = this.props;
+    const { value, testId, onChange, placeholder, error } = this.props;
     return (
       <React.Fragment>
         <Form.Control
           type="text"
-          placeholder={'MM / YY'}
+          placeholder={placeholder || 'MM / YY'}
           value={value}
           onChange={onChange}
           onKeyDown={this.onKeyDown}
