@@ -1,16 +1,12 @@
 import React from 'react';
 import { ConnectedRouter } from 'connected-react-router'
 import { Switch, Route } from 'react-router-dom';
-import { statuses, setStore } from 'shared/actions';
+import { statuses } from 'shared/actions';
+import { OverrideContext } from 'shared/utils';
 import { connectDonateWidget } from 'donate/utils';
 import { AmountPanel, DetailsPanel, PaymentPanel, SuccessPanel } from 'donate/components';
 
 export class _DonateWidget extends React.Component {
-  AmountPanelClass  = AmountPanel;
-  DetailsPanelClass = DetailsPanel;
-  PaymentPanelClass = PaymentPanel;
-  SuccessPanelClass = SuccessPanel;
-
   componentWillMount() {
     const { fetchExplain, setStore } = this.props;
     const { storeCode, singleOfferCode, recurringOfferCode } = this.props;
@@ -30,6 +26,11 @@ export class _DonateWidget extends React.Component {
   render() {
     const { status, forceMdLayout } = this.props;
 
+    const AmountPanelComponent  = this.context.AmountPanel  || AmountPanel;
+    const DetailsPanelComponent = this.context.DetailsPanel || DetailsPanel;
+    const PaymentPanelComponent = this.context.PaymentPanel || PaymentPanel;
+    const SuccessPanelComponent = this.context.SuccessPanel || SuccessPanel;
+
     // Show a loading indicator while we init.
     if (status === statuses.uninitialized) {
       return (
@@ -44,16 +45,16 @@ export class _DonateWidget extends React.Component {
         <ConnectedRouter history={this.props.history}>
           <Switch>
             <Route exact path="/" render={props => (
-              <this.AmountPanelClass {...props} forceMd={forceMdLayout} />
+              <AmountPanelComponent {...props} forceMd={forceMdLayout} />
             )}/>
             <Route path="/details" render={props => (
-              <this.DetailsPanelClass {...props} forceMd={forceMdLayout} />
+              <DetailsPanelComponent {...props} forceMd={forceMdLayout} />
             )}/>
             <Route path="/payment" render={props => (
-              <this.PaymentPanelClass {...props} forceMd={forceMdLayout} />
+              <PaymentPanelComponent {...props} forceMd={forceMdLayout} />
             )}/>
             <Route path="/success" render={props => (
-              <this.SuccessPanelClass {...props} forceMd={forceMdLayout} />
+              <SuccessPanelComponent {...props} forceMd={forceMdLayout} />
             )}/>
           </Switch>
         </ConnectedRouter>
@@ -61,5 +62,7 @@ export class _DonateWidget extends React.Component {
     );
   }
 }
+
+_DonateWidget.contextType = OverrideContext;
 
 export const DonateWidget = connectDonateWidget(_DonateWidget);
