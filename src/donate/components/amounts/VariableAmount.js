@@ -36,4 +36,5 @@ const mapStateToProps = state => {
   }
 };
 
-export const VariableAmount = connect(mapStateToProps)(_VariableAmount);
+export const connectVariableAmount = connect(mapStateToProps);
+export const VariableAmount = connectVariableAmount(_VariableAmount);

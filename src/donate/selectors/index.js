@@ -17,7 +17,8 @@ export function getSelectedAmount(state) {
   if (!selection) return '';
   if (!selection.amount) return '';
 
-  return currency.symbol + selection.amount;
+  const amount = Number(selection.amount).toFixed(0);
+  return currency.symbol + amount;
 }
 
 export function getFrequencyLabel(state, offerUid) {

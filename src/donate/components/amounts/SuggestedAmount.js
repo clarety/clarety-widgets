@@ -32,4 +32,5 @@ const mapStateToProps = state => {
   };
 };
 
-export const SuggestedAmount = connect(mapStateToProps)(_SuggestedAmount);
+export const connectSuggestedAmount = connect(mapStateToProps);
+export const SuggestedAmount = connectSuggestedAmount(_SuggestedAmount);
