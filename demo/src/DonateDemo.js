@@ -1,6 +1,8 @@
 import React from 'react';
-import { Config, DonateWidget } from '../../src';
+import { Config, DonateWidget, withOverrides } from '../../src/';
 import '../../src/donate/style.scss';
+
+const DemoDonateWidget = withOverrides(DonateWidget, {});
 
 const DonateDemo = () => (
   <div className="container my-5">
@@ -15,7 +17,7 @@ const DonateDemo = () => (
       </div>
 
       <div className="donate-widget col-lg-6">
-        <DonateWidget
+        <DemoDonateWidget
           storeCode="AU"
           singleOfferCode="widget-single"
           recurringOfferCode="widget-recurring"
