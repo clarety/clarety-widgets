@@ -8,7 +8,7 @@ import { fetchExplain, setStore, clearItems } from 'shared/actions';
 import { formatPrice } from 'form/utils';
 import { createRootReducer } from 'donate/reducers';
 import { selectAmount, submitAmountPanel, submitDetailsPanel, submitPaymentPanel } from 'donate/actions';
-import { getIsBusy, getCartItem, getSelectedAmount, getFrequencyLabel } from 'donate/selectors';
+import { getIsBusy, getSelectedFrequency, getSelectedAmount, getFrequencyLabel } from 'donate/selectors';
 
 export function connectDonateWidget(ViewComponent) {
   const mapStateToProps = state => {
@@ -89,6 +89,7 @@ export function connectPaymentPanel(ViewComponent) {
     return {
       isBusy: getIsBusy(state),
       amount: getSelectedAmount(state),
+      frequency: getSelectedFrequency(state),
     };
   };
   
