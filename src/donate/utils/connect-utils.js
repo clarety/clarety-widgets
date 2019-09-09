@@ -86,11 +86,9 @@ export function connectDetailsPanel(ViewComponent) {
 
 export function connectPaymentPanel(ViewComponent) {
   const mapStateToProps = state => {
-    const item = getCartItem(state);
-
     return {
       isBusy: getIsBusy(state),
-      amount: formatPrice(item.price),
+      amount: getSelectedAmount(state),
     };
   };
   
