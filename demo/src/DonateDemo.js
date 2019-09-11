@@ -11,12 +11,7 @@ class InstanceValidations extends Validations {
 
     const { formData } = getState();
 
-    if (!this.validateEmail(formData['customer.email'])) {
-      errors.push({
-        message: 'Please enter a valid email.',
-        field: 'customer.email',
-      });
-    }
+    this.emailField(errors, formData, 'customer.email');
 
     return errors.length === 0;
   }

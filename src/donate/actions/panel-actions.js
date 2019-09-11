@@ -1,12 +1,9 @@
 import { push as pushRoute } from 'connected-react-router';
-import { ClaretyApi } from 'clarety-utils';
 import { statuses, setStatus, addItem, setCustomer, updateCartData } from 'shared/actions';
 import { parseNestedElements } from 'shared/utils';
-import { setErrors, clearErrors } from 'form/actions';
-import { updateCartRequest, updateCartSuccess, updateCartFailure } from 'donate/actions';
+import { setErrors } from 'form/actions';
 import { makePaymentSuccess, makePaymentFailure } from 'donate/actions';
-import { getAmountPanelSelection, getSelectedOffer, getPaymentData } from 'donate/selectors';
-import { validateCard } from 'donate/utils';
+import { getAmountPanelSelection, getSelectedOffer } from 'donate/selectors';
 
 export const submitAmountPanel = () => {
   return (dispatch, getState, { actions, validations }) => {
@@ -57,95 +54,65 @@ export class PanelActions {
     const { status, formData } = getState();
 
     if (status !== statuses.ready) return;
-
     dispatch(setStatus(statuses.busy));
-    dispatch(clearErrors());
 
-    const formDataObjs = parseNestedElements(formData);
-    dispatch(setCustomer(formDataObjs.customer));
+    const errors = [];
+    const isValid = validations.validateDetailsPanel(errors, getState);
+    dispatch(setErrors(errors));
 
-    const { cart } = getState();
-
-    const postData = {
-      store: cart.store,
-      uid: cart.uid,
-      jwt: cart.jwt,
-      customer: cart.customer,
-      saleline: cart.items[0],
-    };
-
-    dispatch(updateCartRequest(postData));
-    
-    const results = await ClaretyApi.post('donations/', postData);
-    const result = results[0];
-
-    dispatch(setStatus(statuses.ready));
-
-    if (result.validationErrors) {
-      dispatch(setErrors(result.validationErrors));
-      dispatch(updateCartFailure(result));
-    } else {
-      dispatch(updateCartSuccess(result));
-      dispatch(updateCartData({
-        uid: result.uid,
-        jwt: result.jwt,
-        status: result.status,
-        customer: result.customer,
-        items: result.salelines,
-      }));
+    if (isValid) {
+      const formDataObjs = parseNestedElements(formData);
+      dispatch(setCustomer(formDataObjs.customer));
       dispatch(pushRoute('/payment'));
     }
+
+    dispatch(setStatus(statuses.ready));
   }
 
   async submitPaymentPanel(dispatch, getState, { actions, validations }) {
     const { status, settings, formData } = getState();
 
     if (status !== statuses.ready) return;
-
     dispatch(setStatus(statuses.busy));
-    dispatch(clearErrors());
 
-    // Validate card details.
+    const errors = [];
+    const isValid = validations.validatePaymentPanel(errors, getState);
+    dispatch(setErrors(errors));
 
-    const paymentData = getPaymentData(formData);
+    if (isValid) {
+      // Attempt payment.
 
-    const errors = validateCard(paymentData);
-    if (errors) {
-      dispatch(setErrors(errors));
+      const { paymentActions } = actions;
+
+      let result;
+      if (settings.payment.type === 'stripe') {
+        result = await paymentActions.makeStripeCCPayment(dispatch, getState, { actions, validations });
+      } else {
+        result = await paymentActions.makeClaretyCCPayment(dispatch, getState, { actions, validations });
+      }
+
+      // Dispatch results.
+
       dispatch(setStatus(statuses.ready));
-      return;
+
+      if (result.validationErrors) {
+        dispatch(makePaymentFailure(result));
+        dispatch(setErrors(result.validationErrors));
+      } else {
+        dispatch(makePaymentSuccess(result));
+
+        dispatch(updateCartData({
+          uid: result.uid,
+          jwt: result.jwt,
+          status: result.status,
+          customer: result.customer,
+          items: result.salelines,
+        }));
+
+        dispatch(pushRoute('/success'));
+      }
     }
 
-    // Attempt payment.
-
-    const { paymentActions } = actions;
-
-    let result;
-    if (settings.payment.type === 'stripe') {
-      result = await paymentActions.makeStripeCCPayment(dispatch, getState, { actions, validations });
-    } else {
-      result = await paymentActions.makeClaretyCCPayment(dispatch, getState, { actions, validations });
-    }
-
-    // Dispatch results.
-
-    dispatch(setStatus(statuses.ready));
-
-    if (result.validationErrors) {
-      dispatch(makePaymentFailure(result));
-      dispatch(setErrors(result.validationErrors));
-    } else {
-      dispatch(makePaymentSuccess(result));
-
-      dispatch(updateCartData({
-        uid: result.uid,
-        jwt: result.jwt,
-        status: result.status,
-        customer: result.customer,
-        items: result.salelines,
-      }));
-
-      dispatch(pushRoute('/success'));
-    }
+    dispatch(setStatus(statuses.ready));    
   }
 }

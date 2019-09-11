@@ -66,11 +66,10 @@ export const parseStripeError = error => {
 
 const _stripeParamToField = param => {
   switch (param) {
-    case 'number': return 'cardNumber';
-    case 'exp_month': return 'expiry';
-    case 'exp_year': return 'expiry';
-    case 'cvc': return 'ccv';
-
-    default: return undefined;
+    case 'number':    return 'payment.cardNumber';
+    case 'exp_month': return 'payment.expiry';
+    case 'exp_year':  return 'payment.expiry';
+    case 'cvc':       return 'payment.ccv';
+    default:          return undefined;
   }
 };
