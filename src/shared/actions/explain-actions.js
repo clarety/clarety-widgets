@@ -16,6 +16,11 @@ export const fetchExplain = (endpoint, params) => {
   };
 };
 
+export const setVariant = variant => ({
+  type: types.setVariant,
+  variant: variant,
+});
+
 const explainFetchRequest = endpoint => ({
   type: types.explainFetchRequest,
   endpoint,

@@ -2,18 +2,19 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router'
 import { Switch, Route } from 'react-router-dom';
-import { statuses, fetchExplain, setStore } from 'shared/actions';
+import { statuses, setVariant, setStore, fetchExplain } from 'shared/actions';
 import { OverrideContext } from 'shared/utils';
 import { AmountPanel, DetailsPanel, PaymentPanel, SuccessPanel } from 'donate/components';
 
 export class _DonateWidget extends React.Component {
   componentWillMount() {
-    const { fetchExplain, setStore } = this.props;
-    const { storeCode, singleOfferCode, recurringOfferCode } = this.props;
+    const { setVariant, setStore, fetchExplain } = this.props;
+    const { storeCode, singleOfferCode, recurringOfferCode, variant } = this.props;
 
     if (!singleOfferCode && !recurringOfferCode) throw new Error('[Clarety] Either a singleOfferCode or recurringOfferCode prop is required');
     if (!window.Stripe) throw new Error('[Clarety] Stripe not found');
 
+    setVariant(variant);
     setStore(storeCode);
 
     fetchExplain('donations/', {
@@ -24,7 +25,7 @@ export class _DonateWidget extends React.Component {
   }
 
   render() {
-    const { status, forceMdLayout } = this.props;
+    const { status, forceMdLayout, variant } = this.props;
 
     const AmountPanelComponent  = this.context.AmountPanel  || AmountPanel;
     const DetailsPanelComponent = this.context.DetailsPanel || DetailsPanel;
@@ -45,16 +46,16 @@ export class _DonateWidget extends React.Component {
         <ConnectedRouter history={this.props.history}>
           <Switch>
             <Route exact path="/" render={props => (
-              <AmountPanelComponent {...props} forceMd={forceMdLayout} />
+              <AmountPanelComponent {...props} forceMd={forceMdLayout} variant={variant} />
             )}/>
             <Route path="/details" render={props => (
-              <DetailsPanelComponent {...props} forceMd={forceMdLayout} />
+              <DetailsPanelComponent {...props} forceMd={forceMdLayout} variant={variant} />
             )}/>
             <Route path="/payment" render={props => (
-              <PaymentPanelComponent {...props} forceMd={forceMdLayout} />
+              <PaymentPanelComponent {...props} forceMd={forceMdLayout} variant={variant} />
             )}/>
             <Route path="/success" render={props => (
-              <SuccessPanelComponent {...props} forceMd={forceMdLayout} />
+              <SuccessPanelComponent {...props} forceMd={forceMdLayout} variant={variant} />
             )}/>
           </Switch>
         </ConnectedRouter>
@@ -72,8 +73,9 @@ const mapStateToProps = state => {
 };
 
 const actions = {
-  fetchExplain: fetchExplain,
+  setVariant: setVariant,
   setStore: setStore,
+  fetchExplain: fetchExplain,
 };
 
 export const connectDonateWidget = connect(mapStateToProps, actions);
