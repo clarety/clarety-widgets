@@ -1,5 +1,5 @@
 export const types = {
-  // Amount Panel Action Types
+  // Amount Action Types
 
   selectFrequency: 'SELECT_FREQUENCY',
   selectAmount:    'SELECT_AMOUNT',

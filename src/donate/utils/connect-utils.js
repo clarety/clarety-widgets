@@ -2,52 +2,39 @@ import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { routerMiddleware } from 'connected-react-router';
-import { Provider, connect } from 'react-redux';
+import { Provider as ReduxProvider, connect } from 'react-redux';
 import { createMemoryHistory } from 'history';
-import { fetchExplain, setStore, clearItems } from 'shared/actions';
+import { OverrideContext } from 'shared/utils';
+import { clearItems } from 'shared/actions';
 import { formatPrice } from 'form/utils';
 import { createRootReducer } from 'donate/reducers';
 import { selectAmount, submitAmountPanel, submitDetailsPanel, submitPaymentPanel } from 'donate/actions';
 import { getIsBusy, getSelectedFrequency, getSelectedAmount, getFrequencyLabel } from 'donate/selectors';
+import { DonateWidget } from 'donate/components';
 
-export function connectDonateWidget(ViewComponent) {
-  const mapStateToProps = state => {
-    return {
-      status: state.status,
-    };
-  };
-
-  const actions = {
-    fetchExplain: fetchExplain,
-    setStore: setStore,
-  };
-
-  const ConnectedComponent = connect(mapStateToProps, actions)(ViewComponent);
-
+export function createDonateWidget({ components, actions, validations }) {
+  // Setup redux store.
   const history = createMemoryHistory();
-  const middleware = applyMiddleware(routerMiddleware(history), thunkMiddleware);
+  const reducer = createRootReducer(history);
+
+  const thunk = thunkMiddleware.withExtraArgument({ actions, validations });
+  const middleware = applyMiddleware(routerMiddleware(history), thunk);
+
   const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-  const store = createStore(createRootReducer(history), composeDevTools(middleware));
 
-  if (window.Cypress) window.store = store;
+  const store = createStore(reducer, composeDevTools(middleware));
 
-  class StoreWrapper extends React.Component {
-    render() {
-      return (
-        <Provider store={store}>
-          <ConnectedComponent
-            {...this.props}
-            history={history}
-          />
-        </Provider>
-      );
-    }
-  };
+  // Wrap donation widget in providers.
+  const DonateWidgetWrapper = props => (
+    <ReduxProvider store={store}>
+      <OverrideContext.Provider value={components}>
+        <DonateWidget {...props} history={history} />
+      </OverrideContext.Provider>
+    </ReduxProvider>
+  );
 
-  StoreWrapper.displayName = `StoreWrapper(${ViewComponent.name})`;
-
-  return StoreWrapper;
-};
+  return DonateWidgetWrapper;  
+}
 
 export function connectAmountPanel(ViewComponent) {
   const mapStateToProps = state => {

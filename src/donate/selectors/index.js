@@ -45,3 +45,30 @@ export function getSelectedOffer(state) {
     offer => offer.frequency === panels.amountPanel.frequency
   );
 }
+
+export function getPaymentPostData(state) {
+  const { cart } = state;
+  return {
+    store: cart.store,
+    uid: cart.uid,
+    jwt: cart.jwt,
+    saleline: cart.items[0],
+    customer: cart.customer,
+    payment: cart.payment,
+  };
+}
+
+export function getPaymentData(formData) {
+  return {
+    cardNumber:  formData['payment.cardNumber'],
+    expiryMonth: formData['payment.expiryMonth'],
+    expiryYear:  formData['payment.expiryYear'],
+    ccv:         formData['payment.ccv'],
+  };
+}
+
+export function getCustomerFullName(formData) {
+  const firstName = formData['customer.firstName'];
+  const lastName  = formData['customer.lastName'];
+  return `${firstName} ${lastName}`;
+}

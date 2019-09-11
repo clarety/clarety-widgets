@@ -1,9 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router'
 import { Switch, Route } from 'react-router-dom';
-import { statuses } from 'shared/actions';
+import { statuses, fetchExplain, setStore } from 'shared/actions';
 import { OverrideContext } from 'shared/utils';
-import { connectDonateWidget } from 'donate/utils';
 import { AmountPanel, DetailsPanel, PaymentPanel, SuccessPanel } from 'donate/components';
 
 export class _DonateWidget extends React.Component {
@@ -65,4 +65,16 @@ export class _DonateWidget extends React.Component {
 
 _DonateWidget.contextType = OverrideContext;
 
+const mapStateToProps = state => {
+  return {
+    status: state.status,
+  };
+};
+
+const actions = {
+  fetchExplain: fetchExplain,
+  setStore: setStore,
+};
+
+export const connectDonateWidget = connect(mapStateToProps, actions);
 export const DonateWidget = connectDonateWidget(_DonateWidget);

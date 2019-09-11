@@ -6,6 +6,7 @@ export { SubscribeWidget } from 'subscribe/views';
 export { setupSubscribeAxiosMock } from 'subscribe/mocks';
 
 export { DonateWidget } from 'donate/components';
+export { createDonateWidget } from 'donate/utils';
 export { setupDonateAxiosMock } from 'donate/mocks';
 
 export { RegistrationsApp } from 'registrations/components';
