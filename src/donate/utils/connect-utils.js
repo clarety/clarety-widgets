@@ -10,9 +10,15 @@ import { formatPrice } from 'form/utils';
 import { createRootReducer } from 'donate/reducers';
 import { selectAmount, submitAmountPanel, submitDetailsPanel, submitPaymentPanel } from 'donate/actions';
 import { getIsBusy, getSelectedFrequency, getSelectedAmount, getFrequencyLabel } from 'donate/selectors';
-import { DonateWidget } from 'donate/components';
+import { DonateWidget, DonatePage } from 'donate/components';
+import { Actions, PageActions } from 'donate/actions';
+import { Validations } from 'donate/validations';
 
-export function createDonateWidget({ components, actions, validations }) {
+function wrapDonateComponent(Component, { components, actions, validations }) {
+  components = components || {};
+  actions = actions || new Actions;
+  validations = validations || new Validations;
+
   // Setup redux store.
   const history = createMemoryHistory();
   const reducer = createRootReducer(history);
@@ -25,15 +31,31 @@ export function createDonateWidget({ components, actions, validations }) {
   const store = createStore(reducer, composeDevTools(middleware));
 
   // Wrap donation widget in providers.
-  const DonateWidgetWrapper = props => (
+  const DonateWrapper = props => (
     <ReduxProvider store={store}>
       <OverrideContext.Provider value={components}>
-        <DonateWidget {...props} history={history} />
+        <Component {...props} history={history} />
       </OverrideContext.Provider>
     </ReduxProvider>
   );
 
-  return DonateWidgetWrapper;  
+  return DonateWrapper;
+}
+
+export function createDonateWidget({ components, actions, validations } = {}) {
+  components = components || {};
+  actions = actions || new Actions;
+  validations = validations || new Validations;
+
+  return wrapDonateComponent(DonateWidget, { components, actions, validations });
+}
+
+export function createDonatePage({ components, actions, validations } = {}) {
+  components = components || {};
+  actions = actions || new PageActions;
+  validations = validations || new Validations;
+
+  return wrapDonateComponent(DonatePage, { components, actions, validations });
 }
 
 export function connectAmountPanel(ViewComponent) {

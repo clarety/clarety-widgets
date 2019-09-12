@@ -4,20 +4,6 @@ import { Actions } from '../../src/donate/actions';
 import { Validations } from '../../src/donate/validations';
 import '../../src/donate/style.scss';
 
-
-class InstanceValidations extends Validations {
-  validateAmountPanel(errors, getState) {
-    super.validateAmountPanel(errors, getState);
-
-    const { formData } = getState();
-
-    this.emailField(errors, formData, 'customer.email');
-
-    return errors.length === 0;
-  }
-}
-
-
 const DonateWidget = createDonateWidget({
   actions: new Actions(),
   validations: new Validations(),
@@ -26,7 +12,6 @@ const DonateWidget = createDonateWidget({
     // AmountPanel: InstanceAmountPanel,
   },
 });
-
 
 const DonateDemo = () => (
   <div className="container my-5">

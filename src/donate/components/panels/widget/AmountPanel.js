@@ -49,11 +49,10 @@ export class _AmountPanel extends React.Component {
             {offer.amounts.map(this.renderSuggestedAmount)}
             {this.renderVariableAmount(variableAmount)}
           </div>
-
         </Card.Body>
 
         <Card.Footer>
-        <Form.Row className="justify-content-center">
+          <Form.Row className="justify-content-center">
             <Col lg={forceMd ? null : 5}>
               <SubmitButton title="Next" block testId="next-button" />
             </Col>

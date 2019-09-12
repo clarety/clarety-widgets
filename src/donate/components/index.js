@@ -6,9 +6,14 @@ export * from './amounts/VariableAmountLg';
 
 export * from './misc/StepIndicator';
 
-export * from './panels/AmountPanel';
-export * from './panels/DetailsPanel';
-export * from './panels/PaymentPanel';
-export * from './panels/SuccessPanel';
+export * from './panels/widget/AmountPanel';
+export * from './panels/widget/DetailsPanel';
+export * from './panels/widget/PaymentPanel';
+export * from './panels/widget/SuccessPanel';
+
+export * from './panels/page/PageAmountPanel';
+export * from './panels/page/PageDetailsPanel';
+export * from './panels/page/PagePaymentPanel';
 
 export * from './DonateWidget';
+export * from './DonatePage';
