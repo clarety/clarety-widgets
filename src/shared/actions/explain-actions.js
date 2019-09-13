@@ -21,6 +21,11 @@ export const setVariant = variant => ({
   variant: variant,
 });
 
+export const setConfirmPageUrl = confirmPageUrl => ({
+  type: types.setConfirmPageUrl,
+  confirmPageUrl: confirmPageUrl,
+});
+
 const explainFetchRequest = endpoint => ({
   type: types.explainFetchRequest,
   endpoint,

@@ -16,6 +16,12 @@ export const explainReducer = (state = initialState, action) => {
         variant: action.variant,
       };
 
+    case types.setConfirmPageUrl:
+      return {
+        ...state,
+        confirmPageUrl: action.confirmPageUrl,
+      };
+
     default:
       return state;
   }

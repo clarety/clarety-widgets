@@ -61,7 +61,7 @@ export class PanelActions {
   }
 
   async submitPaymentPanel(dispatch, getState, { actions, validations }) {
-    const { status } = getState();
+    const { status, settings } = getState();
 
     if (status !== statuses.ready) return;
     dispatch(setStatus(statuses.busy));
@@ -92,7 +92,8 @@ export class PanelActions {
           items: result.salelines,
         }));
 
-        dispatch(pushRoute('/success'));
+        // Redirect on success.
+        window.location.href = settings.confirmPageUrl;
       }
     }
 
@@ -120,9 +121,9 @@ export class PanelActions {
 
 export class PagePanelActions extends PanelActions {
   async submitPaymentPanel(dispatch, getState, { actions, validations }) {
-    const state = getState();
+    const { status, settings } = getState();
 
-    if (state.status !== statuses.ready) return;
+    if (status !== statuses.ready) return;
     dispatch(setStatus(statuses.busy));
 
     // Validate.
@@ -149,8 +150,8 @@ export class PagePanelActions extends PanelActions {
         dispatch(makePaymentFailure(result));
         dispatch(setErrors(result.validationErrors));
       } else {
-        // TODO: get redirect url from response...
-        window.location.href = 'http://humanfund.org/thanks';
+        // Redirect on success.
+        window.location.href = settings.confirmPageUrl;
       } 
     }
 

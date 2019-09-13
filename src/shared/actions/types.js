@@ -3,7 +3,8 @@ export const types = {
   explainFetchRequest: 'EXPLAIN_FETCH_REQUEST',
   explainFetchSuccess: 'EXPLAIN_FETCH_SUCCESS',
   explainFetchFailure: 'EXPLAIN_FETCH_FAILURE',
-  setVariant: 'SET_VARIANT',
+  setVariant:          'SET_VARIANT',
+  setConfirmPageUrl:   'SET_CONFIRM_PAGE_URL',
 
   // Cart Action Types
   addItem:        'ADD_ITEM',
