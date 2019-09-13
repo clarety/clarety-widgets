@@ -22,7 +22,7 @@ export class _DonatePage extends _DonateWidget {
     }
 
     return (
-      <div className="clarety-donate-widget h-100">
+      <div className="clarety-donate-page">
         <BlockUi tag="div" blocking={status !== statuses.ready} loader={<span></span>}>
           <AmountPanelComponent  variant={variant} />
           <DetailsPanelComponent variant={variant} />

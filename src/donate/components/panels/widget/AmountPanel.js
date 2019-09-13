@@ -67,6 +67,7 @@ export class _AmountPanel extends React.Component {
     const currentSelection = selections[frequency];
 
     const SuggestedAmountComponent = this.context.SuggestedAmount || SuggestedAmount;
+    const SuggestedAmountLgComponent = this.context.SuggestedAmountLg || SuggestedAmountLg;
 
     // Ignore variable amount, we'll add a field below the suggested amounts.
     if (suggestedAmount.variable) return null;
@@ -82,7 +83,7 @@ export class _AmountPanel extends React.Component {
           forceMd={forceMd}
         />
         {!forceMd &&
-          <SuggestedAmountLg
+          <SuggestedAmountLgComponent
             key={`${suggestedAmount.amount}-lg`}
             amountInfo={suggestedAmount}
             onClick={amount => selectAmount(frequency, amount)}
@@ -101,6 +102,7 @@ export class _AmountPanel extends React.Component {
     const currentSelection = selections[frequency];
 
     const VariableAmountComponent = this.context.VariableAmount || VariableAmount;
+    const VariableAmountLgComponent = this.context.VariableAmountLg || VariableAmountLg;
 
     return (
       <React.Fragment>
@@ -111,7 +113,7 @@ export class _AmountPanel extends React.Component {
           forceMd={forceMd}
         />
         {!forceMd &&
-          <VariableAmountLg
+          <VariableAmountLgComponent
             value={currentSelection.variableAmount || ''}
             amountInfo={variableAmount}
             onChange={amount => selectAmount(frequency, amount, true)}

@@ -27,7 +27,6 @@ const _VariableAmountLg = ({ value, amountInfo, isSelected, onChange, currency, 
             </InputGroup.Prepend>
             <Form.Control
               placeholder="Other Amount"
-              required={isSelected}
               ref={input}
               value={value}
               type="text"
