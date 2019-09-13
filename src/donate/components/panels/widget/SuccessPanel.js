@@ -1,9 +1,10 @@
 import React from 'react';
 import { Card, Col, Row, Table } from 'react-bootstrap';
 import { scrollIntoView } from 'shared/utils';
+import { BasePanel } from 'donate/components';
 import { connectSuccessPanel } from 'donate/utils';
 
-export class _SuccessPanel extends React.Component {
+export class _SuccessPanel extends BasePanel {
   componentDidMount() {
     scrollIntoView(this);
   }

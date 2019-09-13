@@ -5,7 +5,37 @@ import { _DetailsPanel } from 'donate/components';
 import { connectDetailsPanel } from 'donate/utils';
 
 export class _PageDetailsPanel extends _DetailsPanel {
+  fields = [
+    'customer.firstName',
+    'customer.lastName',
+    'customer.email',
+    'customer.billing.address1',
+    'customer.billing.suburb',
+    'customer.billing.state',
+    'customer.billing.postcode',
+    'customer.billing.country'
+  ];
+
   componentDidMount() {
+  }
+
+  componentDidUpdate() {
+    if (this.hasError()) this.scrollIntoView();
+  }
+
+  hasError() {
+    if (!this.fields || this.fields.length === 0) {
+      return false;
+    }
+
+    const { errors } = this.props;
+    for (let field of this.fields) {
+      if (errors.find(error => error.field === field)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   renderContent() {

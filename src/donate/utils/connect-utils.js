@@ -67,6 +67,7 @@ export function connectAmountPanel(ViewComponent) {
       frequency: amountPanel.frequency,
       selections: amountPanel.selections,
       selectedAmount: getSelectedAmount(state),
+      errors: state.errors,
     };
   };
   
@@ -83,6 +84,7 @@ export function connectDetailsPanel(ViewComponent) {
   const mapStateToProps = state => {
     return {
       isBusy: getIsBusy(state),
+      errors: state.errors,
     };
   };
   
@@ -99,6 +101,7 @@ export function connectPaymentPanel(ViewComponent) {
       isBusy: getIsBusy(state),
       amount: getSelectedAmount(state),
       frequency: getSelectedFrequency(state),
+      errors: state.errors,
     };
   };
   

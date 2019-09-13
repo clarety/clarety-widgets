@@ -5,7 +5,17 @@ import { _PaymentPanel } from 'donate/components';
 import { connectPaymentPanel } from 'donate/utils';
 
 export class _PagePaymentPanel extends _PaymentPanel {
+  fields = [
+    'payment.cardNumber',
+    'payment.expiry',
+    'payment.ccv',
+  ];
+
   componentDidMount() {
+  }
+
+  componentDidUpdate() {
+    if (this.hasError()) this.scrollIntoView();
   }
 
   renderContent() {

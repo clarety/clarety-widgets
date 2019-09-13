@@ -8,6 +8,10 @@ export class _PageAmountPanel extends _AmountPanel {
   componentDidMount() {
   }
 
+  componentDidUpdate() {
+    if (this.hasError()) this.scrollIntoView();
+  }
+
   renderContent() {
     const { frequency } = this.props;
     

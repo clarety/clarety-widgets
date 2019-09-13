@@ -1,11 +1,11 @@
 import React from 'react';
 import { Card, Form, Col } from 'react-bootstrap';
 import { SubmitButton, ErrorMessages } from 'form/components';
-import { StepIndicator, FrequencySelect, SuggestedAmount, SuggestedAmountLg, VariableAmount, VariableAmountLg } from 'donate/components';
+import { BasePanel, StepIndicator, FrequencySelect, SuggestedAmount, SuggestedAmountLg, VariableAmount, VariableAmountLg } from 'donate/components';
 import { connectAmountPanel } from 'donate/utils';
 import { OverrideContext } from 'shared/utils';
 
-export class _AmountPanel extends React.Component {
+export class _AmountPanel extends BasePanel {
   componentWillMount() {
     this.props.clearItems();
   }

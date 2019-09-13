@@ -6,6 +6,8 @@ export * from './amounts/VariableAmountLg';
 
 export * from './misc/StepIndicator';
 
+export * from './panels/BasePanel';
+
 export * from './panels/widget/AmountPanel';
 export * from './panels/widget/DetailsPanel';
 export * from './panels/widget/PaymentPanel';

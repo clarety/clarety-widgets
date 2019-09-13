@@ -3,11 +3,11 @@ import { Card, Form, Row, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import { scrollIntoView } from 'shared/utils';
 import { SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput } from 'form/components';
-import { StepIndicator } from 'donate/components';
+import { BasePanel, StepIndicator } from 'donate/components';
 import { connectPaymentPanel } from 'donate/utils';
 import 'react-block-ui/style.css';
 
-export class _PaymentPanel extends React.Component {
+export class _PaymentPanel extends BasePanel {
   componentDidMount() {
     scrollIntoView(this);
   }
