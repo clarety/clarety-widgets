@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 import { statuses } from 'shared/actions';
 
 const _SubmitButton = ({ title, className, block, testId, isReady }) => (
-  <Button className={className} block={block} disabled={!isReady} type="submit" data-testid={testId}>
+  <Button className={`btn-submit ${className}`} block={block} disabled={!isReady} type="submit" data-testid={testId}>
     {isReady ? title : <Spinner />} 
   </Button>
 );
