@@ -49,6 +49,9 @@ export const getCreateRegistrationPostData = state => {
         ...participant.additionalData,
       }],
     })),
+    fundraising: {
+      donationAmount: getDonationAmount(state),
+    }
   };
 
   return postData;
@@ -75,4 +78,9 @@ const getProductId = (state, participant) => {
            .registrationProducts[0]
            .products[0]
            .productId;
+};
+
+const getDonationAmount = state => {
+  const { frequency, selections } = state.panels.amountPanel;
+  return selections[frequency].amount;
 };
