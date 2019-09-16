@@ -1,157 +1,160 @@
 @import '~bootstrap/scss/bootstrap.scss';
 
-// bootstrap overrides
+.registrations {
+  // bootstrap overrides
 
-.sticky-top {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  z-index: 1020;
-}
-
-.section {
-  padding: 60px 0;
-  border-bottom: 1px solid $gray-300;
-
-  &:last-of-type {
-    border: none;
-    min-height: 100vh;
-  }
-}
-
-h4 {
-  text-align: center;
-}
-
-.btn {
-  padding: 12px 20px 12px 20px;
-}
-
-.navbar {
-  align-items: stretch;
-  padding: 0;
-  background: $light;
-  flex-direction: column;
-
-  &-brand {
-    padding: 0;
+  .sticky-top {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1020;
   }
 
-  .col {
-    padding: 15px;
-    height: 100px;
-    border-right: 1px solid $gray-300;
-  }
-}
+  .section {
+    padding: 60px 0;
+    border-bottom: 1px solid $gray-300;
 
-.progress {
-  height: 10px;
-  background: transparent;
-  border-radius: 0;
-}
-
-.container {
-  padding: 0 20px;
-  text-align: center;
-
-  @include media-breakpoint-up(md) {
-    padding: 0 60px;
-  }
-}
-
-.modal-dialog {
-  max-width: 400px;
-  margin-top: -60px;
-}
-
-.modal-body {
-  padding: 1.5rem;
-}
-
-.invalid-feedback {
-  display: block;
-}
-
-
-// react-block-ui overrides
-
-.registration-app .block-ui-container,
-.block-ui-container {
-  position: fixed;
-}
-
-
-// react-select overrides
-
-.react-select__control {
-  &--is-focused, &--menu-is-open {
-    border-color: $primary !important;
-    box-shadow: 0 0 0 1px $primary !important;
-  }
-}
-
-.react-select__option {
-  &--is-focused {
-    background: $gray-200 !important;
+    &:last-of-type {
+      border: none;
+      min-height: 100vh;
+    }
   }
 
-  &--is-selected {
-    background: $primary !important;
-  }
-}
-
-
-// react-phone-number-input overrides
-
-.react-phone-number-input__icon {
-  width: 1.8em;
-  height: auto;
-  line-height: 0;
-}
-
-
-// custom styles
-
-.panel-body {
-  margin: 40px auto;
-  text-align: left;
-
-  &-qtys { max-width: 500px; }
-  &-names { max-width: 600px; }
-}
-
-.input-group-qty {
-  margin-left: auto;
-  width: 140px;
-
-  input {
+  h4 {
     text-align: center;
-    outline: none;
-    background: $gray-100;
-    line-height: 2;
   }
 
-  button {
-    width: 40px;
+  .btn {
+    padding: 12px 20px 12px 20px;
   }
-}
 
-$circle-size: 40px;
-.circle {
-  display: block;
-  border: 1px solid $black;
-  line-height: $circle-size;
-  border-radius: $circle-size;
-  width: $circle-size;
-  height: $circle-size;
-  text-align: center;
-}
+  .navbar {
+    align-items: stretch;
+    padding: 0;
+    background: $light;
+    flex-direction: column;
 
-.table-sale {
-  text-align: right;
+    &-brand {
+      padding: 0;
+    }
 
-  tr > th:nth-child(1),
-  tr > td:nth-child(1) {
+    .col {
+      padding: 15px;
+      height: 100px;
+      border-right: 1px solid $gray-300;
+    }
+  }
+
+  .progress {
+    height: 10px;
+    background: transparent;
+    border-radius: 0;
+  }
+
+  .container {
+    padding: 0 20px;
+    text-align: center;
+
+    @include media-breakpoint-up(md) {
+      padding: 0 60px;
+    }
+  }
+
+  .modal-dialog {
+    max-width: 400px;
+    margin-top: -60px;
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+
+  .invalid-feedback {
+    display: block;
+  }
+
+
+  // react-block-ui overrides
+
+  .registration-app .block-ui-container,
+  .block-ui-container {
+    position: fixed;
+  }
+
+
+  // react-select overrides
+
+  .react-select__control {
+    &--is-focused, &--menu-is-open {
+      border-color: $primary !important;
+      box-shadow: 0 0 0 1px $primary !important;
+    }
+  }
+
+  .react-select__option {
+    &--is-focused {
+      background: $gray-200 !important;
+    }
+
+    &--is-selected {
+      background: $primary !important;
+    }
+  }
+
+
+  // react-phone-number-input overrides
+
+  .react-phone-number-input__icon {
+    width: 1.8em;
+    height: auto;
+    line-height: 0;
+  }
+
+
+  // custom styles
+
+  .panel-body {
+    margin: 40px auto;
     text-align: left;
+
+    &-qtys { max-width: 500px; }
+    &-names { max-width: 600px; }
   }
+
+  .input-group-qty {
+    margin-left: auto;
+    width: 140px;
+
+    input {
+      text-align: center;
+      outline: none;
+      background: $gray-100;
+      line-height: 2;
+    }
+
+    button {
+      width: 40px;
+    }
+  }
+
+  $circle-size: 40px;
+  .circle {
+    display: block;
+    border: 1px solid $black;
+    line-height: $circle-size;
+    border-radius: $circle-size;
+    width: $circle-size;
+    height: $circle-size;
+    text-align: center;
+  }
+
+  .table-sale {
+    text-align: right;
+
+    tr > th:nth-child(1),
+    tr > td:nth-child(1) {
+      text-align: left;
+    }
+  }
+
 }

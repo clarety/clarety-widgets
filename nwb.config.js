@@ -4,6 +4,9 @@ module.exports = {
     esModules: true,
     umd: false,
   },
+  devServer: {
+    hot: false,
+  },
   webpack: {
     html: {
       template: 'demo/src/index.html',

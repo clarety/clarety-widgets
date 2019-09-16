@@ -6,7 +6,7 @@ import { CartSummary } from "cart/components";
 import { cartReducer } from 'cart/reducers';
 import { fetchItems } from "cart/actions";
 import { Col, Row } from "react-bootstrap";
-import 'cart/styles/main.scss';
+// import 'cart/styles/main.scss';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
