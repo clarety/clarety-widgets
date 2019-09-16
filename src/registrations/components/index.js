@@ -12,10 +12,10 @@ export * from './panels/NamesPanel';
 export * from './panels/QtysPanel';
 export * from './panels/ReviewPanel';
 
-export * from './Brand';
-export * from './MiniCart';
-export * from './PanelStack';
-export * from './Qty';
-export * from './ScrollIntoView';
+export * from './misc/Brand';
+export * from './misc/MiniCart';
+export * from './misc/Qty';
+export * from './misc/ScrollIntoView';
 
-export * from './RegistrationsApp';
+export * from './PanelStack';
+export * from './Registrations';

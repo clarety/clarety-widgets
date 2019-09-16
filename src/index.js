@@ -9,7 +9,7 @@ export { DonateWidget, DonatePage } from 'donate/components';
 export { createDonateWidget, createDonatePage } from 'donate/utils';
 export { setupDonateAxiosMock } from 'donate/mocks';
 
-export { RegistrationsApp } from 'registrations/components';
+export { Registrations } from 'registrations/components';
 export { setupRegistrationsAxiosMock } from 'registrations/mocks';
 
 export { Checkout } from 'checkout/components';

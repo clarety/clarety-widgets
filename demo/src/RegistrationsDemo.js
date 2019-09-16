@@ -1,8 +1,8 @@
 import React from 'react';
-import { RegistrationsApp, withOverrides, setupRegistrationsAxiosMock } from '../../src';
+import { Registrations, withOverrides, setupRegistrationsAxiosMock } from '../../src';
 import enTranslations from '../../src/registrations/intl/en.json';
 
-const App = withOverrides(RegistrationsApp, {});
+const App = withOverrides(Registrations, {});
 
 export default class RegistrationsDemo extends React.Component {
   componentWillMount() {
