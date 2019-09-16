@@ -56,8 +56,8 @@ class _ReviewPanel extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    hasErrors: state.registration.errors !== null,
-    registrations: state.registration.sale ? state.registration.sale.salelines : null,
+    hasErrors: state.cart.errors !== null,
+    registrations: state.cart.sale ? state.cart.sale.salelines : null,
   };
 };
 

@@ -56,8 +56,8 @@ export const getCreateRegistrationPostData = state => {
 
 export const getSubmitRegistrationPostData = state => {
   return {
-    uid: state.registration.uid,
-    jwt: state.registration.jwt,
+    uid: state.cart.uid,
+    jwt: state.cart.jwt,
   };
 };
 

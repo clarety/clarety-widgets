@@ -31,7 +31,7 @@ export const types = {
   panelDataSetErrors:         'PANEL_DATA_SET_ERRORS',
   panelDataResetDetails:      'PANEL_DATA_RESET_DETAILS',
 
-  // Registration Action Types
+  // Cart Action Types
 
   registrationCreateRequest: 'REGISTRATION_CREATE_REQUEST',
   registrationCreateSuccess: 'REGISTRATION_CREATE_SUCCESS',
