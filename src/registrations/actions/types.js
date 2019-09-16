@@ -13,6 +13,8 @@ export const types = {
   fetchFullEventSuccess: 'FETCH_FULL_EVENT_SUCCESS',
   fetchFullEventFailure: 'FETCH_FULL_EVENT_FAILURE',
 
+  setPriceHandles: 'SET_PRICE_HANDLES',
+
   // Panel Stack Action Types
 
   panelStackPush: 'PANEL_STACK_PUSH',

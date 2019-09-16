@@ -14,8 +14,11 @@ export const amountPanelReducer = (state = initialState, action) => {
     case types.selectAmount:
       return selectAmount(state, action);
 
+    case types.selectDefaults:
+        return selectDefaults(state, action.offers);
+
     case sharedActionTypes.explainFetchSuccess:
-      return selectDefaults(state, action);
+      return selectDefaults(state, action.explain.offers);
 
     default:
       return state;
@@ -48,9 +51,7 @@ const selectAmount = (state, action) => {
   };
 };
 
-const selectDefaults = (state, action) => {
-  const { offers } = action.explain;
-
+const selectDefaults = (state, offers) => {
   const defaultFrequency = offers[0].frequency;
   const defaultSelections = {};
 

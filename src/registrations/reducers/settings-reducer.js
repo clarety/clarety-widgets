@@ -2,10 +2,19 @@ import { types } from 'registrations/actions';
 
 const initialState = {
   isBusy: false,
+
   events: null,
   event: null,
+
   extendForms: null,
   elements: null,
+
+  priceHandles: null,
+
+  currency: {
+    symbol: '$',
+    code: 'AUD',
+  },
 };
 
 export const settingsReducer = (state = initialState, action) => {
@@ -29,6 +38,12 @@ export const settingsReducer = (state = initialState, action) => {
         event: action.result.events[0],
         extendForms: convertSelectFields(action.result.extendForms),
         elements: action.result.elements,
+      };
+
+    case types.setPriceHandles:
+      return {
+        ...state,
+        priceHandles: action.priceHandles,
       };
 
     default:

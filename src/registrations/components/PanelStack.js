@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { ScrollIntoView, EventPanel, QtysPanel, NamesPanel, DetailsPanel, ReviewPanel } from 'registrations/components';
+import { ScrollIntoView, EventPanel, QtysPanel, NamesPanel, DetailsPanel, DonatePanel, ReviewPanel } from 'registrations/components';
 import { pushPanel, popToPanel, panels } from 'registrations/actions';
 import { OverrideContext } from 'shared/utils';
 
@@ -33,6 +33,7 @@ class _PanelStack extends React.Component {
       case panels.qtysPanel:    return this.context.QtysPanel    || QtysPanel;
       case panels.namesPanel:   return this.context.NamesPanel   || NamesPanel;
       case panels.detailsPanel: return this.context.DetailsPanel || DetailsPanel;
+      case panels.donatePanel:  return this.context.DonatePanel  || DonatePanel;
       case panels.reviewPanel:  return this.context.ReviewPanel  || ReviewPanel;
   
       default: throw new Error(`Cannot resolve panel component ${name}`);

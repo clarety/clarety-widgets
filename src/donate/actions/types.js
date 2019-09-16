@@ -3,6 +3,7 @@ export const types = {
 
   selectFrequency: 'SELECT_FREQUENCY',
   selectAmount:    'SELECT_AMOUNT',
+  selectDefaults:  'SELECT_DEFAULTS',
 
   // API Action Types
 

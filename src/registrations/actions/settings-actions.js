@@ -12,7 +12,7 @@ export const fetchEvents = () => {
     if (results) {
       dispatch(fetchEventsSuccess(results));
       dispatch(pushPanel({
-        panel: panels.eventPanel,
+        panel: panels.donatePanel,
         progress: 0,
       }));
     } else {
@@ -41,6 +41,11 @@ export const fetchFullEvent = eventId => {
     }
   };
 };
+
+export const setPriceHandles = priceHandles => ({
+  type: types.setPriceHandles,
+  priceHandles: priceHandles,
+});
 
 
 // Fetch Events

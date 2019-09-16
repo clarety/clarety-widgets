@@ -63,18 +63,14 @@
   "detailsPanel.customerFormTitle": "Personal Details",
   "detailsPanel.extendFormTitle": "Event Details",
   "detailsPanel.doneTitle": "Registration Details For {firstName}",
+
+  "donatePanel.editTitle": "Make A Donation",
+  "donatePanel.doneTitle": "Your Donation",
+  "donatePanel.summaryText": "Amount: {amount}",
   
   "reviewPanel.errorTitle": "We Found Some Problems With Your Registration",
   "reviewPanel.errorSubtitle": "Please correct the issues and try again.",
   "reviewPanel.reviewTitle": "Please Review Your Registration",
-
-  "resultsPage.title": "You're Officially Registered!",
-  "resultsPage.message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. \n\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  "resultsPage.orderId": "Order ID: {id}",
-  "resultsPage.items": "Items",
-  "resultsPage.price": "Price",
-  "resultsPage.qty": "Qty",
-  "resultsPage.total": "Total",
 
   "validation.required": "This is a required field.",
   "validation.email": "Please enter a valid email.",

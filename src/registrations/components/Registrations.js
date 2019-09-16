@@ -7,9 +7,11 @@ import 'intl-pluralrules'; // Polyfill for safari 12
 import { Spinner, Modal } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
+import { selectDefaults } from 'donate/actions';
 import { MiniCart, PanelStack } from 'registrations/components';
-import { fetchEvents, statuses } from 'registrations/actions';
+import { fetchEvents, statuses, setPriceHandles } from 'registrations/actions';
 import { rootReducer } from 'registrations/reducers';
+import { priceHandles } from 'registrations/utils';
 
 const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
@@ -24,7 +26,10 @@ export const Registrations = ({ translations }) => (
 
 class _Root extends React.Component {
   componentDidMount() {
-    this.props.fetchEvents();
+    const { fetchEvents, selectDefaultDonations, setPriceHandles } = this.props;
+    fetchEvents();
+    setPriceHandles(priceHandles);
+    selectDefaultDonations(priceHandles);
   }
 
   render() {
@@ -58,6 +63,8 @@ const mapStateToProps = state => {
 
 const actions = {
   fetchEvents: fetchEvents,
+  setPriceHandles: setPriceHandles,
+  selectDefaultDonations: selectDefaults,
 };
 
 const Root = connect(mapStateToProps, actions)(_Root);
