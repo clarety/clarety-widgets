@@ -1,4 +1,5 @@
 import { ClaretyApi, Config } from 'clarety-utils';
+import { setErrors } from 'form/actions';
 import { getCreateRegistrationPostData, getSubmitRegistrationPostData } from 'registrations/selectors';
 import { types, pushPanel, panels } from 'registrations/actions';
 
@@ -11,16 +12,18 @@ export const createRegistration = () => {
     const state = getState();
     const postData = getCreateRegistrationPostData(state);
 
-    const result = await ClaretyApi.post('registration-sale-widget/', postData, { storeId });
+    const results = await ClaretyApi.post('registration-sale-widget/', postData, { storeId });
+    const result = results[0];
 
-    if (result[0] && result[0].status !== 'error') {
-      dispatch(registrationCreateSuccess(result[0]));
+    if (result.status !== 'error') {
+      dispatch(registrationCreateSuccess(result));
       dispatch(pushPanel({
         panel: panels.reviewPanel,
         progress: 100,
       }));
     } else {
-      dispatch(registrationCreateFailure(result[0]));
+      dispatch(registrationCreateFailure(result));
+      dispatch(setErrors(result.validationErrors));
     }
   };
 };
@@ -34,13 +37,14 @@ export const submitRegistration = () => {
     const state = getState();
     const postData = getSubmitRegistrationPostData(state);
 
-    const result = await ClaretyApi.post('registration-payment-widget/', postData, { storeId });
+    const results = await ClaretyApi.post('registration-payment-widget/', postData, { storeId });
+    const result = results[0];
 
-    if (result[0] && result[0].status !== 'error') {
+    if (result && result.status !== 'error') {
       // Redirect on success.
-      window.location.href = result[0].redirect;
+      window.location.href = result.redirect;
     } else {
-      dispatch(registrationSubmitFailure(result[0]));
+      dispatch(registrationSubmitFailure(result));
     }
   };
 };

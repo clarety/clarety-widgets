@@ -3,24 +3,26 @@ import { types } from 'registrations/actions';
 const initialState = {
   uid: null,
   jwt: null,
-  sale: null,
-  errors: [],
+  status: null,
+  items: null,
+  summary: {
+    total: null,
+  },
 };
 
 export const cartReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.registrationCreateSuccess:
       return {
-        errors: [],
+        ...state,
         uid: action.result.uid,
         jwt: action.result.jwt,
-        sale: action.result.sale,
-      };
-
-    case types.registrationCreateFailure:
-      return {
-        ...state,
-        errors: action.result.validationErrors,
+        status: action.result.sale.status,
+        items: action.result.sale.salelines,
+        summary: {
+          ...state.summary,
+          total: action.result.sale.total,
+        }
       };
 
     default:
