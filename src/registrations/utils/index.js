@@ -36,6 +36,6 @@ export function scrollIntoView(elementRef) {
   window.scroll({ top: scrollTarget, behavior: 'smooth' });
 };
 
-export const getExtendField = (columnKey, init) => {
-  return init.extendForms[0].extendFields.find(field => field.columnKey === columnKey);
+export const getExtendField = (columnKey, settings) => {
+  return settings.extendForms[0].extendFields.find(field => field.columnKey === columnKey);
 };
