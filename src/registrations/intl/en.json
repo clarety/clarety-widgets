@@ -59,6 +59,9 @@
   "namesPanel.adult.title": "Adult Registration",
   "namesPanel.child.title": "Child Registration",
 
+  "teamPanel.editTitle": "Do you want to participate with a team?",
+  "teamPanel.doneTitle": "Your Team",
+
   "detailsPanel.editTitle": "Registration Details For {firstName}",
   "detailsPanel.customerFormTitle": "Personal Details",
   "detailsPanel.extendFormTitle": "Event Details",

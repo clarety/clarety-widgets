@@ -6,6 +6,7 @@ export const panels = {
   qtysPanel:    'QTYS_PANEL',
   namesPanel:   'NAMES_PANEL',
   detailsPanel: 'DETAILS_PANEL',
+  teamPanel:    'TEAM_PANEL',
   donatePanel:  'DONATE_PANEL',
   reviewPanel:  'REVIEW_PANEL',
 };

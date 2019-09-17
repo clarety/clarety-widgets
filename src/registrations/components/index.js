@@ -12,6 +12,7 @@ export * from './panels/EventPanel';
 export * from './panels/NamesPanel';
 export * from './panels/QtysPanel';
 export * from './panels/ReviewPanel';
+export * from './panels/TeamPanel';
 
 export * from './misc/Brand';
 export * from './misc/MiniCart';

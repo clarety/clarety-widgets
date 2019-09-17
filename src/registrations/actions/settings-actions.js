@@ -12,7 +12,7 @@ export const fetchEvents = () => {
     if (results) {
       dispatch(fetchEventsSuccess(results));
       dispatch(pushPanel({
-        panel: panels.donatePanel,
+        panel: panels.teamPanel,
         progress: 0,
       }));
     } else {
