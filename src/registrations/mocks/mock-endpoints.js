@@ -14,6 +14,9 @@ export function setupRegistrationsAxiosMock() {
   mock.onGet(`${apiBase}registration-full/`)
       .reply(200, responses.registrationFull);
 
+  mock.onGet(`${apiBase}registration-teams/`)
+      .reply(200, responses.searchTeamsSuccess);
+
   mock.onPost(`${apiBase}registration-sale-widget/`)
       .reply(200, responses.registrationSaleSuccess);
 

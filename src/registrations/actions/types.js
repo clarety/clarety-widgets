@@ -42,6 +42,13 @@ export const types = {
   registrationSubmitRequest: 'REGISTRATION_SUBMIT_REQUEST',
   // NOTE: there's no registrationSubmitSuccess action, we just redirect.
   registrationSubmitFailure: 'REGISTRATION_SUBMIT_FAILURE',
+
+  // Team Action Types
+
+  searchTeamsRequest: 'SEARCH_TEAMS_REQUEST',
+  searchTeamsSuccess: 'SEARCH_TEAMS_SUCCESS',
+
+  selectTeam: 'SELECT_TEAM',
 };
 
 export const statuses = {

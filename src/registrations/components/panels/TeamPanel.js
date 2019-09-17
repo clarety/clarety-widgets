@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { Container, Button, Form, Col } from 'react-bootstrap';
+import { Container, Button, Form } from 'react-bootstrap';
+import { TeamSearchInput } from 'registrations/components';
+import { searchTeams, selectTeam } from 'registrations/actions';
 
 export class _TeamPanel extends React.Component {
   onClickNext = () => {
@@ -12,6 +14,8 @@ export class _TeamPanel extends React.Component {
   onClickEdit = () => {
     this.props.popToPanel();
   };
+
+
 
   render() {
     if (this.props.isDone) {
@@ -25,12 +29,16 @@ export class _TeamPanel extends React.Component {
     return (
       <Container>
         <FormattedMessage id="teamPanel.editTitle" tagName="h2" />
+        <FormattedMessage id="teamPanel.message.1" tagName="p" />
+        <FormattedMessage id="teamPanel.message.2" tagName="p" />
 
-        <Form className="panel-body panel-body-teams">
-          <p>Hello, teams panel!</p>
+        <Form className="panel-body panel-body-team">
+          <FormattedMessage id="teamPanel.searchPrompt">
+            {text => <TeamSearchInput placeholder={text} />}
+          </FormattedMessage>
         </Form>
 
-        <Button onClick={this.onClickNext} disabled={true}>
+        <Button onClick={this.onClickNext}>
           <FormattedMessage id="btn.next" />
         </Button>
       </Container>
@@ -51,17 +59,19 @@ export class _TeamPanel extends React.Component {
 }
 
 const mapStateToProps = state => {
+  const { teamPanel } = state.panels;
+
   return {
-    
+    isBusySearch: teamPanel.isBusySearch,
+    searchResults: teamPanel.searchResults,
+    selectedTeam: teamPanel.selectedTeam,
   };
 };
 
 const actions = {
-  
+  searchTeams: searchTeams,
+  selectTeam: selectTeam,
 };
 
 export const connectTeamPanel = connect(mapStateToProps, actions);
 export const TeamPanel = connectTeamPanel(_TeamPanel);
-
-
-

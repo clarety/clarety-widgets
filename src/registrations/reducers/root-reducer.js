@@ -13,5 +13,6 @@ export const rootReducer = combineReducers({
   panelData:  reducers.panelDataReducer,
   panels: combineReducers({
     amountPanel: amountPanelReducer,
+    teamPanel: reducers.teamPanelReducer,
   }),
 });

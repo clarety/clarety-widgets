@@ -4,6 +4,7 @@ export * from './inputs/PhoneInput';
 export * from './inputs/QtyInput';
 export * from './inputs/SelectInput';
 export * from './inputs/SimpleSelectInput';
+export * from './inputs/TeamSearchInput';
 export * from './inputs/TextInput';
 
 export * from './panels/DetailsPanel';
