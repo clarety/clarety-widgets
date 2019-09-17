@@ -2,14 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router'
 import { Switch, Route } from 'react-router-dom';
-import { statuses, setVariant, setStore, setConfirmPageUrl, fetchExplain } from 'shared/actions';
+import { statuses, setVariant, setStore, setConfirmPageUrl, setTracking, fetchExplain } from 'shared/actions';
 import { OverrideContext } from 'shared/utils';
 import { AmountPanel, DetailsPanel, PaymentPanel, SuccessPanel } from 'donate/components';
 
 export class _DonateWidget extends React.Component {
   componentWillMount() {
-    const { setVariant, setStore, setConfirmPageUrl, fetchExplain } = this.props;
+    const { setVariant, setStore, setConfirmPageUrl, setTracking, fetchExplain } = this.props;
     const { storeCode, singleOfferCode, recurringOfferCode, variant, confirmPageUrl } = this.props;
+    const { sourceId, responseId, emailResponseId } = this.props;
 
     if (!singleOfferCode && !recurringOfferCode) throw new Error('[Clarety] Either a singleOfferCode or recurringOfferCode prop is required');
     if (!window.Stripe) throw new Error('[Clarety] Stripe not found');
@@ -17,6 +18,7 @@ export class _DonateWidget extends React.Component {
     setVariant(variant);
     setStore(storeCode);
     setConfirmPageUrl(confirmPageUrl);
+    setTracking({ sourceId, responseId, emailResponseId });
 
     fetchExplain('donations/', {
       store: storeCode,
@@ -77,6 +79,7 @@ const actions = {
   setVariant: setVariant,
   setStore: setStore,
   setConfirmPageUrl: setConfirmPageUrl,
+  setTracking: setTracking,
   fetchExplain: fetchExplain,
 };
 
