@@ -10,8 +10,15 @@ const DonatePageDemo = () => (
       <div className="col">
         <DonatePage
           storeCode="AU"
-          singleOfferCode="widget-single"
-          recurringOfferCode="widget-recurring"
+
+          singleOfferId="8"
+          recurringOfferId="17"
+
+          sourceId="17"
+          responseId="e9c2e351d90b11e996fd"
+          emailResponseId="1234"
+
+          reCaptchaKey="1234"
         />
       </div>
     </div>
