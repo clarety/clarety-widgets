@@ -28,8 +28,9 @@ const DonateDemo = () => (
       <div className="donate-widget col-lg-6">
         <DonateWidget
           storeCode="AU"
-          singleOfferCode="8"
-          recurringOfferCode="17"
+
+          singleOfferId="8"
+          recurringOfferId="17"
 
           sourceId="17"
           responseId="e9c2e351d90b11e996fd"

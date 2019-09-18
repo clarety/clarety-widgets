@@ -9,10 +9,10 @@ import { AmountPanel, DetailsPanel, PaymentPanel, SuccessPanel } from 'donate/co
 export class _DonateWidget extends React.Component {
   componentWillMount() {
     const { setVariant, setStore, setConfirmPageUrl, setTracking, fetchExplain } = this.props;
-    const { storeCode, singleOfferCode, recurringOfferCode, variant, confirmPageUrl } = this.props;
+    const { storeCode, singleOfferId, recurringOfferId, variant, confirmPageUrl } = this.props;
     const { sourceId, responseId, emailResponseId } = this.props;
 
-    if (!singleOfferCode && !recurringOfferCode) throw new Error('[Clarety] Either a singleOfferCode or recurringOfferCode prop is required');
+    if (!singleOfferId && !recurringOfferId) throw new Error('[Clarety] Either a singleOfferId or recurringOfferId prop is required');
     if (!window.Stripe) throw new Error('[Clarety] Stripe not found');
 
     setVariant(variant);
@@ -22,8 +22,8 @@ export class _DonateWidget extends React.Component {
 
     fetchExplain('donations/', {
       store: storeCode,
-      offerSingle: singleOfferCode,
-      offerRecurring: recurringOfferCode,
+      offerSingle: singleOfferId,
+      offerRecurring: recurringOfferId,
     });
   }
 
