@@ -1,4 +1,5 @@
 import { push as pushRoute } from 'connected-react-router';
+import Cookies from 'js-cookie';
 import { statuses, setStatus, addItem, setCustomer, updateCartData } from 'shared/actions';
 import { parseNestedElements } from 'shared/utils';
 import { setErrors } from 'form/actions';
@@ -91,6 +92,7 @@ export class PanelActions {
           }));
 
           // Redirect on success.
+          Cookies.set('session-jwt', result.jwt);
           window.location.href = settings.confirmPageUrl;
         }
       } else {

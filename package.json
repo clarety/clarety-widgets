@@ -27,6 +27,7 @@
     "connected-react-router": "^6.5.2",
     "credit-card-type": "^8.2.0",
     "intl-pluralrules": "^1.0.3",
+    "js-cookie": "^2.2.1",
     "jwt-decode": "^2.2.0",
     "mem": "^5.1.1",
     "node-sass": "^4.12.0",
