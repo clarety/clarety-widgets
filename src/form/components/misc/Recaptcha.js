@@ -11,17 +11,17 @@ export function executeRecaptcha(callback) {
 
   if (recaptchaRef.current) {
     recaptchaRef.current.reset();
-    recaptchaRef.current.execute();    
+    recaptchaRef.current.execute();
   } else {
     callback();
   }
 }
 
 export class _Recaptcha extends React.Component {
-  onResponse = response => {
-    if (!response) return;
+  onChange = value => {
+    if (!value) return;
 
-    this.props.setRecaptchaResponse(response);
+    this.props.setRecaptchaResponse(value);
     if (_callback) _callback();
   };
 
@@ -33,7 +33,7 @@ export class _Recaptcha extends React.Component {
         ref={recaptchaRef}
         size="invisible"
         sitekey={this.props.siteKey}
-        onChange={this.onResponse}
+        onChange={this.onChange}
       />
     );
   }
