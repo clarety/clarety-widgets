@@ -68,22 +68,17 @@ export class PanelActions {
     dispatch(setStatus(statuses.busy));
 
     executeRecaptcha(async () => {
-
       const errors = [];
       const isValid = validations.validatePaymentPanel(errors, getState);
       dispatch(setErrors(errors));
 
       if (isValid) {
-        // Attempt payment.
         const result = await actions.paymentActions.makePayment(dispatch, getState, { actions, validations });
-
-        // Dispatch results.
-
-        dispatch(setStatus(statuses.ready));
 
         if (result.validationErrors) {
           dispatch(makePaymentFailure(result));
           dispatch(setErrors(result.validationErrors));
+          dispatch(setStatus(statuses.ready));
         } else {
           dispatch(makePaymentSuccess(result));
 
@@ -98,10 +93,9 @@ export class PanelActions {
           // Redirect on success.
           window.location.href = settings.confirmPageUrl;
         }
+      } else {
+        dispatch(setStatus(statuses.ready));
       }
-
-      dispatch(setStatus(statuses.ready));
-
     });
   }
 
