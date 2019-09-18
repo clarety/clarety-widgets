@@ -1,12 +1,13 @@
 import React from 'react';
 import BlockUi from 'react-block-ui';
 import { statuses } from 'shared/actions';
+import { Recaptcha } from 'form/components';
 import { _DonateWidget, connectDonateWidget } from 'donate/components';
 import { PageAmountPanel, PageDetailsPanel, PagePaymentPanel } from 'donate/components';
 
 export class _DonatePage extends _DonateWidget {
   render() {
-    const { status, variant } = this.props;
+    const { status, variant, reCaptchaKey } = this.props;
 
     const AmountPanelComponent  = this.context.AmountPanel  || PageAmountPanel;
     const DetailsPanelComponent = this.context.DetailsPanel || PageDetailsPanel;
@@ -28,6 +29,8 @@ export class _DonatePage extends _DonateWidget {
           <DetailsPanelComponent variant={variant} />
           <PaymentPanelComponent variant={variant} />
         </BlockUi>
+
+        <Recaptcha siteKey={reCaptchaKey} />
       </div>
     );
   }

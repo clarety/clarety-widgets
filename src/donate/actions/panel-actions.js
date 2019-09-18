@@ -63,7 +63,7 @@ export class PanelActions {
   }
 
   async submitPaymentPanel(dispatch, getState, { actions, validations }) {
-    const { status, settings } = getState();
+    const { status } = getState();
 
     if (status !== statuses.ready) return;
     dispatch(setStatus(statuses.busy));
@@ -75,34 +75,7 @@ export class PanelActions {
 
       if (isValid) {
         const result = await actions.paymentActions.makePayment(dispatch, getState, { actions, validations });
-
-        if (result.validationErrors) {
-          dispatch(makePaymentFailure(result));
-
-          dispatch(updateCartData({
-            uid: result.uid,
-            jwt: result.jwt,
-            status: result.status,
-            customer: result.customer,
-          }));
-
-          dispatch(setErrors(result.validationErrors));
-          dispatch(setStatus(statuses.ready));
-        } else {
-          dispatch(makePaymentSuccess(result));
-
-          dispatch(updateCartData({
-            uid: result.uid,
-            jwt: result.jwt,
-            status: result.status,
-            customer: result.customer,
-            items: result.salelines,
-          }));
-
-          // Redirect on success.
-          Cookies.set('session-jwt', result.jwt);
-          window.location.href = settings.confirmPageUrl;
-        }
+        this._handlePaymentResult(result, dispatch, getState);
       } else {
         dispatch(setStatus(statuses.ready));
       }
@@ -126,6 +99,38 @@ export class PanelActions {
     const formData = parseNestedElements(state.formData);
     dispatch(setCustomer(formData.customer));
   }
+
+  _handlePaymentResult(result, dispatch, getState) {
+    const { settings } = getState();
+
+    if (result.validationErrors) {
+      dispatch(makePaymentFailure(result));
+
+      dispatch(updateCartData({
+        uid: result.uid,
+        jwt: result.jwt,
+        status: result.status,
+        customer: result.customer,
+      }));
+
+      dispatch(setErrors(result.validationErrors));
+      dispatch(setStatus(statuses.ready));
+    } else {
+      dispatch(makePaymentSuccess(result));
+
+      dispatch(updateCartData({
+        uid: result.uid,
+        jwt: result.jwt,
+        status: result.status,
+        customer: result.customer,
+        items: result.salelines,
+      }));
+
+      // Redirect on success.
+      Cookies.set('session-jwt', result.jwt);
+      window.location.href = settings.confirmPageUrl;
+    }
+  }
 }
 
 export class PagePanelActions extends PanelActions {
@@ -135,35 +140,25 @@ export class PagePanelActions extends PanelActions {
     if (status !== statuses.ready) return;
     dispatch(setStatus(statuses.busy));
 
-    // Validate.
+    executeRecaptcha(async () => {
+      // Validate.
+      const errors = [];
+      const isAmountValid  = validations.validateAmountPanel(errors, getState);
+      const isDetailsValid = validations.validateDetailsPanel(errors, getState);
+      const isPaymentValid = validations.validatePaymentPanel(errors, getState);
+      dispatch(setErrors(errors));
 
-    const errors = [];
-    const isAmountValid  = validations.validateAmountPanel(errors, getState);
-    const isDetailsValid = validations.validateDetailsPanel(errors, getState);
-    const isPaymentValid = validations.validatePaymentPanel(errors, getState);
-    dispatch(setErrors(errors));
+      if (isAmountValid && isDetailsValid && isPaymentValid) {
+        // Update store.
+        this._addDonationToCart(dispatch, getState);
+        this._addCustomerToCart(dispatch, getState);
 
-    if (isAmountValid && isDetailsValid && isPaymentValid) {
-      // Update store.
-
-      this._addDonationToCart(dispatch, getState);
-      this._addCustomerToCart(dispatch, getState);
-
-      // Attempt payment.
-
-      const result = await actions.paymentActions.makePayment(dispatch, getState, { actions, validations });
-
-      // Handle errors or redirect.
-
-      if (result.validationErrors) {
-        dispatch(makePaymentFailure(result));
-        dispatch(setErrors(result.validationErrors));
+        // Attempt payment.
+        const result = await actions.paymentActions.makePayment(dispatch, getState, { actions, validations });
+        this._handlePaymentResult(result, dispatch, getState);
       } else {
-        // Redirect on success.
-        window.location.href = settings.confirmPageUrl;
-      } 
-    }
-
-    dispatch(setStatus(statuses.ready));
+        dispatch(setStatus(statuses.ready));
+      }
+    });    
   }
 }
