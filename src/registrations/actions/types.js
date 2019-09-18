@@ -48,7 +48,13 @@ export const types = {
   searchTeamsRequest: 'SEARCH_TEAMS_REQUEST',
   searchTeamsSuccess: 'SEARCH_TEAMS_SUCCESS',
 
+  checkTeamPasswordRequest: 'CHECK_TEAM_PASSWORD_REQUEST',
+  checkTeamPasswordSuccess: 'CHECK_TEAM_PASSWORD_SUCCESS',
+  checkTeamPasswordFailure: 'CHECK_TEAM_PASSWORD_FAILURE',
+
   selectTeam: 'SELECT_TEAM',
+
+  setTeamPanelStatus: 'SET_TEAM_PANEL_STATUS',
 };
 
 export const statuses = {

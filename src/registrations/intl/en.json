@@ -6,6 +6,10 @@
   "btn.reset": "Start Over",
   "btn.submit": "Submit Registration",
   "btn.retry": "Try Again",
+  "btn.yes": "Yes",
+  "btn.no": "No",
+  "btn.cancel": "Cancel",
+  "btn.createTeam": "Create Team",
 
   "label.firstName": "First Name",
   "label.lastName": "Last Name",
@@ -13,6 +17,7 @@
   "label.gender": "Gender",
   "label.dateOfBirth": "Date Of Birth",
   "label.mobile": "Mobile",
+  "label.password": "Password",
 
   "label.registrationformformemergencycontact": "Emergency Contact Name",
   "label.registrationformformemergencycontact1": "Emergency Contact Number",
@@ -64,6 +69,7 @@
   "teamPanel.searchPrompt": "Search for a team...",
   "teamPanel.message.1": "Combine your efforts and participate as a team! Either create a new team or join one that’s already been created.",
   "teamPanel.message.2": "If you are registering with an existing team, please contact your team leader for the team name and password (if applicable) before proceeding with the team registration process.",
+  "teamPanel.noTeam": "No Team",
 
   "detailsPanel.editTitle": "Registration Details For {firstName}",
   "detailsPanel.customerFormTitle": "Personal Details",

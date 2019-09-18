@@ -1,6 +1,7 @@
 import { types } from 'registrations/actions';
 
 const initialState = {
+  status: 'prompt',
   isBusySearch: false,
   searchResults: [],
   selectedTeam: null,
@@ -8,6 +9,12 @@ const initialState = {
 
 export const teamPanelReducer = (state = initialState, action) => {
   switch (action.type) {
+    case types.setTeamPanelStatus:
+      return {
+        ...state,
+        status: action.status,
+      };
+
     case types.searchTeamsRequest:
       return {
         ...state,

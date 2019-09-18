@@ -6,7 +6,7 @@ const App = withOverrides(Registrations, {});
 
 export default class RegistrationsDemo extends React.Component {
   componentWillMount() {
-    setupRegistrationsAxiosMock();
+    // setupRegistrationsAxiosMock();
   }
 
   render() {
