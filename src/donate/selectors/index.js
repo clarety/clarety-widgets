@@ -60,6 +60,8 @@ export function getPaymentPostData(state) {
     saleline: cart.items[0],
     customer: cart.customer,
     payment: cart.payment,
+
+    recaptchaResponse: cart.recaptchaResponse,
   };
 }
 

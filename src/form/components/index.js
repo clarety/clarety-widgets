@@ -1,5 +1,6 @@
-export * from './errors/ErrorMessages';
-export * from './errors/FieldError';
+export * from './misc/ErrorMessages';
+export * from './misc/FieldError';
+export * from './misc/Recaptcha';
 
 export * from './inputs/BackButton';
 export * from './inputs/CardNameInput';

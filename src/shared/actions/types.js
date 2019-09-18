@@ -7,14 +7,15 @@ export const types = {
   setConfirmPageUrl:   'SET_CONFIRM_PAGE_URL',
 
   // Cart Action Types
-  addItem:        'ADD_ITEM',
-  clearItems:     'CLEAR_ITEMS',
-  updateCartData: 'UPDATE_CART_DATA',
-  setStore:       'SET_STORE',
-  setCustomer:    'SET_CUSTOMER',
-  setPayment:     'SET_PAYMENT',
-  clearPayment:   'CLEAR_PAYMENT',
-  setTracking:    'SET_TRACKING',
+  addItem:              'ADD_ITEM',
+  clearItems:           'CLEAR_ITEMS',
+  updateCartData:       'UPDATE_CART_DATA',
+  setStore:             'SET_STORE',
+  setCustomer:          'SET_CUSTOMER',
+  setPayment:           'SET_PAYMENT',
+  clearPayment:         'CLEAR_PAYMENT',
+  setTracking:          'SET_TRACKING',
+  setRecaptchaResponse: 'SET_RECAPTCHA_RESPONSE',
 
   // Status Action Types
   setStatus: 'SET_STATUS',
