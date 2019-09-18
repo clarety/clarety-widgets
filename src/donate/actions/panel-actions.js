@@ -78,6 +78,14 @@ export class PanelActions {
 
         if (result.validationErrors) {
           dispatch(makePaymentFailure(result));
+
+          dispatch(updateCartData({
+            uid: result.uid,
+            jwt: result.jwt,
+            status: result.status,
+            customer: result.customer,
+          }));
+
           dispatch(setErrors(result.validationErrors));
           dispatch(setStatus(statuses.ready));
         } else {

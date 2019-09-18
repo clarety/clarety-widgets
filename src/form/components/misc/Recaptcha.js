@@ -10,7 +10,8 @@ export function executeRecaptcha(callback) {
   _callback = callback;
 
   if (recaptchaRef.current) {
-    recaptchaRef.current.execute();
+    recaptchaRef.current.reset();
+    recaptchaRef.current.execute();    
   } else {
     callback();
   }
@@ -18,6 +19,8 @@ export function executeRecaptcha(callback) {
 
 export class _Recaptcha extends React.Component {
   onResponse = response => {
+    if (!response) return;
+
     this.props.setRecaptchaResponse(response);
     if (_callback) _callback();
   };

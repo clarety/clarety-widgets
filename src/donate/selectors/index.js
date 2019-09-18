@@ -21,7 +21,7 @@ export function getSelectedAmount(state) {
   if (!selection) return '';
   if (!selection.amount) return '';
 
-  const amount = Number(selection.amount).toFixed(0);
+  const amount = Number(selection.amount).toFixed(2);
   return currency.symbol + amount;
 }
 
