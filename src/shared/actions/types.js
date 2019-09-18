@@ -14,6 +14,7 @@ export const types = {
   setCustomer:    'SET_CUSTOMER',
   setPayment:     'SET_PAYMENT',
   clearPayment:   'CLEAR_PAYMENT',
+  setTracking:    'SET_TRACKING',
 
   // Status Action Types
   setStatus: 'SET_STATUS',

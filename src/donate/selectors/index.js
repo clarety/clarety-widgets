@@ -52,6 +52,11 @@ export function getPaymentPostData(state) {
     store: cart.store,
     uid: cart.uid,
     jwt: cart.jwt,
+
+    sourceId: cart.sourceId,
+    responseId: cart.responseId,
+    emailResponseId: cart.emailResponseId,
+
     saleline: cart.items[0],
     customer: cart.customer,
     payment: cart.payment,

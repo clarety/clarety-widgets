@@ -3,7 +3,13 @@ import { types } from 'shared/actions';
 const initialState = {
   uid: null,
   jwt: null,
+
   store: null,
+
+  sourceId: null,
+  responseId: null,
+  emailResponseId: null,
+
   status: null,
   items: [],
   customer: {},
@@ -55,6 +61,14 @@ export const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         payment: {},
+      };
+
+    case types.setTracking:
+      return {
+        ...state,
+        sourceId: action.sourceId,
+        responseId: action.responseId,
+        emailResponseId: action.emailResponseId,
       };
 
     default:

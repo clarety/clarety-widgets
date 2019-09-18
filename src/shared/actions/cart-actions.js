@@ -37,3 +37,10 @@ export const setPayment = payment => ({
 export const clearPayment = () => ({
   type: types.clearPayment,
 });
+
+export const setTracking = ({ sourceId, responseId, emailResponseId }) => ({
+  type: types.setTracking,
+  sourceId: sourceId,
+  responseId: responseId,
+  emailResponseId: emailResponseId,
+});
