@@ -4,15 +4,17 @@ import { ConnectedRouter } from 'connected-react-router'
 import { Switch, Route } from 'react-router-dom';
 import { statuses, setVariant, setStore, setConfirmPageUrl, setTracking, fetchExplain } from 'shared/actions';
 import { OverrideContext } from 'shared/utils';
+import { Recaptcha } from 'form/components';
 import { AmountPanel, DetailsPanel, PaymentPanel, SuccessPanel } from 'donate/components';
 
 export class _DonateWidget extends React.Component {
   componentWillMount() {
     const { setVariant, setStore, setConfirmPageUrl, setTracking, fetchExplain } = this.props;
-    const { storeCode, singleOfferId, recurringOfferId, variant, confirmPageUrl } = this.props;
+    const { storeCode, singleOfferId, recurringOfferId, variant, confirmPageUrl, reCaptchaKey } = this.props;
     const { sourceId, responseId, emailResponseId } = this.props;
 
     if (!singleOfferId && !recurringOfferId) throw new Error('[Clarety] Either a singleOfferId or recurringOfferId prop is required');
+    if (!reCaptchaKey) throw new Error('[Clarety] missing reCaptcha key');
     if (!window.Stripe) throw new Error('[Clarety] Stripe not found');
 
     setVariant(variant);
@@ -28,7 +30,7 @@ export class _DonateWidget extends React.Component {
   }
 
   render() {
-    const { status, forceMdLayout, variant } = this.props;
+    const { status, forceMdLayout, variant, reCaptchaKey } = this.props;
 
     const AmountPanelComponent  = this.context.AmountPanel  || AmountPanel;
     const DetailsPanelComponent = this.context.DetailsPanel || DetailsPanel;
@@ -62,6 +64,8 @@ export class _DonateWidget extends React.Component {
             )}/>
           </Switch>
         </ConnectedRouter>
+
+        <Recaptcha siteKey={reCaptchaKey} />
       </div>
     );
   }

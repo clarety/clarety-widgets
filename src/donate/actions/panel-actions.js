@@ -1,9 +1,11 @@
 import { push as pushRoute } from 'connected-react-router';
+import Cookies from 'js-cookie';
 import { statuses, setStatus, addItem, setCustomer, updateCartData } from 'shared/actions';
 import { parseNestedElements } from 'shared/utils';
 import { setErrors } from 'form/actions';
 import { makePaymentSuccess, makePaymentFailure } from 'donate/actions';
 import { getAmountPanelSelection, getSelectedOffer } from 'donate/selectors';
+import { executeRecaptcha } from 'form/components';
 
 export const submitAmountPanel = () => {
   return (dispatch, getState, { actions, validations }) => {
@@ -66,38 +68,45 @@ export class PanelActions {
     if (status !== statuses.ready) return;
     dispatch(setStatus(statuses.busy));
 
-    const errors = [];
-    const isValid = validations.validatePaymentPanel(errors, getState);
-    dispatch(setErrors(errors));
+    executeRecaptcha(async () => {
+      const errors = [];
+      const isValid = validations.validatePaymentPanel(errors, getState);
+      dispatch(setErrors(errors));
 
-    if (isValid) {
-      // Attempt payment.
-      const result = await actions.paymentActions.makePayment(dispatch, getState, { actions, validations });
+      if (isValid) {
+        const result = await actions.paymentActions.makePayment(dispatch, getState, { actions, validations });
 
-      // Dispatch results.
+        if (result.validationErrors) {
+          dispatch(makePaymentFailure(result));
 
-      dispatch(setStatus(statuses.ready));
+          dispatch(updateCartData({
+            uid: result.uid,
+            jwt: result.jwt,
+            status: result.status,
+            customer: result.customer,
+          }));
 
-      if (result.validationErrors) {
-        dispatch(makePaymentFailure(result));
-        dispatch(setErrors(result.validationErrors));
+          dispatch(setErrors(result.validationErrors));
+          dispatch(setStatus(statuses.ready));
+        } else {
+          dispatch(makePaymentSuccess(result));
+
+          dispatch(updateCartData({
+            uid: result.uid,
+            jwt: result.jwt,
+            status: result.status,
+            customer: result.customer,
+            items: result.salelines,
+          }));
+
+          // Redirect on success.
+          Cookies.set('session-jwt', result.jwt);
+          window.location.href = settings.confirmPageUrl;
+        }
       } else {
-        dispatch(makePaymentSuccess(result));
-
-        dispatch(updateCartData({
-          uid: result.uid,
-          jwt: result.jwt,
-          status: result.status,
-          customer: result.customer,
-          items: result.salelines,
-        }));
-
-        // Redirect on success.
-        window.location.href = settings.confirmPageUrl;
+        dispatch(setStatus(statuses.ready));
       }
-    }
-
-    dispatch(setStatus(statuses.ready));    
+    });
   }
 
   _addDonationToCart(dispatch, getState) {

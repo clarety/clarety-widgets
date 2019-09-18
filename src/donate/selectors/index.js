@@ -21,7 +21,7 @@ export function getSelectedAmount(state) {
   if (!selection) return '';
   if (!selection.amount) return '';
 
-  const amount = Number(selection.amount).toFixed(0);
+  const amount = Number(selection.amount).toFixed(2);
   return currency.symbol + amount;
 }
 
@@ -60,6 +60,8 @@ export function getPaymentPostData(state) {
     saleline: cart.items[0],
     customer: cart.customer,
     payment: cart.payment,
+
+    recaptchaResponse: cart.recaptchaResponse,
   };
 }
 
