@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Form, Row, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import { scrollIntoView } from 'shared/utils';
-import { TextInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
+import { TextInput, StateInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
 import { BasePanel, StepIndicator } from 'donate/components';
 import { connectDetailsPanel } from 'donate/utils';
 import 'react-block-ui/style.css';
@@ -83,7 +83,7 @@ export class _DetailsPanel extends BasePanel {
                   <Col sm>
                     <Form.Group controlId="state">
                       <Form.Label>State</Form.Label>
-                      <TextInput field="customer.billing.state" testId="state-input" />
+                      <StateInput field="customer.billing.state" testId="state-input" />
                     </Form.Group>
                   </Col>
                   <Col sm>

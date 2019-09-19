@@ -10,5 +10,6 @@ export * from './inputs/CheckboxInput';
 export * from './inputs/ExpiryInput';
 export * from './inputs/FormElement';
 export * from './inputs/SelectInput';
+export * from './inputs/StateInput';
 export * from './inputs/SubmitButton';
 export * from './inputs/TextInput';

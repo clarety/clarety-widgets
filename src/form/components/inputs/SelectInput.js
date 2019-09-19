@@ -24,12 +24,24 @@ const _SelectInput = ({ value, options, placeholder, testId, error, onChange }) 
   </React.Fragment>
 );
 
-const mapStateToProps = (state, { field }) => {
-  const element = findElement(field, state.explain.elements);
-  if (!element.options) throw new Error(`[Clarety] SelectInput could not find options for field '${field}'.`);
+_SelectInput.defaultProps = {
+  placeholder: 'Select',
+};
+
+const mapStateToProps = (state, ownProps) => {
+  let { field, options } = ownProps;
+
+  // If no options are provided, try to get them from the elements in our settings.
+  if (!options) {
+    const element = findElement(field, state.settings.elements);
+    options = element ? element.options : options;
+  }
+
+  // If we still don't have options, something went wrong.
+  if (!options) throw new Error(`[Clarety] SelectInput could not find options for field '${field}'.`);
 
   return {
-    options: element.options,
+    options: options,
     value: state.formData[field] || '',
     error: getValidationError(field, state.errors),
   }
