@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Container, Button, Form, Row, Col } from 'react-bootstrap';
 import { getElementOptions } from 'shared/utils';
-import { TextInput, DobInput, CheckboxInput, SimpleSelectInput, SelectInput, PhoneInput } from 'registrations/components';
+import { BasePanel, TextInput, DobInput, CheckboxInput, SimpleSelectInput, SelectInput, PhoneInput } from 'registrations/components';
 import { setDetails, setAdditionalData, setErrors, resetDetails, pushNextDetailsPanel } from 'registrations/actions';
 import { getEvent, getExtendFields } from 'registrations/selectors';
 import { FormContext, scrollIntoView } from 'registrations/utils';
 
-export class _DetailsPanel extends React.Component {
+export class _DetailsPanel extends BasePanel {
   ref = React.createRef();
 
   constructor(props) {
@@ -138,14 +138,6 @@ export class _DetailsPanel extends React.Component {
   componentWillUnmount() {
     const { resetDetails, participantIndex } = this.props;
     resetDetails(participantIndex);
-  }
-
-  render() {
-    if (this.props.isDone) {
-      return this.renderDone();
-    } else {
-      return this.renderEdit();
-    }
   }
 
   renderEdit() {

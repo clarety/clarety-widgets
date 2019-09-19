@@ -2,9 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Button } from 'react-bootstrap';
+import { BasePanel } from 'registrations/components';
 import { createRegistration, submitRegistration } from 'registrations/actions';
 
-class _ReviewPanel extends React.Component {
+class _ReviewPanel extends BasePanel {
   onClickNext = () => {
     this.props.submitRegistration();
   };
@@ -13,7 +14,7 @@ class _ReviewPanel extends React.Component {
     this.props.createRegistration();
   };
 
-  render() {
+  renderEdit() {
     const { hasErrors, registrations } = this.props;
 
     if (hasErrors) return this.renderErrors();

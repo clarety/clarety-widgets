@@ -2,11 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Form } from 'react-bootstrap';
-import { panels, setTeamPanelMode, checkTeamPassword, selectTeam, createTeam } from 'registrations/actions';
-import { TeamSearchInput } from 'registrations/components';
 import { Button, TextInput as FormTextInput, SelectInput as FormSelectInput } from 'form/components';
+import { BasePanel, TeamSearchInput } from 'registrations/components';
+import { panels, setTeamPanelMode, checkTeamPassword, selectTeam, createTeam } from 'registrations/actions';
 
-export class _TeamPanel extends React.Component {
+export class _TeamPanel extends BasePanel {
   _pushNextPanel() {
     this.props.pushPanel({
       panel: panels.eventPanel,
@@ -51,14 +51,6 @@ export class _TeamPanel extends React.Component {
     event.preventDefault();
     this.props.createTeam();
   };
-
-  render() {
-    if (this.props.isDone) {
-      return this.renderDone();
-    } else {
-      return this.renderEdit();
-    }
-  }
 
   renderEdit() {
     const { mode } = this.props;

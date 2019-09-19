@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Form } from 'react-bootstrap';
 import Select from 'react-select';
-// TODO: move button into 'form/components'.
-import { Button } from 'checkout/components';
+import { Button } from 'form/components';
+import { BasePanel } from 'registrations/components';
 import { setEvent, resetEvent, fetchFullEvent } from 'registrations/actions';
 import { getEvent } from 'registrations/selectors';
 
-class _EventPanel extends React.Component {
+class _EventPanel extends BasePanel {
   state = {
     event: null,
   };
@@ -39,14 +39,6 @@ class _EventPanel extends React.Component {
   componentWillUnmount() {
     this.props.resetEvent();
   }
-
-  render() {
-    if (this.props.isDone) {
-      return this.renderDone();
-    } else {
-      return this.renderEdit();
-    }
-  }
   
   renderEdit() {
     const { events, isBusy } = this.props;
@@ -69,12 +61,13 @@ class _EventPanel extends React.Component {
         </div>
 
         <Button
-          title={<FormattedMessage id="btn.next" />}
           onClick={this.onClickNext}
           disabled={!this.state.event}
           isBusy={isBusy}
           variant="action"
-        />
+        >
+          <FormattedMessage id="btn.next" />
+        </Button>
       </Container>
     );
   }
@@ -86,11 +79,10 @@ class _EventPanel extends React.Component {
       <Container>
         <FormattedMessage id="eventPanel.doneTitle" tagName="h4" />
         <p className="lead">{selectedEvent.name}</p>
-        <Button
-          title={<FormattedMessage id="btn.reset" />}
-          onClick={this.onClickEdit}
-          variant="action"
-        />
+
+        <Button onClick={this.onClickEdit} variant="action">
+          <FormattedMessage id="btn.reset" />
+        </Button>
       </Container>
     );
   }

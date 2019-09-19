@@ -7,6 +7,8 @@ export * from './inputs/SimpleSelectInput';
 export * from './inputs/TeamSearchInput';
 export * from './inputs/TextInput';
 
+export * from './panels/BasePanel';
+
 export * from './panels/DetailsPanel';
 export * from './panels/DonatePanel';
 export * from './panels/EventPanel';

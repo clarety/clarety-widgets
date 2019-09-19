@@ -2,11 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Button, Form, Col } from 'react-bootstrap';
-import { Qty, QtyInput } from 'registrations/components';
+import { BasePanel, Qty, QtyInput } from 'registrations/components';
 import { setQtys, resetQtys, panels } from 'registrations/actions';
 import { getRegistrationTypes } from 'registrations/selectors';
 
-class _QtysPanel extends React.Component {
+class _QtysPanel extends BasePanel {
   state = {};
 
   onClickNext = () => {
@@ -23,14 +23,6 @@ class _QtysPanel extends React.Component {
 
   componentWillUnmount() {
     this.props.resetQtys();
-  }
-
-  render() {
-    if (this.props.isDone) {
-      return this.renderDone();
-    } else {
-      return this.renderEdit();
-    }
   }
 
   renderEdit() {

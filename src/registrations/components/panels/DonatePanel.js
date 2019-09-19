@@ -23,11 +23,12 @@ export class _DonatePanel extends _AmountPanel {
     this.props.popToPanel();
   }
 
+  // TODO: remove once _AmountPanel extends BasePanel
   render() {
-    if (this.props.isDone) {
-      return this.renderDone();
-    } else {
-      return this.renderEdit();
+    switch (this.props.status) {
+      case 'wait': return this.renderWait();
+      case 'edit': return this.renderEdit();
+      case 'done': return this.renderDone();
     }
   }
 

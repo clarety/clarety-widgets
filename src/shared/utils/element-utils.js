@@ -45,7 +45,9 @@ const _addNestedElement = (properties, value, output) => {
   }
 }
 
-export const getElementOptions = mem((field, init) => {
-  const element = findElement(field, init.elements);
+export const getElementOptions = mem((field, settings) => {
+  if (!settings.elements) return null;
+
+  const element = findElement(field, settings.elements);
   return element.options;
 });

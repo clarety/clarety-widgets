@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Button, Form, Row, Col } from 'react-bootstrap';
+import { BasePanel } from 'registrations/components';
 import { setFirstNames, resetFirstNames, panels } from 'registrations/actions';
 import { calcProgress } from 'registrations/utils';
 
-class _NamesPanel extends React.Component {
+class _NamesPanel extends BasePanel {
   state = {
     names: [],
   };
@@ -48,14 +49,6 @@ class _NamesPanel extends React.Component {
 
   componentWillUnmount() {
     this.props.resetFirstNames();
-  }
-
-  render() {
-    if (this.props.isDone) {
-      return this.renderDone();
-    } else {
-      return this.renderEdit();
-    }
   }
 
   renderEdit() {

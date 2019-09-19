@@ -18,7 +18,7 @@ class _PanelStack extends React.Component {
     return (
       <ScrollIntoView isActive={isLast} key={index} className="section">
         <PanelComponent
-          isDone={!isLast}
+          status={isLast ? 'edit' : 'done'}
           pushPanel={pushPanel}
           popToPanel={() => popToPanel(index)}
           {...panel.props}
