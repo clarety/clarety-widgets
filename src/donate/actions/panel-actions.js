@@ -1,6 +1,6 @@
 import { push as pushRoute } from 'connected-react-router';
 import Cookies from 'js-cookie';
-import { statuses, setStatus, addItem, setCustomer, updateCartData } from 'shared/actions';
+import { statuses, setStatus, addItem, setCustomer, updateCartData, clearItems } from 'shared/actions';
 import { parseNestedElements } from 'shared/utils';
 import { setErrors } from 'form/actions';
 import { makePaymentSuccess, makePaymentFailure } from 'donate/actions';
@@ -86,6 +86,8 @@ export class PanelActions {
     const state = getState();
     const selection = getAmountPanelSelection(state);
     const offer = getSelectedOffer(state);
+
+    dispatch(clearItems());
 
     dispatch(addItem({
       offerUid: offer.offerUid,
