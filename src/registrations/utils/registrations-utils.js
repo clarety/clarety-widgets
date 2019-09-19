@@ -39,3 +39,23 @@ export function scrollIntoView(elementRef) {
 export const getExtendField = (columnKey, settings) => {
   return settings.extendForms[0].extendFields.find(field => field.columnKey === columnKey);
 };
+
+export function parseTeamErrors(result) {
+  const errors = [];
+
+  if (result.errors.RT005) {
+    errors.push({
+      field: 'team.name',
+      message: 'This team name already exists', // TODO: translate!
+    });
+  }
+
+  if (result.errors.RT003) {
+    errors.push({
+      field: 'team.passwordCheck',
+      message: 'Incorrect password', // TODO: translate!
+    });
+  }
+
+  return errors;
+};

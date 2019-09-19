@@ -1,3 +1,5 @@
+import { Config } from 'clarety-utils';
+
 export const getEvent = state => state.settings.event;
 
 export const getEventName = state => {
@@ -30,6 +32,21 @@ const getExtendFormId = state => {
   } catch (error) {
     return null;
   }
+};
+
+export const getCreateTeamPostData = state => {
+  const { panelData, formData } = state;
+
+  return {
+    seriesId: Config.get('seriesId'),
+    eventId: panelData.eventId,
+    teamId: '', // NOTE: the api wants an empty string...
+    customerId: '124', // TODO: get customer ID when logged in...
+    name: formData['team.name'],
+    type: formData['team.type'],
+    password: formData['team.password'],
+    passwordRequired: !!formData['team.password'],
+  };
 };
 
 export const getCreateRegistrationPostData = state => {

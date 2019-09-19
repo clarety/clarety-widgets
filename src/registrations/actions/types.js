@@ -48,6 +48,14 @@ export const types = {
   searchTeamsRequest: 'SEARCH_TEAMS_REQUEST',
   searchTeamsSuccess: 'SEARCH_TEAMS_SUCCESS',
 
+  fetchTeamRequest: 'FETCH_TEAM_REQUEST',
+  fetchTeamSuccess: 'FETCH_TEAM_SUCCESS',
+  fetchTeamFailure: 'FETCH_TEAM_FAILURE',
+
+  createTeamRequest: 'CREATE_TEAM_REQUEST',
+  createTeamSuccess: 'CREATE_TEAM_SUCCESS',
+  createTeamFailure: 'CREATE_TEAM_FAILURE',
+
   checkTeamPasswordRequest: 'CHECK_TEAM_PASSWORD_REQUEST',
   checkTeamPasswordSuccess: 'CHECK_TEAM_PASSWORD_SUCCESS',
   checkTeamPasswordFailure: 'CHECK_TEAM_PASSWORD_FAILURE',

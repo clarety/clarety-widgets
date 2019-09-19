@@ -15,7 +15,8 @@ const _SelectInput = ({ value, options, placeholder, testId, error, onChange }) 
       data-testid={testId}
       isInvalid={error !== null}
     >
-      <option>{placeholder}</option>
+      <option value="" disabled hidden>{placeholder}</option>
+      
       {options.map(option =>
         <option key={option.value} value={option.value}>{option.label}</option>
       )}

@@ -2,8 +2,10 @@ import { types } from 'registrations/actions';
 
 const initialState = {
   status: 'prompt',
+  isBusyFetch: false,
   isBusySearch: false,
   isBusyPassword: false,
+  isBusyCreate: false,
   searchResults: [],
   selectedTeam: null,
 };
@@ -26,6 +28,21 @@ export const teamPanelReducer = (state = initialState, action) => {
         selectedTeam: action.team,
       };
 
+    // Fetch
+
+    case types.fetchTeamRequest:
+        return {
+          ...state,
+          isBusyFetch: true,
+        };
+  
+    case types.fetchTeamSuccess:
+    case types.fetchTeamFailure:
+      return {
+        ...state,
+        isBusyFetch: false,
+      };
+
     // Search
 
     case types.searchTeamsRequest:
@@ -39,6 +56,21 @@ export const teamPanelReducer = (state = initialState, action) => {
         ...state,
         isBusySearch: false,
         searchResults: action.results,
+      };
+
+    // Create
+
+    case types.createTeamRequest:
+      return {
+        ...state,
+        isBusyCreate: true,
+      };
+
+    case types.createTeamSuccess:
+    case types.createTeamFailure:
+      return {
+        ...state,
+        isBusyCreate: false,
       };
 
     // Check Password

@@ -1,6 +1,8 @@
 import { ClaretyApi, Config } from 'clarety-utils';
 import { setErrors, clearErrors } from 'form/actions';
 import { types, panels, pushPanel } from 'registrations/actions';
+import { getCreateTeamPostData } from 'registrations/selectors';
+import { parseTeamErrors } from 'registrations/utils';
 
 export const searchTeams = query => {
   return async (dispatch, getState) => {
@@ -11,6 +13,60 @@ export const searchTeams = query => {
     const results = await ClaretyApi.get('registration-teams/', { query, seriesId, storeId });
     
     dispatch(searchTeamsSuccess(results));
+  };
+};
+
+export const createTeam = () => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const postData = getCreateTeamPostData(state);
+
+    dispatch(clearErrors());
+    dispatch(createTeamRequest(postData));
+    
+    const storeId = Config.get('storeId');
+    const results = await ClaretyApi.post('registration-teams/', postData, { storeId });
+    const result = results[0];
+
+    if (!result.errors) {
+      const team = await dispatch(fetchTeam(result.teamId));
+      dispatch(selectTeam(team));
+
+      dispatch(createTeamSuccess(result));
+
+      // TODO: push the correct panel...
+      // TODO: actual progress...
+      dispatch(pushPanel({
+        panel: panels.eventPanel,
+        progress: 20, 
+      }));
+
+    } else {
+      dispatch(createTeamFailure(result));
+
+      const errors = parseTeamErrors(result);
+      dispatch(setErrors(errors));
+    }
+  };
+};
+
+export const fetchTeam = teamId => {
+  return async (dispatch, getState) => {
+    dispatch(fetchTeamRequest(teamId));
+
+    const storeId = Config.get('storeId');
+    const seriesId = Config.get('seriesId');
+    const results = await ClaretyApi.get('registration-teams/', { seriesId, storeId, teamId });
+    const result = results[0];
+
+    if (result) {
+      dispatch(fetchTeamSuccess(result));
+      return result;
+
+    } else {
+      dispatch(fetchTeamFailure(result));
+      return null;
+    }
   };
 };
 
@@ -36,7 +92,6 @@ export const checkTeamPassword = (team, password) => {
 
       // TODO: push the correct panel...
       // TODO: actual progress...
-
       dispatch(pushPanel({
         panel: panels.eventPanel,
         progress: 20, 
@@ -45,12 +100,7 @@ export const checkTeamPassword = (team, password) => {
     } else {
       dispatch(checkTeamPasswordFailure(result));
 
-      // NOTE: The API returns an error that doesn't match our format, so just create our own.
-      // TODO: This needs to be translated...
-      const errors = [{
-        field: 'team.password',
-        message: 'Incorrect password',
-      }];
+      const errors = parseTeamErrors(result);
       dispatch(setErrors(errors));
     }
   };
@@ -67,6 +117,23 @@ export const setTeamPanelStatus = status => ({
 });
 
 
+// Fetch
+
+const fetchTeamRequest = teamId => ({
+  type: types.fetchTeamRequest,
+  teamId: teamId,
+});
+
+const fetchTeamSuccess = result => ({
+  type: types.fetchTeamSuccess,
+  result,
+});
+
+const fetchTeamFailure = result => ({
+  type: types.fetchTeamFailure,
+  result,
+});
+
 // Search
 
 const searchTeamsRequest = query => ({
@@ -79,6 +146,22 @@ const searchTeamsSuccess = results => ({
   results,
 });
 
+// Create
+
+const createTeamRequest = postData => ({
+  type: types.createTeamRequest,
+  postData: postData,
+});
+
+const createTeamSuccess = result => ({
+  type: types.createTeamSuccess,
+  result,
+});
+
+const createTeamFailure = result => ({
+  type: types.createTeamFailure,
+  result,
+});
 
 // Check Password
 

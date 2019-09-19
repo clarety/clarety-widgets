@@ -17,7 +17,13 @@
   "label.gender": "Gender",
   "label.dateOfBirth": "Date Of Birth",
   "label.mobile": "Mobile",
-  "label.password": "Password",
+  
+  "label.team.search": "Team Search",
+  "label.team.name": "Team Name",
+  "label.team.type": "Team Type",
+  "label.team.password": "Team Password",
+
+  "label.optional": "Optional",
 
   "label.registrationformformemergencycontact": "Emergency Contact Name",
   "label.registrationformformemergencycontact1": "Emergency Contact Number",
@@ -66,7 +72,6 @@
 
   "teamPanel.editTitle": "Do you want to participate with a team?",
   "teamPanel.doneTitle": "Your Team",
-  "teamPanel.searchPrompt": "Search for a team...",
   "teamPanel.message.1": "Combine your efforts and participate as a team! Either create a new team or join one that’s already been created.",
   "teamPanel.message.2": "If you are registering with an existing team, please contact your team leader for the team name and password (if applicable) before proceeding with the team registration process.",
   "teamPanel.createTeamTitle": "Create New Team",
