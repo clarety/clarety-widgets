@@ -62,7 +62,7 @@ export const types = {
 
   selectTeam: 'SELECT_TEAM',
 
-  setTeamPanelStatus: 'SET_TEAM_PANEL_STATUS',
+  setTeamPanelMode: 'SET_TEAM_PANEL_MODE',
 };
 
 export const statuses = {

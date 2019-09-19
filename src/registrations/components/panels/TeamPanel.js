@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Form } from 'react-bootstrap';
-import { panels, setTeamPanelStatus, checkTeamPassword, selectTeam, createTeam } from 'registrations/actions';
+import { panels, setTeamPanelMode, checkTeamPassword, selectTeam, createTeam } from 'registrations/actions';
 import { TeamSearchInput } from 'registrations/components';
 import { Button, TextInput as FormTextInput, SelectInput as FormSelectInput } from 'form/components';
 
@@ -26,7 +26,7 @@ export class _TeamPanel extends React.Component {
   };
 
   onClickEdit = () => {
-    this.props.setPanelStatus('prompt');
+    this.props.setPanelMode('prompt');
     this.props.popToPanel();
   };
 
@@ -36,15 +36,15 @@ export class _TeamPanel extends React.Component {
   };
 
   onClickYes = () => {
-    this.props.setPanelStatus('search');
+    this.props.setPanelMode('search');
   };
 
   onClickCancel = () => {
-    this.props.setPanelStatus('prompt');
+    this.props.setPanelMode('prompt');
   };
 
   onClickCreate = () => {
-    this.props.setPanelStatus('create');
+    this.props.setPanelMode('create');
   };
 
   onSubmitCreateForm = event => {
@@ -61,7 +61,7 @@ export class _TeamPanel extends React.Component {
   }
 
   renderEdit() {
-    const { status } = this.props;
+    const { mode } = this.props;
 
     return (
       <Container>
@@ -69,9 +69,9 @@ export class _TeamPanel extends React.Component {
         <FormattedMessage id="teamPanel.message.1" tagName="p" />
         <FormattedMessage id="teamPanel.message.2" tagName="p" />
 
-        {status === 'prompt' && this.renderPrompt()}
-        {status === 'search' && this.renderSearch()}
-        {status === 'create' && this.renderCreate()}
+        {mode === 'prompt' && this.renderPrompt()}
+        {mode === 'search' && this.renderSearch()}
+        {mode === 'create' && this.renderCreate()}
       </Container>
     );
   }
@@ -205,13 +205,13 @@ export class _TeamPanel extends React.Component {
 
 const mapStateToProps = state => {
   const { teamPanel } = state.panels;
-  const { status, selectedTeam, isBusyPassword, isBusyCreate } = teamPanel;
+  const { mode, selectedTeam, isBusyPassword, isBusyCreate } = teamPanel;
 
   const canContinue = selectedTeam && !selectedTeam.passwordRequired;
   const requiresPassword = selectedTeam && !!selectedTeam.passwordRequired;
 
   return {
-    status: status,
+    mode: mode,
     selectedTeam: selectedTeam,
     canContinue: canContinue,
     requiresPassword: requiresPassword,
@@ -223,7 +223,7 @@ const mapStateToProps = state => {
 };
 
 const actions = {
-  setPanelStatus: setTeamPanelStatus,
+  setPanelMode: setTeamPanelMode,
   checkTeamPassword: checkTeamPassword,
   selectTeam: selectTeam,
   createTeam: createTeam,

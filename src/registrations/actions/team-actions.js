@@ -111,9 +111,9 @@ export const selectTeam = team => ({
   team: team,
 });
 
-export const setTeamPanelStatus = status => ({
-  type: types.setTeamPanelStatus,
-  status: status,
+export const setTeamPanelMode = mode => ({
+  type: types.setTeamPanelMode,
+  mode: mode,
 });
 
 

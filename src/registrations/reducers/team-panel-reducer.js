@@ -1,7 +1,7 @@
 import { types } from 'registrations/actions';
 
 const initialState = {
-  status: 'prompt',
+  mode: 'prompt',
   isBusyFetch: false,
   isBusySearch: false,
   isBusyPassword: false,
@@ -12,12 +12,12 @@ const initialState = {
 
 export const teamPanelReducer = (state = initialState, action) => {
   switch (action.type) {
-    // Status
+    // Mode
 
-    case types.setTeamPanelStatus:
+    case types.setTeamPanelMode:
       return {
         ...state,
-        status: action.status,
+        mode: action.mode,
       };
 
     // Select
