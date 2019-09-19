@@ -1,16 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button } from 'react-bootstrap';
+import { Button, Spinner } from 'react-bootstrap';
 import { statuses } from 'shared/actions';
 
 const _SubmitButton = ({ title, className, block, testId, isReady }) => (
   <Button className={`btn-submit ${className}`} block={block} disabled={!isReady} type="submit" data-testid={testId}>
-    {isReady ? title : <Spinner />} 
+    {isReady
+      ? title
+      : <Spinner animation="border" size="sm" />
+    }
   </Button>
-);
-
-const Spinner = () => (
-  <span className="spinner-border spinner-border-sm"></span>
 );
 
 const mapStateToProps = state => {

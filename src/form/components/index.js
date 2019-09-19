@@ -3,6 +3,7 @@ export * from './misc/FieldError';
 export * from './misc/Recaptcha';
 
 export * from './inputs/BackButton';
+export * from './inputs/Button';
 export * from './inputs/CardNameInput';
 export * from './inputs/CardNumberInput';
 export * from './inputs/CcvInput';

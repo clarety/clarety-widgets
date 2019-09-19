@@ -1,6 +1,6 @@
 import { ClaretyApi, Config } from 'clarety-utils';
-import { setErrors } from 'form/actions';
-import { types } from 'registrations/actions';
+import { setErrors, clearErrors } from 'form/actions';
+import { types, panels, pushPanel } from 'registrations/actions';
 
 export const searchTeams = query => {
   return async (dispatch, getState) => {
@@ -25,13 +25,22 @@ export const checkTeamPassword = (team, password) => {
       password: password,
     };
 
+    dispatch(clearErrors());
     dispatch(checkTeamPasswordRequest(postData));
     
     const results = await ClaretyApi.post('registration-teams/', postData, { storeId });
     const result = results[0];
 
-    if (result.errors === null) {
+    if (!result.errors) {
       dispatch(checkTeamPasswordSuccess(result));
+
+      // TODO: push the correct panel...
+      // TODO: actual progress...
+
+      dispatch(pushPanel({
+        panel: panels.eventPanel,
+        progress: 20, 
+      }));
 
     } else {
       dispatch(checkTeamPasswordFailure(result));

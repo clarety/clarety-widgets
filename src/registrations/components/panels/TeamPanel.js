@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { Container, Button, Form } from 'react-bootstrap';
-import { panels, setTeamPanelStatus, checkTeamPassword } from 'registrations/actions';
+import { Container, Form } from 'react-bootstrap';
+import { panels, setTeamPanelStatus, checkTeamPassword, selectTeam } from 'registrations/actions';
 import { TeamSearchInput } from 'registrations/components';
-import { FieldError } from 'form/components';
+import { FieldError, Button } from 'form/components';
 import { getValidationError } from 'form/utils';
 
 export class _TeamPanel extends React.Component {
@@ -51,6 +51,12 @@ export class _TeamPanel extends React.Component {
     this.props.setPanelStatus('create');
   };
 
+  onSubmitCreateForm = event => {
+    event.preventDefault();
+
+    // TODO: attempt to create team... errors may come back...
+  };
+
   render() {
     if (this.props.isDone) {
       return this.renderDone();
@@ -68,31 +74,29 @@ export class _TeamPanel extends React.Component {
         <FormattedMessage id="teamPanel.message.1" tagName="p" />
         <FormattedMessage id="teamPanel.message.2" tagName="p" />
 
-        <Form className="panel-body panel-body-team">
-          {status === 'prompt' && this.renderPrompt()}
-          {status === 'search' && this.renderSearch()}
-          {status === 'create' && this.renderCreate()}
-        </Form>
+        {status === 'prompt' && this.renderPrompt()}
+        {status === 'search' && this.renderSearch()}
+        {status === 'create' && this.renderCreate()}
       </Container>
     );
   }
 
   renderPrompt() {
     return (
-      <React.Fragment>
+      <Form className="panel-body panel-body-team">
         <Button onClick={this.onClickYes}>
           <FormattedMessage id="btn.yes" />
         </Button>
 
-        <Button onClick={this.onClickNext}>
+        <Button onClick={this.onClickNo}>
           <FormattedMessage id="btn.no" />
         </Button>
-      </React.Fragment>
+      </Form>
     );
   }
 
   renderSearch() {
-    const { selectedTeam, errors } = this.props;
+    const { selectedTeam, errors, isBusyPassword } = this.props;
     const { password } = this.state;
 
     const canContinue = selectedTeam && (selectedTeam.passwordRequired ? !!password : true);
@@ -100,7 +104,7 @@ export class _TeamPanel extends React.Component {
     const passwordError = getValidationError('team.password', errors);
 
     return (
-      <React.Fragment>
+      <Form className="panel-body panel-body-team">
         <FormattedMessage id="teamPanel.searchPrompt">
           {text => <TeamSearchInput placeholder={text} />}
         </FormattedMessage>
@@ -122,30 +126,37 @@ export class _TeamPanel extends React.Component {
           </FormattedMessage>
         }
 
-        <Button onClick={this.onClickCancel}>
+        <Button onClick={this.onClickCancel} disabled={isBusyPassword}>
           <FormattedMessage id="btn.cancel" />
         </Button>
 
-        <Button onClick={this.onClickCreate}>
+        <Button onClick={this.onClickCreate} disabled={isBusyPassword}>
           <FormattedMessage id="btn.createTeam" />
         </Button>
 
-        <Button onClick={this.onClickNext} disabled={!canContinue}>
+        <Button onClick={this.onClickNext} disabled={!canContinue} isBusy={isBusyPassword}>
           <FormattedMessage id="btn.next" />
         </Button>
-      </React.Fragment>
+      </Form>
     );
   }
 
   renderCreate() {
-    // TODO: render create team form...
+    const canContinue = false; // TODO: implement...
+    const isBusyCreate = false; // TODO: get from store...
+
     return (
-      <React.Fragment>
-        <p>Hello, create team!</p>
+      <Form className="panel-body panel-body-team" onSubmit={this.onSubmitCreateForm}>
+        <FormattedMessage id="teamPanel.createTeamTitle" tagName="h4" />
+
         <Button onClick={this.onClickCancel}>
           <FormattedMessage id="btn.cancel" />
         </Button>
-      </React.Fragment>
+
+        <Button type="submit" disabled={!canContinue} isBusy={isBusyCreate}>
+          <FormattedMessage id="btn.createTeam" />
+        </Button>
+      </Form>
     );
   }
 
@@ -181,6 +192,7 @@ const mapStateToProps = state => {
     selectedTeam: teamPanel.selectedTeam,
     canContinue: canContinue,
     requiresPassword: requiresPassword,
+    isBusyPassword: teamPanel.isBusyPassword,
     errors: state.errors,
   };
 };
@@ -188,6 +200,7 @@ const mapStateToProps = state => {
 const actions = {
   setPanelStatus: setTeamPanelStatus,
   checkTeamPassword: checkTeamPassword,
+  selectTeam: selectTeam,
 };
 
 export const connectTeamPanel = connect(mapStateToProps, actions);
