@@ -2,16 +2,18 @@ export * from './misc/ErrorMessages';
 export * from './misc/FieldError';
 export * from './misc/Recaptcha';
 
-export * from './inputs/BackButton';
-export * from './inputs/CardNameInput';
-export * from './inputs/CardNumberInput';
-export * from './inputs/CcvInput';
-export * from './inputs/CheckboxInput';
-export * from './inputs/ExpiryInput';
-export * from './inputs/FormElement';
-export * from './inputs/PhoneInput';
-export * from './inputs/PostcodeInput';
-export * from './inputs/SelectInput';
-export * from './inputs/StateInput';
-export * from './inputs/SubmitButton';
-export * from './inputs/TextInput';
+export * from './inputs/address/StateInput';
+export * from './inputs/address/PostcodeInput';
+
+export * from './inputs/payment/CardNameInput';
+export * from './inputs/payment/CardNumberInput';
+export * from './inputs/payment/CcvInput';
+export * from './inputs/payment/ExpiryInput';
+
+export * from './inputs/general/BackButton';
+export * from './inputs/general/CheckboxInput';
+export * from './inputs/general/FormElement';
+export * from './inputs/general/PhoneInput';
+export * from './inputs/general/SelectInput';
+export * from './inputs/general/SubmitButton';
+export * from './inputs/general/TextInput';
