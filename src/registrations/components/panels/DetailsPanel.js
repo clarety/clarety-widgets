@@ -104,7 +104,7 @@ export class _DetailsPanel extends React.Component {
     this.validateRequired('dateOfBirthDay', formData, errors);
     this.validateRequired('dateOfBirthMonth', formData, errors);
     this.validateRequired('dateOfBirthYear', formData, errors);
-    this.validateRequired('mobile', formData, errors);
+    this.validatePhone('mobile', formData, errors);
 
     this.validateDob({
       field: 'dateOfBirth',
@@ -284,6 +284,15 @@ export class _DetailsPanel extends React.Component {
     const isValid = /^.+@.+\..+$/.test(formData[field]);
     if (!isValid) {
       const message = intl.formatMessage({ id: 'validation.email' });
+      errors.push({ field: field, message: message });
+    }
+  }
+
+  validatePhone(field, formData, errors) {
+    const { intl } = this.props;
+    const phone = formData[field];
+    if (!phone || phone.length < 10 || phone.length > 14) {
+      const message = intl.formatMessage({ id: 'validation.phone' });
       errors.push({ field: field, message: message });
     }
   }
