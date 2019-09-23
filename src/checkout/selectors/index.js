@@ -1,3 +1,13 @@
+export const getIsLoggedIn = state => {
+  const { auth, cart } = state;
+  return !!(auth.jwt && cart.customer);
+};
+
+export const getEmailStatus = (state, panelIndex) => {
+  const panel = state.panels[panelIndex];
+  return panel.data.emailStatus;
+};
+
 export const hasSelectedShippingOption = state => {
   return !!state.formData['sale.shippingOption'];
 };

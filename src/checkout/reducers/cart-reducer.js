@@ -2,7 +2,6 @@ import { types } from 'checkout/actions';
 
 const initialState = {
   uid: null,
-  jwt: null,
   sale: null,
   items: null,
   customer: null,
@@ -55,27 +54,6 @@ export const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         paymentMethods: action.results,
-      };
-
-    // Auth
-
-    case types.loginRequest:
-      return {
-        ...state,
-        jwt: null,
-      };
-
-    case types.loginSuccess:
-      return {
-        ...state,
-        jwt: action.result,
-      };
-
-    case types.logout:
-      return {
-        ...state,
-        jwt: null,
-        customer: null,
       };
 
     default:

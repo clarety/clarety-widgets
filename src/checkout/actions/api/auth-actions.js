@@ -1,72 +1,31 @@
-import jwtDecode from 'jwt-decode';
 import { ClaretyApi } from 'clarety-utils';
-import { types, nextPanel } from 'checkout/actions';
-
-const clientId = '82ee4a2479780256c9bf9b951f5d1cfb';
-
-export const emailStatuses = {
-  notChecked: 'not-checked',
-  noAccount:  'no-account',
-  hasAccount: 'has-account',
-};
+import { types } from 'checkout/actions';
 
 export const login = (email, password) => {
   return async dispatch => {
-    let result;
+    // TODO: get client ID from settings.
+    const clientId = '82ee4a2479780256c9bf9b951f5d1cfb';
 
     // Login.
     dispatch(loginRequest(email, password));
-    result = await ClaretyApi.auth(email, password, clientId);
+    let result = await ClaretyApi.auth(email, password, clientId);
 
     if (result.error) {
       dispatch(loginFailure(result));
-      return;
+      return false;
     } else {
       dispatch(loginSuccess(result));
-    }
-
-    const jwt = jwtDecode(result.access_token);
-
-    // Fetch customer.
-    dispatch(fetchCustomerRequest());
-    const results = await ClaretyApi.get(`carts/customers/${jwt.customerUid}/`);
-    result = results[0];
-
-    if (result.status === 'error') {
-      dispatch(fetchCustomerFailure(result));
-      return;
-    } else {
-      dispatch(fetchCustomerSuccess(result));
-
-      // Proceed to the customer details panel.
-      dispatch(nextPanel());
+      return true;
     }
   }
 };
 
-export const logout = () => ({
-  // TODO: do we need to logout via the API?
-  type: types.logout,
-});
-
-export const hasAccount = email => {
-  return async dispatch => {
-    dispatch(hasAccountRequest(email));
-
-    const results = await ClaretyApi.get('/carts/has-account/', { email });
-    const result = results[0];
-
-    if (result.status === 'error') {
-      dispatch(hasAccountFailure(result));
-    } else {
-      dispatch(hasAccountSuccess(result));
-    }
+export const logout = () => {
+  return dispatch => {
+    dispatch(logoutRequest());
+    dispatch(logoutSuccess());
   };
 };
-
-export const resetEmailStatus = () => ({
-  type: types.resetEmailStatus,
-});
 
 
 // Login
@@ -87,35 +46,18 @@ const loginFailure = result => ({
   result: result,
 });
 
-// Customer Search
+// Logout
 
-const hasAccountRequest = email => ({
-  type: types.hasAccountRequest,
-  email: email,
+const logoutRequest = () => ({
+  type: types.logoutRequest,
 });
 
-const hasAccountSuccess = result => ({
-  type: types.hasAccountSuccess,
+const logoutSuccess = result => ({
+  type: types.logoutSuccess,
   result: result,
 });
 
-const hasAccountFailure = result => ({
-  type: types.hasAccountFailure,
-  result: result,
-});
-
-// Fetch Customer
-
-const fetchCustomerRequest = () => ({
-  type: types.fetchCustomerRequest,
-});
-
-const fetchCustomerSuccess = result => ({
-  type: types.fetchCustomerSuccess,
-  result: result,
-});
-
-const fetchCustomerFailure = result => ({
-  type: types.fetchCustomerFailure,
+const logoutFailure = result => ({
+  type: types.logoutFailure,
   result: result,
 });

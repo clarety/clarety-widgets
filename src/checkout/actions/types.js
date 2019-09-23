@@ -24,7 +24,11 @@ export const types = {
   loginSuccess: 'LOGIN_SUCCESS',
   loginFailure: 'LOGIN_FAILURE',
 
-  logout: 'LOGOUT',
+  logoutRequest: 'LOGOUT_REQUEST',
+  logoutSuccess: 'LOGOUT_SUCCESS',
+  logoutFailure: 'LOGOUT_FAILURE',
+
+  // Customer Action Types
 
   hasAccountRequest: 'HAS_ACCOUNT_REQUEST',
   hasAccountSuccess: 'HAS_ACCOUNT_SUCCESS',

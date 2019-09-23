@@ -5,7 +5,8 @@ import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { BasePanel, TextInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { statuses, hasAccount, login, logout, updateFormData, resetFormData, nextPanel, editPanel, resetPanels, emailStatuses, resetEmailStatus } from 'checkout/actions';
+import { statuses, hasAccount, login, logout, updateFormData, resetFormData, nextPanel, editPanel, resetPanels, emailStatuses, resetEmailStatus, fetchAuthCustomer } from 'checkout/actions';
+import { getIsLoggedIn, getEmailStatus } from 'checkout/selectors';
 import { FormContext } from 'checkout/utils';
 
 class _LoginPanel extends BasePanel {
@@ -20,12 +21,20 @@ class _LoginPanel extends BasePanel {
     }
   };
 
-  onPressLogin = event => {
+  onPressLogin = async event => {
     event.preventDefault();
 
     if (this.validate()) {
+      const { login, fetchAuthCustomer, nextPanel } = this.props;
       const { email, password } = this.state.formData;
-      this.props.login(email, password);
+
+      const didLogin = await login(email, password);
+      if (!didLogin) return;
+
+      const didFetch = await fetchAuthCustomer();
+      if (!didFetch) return;
+
+      nextPanel();
     }
   };
 
@@ -250,7 +259,7 @@ class _LoginPanel extends BasePanel {
   renderIsLoggedInForm() {
     return (
       <React.Fragment>
-        <p>You're currently logged-in as {this.props.loggedInEmail}</p>
+        <p>You're currently logged-in as {this.props.customer.email}</p>
         <div className="text-right mt-3">
           <Button title="Logout" onClick={this.onPressLogout} variant="link" />
           <Button title="Continue" onClick={this.onPressStayLoggedIn} />
@@ -273,14 +282,11 @@ class _LoginPanel extends BasePanel {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { customer, jwt } = state.cart;
-  const panel = state.panels[ownProps.index];
-
   return {
     isBusy: state.status === statuses.busy,
-    emailStatus: panel.data.emailStatus,
-    isLoggedIn: !!(jwt && customer),
-    loggedInEmail: customer && customer.email,
+    emailStatus: getEmailStatus(state, ownProps.index),
+    isLoggedIn: getIsLoggedIn(state),
+    customer: state.cart.customer,
     errors: state.errors,
   };
 };
@@ -289,6 +295,7 @@ const actions = {
   hasAccount: hasAccount,
   login: login,
   logout: logout,
+  fetchAuthCustomer: fetchAuthCustomer,
   resetEmailStatus: resetEmailStatus,
   updateFormData: updateFormData,
   resetFormData: resetFormData,
