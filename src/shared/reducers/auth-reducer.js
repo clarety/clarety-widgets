@@ -1,4 +1,4 @@
-import { types } from 'checkout/actions';
+import { types } from 'shared/actions';
 
 const initialState = {
   jwt: null,
@@ -6,19 +6,13 @@ const initialState = {
 
 export const authReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.loginRequest:
-      return {
-        ...state,
-        jwt: null,
-      };
-
     case types.loginSuccess:
       return {
         ...state,
         jwt: action.result.access_token,
       };
 
-    case types.logout:
+    case types.logoutSuccess:
       return {
         ...state,
         jwt: null,

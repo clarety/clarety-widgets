@@ -1,11 +1,12 @@
+import { types as sharedTypes } from 'shared/actions';
 import { statuses, types } from 'checkout/actions';
 
 const initialState = statuses.ready;
 
 export const statusReducer = (state = initialState, action) => {
   switch (action.type) {
+    case sharedTypes.loginRequest:
     case types.hasAccountRequest:
-    case types.loginRequest:
     case types.fetchCustomerRequest:
     case types.fetchCartRequest:
     case types.createCustomerRequest:
@@ -20,10 +21,10 @@ export const statusReducer = (state = initialState, action) => {
     case types.applyPromoCodeRequest:
       return statuses.busyPromoCode;
 
+    case sharedTypes.loginSuccess:
+    case sharedTypes.loginFailure:
     case types.hasAccountSuccess:
     case types.hasAccountFailure:
-    case types.loginSuccess:
-    case types.loginFailure:
     case types.fetchCustomerSuccess:
     case types.fetchCustomerFailure:
     case types.fetchCartSuccess:

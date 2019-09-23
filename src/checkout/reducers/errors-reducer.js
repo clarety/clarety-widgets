@@ -1,11 +1,12 @@
+import { types as sharedTypes } from 'shared/actions';
 import { types } from 'checkout/actions';
 
 const initialState = [];
 
 export const errorsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case sharedTypes.loginRequest:
     case types.hasAccountRequest:
-    case types.loginRequest:
     case types.fetchCustomerRequest:
     case types.fetchCartRequest:
     case types.createCustomerRequest:
@@ -29,7 +30,7 @@ export const errorsReducer = (state = initialState, action) => {
     case types.stripeTokenFailure:
       return  action.errors;
 
-    case types.loginFailure:
+    case sharedTypes.loginFailure:
       return [{
         field: 'password',
         message: action.result.error_description,

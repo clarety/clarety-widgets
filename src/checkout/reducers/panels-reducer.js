@@ -1,3 +1,4 @@
+import { types as sharedTypes } from 'shared/actions';
 import { types, panels, panelStatuses, emailStatuses } from 'checkout/actions';
 
 const initialState = [
@@ -71,16 +72,16 @@ const initialState = [
 
 export const panelsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.nextPanel:        return nextPanel(state, action);
-    case types.editPanel:        return editPanel(state, action);
-    case types.invalidatePanel:  return invalidatePanel(state, action);
-    case types.resetPanels:      return resetPanels(state, action);
+    case types.nextPanel:       return nextPanel(state, action);
+    case types.editPanel:       return editPanel(state, action);
+    case types.invalidatePanel: return invalidatePanel(state, action);
+    case types.resetPanels:     return resetPanels(state, action);
 
     // TODO: should the LoginPanel have it's own reducer?
-    case types.hasAccountRequest: return resetEmailStatus(state, action);
-    case types.hasAccountSuccess: return hasAccountSuccess(state, action);
-    case types.resetEmailStatus:  return resetEmailStatus(state, action);
-    case types.logout:            return resetEmailStatus(state, action);
+    case types.hasAccountRequest:   return resetEmailStatus(state, action);
+    case types.hasAccountSuccess:   return hasAccountSuccess(state, action);
+    case types.resetEmailStatus:    return resetEmailStatus(state, action);
+    case sharedTypes.logoutSuccess: return resetEmailStatus(state, action);
 
     default: return state;
   }

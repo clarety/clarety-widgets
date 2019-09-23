@@ -1,4 +1,3 @@
-export * from './auth-reducer';
 export * from './cart-reducer';
 export * from './errors-reducer';
 export * from './form-data-reducer';

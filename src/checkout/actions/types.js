@@ -18,16 +18,6 @@ export const types = {
   updateFormData: 'UPDATE_FORM_DATA',
   resetFormData:  'RESET_FORM_DATA',
 
-  // Auth Action Types
-
-  loginRequest: 'LOGIN_REQUEST',
-  loginSuccess: 'LOGIN_SUCCESS',
-  loginFailure: 'LOGIN_FAILURE',
-
-  logoutRequest: 'LOGOUT_REQUEST',
-  logoutSuccess: 'LOGOUT_SUCCESS',
-  logoutFailure: 'LOGOUT_FAILURE',
-
   // Customer Action Types
 
   hasAccountRequest: 'HAS_ACCOUNT_REQUEST',

@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
+import { login, logout } from 'shared/actions';
 import { BasePanel, TextInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { statuses, hasAccount, login, logout, updateFormData, resetFormData, nextPanel, editPanel, resetPanels, emailStatuses, resetEmailStatus, fetchAuthCustomer } from 'checkout/actions';
+import { statuses, hasAccount, updateFormData, resetFormData, nextPanel, editPanel, resetPanels, emailStatuses, resetEmailStatus, fetchAuthCustomer } from 'checkout/actions';
 import { getIsLoggedIn, getEmailStatus } from 'checkout/selectors';
 import { FormContext } from 'checkout/utils';
 
@@ -24,18 +25,19 @@ class _LoginPanel extends BasePanel {
   onPressLogin = async event => {
     event.preventDefault();
 
-    if (this.validate()) {
-      const { login, fetchAuthCustomer, nextPanel } = this.props;
-      const { email, password } = this.state.formData;
+    const { login, fetchAuthCustomer, nextPanel } = this.props;
+    const { email, password } = this.state.formData;
 
-      const didLogin = await login(email, password);
-      if (!didLogin) return;
+    const didValidate = this.validate();
+    if (!didValidate) return;
+    
+    const didLogin = await login(email, password);
+    if (!didLogin) return;
 
-      const didFetch = await fetchAuthCustomer();
-      if (!didFetch) return;
+    const didFetch = await fetchAuthCustomer();
+    if (!didFetch) return;
 
-      nextPanel();
-    }
+    nextPanel();
   };
 
   onPressShowCreateAccountForm = () => {

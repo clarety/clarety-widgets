@@ -1,5 +1,5 @@
 import { ClaretyApi } from 'clarety-utils';
-import { types } from 'checkout/actions';
+import { types } from 'shared/actions';
 
 export const login = (email, password) => {
   return async dispatch => {
