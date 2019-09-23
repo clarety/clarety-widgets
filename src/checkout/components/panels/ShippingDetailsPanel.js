@@ -3,14 +3,15 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
+import { setFormData } from 'form/actions';
 import { BasePanel, TextInput, PureCheckboxInput, StateInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { statuses, updateFormData, onSubmitShippingDetails, editPanel, invalidatePanel, panels } from 'checkout/actions';
+import { statuses, onSubmitShippingDetails, editPanel, invalidatePanel, panels } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _ShippingDetailsPanel extends BasePanel {
   onPressContinue = event => {
-    const { invalidatePanel, updateFormData, onSubmitShippingDetails } = this.props;
+    const { invalidatePanel, setFormData, onSubmitShippingDetails } = this.props;
 
     event.preventDefault();
 
@@ -26,7 +27,7 @@ class _ShippingDetailsPanel extends BasePanel {
       }
       
       invalidatePanel(panels.shippingOptionsPanel);
-      updateFormData(formData);
+      setFormData(formData);
       onSubmitShippingDetails();
     }
   };
@@ -178,7 +179,7 @@ const mapStateToProps = state => {
 };
 
 const actions = {
-  updateFormData: updateFormData,
+  setFormData: setFormData,
   onSubmitShippingDetails: onSubmitShippingDetails,
   invalidatePanel: invalidatePanel,
   editPanel: editPanel,

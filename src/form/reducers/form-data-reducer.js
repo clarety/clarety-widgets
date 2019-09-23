@@ -4,12 +4,20 @@ const initialState = {};
 
 export const formDataReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.updateFormData:
-      const { field, value } = action;
+    case types.setFormData:
       return {
         ...state,
-        [field]: value
+        ...action.formData,
       };
+
+    case types.updateFormData:
+      return {
+        ...state,
+        [action.field]: action.value,
+      };
+
+    case types.resetFormData:
+      return {};
 
     default:
       return state;

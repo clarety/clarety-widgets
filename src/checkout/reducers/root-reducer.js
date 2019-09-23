@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import { authReducer } from 'shared/reducers';
+import { formDataReducer } from 'form/reducers';
 import * as reducers from 'checkout/reducers';
 
 export const rootReducer = combineReducers({
@@ -7,6 +8,6 @@ export const rootReducer = combineReducers({
   panels:   reducers.panelsReducer,
   auth:              authReducer,
   cart:     reducers.cartReducer,
-  formData: reducers.formDataReducer,
+  formData:          formDataReducer,
   errors:   reducers.errorsReducer,
 });

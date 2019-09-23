@@ -4,9 +4,10 @@ import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { login, logout } from 'shared/actions';
+import { setFormData, resetFormData } from 'form/actions';
 import { BasePanel, TextInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { statuses, hasAccount, updateFormData, resetFormData, nextPanel, editPanel, resetPanels, emailStatuses, resetEmailStatus, fetchAuthCustomer } from 'checkout/actions';
+import { statuses, hasAccount, nextPanel, editPanel, resetPanels, emailStatuses, resetEmailStatus, fetchAuthCustomer } from 'checkout/actions';
 import { getIsLoggedIn, getEmailStatus } from 'checkout/selectors';
 import { FormContext } from 'checkout/utils';
 
@@ -53,7 +54,7 @@ class _LoginPanel extends BasePanel {
 
     if (this.validate()) {
       const { email, password } = this.state.formData;
-      this.props.updateFormData({
+      this.props.setFormData({
         'customer.email': email,
         'customer.password': password,
       });
@@ -63,7 +64,7 @@ class _LoginPanel extends BasePanel {
 
   onPressGuestCheckout = () => {
     const { email } = this.state.formData;
-    this.props.updateFormData({ 'customer.email': email });
+    this.props.setFormData({ 'customer.email': email });
     this.props.nextPanel();
   };
 
@@ -299,7 +300,7 @@ const actions = {
   logout: logout,
   fetchAuthCustomer: fetchAuthCustomer,
   resetEmailStatus: resetEmailStatus,
-  updateFormData: updateFormData,
+  setFormData: setFormData,
   resetFormData: resetFormData,
   nextPanel: nextPanel,
   editPanel: editPanel,

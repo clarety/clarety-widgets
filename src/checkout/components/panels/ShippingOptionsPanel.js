@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
+import { setFormData } from 'form/actions';
 import { BasePanel, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { statuses, updateFormData, updateSale, fetchPaymentMethods, editPanel } from 'checkout/actions';
+import { statuses, updateSale, fetchPaymentMethods, editPanel } from 'checkout/actions';
 import { hasSelectedShippingOption, getSelectedShippingOptionLabel } from 'checkout/selectors';
 import { currency } from 'shared/utils';
 
@@ -16,7 +17,7 @@ class _ShippingOptionsPanel extends BasePanel {
   };
 
   onSelectOption = uid => {
-    this.props.updateFormData({ 'sale.shippingOption': uid });
+    this.props.setFormData({ 'sale.shippingOption': uid });
     this.props.updateSale(uid);
   };
 
@@ -93,7 +94,7 @@ const mapStateToProps = state => {
 };
 
 const actions = {
-  updateFormData: updateFormData,
+  setFormData: setFormData,
   updateSale: updateSale,
   fetchPaymentMethods: fetchPaymentMethods,
   editPanel: editPanel,

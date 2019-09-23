@@ -12,8 +12,6 @@ export * from './inputs/PhoneInput';
 export * from './inputs/StateInput';
 export * from './inputs/TextInput';
 
-export * from './inputs/RxTextInput';
-
 export * from './panels/BasePanel';
 export * from './panels/PanelHeader';
 export * from './panels/LoginPanel';
@@ -21,6 +19,6 @@ export * from './panels/PaymentDetailsPanel';
 export * from './panels/PersonalDetailsPanel';
 export * from './panels/ShippingDetailsPanel';
 export * from './panels/ShippingOptionsPanel';
-export * from './panels/PanelStack';
 
+export * from './PanelStack';
 export * from './Checkout';

@@ -1,15 +1,16 @@
-import { statuses } from 'shared/actions';
 import { types } from 'form/actions';
 
-export const updateFormData = (field, value) => {
-  return (dispatch, getState) => {
-    // Don't update when busy.
-    if (getState().status === statuses.busy) return;
+export const setFormData = formData => ({
+  type: types.setFormData,
+  formData: formData,
+});
 
-    dispatch({
-      type: types.updateFormData,
-      field,
-      value,
-    });
-  };
-};
+export const updateFormData = (field, value) => ({
+  type: types.updateFormData,
+  field: field,
+  value: value,
+});
+
+export const resetFormData = () => ({
+  type: types.resetFormData,
+});

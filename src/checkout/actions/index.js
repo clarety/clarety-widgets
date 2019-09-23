@@ -1,8 +1,6 @@
 export * from './types';
 
+export * from './cart-actions';
+export * from './customer-actions';
 export * from './panel-actions';
-export * from './form-data-actions';
-
-export * from './api/cart-actions';
-export * from './api/customer-actions';
-export * from './api/payment-actions';
+export * from './payment-actions';

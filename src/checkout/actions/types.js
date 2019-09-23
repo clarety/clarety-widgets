@@ -13,11 +13,6 @@ export const types = {
   invalidatePanel: 'INVALIDATE_PANEL',
   resetPanels:     'RESET_PANELS',
 
-  // Form Data Action Types
-
-  updateFormData: 'UPDATE_FORM_DATA',
-  resetFormData:  'RESET_FORM_DATA',
-
   // Customer Action Types
 
   hasAccountRequest: 'HAS_ACCOUNT_REQUEST',

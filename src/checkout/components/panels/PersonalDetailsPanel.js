@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
+import { setFormData } from 'form/actions';
 import { BasePanel, TextInput, PhoneInput, DobInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { statuses, updateFormData, nextPanel, editPanel } from 'checkout/actions';
+import { statuses, nextPanel, editPanel } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _PersonalDetailsPanel extends BasePanel {
@@ -13,7 +14,7 @@ class _PersonalDetailsPanel extends BasePanel {
     event.preventDefault();
 
     if (this.validate()) {
-      this.props.updateFormData(this.state.formData);
+      this.props.setFormData(this.state.formData);
       this.props.nextPanel();
     }
   };
@@ -179,7 +180,7 @@ const mapStateToProps = state => {
 };
 
 const actions = {
-  updateFormData: updateFormData,
+  setFormData: setFormData,
   nextPanel: nextPanel,
   editPanel: editPanel,
 };
