@@ -49,7 +49,7 @@ function resolvePanelComponent(name) {
 
 const mapStateToProps = state => {
   return {
-    panels: state.panels,
+    panels: state.panelStack,
   };
 };
 

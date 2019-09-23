@@ -23,9 +23,9 @@ export const editPanel = index => ({
   index: index,
 });
 
-export const invalidatePanel = panelName => ({
+export const invalidatePanel = name => ({
   type: types.invalidatePanel,
-  name: panelName,
+  name: name,
 });
 
 export const resetPanels = () => ({

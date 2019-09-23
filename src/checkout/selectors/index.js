@@ -4,7 +4,7 @@ export const getIsLoggedIn = state => {
 };
 
 export const getEmailStatus = state => {
-  return state.panels2.loginPanel.emailStatus;
+  return getLoginPanel(state).emailStatus;
 };
 
 export const hasSelectedShippingOption = state => {
@@ -28,4 +28,8 @@ export const getPaymentMethod = state => {
   if (!paymentMethods) return null;
   // TODO: handle multiple payment methods.
   return paymentMethods[0];
+};
+
+const getLoginPanel = state => {
+  return state.panels.loginPanel;
 };

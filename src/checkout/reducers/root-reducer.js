@@ -1,17 +1,19 @@
 import { combineReducers } from 'redux';
 import { authReducer } from 'shared/reducers';
 import { formDataReducer } from 'form/reducers';
-import * as reducers from 'checkout/reducers';
+import { statusReducer, errorsReducer, cartReducer } from 'checkout/reducers';
+import { panelStackReducer, loginPanelReducer } from 'checkout/reducers';
 
 export const rootReducer = combineReducers({
-  status:   reducers.statusReducer,
-  panels:   reducers.panelsReducer,
-  auth:              authReducer,
-  cart:     reducers.cartReducer,
-  formData:          formDataReducer,
-  errors:   reducers.errorsReducer,
+  status: statusReducer,
+  errors: errorsReducer,
 
-  panels2: combineReducers({
-    loginPanel: reducers.loginPanelReducer,
+  auth: authReducer,
+  cart: cartReducer,
+  formData: formDataReducer,
+
+  panelStack: panelStackReducer,
+  panels: combineReducers({
+    loginPanel: loginPanelReducer,
   }),
 });

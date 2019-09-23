@@ -28,7 +28,7 @@ const initialState = [
   },
 ];
 
-export const panelsReducer = (state = initialState, action) => {
+export const panelStackReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.nextPanel:       return nextPanel(state, action);
     case types.editPanel:       return editPanel(state, action);
