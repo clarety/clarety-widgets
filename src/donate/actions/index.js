@@ -5,4 +5,4 @@ export * from './amount-actions';
 export * from './panel-actions';
 export * from './payment-actions';
 
-export * from './actions';
+export * from './actions-class';

@@ -10,4 +10,8 @@ export const rootReducer = combineReducers({
   cart:     reducers.cartReducer,
   formData:          formDataReducer,
   errors:   reducers.errorsReducer,
+
+  panels2: combineReducers({
+    loginPanel: reducers.loginPanelReducer,
+  }),
 });

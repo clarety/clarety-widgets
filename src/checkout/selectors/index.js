@@ -3,9 +3,8 @@ export const getIsLoggedIn = state => {
   return !!(auth.jwt && cart.customer);
 };
 
-export const getEmailStatus = (state, panelIndex) => {
-  const panel = state.panels[panelIndex];
-  return panel.data.emailStatus;
+export const getEmailStatus = state => {
+  return state.panels2.loginPanel.emailStatus;
 };
 
 export const hasSelectedShippingOption = state => {

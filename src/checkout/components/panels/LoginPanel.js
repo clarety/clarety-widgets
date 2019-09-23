@@ -284,10 +284,10 @@ class _LoginPanel extends BasePanel {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return {
     isBusy: state.status === statuses.busy,
-    emailStatus: getEmailStatus(state, ownProps.index),
+    emailStatus: getEmailStatus(state),
     isLoggedIn: getIsLoggedIn(state),
     customer: state.cart.customer,
     errors: state.errors,
