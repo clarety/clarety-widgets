@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
+import { editPanel } from 'shared/actions';
 import { setFormData } from 'form/actions';
 import { BasePanel, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { statuses, updateSale, fetchPaymentMethods, editPanel } from 'checkout/actions';
+import { statuses, updateSale, fetchPaymentMethods } from 'checkout/actions';
 import { hasSelectedShippingOption, getSelectedShippingOptionLabel } from 'checkout/selectors';
 import { currency } from 'shared/utils';
 

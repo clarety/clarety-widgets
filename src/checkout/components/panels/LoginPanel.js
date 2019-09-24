@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { login, logout, setLoginPanelMode } from 'shared/actions';
+import { login, logout, setLoginPanelMode, nextPanel, editPanel, resetPanels } from 'shared/actions';
 import { setFormData, resetFormData } from 'form/actions';
 import { BasePanel, TextInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { statuses, hasAccount, nextPanel, editPanel, resetPanels, fetchAuthCustomer } from 'checkout/actions';
+import { statuses, hasAccount, fetchAuthCustomer } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _LoginPanel extends BasePanel {

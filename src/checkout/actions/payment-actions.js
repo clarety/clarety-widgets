@@ -1,6 +1,7 @@
 import { ClaretyApi } from 'clarety-utils';
+import { nextPanel } from 'shared/actions';
 import { createStripeToken, parseStripeError } from 'donate/utils';
-import { types, nextPanel } from 'checkout/actions';
+import { types } from 'checkout/actions';
 
 export const paymentMethods = {
   creditCard: 'credit-card',

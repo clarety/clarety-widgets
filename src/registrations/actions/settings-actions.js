@@ -1,5 +1,6 @@
 import { ClaretyApi, Config } from 'clarety-utils';
-import { types, pushPanel, panels } from 'registrations/actions';
+import { panels, pushPanel } from 'shared/actions';
+import { types } from 'registrations/actions';
 
 export const fetchEvents = () => {
   return async dispatch => {

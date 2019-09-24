@@ -2,8 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Button, Form, Row, Col } from 'react-bootstrap';
+import { panels } from 'shared/actions';
 import { BasePanel } from 'registrations/components';
-import { setFirstNames, resetFirstNames, panels } from 'registrations/actions';
+import { setFirstNames, resetFirstNames } from 'registrations/actions';
 import { calcProgress } from 'registrations/utils';
 
 class _NamesPanel extends BasePanel {

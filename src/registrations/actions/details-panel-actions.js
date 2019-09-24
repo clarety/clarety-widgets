@@ -1,4 +1,4 @@
-import { panels, pushPanel } from 'registrations/actions';
+import { panels, pushPanel } from 'shared/actions';
 import { createRegistration } from 'registrations/actions';
 import { calcProgress } from 'registrations/utils';
 

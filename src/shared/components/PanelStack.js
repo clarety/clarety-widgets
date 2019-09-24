@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { panels, pushPanel, popToPanel } from 'shared/actions';
 import { OverrideContext } from 'shared/utils';
 import { LoginPanel, PersonalDetailsPanel, ShippingDetailsPanel, ShippingOptionsPanel, PaymentDetailsPanel } from 'checkout/components';
 import { ScrollIntoView, EventPanel, QtysPanel, NamesPanel, DetailsPanel, TeamPanel, DonatePanel, ReviewPanel } from 'registrations/components';
-import { panels as checkoutPanels } from 'checkout/actions';
-import { pushPanel, popToPanel, panels as regoPanels } from 'registrations/actions';
 
 class _PanelStack extends React.Component {
   constructor(props) {
@@ -49,19 +48,19 @@ class _PanelStack extends React.Component {
 
   resolvePanelComponent(name) {
     switch (name) {
-      case regoPanels.eventPanel:   return this.context.EventPanel   || EventPanel;
-      case regoPanels.qtysPanel:    return this.context.QtysPanel    || QtysPanel;
-      case regoPanels.namesPanel:   return this.context.NamesPanel   || NamesPanel;
-      case regoPanels.detailsPanel: return this.context.DetailsPanel || DetailsPanel;
-      case regoPanels.teamPanel:    return this.context.TeamPanel    || TeamPanel;
-      case regoPanels.donatePanel:  return this.context.DonatePanel  || DonatePanel;
-      case regoPanels.reviewPanel:  return this.context.ReviewPanel  || ReviewPanel;
+      case panels.eventPanel:   return this.context.EventPanel   || EventPanel;
+      case panels.qtysPanel:    return this.context.QtysPanel    || QtysPanel;
+      case panels.namesPanel:   return this.context.NamesPanel   || NamesPanel;
+      case panels.detailsPanel: return this.context.DetailsPanel || DetailsPanel;
+      case panels.teamPanel:    return this.context.TeamPanel    || TeamPanel;
+      case panels.donatePanel:  return this.context.DonatePanel  || DonatePanel;
+      case panels.reviewPanel:  return this.context.ReviewPanel  || ReviewPanel;
 
-      case checkoutPanels.loginPanel:           return this.context.LoginPanel           || LoginPanel;
-      case checkoutPanels.personalDetailsPanel: return this.context.PersonalDetailsPanel || PersonalDetailsPanel;
-      case checkoutPanels.shippingDetailsPanel: return this.context.ShippingDetailsPanel || ShippingDetailsPanel;
-      case checkoutPanels.shippingOptionsPanel: return this.context.ShippingOptionsPanel || ShippingOptionsPanel;
-      case checkoutPanels.paymentDetailsPanel:  return this.context.PaymentDetailsPanel  || PaymentDetailsPanel;
+      case panels.loginPanel:           return this.context.LoginPanel           || LoginPanel;
+      case panels.personalDetailsPanel: return this.context.PersonalDetailsPanel || PersonalDetailsPanel;
+      case panels.shippingDetailsPanel: return this.context.ShippingDetailsPanel || ShippingDetailsPanel;
+      case panels.shippingOptionsPanel: return this.context.ShippingOptionsPanel || ShippingOptionsPanel;
+      case panels.paymentDetailsPanel:  return this.context.PaymentDetailsPanel  || PaymentDetailsPanel;
   
       default: throw new Error(`Cannot resolve panel component ${name}`);
     }

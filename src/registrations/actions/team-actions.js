@@ -1,8 +1,9 @@
 import { ClaretyApi, Config } from 'clarety-utils';
+import { panels, pushPanel } from 'shared/actions';
 import { setErrors, clearErrors } from 'form/actions';
-import { types, panels, pushPanel } from 'registrations/actions';
 import { getCreateTeamPostData } from 'registrations/selectors';
 import { parseTeamErrors } from 'registrations/utils';
+import { types } from 'registrations/actions';
 
 export const searchTeams = query => {
   return async (dispatch, getState) => {

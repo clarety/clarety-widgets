@@ -1,6 +1,7 @@
 import { ClaretyApi } from 'clarety-utils';
 import { parseNestedElements } from 'shared/utils';
-import { types, nextPanel } from 'checkout/actions';
+import { nextPanel } from 'shared/actions';
+import { types } from 'checkout/actions';
 
 export const fetchCart = () => {
   return async dispatch => {

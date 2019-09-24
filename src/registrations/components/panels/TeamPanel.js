@@ -2,9 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Form } from 'react-bootstrap';
+import { panels } from 'shared/actions';
 import { Button, TextInput as FormTextInput, SelectInput as FormSelectInput } from 'form/components';
 import { BasePanel, TeamSearchInput } from 'registrations/components';
-import { panels, setTeamPanelMode, checkTeamPassword, selectTeam, createTeam } from 'registrations/actions';
+import { setTeamPanelMode, checkTeamPassword, selectTeam, createTeam } from 'registrations/actions';
 
 export class _TeamPanel extends BasePanel {
   _pushNextPanel() {

@@ -1,5 +1,4 @@
 import React from 'react';
-import { panelStatuses } from 'checkout/actions';
 import { validateRequired, validateEmail, validatePassword, validateCardNumber, validateCardExpiry, validateCcv } from 'checkout/utils';
 
 export class BasePanel extends React.Component {
@@ -35,9 +34,9 @@ export class BasePanel extends React.Component {
 
   render() {
     switch (this.props.status) {
-      case panelStatuses.wait: return this.renderWait();
-      case panelStatuses.edit: return this.renderEdit();
-      case panelStatuses.done: return this.renderDone();
+      case 'wait': return this.renderWait();
+      case 'edit': return this.renderEdit();
+      case 'done': return this.renderDone();
 
       default: throw new Error(`Unhandled panel status: ${status}`);
     }

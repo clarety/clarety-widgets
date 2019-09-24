@@ -2,11 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Button, Form } from 'react-bootstrap';
-import { clearItems } from 'shared/actions';
+import { panels, clearItems } from 'shared/actions';
 import { _AmountPanel } from 'donate/components';
 import { selectAmount, submitAmountPanel } from 'donate/actions';
 import { getSelectedAmount } from 'donate/selectors';
-import { panels } from 'registrations/actions';
 
 export class _DonatePanel extends _AmountPanel {
   onClickNext = event => {

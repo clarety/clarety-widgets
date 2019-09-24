@@ -1,7 +1,8 @@
 import { ClaretyApi, Config } from 'clarety-utils';
+import { pushPanel, panels } from 'shared/actions';
 import { setErrors } from 'form/actions';
 import { getCreateRegistrationPostData, getSubmitRegistrationPostData } from 'registrations/selectors';
-import { types, pushPanel, panels } from 'registrations/actions';
+import { types } from 'registrations/actions';
 
 export const createRegistration = () => {
   return async (dispatch, getState) => {

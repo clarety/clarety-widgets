@@ -1,6 +1,14 @@
 import { types } from 'shared/actions';
 
 export const panels = {
+  eventPanel:   'event-panel',
+  qtysPanel:    'qtys-panel',
+  namesPanel:   'names-panel',
+  detailsPanel: 'details-panel',
+  teamPanel:    'team-panel',
+  donatePanel:  'donate-panel',
+  reviewPanel:  'review-panel',
+
   loginPanel:           'login-panel',
   personalDetailsPanel: 'personal-details-panel',
   shippingDetailsPanel: 'shipping-details-panel',
@@ -25,6 +33,18 @@ export const nextPanel = () => ({
 
 export const editPanel = index => ({
   type: types.editPanel,
+  index: index,
+});
+
+export const pushPanel = ({ panel, progress, props }) => ({
+  type: types.pushPanel,
+  panel: panel,
+  progress: progress,
+  props: props,
+});
+
+export const popToPanel = index => ({
+  type: types.popToPanel,
   index: index,
 });
 
