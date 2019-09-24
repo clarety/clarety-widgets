@@ -1,5 +1,3 @@
-import { calcProgress } from 'registrations/utils';
-import { createRegistration } from 'registrations/actions';
 import { types } from 'shared/actions';
 
 export const panels = {
@@ -23,21 +21,3 @@ export const popToPanel = index => ({
   type: types.popToPanel,
   index: index,
 });
-
-export const pushNextDetailsPanel = participantIndex => {
-  return (dispatch, getState) => {
-    const state = getState();
-    const participantCount = state.panelData.participants.length;
-
-    const hasNext = participantIndex < participantCount;
-    if (hasNext) {
-      dispatch(pushPanel({
-        panel: panels.detailsPanel,
-        progress: calcProgress(participantCount, participantIndex),
-        props: { participantIndex },
-      }));
-    } else {
-      dispatch(createRegistration());
-    }
-  };
-};
