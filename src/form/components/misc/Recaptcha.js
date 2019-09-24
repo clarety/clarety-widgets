@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ReCAPTCHA from 'react-google-recaptcha';
-import { setRecaptchaResponse } from 'shared/actions';
+import { setRecaptcha } from 'shared/actions';
 
 const recaptchaRef = React.createRef();
 let _callback = null;
@@ -21,7 +21,7 @@ export class _Recaptcha extends React.Component {
   onChange = value => {
     if (!value) return;
 
-    this.props.setRecaptchaResponse(value);
+    this.props.setRecaptcha(value);
     if (_callback) _callback();
   };
 
@@ -45,7 +45,7 @@ const mapStateToProps = state => {
 };
 
 const actions = {
-  setRecaptchaResponse: setRecaptchaResponse,
+  setRecaptcha: setRecaptcha,
 };
 
 export const connectRecaptcha = connect(mapStateToProps, actions);

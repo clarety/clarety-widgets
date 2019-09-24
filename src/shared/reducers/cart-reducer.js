@@ -15,7 +15,7 @@ const initialState = {
   customer: {},
   payment: {},
 
-  recaptchaResponse: null,
+  recaptcha: null,
 };
 
 export const cartReducer = (state = initialState, action) => {
@@ -73,10 +73,10 @@ export const cartReducer = (state = initialState, action) => {
         emailResponseId: action.emailResponseId,
       };
 
-    case types.setRecaptchaResponse:
+    case types.setRecaptcha:
       return {
         ...state,
-        recaptchaResponse: action.recaptchaResponse,
+        recaptcha: action.recaptcha,
       };
 
     default:

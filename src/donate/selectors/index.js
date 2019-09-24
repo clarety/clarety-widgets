@@ -61,7 +61,7 @@ export function getPaymentPostData(state) {
     customer: cart.customer,
     payment: cart.payment,
 
-    recaptchaResponse: cart.recaptchaResponse,
+    recaptchaResponse: cart.recaptcha,
   };
 }
 

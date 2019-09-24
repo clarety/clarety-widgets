@@ -45,7 +45,7 @@ export const setTracking = ({ sourceId, responseId, emailResponseId }) => ({
   emailResponseId: emailResponseId,
 });
 
-export const setRecaptchaResponse = recaptchaResponse => ({
-  type: types.setRecaptchaResponse,
-  recaptchaResponse: recaptchaResponse,
+export const setRecaptcha = recaptcha => ({
+  type: types.setRecaptcha,
+  recaptcha: recaptcha,
 });
