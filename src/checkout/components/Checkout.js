@@ -4,13 +4,21 @@ import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import { Container, Row, Col } from 'react-bootstrap';
 import { PanelStack } from 'shared/components';
-import { fetchCart } from 'checkout/actions';
+import { fetchCart, panels, setPanels } from 'checkout/actions';
 import { rootReducer } from 'checkout/reducers';
 import { CartSummary } from 'checkout/components';
 import 'checkout/style.scss';
 
 const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
+
+store.dispatch(setPanels([
+  panels.loginPanel,
+  panels.personalDetailsPanel,
+  panels.shippingDetailsPanel,
+  panels.shippingOptionsPanel,
+  panels.paymentDetailsPanel,
+]));
 
 export class Checkout extends React.Component {
   componentDidMount() {

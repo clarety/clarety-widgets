@@ -1,53 +1,37 @@
-import { types, panels, panelStatuses } from 'checkout/actions';
+import { types } from 'shared/actions';
 
-const initialState = [
-  {
-    name: panels.loginPanel,
-    status: panelStatuses.edit,
-    isValid: false,
-  },
-  {
-    name: panels.personalDetailsPanel,
-    status: panelStatuses.wait,
-    isValid: false,
-  },
-  {
-    name: panels.shippingDetailsPanel,
-    status: panelStatuses.wait,
-    isValid: false,
-  },
-  {
-    name: panels.shippingOptionsPanel,
-    status: panelStatuses.wait,
-    isValid: false,
-  },
-  {
-    name: panels.paymentDetailsPanel,
-    status: panelStatuses.wait,
-    isValid: false,
-  },
-];
+const initialState = [];
 
 export const panelStackReducer = (state = initialState, action) => {
   switch (action.type) {
+    case types.setPanels:       return setPanels(state, action);
     case types.nextPanel:       return nextPanel(state, action);
     case types.editPanel:       return editPanel(state, action);
+    case types.pushPanel:       return pushPanel(state, action);
+    case types.popToPanel:      return popToPanel(state, action);
     case types.invalidatePanel: return invalidatePanel(state, action);
     case types.resetPanels:     return resetPanels(state, action);
-
     default:                    return state;
   }
 };
+
+function setPanels(state, action) {
+  return action.panels.map((name, index) => ({
+    name: name,
+    status: index === 0 ? 'edit' : 'wait',
+    isValid: false,
+  }));
+}
 
 function nextPanel(state, action) {
   let foundNext = false;
 
   return state.map(panel => {
     // Set current panel status to 'done'.
-    if (panel.status === panelStatuses.edit) {
+    if (panel.status === 'edit') {
       return {
         ...panel,
-        status: panelStatuses.done,
+        status: 'done',
         isValid: true,
       };
     }
@@ -57,7 +41,7 @@ function nextPanel(state, action) {
       foundNext = true;
       return {
         ...panel,
-        status: panelStatuses.edit,
+        status: 'edit',
       };
     }
 
@@ -68,10 +52,10 @@ function nextPanel(state, action) {
 function editPanel(state, action) {
   return state.map((panel, index) => {
     // Set status of current panel to 'wait'.
-    if (panel.status === panelStatuses.edit) {
+    if (panel.status === 'edit') {
       return {
         ...panel,
-        status: panelStatuses.wait,
+        status: 'wait',
       };
     }
 
@@ -79,7 +63,7 @@ function editPanel(state, action) {
     if (index === action.index) {
       return {
         ...panel,
-        status: panelStatuses.edit,
+        status: 'edit',
         isValid: false,
       };
     }
@@ -88,10 +72,25 @@ function editPanel(state, action) {
   });
 }
 
+function pushPanel(state, action) {
+  return [
+    ...state,
+    {
+      name: action.panel,
+      progress: action.progress,
+      props: action.props,
+    },
+  ];
+}
+
+function popToPanel(state, action) {
+  return state.slice(0, action.index + 1);
+}
+
 function resetPanels(state, action) {
   return state.map((panel, index) => ({
     ...panel,
-    status: index === 0 ? panelStatuses.edit : panelStatuses.wait,
+    status: index === 0 ? 'edit' : 'wait',
     isValid: false,
   }));
 }
@@ -101,7 +100,7 @@ function invalidatePanel(state, action) {
     if (panel.name === action.name) {
       return {
         ...panel,
-        status: panelStatuses.wait,
+        status: 'wait',
         isValid: false,
       };
     }

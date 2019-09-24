@@ -37,6 +37,16 @@ export const types = {
   logoutSuccess: 'LOGOUT_SUCCESS',
   logoutFailure: 'LOGOUT_FAILURE',
 
+  // Panel Stack Action Types
+
+  setPanels:       'SET_PANELS',
+  nextPanel:       'NEXT_PANEL',
+  editPanel:       'EDIT_PANEL',
+  pushPanel:       'PUSH_PANEL',
+  popToPanel:      'POP_TO_PANEL',
+  invalidatePanel: 'INVALIDATE_PANEL',
+  resetPanels:     'RESET_PANELS',
+
   // Login Panel Action Types
 
   setLoginPanelMode: 'SET_LOGIN_PANEL_MODE',

@@ -1,4 +1,4 @@
-import { types } from '.';
+import { types } from 'shared/actions';
 
 export const panels = {
   loginPanel:           'login-panel',
@@ -13,6 +13,11 @@ export const panelStatuses = {
   edit: 'edit',
   done: 'done',
 };
+
+export const setPanels = panels => ({
+  type: types.setPanels,
+  panels: panels,
+});
 
 export const nextPanel = () => ({
   type: types.nextPanel,

@@ -6,13 +6,6 @@ export const statuses = {
 };
 
 export const types = {
-  // Panel Stack Action Types
-
-  nextPanel:       'NEXT_PANEL',
-  editPanel:       'EDIT_PANEL',
-  invalidatePanel: 'INVALIDATE_PANEL',
-  resetPanels:     'RESET_PANELS',
-
   // Customer Action Types
 
   hasAccountRequest: 'HAS_ACCOUNT_REQUEST',

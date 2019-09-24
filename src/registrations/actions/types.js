@@ -15,11 +15,6 @@ export const types = {
 
   setPriceHandles: 'SET_PRICE_HANDLES',
 
-  // Panel Stack Action Types
-
-  panelStackPush: 'PANEL_STACK_PUSH',
-  panelStackPop:  'PANEL_STACK_POP',
-
   // Panel Data Action Types
 
   panelDataSetEvent:          'PANEL_DATA_SET_EVENT',

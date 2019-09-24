@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { panelStackReducer } from 'shared/reducers';
 import { formDataReducer, errorsReducer } from 'form/reducers';
 import { amountPanelReducer } from 'donate/reducers';
 import * as reducers from 'registrations/reducers';
@@ -10,7 +11,7 @@ export const rootReducer = combineReducers({
   formData:   formDataReducer,
   errors:     errorsReducer,
 
-  panelStack: reducers.panelStackReducer,
+  panelStack: panelStackReducer,
   panelData:  reducers.panelDataReducer,
 
   panels: combineReducers({

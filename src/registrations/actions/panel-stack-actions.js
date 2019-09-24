@@ -1,5 +1,6 @@
 import { calcProgress } from 'registrations/utils';
-import { createRegistration, types } from 'registrations/actions';
+import { createRegistration } from 'registrations/actions';
+import { types } from 'shared/actions';
 
 export const panels = {
   eventPanel:   'EVENT_PANEL',
@@ -12,15 +13,15 @@ export const panels = {
 };
 
 export const pushPanel = ({ panel, progress, props }) => ({
-  type: types.panelStackPush,
-  panel,
-  progress,
-  props,
+  type: types.pushPanel,
+  panel: panel,
+  progress: progress,
+  props: props,
 });
 
 export const popToPanel = index => ({
-  type: types.panelStackPop,
-  index,
+  type: types.popToPanel,
+  index: index,
 });
 
 export const pushNextDetailsPanel = participantIndex => {
