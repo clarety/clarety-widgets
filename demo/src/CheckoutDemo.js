@@ -1,5 +1,7 @@
 import React from 'react';
-import { Checkout, setupCheckoutAxiosMock } from '../../src';
+import { Checkout, setupCheckoutAxiosMock, withOverrides } from '../../src';
+
+const App = withOverrides(Checkout, {});
 
 export default class CheckoutDemo extends React.Component {
   componentWillMount() {
@@ -9,7 +11,7 @@ export default class CheckoutDemo extends React.Component {
   render() {
     return (
       <div className="checkout">
-        <Checkout />
+        <App />
       </div>
     );
   }

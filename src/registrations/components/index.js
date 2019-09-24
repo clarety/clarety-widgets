@@ -23,5 +23,4 @@ export * from './misc/MiniCart';
 export * from './misc/Qty';
 export * from './misc/ScrollIntoView';
 
-export * from './PanelStack';
 export * from './Registrations';

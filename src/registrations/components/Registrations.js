@@ -7,8 +7,9 @@ import 'intl-pluralrules'; // Polyfill for safari 12
 import { Spinner, Modal } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
+import { PanelStack } from 'shared/components';
 import { selectDefaults } from 'donate/actions';
-import { MiniCart, PanelStack } from 'registrations/components';
+import { MiniCart } from 'registrations/components';
 import { fetchEvents, statuses, setPriceHandles } from 'registrations/actions';
 import { rootReducer } from 'registrations/reducers';
 import { priceHandles } from 'registrations/utils';
@@ -36,7 +37,7 @@ class _Root extends React.Component {
     return (
       <BlockUi blocking={this.props.isBlocking} loader={this.getLoader()}>
         <MiniCart />
-        <PanelStack />
+        <PanelStack layout="stack" />
       </BlockUi>
     );
   }
