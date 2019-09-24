@@ -36,4 +36,9 @@ export const types = {
   logoutRequest: 'LOGOUT_REQUEST',
   logoutSuccess: 'LOGOUT_SUCCESS',
   logoutFailure: 'LOGOUT_FAILURE',
+
+  // Login Panel Action Types
+
+  setEmailStatus:   'SET_EMAIL_STATUS',
+  resetEmailStatus: 'RESET_EMAIL_STATUS',
 };

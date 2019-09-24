@@ -62,9 +62,4 @@ export const types = {
   stripeTokenRequest: 'STRIPE_TOKEN_REQUEST',
   stripeTokenSuccess: 'STRIPE_TOKEN_SUCCESS',
   stripeTokenFailure: 'STRIPE_TOKEN_FAILURE',
-
-  // Login Panel Action Types
-
-  setEmailStatus:   'SET_EMAIL_STATUS',
-  resetEmailStatus: 'RESET_EMAIL_STATUS',
 };

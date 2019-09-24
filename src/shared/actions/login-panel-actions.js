@@ -1,4 +1,4 @@
-import { types } from 'checkout/actions';
+import { types } from 'shared/actions';
 
 export const emailStatuses = {
   notChecked: 'not-checked',

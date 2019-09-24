@@ -1,5 +1,4 @@
-import { types as sharedTypes } from 'shared/actions';
-import { types, emailStatuses } from 'checkout/actions';
+import { types, emailStatuses } from 'shared/actions';
 
 const initialState = {
   emailStatus: emailStatuses.notChecked,
@@ -14,7 +13,7 @@ export const loginPanelReducer = (state = initialState, action) => {
       };
 
     case types.resetEmailStatus:
-    case sharedTypes.logoutSuccess:
+    case types.logoutSuccess:
       return {
         ...state,
         emailStatus: emailStatuses.notChecked,
