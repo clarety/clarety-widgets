@@ -281,7 +281,9 @@ export class _DetailsPanel extends React.Component {
 
   validateEmail(field, formData, errors) {
     const { intl } = this.props;
-    const isValid = /^.+@.+\..+$/.test(formData[field]);
+    // NOTE: giant ugly regex from: https://emailregex.com/
+    const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const isValid = regex.test(formData[field]);
     if (!isValid) {
       const message = intl.formatMessage({ id: 'validation.email' });
       errors.push({ field: field, message: message });
