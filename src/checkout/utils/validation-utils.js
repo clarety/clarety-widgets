@@ -10,7 +10,9 @@ export function validateRequired(value, field, errors) {
 }
 
 export function validateEmail(email, field, errors) {
-  const isValid = /^.+@.+\..+$/.test(email);
+  // NOTE: giant ugly regex from: https://emailregex.com/
+  const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const isValid = regex.test(email);
   if (!isValid) {
     errors.push({
       'field': field,
