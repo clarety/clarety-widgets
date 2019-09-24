@@ -15,12 +15,14 @@ class _LoginPanel extends BasePanel {
   onPressCheckEmail = async event => {
     event.preventDefault();
 
+    const { hasAccount, setEmailStatus, resetFormData, resetPanelData } = this.props;
+    const { email } = this.state.formData;
+
     if (this.validate()) {
-      const { email } = this.state.formData;
-      const emailStatus = await this.props.hasAccount(email);
-      this.props.setEmailStatus(emailStatus);
-      this.props.resetFormData();
-      this.props.resetPanelData();
+      const emailStatus = await hasAccount(email);
+      setEmailStatus(emailStatus);
+      resetFormData();
+      resetPanelData();
     }
   };
 
@@ -53,30 +55,38 @@ class _LoginPanel extends BasePanel {
   onPressCreateAccount = event => {
     event.preventDefault();
 
+    const { setFormData, nextPanel } = this.props;
+    const { email, password } = this.state.formData;
+
     if (this.validate()) {
-      const { email, password } = this.state.formData;
-      this.props.setFormData({
+      setFormData({
         'customer.email': email,
         'customer.password': password,
       });
-      this.props.nextPanel();
+      nextPanel();
     }
   };
 
   onPressGuestCheckout = () => {
+    const { setFormData, nextPanel } = this.props;
     const { email } = this.state.formData;
-    this.props.setFormData({ 'customer.email': email });
-    this.props.nextPanel();
+
+    setFormData({ 'customer.email': email });
+    nextPanel();
   };
 
   onPressLogout = () => {
+    const { resetPanels, resetPanelData, resetFormData, logout } = this.props;
+
     this.onChangeField('email', '');
     this.onChangeField('password', '');
+
     this.setState({ isCreatingAccount: false });
-    this.props.resetPanels();
-    this.props.resetPanelData();
-    this.props.resetFormData();
-    this.props.logout();
+
+    resetPanels();
+    resetPanelData();
+    resetFormData();
+    logout();
   }
 
   onPressStayLoggedIn = () => {
