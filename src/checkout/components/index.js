@@ -12,8 +12,9 @@ export * from './inputs/PhoneInput';
 export * from './inputs/StateInput';
 export * from './inputs/TextInput';
 
+export * from './misc/PanelHeader';
+
 export * from './panels/BasePanel';
-export * from './panels/PanelHeader';
 export * from './panels/LoginPanel';
 export * from './panels/PaymentDetailsPanel';
 export * from './panels/PersonalDetailsPanel';
