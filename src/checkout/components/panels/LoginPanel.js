@@ -3,24 +3,27 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { login, logout, emailStatuses, setEmailStatus, resetEmailStatus } from 'shared/actions';
+import { login, logout, setLoginPanelMode } from 'shared/actions';
 import { setFormData, resetFormData } from 'form/actions';
 import { BasePanel, TextInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { statuses, hasAccount, nextPanel, editPanel, resetPanels, fetchAuthCustomer } from 'checkout/actions';
-import { getIsLoggedIn, getEmailStatus } from 'checkout/selectors';
 import { FormContext } from 'checkout/utils';
 
 class _LoginPanel extends BasePanel {
   onPressCheckEmail = async event => {
     event.preventDefault();
 
-    const { hasAccount, setEmailStatus, resetFormData, resetPanelData } = this.props;
+    const { hasAccount, resetFormData, resetPanelData, setMode } = this.props;
     const { email } = this.state.formData;
 
     if (this.validate()) {
       const emailStatus = await hasAccount(email);
-      setEmailStatus(emailStatus);
+      
+      if (emailStatus === 'not-checked') setMode('check-email');
+      if (emailStatus === 'no-account')  setMode('no-account');
+      if (emailStatus === 'has-account') setMode('login');
+
       resetFormData();
       resetPanelData();
     }
@@ -29,7 +32,7 @@ class _LoginPanel extends BasePanel {
   onPressLogin = async event => {
     event.preventDefault();
 
-    const { login, fetchAuthCustomer, nextPanel } = this.props;
+    const { login, fetchAuthCustomer, setMode, nextPanel } = this.props;
     const { email, password } = this.state.formData;
 
     const didValidate = this.validate();
@@ -41,15 +44,17 @@ class _LoginPanel extends BasePanel {
     const didFetch = await fetchAuthCustomer();
     if (!didFetch) return;
 
+    setMode('logged-in');
+
     nextPanel();
   };
 
   onPressShowCreateAccountForm = () => {
-    this.setState({ isCreatingAccount: true });
+    this.props.setMode('create-account');
   };
 
   onPressCancelCreateAccount = () => {
-    this.setState({ isCreatingAccount: false });
+    this.props.setMode('no-account');
   }
 
   onPressCreateAccount = event => {
@@ -76,12 +81,12 @@ class _LoginPanel extends BasePanel {
   };
 
   onPressLogout = () => {
-    const { resetPanels, resetPanelData, resetFormData, logout } = this.props;
+    const { setMode, resetPanels, resetPanelData, resetFormData, logout } = this.props;
 
     this.onChangeField('email', '');
     this.onChangeField('password', '');
 
-    this.setState({ isCreatingAccount: false });
+    setMode('check-email');
 
     resetPanels();
     resetPanelData();
@@ -96,7 +101,8 @@ class _LoginPanel extends BasePanel {
   componentDidUpdate(prevProps, prevState) {
     // Check if email has been modified, and reset status.
     if (this.state.formData.email !== prevState.formData.email) {
-      this.props.resetEmailStatus();
+      this.props.setMode('check-email');
+
       this.props.resetPanels();
       this.onChangeField('password', '');
     }
@@ -109,21 +115,18 @@ class _LoginPanel extends BasePanel {
   validate() {
     const errors = [];
 
-    const { emailStatus } = this.props;
+    const { mode } = this.props.panel;
 
-    // Create Account
-    if (this.state.isCreatingAccount) {
+    if (mode === 'check-email') {
+      this.validateEmail('email', errors);
+    }
+
+    if (mode === 'create-account') {
       this.validatePassword('password', errors);
     }
 
-    // Login
-    if (emailStatus === emailStatuses.hasAccount) {
+    if (mode === 'login') {
       this.validateRequired('password', errors);
-    }
-
-    // Check Email
-    if (emailStatus === emailStatuses.notChecked) {
-      this.validateEmail('email', errors);
     }
 
     this.setState({ errors });
@@ -160,20 +163,13 @@ class _LoginPanel extends BasePanel {
   }
 
   renderForm() {
-    if (this.props.isLoggedIn) {
-      return this.renderIsLoggedInForm();
-    }
+    const { mode } = this.props.panel;
 
-    if (this.state.isCreatingAccount) {
-      return this.renderCreateAccountForm();
-    }
-
-    if (this.props.emailStatus === emailStatuses.hasAccount) {
-      return this.renderLoginForm();
-    }
-
-    const hasNoAccount = this.props.emailStatus === emailStatuses.noAccount;
-    return this.renderEmailCheckForm(hasNoAccount);
+    if (mode === 'check-email')    return this.renderEmailCheckForm(false);
+    if (mode === 'no-account')     return this.renderEmailCheckForm(true);
+    if (mode === 'create-account') return this.renderCreateAccountForm();
+    if (mode === 'login')          return this.renderLoginForm();
+    if (mode === 'logged-in')      return this.renderIsLoggedInForm();
   }
 
   renderEmailCheckForm(hasNoAccount) {
@@ -298,8 +294,7 @@ class _LoginPanel extends BasePanel {
 const mapStateToProps = state => {
   return {
     isBusy: state.status === statuses.busy,
-    emailStatus: getEmailStatus(state),
-    isLoggedIn: getIsLoggedIn(state),
+    panel: state.panels.loginPanel,
     customer: state.cart.customer,
     errors: state.errors,
   };
@@ -310,10 +305,12 @@ const actions = {
   login: login,
   logout: logout,
   fetchAuthCustomer: fetchAuthCustomer,
-  resetEmailStatus: resetEmailStatus,
+
   setFormData: setFormData,
-  setEmailStatus: setEmailStatus,
   resetFormData: resetFormData,
+
+  setMode: setLoginPanelMode,
+  
   nextPanel: nextPanel,
   editPanel: editPanel,
   resetPanels: resetPanels,

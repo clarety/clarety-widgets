@@ -39,6 +39,5 @@ export const types = {
 
   // Login Panel Action Types
 
-  setEmailStatus:   'SET_EMAIL_STATUS',
-  resetEmailStatus: 'RESET_EMAIL_STATUS',
+  setLoginPanelMode: 'SET_LOGIN_PANEL_MODE',
 };

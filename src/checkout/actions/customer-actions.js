@@ -1,7 +1,12 @@
 import jwtDecode from 'jwt-decode';
 import { ClaretyApi } from 'clarety-utils';
-import { emailStatuses } from 'shared/actions';
 import { types } from 'checkout/actions';
+
+export const emailStatuses = {
+  notChecked: 'not-checked',
+  noAccount:  'no-account',
+  hasAccount: 'has-account',
+};
 
 export const hasAccount = email => {
   return async dispatch => {
