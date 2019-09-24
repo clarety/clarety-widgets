@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Container, Button, Form, Row, Col } from 'react-bootstrap';
 import { getElementOptions } from 'shared/utils';
-import { TextInput, DobInput, CheckboxInput, SimpleSelectInput, SelectInput, PhoneInput } from 'registrations/components';
+import { TextInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, SelectInput, PhoneInput } from 'registrations/components';
 import { setDetails, setAdditionalData, setErrors, resetDetails, pushNextDetailsPanel } from 'registrations/actions';
 import { getEvent, getExtendFields } from 'registrations/selectors';
 import { FormContext, scrollIntoView } from 'registrations/utils';
@@ -199,7 +199,7 @@ export class _DetailsPanel extends React.Component {
         </Form.Row>
         <Form.Row>
           <Col>
-            <TextInput field="email" type="text" required />
+            <EmailInput field="email" required />
           </Col>
         </Form.Row>
         <Form.Row>
