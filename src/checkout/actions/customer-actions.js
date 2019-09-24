@@ -1,12 +1,6 @@
 import jwtDecode from 'jwt-decode';
 import { ClaretyApi } from 'clarety-utils';
-import { types } from 'checkout/actions';
-
-export const emailStatuses = {
-  notChecked: 'not-checked',
-  noAccount:  'no-account',
-  hasAccount: 'has-account',
-};
+import { types, emailStatuses } from 'checkout/actions';
 
 export const hasAccount = email => {
   return async dispatch => {
@@ -17,10 +11,10 @@ export const hasAccount = email => {
 
     if (result.status === 'error') {
       dispatch(hasAccountFailure(result));
-      return false;
+      return emailStatuses.notChecked;
     } else {
       dispatch(hasAccountSuccess(result));
-      return true;
+      return result.exists ? emailStatuses.hasAccount : emailStatuses.noAccount;
     }
   };
 };
@@ -49,10 +43,6 @@ export const fetchAuthCustomer = () => {
     return await dispatch(fetchCustomer(jwtData.customerUid));
   };
 };
-
-export const resetEmailStatus = () => ({
-  type: types.resetEmailStatus,
-});
 
 
 // Has Account

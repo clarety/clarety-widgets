@@ -7,17 +7,18 @@ import { login, logout } from 'shared/actions';
 import { setFormData, resetFormData } from 'form/actions';
 import { BasePanel, TextInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { statuses, hasAccount, nextPanel, editPanel, resetPanels, emailStatuses, resetEmailStatus, fetchAuthCustomer } from 'checkout/actions';
+import { statuses, hasAccount, nextPanel, editPanel, resetPanels, emailStatuses, setEmailStatus, resetEmailStatus, fetchAuthCustomer } from 'checkout/actions';
 import { getIsLoggedIn, getEmailStatus } from 'checkout/selectors';
 import { FormContext } from 'checkout/utils';
 
 class _LoginPanel extends BasePanel {
-  onPressCheckEmail = event => {
+  onPressCheckEmail = async event => {
     event.preventDefault();
 
     if (this.validate()) {
       const { email } = this.state.formData;
-      this.props.hasAccount(email);
+      const emailStatus = await this.props.hasAccount(email);
+      this.props.setEmailStatus(emailStatus);
       this.props.resetFormData();
       this.props.resetPanelData();
     }
@@ -301,6 +302,7 @@ const actions = {
   fetchAuthCustomer: fetchAuthCustomer,
   resetEmailStatus: resetEmailStatus,
   setFormData: setFormData,
+  setEmailStatus: setEmailStatus,
   resetFormData: resetFormData,
   nextPanel: nextPanel,
   editPanel: editPanel,

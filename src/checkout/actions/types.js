@@ -6,7 +6,7 @@ export const statuses = {
 };
 
 export const types = {
-  // Panel Action Types
+  // Panel Stack Action Types
 
   nextPanel:       'NEXT_PANEL',
   editPanel:       'EDIT_PANEL',
@@ -18,8 +18,6 @@ export const types = {
   hasAccountRequest: 'HAS_ACCOUNT_REQUEST',
   hasAccountSuccess: 'HAS_ACCOUNT_SUCCESS',
   hasAccountFailure: 'HAS_ACCOUNT_FAILURE',
-
-  resetEmailStatus: 'RESET_EMAIL_STATUS',
 
   fetchCustomerRequest: 'FETCH_CUSTOMER_REQUEST',
   fetchCustomerSuccess: 'FETCH_CUSTOMER_SUCCESS',
@@ -64,4 +62,9 @@ export const types = {
   stripeTokenRequest: 'STRIPE_TOKEN_REQUEST',
   stripeTokenSuccess: 'STRIPE_TOKEN_SUCCESS',
   stripeTokenFailure: 'STRIPE_TOKEN_FAILURE',
+
+  // Login Panel Action Types
+
+  setEmailStatus:   'SET_EMAIL_STATUS',
+  resetEmailStatus: 'RESET_EMAIL_STATUS',
 };
