@@ -9,6 +9,12 @@ const initialState = {
 
 export const registrationReducer = (state = initialState, action) => {
   switch (action.type) {
+    case types.registrationCreateRequest:
+      return {
+        ...state,
+        errors: null,
+      };
+
     case types.registrationCreateSuccess:
       return {
         errors: null,

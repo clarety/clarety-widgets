@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Container, Button, Form, Row, Col } from 'react-bootstrap';
+import { Container, Button, Form, Row, Col, Alert } from 'react-bootstrap';
 import { getElementOptions } from 'shared/utils';
 import { TextInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, SelectInput, PhoneInput } from 'registrations/components';
 import { setDetails, setAdditionalData, setErrors, resetDetails, pushNextDetailsPanel } from 'registrations/actions';
@@ -149,6 +149,7 @@ export class _DetailsPanel extends React.Component {
   }
 
   renderEdit() {
+    const { registrationErrors } = this.props;
     const { firstName } = this.state.customerFormContext.formData;
 
     return (
@@ -178,6 +179,16 @@ export class _DetailsPanel extends React.Component {
               </Col>
             </Row>
           </div>
+
+          {registrationErrors &&
+            <Alert variant="danger">
+              <ul className="list-unstyled">
+                {registrationErrors.map(error =>
+                  <li>{error.message}</li>
+                )}
+              </ul>
+            </Alert>
+          }
 
           <Button type="submit">
             <FormattedMessage id="btn.next" />
@@ -344,6 +355,7 @@ const mapStateToProps = (state, ownProps) => {
     eventDate: eventDate,
     minAge: Number(offer.minAgeOver),
     maxAge: Number(offer.maxAgeUnder),
+    registrationErrors: state.registration.errors,
   };
 };
 
