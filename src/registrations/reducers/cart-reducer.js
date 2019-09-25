@@ -8,10 +8,18 @@ const initialState = {
   summary: {
     total: null,
   },
+
+  errors: null,
 };
 
 export const cartReducer = (state = initialState, action) => {
   switch (action.type) {
+    case types.registrationCreateRequest:
+      return {
+        ...state,
+        errors: null,
+      };
+
     case types.registrationCreateSuccess:
       return {
         ...state,
@@ -23,6 +31,12 @@ export const cartReducer = (state = initialState, action) => {
           ...state.summary,
           total: action.result.sale.total,
         }
+      };
+
+    case types.registrationCreateFailure:
+      return {
+        ...state,
+        errors: action.result.validationErrors,
       };
 
     default:
