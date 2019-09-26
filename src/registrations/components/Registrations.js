@@ -8,7 +8,7 @@ import { Spinner, Modal } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { panels, pushPanel } from 'shared/actions';
-import { PanelStack } from 'shared/components';
+import { PanelManager } from 'shared/components';
 import { selectDefaults } from 'donate/actions';
 import { MiniCart } from 'registrations/components';
 import { fetchEvents, statuses, setPriceHandles } from 'registrations/actions';
@@ -44,7 +44,7 @@ class _Root extends React.Component {
     return (
       <BlockUi blocking={this.props.isBlocking} loader={this.getLoader()}>
         <MiniCart />
-        <PanelStack layout="stack" />
+        <PanelManager layout="stack" />
       </BlockUi>
     );
   }

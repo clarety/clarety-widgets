@@ -37,7 +37,7 @@ export const types = {
   logoutSuccess: 'LOGOUT_SUCCESS',
   logoutFailure: 'LOGOUT_FAILURE',
 
-  // Panel Stack Action Types
+  // Panel Manager Action Types
 
   setPanels:       'SET_PANELS',
   nextPanel:       'NEXT_PANEL',

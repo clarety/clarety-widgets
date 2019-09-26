@@ -1,2 +1,1 @@
-export * from './PanelStack';
-export * from './TestData';
+export * from './PanelManager';

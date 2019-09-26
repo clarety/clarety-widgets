@@ -3,7 +3,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import { Container, Row, Col } from 'react-bootstrap';
-import { PanelStack } from 'shared/components';
+import { PanelManager } from 'shared/components';
 import { panels, setPanels } from 'shared/actions';
 import { fetchCart } from 'checkout/actions';
 import { rootReducer } from 'checkout/reducers';
@@ -37,7 +37,7 @@ export class Checkout extends React.Component {
 
             <Col lg={6} className="col-checkout">
               <h1>Checkout</h1>
-              <PanelStack layout="accordian" />
+              <PanelManager layout="accordian" />
             </Col>
           </Row>
         </Container>

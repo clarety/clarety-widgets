@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { authReducer, loginPanelReducer, panelStackReducer } from 'shared/reducers';
+import { authReducer, loginPanelReducer, panelManagerReducer } from 'shared/reducers';
 import { formDataReducer } from 'form/reducers';
 import { statusReducer, errorsReducer, cartReducer } from 'checkout/reducers';
 
@@ -11,7 +11,7 @@ export const rootReducer = combineReducers({
   cart: cartReducer,
   formData: formDataReducer,
 
-  panelStack: panelStackReducer,
+  panelManager: panelManagerReducer,
   panels: combineReducers({
     loginPanel: loginPanelReducer,
   }),

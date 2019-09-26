@@ -5,11 +5,11 @@ import { OverrideContext } from 'shared/utils';
 import { LoginPanel, PersonalDetailsPanel, ShippingDetailsPanel, ShippingOptionsPanel, PaymentDetailsPanel } from 'checkout/components';
 import { ScrollIntoView, EventPanel, QtysPanel, NamesPanel, DetailsPanel, TeamPanel, DonatePanel, ReviewPanel } from 'registrations/components';
 
-class _PanelStack extends React.Component {
+class _PanelManager extends React.Component {
   constructor(props) {
     super(props);
 
-    this.panelRefs = props.panelStack.map(panel => React.createRef());
+    this.panelRefs = props.panels.map(panel => React.createRef());
   }
 
   nextPanel = index => {
@@ -39,14 +39,14 @@ class _PanelStack extends React.Component {
   };
 
   render() {
-    return this.props.panelStack.map(this.renderPanel);
+    return this.props.panels.map(this.renderPanel);
   }
 
   renderPanel = (panel, index) => {
-    const { panelStack, layout } = this.props;
+    const { panels, layout } = this.props;
     const PanelComponent = this.resolvePanelComponent(panel.name);
     
-    const status = panel.status || (panelStack.length - 1 === index ? 'edit' : 'done');
+    const status = panel.status || (panels.length - 1 === index ? 'edit' : 'done');
     const shouldScroll = layout === 'stack' && status === 'edit';
     const className = layout === 'stack' ? 'section' : undefined;
 
@@ -94,11 +94,11 @@ class _PanelStack extends React.Component {
   }
 }
 
-_PanelStack.contextType = OverrideContext;
+_PanelManager.contextType = OverrideContext;
 
 const mapStateToProps = state => {
   return {
-    panelStack: state.panelStack,
+    panels: state.panelManager,
   };
 };
 
@@ -110,4 +110,4 @@ const actions = {
   resetPanels: resetPanels,
 };
 
-export const PanelStack = connect(mapStateToProps, actions)(_PanelStack);
+export const PanelManager = connect(mapStateToProps, actions)(_PanelManager);

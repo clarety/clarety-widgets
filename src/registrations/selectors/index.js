@@ -8,8 +8,8 @@ export const getEventName = state => {
 };
 
 export const getProgress = state => {
-  const lastIndex = state.panelStack.length - 1;
-  const lastPanel = state.panelStack[lastIndex];
+  const lastIndex = state.panelManager.length - 1;
+  const lastPanel = state.panelManager[lastIndex];
   return lastPanel ? lastPanel.progress : 0;
 };
 

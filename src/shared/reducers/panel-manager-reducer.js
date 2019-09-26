@@ -2,7 +2,7 @@ import { types } from 'shared/actions';
 
 const initialState = [];
 
-export const panelStackReducer = (state = initialState, action) => {
+export const panelManagerReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.setPanels:       return setPanels(state, action);
     case types.nextPanel:       return nextPanel(state, action);
