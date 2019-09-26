@@ -9,7 +9,7 @@ export const panelManagerReducer = (state = initialState, action) => {
     case types.popToPanel:      return popToPanel(state, action);
     case types.setPanelStatus:  return setPanelStatus(state, action);
     case types.invalidatePanel: return invalidatePanel(state, action);
-    case types.resetPanels:     return resetPanels(state, action);
+    case types.resetAllPanels:  return resetAllPanels(state, action);
     default:                    return state;
   }
 };
@@ -50,7 +50,7 @@ function setPanelStatus(state, action) {
   });
 }
 
-function resetPanels(state, action) {
+function resetAllPanels(state, action) {
   return state.map((panel, index) => ({
     ...panel,
     status: index === 0 ? 'edit' : 'wait',

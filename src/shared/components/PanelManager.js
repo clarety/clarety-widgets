@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { panels, pushPanel, popToPanel, setPanelStatus, resetPanels } from 'shared/actions';
+import { panels, pushPanel, popToPanel, setPanelStatus, resetAllPanels } from 'shared/actions';
 import { OverrideContext } from 'shared/utils';
 import { LoginPanel, PersonalDetailsPanel, ShippingDetailsPanel, ShippingOptionsPanel, PaymentDetailsPanel } from 'checkout/components';
 import { ScrollIntoView, EventPanel, QtysPanel, NamesPanel, DetailsPanel, TeamPanel, DonatePanel, ReviewPanel } from 'registrations/components';
@@ -34,8 +34,8 @@ class _PanelManager extends React.Component {
     this.props.popToPanel(index);
   };
 
-  resetPanels = () => {
-    this.props.resetPanels();
+  resetAllPanels = () => {
+    this.props.resetAllPanels();
   };
 
   resetPanelData = () => {
@@ -70,7 +70,7 @@ class _PanelManager extends React.Component {
           pushPanel={panel => this.pushPanel(panel)}
           popToPanel={() => this.popToPanel(index)}
 
-          resetPanels={this.resetPanels}
+          resetAllPanels={this.resetAllPanels}
           resetPanelData={this.resetPanelData}
 
           {...panel.props}
@@ -130,7 +130,7 @@ const actions = {
   pushPanel: pushPanel,
   popToPanel: popToPanel,
   setPanelStatus: setPanelStatus,
-  resetPanels: resetPanels,
+  resetAllPanels: resetAllPanels,
 };
 
 export const PanelManager = connect(mapStateToProps, actions)(_PanelManager);

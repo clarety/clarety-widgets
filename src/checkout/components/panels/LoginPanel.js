@@ -81,14 +81,14 @@ class _LoginPanel extends BasePanel {
   };
 
   onPressLogout = () => {
-    const { setMode, resetPanels, resetPanelData, resetFormData, logout } = this.props;
+    const { setMode, resetAllPanels, resetPanelData, resetFormData, logout } = this.props;
 
     this.onChangeField('email', '');
     this.onChangeField('password', '');
 
     setMode('check-email');
 
-    resetPanels();
+    resetAllPanels();
     resetPanelData();
     resetFormData();
     logout();
@@ -103,7 +103,7 @@ class _LoginPanel extends BasePanel {
     if (this.state.formData.email !== prevState.formData.email) {
       this.props.setMode('check-email');
 
-      this.props.resetPanels();
+      this.props.resetAllPanels();
       this.onChangeField('password', '');
     }
 

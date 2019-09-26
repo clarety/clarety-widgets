@@ -50,6 +50,6 @@ export const invalidatePanel = name => ({
   name: name,
 });
 
-export const resetPanels = () => ({
-  type: types.resetPanels,
+export const resetAllPanels = () => ({
+  type: types.resetAllPanels,
 });
