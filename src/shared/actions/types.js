@@ -40,10 +40,9 @@ export const types = {
   // Panel Manager Action Types
 
   setPanels:       'SET_PANELS',
-  nextPanel:       'NEXT_PANEL',
-  editPanel:       'EDIT_PANEL',
   pushPanel:       'PUSH_PANEL',
   popToPanel:      'POP_TO_PANEL',
+  setPanelStatus:  'SET_PANEL_STATUS',
   invalidatePanel: 'INVALIDATE_PANEL',
   resetPanels:     'RESET_PANELS',
 

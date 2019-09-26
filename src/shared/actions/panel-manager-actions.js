@@ -27,15 +27,6 @@ export const setPanels = panels => ({
   panels: panels,
 });
 
-export const nextPanel = () => ({
-  type: types.nextPanel,
-});
-
-export const editPanel = index => ({
-  type: types.editPanel,
-  index: index,
-});
-
 export const pushPanel = ({ panel, progress, props }) => ({
   type: types.pushPanel,
   panel: panel,
@@ -46,6 +37,12 @@ export const pushPanel = ({ panel, progress, props }) => ({
 export const popToPanel = index => ({
   type: types.popToPanel,
   index: index,
+});
+
+export const setPanelStatus = (index, status) => ({
+  type: types.setPanelStatus,
+  index: index,
+  status: status,
 });
 
 export const invalidatePanel = name => ({

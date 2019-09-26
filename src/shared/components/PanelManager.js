@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { panels, pushPanel, popToPanel, nextPanel, editPanel, resetPanels } from 'shared/actions';
+import { panels, pushPanel, popToPanel, setPanelStatus, resetPanels } from 'shared/actions';
 import { OverrideContext } from 'shared/utils';
 import { LoginPanel, PersonalDetailsPanel, ShippingDetailsPanel, ShippingOptionsPanel, PaymentDetailsPanel } from 'checkout/components';
 import { ScrollIntoView, EventPanel, QtysPanel, NamesPanel, DetailsPanel, TeamPanel, DonatePanel, ReviewPanel } from 'registrations/components';
@@ -12,12 +12,18 @@ class _PanelManager extends React.Component {
     this.panelRefs = props.panels.map(panel => React.createRef());
   }
 
-  nextPanel = index => {
-    this.props.nextPanel();
+  nextPanel = current => {
+    this.setStatus(current, 'done');
+
+    const next = this.getFirstIndexWithStatus('wait');
+    if (next !== -1) this.setStatus(next, 'edit');
   };
 
-  editPanel = index => {
-    this.props.editPanel(index);
+  editPanel = next => {
+    const current = this.getFirstIndexWithStatus('edit');
+    if (current !== -1) this.setStatus(current, 'wait');
+
+    this.setStatus(next, 'edit');
   };
 
   pushPanel = panel => {
@@ -92,6 +98,24 @@ class _PanelManager extends React.Component {
       default: throw new Error(`Cannot resolve panel component ${name}`);
     }
   }
+
+  getPanel(index) {
+    const panelKey = this.getPanelKey(index);
+    return this.props.panels[panelKey];
+  }
+
+  getPanelKey(index) {
+    return index;
+  }
+
+  getFirstIndexWithStatus(status) {
+    return this.props.panels.findIndex(panel => panel.status === status);
+  }
+
+  setStatus(index, status) {
+    const panelKey = this.getPanelKey(index);
+    this.props.setPanelStatus(panelKey, status);
+  }
 }
 
 _PanelManager.contextType = OverrideContext;
@@ -105,8 +129,7 @@ const mapStateToProps = state => {
 const actions = {
   pushPanel: pushPanel,
   popToPanel: popToPanel,
-  nextPanel: nextPanel,
-  editPanel: editPanel,
+  setPanelStatus: setPanelStatus,
   resetPanels: resetPanels,
 };
 

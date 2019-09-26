@@ -5,10 +5,9 @@ const initialState = [];
 export const panelManagerReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.setPanels:       return setPanels(state, action);
-    case types.nextPanel:       return nextPanel(state, action);
-    case types.editPanel:       return editPanel(state, action);
     case types.pushPanel:       return pushPanel(state, action);
     case types.popToPanel:      return popToPanel(state, action);
+    case types.setPanelStatus:  return setPanelStatus(state, action);
     case types.invalidatePanel: return invalidatePanel(state, action);
     case types.resetPanels:     return resetPanels(state, action);
     default:                    return state;
@@ -21,55 +20,6 @@ function setPanels(state, action) {
     status: index === 0 ? 'edit' : 'wait',
     isValid: false,
   }));
-}
-
-function nextPanel(state, action) {
-  let foundNext = false;
-
-  return state.map(panel => {
-    // Set current panel status to 'done'.
-    if (panel.status === 'edit') {
-      return {
-        ...panel,
-        status: 'done',
-        isValid: true,
-      };
-    }
-
-    // Set next invalid panel status to 'edit'.
-    if (!foundNext && !panel.isValid) {
-      foundNext = true;
-      return {
-        ...panel,
-        status: 'edit',
-      };
-    }
-
-    return panel;
-  });
-}
-
-function editPanel(state, action) {
-  return state.map((panel, index) => {
-    // Set status of current panel to 'wait'.
-    if (panel.status === 'edit') {
-      return {
-        ...panel,
-        status: 'wait',
-      };
-    }
-
-    // Set status of panel at index to 'edit'.
-    if (index === action.index) {
-      return {
-        ...panel,
-        status: 'edit',
-        isValid: false,
-      };
-    }
-
-    return panel;
-  });
 }
 
 function pushPanel(state, action) {
@@ -85,6 +35,19 @@ function pushPanel(state, action) {
 
 function popToPanel(state, action) {
   return state.slice(0, action.index + 1);
+}
+
+function setPanelStatus(state, action) {
+  return state.map((panel, index) => {
+    if (index === action.index) {
+      return {
+        ...panel,
+        status: action.status,
+      };
+    }
+
+    return panel;
+  });
 }
 
 function resetPanels(state, action) {
