@@ -7,12 +7,13 @@ import { panels, editPanel, invalidatePanel } from 'shared/actions';
 import { setFormData } from 'form/actions';
 import { BasePanel, TextInput, PureCheckboxInput, StateInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { statuses, onSubmitShippingDetails } from 'checkout/actions';
+import { statuses, createOrUpdateCustomer, fetchShippingOptions } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _ShippingDetailsPanel extends BasePanel {
-  onPressContinue = event => {
-    const { invalidatePanel, setFormData, onSubmitShippingDetails } = this.props;
+  onPressContinue = async event => {
+    const { invalidatePanel, setFormData } = this.props;
+    const { createOrUpdateCustomer, fetchShippingOptions, nextPanel } = this.props;
 
     event.preventDefault();
 
@@ -29,7 +30,14 @@ class _ShippingDetailsPanel extends BasePanel {
       
       invalidatePanel(panels.shippingOptionsPanel);
       setFormData(formData);
-      onSubmitShippingDetails();
+
+      const didCreateOrUpdate = await createOrUpdateCustomer();
+      if (!didCreateOrUpdate) return;
+
+      const didFetch = await fetchShippingOptions();
+      if (!didFetch) return;
+
+      nextPanel();
     }
   };
 
@@ -181,7 +189,8 @@ const mapStateToProps = state => {
 
 const actions = {
   setFormData: setFormData,
-  onSubmitShippingDetails: onSubmitShippingDetails,
+  createOrUpdateCustomer: createOrUpdateCustomer,
+  fetchShippingOptions: fetchShippingOptions,
   invalidatePanel: invalidatePanel,
   editPanel: editPanel,
 };

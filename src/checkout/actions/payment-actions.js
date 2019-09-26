@@ -1,5 +1,4 @@
 import { ClaretyApi } from 'clarety-utils';
-import { nextPanel } from 'shared/actions';
 import { createStripeToken, parseStripeError } from 'donate/utils';
 import { types } from 'checkout/actions';
 
@@ -21,9 +20,10 @@ export const fetchPaymentMethods = () => {
 
     if (!results) {
       dispatch(fetchPaymentMethodsFailure());
+      return false;
     } else {
       dispatch(fetchPaymentMethodsSuccess(results));
-      dispatch(nextPanel());
+      return true;
     }
   };
 };

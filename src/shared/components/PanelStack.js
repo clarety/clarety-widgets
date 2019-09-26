@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { panels, pushPanel, popToPanel } from 'shared/actions';
+import { panels, pushPanel, popToPanel, nextPanel } from 'shared/actions';
 import { OverrideContext } from 'shared/utils';
 import { LoginPanel, PersonalDetailsPanel, ShippingDetailsPanel, ShippingOptionsPanel, PaymentDetailsPanel } from 'checkout/components';
 import { ScrollIntoView, EventPanel, QtysPanel, NamesPanel, DetailsPanel, TeamPanel, DonatePanel, ReviewPanel } from 'registrations/components';
@@ -11,6 +11,10 @@ class _PanelStack extends React.Component {
 
     this.panelRefs = props.panelStack.map(panel => React.createRef());
   }
+
+  nextPanel = () => {
+    this.props.nextPanel();
+  };
 
   resetPanelData = () => {
     for (let panelRef of this.panelRefs) {
@@ -23,7 +27,7 @@ class _PanelStack extends React.Component {
   }
 
   renderPanel = (panel, index) => {
-    const { panelStack, layout, pushPanel, popToPanel } = this.props;
+    const { panelStack, layout, pushPanel, popToPanel, nextPanel } = this.props;
     const PanelComponent = this.resolvePanelComponent(panel.name);
     
     const status = panel.status || (panelStack.length - 1 === index ? 'edit' : 'done');
@@ -40,6 +44,7 @@ class _PanelStack extends React.Component {
           resetPanelData={this.resetPanelData}
           pushPanel={pushPanel}
           popToPanel={() => popToPanel(index)}
+          nextPanel={() => this.nextPanel()}
           {...panel.props}
         />
       </ScrollIntoView>
@@ -78,6 +83,7 @@ const mapStateToProps = state => {
 const actions = {
   pushPanel: pushPanel,
   popToPanel: popToPanel,
+  nextPanel: nextPanel,
 };
 
 export const PanelStack = connect(mapStateToProps, actions)(_PanelStack);

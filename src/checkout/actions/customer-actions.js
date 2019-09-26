@@ -1,5 +1,6 @@
 import jwtDecode from 'jwt-decode';
 import { ClaretyApi } from 'clarety-utils';
+import { parseNestedElements } from 'shared/utils';
 import { types } from 'checkout/actions';
 
 export const emailStatuses = {
@@ -50,6 +51,59 @@ export const fetchAuthCustomer = () => {
   };
 };
 
+export const createOrUpdateCustomer = () => {
+  return async (dispatch, getState) => {
+    const { cart } = getState();
+
+    if (cart.customer && cart.customer.uid) {
+      return await dispatch(updateCustomer());
+    }
+
+    return await dispatch(createCustomer());
+  };
+};
+
+export const createCustomer = () => {
+  return async (dispatch, getState) => {
+    const { cart, formData } = getState();
+    const { customer } = parseNestedElements(formData);
+
+    dispatch(createCustomerRequest(customer));
+
+    let results = await ClaretyApi.post(`carts/${cart.uid}/customers/`, customer);
+    const result = results[0];
+
+    if (result.status === 'error') {
+      dispatch(createCustomerFailure(result));
+      return false;
+    } else {
+      dispatch(createCustomerSuccess(result));
+      return true;
+    }
+  };
+};
+
+export const updateCustomer = () => {
+  return async (dispatch, getState) => {
+    const { cart, formData } = getState();
+    const { customer } = parseNestedElements(formData);
+
+    dispatch(updateCustomerRequest(customer));
+
+    const customerUid = cart.customer.uid;
+    let results = await ClaretyApi.put(`carts/${cart.uid}/customers/${customerUid}/`, customer);
+    const result = results[0];
+
+    if (result.status === 'error') {
+      dispatch(updateCustomerFailure(result));
+      return false;
+    } else {
+      dispatch(updateCustomerSuccess(result));
+      return true;
+    }
+  };
+};
+
 
 // Has Account
 
@@ -82,5 +136,39 @@ const fetchCustomerSuccess = result => ({
 
 const fetchCustomerFailure = result => ({
   type: types.fetchCustomerFailure,
+  result: result,
+});
+
+// Create Customer
+
+const createCustomerRequest = postData => ({
+  type: types.createCustomerRequest,
+  postData: postData,
+});
+
+const createCustomerSuccess = result => ({
+  type: types.createCustomerSuccess,
+  result: result,
+});
+
+const createCustomerFailure = result => ({
+  type: types.createCustomerFailure,
+  result: result,
+});
+
+// Update Customer
+
+const updateCustomerRequest = putData => ({
+  type: types.updateCustomerRequest,
+  putData: putData,
+});
+
+const updateCustomerSuccess = result => ({
+  type: types.updateCustomerSuccess,
+  result: result,
+});
+
+const updateCustomerFailure = result => ({
+  type: types.updateCustomerFailure,
   result: result,
 });

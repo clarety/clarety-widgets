@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { nextPanel, editPanel } from 'shared/actions';
+import { editPanel } from 'shared/actions';
 import { setFormData } from 'form/actions';
 import { BasePanel, TextInput, PhoneInput, DobInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
@@ -182,7 +182,6 @@ const mapStateToProps = state => {
 
 const actions = {
   setFormData: setFormData,
-  nextPanel: nextPanel,
   editPanel: editPanel,
 };
 

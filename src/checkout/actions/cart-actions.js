@@ -1,6 +1,5 @@
 import { ClaretyApi } from 'clarety-utils';
 import { parseNestedElements } from 'shared/utils';
-import { nextPanel } from 'shared/actions';
 import { types } from 'checkout/actions';
 
 export const fetchCart = () => {
@@ -21,78 +20,21 @@ export const fetchCart = () => {
   };
 };
 
-export const onSubmitShippingDetails = () => {
+export const fetchShippingOptions = () => {
   return async (dispatch, getState) => {
-    const { cart, formData } = getState();
+    const { cart } = getState();
 
-    const postData = parseNestedElements(formData);
+    dispatch(fetchShippingOptionsRequest(cart.uid));
+    const results = await ClaretyApi.get(`carts/${cart.uid}/shipping-options/`);
 
-    let didSucceed;
-    if (cart.customer) {
-      didSucceed = await _updateCustomer(dispatch, getState, postData.customer);
+    if (!results) {
+      dispatch(fetchShippingOptionsFailure());
+      return false;
     } else {
-      didSucceed = await _createCustomer(dispatch, getState, postData.customer);
-    }
-
-    if (didSucceed) {
-      await _fetchShippingOptions(dispatch, getState);
-
-      // Proceed to shipping options panel.
-      dispatch(nextPanel());
-    } else {
-      // Errors will have been set,
-      // and panels containing errors will show automatically.
+      dispatch(fetchShippingOptionsSuccess(results));
+      return true;
     }
   };
-};
-
-const _createCustomer = async (dispatch, getState, customerData) => {
-  const { cart } = getState();
-
-  dispatch(createCustomerRequest(customerData));
-
-  let results = await ClaretyApi.post(`carts/${cart.uid}/customers/`, customerData);
-  const result = results[0];
-
-  if (result.status === 'error') {
-    dispatch(createCustomerFailure(result));
-  } else {
-    dispatch(createCustomerSuccess(result));
-  }
-
-  return result.status !== 'error';
-};
-
-const _updateCustomer = async (dispatch, getState, customerData) => {
-  const { cart } = getState();
-  const { customer } = cart;
-
-  dispatch(updateCustomerRequest(customerData));
-
-  let results = await ClaretyApi.put(`carts/${cart.uid}/customers/${customer.uid}/`, customerData);
-  const result = results[0];
-
-  if (result.status === 'error') {
-    dispatch(updateCustomerFailure(result));
-  } else {
-    dispatch(updateCustomerSuccess(result));
-  }
-
-  return result.status !== 'error';
-};
-
-const _fetchShippingOptions = async (dispatch, getState) => {
-  const { cart } = getState();
-
-  dispatch(fetchShippingOptionsRequest(cart.uid));
-
-  const results = await ClaretyApi.get(`carts/${cart.uid}/shipping-options/`);
-
-  if (!results) {
-    dispatch(fetchShippingOptionsFailure());
-  } else {
-    dispatch(fetchShippingOptionsSuccess(results));
-  }
 };
 
 export const updateSale = () => {
@@ -146,40 +88,6 @@ const fetchCartSuccess = result => ({
 
 const fetchCartFailure = result => ({
   type: types.fetchCartFailure,
-  result: result,
-});
-
-// Create Customer
-
-const createCustomerRequest = postData => ({
-  type: types.createCustomerRequest,
-  postData: postData,
-});
-
-const createCustomerSuccess = result => ({
-  type: types.createCustomerSuccess,
-  result: result,
-});
-
-const createCustomerFailure = result => ({
-  type: types.createCustomerFailure,
-  result: result,
-});
-
-// Update Customer
-
-const updateCustomerRequest = putData => ({
-  type: types.updateCustomerRequest,
-  putData: putData,
-});
-
-const updateCustomerSuccess = result => ({
-  type: types.updateCustomerSuccess,
-  result: result,
-});
-
-const updateCustomerFailure = result => ({
-  type: types.updateCustomerFailure,
   result: result,
 });
 

@@ -12,9 +12,14 @@ import { hasSelectedShippingOption, getSelectedShippingOptionLabel } from 'check
 import { currency } from 'shared/utils';
 
 class _ShippingOptionsPanel extends BasePanel {
-  onPressContinue = () => {
-    const { canContinue, fetchPaymentMethods } = this.props;
-    if (canContinue) fetchPaymentMethods();
+  onPressContinue = async () => {
+    const { canContinue, fetchPaymentMethods, nextPanel } = this.props;
+    if (!canContinue) return;
+
+    const didFetch = await fetchPaymentMethods();
+    if (!didFetch) return;
+
+    nextPanel();
   };
 
   onSelectOption = uid => {
