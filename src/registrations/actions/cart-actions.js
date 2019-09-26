@@ -1,5 +1,4 @@
 import { ClaretyApi, Config } from 'clarety-utils';
-import { pushPanel, panels } from 'shared/actions';
 import { setErrors } from 'form/actions';
 import { getCreateRegistrationPostData, getSubmitRegistrationPostData } from 'registrations/selectors';
 import { types } from 'registrations/actions';
@@ -17,13 +16,11 @@ export const createRegistration = () => {
 
     if (result.status !== 'error') {
       dispatch(registrationCreateSuccess(result));
-      dispatch(pushPanel({
-        panel: panels.reviewPanel,
-        progress: 100,
-      }));
+      return true;
     } else {
       dispatch(registrationCreateFailure(result));
       dispatch(setErrors(result.validationErrors));
+      return false;
     }
   };
 };

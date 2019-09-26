@@ -1,5 +1,4 @@
 import { ClaretyApi, Config } from 'clarety-utils';
-import { panels, pushPanel } from 'shared/actions';
 import { types } from 'registrations/actions';
 
 export const fetchEvents = () => {
@@ -12,12 +11,10 @@ export const fetchEvents = () => {
 
     if (results) {
       dispatch(fetchEventsSuccess(results));
-      dispatch(pushPanel({
-        panel: panels.teamPanel,
-        progress: 0,
-      }));
+      return true;
     } else {
       dispatch(fetchEventsFailure());
+      return false;
     }
   };
 };
@@ -33,12 +30,10 @@ export const fetchFullEvent = eventId => {
 
     if (results) {
       dispatch(fetchFullEventSuccess(results[0]));
-      dispatch(pushPanel({
-        panel: panels.qtysPanel,
-        progress: 20,
-      }));
+      return true;
     } else {
       dispatch(fetchFullEventFailure());
+      return false;
     }
   };
 };

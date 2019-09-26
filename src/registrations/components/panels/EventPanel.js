@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Form } from 'react-bootstrap';
 import Select from 'react-select';
+import { panels } from 'shared/actions';
 import { Button } from 'form/components';
 import { BasePanel } from 'registrations/components';
 import { setEvent, resetEvent, fetchFullEvent } from 'registrations/actions';
@@ -24,11 +25,18 @@ class _EventPanel extends BasePanel {
     }
   }
 
-  onClickNext = () => {
-    if (!this.state.event) return;
+  onClickNext = async () => {
+    const { setEvent, fetchFullEvent, pushPanel } = this.props;
+    const { event } = this.state;
 
-    this.props.setEvent(this.state.event.eventId);
-    this.props.fetchFullEvent(this.state.event.eventId);
+    if (!event) return;
+
+    setEvent(event.eventId);
+
+    const didFetch = await fetchFullEvent(event.eventId);
+    if (!didFetch) return;
+
+    pushPanel({ panel: panels.qtysPanel, progress: 20 });
   };
 
   onClickEdit = () => {

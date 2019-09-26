@@ -12,10 +12,10 @@ import { FormContext } from 'checkout/utils';
 
 class _ShippingDetailsPanel extends BasePanel {
   onPressContinue = async event => {
+    event.preventDefault();
+
     const { invalidatePanel, setFormData } = this.props;
     const { createOrUpdateCustomer, fetchShippingOptions, nextPanel } = this.props;
-
-    event.preventDefault();
 
     if (this.validate()) {
       const formData = { ...this.state.formData };
@@ -27,9 +27,9 @@ class _ShippingDetailsPanel extends BasePanel {
         formData['customer.billing.state']    = formData['customer.delivery.state'];
         formData['customer.billing.postcode'] = formData['customer.delivery.postcode'];
       }
+      setFormData(formData);
       
       invalidatePanel(panels.shippingOptionsPanel);
-      setFormData(formData);
 
       const didCreateOrUpdate = await createOrUpdateCustomer();
       if (!didCreateOrUpdate) return;

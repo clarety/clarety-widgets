@@ -7,6 +7,7 @@ import 'intl-pluralrules'; // Polyfill for safari 12
 import { Spinner, Modal } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
+import { panels, pushPanel } from 'shared/actions';
 import { PanelStack } from 'shared/components';
 import { selectDefaults } from 'donate/actions';
 import { MiniCart } from 'registrations/components';
@@ -26,11 +27,17 @@ export const Registrations = ({ translations }) => (
 );
 
 class _Root extends React.Component {
-  componentDidMount() {
-    const { fetchEvents, selectDefaultDonations, setPriceHandles } = this.props;
-    fetchEvents();
+  async componentDidMount() {
+    const { fetchEvents, selectDefaultDonations, setPriceHandles, pushPanel } = this.props;
+
+    const didFetch = await fetchEvents();
+    if (!didFetch) return;
+
     setPriceHandles(priceHandles);
     selectDefaultDonations(priceHandles);
+
+    // TODO: remove!
+    pushPanel({ panel: panels.eventPanel, progress: 0 });
   }
 
   render() {
@@ -66,6 +73,7 @@ const actions = {
   fetchEvents: fetchEvents,
   setPriceHandles: setPriceHandles,
   selectDefaultDonations: selectDefaults,
+  pushPanel: pushPanel,
 };
 
 const Root = connect(mapStateToProps, actions)(_Root);

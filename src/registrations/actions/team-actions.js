@@ -1,5 +1,4 @@
 import { ClaretyApi, Config } from 'clarety-utils';
-import { panels, pushPanel } from 'shared/actions';
 import { setErrors, clearErrors } from 'form/actions';
 import { getCreateTeamPostData } from 'registrations/selectors';
 import { parseTeamErrors } from 'registrations/utils';
@@ -32,21 +31,13 @@ export const createTeam = () => {
     if (!result.errors) {
       const team = await dispatch(fetchTeam(result.teamId));
       dispatch(selectTeam(team));
-
       dispatch(createTeamSuccess(result));
-
-      // TODO: push the correct panel...
-      // TODO: actual progress...
-      dispatch(pushPanel({
-        panel: panels.eventPanel,
-        progress: 20, 
-      }));
-
+      return true;
     } else {
       dispatch(createTeamFailure(result));
-
       const errors = parseTeamErrors(result);
       dispatch(setErrors(errors));
+      return false;
     }
   };
 };
@@ -90,19 +81,12 @@ export const checkTeamPassword = (team, password) => {
 
     if (!result.errors) {
       dispatch(checkTeamPasswordSuccess(result));
-
-      // TODO: push the correct panel...
-      // TODO: actual progress...
-      dispatch(pushPanel({
-        panel: panels.eventPanel,
-        progress: 20, 
-      }));
-
+      return true;
     } else {
       dispatch(checkTeamPasswordFailure(result));
-
       const errors = parseTeamErrors(result);
       dispatch(setErrors(errors));
+      return false;
     }
   };
 };

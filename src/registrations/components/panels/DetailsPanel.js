@@ -2,11 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Container, Button, Form, Row, Col, Alert } from 'react-bootstrap';
+import { panels } from 'shared/actions';
 import { getElementOptions } from 'shared/utils';
 import { BasePanel, TextInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput } from 'registrations/components';
-import { setDetails, setAdditionalData, setErrors, resetDetails, pushNextDetailsPanel } from 'registrations/actions';
+import { setDetails, setAdditionalData, setErrors, resetDetails, createRegistration } from 'registrations/actions';
 import { getEvent, getExtendFields } from 'registrations/selectors';
-import { FormContext, scrollIntoView } from 'registrations/utils';
+import { FormContext, scrollIntoView, calcProgress } from 'registrations/utils';
 
 export class _DetailsPanel extends BasePanel {
   ref = React.createRef();
@@ -45,8 +46,9 @@ export class _DetailsPanel extends BasePanel {
     }
   }
 
-  onClickNext = event => {
-    const { participantIndex, setDetails, pushNextDetailsPanel } = this.props;
+  onClickNext = async event => {
+    const { participantIndex, participantCount } = this.props;
+    const { pushPanel, createRegistration, setDetails } = this.props;
     const { customerFormContext, extendFormContext } = this.state;
 
     event.preventDefault();
@@ -54,7 +56,21 @@ export class _DetailsPanel extends BasePanel {
     if (this.validate()) {
       this.onSubmitForm();
       setDetails(participantIndex, customerFormContext.formData, extendFormContext.formData);
-      pushNextDetailsPanel(participantIndex + 1);
+
+      const nextIndex = participantIndex + 1;
+      const hasNext = nextIndex < participantCount;
+      if (hasNext) {
+        pushPanel({
+          panel: panels.detailsPanel,
+          progress: calcProgress(participantCount, nextIndex),
+          props: { participantIndex: nextIndex },
+        });
+      } else {
+        const didCreate = await createRegistration();
+        if (!didCreate) return;
+
+        pushPanel({ panel: panels.reviewPanel, progress: 100 });
+      }
     }
   };
 
@@ -175,8 +191,8 @@ export class _DetailsPanel extends BasePanel {
           {registrationErrors &&
             <Alert variant="danger">
               <ul className="list-unstyled">
-                {registrationErrors.map(error =>
-                  <li>{error.message}</li>
+                {registrationErrors.map((error, index) =>
+                  <li key={index}>{error.message}</li>
                 )}
               </ul>
             </Alert>
@@ -348,6 +364,9 @@ const mapStateToProps = (state, ownProps) => {
     minAge: Number(offer.minAgeOver),
     maxAge: Number(offer.maxAgeUnder),
     registrationErrors: state.cart.errors,
+
+    // TEMP:
+    participantCount: state.panelData.participants.length,
   };
 };
 
@@ -356,7 +375,7 @@ const actions = {
   setAdditionalData: setAdditionalData,
   setErrors: setErrors,
   resetDetails: resetDetails,
-  pushNextDetailsPanel: pushNextDetailsPanel,
+  createRegistration: createRegistration,
 };
 
 export const connectDetailsPanel = Component => injectIntl(connect(mapStateToProps, actions)(Component));

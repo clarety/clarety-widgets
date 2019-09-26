@@ -15,15 +15,16 @@ export class _TeamPanel extends BasePanel {
     });
   }
 
-  onClickNext = event => {
+  onClickNext = async event => {
     event.preventDefault();
     const { selectedTeam, formData, checkTeamPassword } = this.props;
 
     if (selectedTeam.passwordRequired) {
-      checkTeamPassword(selectedTeam, formData['team.passwordCheck']);
-    } else {
-      this._pushNextPanel();
+      const isCorrect = await checkTeamPassword(selectedTeam, formData['team.passwordCheck']);
+      if (!isCorrect) return;
     }
+
+    this._pushNextPanel();
   };
 
   onClickEdit = () => {
@@ -48,9 +49,16 @@ export class _TeamPanel extends BasePanel {
     this.props.setPanelMode('create');
   };
 
-  onSubmitCreateForm = event => {
+  onSubmitCreateForm = async event => {
     event.preventDefault();
-    this.props.createTeam();
+
+    const { createTeam, pushPanel } = this.props;
+
+    const didCreate = await createTeam();
+    if (!didCreate) return;
+
+    // TODO: push the correct panel...
+    pushPanel({ panel: panels.eventPanel, progress: 20 });
   };
 
   renderEdit() {

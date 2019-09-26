@@ -12,12 +12,20 @@ class _PanelStack extends React.Component {
     this.panelRefs = props.panelStack.map(panel => React.createRef());
   }
 
-  nextPanel = () => {
+  nextPanel = index => {
     this.props.nextPanel();
   };
 
   editPanel = index => {
     this.props.editPanel(index);
+  };
+
+  pushPanel = panel => {
+    this.props.pushPanel(panel);
+  };
+
+  popToPanel = index => {
+    this.props.popToPanel(index);
   };
 
   resetPanels = () => {
@@ -35,7 +43,7 @@ class _PanelStack extends React.Component {
   }
 
   renderPanel = (panel, index) => {
-    const { panelStack, layout, pushPanel, popToPanel, nextPanel } = this.props;
+    const { panelStack, layout } = this.props;
     const PanelComponent = this.resolvePanelComponent(panel.name);
     
     const status = panel.status || (panelStack.length - 1 === index ? 'edit' : 'done');
@@ -51,10 +59,10 @@ class _PanelStack extends React.Component {
 
           status={status}
 
-          pushPanel={pushPanel}
-          popToPanel={() => popToPanel(index)}
-          nextPanel={() => this.nextPanel()}
+          nextPanel={() => this.nextPanel(index)}
           editPanel={() => this.editPanel(index)}
+          pushPanel={panel => this.pushPanel(panel)}
+          popToPanel={() => this.popToPanel(index)}
 
           resetPanels={this.resetPanels}
           resetPanelData={this.resetPanelData}
