@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { panels, editPanel, invalidatePanel } from 'shared/actions';
+import { panels, invalidatePanel } from 'shared/actions';
 import { setFormData } from 'form/actions';
 import { BasePanel, TextInput, PureCheckboxInput, StateInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
@@ -192,7 +192,6 @@ const actions = {
   createOrUpdateCustomer: createOrUpdateCustomer,
   fetchShippingOptions: fetchShippingOptions,
   invalidatePanel: invalidatePanel,
-  editPanel: editPanel,
 };
 
 export const ShippingDetailsPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_ShippingDetailsPanel);

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { editPanel } from 'shared/actions';
 import { BasePanel, TextInput, CardNumberInput, CcvInput, ExpiryInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { statuses, makePayment, paymentMethods } from 'checkout/actions';
@@ -145,7 +144,6 @@ const mapStateToProps = state => {
 
 const actions = {
   makePayment: makePayment,
-  editPanel: editPanel,
 };
 
 export const PaymentDetailsPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_PaymentDetailsPanel);

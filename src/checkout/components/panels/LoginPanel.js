@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { login, logout, setLoginPanelMode, editPanel, resetPanels } from 'shared/actions';
+import { login, logout, setLoginPanelMode, resetPanels } from 'shared/actions';
 import { setFormData, resetFormData } from 'form/actions';
 import { BasePanel, TextInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
@@ -311,7 +311,6 @@ const actions = {
 
   setMode: setLoginPanelMode,
   
-  editPanel: editPanel,
   resetPanels: resetPanels,
 };
 

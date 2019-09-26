@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { editPanel } from 'shared/actions';
 import { setFormData } from 'form/actions';
 import { BasePanel, TextInput, PhoneInput, DobInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
@@ -60,8 +59,7 @@ class _PersonalDetailsPanel extends BasePanel {
     if (this.hasError('customer.dateOfBirthYear'))  foundError = true;
 
     if (foundError) {
-      const { index, editPanel } = this.props;
-      editPanel(index);
+      this.props.editPanel();
     }
   }
 
@@ -182,7 +180,6 @@ const mapStateToProps = state => {
 
 const actions = {
   setFormData: setFormData,
-  editPanel: editPanel,
 };
 
 export const PersonalDetailsPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_PersonalDetailsPanel);
