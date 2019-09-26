@@ -26,6 +26,10 @@ class _QtysPanel extends BasePanel {
     this.props.resetQtys();
   }
 
+  renderWait() {
+    return null;
+  }
+
   renderEdit() {
     return (
       <Container>
@@ -113,4 +117,4 @@ const actions = {
   resetQtys: resetQtys,
 };
 
-export const QtysPanel = connect(mapStateToProps, actions)(_QtysPanel);
+export const QtysPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_QtysPanel);

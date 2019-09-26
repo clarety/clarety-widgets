@@ -47,6 +47,10 @@ class _EventPanel extends BasePanel {
   componentWillUnmount() {
     this.props.resetEvent();
   }
+
+  renderWait() {
+    return null;
+  }
   
   renderEdit() {
     const { events, isBusy } = this.props;
@@ -110,4 +114,4 @@ const actions = {
   fetchFullEvent: fetchFullEvent,
 };
 
-export const EventPanel = connect(mapStateToProps, actions)(_EventPanel);
+export const EventPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_EventPanel);

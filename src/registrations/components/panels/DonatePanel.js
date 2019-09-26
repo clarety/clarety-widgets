@@ -31,6 +31,10 @@ export class _DonatePanel extends _AmountPanel {
     }
   }
 
+  renderWait() {
+    return null;
+  }
+
   renderEdit() {
     const { frequency } = this.props;
     
@@ -97,5 +101,5 @@ const actions = {
   clearItems: clearItems,
 };
 
-export const connectDonatePanel = connect(mapStateToProps, actions);
+export const connectDonatePanel = connect(mapStateToProps, actions, null, { forwardRef: true });
 export const DonatePanel = connectDonatePanel(_DonatePanel);

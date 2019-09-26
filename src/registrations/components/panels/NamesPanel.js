@@ -52,6 +52,10 @@ class _NamesPanel extends BasePanel {
     this.props.resetFirstNames();
   }
 
+  renderWait() {
+    return null;
+  }
+
   renderEdit() {
     return (
       <Container>
@@ -147,4 +151,4 @@ const actions = {
   resetFirstNames: resetFirstNames,
 };
 
-export const NamesPanel = connect(mapStateToProps, actions)(_NamesPanel);
+export const NamesPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_NamesPanel);

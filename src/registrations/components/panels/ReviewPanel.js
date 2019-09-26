@@ -14,6 +14,10 @@ class _ReviewPanel extends BasePanel {
     this.props.createRegistration();
   };
 
+  renderWait() {
+    return null;
+  }
+
   renderEdit() {
     const { hasErrors, registrations } = this.props;
 
@@ -67,4 +71,4 @@ const actions = {
   submitRegistration: submitRegistration,
 };
 
-export const ReviewPanel = connect(mapStateToProps, actions)(_ReviewPanel);
+export const ReviewPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_ReviewPanel);

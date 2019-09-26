@@ -15,7 +15,7 @@ export const getProgress = state => {
 
 export const getRegistrationTypes = state => {
   const event = getEvent(state);
-  return event.registrationTypes;
+  return event ? event.registrationTypes: null;
 };
 
 export const getExtendFields = state => {

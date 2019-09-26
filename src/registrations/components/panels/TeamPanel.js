@@ -61,6 +61,10 @@ export class _TeamPanel extends BasePanel {
     pushPanel({ panel: panels.eventPanel, progress: 20 });
   };
 
+  renderWait() {
+    return null;
+  }
+
   renderEdit() {
     const { mode } = this.props;
 
@@ -230,5 +234,5 @@ const actions = {
   createTeam: createTeam,
 };
 
-export const connectTeamPanel = connect(mapStateToProps, actions);
+export const connectTeamPanel = connect(mapStateToProps, actions, null, { forwardRef: true });
 export const TeamPanel = connectTeamPanel(_TeamPanel);

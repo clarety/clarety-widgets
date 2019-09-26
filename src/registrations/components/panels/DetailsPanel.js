@@ -156,6 +156,10 @@ export class _DetailsPanel extends BasePanel {
     resetDetails(participantIndex);
   }
 
+  renderWait() {
+    return null;
+  }
+
   renderEdit() {
     const { registrationErrors } = this.props;
     const { firstName } = this.state.customerFormContext.formData;
@@ -378,5 +382,5 @@ const actions = {
   createRegistration: createRegistration,
 };
 
-export const connectDetailsPanel = Component => injectIntl(connect(mapStateToProps, actions)(Component));
+export const connectDetailsPanel = Component => injectIntl(connect(mapStateToProps, actions, null, { forwardRef: true })(Component));
 export const DetailsPanel = connectDetailsPanel(_DetailsPanel);
