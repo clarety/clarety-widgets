@@ -23,7 +23,10 @@ export const cartReducer = (state = initialState, action) => {
     case types.updateItemSuccess:
       return {
         ...state,
-        cart: action.result.cart,
+        cart: {
+          ...state.cart,
+          ...action.result,
+        }
       };
 
     case types.updateItemFailure:
