@@ -3,6 +3,8 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import { Container, Row, Col } from 'react-bootstrap';
+import { ClaretyApi } from 'clarety-utils';
+import { getJwtSession } from 'shared/utils';
 import { fetchCart } from 'checkout/actions';
 import { rootReducer } from 'checkout/reducers';
 import { PanelStack, CartSummary } from 'checkout/components';
@@ -13,7 +15,9 @@ const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMidd
 
 export class Checkout extends React.Component {
   componentDidMount() {
-    store.dispatch(fetchCart());
+    const jwtSession = getJwtSession();
+    ClaretyApi.setJwtSession(jwtSession);
+    store.dispatch(fetchCart(jwtSession.cartUid));
   }
 
   render() {

@@ -2,11 +2,8 @@ import { ClaretyApi } from 'clarety-utils';
 import { parseNestedElements } from 'shared/utils';
 import { types, nextPanel } from 'checkout/actions';
 
-export const fetchCart = () => {
+export const fetchCart = (cartUid) => {
   return async dispatch => {
-    // TODO: decode JWT and get cart uid.
-    const cartUid = '8c2756b2-f018-4c27-a025-c31fca7e482b';
-
     dispatch(fetchCartRequest(cartUid));
 
     const results = await ClaretyApi.get(`carts/${cartUid}/`);

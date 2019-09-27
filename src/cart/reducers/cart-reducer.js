@@ -12,6 +12,7 @@ export const cartReducer = (state = initialState, action) => {
         ...state,
         errors: [],
       };
+      
     case types.updateItemRequest:
       return {
         ...state,
