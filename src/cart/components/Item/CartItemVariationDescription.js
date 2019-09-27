@@ -2,7 +2,7 @@ import React from 'react';
 import { Row, Col } from "react-bootstrap";
 
 export const CartItemVariationDescription = ({ item }) => {
-    if (!item) return null;
+    if (!item || !item.variantDetails) return null;
 
     return (
         <Col sm={12}>
