@@ -1,14 +1,15 @@
 import { ClaretyApi } from 'clarety-utils';
 import { types } from '../actions';
 
-export function fetchItems() {
+export function fetchItems(cartUid) {
   return async dispatch => {
     dispatch(fetchItemsRequest());
 
-    const result = await ClaretyApi.get('cart/', {id:102010});
+    const results = await ClaretyApi.get(`carts/${cartUid}/`);
+    const result = results[0];
 
-    if (result[0]) {
-      dispatch(fetchItemsSuccess(result[0]));
+    if (result) {
+      dispatch(fetchItemsSuccess(result));
     } else {
       dispatch(fetchItemsFailure());
     }
@@ -36,7 +37,9 @@ export const updateItemQuantity = (item, newQuantity) => {
 };
 
 //Anything that is within the list actions below of types.*** are found in the types.js as the types.* is used here and in the list-reducer like a constant is used within PHP
-// Fetch List
+
+// Fetch Items
+
 function fetchItemsRequest() {
   return {
     type: types.fetchItemsRequest,
@@ -57,7 +60,8 @@ function fetchItemsFailure(result) {
   };
 }
 
-// Action
+// Update Item
+
 function updateItemRequest(item) {
   return {
     type: types.updateItemRequest,
