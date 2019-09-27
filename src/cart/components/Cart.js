@@ -16,7 +16,7 @@ const store = createStore(cartReducer, composeDevTools(applyMiddleware(thunkMidd
 export class Cart extends React.Component {
     componentDidMount() {
         const jwtSession = getJwtSession();
-        ClaretyApi.setJwtSession(jwtSession);
+        ClaretyApi.setJwtSession(jwtSession.jwtString);
         store.dispatch(fetchItems(jwtSession.cartUid));
     }
 

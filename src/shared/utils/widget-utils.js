@@ -25,7 +25,10 @@ export function getJwtSession() {
     jwtString = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJjYXJ0VWlkIjoiOGMyNzU2YjItZjAxOC00YzI3LWEwMjUtYzMxZmNhN2U0ODJiIn0.WDXbbj84bUH7zGVNEEeSK1VwuEfBY8Lt6stiEr6Yhek';
   };
 
-  return jwtDecode(jwtString);
+  const jwt = jwtDecode(jwtString);
+  jwt.jwtString = jwtString;
+
+  return jwt;
 }
 
 export function scrollIntoView(component) {
