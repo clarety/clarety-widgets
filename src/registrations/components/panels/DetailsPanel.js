@@ -61,7 +61,7 @@ export class _DetailsPanel extends BasePanel {
       if (hasNext) {
         pushPanel({
           component: 'DetailsPanel',
-          props: { participantIndex: nextIndex },
+          data: { participantIndex: nextIndex },
         });
       } else {
         const didCreate = await createRegistration();

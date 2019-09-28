@@ -64,6 +64,7 @@ class _PanelManager extends React.Component {
           ref={this.panelRefs[index]}
 
           status={status}
+          {...panel.data}
 
           nextPanel={() => this.nextPanel(index)}
           editPanel={() => this.editPanel(index)}
@@ -72,8 +73,6 @@ class _PanelManager extends React.Component {
 
           resetAllPanels={this.resetAllPanels}
           resetPanelData={this.resetPanelData}
-
-          {...panel.props}
         />
       </ScrollIntoView>
     );

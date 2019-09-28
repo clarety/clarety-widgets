@@ -11,12 +11,10 @@ export const setPanels = panels => ({
   panels: panels,
 });
 
-export const pushPanel = ({ component, props }) => ({
+export const pushPanel = ({ component, data }) => ({
   type: types.pushPanel,
   component: component,
-
-  // TODO: remove props...
-  props: props,
+  data: data,
 });
 
 export const popToPanel = index => ({

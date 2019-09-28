@@ -28,11 +28,9 @@ class _NamesPanel extends BasePanel {
 
     setFirstNames(this.state.names);
 
-    const participantCount = this.state.names.length;
-
     pushPanel({
       component: 'DetailsPanel',
-      props: { participantIndex: 0 },
+      data: { participantIndex: 0 },
     });
   };
 

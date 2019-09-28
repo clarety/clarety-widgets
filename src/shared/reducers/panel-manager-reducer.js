@@ -19,6 +19,7 @@ function setPanels(state, action) {
     component: panel.component || null,
     status: panel.status || 'wait',
     isValid: false,
+    data: {},
   }));
 }
 
@@ -29,13 +30,11 @@ function pushPanel(state, action) {
       component: action.component || null,
 
       // TODO: use panel status, instead of calculating using stack position.
-      status: undefined,
       // status: action.status || 'wait',
+      status: undefined,
 
       isValid: false,
-
-      // TODO: remove the need to pass props (or store in a 'data' node?)
-      props: action.props,
+      data: action.data || {},
     },
   ];
 }
