@@ -11,12 +11,11 @@ export const setPanels = panels => ({
   panels: panels,
 });
 
-export const pushPanel = ({ component, progress, props }) => ({
+export const pushPanel = ({ component, props }) => ({
   type: types.pushPanel,
   component: component,
 
-  // TODO: remove progress and props...
-  progress: progress,
+  // TODO: remove props...
   props: props,
 });
 

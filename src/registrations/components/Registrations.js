@@ -37,7 +37,7 @@ class _Root extends React.Component {
     selectDefaultDonations(priceHandles);
 
     // TODO: remove!
-    pushPanel({ component: 'EventPanel', progress: 0 });
+    pushPanel({ component: 'EventPanel' });
   }
 
   render() {

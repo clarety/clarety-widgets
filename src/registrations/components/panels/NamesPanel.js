@@ -32,7 +32,6 @@ class _NamesPanel extends BasePanel {
 
     pushPanel({
       component: 'DetailsPanel',
-      progress: calcProgress(participantCount, 0),
       props: { participantIndex: 0 },
     });
   };

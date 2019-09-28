@@ -11,10 +11,7 @@ class _QtysPanel extends BasePanel {
 
   onClickNext = () => {
     this.props.setQtys(this.state);
-    this.props.pushPanel({
-      component: 'NamesPanel',
-      progress: 40,
-    });
+    this.props.pushPanel({ component: 'NamesPanel' });
   };
 
   onClickEdit = () => {

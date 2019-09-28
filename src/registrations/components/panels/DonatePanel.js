@@ -11,10 +11,7 @@ export class _DonatePanel extends _AmountPanel {
   onClickNext = event => {
     event.preventDefault();
 
-    this.props.pushPanel({
-      component: 'EventPanel',
-      progress: 10,
-    });
+    this.props.pushPanel({ component: 'EventPanel' });
   };
 
   onClickEdit = event => {

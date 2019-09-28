@@ -35,7 +35,7 @@ class _EventPanel extends BasePanel {
     const didFetch = await fetchFullEvent(event.eventId);
     if (!didFetch) return;
 
-    pushPanel({ component: 'QtysPanel', progress: 20 });
+    pushPanel({ component: 'QtysPanel' });
   };
 
   onClickEdit = () => {

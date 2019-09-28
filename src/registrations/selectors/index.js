@@ -8,9 +8,8 @@ export const getEventName = state => {
 };
 
 export const getProgress = state => {
-  const lastIndex = state.panelManager.length - 1;
-  const lastPanel = state.panelManager[lastIndex];
-  return lastPanel ? lastPanel.progress : 0;
+  // TODO: implement once no longer pushing panels.
+  return 0;
 };
 
 export const getRegistrationTypes = state => {

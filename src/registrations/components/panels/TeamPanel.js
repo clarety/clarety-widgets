@@ -8,10 +8,7 @@ import { setTeamPanelMode, checkTeamPassword, selectTeam, createTeam } from 'reg
 
 export class _TeamPanel extends BasePanel {
   _pushNextPanel() {
-    this.props.pushPanel({
-      component: 'EventPanel',
-      progress: 20, // TODO: actual progress...
-    });
+    this.props.pushPanel({ component: 'EventPanel' });
   }
 
   onClickNext = async event => {
@@ -57,7 +54,7 @@ export class _TeamPanel extends BasePanel {
     if (!didCreate) return;
 
     // TODO: push the correct panel...
-    pushPanel({ component: 'EventPanel', progress: 20 });
+    pushPanel({ component: 'EventPanel' });
   };
 
   renderWait() {

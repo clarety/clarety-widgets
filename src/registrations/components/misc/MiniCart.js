@@ -25,7 +25,9 @@ class _MiniCart extends React.Component {
             )}
           </Col>
         </Row>
-        <ProgressBar now={progress} />
+        <Row>
+          <ProgressBar now={progress} />
+        </Row>
       </Navbar>
     );
   }

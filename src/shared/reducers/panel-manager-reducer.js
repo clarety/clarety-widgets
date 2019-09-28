@@ -34,9 +34,6 @@ function pushPanel(state, action) {
 
       isValid: false,
 
-      // TODO: calculate progress instead of storing.
-      progress: action.progress,
-
       // TODO: remove the need to pass props (or store in a 'data' node?)
       props: action.props,
     },
