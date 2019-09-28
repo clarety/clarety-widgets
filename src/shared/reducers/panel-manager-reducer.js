@@ -15,9 +15,9 @@ export const panelManagerReducer = (state = initialState, action) => {
 };
 
 function setPanels(state, action) {
-  return action.panels.map((name, index) => ({
-    name: name,
-    status: index === 0 ? 'edit' : 'wait',
+  return action.panels.map(panel => ({
+    component: panel.component || null,
+    status: panel.status || 'wait',
     isValid: false,
   }));
 }
@@ -26,8 +26,18 @@ function pushPanel(state, action) {
   return [
     ...state,
     {
-      name: action.panel,
+      component: action.component || null,
+
+      // TODO: use panel status, instead of calculating using stack position.
+      status: undefined,
+      // status: action.status || 'wait',
+
+      isValid: false,
+
+      // TODO: calculate progress instead of storing.
       progress: action.progress,
+
+      // TODO: remove the need to pass props (or store in a 'data' node?)
       props: action.props,
     },
   ];
@@ -60,7 +70,7 @@ function resetAllPanels(state, action) {
 
 function invalidatePanel(state, action) {
   return state.map(panel => {
-    if (panel.name === action.name) {
+    if (action.component === panel.component) {
       return {
         ...panel,
         status: 'wait',

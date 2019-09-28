@@ -5,7 +5,7 @@ import thunkMiddleware from 'redux-thunk';
 import { Container, Row, Col } from 'react-bootstrap';
 import { ClaretyApi } from 'clarety-utils';
 import { PanelManager } from 'shared/components';
-import { panels, setPanels } from 'shared/actions';
+import { setPanels } from 'shared/actions';
 import { getJwtSession } from 'shared/utils';
 import { fetchCart } from 'checkout/actions';
 import { rootReducer } from 'checkout/reducers';
@@ -16,11 +16,11 @@ const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
 
 store.dispatch(setPanels([
-  panels.loginPanel,
-  panels.personalDetailsPanel,
-  panels.shippingDetailsPanel,
-  panels.shippingOptionsPanel,
-  panels.paymentDetailsPanel,
+  { component: 'LoginPanel', status: 'edit' },
+  { component: 'PersonalDetailsPanel' },
+  { component: 'ShippingDetailsPanel' },
+  { component: 'ShippingOptionsPanel' },
+  { component: 'PaymentDetailsPanel' },
 ]));
 
 export class Checkout extends React.Component {

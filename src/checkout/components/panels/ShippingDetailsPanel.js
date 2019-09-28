@@ -29,7 +29,7 @@ class _ShippingDetailsPanel extends BasePanel {
       }
       setFormData(formData);
       
-      invalidatePanel(panels.shippingOptionsPanel);
+      invalidatePanel({ component: 'ShippingOptionsPanel' });
 
       const didCreateOrUpdate = await createOrUpdateCustomer();
       if (!didCreateOrUpdate) return;

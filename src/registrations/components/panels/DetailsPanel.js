@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Container, Button, Form, Row, Col, Alert } from 'react-bootstrap';
-import { panels } from 'shared/actions';
 import { getElementOptions } from 'shared/utils';
 import { BasePanel, TextInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput } from 'registrations/components';
 import { setDetails, setAdditionalData, setErrors, resetDetails, createRegistration } from 'registrations/actions';
@@ -61,7 +60,7 @@ export class _DetailsPanel extends BasePanel {
       const hasNext = nextIndex < participantCount;
       if (hasNext) {
         pushPanel({
-          panel: panels.detailsPanel,
+          component: 'DetailsPanel',
           progress: calcProgress(participantCount, nextIndex),
           props: { participantIndex: nextIndex },
         });
@@ -69,7 +68,7 @@ export class _DetailsPanel extends BasePanel {
         const didCreate = await createRegistration();
         if (!didCreate) return;
 
-        pushPanel({ panel: panels.reviewPanel, progress: 100 });
+        pushPanel({ component: 'ReviewPanel', progress: 100 });
       }
     }
   };

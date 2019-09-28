@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Form } from 'react-bootstrap';
 import Select from 'react-select';
-import { panels } from 'shared/actions';
 import { Button } from 'form/components';
 import { BasePanel } from 'registrations/components';
 import { setEvent, resetEvent, fetchFullEvent } from 'registrations/actions';
@@ -36,7 +35,7 @@ class _EventPanel extends BasePanel {
     const didFetch = await fetchFullEvent(event.eventId);
     if (!didFetch) return;
 
-    pushPanel({ panel: panels.qtysPanel, progress: 20 });
+    pushPanel({ component: 'QtysPanel', progress: 20 });
   };
 
   onClickEdit = () => {

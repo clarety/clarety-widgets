@@ -1,21 +1,5 @@
 import { types } from 'shared/actions';
 
-export const panels = {
-  eventPanel:   'event-panel',
-  qtysPanel:    'qtys-panel',
-  namesPanel:   'names-panel',
-  detailsPanel: 'details-panel',
-  teamPanel:    'team-panel',
-  donatePanel:  'donate-panel',
-  reviewPanel:  'review-panel',
-
-  loginPanel:           'login-panel',
-  personalDetailsPanel: 'personal-details-panel',
-  shippingDetailsPanel: 'shipping-details-panel',
-  shippingOptionsPanel: 'shipping-options-panel',
-  paymentDetailsPanel:  'payment-details-panel',
-};
-
 export const panelStatuses = {
   wait: 'wait',
   edit: 'edit',
@@ -27,9 +11,11 @@ export const setPanels = panels => ({
   panels: panels,
 });
 
-export const pushPanel = ({ panel, progress, props }) => ({
+export const pushPanel = ({ component, progress, props }) => ({
   type: types.pushPanel,
-  panel: panel,
+  component: component,
+
+  // TODO: remove progress and props...
   progress: progress,
   props: props,
 });
@@ -45,9 +31,9 @@ export const setPanelStatus = (index, status) => ({
   status: status,
 });
 
-export const invalidatePanel = name => ({
+export const invalidatePanel = ({ component }) => ({
   type: types.invalidatePanel,
-  name: name,
+  component: component,
 });
 
 export const resetAllPanels = () => ({

@@ -7,7 +7,7 @@ import 'intl-pluralrules'; // Polyfill for safari 12
 import { Spinner, Modal } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { panels, pushPanel } from 'shared/actions';
+import { pushPanel } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { selectDefaults } from 'donate/actions';
 import { MiniCart } from 'registrations/components';
@@ -37,7 +37,7 @@ class _Root extends React.Component {
     selectDefaultDonations(priceHandles);
 
     // TODO: remove!
-    pushPanel({ panel: panels.eventPanel, progress: 0 });
+    pushPanel({ component: 'EventPanel', progress: 0 });
   }
 
   render() {

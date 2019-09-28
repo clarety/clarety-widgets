@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Form } from 'react-bootstrap';
-import { panels } from 'shared/actions';
 import { Button, TextInput as FormTextInput, SelectInput as FormSelectInput } from 'form/components';
 import { BasePanel, TeamSearchInput } from 'registrations/components';
 import { setTeamPanelMode, checkTeamPassword, selectTeam, createTeam } from 'registrations/actions';
@@ -10,7 +9,7 @@ import { setTeamPanelMode, checkTeamPassword, selectTeam, createTeam } from 'reg
 export class _TeamPanel extends BasePanel {
   _pushNextPanel() {
     this.props.pushPanel({
-      panel: panels.eventPanel,
+      component: 'EventPanel',
       progress: 20, // TODO: actual progress...
     });
   }
@@ -58,7 +57,7 @@ export class _TeamPanel extends BasePanel {
     if (!didCreate) return;
 
     // TODO: push the correct panel...
-    pushPanel({ panel: panels.eventPanel, progress: 20 });
+    pushPanel({ component: 'EventPanel', progress: 20 });
   };
 
   renderWait() {

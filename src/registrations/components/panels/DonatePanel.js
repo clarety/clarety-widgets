@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Button, Form } from 'react-bootstrap';
-import { panels, clearItems } from 'shared/actions';
+import { clearItems } from 'shared/actions';
 import { _AmountPanel } from 'donate/components';
 import { selectAmount, submitAmountPanel } from 'donate/actions';
 import { getSelectedAmount } from 'donate/selectors';
@@ -12,7 +12,7 @@ export class _DonatePanel extends _AmountPanel {
     event.preventDefault();
 
     this.props.pushPanel({
-      panel: panels.eventPanel,
+      component: 'EventPanel',
       progress: 10,
     });
   };

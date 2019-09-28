@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Button, Form, Col } from 'react-bootstrap';
-import { panels } from 'shared/actions';
 import { BasePanel, Qty, QtyInput } from 'registrations/components';
 import { setQtys, resetQtys } from 'registrations/actions';
 import { getRegistrationTypes } from 'registrations/selectors';
@@ -13,7 +12,7 @@ class _QtysPanel extends BasePanel {
   onClickNext = () => {
     this.props.setQtys(this.state);
     this.props.pushPanel({
-      panel: panels.namesPanel,
+      component: 'NamesPanel',
       progress: 40,
     });
   };

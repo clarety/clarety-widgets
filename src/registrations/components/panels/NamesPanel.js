@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Button, Form, Row, Col } from 'react-bootstrap';
-import { panels } from 'shared/actions';
 import { BasePanel } from 'registrations/components';
 import { setFirstNames, resetFirstNames } from 'registrations/actions';
 import { calcProgress } from 'registrations/utils';
@@ -32,7 +31,7 @@ class _NamesPanel extends BasePanel {
     const participantCount = this.state.names.length;
 
     pushPanel({
-      panel: panels.detailsPanel,
+      component: 'DetailsPanel',
       progress: calcProgress(participantCount, 0),
       props: { participantIndex: 0 },
     });
