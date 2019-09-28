@@ -57,9 +57,9 @@ class _PanelManager extends React.Component {
     const className = layout === 'stack' ? 'section' : undefined;
 
     return (
-      <ScrollIntoView isActive={shouldScroll} key={index} className={className}>
+      <ScrollIntoView isActive={shouldScroll} key={panel.id} className={className}>
         <PanelComponent
-          key={index}
+          key={panel.id}
           index={index}
           ref={this.panelRefs[index]}
 

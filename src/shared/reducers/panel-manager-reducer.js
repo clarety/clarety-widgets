@@ -1,3 +1,4 @@
+import { nextId } from 'shared/utils';
 import { types } from 'shared/actions';
 
 const initialState = [];
@@ -16,6 +17,7 @@ export const panelManagerReducer = (state = initialState, action) => {
 
 function setPanels(state, action) {
   return action.panels.map(panel => ({
+    id: nextId(),
     component: panel.component || null,
     status: panel.status || 'wait',
     isValid: false,
@@ -27,6 +29,7 @@ function pushPanel(state, action) {
   return [
     ...state,
     {
+      id: nextId(),
       component: action.component || null,
 
       // TODO: use panel status, instead of calculating using stack position.

@@ -1,11 +1,5 @@
 import { types } from 'shared/actions';
 
-export const panelStatuses = {
-  wait: 'wait',
-  edit: 'edit',
-  done: 'done',
-};
-
 export const setPanels = panels => ({
   type: types.setPanels,
   panels: panels,

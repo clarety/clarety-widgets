@@ -31,6 +31,11 @@ export function getJwtSession() {
   return jwt;
 }
 
+let _nextId = 0;
+export function nextId() {
+  return _nextId++;
+}
+
 export function scrollIntoView(component) {
   const node = ReactDOM.findDOMNode(component);
   scrollIntoViewIfNeeded(node, {
