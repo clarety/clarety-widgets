@@ -17,15 +17,12 @@ export function fetchItems(cartUid) {
 }
 
 export const updateItemQuantity = (item, newQuantity) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const { cart } = getState();
 
-    //Create an object to give to the api
-    let updateItem = item;
-    updateItem.quantity = newQuantity;
+    dispatch(updateItemRequest(item, newQuantity));
 
-    dispatch(updateItemRequest(updateItem));
-
-    const results = await ClaretyApi.post('update-cart-item/', updateItem);
+    const results = await ClaretyApi.put(`carts/${cart.cartUid}/items/${item.itemUid}/`, { quantity: newQuantity });
     const result = results[0];
 
     if (result.status === 'error') {
@@ -62,10 +59,11 @@ function fetchItemsFailure(result) {
 
 // Update Item
 
-function updateItemRequest(item) {
+function updateItemRequest(item, quantity) {
   return {
     type: types.updateItemRequest,
-    item: item
+    item: item,
+    quantity: quantity,
   };
 }
 function updateItemSuccess(result) {

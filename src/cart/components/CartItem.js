@@ -37,7 +37,7 @@ class _Item extends React.Component {
         const { quantity } = this.state;
 
         return (
-            <Row className="cart-demo__summary__item" key={item.id}>
+            <Row className="cart-widget__summary__item" key={item.id}>
                 <Col xs={3}>
                     <img src={item.image} className="img-fluid"/>
                 </Col>
