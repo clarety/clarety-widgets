@@ -5,6 +5,17 @@ export const setPanels = panels => ({
   panels: panels,
 });
 
+export const insertPanels = ({ afterComponent, panels }) => ({
+  type: types.insertPanels,
+  afterComponent: afterComponent,
+  panels: panels,
+});
+
+export const removePanels = ({ withComponent }) => ({
+  type: types.removePanels,
+  withComponent: withComponent,
+});
+
 export const pushPanel = ({ component, data }) => ({
   type: types.pushPanel,
   component: component,

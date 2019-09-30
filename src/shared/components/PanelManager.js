@@ -68,7 +68,8 @@ class _PanelManager extends React.Component {
 
           nextPanel={() => this.nextPanel(index)}
           editPanel={() => this.editPanel(index)}
-          pushPanel={panel => this.pushPanel(panel)}
+          // pushPanel={panel => this.pushPanel(panel)}
+          pushPanel={() => this.nextPanel(index)}
           popToPanel={() => this.popToPanel(index)}
 
           resetAllPanels={this.resetAllPanels}

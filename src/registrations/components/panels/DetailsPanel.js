@@ -380,5 +380,14 @@ const actions = {
   createRegistration: createRegistration,
 };
 
-export const connectDetailsPanel = Component => injectIntl(connect(mapStateToProps, actions, null, { forwardRef: true })(Component));
+export const connectDetailsPanel = Component => injectIntl(
+  connect(
+    mapStateToProps,
+    actions,
+    null,
+    { forwardRef: true }
+  )(Component),
+  { forwardRef: true }
+);
+
 export const DetailsPanel = connectDetailsPanel(_DetailsPanel);
