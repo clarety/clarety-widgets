@@ -11,7 +11,7 @@ class _CartSummary extends React.Component {
     if (!cart || !cart.items) return null;
 
     return (
-      <div className="cart-demo__summary">
+      <div className="cart-widget__summary">
           {cart.items.map(item =>
               <CartItem
                   item={item}
@@ -35,13 +35,13 @@ const actions = {};
 export const CartSummary = connect(mapStateToProps, actions)(_CartSummary);
 
 const CartTotals = ({ summary }) => (
-    <Row className="cart-demo__summary__subtotal">
+    <Row className="cart-widget__summary__subtotal">
         <Col xs={3}>
             &nbsp;
         </Col>
         <Col xs={9}>
             <Row>
-                <TotalLine label="Subtotal" value={summary.subtotal} />
+                <TotalLine label="Subtotal" value={summary.total} />
             </Row>
         </Col>
     </Row>
