@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { pushPanel, popToPanel, setPanelStatus, resetAllPanels } from 'shared/actions';
+import { setPanelStatus, resetAllPanels } from 'shared/actions';
 import { OverrideContext } from 'shared/utils';
 import { LoginPanel, PersonalDetailsPanel, ShippingDetailsPanel, ShippingOptionsPanel, PaymentDetailsPanel } from 'checkout/components';
 import { ScrollIntoView, EventPanel, QtysPanel, NamesPanel, DetailsPanel, TeamPanel, DonatePanel, ReviewPanel } from 'registrations/components';
@@ -12,26 +12,29 @@ class _PanelManager extends React.Component {
     this.panelRefs = props.panels.map(panel => React.createRef());
   }
 
-  nextPanel = current => {
-    this.setStatus(current, 'done');
+  nextPanel = currentIndex => {
+    this.setStatus(currentIndex, 'done');
 
-    const next = this.getFirstIndexWithStatus('wait');
-    if (next !== -1) this.setStatus(next, 'edit');
+    const nextIndex = this.getFirstIndexWithStatus('wait');
+    if (nextIndex !== -1) this.setStatus(nextIndex, 'edit');
   };
 
-  editPanel = next => {
-    const current = this.getFirstIndexWithStatus('edit');
-    if (current !== -1) this.setStatus(current, 'wait');
+  editPanel = nextIndex => {
+    const { layout, panels } = this.props;
 
-    this.setStatus(next, 'edit');
-  };
-
-  pushPanel = panel => {
-    this.props.pushPanel(panel);
-  };
-
-  popToPanel = index => {
-    this.props.popToPanel(index);
+    if (layout === 'stack') {
+      for (let panelIndex = 0; panelIndex < panels.length; panelIndex++) {
+        if (panelIndex > nextIndex) {
+          // TODO: reset panel...
+          this.setStatus(panelIndex, 'wait');
+        }
+      }
+    } else {
+      const currentIndex = this.getFirstIndexWithStatus('edit');
+      if (currentIndex !== -1) this.setStatus(currentIndex, 'wait');
+    }
+    
+    this.setStatus(nextIndex, 'edit');
   };
 
   resetAllPanels = () => {
@@ -49,11 +52,10 @@ class _PanelManager extends React.Component {
   }
 
   renderPanel = (panel, index) => {
-    const { panels, layout } = this.props;
+    const { layout } = this.props;
     const PanelComponent = this.resolvePanelComponent(panel);
     
-    const status = panel.status || (panels.length - 1 === index ? 'edit' : 'done');
-    const shouldScroll = layout === 'stack' && status === 'edit';
+    const shouldScroll = layout === 'stack' && panel.status === 'edit';
     const className = layout === 'stack' ? 'section' : undefined;
 
     return (
@@ -63,14 +65,15 @@ class _PanelManager extends React.Component {
           index={index}
           ref={this.panelRefs[index]}
 
-          status={status}
+          status={panel.status}
           {...panel.data}
 
           nextPanel={() => this.nextPanel(index)}
           editPanel={() => this.editPanel(index)}
-          // pushPanel={panel => this.pushPanel(panel)}
+
+          // TODO: replace calls to 'push/pop' with 'next/edit'.
           pushPanel={() => this.nextPanel(index)}
-          popToPanel={() => this.popToPanel(index)}
+          popToPanel={() => this.editPanel(index)}
 
           resetAllPanels={this.resetAllPanels}
           resetPanelData={this.resetPanelData}
@@ -129,8 +132,6 @@ const mapStateToProps = state => {
 };
 
 const actions = {
-  pushPanel: pushPanel,
-  popToPanel: popToPanel,
   setPanelStatus: setPanelStatus,
   resetAllPanels: resetAllPanels,
 };

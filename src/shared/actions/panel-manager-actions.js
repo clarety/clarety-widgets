@@ -16,17 +16,6 @@ export const removePanels = ({ withComponent }) => ({
   withComponent: withComponent,
 });
 
-export const pushPanel = ({ component, data }) => ({
-  type: types.pushPanel,
-  component: component,
-  data: data,
-});
-
-export const popToPanel = index => ({
-  type: types.popToPanel,
-  index: index,
-});
-
 export const setPanelStatus = (index, status) => ({
   type: types.setPanelStatus,
   index: index,

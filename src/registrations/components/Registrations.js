@@ -7,7 +7,7 @@ import 'intl-pluralrules'; // Polyfill for safari 12
 import { Spinner, Modal } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { setPanels, pushPanel } from 'shared/actions';
+import { setPanels } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { selectDefaults } from 'donate/actions';
 import { MiniCart } from 'registrations/components';
@@ -18,6 +18,13 @@ import { priceHandles } from 'registrations/utils';
 const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
 
+store.dispatch(setPanels([
+  { component: 'EventPanel', status: 'edit' },
+  { component: 'QtysPanel' },
+  { component: 'NamesPanel' },
+  { component: 'ReviewPanel' },
+]));
+
 export const Registrations = ({ translations }) => (
   <IntlProvider locale="en" messages={translations}>
     <ReduxProvider store={store}>
@@ -26,27 +33,15 @@ export const Registrations = ({ translations }) => (
   </IntlProvider>
 );
 
-
-store.dispatch(setPanels([
-  { component: 'EventPanel', status: 'edit' },
-  { component: 'QtysPanel' },
-  { component: 'NamesPanel' },
-  { component: 'ReviewPanel' },
-]));
-
-
 class _Root extends React.Component {
   async componentDidMount() {
-    const { fetchEvents, selectDefaultDonations, setPriceHandles, pushPanel } = this.props;
+    const { fetchEvents, selectDefaultDonations, setPriceHandles } = this.props;
 
     const didFetch = await fetchEvents();
     if (!didFetch) return;
 
     setPriceHandles(priceHandles);
     selectDefaultDonations(priceHandles);
-
-    // TODO: remove!
-    // pushPanel({ component: 'EventPanel' });
   }
 
   render() {
@@ -82,7 +77,6 @@ const actions = {
   fetchEvents: fetchEvents,
   setPriceHandles: setPriceHandles,
   selectDefaultDonations: selectDefaults,
-  pushPanel: pushPanel,
 };
 
 const Root = connect(mapStateToProps, actions)(_Root);

@@ -8,8 +8,6 @@ export const panelManagerReducer = (state = initialState, action) => {
     case types.setPanels:       return setPanels(state, action);
     case types.insertPanels:    return insertPanels(state, action);
     case types.removePanels:    return removePanels(state, action);
-    case types.pushPanel:       return pushPanel(state, action);
-    case types.popToPanel:      return popToPanel(state, action);
     case types.setPanelStatus:  return setPanelStatus(state, action);
     case types.invalidatePanel: return invalidatePanel(state, action);
     case types.resetAllPanels:  return resetAllPanels(state, action);
@@ -48,27 +46,6 @@ function insertPanels(state, action) {
 
 function removePanels(state, action) {
   return state.filter(panel => panel.component !== action.withComponent);
-}
-
-function pushPanel(state, action) {
-  return [
-    ...state,
-    {
-      id: nextId(),
-      component: action.component || null,
-
-      // TODO: use panel status, instead of calculating using stack position.
-      // status: action.status || 'wait',
-      status: undefined,
-
-      isValid: false,
-      data: action.data || {},
-    },
-  ];
-}
-
-function popToPanel(state, action) {
-  return state.slice(0, action.index + 1);
 }
 
 function setPanelStatus(state, action) {

@@ -42,8 +42,6 @@ export const types = {
   setPanels:       'SET_PANELS',
   insertPanels:    'INSERT_PANELS',
   removePanels:    'REMOVE_PANELS',
-  pushPanel:       'PUSH_PANEL',
-  popToPanel:      'POP_TO_PANEL',
   setPanelStatus:  'SET_PANEL_STATUS',
   invalidatePanel: 'INVALIDATE_PANEL',
   resetAllPanels:  'RESET_ALL_PANELS',
