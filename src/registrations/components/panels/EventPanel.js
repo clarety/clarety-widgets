@@ -25,7 +25,7 @@ class _EventPanel extends BasePanel {
   }
 
   onClickNext = async () => {
-    const { setEvent, fetchFullEvent, pushPanel } = this.props;
+    const { setEvent, fetchFullEvent, nextPanel } = this.props;
     const { event } = this.state;
 
     if (!event) return;
@@ -35,7 +35,7 @@ class _EventPanel extends BasePanel {
     const didFetch = await fetchFullEvent(event.eventId);
     if (!didFetch) return;
 
-    pushPanel({ component: 'QtysPanel' });
+    nextPanel();
   };
 
   onClickEdit = () => {

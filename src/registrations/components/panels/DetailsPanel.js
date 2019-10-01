@@ -46,11 +46,12 @@ export class _DetailsPanel extends BasePanel {
   }
 
   onClickNext = async event => {
+    event.preventDefault();
+
     const { participantIndex, participantCount } = this.props;
-    const { pushPanel, createRegistration, setDetails } = this.props;
+    const { nextPanel, createRegistration, setDetails } = this.props;
     const { customerFormContext, extendFormContext } = this.state;
 
-    event.preventDefault();
 
     if (this.validate()) {
       this.onSubmitForm();
@@ -59,15 +60,12 @@ export class _DetailsPanel extends BasePanel {
       const nextIndex = participantIndex + 1;
       const hasNext = nextIndex < participantCount;
       if (hasNext) {
-        pushPanel({
-          component: 'DetailsPanel',
-          data: { participantIndex: nextIndex },
-        });
+        nextPanel();
       } else {
         const didCreate = await createRegistration();
         if (!didCreate) return;
 
-        pushPanel({ component: 'ReviewPanel' });
+        nextPanel();
       }
     }
   };

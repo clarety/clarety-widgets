@@ -7,20 +7,16 @@ import { BasePanel, TeamSearchInput } from 'registrations/components';
 import { setTeamPanelMode, checkTeamPassword, selectTeam, createTeam } from 'registrations/actions';
 
 export class _TeamPanel extends BasePanel {
-  _pushNextPanel() {
-    this.props.pushPanel({ component: 'EventPanel' });
-  }
-
   onClickNext = async event => {
     event.preventDefault();
-    const { selectedTeam, formData, checkTeamPassword } = this.props;
+    const { selectedTeam, formData, checkTeamPassword, nextPanel } = this.props;
 
     if (selectedTeam.passwordRequired) {
       const isCorrect = await checkTeamPassword(selectedTeam, formData['team.passwordCheck']);
       if (!isCorrect) return;
     }
 
-    this._pushNextPanel();
+    nextPanel();
   };
 
   onClickEdit = () => {
@@ -30,7 +26,7 @@ export class _TeamPanel extends BasePanel {
 
   onClickNo = () => {
     this.props.selectTeam(null);
-    this._pushNextPanel();
+    this.props.nextPanel();
   };
 
   onClickYes = () => {
@@ -48,13 +44,12 @@ export class _TeamPanel extends BasePanel {
   onSubmitCreateForm = async event => {
     event.preventDefault();
 
-    const { createTeam, pushPanel } = this.props;
+    const { createTeam, nextPanel } = this.props;
 
     const didCreate = await createTeam();
     if (!didCreate) return;
 
-    // TODO: push the correct panel...
-    pushPanel({ component: 'EventPanel' });
+    nextPanel();
   };
 
   renderWait() {

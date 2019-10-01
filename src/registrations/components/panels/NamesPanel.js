@@ -24,17 +24,14 @@ class _NamesPanel extends BasePanel {
 
     if (!this.canContinue()) return;
 
-    const { setFirstNames, pushPanel, insertPanels } = this.props;
+    const { setFirstNames, nextPanel } = this.props;
 
     setFirstNames(this.state.names);
 
     // TODO: details panels should probably be setup by qtys panel.
     this.setupDetailsPanels();
 
-    pushPanel({
-      component: 'DetailsPanel',
-      data: { participantIndex: 0 },
-    });
+    nextPanel();
   };
 
   setupDetailsPanels() {

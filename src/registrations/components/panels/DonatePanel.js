@@ -11,7 +11,7 @@ export class _DonatePanel extends _AmountPanel {
   onClickNext = event => {
     event.preventDefault();
 
-    this.props.pushPanel({ component: 'EventPanel' });
+    this.props.nextPanel();
   };
 
   onClickEdit = event => {
