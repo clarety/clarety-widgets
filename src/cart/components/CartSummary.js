@@ -1,14 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { currency } from 'shared/utils';
-import { CartItem, TotalLine } from "cart/components";
 import { Row, Col } from "react-bootstrap";
-
+import { CartItem, TotalLine } from "cart/components";
 
 class _CartSummary extends React.Component {
   render() {
     const { cart } = this.props;
-    if (!cart || !cart.items) return null;
+
+    if (!cart || !cart.items) {
+        return (
+            <div className="cart-widget__empty">
+                Your cart is empty.
+            </div>
+        );
+    }
 
     return (
       <div className="cart-widget__summary">
@@ -25,9 +30,9 @@ class _CartSummary extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return {
-    cart: state.cart,
-  };
+    return {
+        cart: state.cart,
+    };
 };
 
 const actions = {};
