@@ -15,7 +15,7 @@ class _CartSummary extends React.Component {
           {cart.items.map(item =>
               <CartItem
                   item={item}
-                  key={item.id}
+                  key={item.itemUid}
               />
           )}
           <CartTotals summary={cart.summary} />

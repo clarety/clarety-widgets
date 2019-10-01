@@ -1,4 +1,4 @@
-export const getCartSuccess = {
+export const updateCartItemSuccess = {
   "requestId": "",
   "success": true,
   "result": [
@@ -21,25 +21,25 @@ export const getCartSuccess = {
             }
           ],
           "price": 39.90,
-          "quantity": 2,
-          "total": 79.80
+          "quantity": 5,
+          "total": 199.50
         },
         {
           "itemUid": "9875655",
           "description": "Human Kind Coffee Mug",
           "image": "https://i.imgur.com/EfqApSo.jpg",
-          "price": 14.95,
           "variantDetails":[],
+          "price": 14.95,
           "quantity": 1,
           "total": 14.95
         }
       ],
 
       "summary": {
-        "subtotal": 94.97,
+        "subtotal": 213.57,
         "shipping": 20.00,
         "discount": 9.48,
-        "total": 85.27
+        "total": 224.02
       }
     }
   ]
