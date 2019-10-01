@@ -5,9 +5,13 @@ import { CartItem, TotalLine } from "cart/components";
 
 class _CartSummary extends React.Component {
   render() {
-    const { cart } = this.props;
+    const { cart, isBusy } = this.props;
 
-    if (!cart || !cart.items) {
+    if (!cart.items && isBusy) {
+      return null;
+    }
+
+    if (!cart.items || !cart.items.length) {
         return (
             <div className="cart-widget__empty">
                 Your cart is empty.
@@ -23,6 +27,7 @@ class _CartSummary extends React.Component {
                   key={item.itemUid}
               />
           )}
+
           <CartTotals summary={cart.summary} />
       </div>
     );
@@ -31,6 +36,7 @@ class _CartSummary extends React.Component {
 
 const mapStateToProps = state => {
     return {
+        isBusy: state.isBusy,
         cart: state.cart,
     };
 };
