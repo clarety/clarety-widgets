@@ -112,12 +112,11 @@ export const panelDataReducer = (state = initialState, action) => {
         ...state,
         participants: state.participants.map((participant, index) => {
           if (index === action.index) {
-            // Just keep the first name.
             return { 
               ...participant,
-              details: {
-                firstName: participant.customer.firstName,
-              },
+              customer: undefined,
+              extendForm: undefined,
+              errors: undefined,
             };
           } else {
             return participant;

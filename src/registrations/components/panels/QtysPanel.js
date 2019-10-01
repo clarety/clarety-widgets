@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Button, Form, Col } from 'react-bootstrap';
+import { insertPanels, removePanels } from 'shared/actions';
 import { BasePanel, Qty, QtyInput } from 'registrations/components';
 import { setQtys, resetQtys } from 'registrations/actions';
 import { getRegistrationTypes } from 'registrations/selectors';
@@ -10,7 +11,11 @@ class _QtysPanel extends BasePanel {
   state = {};
 
   onClickNext = () => {
+    const participantCount = this.participantCount();
+    this.setupDetailsPanels(participantCount);
+
     this.props.setQtys(this.state);
+
     this.props.nextPanel();
   };
 
@@ -18,7 +23,28 @@ class _QtysPanel extends BasePanel {
     this.props.editPanel();
   };
 
+  setupDetailsPanels(participantCount) {
+    const { insertPanels, removePanels } = this.props;
+
+    // Remove existing details panels.
+    removePanels({ withComponent: 'DetailsPanel' });
+
+    const detailsPanels = [];
+    for (let participantIndex = 0; participantIndex < participantCount; participantIndex++) {
+      detailsPanels.push({
+        component: 'DetailsPanel',
+        data: { participantIndex },
+      });
+    }
+
+    insertPanels({
+      afterComponent: 'NamesPanel',
+      panels: detailsPanels,
+    });
+  }
+
   componentWillUnmount() {
+    console.log('qtys componentWillUnmount');
     this.props.resetQtys();
   }
 
@@ -99,6 +125,10 @@ class _QtysPanel extends BasePanel {
 
     return false;
   }
+
+  participantCount() {
+    return Object.values(this.state).reduce((sum, value) => sum + value, 0);
+  }
 }
 
 const mapStateToProps = state => {
@@ -111,6 +141,8 @@ const mapStateToProps = state => {
 const actions = {
   setQtys: setQtys,
   resetQtys: resetQtys,
+  insertPanels: insertPanels,
+  removePanels: removePanels,
 };
 
 export const QtysPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_QtysPanel);

@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Button, Form, Row, Col } from 'react-bootstrap';
-import { insertPanels, removePanels } from 'shared/actions';
 import { BasePanel } from 'registrations/components';
 import { setFirstNames, resetFirstNames } from 'registrations/actions';
 
@@ -25,32 +24,9 @@ class _NamesPanel extends BasePanel {
     if (!this.canContinue()) return;
 
     const { setFirstNames, nextPanel } = this.props;
-
     setFirstNames(this.state.names);
-
-    // TODO: details panels should probably be setup by qtys panel.
-    this.setupDetailsPanels();
-
     nextPanel();
   };
-
-  setupDetailsPanels() {
-    const { participants, insertPanels, removePanels } = this.props;
-
-    // Remove existing details panels.
-    removePanels({ withComponent: 'DetailsPanel' });
-
-    // Insert new details panels.
-    const detailsPanels = participants.map((participant, index) => ({
-      component: 'DetailsPanel',
-      data: { participantIndex: index },
-    }));
-
-    insertPanels({
-      afterComponent: 'NamesPanel',
-      panels: detailsPanels,
-    });
-  }
 
   onClickEdit = () => {
     // Update our component state with the names from the store.
@@ -64,6 +40,12 @@ class _NamesPanel extends BasePanel {
 
   componentWillUnmount() {
     this.props.resetFirstNames();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.participants.length !== prevProps.participants.length) {
+      this.setState({ names: [] });
+    }
   }
 
   renderWait() {
@@ -163,8 +145,6 @@ const mapStateToProps = state => {
 const actions = {
   setFirstNames: setFirstNames,
   resetFirstNames: resetFirstNames,
-  insertPanels: insertPanels,
-  removePanels: removePanels,
 };
 
 export const NamesPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_NamesPanel);

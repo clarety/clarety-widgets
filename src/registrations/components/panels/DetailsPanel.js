@@ -29,17 +29,21 @@ export class _DetailsPanel extends BasePanel {
   }
 
   componentDidUpdate(prevProps) {
-    const { errors } = this.props.participant;
-
-    if (prevProps.participant.errors !== errors) {
+    if (prevProps.participant !== this.props.participant) {
       this.setState({
         customerFormContext: {
           ...this.state.customerFormContext,
-          errors: errors,
+          formData: {
+            ...this.props.participant.customer,
+          },
+          errors: this.props.participant.errors || [],
         },
         extendFormContext: {
           ...this.state.extendFormContext,
-          errors: errors,
+          formData: {
+            ...this.props.participant.extendForm,
+          },
+          errors: this.props.participant.errors || [],
         },
       });
     }
@@ -51,7 +55,6 @@ export class _DetailsPanel extends BasePanel {
     const { participantIndex, participantCount } = this.props;
     const { nextPanel, createRegistration, setDetails } = this.props;
     const { customerFormContext, extendFormContext } = this.state;
-
 
     if (this.validate()) {
       this.onSubmitForm();
