@@ -8,19 +8,29 @@ import { setQtys, resetQtys } from 'registrations/actions';
 import { getRegistrationTypes } from 'registrations/selectors';
 
 class _QtysPanel extends BasePanel {
-  state = {};
+  state = {
+    qtys: {},
+  };
 
   onClickNext = () => {
     const participantCount = this.participantCount();
     this.setupDetailsPanels(participantCount);
 
-    this.props.setQtys(this.state);
-
+    this.props.setQtys(this.state.qtys);
     this.props.nextPanel();
   };
 
   onClickEdit = () => {
     this.props.editPanel();
+  };
+
+  onChangeQty = (type, qty) => {
+    this.setState(prevState => ({
+      qtys: {
+        ...prevState.qtys,
+        [type]: qty,
+      }
+    }));
   };
 
   setupDetailsPanels(participantCount) {
@@ -29,6 +39,7 @@ class _QtysPanel extends BasePanel {
     // Remove existing details panels.
     removePanels({ withComponent: 'DetailsPanel' });
 
+    // Build array of new panels.
     const detailsPanels = [];
     for (let participantIndex = 0; participantIndex < participantCount; participantIndex++) {
       detailsPanels.push({
@@ -37,14 +48,15 @@ class _QtysPanel extends BasePanel {
       });
     }
 
+    // Insert new panels.
     insertPanels({
       afterComponent: 'NamesPanel',
       panels: detailsPanels,
     });
   }
 
-  componentWillUnmount() {
-    console.log('qtys componentWillUnmount');
+  reset() {
+    this.setState({ qtys: {} });
     this.props.resetQtys();
   }
 
@@ -73,6 +85,31 @@ class _QtysPanel extends BasePanel {
     );
   }
 
+  renderQtyInputs() {
+    const { types } = this.props;
+
+    return Object.keys(types).map(type =>
+      <Form.Group key={type}>
+        <Form.Row className="align-items-center">
+          <Col>
+            <Form.Label className="form-label-qty">
+              <FormattedMessage id={`qtysPanel.${type}.title`} tagName="h4" />
+              <FormattedMessage id={`qtysPanel.${type}.subtitle`}>
+                {txt => <span className="text-muted">{txt}</span>}
+              </FormattedMessage>
+            </Form.Label>
+          </Col>
+          <Col>
+            <QtyInput
+              value={this.state.qtys[type] || 0}
+              onChange={qty => this.onChangeQty(type, qty)}
+            />
+          </Col>
+        </Form.Row>
+      </Form.Group>
+    );
+  }
+
   renderDone() {
     const { qtys } = this.props;
 
@@ -93,41 +130,16 @@ class _QtysPanel extends BasePanel {
     );
   }
 
-  renderQtyInputs() {
-    const { types } = this.props;
-
-    return Object.keys(types).map(key =>
-      <Form.Group key={key}>
-        <Form.Row className="align-items-center">
-          <Col>
-            <Form.Label className="form-label-qty">
-              <FormattedMessage id={`qtysPanel.${key}.title`} tagName="h4" />
-              <FormattedMessage id={`qtysPanel.${key}.subtitle`}>
-                {txt => <span className="text-muted">{txt}</span>}
-              </FormattedMessage>
-            </Form.Label>
-          </Col>
-          <Col>
-            <QtyInput
-              value={this.state[key] || 0}
-              onChange={qty => this.setState({ [key]: qty })}
-            />
-          </Col>
-        </Form.Row>
-      </Form.Group>
-    );
-  }
-
   canContinue() {
-    for (let key in this.state) {
-      if (this.state[key]) return true;
+    for (let key in this.state.qtys) {
+      if (this.state.qtys[key]) return true;
     }
 
     return false;
   }
 
   participantCount() {
-    return Object.values(this.state).reduce((sum, value) => sum + value, 0);
+    return Object.values(this.state.qtys).reduce((sum, value) => sum + value, 0);
   }
 }
 

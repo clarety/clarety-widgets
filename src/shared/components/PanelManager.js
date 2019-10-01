@@ -6,11 +6,7 @@ import { LoginPanel, PersonalDetailsPanel, ShippingDetailsPanel, ShippingOptions
 import { ScrollIntoView, EventPanel, QtysPanel, NamesPanel, DetailsPanel, TeamPanel, DonatePanel, ReviewPanel } from 'registrations/components';
 
 class _PanelManager extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.panelRefs = props.panels.map(panel => React.createRef());
-  }
+  panelRefs = [];
 
   nextPanel = currentIndex => {
     this.setStatus(currentIndex, 'done');
@@ -24,9 +20,10 @@ class _PanelManager extends React.Component {
 
     if (layout === 'stack') {
       for (let panelIndex = 0; panelIndex < panels.length; panelIndex++) {
-        if (panelIndex > nextIndex) {
-          // TODO: reset panel...
+        const panel = this.getPanel(panelIndex);
+        if (panelIndex > nextIndex && panel.status !== 'wait') {
           this.setStatus(panelIndex, 'wait');
+          this.resetPanel(panelIndex);
         }
       }
     } else {
@@ -43,7 +40,7 @@ class _PanelManager extends React.Component {
 
   resetPanelData = () => {
     for (let panelRef of this.panelRefs) {
-      panelRef.current.resetPanelData();
+      panelRef.resetPanelData();
     }
   };
 
@@ -63,7 +60,7 @@ class _PanelManager extends React.Component {
         <PanelComponent
           key={panel.id}
           index={index}
-          ref={this.panelRefs[index]}
+          ref={ref => this.panelRefs[index] = ref}
 
           status={panel.status}
           {...panel.data}
@@ -115,6 +112,10 @@ class _PanelManager extends React.Component {
   setStatus(index, status) {
     const panelKey = this.getPanelKey(index);
     this.props.setPanelStatus(panelKey, status);
+  }
+
+  resetPanel(index) {
+    this.panelRefs[index].reset();
   }
 }
 

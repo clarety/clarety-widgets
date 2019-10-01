@@ -38,14 +38,14 @@ class _NamesPanel extends BasePanel {
     this.props.editPanel();
   };
 
-  componentWillUnmount() {
-    this.props.resetFirstNames();
-  }
-
   componentDidUpdate(prevProps) {
     if (this.props.participants.length !== prevProps.participants.length) {
       this.setState({ names: [] });
     }
+  }
+
+  reset() {
+    this.props.resetFirstNames();
   }
 
   renderWait() {

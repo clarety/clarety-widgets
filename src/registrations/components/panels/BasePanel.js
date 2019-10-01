@@ -1,6 +1,11 @@
 import React from 'react';
 
 export class BasePanel extends React.Component {
+  reset() {
+    // Implemented in subclasses.
+    // Called by panel manager.
+  }
+
   render() {
     switch (this.props.status) {
       case 'wait': return this.renderWait();

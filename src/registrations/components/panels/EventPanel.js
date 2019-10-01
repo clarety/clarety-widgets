@@ -43,7 +43,7 @@ class _EventPanel extends BasePanel {
     this.props.resetEvent();
   };
 
-  componentWillUnmount() {
+  reset() {
     this.props.resetEvent();
   }
 

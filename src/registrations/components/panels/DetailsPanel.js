@@ -150,7 +150,7 @@ export class _DetailsPanel extends BasePanel {
     return this.state.extendFormContext.formData[field];
   }
 
-  componentWillUnmount() {
+  reset() {
     const { resetDetails, participantIndex } = this.props;
     resetDetails(participantIndex);
   }

@@ -25,6 +25,11 @@ export class BasePanel extends React.Component {
     }));
   };
 
+  reset() {
+    // Implemented in subclasses.
+    // Called by panel manager.
+  }
+
   resetPanelData() {
     this.setState({
       formData: {},
