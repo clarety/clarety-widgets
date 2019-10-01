@@ -39,7 +39,7 @@ class _EventPanel extends BasePanel {
   };
 
   onClickEdit = () => {
-    this.props.popToPanel();
+    this.props.editPanel();
     this.props.resetEvent();
   };
 

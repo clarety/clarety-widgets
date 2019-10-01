@@ -21,7 +21,7 @@ export class _TeamPanel extends BasePanel {
 
   onClickEdit = () => {
     this.props.setPanelMode('prompt');
-    this.props.popToPanel();
+    this.props.editPanel();
   };
 
   onClickNo = () => {

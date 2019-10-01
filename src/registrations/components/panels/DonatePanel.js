@@ -16,7 +16,7 @@ export class _DonatePanel extends _AmountPanel {
 
   onClickEdit = event => {
     event.preventDefault();
-    this.props.popToPanel();
+    this.props.editPanel();
   }
 
   // TODO: remove once _AmountPanel extends BasePanel

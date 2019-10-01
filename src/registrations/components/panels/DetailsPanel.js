@@ -71,7 +71,7 @@ export class _DetailsPanel extends BasePanel {
   };
 
   onClickEdit = () => {
-    this.props.popToPanel();
+    this.props.editPanel();
   };
 
   onCustomerFormChange = (field, value) => {

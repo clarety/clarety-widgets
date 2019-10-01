@@ -70,10 +70,6 @@ class _PanelManager extends React.Component {
 
           nextPanel={() => this.nextPanel(index)}
           editPanel={() => this.editPanel(index)}
-
-          // TODO: replace calls to 'push/pop' with 'next/edit'.
-          popToPanel={() => this.editPanel(index)}
-
           resetAllPanels={this.resetAllPanels}
           resetPanelData={this.resetPanelData}
         />

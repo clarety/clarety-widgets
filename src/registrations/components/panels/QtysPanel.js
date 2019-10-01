@@ -15,7 +15,7 @@ class _QtysPanel extends BasePanel {
   };
 
   onClickEdit = () => {
-    this.props.popToPanel();
+    this.props.editPanel();
   };
 
   componentWillUnmount() {

@@ -59,7 +59,7 @@ class _NamesPanel extends BasePanel {
       names: participants.map(participant => participant.customer.firstName),
     });
 
-    this.props.popToPanel();
+    this.props.editPanel();
   };
 
   componentWillUnmount() {
