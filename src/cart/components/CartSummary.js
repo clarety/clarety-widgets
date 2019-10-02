@@ -52,7 +52,7 @@ const CartTotals = ({ summary }) => (
         </Col>
         <Col xs={9}>
             <Row>
-                <TotalLine label="Subtotal" value={summary.total} />
+                <TotalLine label="Subtotal" value={summary.subTotal} />
             </Row>
         </Col>
     </Row>
