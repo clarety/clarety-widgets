@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { login, logout, setLoginPanelMode } from 'shared/actions';
+import { login, logout } from 'shared/actions';
 import { setFormData, resetFormData } from 'form/actions';
 import { BasePanel, TextInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
@@ -11,18 +11,28 @@ import { statuses, hasAccount, fetchAuthCustomer } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _LoginPanel extends BasePanel {
+  constructor(props) {
+    super(props);
+
+    this.state.mode = 'check-email';
+  }
+
+  setMode(mode) {
+    this.setState({ mode });
+  }
+
   onPressCheckEmail = async event => {
     event.preventDefault();
 
-    const { hasAccount, resetFormData, resetAllPanels, setMode } = this.props;
+    const { hasAccount, resetFormData, resetAllPanels } = this.props;
     const { email } = this.state.formData;
 
     if (this.validate()) {
       const emailStatus = await hasAccount(email);
       
-      if (emailStatus === 'not-checked') setMode('check-email');
-      if (emailStatus === 'no-account')  setMode('no-account');
-      if (emailStatus === 'has-account') setMode('login');
+      if (emailStatus === 'not-checked') this.setMode('check-email');
+      if (emailStatus === 'no-account')  this.setMode('no-account');
+      if (emailStatus === 'has-account') this.setMode('login');
 
       resetAllPanels();
       resetFormData();
@@ -32,7 +42,7 @@ class _LoginPanel extends BasePanel {
   onPressLogin = async event => {
     event.preventDefault();
 
-    const { login, fetchAuthCustomer, setMode, nextPanel } = this.props;
+    const { login, fetchAuthCustomer, nextPanel } = this.props;
     const { email, password } = this.state.formData;
 
     const didValidate = this.validate();
@@ -44,17 +54,17 @@ class _LoginPanel extends BasePanel {
     const didFetch = await fetchAuthCustomer();
     if (!didFetch) return;
 
-    setMode('logged-in');
+    this.setMode('logged-in');
 
     nextPanel();
   };
 
   onPressShowCreateAccountForm = () => {
-    this.props.setMode('create-account');
+    this.setMode('create-account');
   };
 
   onPressCancelCreateAccount = () => {
-    this.props.setMode('no-account');
+    this.setMode('no-account');
   }
 
   onPressCreateAccount = event => {
@@ -81,12 +91,12 @@ class _LoginPanel extends BasePanel {
   };
 
   onPressLogout = () => {
-    const { setMode, resetAllPanels, resetFormData, logout } = this.props;
+    const { resetAllPanels, resetFormData, logout } = this.props;
 
     this.onChangeField('email', '');
     this.onChangeField('password', '');
 
-    setMode('check-email');
+    this.setMode('check-email');
 
     resetAllPanels();
     resetFormData();
@@ -100,7 +110,7 @@ class _LoginPanel extends BasePanel {
   componentDidUpdate(prevProps, prevState) {
     // Check if email has been modified, and reset status.
     if (this.state.formData.email !== prevState.formData.email) {
-      this.props.setMode('check-email');
+      this.setMode('check-email');
 
       this.props.resetAllPanels();
       this.onChangeField('password', '');
@@ -114,7 +124,7 @@ class _LoginPanel extends BasePanel {
   validate() {
     const errors = [];
 
-    const { mode } = this.props.panel;
+    const { mode } = this.state;
 
     if (mode === 'check-email') {
       this.validateEmail('email', errors);
@@ -162,7 +172,7 @@ class _LoginPanel extends BasePanel {
   }
 
   renderForm() {
-    const { mode } = this.props.panel;
+    const { mode } = this.state;
 
     if (mode === 'check-email')    return this.renderEmailCheckForm(false);
     if (mode === 'no-account')     return this.renderEmailCheckForm(true);
@@ -293,7 +303,6 @@ class _LoginPanel extends BasePanel {
 const mapStateToProps = state => {
   return {
     isBusy: state.status === statuses.busy,
-    panel: state.panels.loginPanel,
     customer: state.cart.customer,
     errors: state.errors,
   };
@@ -307,8 +316,6 @@ const actions = {
 
   setFormData: setFormData,
   resetFormData: resetFormData,
-
-  setMode: setLoginPanelMode,
 };
 
 export const LoginPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_LoginPanel);

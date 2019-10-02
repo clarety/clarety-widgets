@@ -45,8 +45,4 @@ export const types = {
   setPanelStatus:  'SET_PANEL_STATUS',
   invalidatePanel: 'INVALIDATE_PANEL',
   resetAllPanels:  'RESET_ALL_PANELS',
-
-  // Login Panel Action Types
-
-  setLoginPanelMode: 'SET_LOGIN_PANEL_MODE',
 };

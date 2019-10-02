@@ -36,7 +36,7 @@ class _PanelManager extends React.Component {
 
   resetAllPanels = () => {
     this.props.resetAllPanels();
-    this.panelRefs.forEach(panelRef => panelRef.reset());
+    this.panelRefs.forEach(panelRef => panelRef && panelRef.reset());
   };
 
   render() {
