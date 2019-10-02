@@ -38,7 +38,7 @@ export const formatExpiry = (month, year) => {
 };
 
 export const cleanExpiry = expiry => {
-  let [month, year] = expiry.split(' / ');
+  let [month, year] = expiry.replace(/\s/g, '').split('/');
 
   if (month) month = _cleanDigits(month, 2);
   if (year) year = _cleanDigits(year, 2);
