@@ -26,9 +26,7 @@ function setPanels(state, action) {
 }
 
 function insertPanels(state, action) {
-
-  // TODO: just pass an index to this action?
-  const index = state.findIndex(panel => panel.component === action.afterComponent) + 1;
+  const index = 1 + state.findIndex(panel => panel.component === action.afterComponent);
 
   const panels = action.panels.map(panel => ({
     id: nextId(),

@@ -14,7 +14,7 @@ class _LoginPanel extends BasePanel {
   onPressCheckEmail = async event => {
     event.preventDefault();
 
-    const { hasAccount, resetFormData, resetPanelData, setMode } = this.props;
+    const { hasAccount, resetFormData, resetAllPanels, setMode } = this.props;
     const { email } = this.state.formData;
 
     if (this.validate()) {
@@ -24,8 +24,8 @@ class _LoginPanel extends BasePanel {
       if (emailStatus === 'no-account')  setMode('no-account');
       if (emailStatus === 'has-account') setMode('login');
 
+      resetAllPanels();
       resetFormData();
-      resetPanelData();
     }
   };
 
@@ -81,7 +81,7 @@ class _LoginPanel extends BasePanel {
   };
 
   onPressLogout = () => {
-    const { setMode, resetAllPanels, resetPanelData, resetFormData, logout } = this.props;
+    const { setMode, resetAllPanels, resetFormData, logout } = this.props;
 
     this.onChangeField('email', '');
     this.onChangeField('password', '');
@@ -89,7 +89,6 @@ class _LoginPanel extends BasePanel {
     setMode('check-email');
 
     resetAllPanels();
-    resetPanelData();
     resetFormData();
     logout();
   }
@@ -133,7 +132,7 @@ class _LoginPanel extends BasePanel {
     return errors.length === 0;
   }
 
-  resetPanelData() {
+  reset() {
     // Clear all form data except email.
     this.setState(prevState => ({
       formData: {
