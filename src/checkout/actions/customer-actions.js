@@ -13,7 +13,7 @@ export const hasAccount = email => {
   return async dispatch => {
     dispatch(hasAccountRequest(email));
 
-    const results = await ClaretyApi.get('/carts/has-account/', { email });
+    const results = await ClaretyApi.get('carts/customers/has-account/', { email });
     const result = results[0];
 
     if (result.status === 'error') {

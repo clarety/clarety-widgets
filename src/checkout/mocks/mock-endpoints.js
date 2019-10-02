@@ -24,12 +24,12 @@ export function setupCheckoutAxiosMock() {
 
   // Has account (true).
   mock
-    .onGet(`${api}/carts/has-account/`, { params: { email: 'test@test.com' } })
+    .onGet(`${api}/carts/customers/has-account/`, { params: { email: 'test@test.com' } })
     .reply(200, responses.hasAccountTrue);
 
   // Has account (false).
   mock
-    .onGet(`${api}/carts/has-account/`)
+    .onGet(`${api}/carts/customers/has-account/`)
     .reply(200, responses.hasAccountFalse);
 
   // Get customer.
