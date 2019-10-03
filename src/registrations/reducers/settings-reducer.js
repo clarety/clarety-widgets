@@ -1,6 +1,10 @@
 import { types } from 'registrations/actions';
+import { initialState as sharedInitialState } from 'shared/reducers';
+import { settingsReducer as sharedSettingsReducer } from 'shared/reducers';
 
 const initialState = {
+  ...sharedInitialState,
+
   isBusy: false,
 
   events: null,
@@ -47,7 +51,7 @@ export const settingsReducer = (state = initialState, action) => {
       };
 
     default:
-      return state;
+      return sharedSettingsReducer(state, action);
   }
 };
 

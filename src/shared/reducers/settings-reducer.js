@@ -1,6 +1,6 @@
 import { types } from 'shared/actions';
 
-const initialState = {};
+export const initialState = {};
 
 export const settingsReducer = (state = initialState, action) => {
   switch (action.type) {
