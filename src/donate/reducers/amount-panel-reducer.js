@@ -17,8 +17,8 @@ export const amountPanelReducer = (state = initialState, action) => {
     case types.selectDefaults:
         return selectDefaults(state, action.offers);
 
-    case sharedActionTypes.explainFetchSuccess:
-      return selectDefaults(state, action.explain.offers);
+    case sharedActionTypes.fetchSettingsSuccess:
+      return selectDefaults(state, action.result.offers);
 
     default:
       return state;

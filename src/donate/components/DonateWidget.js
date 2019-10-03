@@ -2,14 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router'
 import { Switch, Route } from 'react-router-dom';
-import { statuses, setVariant, setStore, setConfirmPageUrl, setTracking, fetchExplain } from 'shared/actions';
+import { statuses, setVariant, setStore, setConfirmPageUrl, setTracking, fetchSettings } from 'shared/actions';
 import { OverrideContext } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { AmountPanel, DetailsPanel, PaymentPanel, SuccessPanel } from 'donate/components';
 
 export class _DonateWidget extends React.Component {
   componentWillMount() {
-    const { setVariant, setStore, setConfirmPageUrl, setTracking, fetchExplain } = this.props;
+    const { setVariant, setStore, setConfirmPageUrl, setTracking, fetchSettings } = this.props;
     const { storeCode, singleOfferId, recurringOfferId, variant, confirmPageUrl, reCaptchaKey } = this.props;
     const { sourceId, responseId, emailResponseId } = this.props;
 
@@ -22,7 +22,7 @@ export class _DonateWidget extends React.Component {
     setConfirmPageUrl(confirmPageUrl);
     setTracking({ sourceId, responseId, emailResponseId });
 
-    fetchExplain('donations/', {
+    fetchSettings('donations/', {
       store: storeCode,
       offerSingle: singleOfferId,
       offerRecurring: recurringOfferId,
@@ -84,7 +84,7 @@ const actions = {
   setStore: setStore,
   setConfirmPageUrl: setConfirmPageUrl,
   setTracking: setTracking,
-  fetchExplain: fetchExplain,
+  fetchSettings: fetchSettings,
 };
 
 export const connectDonateWidget = connect(mapStateToProps, actions);

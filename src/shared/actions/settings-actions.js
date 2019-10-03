@@ -1,17 +1,18 @@
 import { ClaretyApi } from 'clarety-utils';
 import { types, statuses, setStatus } from 'shared/actions';
 
-export const fetchExplain = (endpoint, params) => {
+export const fetchSettings = (endpoint, params) => {
   return async dispatch => {
-    dispatch(explainFetchRequest(endpoint));
+    dispatch(fetchSettingsRequest(endpoint));
 
     const results = await ClaretyApi.get(`widgets/${endpoint}`, params);
     const result = results[0];
+
     if (result) {
-      dispatch(explainFetchSuccess(result));
+      dispatch(fetchSettingsSuccess(result));
       dispatch(setStatus(statuses.ready));
     } else {
-      dispatch(explainFetchFailure());
+      dispatch(fetchSettingsFailure());
     }
   };
 };
@@ -26,16 +27,16 @@ export const setConfirmPageUrl = confirmPageUrl => ({
   confirmPageUrl: confirmPageUrl,
 });
 
-const explainFetchRequest = endpoint => ({
-  type: types.explainFetchRequest,
+const fetchSettingsRequest = endpoint => ({
+  type: types.fetchSettingsRequest,
   endpoint,
 });
 
-const explainFetchSuccess = explain => ({
-  type: types.explainFetchSuccess,
-  explain,
+const fetchSettingsSuccess = result => ({
+  type: types.fetchSettingsSuccess,
+  result,
 });
 
-const explainFetchFailure = () => ({
-  type: types.explainFetchFailure,
+const fetchSettingsFailure = () => ({
+  type: types.fetchSettingsFailure,
 });

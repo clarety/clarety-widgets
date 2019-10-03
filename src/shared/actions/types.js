@@ -5,9 +5,9 @@ export const types = {
 
   // Explain Action Types
 
-  explainFetchRequest: 'EXPLAIN_FETCH_REQUEST',
-  explainFetchSuccess: 'EXPLAIN_FETCH_SUCCESS',
-  explainFetchFailure: 'EXPLAIN_FETCH_FAILURE',
+  fetchSettingsRequest: 'FETCH_SETTINGS_REQUEST',
+  fetchSettingsSuccess: 'FETCH_SETTINGS_SUCCESS',
+  fetchSettingsFailure: 'FETCH_SETTINGS_FAILURE',
 
   setVariant:          'SET_VARIANT',
   setConfirmPageUrl:   'SET_CONFIRM_PAGE_URL',

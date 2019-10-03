@@ -9,7 +9,7 @@ export class _BaseFormView extends React.Component {
 
   async componentDidMount() {
     if (!this.endpoint) throw new Error('[Clarety] BaseFormView "endpoint" must be overridden.');
-    this.props.fetchExplain(this.endpoint);
+    this.props.fetchSettings(this.endpoint);
   }
 
   onSubmit = async event => {

@@ -2,12 +2,12 @@ import { types } from 'shared/actions';
 
 const initialState = {};
 
-export const explainReducer = (state = initialState, action) => {
+export const settingsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.explainFetchSuccess:
+    case types.fetchSettingsSuccess:
       return {
         ...state,
-        ...action.explain,
+        ...action.result,
       };
 
     case types.setVariant:

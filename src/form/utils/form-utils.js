@@ -4,7 +4,7 @@ import { createMemoryHistory } from 'history';
 import thunkMiddleware from 'redux-thunk';
 import { routerMiddleware } from 'connected-react-router';
 import { Provider, connect } from 'react-redux';
-import { fetchExplain } from 'shared/actions';
+import { fetchSettings } from 'shared/actions';
 import { createFormReducer } from 'form/reducers';
 import { submitForm } from 'form/actions';
 
@@ -18,7 +18,7 @@ export function connectFormToStore(ViewComponent) {
   };
 
   const actions = {
-    fetchExplain: fetchExplain,
+    fetchSettings: fetchSettings,
     submitForm: submitForm,
   };
 
