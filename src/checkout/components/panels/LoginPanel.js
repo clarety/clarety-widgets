@@ -4,11 +4,11 @@ import { FormattedMessage } from 'react-intl';
 import { Container, Col, Form } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { login, logout } from 'shared/actions';
+import { statuses, login, logout } from 'shared/actions';
 import { setFormData, resetFormData } from 'form/actions';
 import { BasePanel, TextInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { statuses, hasAccount, fetchAuthCustomer } from 'checkout/actions';
+import { hasAccount, fetchAuthCustomer } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _LoginPanel extends BasePanel {

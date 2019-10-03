@@ -1,10 +1,3 @@
-import { statuses as sharedStatuses } from 'shared/actions';
-
-export const statuses = {
-  ...sharedStatuses,
-  busyPromoCode: 'busy-promo-code',
-};
-
 export const types = {
   // Customer Action Types
 

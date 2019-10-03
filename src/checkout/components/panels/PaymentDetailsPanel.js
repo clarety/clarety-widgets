@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
+import { statuses } from 'shared/actions';
 import { BasePanel, TextInput, CardNumberInput, CcvInput, ExpiryInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { statuses, makePayment, paymentMethods } from 'checkout/actions';
+import { makePayment, paymentMethods } from 'checkout/actions';
 import { getPaymentMethod } from 'checkout/selectors';
 import { FormContext } from 'checkout/utils';
 

@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
-import { authReducer, panelManagerReducer } from 'shared/reducers';
+import { statusReducer, authReducer, panelManagerReducer } from 'shared/reducers';
 import { formDataReducer } from 'form/reducers';
-import { statusReducer, errorsReducer, cartReducer } from 'checkout/reducers';
+import { errorsReducer, cartReducer } from 'checkout/reducers';
 
 export const rootReducer = combineReducers({
   status: statusReducer,
