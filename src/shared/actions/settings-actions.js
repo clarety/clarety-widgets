@@ -18,14 +18,26 @@ export const fetchSettings = (endpoint, params) => {
 };
 
 export const setVariant = variant => ({
-  type: types.setVariant,
-  variant: variant,
+  type: types.updateSettings,
+  settings: {
+    variant: variant,
+  },
 });
 
 export const setConfirmPageUrl = confirmPageUrl => ({
-  type: types.setConfirmPageUrl,
-  confirmPageUrl: confirmPageUrl,
+  type: types.updateSettings,
+  settings: {
+    confirmPageUrl: confirmPageUrl,
+  },
 });
+
+export const setAllowGuest = allowGuest => ({
+  type: types.updateSettings,
+  settings: {
+    allowGuest: allowGuest,
+  },
+});
+
 
 const fetchSettingsRequest = endpoint => ({
   type: types.fetchSettingsRequest,

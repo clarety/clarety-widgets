@@ -5,6 +5,7 @@ import { Container, Col, Form } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { statuses, login, logout } from 'shared/actions';
+import { getSetting } from 'shared/selectors';
 import { setFormData, resetFormData } from 'form/actions';
 import { BasePanel, TextInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
@@ -25,17 +26,24 @@ class _LoginPanel extends BasePanel {
   onPressCheckEmail = async event => {
     event.preventDefault();
 
-    const { hasAccount, resetFormData, resetAllPanels } = this.props;
+    const { hasAccount, allowGuest, resetFormData } = this.props;
     const { email } = this.state.formData;
 
     if (this.validate()) {
       const emailStatus = await hasAccount(email);
       
       if (emailStatus === 'not-checked') this.setMode('check-email');
-      if (emailStatus === 'no-account')  this.setMode('no-account');
+
+      if (emailStatus === 'no-account') {
+        if (allowGuest) {
+          this.setMode('no-account');
+        } else {
+          this.setMode('create-account');
+        }
+      }
+
       if (emailStatus === 'has-account') this.setMode('login');
 
-      // resetAllPanels();
       resetFormData();
     }
   };
@@ -112,8 +120,6 @@ class _LoginPanel extends BasePanel {
     // Check if email has been modified, and reset status.
     if (this.state.formData.email !== prevState.formData.email) {
       this.setMode('check-email');
-
-      // this.props.resetAllPanels();
       this.onChangeField('password', '');
     }
 
@@ -309,6 +315,7 @@ class _LoginPanel extends BasePanel {
 const mapStateToProps = state => {
   return {
     isBusy: state.status === statuses.busy,
+    allowGuest: getSetting(state, 'allowGuest'),
     customer: state.cart.customer,
     errors: state.errors,
   };
@@ -344,7 +351,6 @@ const PanelContainer = ({ layout, children }) => {
   return children;
 };
 
-
 const PanelBody = ({ layout, isBusy, children }) => {
   if (layout === 'stack') {
     return <div className="panel-body">{children}</div>;
@@ -356,4 +362,3 @@ const PanelBody = ({ layout, isBusy, children }) => {
 
   return children;
 };
-

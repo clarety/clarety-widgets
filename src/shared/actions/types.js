@@ -3,14 +3,13 @@ export const types = {
 
   setStatus: 'SET_STATUS',
 
-  // Explain Action Types
+  // Settings Action Types
+
+  updateSettings: 'UPDATE_SETTINGS',
 
   fetchSettingsRequest: 'FETCH_SETTINGS_REQUEST',
   fetchSettingsSuccess: 'FETCH_SETTINGS_SUCCESS',
   fetchSettingsFailure: 'FETCH_SETTINGS_FAILURE',
-
-  setVariant:          'SET_VARIANT',
-  setConfirmPageUrl:   'SET_CONFIRM_PAGE_URL',
 
   // Cart Action Types
 
