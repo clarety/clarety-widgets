@@ -58,6 +58,7 @@ class _PanelManager extends React.Component {
           ref={ref => this.panelRefs[index] = ref}
 
           status={panel.status}
+          layout={layout}
           {...panel.data}
 
           nextPanel={() => this.nextPanel(index)}

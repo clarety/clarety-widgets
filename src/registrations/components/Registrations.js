@@ -21,6 +21,7 @@ const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMidd
 store.dispatch(setPanels([
   { component: 'EventPanel', status: 'edit' },
   { component: 'QtysPanel' },
+  { component: 'LoginPanel' },
   { component: 'NamesPanel' },
   { component: 'ReviewPanel' },
 ]));

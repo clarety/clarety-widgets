@@ -65,6 +65,9 @@
   "qtysPanel.child.subtitle": "Ages 13 - 17",
   "qtysPanel.message": " ",
 
+  "loginPanel.editTitle": "Account Details",
+  "loginPanel.doneTitle": "Account Details",
+
   "namesPanel.editTitle": "Participant Names",
   "namesPanel.doneTitle": "Participants",
   "namesPanel.adult.title": "Adult Registration",

@@ -12,7 +12,7 @@ export * from './inputs/PhoneInput';
 export * from './inputs/StateInput';
 export * from './inputs/TextInput';
 
-export * from './misc/PanelHeader';
+export * from './misc/panel-headers';
 
 export * from './panels/BasePanel';
 export * from './panels/LoginPanel';

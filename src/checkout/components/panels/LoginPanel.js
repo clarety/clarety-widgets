@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Form, Col } from 'react-bootstrap';
+import { FormattedMessage } from 'react-intl';
+import { Container, Col, Form } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { login, logout } from 'shared/actions';
@@ -34,7 +35,7 @@ class _LoginPanel extends BasePanel {
       if (emailStatus === 'no-account')  this.setMode('no-account');
       if (emailStatus === 'has-account') this.setMode('login');
 
-      resetAllPanels();
+      // resetAllPanels();
       resetFormData();
     }
   };
@@ -112,7 +113,7 @@ class _LoginPanel extends BasePanel {
     if (this.state.formData.email !== prevState.formData.email) {
       this.setMode('check-email');
 
-      this.props.resetAllPanels();
+      // this.props.resetAllPanels();
       this.onChangeField('password', '');
     }
 
@@ -152,22 +153,27 @@ class _LoginPanel extends BasePanel {
   }
 
   renderWait() {
+    if (this.props.layout === 'stack') return null;
+
     return (
       <WaitPanelHeader number="1" title="Contact Details" />
     );
   }
 
   renderEdit() {
-    const { isBusy } = this.props;
+    const { layout, isBusy } = this.props;
 
     return (
-      <div className="panel">
-        <EditPanelHeader number="1" title="Contact Details" />
+      <PanelContainer layout={layout}>
+        {layout === 'stack'
+          ? <FormattedMessage id="loginPanel.editTitle" tagName="h2" />
+          : <EditPanelHeader number="1" title="Contact Details" />
+        }
 
-        <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
+        <PanelBody layout={layout} isBusy={isBusy}>
           {this.renderForm()}
-        </BlockUi>
-      </div>
+        </PanelBody>
+      </PanelContainer>
     );
   }
 
@@ -319,3 +325,35 @@ const actions = {
 };
 
 export const LoginPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_LoginPanel);
+
+
+
+
+
+// TODO: move...
+
+const PanelContainer = ({ layout, children }) => {
+  if (layout === 'stack') {
+    return <Container>{children}</Container>;
+  }
+
+  if (layout === 'accordian') {
+    return <div className="panel">{children}</div>;
+  }
+
+  return children;
+};
+
+
+const PanelBody = ({ layout, isBusy, children }) => {
+  if (layout === 'stack') {
+    return <div className="panel-body">{children}</div>;
+  }
+
+  if (layout === 'accordian') {
+    return <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>{children}</BlockUi>;
+  }
+
+  return children;
+};
+
