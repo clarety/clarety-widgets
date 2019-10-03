@@ -15,7 +15,8 @@ export const cartReducer = (state = initialState, action) => {
         errors: [],
       };
       
-    case types.updateItemRequest:
+    case types.updateCartItemRequest:
+    case types.removeCartItemRequest:
       return {
         ...state,
         isBusy: true,
@@ -23,7 +24,8 @@ export const cartReducer = (state = initialState, action) => {
       };
 
     case types.fetchItemsSuccess:
-    case types.updateItemSuccess:
+    case types.updateCartItemSuccess:
+    case types.removeCartItemSuccess:
       return {
         ...state,
         isBusy: false,
@@ -33,7 +35,8 @@ export const cartReducer = (state = initialState, action) => {
         },
       };
 
-    case types.updateItemFailure:
+    case types.updateCartItemFailure:
+    case types.removeCartItemFailure:
       return {
         ...state,
         isBusy: false,

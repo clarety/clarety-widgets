@@ -18,20 +18,52 @@ export function fetchItems(cartUid) {
 
 export const updateItemQuantity = (item, newQuantity) => {
   return async (dispatch, getState) => {
-    const { cart } = getState();
-
-    dispatch(updateItemRequest(item, newQuantity));
-
-    const results = await ClaretyApi.put(`carts/${cart.cartUid}/items/${item.itemUid}/`, { quantity: newQuantity });
-    const result = results[0];
-
-    if (result.status === 'error') {
-      dispatch(updateItemFailure(result));
+    if (newQuantity > 0) {
+      dispatch(updateCartItem({ ...item, quantity: newQuantity }));
     } else {
-      dispatch(updateItemSuccess(result));
+      dispatch(removeCartItem(item));
     }
   };
 };
+
+const updateCartItem = item => {
+  return async (dispatch, getState) => {
+    const { cart } = getState();
+
+    dispatch(updateCartItemRequest(item));
+
+    const results = await ClaretyApi.put(`carts/${cart.cartUid}/items/${item.itemUid}/`, item);
+    const result = results[0];
+
+    if (result.status === 'error') {
+      dispatch(updateCartItemFailure(result));
+      return false;
+    } else {
+      dispatch(updateCartItemSuccess(result));
+      return true;
+    }
+  };
+};
+
+const removeCartItem = item => {
+  return async (dispatch, getState) => {
+    const { cart } = getState();
+
+    dispatch(removeCartItemRequest(item));
+
+    const results = await ClaretyApi.delete(`carts/${cart.cartUid}/items/${item.itemUid}/`);
+    const result = results[0];
+
+    if (result.status === 'error') {
+      dispatch(removeCartItemFailure(result));
+      return false;
+    } else {
+      dispatch(removeCartItemSuccess(result));
+      return true;
+    }
+  };
+}
+
 
 //Anything that is within the list actions below of types.*** are found in the types.js as the types.* is used here and in the list-reducer like a constant is used within PHP
 
@@ -57,25 +89,47 @@ function fetchItemsFailure(result) {
   };
 }
 
-// Update Item
+// Update Cart Item
 
-function updateItemRequest(item, quantity) {
+function updateCartItemRequest(item, quantity) {
   return {
-    type: types.updateItemRequest,
+    type: types.updateCartItemRequest,
     item: item,
     quantity: quantity,
   };
 }
-function updateItemSuccess(result) {
+function updateCartItemSuccess(result) {
   return {
-    type: types.updateItemSuccess,
+    type: types.updateCartItemSuccess,
     result: result,
   };
 }
 
-function updateItemFailure(result) {
+function updateCartItemFailure(result) {
   return {
-    type: types.updateItemFailure,
+    type: types.updateCartItemFailure,
+    result: result,
+  };
+}
+
+// Remove Cart Item
+
+function removeCartItemRequest(item) {
+  return {
+    type: types.removeCartItemRequest,
+    item: item,
+  };
+}
+function removeCartItemSuccess(result) {
+  return {
+    type: types.removeCartItemSuccess,
+    result: result,
+  };
+}
+
+function removeCartItemFailure(result) {
+  return {
+    type: types.removeCartItemFailure,
     result: result,
   };
 }
