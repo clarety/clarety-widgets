@@ -4,17 +4,16 @@ import { FormContext } from 'checkout/utils';
 import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
 
-class PureTextInput extends React.PureComponent {
+class PureEmailInput extends React.PureComponent {
   render() {
-    const { field, placeholder, type, value, onChange, error, required } = this.props;
+    const { field, placeholder, value, onChange, error, required } = this.props;
 
     return (
       <Form.Group controlId={field}>
         <Form.Control
           value={value}
-          onChange={event => onChange(field, event.target.value)}
+          onChange={event => onChange(field, event.target.value.trim())}
           placeholder={placeholder}
-          type={type || 'text'}
           isInvalid={!!error}
         />
         <FieldError error={error} />
@@ -23,13 +22,13 @@ class PureTextInput extends React.PureComponent {
   }
 }
 
-export class TextInput extends React.Component {
+export class EmailInput extends React.Component {
   render() {
     const { formData, errors, onChange } = this.context;
     const error = getValidationError(this.props.field, errors);
 
     return (
-      <PureTextInput
+      <PureEmailInput
         {...this.props}
         value={formData[this.props.field] || ''}
         onChange={onChange}
@@ -39,4 +38,4 @@ export class TextInput extends React.Component {
   }
 }
 
-TextInput.contextType = FormContext;
+EmailInput.contextType = FormContext;

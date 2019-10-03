@@ -7,7 +7,7 @@ import 'react-block-ui/style.css';
 import { statuses, login, logout } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
 import { setFormData, resetFormData } from 'form/actions';
-import { BasePanel, TextInput, Button } from 'checkout/components';
+import { BasePanel, TextInput, EmailInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { hasAccount, fetchAuthCustomer } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
@@ -199,7 +199,7 @@ class _LoginPanel extends BasePanel {
         <Form onSubmit={this.onPressCheckEmail}>
           <Form.Row>
             <Col>
-              <TextInput field="email" type="email" placeholder="Email *" />
+              <EmailInput field="email" placeholder="Email *" />
             </Col>
           </Form.Row>
 
@@ -240,7 +240,7 @@ class _LoginPanel extends BasePanel {
 
           <Form.Row>
             <Col>
-              <TextInput field="email" type="email" placeholder="Email *" />
+              <EmailInput field="email" placeholder="Email *" />
             </Col>
           </Form.Row>
 
@@ -270,8 +270,7 @@ class _LoginPanel extends BasePanel {
           {fields.includes('email') &&
             <Form.Row>
               <Col>
-                {/* TODO: use EmailInput */}
-                <TextInput field="email" type="email" placeholder="Email *" />
+                <EmailInput field="email" placeholder="Email *" />
               </Col>
             </Form.Row>
           }

@@ -7,6 +7,7 @@ export * from './inputs/CardNumberInput';
 export * from './inputs/CcvInput';
 export * from './inputs/CheckboxInput';
 export * from './inputs/DobInput';
+export * from './inputs/EmailInput';
 export * from './inputs/ExpiryInput';
 export * from './inputs/PhoneInput';
 export * from './inputs/StateInput';
