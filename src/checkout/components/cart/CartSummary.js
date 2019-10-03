@@ -12,7 +12,7 @@ class _CartSummary extends React.Component {
     return (
       <div>
         {cart.items.map(item =>
-          <CartItem item={item} key={item.uid} />
+          <CartItem item={item} key={item.itemUid} />
         )}
 
         <PromoCodeForm />

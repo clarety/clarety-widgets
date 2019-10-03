@@ -70,7 +70,7 @@ export const createCustomer = () => {
 
     dispatch(createCustomerRequest(customer));
 
-    let results = await ClaretyApi.post(`carts/${cart.uid}/customers/`, customer);
+    let results = await ClaretyApi.post(`carts/${cart.cartUid}/customers/`, customer);
     const result = results[0];
 
     if (result.status === 'error') {
@@ -91,7 +91,7 @@ export const updateCustomer = () => {
     dispatch(updateCustomerRequest(customer));
 
     const customerUid = cart.customer.uid;
-    let results = await ClaretyApi.put(`carts/${cart.uid}/customers/${customerUid}/`, customer);
+    let results = await ClaretyApi.put(`carts/${cart.cartUid}/customers/${customerUid}/`, customer);
     const result = results[0];
 
     if (result.status === 'error') {

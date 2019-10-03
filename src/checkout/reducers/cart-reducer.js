@@ -1,7 +1,7 @@
 import { types } from 'checkout/actions';
 
 const initialState = {
-  uid: null,
+  cartUid: null,
   sale: null,
   items: null,
   customer: null,
@@ -19,7 +19,7 @@ export const cartReducer = (state = initialState, action) => {
     case types.applyPromoCodeSuccess:
       return {
         ...state,
-        uid: action.result.uid,
+        cartUid: action.result.cartUid,
         sale: action.result.sale,
         items: action.result.items,
         summary: action.result.summary,
