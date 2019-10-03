@@ -1,21 +1,21 @@
 import { combineReducers } from 'redux';
-import { panelManagerReducer } from 'shared/reducers';
+import { statusReducer, panelManagerReducer } from 'shared/reducers';
 import { formDataReducer, errorsReducer } from 'form/reducers';
 import { amountPanelReducer } from 'donate/reducers';
-import * as reducers from 'registrations/reducers';
+import { settingsReducer, cartReducer, panelDataReducer, teamPanelReducer } from 'registrations/reducers';
 
 export const rootReducer = combineReducers({
-  status:     reducers.statusReducer,
-  settings:   reducers.settingsReducer,
-  cart:       reducers.cartReducer,
+  status:     statusReducer,
+  settings:   settingsReducer,
+  cart:       cartReducer,
   formData:   formDataReducer,
   errors:     errorsReducer,
 
   panelManager: panelManagerReducer,
-  panelData:    reducers.panelDataReducer,
+  panelData:    panelDataReducer,
 
   panels: combineReducers({
     amountPanel: amountPanelReducer,
-    teamPanel:   reducers.teamPanelReducer,
+    teamPanel:   teamPanelReducer,
   }),
 });

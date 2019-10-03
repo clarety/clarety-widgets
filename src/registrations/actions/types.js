@@ -59,10 +59,3 @@ export const types = {
 
   setTeamPanelMode: 'SET_TEAM_PANEL_MODE',
 };
-
-export const statuses = {
-  initializing: 'INITIALIZING',
-  validating:   'VALIDATING',
-  submitting:   'SUBMITTING',
-  ready:        'READY',
-};

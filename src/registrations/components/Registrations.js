@@ -7,11 +7,11 @@ import 'intl-pluralrules'; // Polyfill for safari 12
 import { Spinner, Modal } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { setPanels } from 'shared/actions';
+import { statuses, setPanels } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { selectDefaults } from 'donate/actions';
 import { MiniCart } from 'registrations/components';
-import { fetchEvents, statuses, setPriceHandles } from 'registrations/actions';
+import { fetchEvents, setPriceHandles } from 'registrations/actions';
 import { rootReducer } from 'registrations/reducers';
 import { priceHandles } from 'registrations/utils';
 

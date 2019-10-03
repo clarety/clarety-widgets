@@ -20,7 +20,7 @@ export class _BaseFormView extends React.Component {
   };
 
   render() {
-    if (this.props.status === statuses.uninitialized) {
+    if (this.props.status === statuses.initializing) {
       return null;
     }
 

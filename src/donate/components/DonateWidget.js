@@ -38,7 +38,7 @@ export class _DonateWidget extends React.Component {
     const SuccessPanelComponent = this.context.SuccessPanel || SuccessPanel;
 
     // Show a loading indicator while we init.
-    if (status === statuses.uninitialized) {
+    if (status === statuses.initializing) {
       return (
         <div className="d-flex justify-content-center align-items-center h-100">
           <div className="spinner-border text-primary"></div>
