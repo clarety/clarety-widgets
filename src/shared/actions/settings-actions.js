@@ -38,6 +38,13 @@ export const setAllowGuest = allowGuest => ({
   },
 });
 
+export const setCreateAccountFields = fields => ({
+  type: types.updateSettings,
+  settings: {
+    createAccountFields: fields,
+  },
+});
+
 
 const fetchSettingsRequest = endpoint => ({
   type: types.fetchSettingsRequest,

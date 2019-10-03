@@ -259,23 +259,46 @@ class _LoginPanel extends BasePanel {
   }
 
   renderCreateAccountForm() {
+    const fields = this.props.createAccountFields;
+
     return (
       <FormContext.Provider value={this.state}>
         <Form onSubmit={this.onPressCreateAccount}>
 
           <p>Please enter your details.</p>
 
-          <Form.Row>
-            <Col>
-              <TextInput field="email" type="email" placeholder="Email *" />
-            </Col>
-          </Form.Row>
+          {fields.includes('email') &&
+            <Form.Row>
+              <Col>
+                {/* TODO: use EmailInput */}
+                <TextInput field="email" type="email" placeholder="Email *" />
+              </Col>
+            </Form.Row>
+          }
 
-          <Form.Row>
-            <Col>
-              <TextInput field="password" type="password" placeholder="Password *" />
-            </Col>
-          </Form.Row>
+          {fields.includes('password') &&
+            <Form.Row>
+              <Col>
+                <TextInput field="password" type="password" placeholder="Password *" />
+              </Col>
+            </Form.Row>
+          }
+
+          {fields.includes('firstName') &&
+            <Form.Row>
+              <Col>
+                <TextInput field="firstName" placeholder="First Name *" />
+              </Col>
+            </Form.Row>
+          }
+
+          {fields.includes('lastName') &&
+            <Form.Row>
+              <Col>
+                <TextInput field="lastName" placeholder="Last Name *" />
+              </Col>
+            </Form.Row>
+          }
 
           <div className="text-right mt-3">
             <Button title="Cancel" onClick={this.onPressCancelCreateAccount} variant="link" />
@@ -316,6 +339,7 @@ const mapStateToProps = state => {
   return {
     isBusy: state.status === statuses.busy,
     allowGuest: getSetting(state, 'allowGuest'),
+    createAccountFields: getSetting(state, 'createAccountFields'),
     customer: state.cart.customer,
     errors: state.errors,
   };

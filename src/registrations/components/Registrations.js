@@ -7,7 +7,7 @@ import 'intl-pluralrules'; // Polyfill for safari 12
 import { Spinner, Modal } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { statuses, setPanels, setAllowGuest } from 'shared/actions';
+import { statuses, setPanels, setAllowGuest, setCreateAccountFields } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { selectDefaults } from 'donate/actions';
 import { MiniCart } from 'registrations/components';
@@ -18,7 +18,8 @@ import { priceHandles } from 'registrations/utils';
 const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
 
-store.dispatch(setAllowGuest(true));
+store.dispatch(setAllowGuest(false));
+store.dispatch(setCreateAccountFields(['email', 'password', 'firstName', 'lastName']));
 
 store.dispatch(setPanels([
   { component: 'EventPanel', status: 'edit' },
