@@ -44,7 +44,7 @@ const CartFooter = () => (
     <Row className="cart-widget__footer">
         <Col sm={12} className="text-center">
             <p>Shipping, taxes, and discounts are calculated at checkout.</p>
-            <a className="btn btn-primary checkout" href="/checkout">Checkout</a>
+            <a className="btn btn-secondary checkout" href="/checkout">Checkout</a>
         </Col>
     </Row>
 );
