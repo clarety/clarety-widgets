@@ -2,10 +2,9 @@ import React from 'react';
 import { connect } from "react-redux";
 import { QtyInput, TotalLine, CartItemDescription, CartItemVariationDescription } from "cart/components";
 import { updateItemQuantity } from "../actions";
-import { currency } from "shared/utils";
 import { Row, Col } from "react-bootstrap";
 
-class _Item extends React.Component {
+class _CartItem extends React.Component {
     timeout = null;
     time = 250;
 
@@ -16,10 +15,12 @@ class _Item extends React.Component {
         };
     }
 
-    onInputChange = (quantity) => {
-        this.setState({quantity: quantity});
+    onInputChange = (text) => {
+        const quantity = text ? Number(text) : '';
 
-        if(quantity && isFinite(quantity) && quantity >= 0){
+        this.setState({ quantity: quantity });
+
+        if (quantity !== '') {
             this.onQuantityChange(quantity);
         }
     };
@@ -46,7 +47,7 @@ class _Item extends React.Component {
                         <CartItemDescription
                             key={item.id}
                             item={item}
-                            />
+                        />
                     </Col>
                 </Row>
                 <Row className="justify-content-end">
@@ -54,20 +55,17 @@ class _Item extends React.Component {
                     <CartItemVariationDescription
                         key={item.id}
                         item={item}
+                    />
+                    <Col as="dt" xs={9}>
+                        Quantity
+                    </Col>
+                    <Col as="dd" xs={3} className="text-right">
+                        <QtyInput
+                            value={quantity}
+                            onChange={ this.onQuantityChange }
+                            onInputChange={ this.onInputChange }
                         />
-
-                    <React.Fragment>
-                        <Col as="dt" xs={9}>
-                            Quantity
-                        </Col>
-                        <Col as="dd" xs={3} className="text-right">
-                            <QtyInput
-                                value={quantity}
-                                onChange={ this.onQuantityChange }
-                                onInputChange={ this.onInputChange }
-                                />
-                        </Col>
-                    </React.Fragment>
+                    </Col>
                 </Row>
             </div>
         );
@@ -82,4 +80,4 @@ const actions = {
     updateItemQuantity: updateItemQuantity
 };
 
-export const CartItem = connect(mapStateToProps, actions)(_Item);
+export const CartItem = connect(mapStateToProps, actions)(_CartItem);
