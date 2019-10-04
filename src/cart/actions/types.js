@@ -3,7 +3,11 @@ export const types = {
   fetchItemsSuccess: 'FETCH_ITEMS_SUCCESS',
   fetchItemsFailure: 'FETCH_ITEMS_FAILURE',
 
-  updateItemRequest: 'UPDATE_ITEM_REQUEST',
-  updateItemSuccess: 'UPDATE_ITEM_SUCCESS',
-  updateItemFailure: 'UPDATE_ITEM_FAILURE',
+  updateCartItemRequest: 'UPDATE_CART_ITEM_REQUEST',
+  updateCartItemSuccess: 'UPDATE_CART_ITEM_SUCCESS',
+  updateCartItemFailure: 'UPDATE_CART_ITEM_FAILURE',
+
+  removeCartItemRequest: 'REMOVE_CART_ITEM_REQUEST',
+  removeCartItemSuccess: 'REMOVE_CART_ITEM_SUCCESS',
+  removeCartItemFailure: 'REMOVE_CART_ITEM_FAILURE',
 };

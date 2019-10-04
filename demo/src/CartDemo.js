@@ -2,11 +2,11 @@ import React from 'react';
 import { Cart, setupCartAxiosMock } from '../../src';
 import Cookies from 'js-cookie';
 
-// Cookies.set('jwtSession', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJjYXJ0VWlkIjoiOGMyNzU2YjItZjAxOC00YzI3LWEwMjUtYzMxZmNhN2U0ODJiIn0.WDXbbj84bUH7zGVNEEeSK1VwuEfBY8Lt6stiEr6Yhek');
+Cookies.set('jwtSession', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjYXJ0VWlkIjoiY3J0X3lnNzIiLCJzYWxlSWQiOiIxMjg3IiwiaXNzIjoiZGV2IiwiZXhwIjoxNTcwMDkzNzAzLCJzdWIiOiIiLCJhdWQiOiIifQ.Zsv6H06zTGDxSyG86R6AK-cxi3_63qz3c6-pjrCwXBw');
 
 export default class CheckoutDemo extends React.Component {
   componentWillMount() {
-    setupCartAxiosMock();
+    // setupCartAxiosMock();
   }
 
   render() {
