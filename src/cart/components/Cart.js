@@ -41,10 +41,8 @@ export class Cart extends React.Component {
 }
 
 const CartFooter = () => (
-    <Row className="cart-widget__footer">
-        <Col sm={12} className="text-center">
-            <p>Shipping, taxes, and discounts are calculated at checkout.</p>
-            <a className="btn btn-secondary checkout" href="/checkout">Checkout</a>
-        </Col>
-    </Row>
+    <div className="cart-widget__footer text-center">
+        <p>Shipping, taxes, and discounts are calculated at checkout.</p>
+        <a className="btn btn-secondary checkout" href="/checkout">Checkout</a>
+    </div>
 );
