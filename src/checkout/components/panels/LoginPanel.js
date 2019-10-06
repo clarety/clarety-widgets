@@ -171,10 +171,12 @@ class _LoginPanel extends BasePanel {
 
     return (
       <PanelContainer layout={layout}>
-        {layout === 'stack'
-          ? <FormattedMessage id="loginPanel.editTitle" tagName="h2" />
-          : <EditPanelHeader number="1" title="Contact Details" />
-        }
+        <PanelHeader
+          layout={layout}
+          number="1"
+          title="Contact Details"
+          intlId="loginPanel.editTitle"
+        />
 
         <PanelBody layout={layout} isBusy={isBusy}>
           {this.renderForm()}
@@ -374,6 +376,16 @@ const PanelContainer = ({ layout, children }) => {
   return children;
 };
 
+const PanelHeader = ({ layout, title, number, intlId }) => {
+  if (layout === 'stack') {
+    return <StackPanelHeader intlId={intlId} />;
+  }
+
+  if (layout === 'accordian') {
+    return <AccordianPanelHeader number={number} title={title} />;
+  }
+};
+
 const PanelBody = ({ layout, isBusy, children }) => {
   if (layout === 'stack') {
     return <div className="panel-body">{children}</div>;
@@ -385,3 +397,11 @@ const PanelBody = ({ layout, isBusy, children }) => {
 
   return children;
 };
+
+const StackPanelHeader = ({ intlId }) => (
+  <FormattedMessage id={intlId} tagName="h2" />
+);
+
+const AccordianPanelHeader = ({ number, title }) => (
+  <EditPanelHeader number={number} title={title} />
+);
