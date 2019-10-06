@@ -59,6 +59,7 @@ class _PanelManager extends React.Component {
 
           status={panel.status}
           layout={layout}
+          settings={panel.settings}
           {...panel.data}
 
           nextPanel={() => this.nextPanel(index)}

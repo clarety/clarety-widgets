@@ -31,20 +31,6 @@ export const setConfirmPageUrl = confirmPageUrl => ({
   },
 });
 
-export const setAllowGuest = allowGuest => ({
-  type: types.updateSettings,
-  settings: {
-    allowGuest: allowGuest,
-  },
-});
-
-export const setCreateAccountFields = fields => ({
-  type: types.updateSettings,
-  settings: {
-    createAccountFields: fields,
-  },
-});
-
 
 const fetchSettingsRequest = endpoint => ({
   type: types.fetchSettingsRequest,

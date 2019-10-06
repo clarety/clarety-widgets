@@ -5,7 +5,6 @@ import { Container, Col, Form } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { statuses, login, logout } from 'shared/actions';
-import { getSetting } from 'shared/selectors';
 import { setFormData, resetFormData } from 'form/actions';
 import { BasePanel, TextInput, EmailInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
@@ -26,7 +25,7 @@ class _LoginPanel extends BasePanel {
   onPressCheckEmail = async event => {
     event.preventDefault();
 
-    const { hasAccount, allowGuest, resetFormData } = this.props;
+    const { hasAccount, settings, resetFormData } = this.props;
     const { email } = this.state.formData;
 
     if (this.validate()) {
@@ -35,7 +34,7 @@ class _LoginPanel extends BasePanel {
       if (emailStatus === 'not-checked') this.setMode('check-email');
 
       if (emailStatus === 'no-account') {
-        if (allowGuest) {
+        if (settings.allowGuest) {
           this.setMode('no-account');
         } else {
           this.setMode('create-account');
@@ -261,7 +260,7 @@ class _LoginPanel extends BasePanel {
   }
 
   renderCreateAccountForm() {
-    const fields = this.props.createAccountFields;
+    const { settings } = this.props;
 
     return (
       <FormContext.Provider value={this.state}>
@@ -269,23 +268,19 @@ class _LoginPanel extends BasePanel {
 
           <p>Please enter your details.</p>
 
-          {fields.includes('email') &&
-            <Form.Row>
-              <Col>
-                <EmailInput field="email" placeholder="Email *" />
-              </Col>
-            </Form.Row>
-          }
+          <Form.Row>
+            <Col>
+              <EmailInput field="email" placeholder="Email *" />
+            </Col>
+          </Form.Row>
 
-          {fields.includes('password') &&
-            <Form.Row>
-              <Col>
-                <TextInput field="password" type="password" placeholder="Password *" />
-              </Col>
-            </Form.Row>
-          }
+          <Form.Row>
+            <Col>
+              <TextInput field="password" type="password" placeholder="Password *" />
+            </Col>
+          </Form.Row>
 
-          {fields.includes('firstName') &&
+          {settings.showFirstName &&
             <Form.Row>
               <Col>
                 <TextInput field="firstName" placeholder="First Name *" />
@@ -293,7 +288,7 @@ class _LoginPanel extends BasePanel {
             </Form.Row>
           }
 
-          {fields.includes('lastName') &&
+          {settings.showLastName &&
             <Form.Row>
               <Col>
                 <TextInput field="lastName" placeholder="Last Name *" />
@@ -339,8 +334,6 @@ class _LoginPanel extends BasePanel {
 const mapStateToProps = state => {
   return {
     isBusy: state.status === statuses.busy,
-    allowGuest: getSetting(state, 'allowGuest'),
-    createAccountFields: getSetting(state, 'createAccountFields'),
     customer: state.cart.customer,
     errors: state.errors,
   };

@@ -21,7 +21,8 @@ function setPanels(state, action) {
     component: panel.component || null,
     status: panel.status || 'wait',
     isValid: false,
-    data: {},
+    settings: panel.settings || {},
+    data: panel.data || {},
   }));
 }
 
@@ -33,6 +34,7 @@ function insertPanels(state, action) {
     component: panel.component || null,
     status: panel.status || 'wait',
     isValid: panel.isValid || false,
+    settings: panel.settings || {},
     data: panel.data || {},
   }));
 
