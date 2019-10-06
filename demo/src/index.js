@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
+import Cookies from 'js-cookie';
 import { Config } from '../../src';
 import SubscribeDemo from './SubscribeDemo';
 import DonatePageDemo from './DonatePageDemo';
@@ -15,6 +16,9 @@ Config.init({
   storeId: 0,
   seriesId: 0,
 });
+
+// Mock JWT session.
+Cookies.set('jwtSession', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJjYXJ0VWlkIjoiOGMyNzU2YjItZjAxOC00YzI3LWEwMjUtYzMxZmNhN2U0ODJiIn0.WDXbbj84bUH7zGVNEEeSK1VwuEfBY8Lt6stiEr6Yhek');
 
 const Demo = () => {
   const url = window.location.href;
