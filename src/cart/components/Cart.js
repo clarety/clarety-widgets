@@ -2,9 +2,8 @@ import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider} from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
-import { Col, Row } from "react-bootstrap";
 import { ClaretyApi } from 'clarety-utils';
-import { getJwtSession } from 'shared/utils';
+import { getJwtSession, getPath } from 'shared/utils';
 import { CartHeader, CartSummary } from "cart/components";
 import { cartReducer } from 'cart/reducers';
 import { fetchItems } from "cart/actions";
@@ -40,9 +39,13 @@ export class Cart extends React.Component {
     }
 }
 
-const CartFooter = () => (
-    <div className="cart-widget__footer text-center">
-        <p>Shipping, taxes, and discounts are calculated at checkout.</p>
-        <a className="btn btn-secondary checkout" href="/checkout">Checkout</a>
-    </div>
-);
+const CartFooter = () => {
+    const checkoutUrl = getPath('checkout');
+
+    return (
+        <div className="cart-widget__footer text-center">
+            <p>Shipping, taxes, and discounts are calculated at checkout.</p>
+            <a className="btn btn-secondary checkout" href={checkoutUrl}>Checkout</a>
+        </div>
+    );
+};
