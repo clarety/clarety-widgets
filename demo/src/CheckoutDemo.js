@@ -1,7 +1,28 @@
 import React from 'react';
 import { Checkout, setupCheckoutAxiosMock, withOverrides } from '../../src';
+import '../../src/checkout/style.scss';
 
-const App = withOverrides(Checkout, {});
+const CheckoutApp = withOverrides(Checkout, {});
+
+CheckoutApp.setPanels([
+  {
+    component: 'LoginPanel',
+    status: 'edit',
+    settings: {
+      allowGuest: true,
+      createAccount: false,
+    },
+  },
+  { component: 'PersonalDetailsPanel' },
+  {
+    component: 'AddressPanel',
+    settings: {
+      addressType: 'international',
+    },
+  },
+  // { component: 'ShippingOptionsPanel' },
+  { component: 'PaymentDetailsPanel' },
+]);
 
 export default class CheckoutDemo extends React.Component {
   componentWillMount() {
@@ -11,7 +32,7 @@ export default class CheckoutDemo extends React.Component {
   render() {
     return (
       <div className="checkout">
-        <App />
+        <CheckoutApp />
       </div>
     );
   }

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { setPanelStatus, resetAllPanels } from 'shared/actions';
 import { OverrideContext } from 'shared/utils';
-import { LoginPanel, PersonalDetailsPanel, ShippingDetailsPanel, ShippingOptionsPanel, PaymentDetailsPanel } from 'checkout/components';
+import { LoginPanel, PersonalDetailsPanel, AddressPanel, ShippingOptionsPanel, PaymentDetailsPanel } from 'checkout/components';
 import { ScrollIntoView, EventPanel, QtysPanel, NamesPanel, DetailsPanel, TeamPanel, DonatePanel, ReviewPanel } from 'registrations/components';
 
 class _PanelManager extends React.Component {
@@ -75,7 +75,7 @@ class _PanelManager extends React.Component {
       // Checkout panels
       case 'LoginPanel':           return this.context.LoginPanel           || LoginPanel;
       case 'PersonalDetailsPanel': return this.context.PersonalDetailsPanel || PersonalDetailsPanel;
-      case 'ShippingDetailsPanel': return this.context.ShippingDetailsPanel || ShippingDetailsPanel;
+      case 'AddressPanel': return this.context.AddressPanel || AddressPanel;
       case 'ShippingOptionsPanel': return this.context.ShippingOptionsPanel || ShippingOptionsPanel;
       case 'PaymentDetailsPanel':  return this.context.PaymentDetailsPanel  || PaymentDetailsPanel;
 

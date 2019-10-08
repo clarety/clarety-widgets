@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { statuses, panels, invalidatePanel } from 'shared/actions';
+import { statuses, invalidatePanel } from 'shared/actions';
 import { setFormData } from 'form/actions';
 import { BasePanel, TextInput, PureCheckboxInput, StateInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { createOrUpdateCustomer, fetchShippingOptions } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
-class _ShippingDetailsPanel extends BasePanel {
+class _AddressPanel extends BasePanel {
   onPressContinue = async event => {
     event.preventDefault();
 
@@ -23,6 +23,7 @@ class _ShippingDetailsPanel extends BasePanel {
       
       if (this.state.billingIsSameAsShipping) {
         formData['customer.billing.address1'] = formData['customer.delivery.address1'];
+        formData['customer.billing.address2'] = formData['customer.delivery.address2'];
         formData['customer.billing.suburb']   = formData['customer.delivery.suburb'];
         formData['customer.billing.state']    = formData['customer.delivery.state'];
         formData['customer.billing.postcode'] = formData['customer.delivery.postcode'];
@@ -80,11 +81,13 @@ class _ShippingDetailsPanel extends BasePanel {
     this.setState({
       formData: {
         'customer.delivery.address1': customer.delivery.address1,
+        'customer.delivery.address2': customer.delivery.address2,
         'customer.delivery.suburb':   customer.delivery.suburb,
         'customer.delivery.state':    customer.delivery.state,
         'customer.delivery.postcode': customer.delivery.postcode,
 
         'customer.billing.address1':  customer.billing.address1,
+        'customer.billing.address2':  customer.billing.address2,
         'customer.billing.suburb':    customer.billing.suburb,
         'customer.billing.state':     customer.billing.state,
         'customer.billing.postcode':  customer.billing.postcode,
@@ -135,6 +138,50 @@ class _ShippingDetailsPanel extends BasePanel {
   }
 
   renderAddressForm(title, fieldPrefix) {
+    const { settings } = this.props;
+
+    switch (settings.addressType) {
+      case 'international': return this.renderInternationalAddressForm(title, fieldPrefix);
+      case 'australia':     return this.renderAustralianAddressForm(title, fieldPrefix);
+      default:              return this.renderAustralianAddressForm(title, fieldPrefix);
+    }
+  }
+
+  renderInternationalAddressForm(title, fieldPrefix) {
+    return (
+      <React.Fragment>
+        <h5>{title}</h5>
+        <Form.Row>
+          <Col>
+            <TextInput field={`${fieldPrefix}.address1`} placeholder="Address 1 *" />
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col>
+            <TextInput field={`${fieldPrefix}.address2`} placeholder="Address 2" />
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col>
+            <TextInput field={`${fieldPrefix}.suburb`} placeholder="Suburb *" />
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col>
+            <TextInput field={`${fieldPrefix}.state`} placeholder="City *" />
+          </Col>
+          <Col>
+            <TextInput field={`${fieldPrefix}.postcode`} placeholder="Postcode *" type="number" />
+          </Col>
+        </Form.Row>
+      </React.Fragment>
+    );
+  }
+
+  renderAustralianAddressForm(title, fieldPrefix) {
     return (
       <React.Fragment>
         <h5>{title}</h5>
@@ -194,4 +241,4 @@ const actions = {
   invalidatePanel: invalidatePanel,
 };
 
-export const ShippingDetailsPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_ShippingDetailsPanel);
+export const AddressPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_AddressPanel);

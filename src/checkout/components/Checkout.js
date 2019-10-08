@@ -10,20 +10,16 @@ import { getJwtSession } from 'shared/utils';
 import { fetchCart } from 'checkout/actions';
 import { rootReducer } from 'checkout/reducers';
 import { CartSummary } from 'checkout/components';
-import 'checkout/style.scss';
+// import 'checkout/style.scss';
 
 const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
 
-store.dispatch(setPanels([
-  { component: 'LoginPanel', status: 'edit' },
-  { component: 'PersonalDetailsPanel' },
-  { component: 'ShippingDetailsPanel' },
-  { component: 'ShippingOptionsPanel' },
-  { component: 'PaymentDetailsPanel' },
-]));
-
 export class Checkout extends React.Component {
+  static setPanels(panels) {
+    store.dispatch(setPanels(panels));
+  }
+
   componentDidMount() {
     const jwtSession = getJwtSession();
     if (jwtSession) {

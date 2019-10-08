@@ -16,10 +16,10 @@ export * from './inputs/TextInput';
 export * from './misc/panel-headers';
 
 export * from './panels/BasePanel';
+export * from './panels/AddressPanel';
 export * from './panels/LoginPanel';
 export * from './panels/PaymentDetailsPanel';
 export * from './panels/PersonalDetailsPanel';
-export * from './panels/ShippingDetailsPanel';
 export * from './panels/ShippingOptionsPanel';
 
 export * from './Checkout';
