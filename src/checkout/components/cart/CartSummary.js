@@ -37,7 +37,7 @@ export const CartSummary = connect(mapStateToProps, actions)(_CartSummary);
 
 const CartTotals = ({ summary }) => (
   <div className="cart-totals">
-    <TotalLine label="Subtotal" value={summary.subtotal} />
+    <TotalLine label="Subtotal" value={summary.subTotal} />
     <TotalLine label="Shipping" value={summary.shipping} fallback="TBD" />
     <TotalLine label="Discount Code" value={summary.discount} />
     <hr />
