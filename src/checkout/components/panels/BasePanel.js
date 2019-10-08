@@ -12,6 +12,16 @@ export class BasePanel extends React.Component {
     };
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.status === 'wait' && this.props.status === 'edit') {
+      this.onShowPanel();
+    }
+  }
+
+  onShowPanel() {
+    // Override in subclass.
+  }
+
   onPressEdit = () => {
     this.props.editPanel();
   };

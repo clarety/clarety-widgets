@@ -7,7 +7,7 @@ import { statuses, invalidatePanel } from 'shared/actions';
 import { setFormData } from 'form/actions';
 import { BasePanel, TextInput, PureCheckboxInput, StateInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { createOrUpdateCustomer, fetchShippingOptions } from 'checkout/actions';
+import { createOrUpdateCustomer } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
 class _AddressPanel extends BasePanel {
@@ -15,7 +15,7 @@ class _AddressPanel extends BasePanel {
     event.preventDefault();
 
     const { invalidatePanel, setFormData } = this.props;
-    const { createOrUpdateCustomer, fetchShippingOptions, nextPanel } = this.props;
+    const { createOrUpdateCustomer, nextPanel } = this.props;
 
     if (this.validate()) {
       const formData = { ...this.state.formData };
@@ -34,9 +34,6 @@ class _AddressPanel extends BasePanel {
 
       const didCreateOrUpdate = await createOrUpdateCustomer();
       if (!didCreateOrUpdate) return;
-
-      const didFetch = await fetchShippingOptions();
-      if (!didFetch) return;
 
       nextPanel();
     }
@@ -66,6 +63,8 @@ class _AddressPanel extends BasePanel {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    super.componentDidUpdate(prevProps, prevState);
+
     if (this.props.customer !== prevProps.customer) {
       this.prefillCustomerData(this.props.customer);
     }
@@ -237,7 +236,6 @@ const mapStateToProps = state => {
 const actions = {
   setFormData: setFormData,
   createOrUpdateCustomer: createOrUpdateCustomer,
-  fetchShippingOptions: fetchShippingOptions,
   invalidatePanel: invalidatePanel,
 };
 

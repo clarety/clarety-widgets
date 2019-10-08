@@ -16,7 +16,7 @@ export const fetchPaymentMethods = () => {
 
     dispatch(fetchPaymentMethodsRequest());
 
-    const results = await ClaretyApi.get(`carts/${cart.uid}/payment-methods/`);
+    const results = await ClaretyApi.get(`carts/${cart.cartUid}/payment-methods/`);
 
     if (!results) {
       dispatch(fetchPaymentMethodsFailure());
@@ -54,7 +54,7 @@ export const makePayment = (paymentData, paymentMethod) => {
 
     dispatch(makePaymentRequest(paymentData));
 
-    const results = await ClaretyApi.post(`carts/${cart.uid}/payments/`);
+    const results = await ClaretyApi.post(`carts/${cart.cartUid}/payments/`);
     const result = results[0];
 
     if (result.status === 'error') {

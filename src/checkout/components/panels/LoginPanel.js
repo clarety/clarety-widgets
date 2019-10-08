@@ -121,6 +121,8 @@ class _LoginPanel extends BasePanel {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    super.componentDidUpdate(prevProps, prevState);
+
     // Check if email has been modified, and reset status.
     if (this.state.formData.email !== prevState.formData.email) {
       this.setMode('check-email');

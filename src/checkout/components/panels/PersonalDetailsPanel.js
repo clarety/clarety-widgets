@@ -35,7 +35,9 @@ class _PersonalDetailsPanel extends BasePanel {
     return errors.length === 0;
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
+    super.componentDidUpdate(prevProps, prevState);
+
     if (this.props.customer !== prevProps.customer) {
       this.prefillCustomerData(this.props.customer);
     }

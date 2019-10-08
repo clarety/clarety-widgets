@@ -21,8 +21,8 @@ export const fetchShippingOptions = () => {
   return async (dispatch, getState) => {
     const { cart } = getState();
 
-    dispatch(fetchShippingOptionsRequest(cart.uid));
-    const results = await ClaretyApi.get(`carts/${cart.uid}/shipping-options/`);
+    dispatch(fetchShippingOptionsRequest(cart.cartUid));
+    const results = await ClaretyApi.get(`carts/${cart.cartUid}/shipping-options/`);
 
     if (!results) {
       dispatch(fetchShippingOptionsFailure());
@@ -42,7 +42,7 @@ export const updateSale = () => {
 
     dispatch(updateSaleRequest(postData.sale));
 
-    const results = await ClaretyApi.put(`carts/${cart.uid}/sale/`, postData.sale);
+    const results = await ClaretyApi.put(`carts/${cart.cartUid}/sale/`, postData.sale);
     const result = results[0];
 
     if (result.status === 'error') {
@@ -59,7 +59,7 @@ export const applyPromoCode = promoCode => {
 
     dispatch(applyPromoCodeRequest(promoCode));
 
-    const results = await ClaretyApi.put(`carts/${cart.uid}/promo-codes/`);
+    const results = await ClaretyApi.put(`carts/${cart.cartUid}/promo-codes/`);
     const result = results[0];
 
     if (result.status === 'error') {

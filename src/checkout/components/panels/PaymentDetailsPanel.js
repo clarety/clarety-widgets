@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Form, Col } from 'react-bootstrap';
+import { Form, Col, Spinner } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { statuses } from 'shared/actions';
 import { BasePanel, TextInput, CardNumberInput, CcvInput, ExpiryInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { makePayment, paymentMethods } from 'checkout/actions';
+import { paymentMethods, fetchPaymentMethods, makePayment } from 'checkout/actions';
 import { getPaymentMethod } from 'checkout/selectors';
 import { FormContext } from 'checkout/utils';
 
@@ -20,6 +20,10 @@ class _PaymentDetailsPanel extends BasePanel {
       makePayment(this.state.formData, paymentMethod);
     }
   };
+
+  onShowPanel() {
+    this.props.fetchPaymentMethods();
+  }
 
   validate() {
     const { paymentMethod } = this.props;
@@ -46,7 +50,9 @@ class _PaymentDetailsPanel extends BasePanel {
     this.validateCcv('ccv', errors);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
+    super.componentDidUpdate(prevProps, prevState);
+
     const { errors } = this.props;
     if (prevProps.errors !== errors) {
       this.setState({ errors });
@@ -62,23 +68,42 @@ class _PaymentDetailsPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { isBusy, index } = this.props;
+    const { index, paymentMethod } = this.props;
 
     return (
       <div className="panel">
         <EditPanelHeader number={index + 1} title="Payment Details" />
 
-        <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
-          <FormContext.Provider value={this.state}>
-            <Form onSubmit={this.onPressPayNow}>
-              {this.renderPaymentMethodFields()}
+        {paymentMethod
+          ? this.renderForm()
+          : this.renderSpinner()
+        }
+      </div>
+    );
+  }
 
-              <div className="text-right mt-3">
-                <Button title="Pay Now" type="submit" isBusy={isBusy} />
-              </div>
-            </Form>
-          </FormContext.Provider>
-        </BlockUi>
+  renderForm() {
+    const { isBusy } = this.props;
+    
+    return (
+      <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
+        <FormContext.Provider value={this.state}>
+          <Form onSubmit={this.onPressPayNow}>
+            {this.renderPaymentMethodFields()}
+
+            <div className="text-right mt-3">
+              <Button title="Pay Now" type="submit" isBusy={isBusy} />
+            </div>
+          </Form>
+        </FormContext.Provider>
+      </BlockUi>
+    );
+  }
+
+  renderSpinner() {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100px' }}>
+        <Spinner animation="border" />
       </div>
     );
   }
@@ -147,6 +172,7 @@ const mapStateToProps = state => {
 };
 
 const actions = {
+  fetchPaymentMethods: fetchPaymentMethods,
   makePayment: makePayment,
 };
 

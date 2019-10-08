@@ -1,24 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Form } from 'react-bootstrap';
+import { Form, Spinner } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { statuses } from 'shared/actions';
 import { setFormData } from 'form/actions';
 import { BasePanel, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { updateSale, fetchPaymentMethods } from 'checkout/actions';
+import { updateSale, fetchShippingOptions } from 'checkout/actions';
 import { hasSelectedShippingOption, getSelectedShippingOptionLabel } from 'checkout/selectors';
 import { currency } from 'shared/utils';
 
 class _ShippingOptionsPanel extends BasePanel {
   onPressContinue = async () => {
-    const { canContinue, fetchPaymentMethods, nextPanel } = this.props;
+    const { canContinue, nextPanel } = this.props;
     if (!canContinue) return;
-
-    const didFetch = await fetchPaymentMethods();
-    if (!didFetch) return;
-
     nextPanel();
   };
 
@@ -26,6 +22,10 @@ class _ShippingOptionsPanel extends BasePanel {
     this.props.setFormData({ 'sale.shippingOption': uid });
     this.props.updateSale(uid);
   };
+
+  onShowPanel() {
+    this.props.fetchShippingOptions();
+  }
 
   renderWait() {
     const { index } = this.props;
@@ -35,25 +35,36 @@ class _ShippingOptionsPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { shippingOptions, canContinue, isBusy, index } = this.props;
+    const { shippingOptions, index } = this.props;
 
     return (
       <div className="panel">
         <EditPanelHeader number={index + 1} title="Shipping Options" />
 
-        <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
-          {shippingOptions && shippingOptions.map(this.renderShippingOption)}
-
-          <div className="text-right mt-3">
-            <Button
-              title="Continue"
-              onClick={this.onPressContinue}
-              isBusy={isBusy}
-              disabled={!canContinue}
-            />
-          </div>
-        </BlockUi>
+        {shippingOptions
+          ? this.renderForm()
+          : this.renderSpinner()
+        }
       </div>
+    );
+  }
+
+  renderForm() {
+    const { shippingOptions, canContinue, isBusy } = this.props;
+
+    return (
+      <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
+        {shippingOptions && shippingOptions.map(this.renderShippingOption)}
+
+        <div className="text-right mt-3">
+          <Button
+            title="Continue"
+            onClick={this.onPressContinue}
+            isBusy={isBusy}
+            disabled={!canContinue}
+          />
+        </div>
+      </BlockUi>
     );
   }
 
@@ -76,6 +87,14 @@ class _ShippingOptionsPanel extends BasePanel {
       </Form.Check>
     );
   };
+
+  renderSpinner() {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100px' }}>
+        <Spinner animation="border" />
+      </div>
+    );
+  }
 
   renderDone() {
     const { selectedOptionName, index } = this.props;
@@ -101,9 +120,9 @@ const mapStateToProps = state => {
 };
 
 const actions = {
+  fetchShippingOptions: fetchShippingOptions,
   setFormData: setFormData,
   updateSale: updateSale,
-  fetchPaymentMethods: fetchPaymentMethods,
 };
 
 export const ShippingOptionsPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_ShippingOptionsPanel);
