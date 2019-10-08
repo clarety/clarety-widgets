@@ -5,6 +5,7 @@ import { Container, Col, Form } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { statuses, login, logout } from 'shared/actions';
+import { parseNestedElements } from 'shared/utils';
 import { setFormData, resetFormData } from 'form/actions';
 import { BasePanel, TextInput, EmailInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
@@ -75,17 +76,21 @@ class _LoginPanel extends BasePanel {
     this.setMode('no-account');
   }
 
-  onPressCreateAccount = event => {
+  onPressCreateAccount = async (event) => {
     event.preventDefault();
 
-    const { setFormData, nextPanel } = this.props;
-    const { email, password } = this.state.formData;
+    const { setFormData, nextPanel, settings } = this.props;
 
     if (this.validate()) {
-      setFormData({
-        'customer.email': email,
-        'customer.password': password,
-      });
+      const createAccountFormData = this.getCreateAccountFormData();
+      setFormData(createAccountFormData);
+
+      if (settings.createAccount) {
+        const { customer } = parseNestedElements(createAccountFormData);
+        // TODO: setup 'create account' action in registrations? what if this runs in the checkout?
+        // await createAccount(customer);
+      }
+
       nextPanel();
     }
   };
@@ -131,21 +136,40 @@ class _LoginPanel extends BasePanel {
     const errors = [];
 
     const { mode } = this.state;
+    const { settings } = this.props;
 
     if (mode === 'check-email') {
       this.validateEmail('email', errors);
     }
 
     if (mode === 'create-account') {
+      this.validateEmail('email', errors);
       this.validatePassword('password', errors);
+      if (settings.showFirstName) this.validateRequired('firstName', errors);
+      if (settings.showLastName) this.validateRequired('lastName', errors);
     }
 
     if (mode === 'login') {
+      this.validateEmail('email', errors);
       this.validateRequired('password', errors);
     }
 
     this.setState({ errors });
     return errors.length === 0;
+  }
+
+  getCreateAccountFormData() {
+    const { settings } = this.props;
+
+    const formData = {
+      'customer.email':    this.state.formData.email,
+      'customer.password': this.state.formData.password,
+    };
+
+    if (settings.showFirstName) formData['customer.firstName'] = this.state.formData.firstName;
+    if (settings.showLastName)  formData['customer.lastName']  = this.state.formData.lastName;
+
+    return formData;
   }
 
   reset() {
