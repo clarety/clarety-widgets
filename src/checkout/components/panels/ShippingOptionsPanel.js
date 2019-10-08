@@ -28,17 +28,18 @@ class _ShippingOptionsPanel extends BasePanel {
   };
 
   renderWait() {
+    const { index } = this.props;
     return (
-      <WaitPanelHeader number="4" title="Shipping Options" />
+      <WaitPanelHeader number={index + 1} title="Shipping Options" />
     );
   }
 
   renderEdit() {
-    const { shippingOptions, canContinue, isBusy } = this.props;
+    const { shippingOptions, canContinue, isBusy, index } = this.props;
 
     return (
       <div className="panel">
-        <EditPanelHeader number="4" title="Shipping Options" />
+        <EditPanelHeader number={index + 1} title="Shipping Options" />
 
         <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
           {shippingOptions && shippingOptions.map(this.renderShippingOption)}
@@ -77,11 +78,11 @@ class _ShippingOptionsPanel extends BasePanel {
   };
 
   renderDone() {
-    const { selectedOptionName } = this.props;
+    const { selectedOptionName, index } = this.props;
 
     return (
       <DonePanelHeader
-        number="4"
+        number={index + 1}
         title={selectedOptionName}
         onPressEdit={this.onPressEdit}
       />

@@ -54,17 +54,19 @@ class _PaymentDetailsPanel extends BasePanel {
   }
 
   renderWait() {
+    const { index } = this.props;
+
     return (
-      <WaitPanelHeader number="5" title="Payment Details" />
+      <WaitPanelHeader number={index + 1} title="Payment Details" />
     );
   }
 
   renderEdit() {
-    const { isBusy } = this.props;
+    const { isBusy, index } = this.props;
 
     return (
       <div className="panel">
-        <EditPanelHeader number="5" title="Payment Details" />
+        <EditPanelHeader number={index + 1} title="Payment Details" />
 
         <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
           <FormContext.Provider value={this.state}>
@@ -123,11 +125,12 @@ class _PaymentDetailsPanel extends BasePanel {
   }
 
   renderDone() {
+    const { index } = this.props;
     const cardNumber = this.state.formData['cardNumber'];
 
     return (
       <DonePanelHeader
-        number="5"
+        number={index + 1}
         title={cardNumber}
         onPressEdit={this.onPressEdit}
       />

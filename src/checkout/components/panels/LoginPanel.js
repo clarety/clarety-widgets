@@ -184,19 +184,21 @@ class _LoginPanel extends BasePanel {
   renderWait() {
     if (this.props.layout === 'stack') return null;
 
+    const { index } = this.props;
+
     return (
-      <WaitPanelHeader number="1" title="Contact Details" />
+      <WaitPanelHeader number={index + 1} title="Contact Details" />
     );
   }
 
   renderEdit() {
-    const { layout, isBusy } = this.props;
+    const { layout, isBusy, index } = this.props;
 
     return (
       <PanelContainer layout={layout}>
         <PanelHeader
           layout={layout}
-          number="1"
+          number={index + 1}
           title="Contact Details"
           intlId="loginPanel.editTitle"
         />
@@ -343,11 +345,12 @@ class _LoginPanel extends BasePanel {
   }
 
   renderDone() {
+    const { index } = this.props;
     const email = this.state.formData['email'];
 
     return (
       <DonePanelHeader
-        number="1"
+        number={index + 1}
         title={email}
         onPressEdit={this.onPressEdit}
       />

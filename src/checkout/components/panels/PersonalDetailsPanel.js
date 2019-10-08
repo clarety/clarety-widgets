@@ -83,17 +83,19 @@ class _PersonalDetailsPanel extends BasePanel {
   }
 
   renderWait() {
+    const { index } = this.props;
+    
     return (
-      <WaitPanelHeader number="2" title="Personal Details" />
+      <WaitPanelHeader number={index + 1} title="Personal Details" />
     );
   }
 
   renderEdit() {
-    const { isBusy } = this.props;
+    const { isBusy, index } = this.props;
 
     return (
       <div className="panel">
-        <EditPanelHeader number="2" title="Personal Details" />
+        <EditPanelHeader number={index + 1} title="Personal Details" />
         
         <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
           <FormContext.Provider value={this.state}>
@@ -152,6 +154,7 @@ class _PersonalDetailsPanel extends BasePanel {
   }
 
   renderDone() {
+    const { index } = this.props;
     const { formData } = this.state;
     const firstName = formData['customer.firstName'];
     const lastName = formData['customer.lastName'];
@@ -162,7 +165,7 @@ class _PersonalDetailsPanel extends BasePanel {
 
     return (
       <DonePanelHeader
-        number="2"
+        number={index + 1}
         title={title}
         onPressEdit={this.onPressEdit}
       />

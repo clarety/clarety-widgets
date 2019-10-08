@@ -8,20 +8,18 @@ CheckoutApp.setPanels([
   {
     component: 'LoginPanel',
     status: 'edit',
-    settings: {
-      allowGuest: true,
-      createAccount: false,
-    },
+    settings: { allowGuest: true, createAccount: false },
   },
-  { component: 'PersonalDetailsPanel' },
+  {
+    component: 'PersonalDetailsPanel',
+  },
   {
     component: 'AddressPanel',
-    settings: {
-      addressType: 'international',
-    },
+    settings: { addressType: 'international' },
   },
-  // { component: 'ShippingOptionsPanel' },
-  { component: 'PaymentDetailsPanel' },
+  {
+    component: 'PaymentDetailsPanel',
+  },
 ]);
 
 export default class CheckoutDemo extends React.Component {
