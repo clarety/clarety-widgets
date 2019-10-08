@@ -2,10 +2,6 @@ import { ClaretyApi } from 'clarety-utils';
 import { createStripeToken, parseStripeError } from 'donate/utils';
 import { types } from 'checkout/actions';
 
-export const paymentMethods = {
-  creditCard: 'credit-card',
-};
-
 export const gateways = {
   stripe: 'stripe',
 };

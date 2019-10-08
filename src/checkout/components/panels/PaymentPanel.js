@@ -6,7 +6,7 @@ import 'react-block-ui/style.css';
 import { statuses } from 'shared/actions';
 import { BasePanel, TextInput, CardNumberInput, CcvInput, ExpiryInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
-import { paymentMethods, fetchPaymentMethods, makePayment } from 'checkout/actions';
+import { fetchPaymentMethods, makePayment } from 'checkout/actions';
 import { getPaymentMethod } from 'checkout/selectors';
 import { FormContext } from 'checkout/utils';
 
@@ -30,8 +30,8 @@ class _PaymentPanel extends BasePanel {
 
     const errors = [];
 
-    switch (paymentMethod.method) {
-      case paymentMethods.creditCard:
+    switch (paymentMethod.type) {
+      case 'gatewaycc':
         this.validateCreditCardFields(errors);
         break;
       
@@ -111,8 +111,8 @@ class _PaymentPanel extends BasePanel {
   renderPaymentMethodFields() {
     const { paymentMethod } = this.props;
 
-    switch (paymentMethod.method) {
-      case paymentMethods.creditCard: return this.renderCreditCardFields();
+    switch (paymentMethod.type) {
+      case 'gatewaycc': return this.renderCreditCardFields();
       default: throw new Error(`[Clarety] unhandled payment method ${paymentMethod}`);
     }
   }
