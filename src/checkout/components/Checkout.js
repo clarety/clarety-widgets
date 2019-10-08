@@ -16,8 +16,10 @@ const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMidd
 export class Checkout extends React.Component {
   componentDidMount() {
     const jwtSession = getJwtSession();
-    ClaretyApi.setJwtSession(jwtSession.jwtString);
-    store.dispatch(fetchCart(jwtSession.cartUid));
+    if (jwtSession) {
+      ClaretyApi.setJwtSession(jwtSession.jwtString);
+      store.dispatch(fetchCart(jwtSession.cartUid));
+    }
   }
 
   render() {
