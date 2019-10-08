@@ -10,7 +10,7 @@ import { paymentMethods, fetchPaymentMethods, makePayment } from 'checkout/actio
 import { getPaymentMethod } from 'checkout/selectors';
 import { FormContext } from 'checkout/utils';
 
-class _PaymentDetailsPanel extends BasePanel {
+class _PaymentPanel extends BasePanel {
   onPressPayNow = event => {
     event.preventDefault();
 
@@ -176,4 +176,4 @@ const actions = {
   makePayment: makePayment,
 };
 
-export const PaymentDetailsPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_PaymentDetailsPanel);
+export const PaymentPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_PaymentPanel);

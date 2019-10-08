@@ -9,7 +9,7 @@ import { BasePanel, TextInput, PhoneInput, DobInput, Button } from 'checkout/com
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { FormContext } from 'checkout/utils';
 
-class _PersonalDetailsPanel extends BasePanel {
+class _CustomerPanel extends BasePanel {
   onPressContinue = event => {
     event.preventDefault();
 
@@ -187,4 +187,4 @@ const actions = {
   setFormData: setFormData,
 };
 
-export const PersonalDetailsPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_PersonalDetailsPanel);
+export const CustomerPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_CustomerPanel);

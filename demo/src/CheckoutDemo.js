@@ -11,14 +11,14 @@ CheckoutApp.setPanels([
     settings: { allowGuest: true, createAccount: false },
   },
   {
-    component: 'PersonalDetailsPanel',
+    component: 'CustomerPanel',
   },
   {
     component: 'AddressPanel',
     settings: { addressType: 'international' },
   },
   {
-    component: 'PaymentDetailsPanel',
+    component: 'PaymentPanel',
   },
 ]);
 

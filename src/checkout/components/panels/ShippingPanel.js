@@ -11,7 +11,7 @@ import { updateSale, fetchShippingOptions } from 'checkout/actions';
 import { hasSelectedShippingOption, getSelectedShippingOptionLabel } from 'checkout/selectors';
 import { currency } from 'shared/utils';
 
-class _ShippingOptionsPanel extends BasePanel {
+class _ShippingPanel extends BasePanel {
   onPressContinue = async () => {
     const { canContinue, nextPanel } = this.props;
     if (!canContinue) return;
@@ -125,4 +125,4 @@ const actions = {
   updateSale: updateSale,
 };
 
-export const ShippingOptionsPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_ShippingOptionsPanel);
+export const ShippingPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_ShippingPanel);

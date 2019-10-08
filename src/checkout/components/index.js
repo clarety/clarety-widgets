@@ -18,8 +18,8 @@ export * from './misc/panel-headers';
 export * from './panels/BasePanel';
 export * from './panels/AddressPanel';
 export * from './panels/LoginPanel';
-export * from './panels/PaymentDetailsPanel';
-export * from './panels/PersonalDetailsPanel';
-export * from './panels/ShippingOptionsPanel';
+export * from './panels/PaymentPanel';
+export * from './panels/CustomerPanel';
+export * from './panels/ShippingPanel';
 
 export * from './Checkout';

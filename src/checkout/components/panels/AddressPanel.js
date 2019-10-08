@@ -30,7 +30,7 @@ class _AddressPanel extends BasePanel {
       }
       setFormData(formData);
       
-      invalidatePanel({ component: 'ShippingOptionsPanel' });
+      invalidatePanel({ component: 'ShippingPanel' });
 
       const didCreateOrUpdate = await createOrUpdateCustomer();
       if (!didCreateOrUpdate) return;
