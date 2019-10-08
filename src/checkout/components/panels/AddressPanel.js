@@ -192,6 +192,12 @@ class _AddressPanel extends BasePanel {
 
         <Form.Row>
           <Col>
+            <TextInput field={`${fieldPrefix}.address2`} placeholder="Address 2" />
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col>
             <TextInput field={`${fieldPrefix}.suburb`} placeholder="Suburb *" />
           </Col>
         </Form.Row>
