@@ -16,10 +16,10 @@ export const panelManagerReducer = (state = initialState, action) => {
 };
 
 function setPanels(state, action) {
-  return action.panels.map(panel => ({
+  return action.panels.map((panel, index) => ({
     id: nextId(),
     component: panel.component || null,
-    status: panel.status || 'wait',
+    status: panel.status || (index == 0 ? 'edit' : 'wait'),
     isValid: false,
     settings: panel.settings || {},
     data: panel.data || {},

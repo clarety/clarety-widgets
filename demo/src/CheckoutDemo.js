@@ -7,11 +7,11 @@ const CheckoutApp = withOverrides(Checkout, {});
 CheckoutApp.setPanels([
   {
     component: 'LoginPanel',
-    status: 'edit',
     settings: { allowGuest: true, createAccount: false },
   },
   {
     component: 'CustomerPanel',
+    settings: {},
   },
   {
     component: 'AddressPanel',
@@ -19,6 +19,7 @@ CheckoutApp.setPanels([
   },
   {
     component: 'PaymentPanel',
+    settings: {},
   },
 ]);
 
