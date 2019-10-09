@@ -45,15 +45,15 @@ const CartTotals = ({ summary }) => (
   </div>
 );
 
-const TotalLine = ({ label, value, fallback }) => {
-  if (!value && !fallback) return null;
-
-  const displayValue = value ? currency(value) : fallback;
+const TotalLine = ({ label, value }) => {
+  if (value === undefined || value === null) {
+    return null;
+  }
 
   return (
     <Row as="dl">
       <dt className="col">{label}</dt>
-      <dd className="col text-right">{displayValue}</dd>
+      <dd className="col text-right">{currency(value)}</dd>
     </Row>
   );
 };

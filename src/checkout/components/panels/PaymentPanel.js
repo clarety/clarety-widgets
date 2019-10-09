@@ -11,21 +11,13 @@ import { getPaymentMethod } from 'checkout/selectors';
 import { FormContext } from 'checkout/utils';
 
 class _PaymentPanel extends BasePanel {
-  onPressPayNow = event => {
+  onPressPlaceOrder = event => {
     event.preventDefault();
 
     const { paymentMethod, makePayment } = this.props;
 
     if (this.validate()) {
-      const paymentData = {
-        type:             paymentMethod.type,
-        cardName:         this.state.formData.cardName,
-        cardNumber:       this.state.formData.cardNumber,
-        expiryMonth:      this.state.formData.expiryMonth,
-        expiryYear:       '20' + this.state.formData.expiryYear,
-        cardSecurityCode: this.state.formData.ccv,
-      };
-
+      const paymentData = this.getPaymentData();
       makePayment(paymentData, paymentMethod);
     }
   };
@@ -43,6 +35,9 @@ class _PaymentPanel extends BasePanel {
       case 'gatewaycc':
         this.validateCreditCardFields(errors);
         break;
+
+      case 'na':
+        break;
       
       default:
         throw new Error(`[Clarety] unhandled payment method ${paymentMethod}`);
@@ -57,6 +52,27 @@ class _PaymentPanel extends BasePanel {
     this.validateCardNumber('cardNumber', errors);
     this.validateCardExpiry('expiry', 'expiryMonth', 'expiryYear', errors);
     this.validateCcv('ccv', errors);
+  }
+
+  getPaymentData() {
+    const { paymentMethod } = this.props;
+
+    if (paymentMethod.type === 'gatewaycc') {
+      return {
+        type:             'gatewaycc',
+        cardName:         this.state.formData.cardName,
+        cardNumber:       this.state.formData.cardNumber,
+        expiryMonth:      this.state.formData.expiryMonth,
+        expiryYear:       '20' + this.state.formData.expiryYear,
+        cardSecurityCode: this.state.formData.ccv,
+      };
+    }
+
+    if (paymentMethod.type === 'na') {
+      return { type: 'na' };
+    }
+
+    throw new Error(`[Clarety] unhandled payment method ${paymentMethod}`);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -97,11 +113,11 @@ class _PaymentPanel extends BasePanel {
     return (
       <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
         <FormContext.Provider value={this.state}>
-          <Form onSubmit={this.onPressPayNow}>
+          <Form onSubmit={this.onPressPlaceOrder}>
             {this.renderPaymentMethodFields()}
 
             <div className="text-right mt-3">
-              <Button title="Pay Now" type="submit" isBusy={isBusy} />
+              <Button title="Place Order" type="submit" isBusy={isBusy} />
             </div>
           </Form>
         </FormContext.Provider>
@@ -122,7 +138,8 @@ class _PaymentPanel extends BasePanel {
 
     switch (paymentMethod.type) {
       case 'gatewaycc': return this.renderCreditCardFields();
-      
+      case 'na':        return null;
+
       default: throw new Error(`[Clarety] unhandled payment method ${paymentMethod}`);
     }
   }
