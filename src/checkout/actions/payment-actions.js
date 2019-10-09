@@ -1,4 +1,5 @@
 import { ClaretyApi } from 'clarety-utils';
+import { getPath } from 'shared/utils';
 import { createStripeToken, parseStripeError } from 'donate/utils';
 import { types } from 'checkout/actions';
 
@@ -26,7 +27,7 @@ export const fetchPaymentMethods = () => {
 
 export const makePayment = (paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
-    const { cart } = getState();
+    const { cart, settings } = getState();
 
     const { options } = paymentMethod;
 
@@ -50,14 +51,14 @@ export const makePayment = (paymentData, paymentMethod) => {
 
     dispatch(makePaymentRequest(paymentData));
 
-    const results = await ClaretyApi.post(`carts/${cart.cartUid}/payments/`);
+    const results = await ClaretyApi.post(`carts/${cart.cartUid}/payments/`, paymentData);
     const result = results[0];
 
-    if (result.status === 'error') {
+    if (result.status === 'error' || result.status === 'failed') {
       dispatch(makePaymentFailure(result));
     } else {
       // Redirect on success.
-      window.location.href = result.redirect;
+      window.location.href = getPath('shop-app-confirm');
     }
   };
 };

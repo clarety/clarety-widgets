@@ -20,6 +20,10 @@ export const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         cartUid: action.result.cartUid,
+        customer: {
+          ...state.customer,
+          customerUid: action.result.customerUid,
+        },
         sale: action.result.sale,
         items: action.result.items,
         summary: action.result.summary,

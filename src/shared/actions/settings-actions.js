@@ -31,6 +31,14 @@ export const setConfirmPageUrl = confirmPageUrl => ({
   },
 });
 
+export const setClientIds = ({ dev, prod }) => ({
+  type: types.updateSettings,
+  settings: {
+    devClientId: dev,
+    prodClientId: prod,
+  },
+});
+
 
 const fetchSettingsRequest = endpoint => ({
   type: types.fetchSettingsRequest,

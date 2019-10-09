@@ -30,13 +30,19 @@ class _PaymentPanel extends BasePanel {
 
     const errors = [];
 
+    // TODO: remove this once paymentMethod 'type' property works again.
+    if (paymentMethod.label === 'Credit Card') {
+      this.validateCreditCardFields(errors);
+    }
+
     switch (paymentMethod.type) {
       case 'gatewaycc':
         this.validateCreditCardFields(errors);
         break;
       
       default:
-        throw new Error(`[Clarety] unhandled payment method ${paymentMethod}`);
+        // TODO: uncomment once paymentMethod 'type' property works again.
+        // throw new Error(`[Clarety] unhandled payment method ${paymentMethod}`);
     }
 
     this.setState({ errors });
@@ -111,9 +117,16 @@ class _PaymentPanel extends BasePanel {
   renderPaymentMethodFields() {
     const { paymentMethod } = this.props;
 
+    // TODO: remove this once paymentMethod 'type' property works again.
+    if (paymentMethod.label === 'Credit Card') {
+      return this.renderCreditCardFields();
+    }
+
     switch (paymentMethod.type) {
       case 'gatewaycc': return this.renderCreditCardFields();
-      default: throw new Error(`[Clarety] unhandled payment method ${paymentMethod}`);
+
+      // TODO: uncomment once paymentMethod 'type' property works again.
+      // default: throw new Error(`[Clarety] unhandled payment method ${paymentMethod}`);
     }
   }
 

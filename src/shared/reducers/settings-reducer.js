@@ -1,8 +1,6 @@
 import { types } from 'shared/actions';
 
-export const initialState = {
-  createAccountFields: ['email', 'password'],
-};
+export const initialState = {};
 
 export const settingsReducer = (state = initialState, action) => {
   switch (action.type) {

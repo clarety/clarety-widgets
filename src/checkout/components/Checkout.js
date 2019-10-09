@@ -5,7 +5,7 @@ import thunkMiddleware from 'redux-thunk';
 import { Container, Row, Col } from 'react-bootstrap';
 import { ClaretyApi } from 'clarety-utils';
 import { PanelManager } from 'shared/components';
-import { setPanels } from 'shared/actions';
+import { setPanels, setClientIds } from 'shared/actions';
 import { getJwtSession } from 'shared/utils';
 import { fetchCart } from 'checkout/actions';
 import { rootReducer } from 'checkout/reducers';
@@ -18,6 +18,10 @@ const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMidd
 export class Checkout extends React.Component {
   static setPanels(panels) {
     store.dispatch(setPanels(panels));
+  }
+
+  static setClientIds({ dev, prod }) {
+    store.dispatch(setClientIds({ dev, prod }));
   }
 
   componentDidMount() {

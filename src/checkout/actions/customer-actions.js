@@ -47,7 +47,7 @@ export const fetchAuthCustomer = () => {
   return async (dispatch, getState) => {
     const { auth } = getState();
     const jwtData = jwtDecode(auth.jwt);
-    return await dispatch(fetchCustomer(jwtData.customerUid));
+    return await dispatch(fetchCustomer(jwtData.customer_uid));
   };
 };
 
@@ -55,7 +55,7 @@ export const createOrUpdateCustomer = () => {
   return async (dispatch, getState) => {
     const { cart } = getState();
 
-    if (cart.customer && cart.customer.uid) {
+    if (cart.customer && cart.customer.customerUid) {
       return await dispatch(updateCustomer());
     }
 
@@ -90,7 +90,7 @@ export const updateCustomer = () => {
 
     dispatch(updateCustomerRequest(customer));
 
-    const customerUid = cart.customer.uid;
+    const { customerUid } = cart.customer;
     let results = await ClaretyApi.put(`carts/${cart.cartUid}/customers/${customerUid}/`, customer);
     const result = results[0];
 

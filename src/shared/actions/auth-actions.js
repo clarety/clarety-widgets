@@ -1,10 +1,11 @@
 import { ClaretyApi } from 'clarety-utils';
 import { types } from 'shared/actions';
+import { getClientId } from 'shared/selectors';
 
 export const login = (email, password) => {
-  return async dispatch => {
-    // TODO: get client ID from settings.
-    const clientId = '82ee4a2479780256c9bf9b951f5d1cfb';
+  return async (dispatch, getState) => {
+    const state = getState();
+    const clientId = getClientId(state);
 
     // Login.
     dispatch(loginRequest(email, password));

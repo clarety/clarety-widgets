@@ -51,11 +51,13 @@ class _LoginPanel extends BasePanel {
   onPressLogin = async event => {
     event.preventDefault();
 
-    const { login, fetchAuthCustomer, nextPanel } = this.props;
+    const { login, fetchAuthCustomer, nextPanel, setFormData } = this.props;
     const { email, password } = this.state.formData;
 
     const didValidate = this.validate();
     if (!didValidate) return;
+
+    setFormData({ 'customer.email': email });
     
     const didLogin = await login(email, password);
     if (!didLogin) return;
@@ -97,9 +99,8 @@ class _LoginPanel extends BasePanel {
 
   onPressGuestCheckout = () => {
     const { setFormData, nextPanel } = this.props;
-    const { email } = this.state.formData;
 
-    setFormData({ 'customer.email': email });
+    setFormData({ 'customer.email': this.state.formData.email });
     nextPanel();
   };
 

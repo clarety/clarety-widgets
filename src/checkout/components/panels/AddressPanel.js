@@ -77,21 +77,30 @@ class _AddressPanel extends BasePanel {
   prefillCustomerData(customer) {
     if (!customer) return;
 
-    this.setState({
-      formData: {
-        'customer.delivery.address1': customer.delivery.address1,
-        'customer.delivery.address2': customer.delivery.address2,
-        'customer.delivery.suburb':   customer.delivery.suburb,
-        'customer.delivery.state':    customer.delivery.state,
-        'customer.delivery.postcode': customer.delivery.postcode,
+    const formData = {};
 
-        'customer.billing.address1':  customer.billing.address1,
-        'customer.billing.address2':  customer.billing.address2,
-        'customer.billing.suburb':    customer.billing.suburb,
-        'customer.billing.state':     customer.billing.state,
-        'customer.billing.postcode':  customer.billing.postcode,
-      }
-    });
+    if (customer.delivery) {
+      formData['customer.delivery.address1'] = customer.delivery.address1;
+      formData['customer.delivery.address2'] = customer.delivery.address2;
+      formData['customer.delivery.suburb']   = customer.delivery.suburb;
+      formData['customer.delivery.state']    = customer.delivery.state;
+      formData['customer.delivery.postcode'] = customer.delivery.postcode;
+    }
+
+    if (customer.billing) {
+      formData['customer.billing.address1'] = customer.billing.address1;
+      formData['customer.billing.address2'] = customer.billing.address2;
+      formData['customer.billing.suburb']   = customer.billing.suburb;
+      formData['customer.billing.state']    = customer.billing.state;
+      formData['customer.billing.postcode'] = customer.billing.postcode;
+    }
+
+    this.setState(prevState => ({
+      formData: {
+        ...prevState.formData,
+        ...formData,
+      },
+    }));
   }
 
   renderWait() {
