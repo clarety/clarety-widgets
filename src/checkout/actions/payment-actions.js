@@ -27,7 +27,7 @@ export const fetchPaymentMethods = () => {
 
 export const makePayment = (paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
-    const { cart, settings } = getState();
+    const { cart } = getState();
 
     const { options } = paymentMethod;
 

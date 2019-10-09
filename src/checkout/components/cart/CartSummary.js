@@ -38,10 +38,10 @@ export const CartSummary = connect(mapStateToProps, actions)(_CartSummary);
 const CartTotals = ({ summary }) => (
   <div className="cart-totals">
     <TotalLine label="Subtotal" value={summary.subTotal} />
-    <TotalLine label="Shipping" value={summary.shipping} fallback="TBD" />
+    <TotalLine label="Shipping" value={summary.shipping} />
     <TotalLine label="Discount Code" value={summary.discount} />
     <hr />
-    <TotalLine label="Total in AUD" value={summary.total} />
+    <TotalLine label="Total" value={summary.total} />
   </div>
 );
 

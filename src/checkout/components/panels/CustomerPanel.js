@@ -20,6 +20,8 @@ class _CustomerPanel extends BasePanel {
   };
 
   validate() {
+    const { settings } = this.props;
+
     const errors = [];
 
     this.validateRequired('customer.firstName', errors);
@@ -29,7 +31,7 @@ class _CustomerPanel extends BasePanel {
     this.validateRequired('customer.dateOfBirthMonth', errors);
     this.validateRequired('customer.dateOfBirthYear', errors);
 
-    this.validateRequired('sale.source', errors);
+    if (settings.showSource) this.validateRequired('sale.source', errors);
 
     this.setState({ errors });
     return errors.length === 0;
@@ -93,7 +95,7 @@ class _CustomerPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { isBusy, index } = this.props;
+    const { isBusy, index, settings } = this.props;
 
     return (
       <div className="panel">
@@ -139,11 +141,13 @@ class _CustomerPanel extends BasePanel {
                 yearField="customer.dateOfBirthYear"
               />
 
-              <Form.Row>
-                <Col>
-                  <TextInput field="sale.source" placeholder="How did you hear about us? *" />
-                </Col>
-              </Form.Row>
+              {settings.showSource &&
+                <Form.Row>
+                  <Col>
+                    <TextInput field="sale.source" placeholder="How did you hear about us? *" />
+                  </Col>
+                </Form.Row>
+              }
 
               <div className="text-right mt-3">
                 <Button title="Continue" type="submit" />
