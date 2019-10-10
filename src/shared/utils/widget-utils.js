@@ -50,5 +50,6 @@ export function scrollIntoView(component) {
 }
 
 export function currency(number) {
-  return `$${number.toFixed(2)}`;
+  const symbol = Config.get('currencySymbol') || '$';
+  return `${symbol}${number.toFixed(2)}`;
 }
