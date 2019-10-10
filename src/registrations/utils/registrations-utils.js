@@ -1,4 +1,5 @@
 import React from 'react';
+import { getElementOptions } from 'shared/utils';
 
 export const FormContext = React.createContext();
 
@@ -39,6 +40,19 @@ export function scrollIntoView(elementRef) {
 export const getExtendField = (columnKey, settings) => {
   return settings.extendForms[0].extendFields.find(field => field.columnKey === columnKey);
 };
+
+export function getGenderOptions(settings, ) {
+  let genderOptions = getElementOptions('customer.gender', settings);
+
+  if (genderOptions) {
+    return genderOptions;
+  } else {
+    return [
+      { value: 'Male',   label: 'Male' },
+      { value: 'Female', label: 'Female' },
+    ];
+  }
+}
 
 export function parseTeamErrors(result) {
   const errors = [];

@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Container, Button, Form, Row, Col, Alert } from 'react-bootstrap';
-import { getElementOptions } from 'shared/utils';
 import { BasePanel, TextInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput } from 'registrations/components';
 import { setDetails, setAdditionalData, setErrors, resetDetails, createRegistration } from 'registrations/actions';
+import { getGenderOptions } from 'registrations/utils';
 import { getEvent, getExtendFields } from 'registrations/selectors';
 import { FormContext, scrollIntoView, calcProgress } from 'registrations/utils';
 
@@ -210,8 +210,9 @@ export class _DetailsPanel extends BasePanel {
   }
 
   renderCustomerForm() {
-    let genderOptions = getElementOptions('customer.gender', this.props.settings);
-    genderOptions = this.translateOptions(genderOptions);
+    const genderOptions = this.translateOptions(
+      getGenderOptions(this.props.settings)
+    );
 
     return (
       <FormContext.Provider value={this.state.customerFormContext}>
