@@ -2,6 +2,11 @@ import { ClaretyApi } from 'clarety-utils';
 import { types } from 'shared/actions';
 import { getClientId } from 'shared/selectors';
 
+export const setAuth = (jwt) => ({
+  type: types.setAuth,
+  jwt: jwt,
+});
+
 export const login = (email, password) => {
   return async (dispatch, getState) => {
     const state = getState();
@@ -37,12 +42,12 @@ const loginRequest = (email, password) => ({
   password: password,
 });
 
-const loginSuccess = result => ({
+const loginSuccess = (result) => ({
   type: types.loginSuccess,
   result: result,
 });
 
-const loginFailure = result => ({
+const loginFailure = (result) => ({
   type: types.loginFailure,
   result: result,
 });
@@ -53,12 +58,12 @@ const logoutRequest = () => ({
   type: types.logoutRequest,
 });
 
-const logoutSuccess = result => ({
-  type: types.logoutSuccess,
+const logoutSuccess = (result) => ({
+type: types.logoutSuccess,
   result: result,
 });
 
-const logoutFailure = result => ({
+const logoutFailure = (result) => ({
   type: types.logoutFailure,
   result: result,
 });

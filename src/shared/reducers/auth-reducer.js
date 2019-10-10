@@ -6,6 +6,12 @@ const initialState = {
 
 export const authReducer = (state = initialState, action) => {
   switch (action.type) {
+    case types.setAuth:
+      return {
+        ...state,
+        jwt: action.jwt,
+      };
+
     case types.loginSuccess:
       return {
         ...state,

@@ -28,6 +28,8 @@ export const types = {
 
   // Auth Action Types
 
+  setAuth: 'SET_AUTH',
+
   loginRequest:  'LOGIN_REQUEST',
   loginSuccess:  'LOGIN_SUCCESS',
   loginFailure:  'LOGIN_FAILURE',

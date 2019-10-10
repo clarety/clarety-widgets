@@ -2,6 +2,7 @@ import { types } from 'checkout/actions';
 
 const initialState = {
   cartUid: null,
+  status: null,
   sale: null,
   items: null,
   customer: null,
@@ -17,13 +18,14 @@ export const cartReducer = (state = initialState, action) => {
     case types.fetchCartSuccess:
     case types.updateSaleSuccess:
     case types.applyPromoCodeSuccess:
+      // Only update customer if we don't already have one.
+      const customer = state.customer || { customerUid: action.result.customerUid };
+
       return {
         ...state,
         cartUid: action.result.cartUid,
-        customer: {
-          ...state.customer,
-          customerUid: action.result.customerUid,
-        },
+        status: action.result.status,
+        customer: customer,
         sale: action.result.sale,
         items: action.result.items,
         summary: action.result.summary,

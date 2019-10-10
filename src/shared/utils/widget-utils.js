@@ -16,7 +16,15 @@ export function renderWidget(elementId, component) {
 }
 
 export function getJwtSession() {
-  let jwtString = Cookies.get('jwtSession');
+  return getDecodedJwtCookie('jwtSession');
+}
+
+export function getJwtAccount() {
+  return getDecodedJwtCookie('jwtAccount');
+}
+
+function getDecodedJwtCookie(cookieName) {
+  let jwtString = Cookies.get(cookieName);
   if (!jwtString) {
     return null;
   };

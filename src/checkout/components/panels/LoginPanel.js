@@ -5,6 +5,7 @@ import { Container, Col, Form } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { statuses, login, logout } from 'shared/actions';
+import { getIsLoggedIn } from 'shared/selectors';
 import { parseNestedElements } from 'shared/utils';
 import { setFormData, resetFormData } from 'form/actions';
 import { BasePanel, TextInput, EmailInput, Button } from 'checkout/components';
@@ -16,7 +17,7 @@ class _LoginPanel extends BasePanel {
   constructor(props) {
     super(props);
 
-    this.state.mode = 'check-email';
+    this.state.mode = props.isLoggedIn ? 'logged-in' : 'check-email';
   }
 
   setMode(mode) {
@@ -118,7 +119,10 @@ class _LoginPanel extends BasePanel {
   }
 
   onPressStayLoggedIn = () => {
-    this.props.nextPanel();
+    const { setFormData, nextPanel, customer } = this.props;
+
+    setFormData({ 'customer.email': customer.email });
+    nextPanel();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -348,8 +352,9 @@ class _LoginPanel extends BasePanel {
   }
 
   renderDone() {
-    const { index } = this.props;
-    const email = this.state.formData['email'];
+    const { formData } = this.state;
+    const { index, isLoggedIn, customer } = this.props;
+    let email = isLoggedIn ? customer.email : formData['email'];
 
     return (
       <DonePanelHeader
@@ -364,6 +369,7 @@ class _LoginPanel extends BasePanel {
 const mapStateToProps = state => {
   return {
     isBusy: state.status === statuses.busy,
+    isLoggedIn: getIsLoggedIn(state),
     customer: state.cart.customer,
     errors: state.errors,
   };

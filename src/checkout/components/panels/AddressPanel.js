@@ -62,6 +62,12 @@ class _AddressPanel extends BasePanel {
     this.setState({ billingIsSameAsShipping: isChecked });
   }
 
+  componentDidMount() {
+    const { customer } = this.props;
+
+    if (customer) this.prefillCustomerData(customer);
+  }
+
   componentDidUpdate(prevProps, prevState) {
     super.componentDidUpdate(prevProps, prevState);
 

@@ -37,6 +37,12 @@ class _CustomerPanel extends BasePanel {
     return errors.length === 0;
   }
 
+  componentDidMount() {
+    const { customer } = this.props;
+
+    if (customer) this.prefillCustomerData(customer);
+  }
+
   componentDidUpdate(prevProps, prevState) {
     super.componentDidUpdate(prevProps, prevState);
 
