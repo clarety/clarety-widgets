@@ -363,14 +363,12 @@ const mapStateToProps = (state, ownProps) => {
     settings: state.settings,
     event: event,
     participant: participant,
+    participantCount: state.panelData.participants.length,
     extendFields: getExtendFields(state),
     eventDate: eventDate,
     minAge: Number(offer.minAgeOver),
     maxAge: Number(offer.maxAgeUnder),
     registrationErrors: state.cart.errors,
-
-    // TEMP:
-    participantCount: state.panelData.participants.length,
   };
 };
 

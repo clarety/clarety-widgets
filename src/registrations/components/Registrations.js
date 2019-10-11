@@ -19,8 +19,14 @@ const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
 
 store.dispatch(setPanels([
-  { component: 'EventPanel' },
-  { component: 'QtysPanel' },
+  {
+    component: 'EventPanel',
+    settings: {},
+  },
+  {
+    component: 'QtysPanel',
+    settings: {},
+  },
   // {
   //   component: 'LoginPanel',
   //   settings: {
@@ -30,8 +36,14 @@ store.dispatch(setPanels([
   //     showLastName: true,
   //   },
   // },
-  { component: 'NamesPanel' },
-  { component: 'ReviewPanel' },
+  {
+    component: 'NamesPanel',
+    settings: { showOffers: true },
+  },
+  {
+    component: 'ReviewPanel',
+    settings: {},
+  },
 ]));
 
 export const Registrations = ({ translations }) => (

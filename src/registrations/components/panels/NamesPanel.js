@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { Container, Button, Form, Row, Col } from 'react-bootstrap';
 import { currency } from 'shared/utils';
 import { BasePanel } from 'registrations/components';
-import { setFirstNames, resetFirstNames } from 'registrations/actions';
+import { setFirstNames, resetFirstNames, setOffers, resetOffers } from 'registrations/actions';
 import { getParticipants, getParticipantsOffers } from 'registrations/selectors';
 
 class _NamesPanel extends BasePanel {
@@ -34,8 +34,11 @@ class _NamesPanel extends BasePanel {
 
     if (!this.canContinue()) return;
 
-    const { setFirstNames, nextPanel } = this.props;
+    const { setFirstNames, setOffers, nextPanel, settings } = this.props;
     setFirstNames(this.state.names);
+
+    if (settings.showOffers) setOffers(this.state.offers);
+
     nextPanel();
   };
 
@@ -49,14 +52,14 @@ class _NamesPanel extends BasePanel {
     this.props.editPanel();
   };
 
-  componentDidUpdate(prevProps) {
-    if (this.props.participants.length !== prevProps.participants.length) {
-      this.setState({ names: [] });
-    }
-  }
-
   reset() {
-    this.props.resetFirstNames();
+    const { resetFirstNames, resetOffers, settings } = this.props;
+
+    this.setState({ names: [], offers: [] });
+
+    resetFirstNames();
+
+    if (settings.showOffers) resetOffers();
   }
 
   renderWait() {
@@ -82,7 +85,7 @@ class _NamesPanel extends BasePanel {
   }
 
   renderRows() {
-    const { participants, offers } = this.props;
+    const { participants, settings } = this.props;
     const { names } = this.state;
 
     return participants.map((participant, index) =>
@@ -97,15 +100,11 @@ class _NamesPanel extends BasePanel {
           </FormattedMessage>
         </Col>
 
-        <Col>
-          {offers[index].map(offer =>
-            <OfferButton
-              key={offer.offerId}
-              offer={offer}
-              onClick={() => this.onClickOffer(index, offer)}
-            />
-          )}
-        </Col>
+        {settings.showOffers &&
+          <Col>
+            {this.renderOffers(index)}
+          </Col>
+        }
 
         <Col>
         <FormattedMessage id={`label.firstName`}>
@@ -119,6 +118,20 @@ class _NamesPanel extends BasePanel {
           </FormattedMessage>
         </Col>
       </Row>
+    );
+  }
+
+  renderOffers(index) {
+    const { offers } = this.props;
+    const selectedOffer = this.state.offers[index];
+
+    return offers[index].map(offer => 
+      <OfferButton
+        key={offer.offerId}
+        offer={offer}
+        isSelected={offer === selectedOffer}
+        onClick={() => this.onClickOffer(index, offer)}
+      />
     );
   }
 
@@ -146,13 +159,21 @@ class _NamesPanel extends BasePanel {
   }
 
   canContinue() {
-    const { participants } = this.props;
-    const { names } = this.state;
+    const { participants, settings } = this.props;
+    const { names, offers } = this.state;
 
     if (names.length !== participants.length) return false;
 
     for (let name of names) {
-      if (!name.trim()) return false;
+      if (!name || !name.trim()) return false;
+    }
+
+    if (settings.showOffers) {
+      if (offers.length !== participants.length) return false;
+
+      for (let offer of offers) {
+        if (!offer) return false;
+      }
     }
 
     return true;
@@ -169,16 +190,18 @@ const mapStateToProps = state => {
 const actions = {
   setFirstNames: setFirstNames,
   resetFirstNames: resetFirstNames,
+  setOffers: setOffers,
+  resetOffers: resetOffers,
 };
 
 export const NamesPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_NamesPanel);
 
-const OfferButton = ({ offer, onClick }) => {
-  // TODO: move to stylesheet.
+const OfferButton = ({ offer, isSelected, onClick }) => {
   const style = { width: '120px', margin: '10px' };
+  const variant = isSelected ? 'primary' : 'secondary';
 
   return (
-    <Button onClick={onClick} style={style}>
+    <Button onClick={onClick} style={style} variant={variant}>
       {offer.name} ({currency(Number(offer.amount))})
     </Button>
   );

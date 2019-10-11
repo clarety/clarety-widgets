@@ -10,14 +10,22 @@ export const panelDataReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.panelDataSetEvent:          return setEvent(state, action);
     case types.panelDataResetEvent:        return resetEvent(state, action);
+
     case types.panelDataSetQtys:           return setQtys(state, action);
     case types.panelDataResetQtys:         return resetQtys(state, action);
+
     case types.panelDataSetFirstNames:     return setFirstNames(state, action);
     case types.panelDataResetFirstNames:   return resetFirstNames(state, action);
+
+    case types.panelDataSetOffers:         return setOffers(state, action);
+    case types.panelDataResetOffers:       return resetOffers(state, action);
+
     case types.panelDataSetDetails:        return setDetails(state, action);
+    case types.panelDataResetDetails:      return resetDetails(state, action);
+
     case types.panelDataSetAdditionalData: return setAdditionalData(state, action);
     case types.panelDataSetErrors:         return setErrors(state, action);
-    case types.panelDataResetDetails:      return resetDetails(state, action);
+    
     default:                               return state;
   }
 };
@@ -76,7 +84,34 @@ function setFirstNames(state, action) {
 function resetFirstNames(state, action) {
   return {
     ...state,
-    participants: [],
+    participants: state.participants.map((participant) => ({
+      ...participant,
+      customer: {
+        firstName: undefined,
+      },
+    })),
+  };
+}
+
+function setOffers(state, action) {
+  return {
+    ...state,
+    participants: state.participants.map((participant, index) =>
+      ({
+        ...participant,
+        offer: action.offers[index],
+      })
+    ),
+  };
+}
+
+function resetOffers(state, action) {
+  return {
+    ...state,
+    participants: state.participants.map((participant) => ({
+      ...participant,
+      offer: undefined,
+    })),
   };
 }
 

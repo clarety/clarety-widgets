@@ -23,6 +23,8 @@ export const types = {
   panelDataResetQtys:         'PANEL_DATA_RESET_QTYS',
   panelDataSetFirstNames:     'PANEL_DATA_SET_FIRST_NAMES',
   panelDataResetFirstNames:   'PANEL_DATA_RESET_FIRST_NAMES',
+  panelDataSetOffers:         'PANEL_DATA_SET_OFFERS',
+  panelDataResetOffers:       'PANEL_DATA_RESET_OFFERS',
   panelDataSetDetails:        'PANEL_DATA_SET_DETAILS',
   panelDataSetAdditionalData: 'PANEL_DATA_SET_ADDITIONAL_DATA',
   panelDataSetErrors:         'PANEL_DATA_SET_ERRORS',
