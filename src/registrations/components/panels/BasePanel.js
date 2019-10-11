@@ -2,8 +2,18 @@ import React from 'react';
 
 export class BasePanel extends React.Component {
   reset() {
-    // Implemented in subclasses.
+    // Override in subclass.
     // Called by panel manager.
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.status === 'wait' && this.props.status === 'edit') {
+      this.onShowPanel();
+    }
+  }
+
+  onShowPanel() {
+    // Override in subclass.
   }
 
   render() {

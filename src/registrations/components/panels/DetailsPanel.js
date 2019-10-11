@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Container, Button, Form, Row, Col, Alert } from 'react-bootstrap';
 import { BasePanel, TextInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput } from 'registrations/components';
-import { setDetails, setAdditionalData, setErrors, resetDetails, createRegistration } from 'registrations/actions';
+import { setDetails, setAdditionalData, setErrors, resetDetails } from 'registrations/actions';
 import { getGenderOptions } from 'registrations/utils';
 import { getEvent, getExtendFields } from 'registrations/selectors';
-import { FormContext, scrollIntoView, calcProgress } from 'registrations/utils';
+import { FormContext, scrollIntoView } from 'registrations/utils';
 
 export class _DetailsPanel extends BasePanel {
   ref = React.createRef();
@@ -52,24 +52,13 @@ export class _DetailsPanel extends BasePanel {
   onClickNext = async event => {
     event.preventDefault();
 
-    const { participantIndex, participantCount } = this.props;
-    const { nextPanel, createRegistration, setDetails } = this.props;
+    const { nextPanel, setDetails, participantIndex } = this.props;
     const { customerFormContext, extendFormContext } = this.state;
 
     if (this.validate()) {
       this.onSubmitForm();
       setDetails(participantIndex, customerFormContext.formData, extendFormContext.formData);
-
-      const nextIndex = participantIndex + 1;
-      const hasNext = nextIndex < participantCount;
-      if (hasNext) {
-        nextPanel();
-      } else {
-        const didCreate = await createRegistration();
-        if (!didCreate) return;
-
-        nextPanel();
-      }
+      nextPanel();
     }
   };
 
@@ -363,7 +352,6 @@ const mapStateToProps = (state, ownProps) => {
     settings: state.settings,
     event: event,
     participant: participant,
-    participantCount: state.panelData.participants.length,
     extendFields: getExtendFields(state),
     eventDate: eventDate,
     minAge: Number(offer.minAgeOver),
@@ -377,7 +365,6 @@ const actions = {
   setAdditionalData: setAdditionalData,
   setErrors: setErrors,
   resetDetails: resetDetails,
-  createRegistration: createRegistration,
 };
 
 export const connectDetailsPanel = Component => injectIntl(

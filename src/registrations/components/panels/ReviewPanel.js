@@ -14,6 +14,10 @@ class _ReviewPanel extends BasePanel {
     this.props.createRegistration();
   };
 
+  onShowPanel() {
+    this.props.createRegistration();
+  }
+
   renderWait() {
     return null;
   }
