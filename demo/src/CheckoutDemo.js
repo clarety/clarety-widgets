@@ -30,7 +30,7 @@ CheckoutApp.setPanels([
 
 export default class CheckoutDemo extends React.Component {
   componentWillMount() {
-    // setupCheckoutAxiosMock();
+    setupCheckoutAxiosMock();
   }
 
   render() {
