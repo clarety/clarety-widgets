@@ -60,55 +60,84 @@ export const getCreateTeamPostData = state => {
   };
 };
 
-export const getCreateRegistrationPostData = state => {
-  const { panelData } = state;
-  const { eventId, participants } = panelData;
+export const getCreateRegistrationPostData = (state) => {
+  const event = getEvent(state);
+  const participants = getParticipants(state);
+  const fundraising = getFundraisingPostData(state);
 
-  const postData = {
-    eventId,
-    registrations: participants.map(participant => ({
-      quantity: 1,
-      offerId: getOfferId(state, participant),
-      participants: [{
-        productId: getProductId(state, participant),
-        customer: participant.customer,
-        extendFormId: getExtendFormId(state),
-        extendForm: participant.extendForm,
-        ...participant.additionalData,
-      }],
-    })),
-    fundraising: {
-      donationAmount: getDonationAmount(state),
-    }
+  return {
+    eventId: event.eventId,
+    registrations: participants.map(
+      participant => getParticipantPostData(state, participant)
+    ),
+    fundraising: fundraising,
   };
-
-  return postData;
 };
 
-export const getSubmitRegistrationPostData = state => {
+const getParticipantPostData = (state, participant) => {
+  const extendFormId = getExtendFormId(state);
+  const offerId = getOfferId(state, participant);
+  const productId = getProductId(state, participant);
+  const customer = participant.customer;
+
+  // TODO: TEMP: baseline currently errors if I don't provide an address...
+  if (location.hostname === 'localhost') {
+    console.log('using dummy billing address on localhost');
+    customer.billing = {
+      address1: '42 Wallaby Way',
+      address2: '',
+      suburb: 'Sydney',
+      state: 'NSW',
+      postcode: '2000',
+      country: 'Australia',
+    };    
+  }
+
   return {
-    uid: state.cart.uid,
-    jwt: state.cart.jwt,
+    quantity: 1,
+    offerId: offerId,
+    participants: [{
+      productId: productId,
+      customer: customer,
+      extendFormId: extendFormId,
+      extendForm: participant.extendForm,
+      ...participant.additionalData,
+    }],
   };
+};
+
+const getOfferForParticipant = (state, participant) => {
+  // If participant has a selected offer, use it.
+  // Otherwise, use the first offer for the registration type.
+  return participant.offer || getOffers(state, participant.type)[0];
 };
 
 const getOfferId = (state, participant) => {
-  const types = getRegistrationTypes(state);
-  return types[participant.type]
-           .offers[0]
-           .offerId;
+  const offer = getOfferForParticipant(state, participant);
+  return offer.offerId;
 };
 
 const getProductId = (state, participant) => {
-  const types = getRegistrationTypes(state);
-  return types[participant.type]
-           .offers[0]
-           .registrationProducts[0]
-           .products[0]
-           .productId;
+  const offer = getOfferForParticipant(state, participant);
+  return offer.registrationProducts[0].products[0].productId;
+};
+
+const getFundraisingPostData = (state) => {
+  const donationAmount = getDonationAmount(state);
+
+  return {
+    donationAmount: donationAmount,
+  };
 };
 
 const getDonationAmount = state => {
   const { frequency, selections } = state.panels.amountPanel;
   return selections[frequency].amount;
+};
+
+export const getSubmitRegistrationPostData = (state) => {
+  return {
+    uid: state.cart.uid,
+    jwt: state.cart.jwt,
+  };
 };
