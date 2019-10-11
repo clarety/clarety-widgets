@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { statusReducer, panelManagerReducer } from 'shared/reducers';
+import { statusReducer, authReducer, panelManagerReducer } from 'shared/reducers';
 import { formDataReducer, errorsReducer } from 'form/reducers';
 import { amountPanelReducer } from 'donate/reducers';
 import { settingsReducer, cartReducer, panelDataReducer, teamPanelReducer } from 'registrations/reducers';
@@ -7,6 +7,7 @@ import { settingsReducer, cartReducer, panelDataReducer, teamPanelReducer } from
 export const rootReducer = combineReducers({
   status:     statusReducer,
   settings:   settingsReducer,
+  auth:       authReducer,
   cart:       cartReducer,
   formData:   formDataReducer,
   errors:     errorsReducer,

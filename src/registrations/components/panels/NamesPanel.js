@@ -2,12 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Button, Form, Row, Col } from 'react-bootstrap';
+import { currency } from 'shared/utils';
 import { BasePanel } from 'registrations/components';
 import { setFirstNames, resetFirstNames } from 'registrations/actions';
+import { getParticipants, getParticipantsOffers } from 'registrations/selectors';
 
 class _NamesPanel extends BasePanel {
   state = {
     names: [],
+    offers: [],
   };
 
   onChangeName = (index, name) => {
@@ -15,6 +18,14 @@ class _NamesPanel extends BasePanel {
       const names = [...prevState.names];
       names[index] = name;
       return { names };
+    });
+  };
+
+  onClickOffer = (index, offer) => {
+    this.setState(prevState => {
+      const offers = [...prevState.offers];
+      offers[index] = offer;
+      return { offers };
     });
   };
 
@@ -71,7 +82,7 @@ class _NamesPanel extends BasePanel {
   }
 
   renderRows() {
-    const { participants } = this.props;
+    const { participants, offers } = this.props;
     const { names } = this.state;
 
     return participants.map((participant, index) =>
@@ -79,11 +90,23 @@ class _NamesPanel extends BasePanel {
         <Col xs={2}>
           <span className="circle">{index + 1}</span>
         </Col>
+        
         <Col>
           <FormattedMessage id={`namesPanel.${participant.type}.title`}>
             {txt => <p className="lead m-0">{txt}</p>}
           </FormattedMessage>
         </Col>
+
+        <Col>
+          {offers[index].map(offer =>
+            <OfferButton
+              key={offer.offerId}
+              offer={offer}
+              onClick={() => this.onClickOffer(index, offer)}
+            />
+          )}
+        </Col>
+
         <Col>
         <FormattedMessage id={`label.firstName`}>
           {label =>
@@ -138,7 +161,8 @@ class _NamesPanel extends BasePanel {
 
 const mapStateToProps = state => {
   return {
-    participants: state.panelData.participants,
+    participants: getParticipants(state),
+    offers: getParticipantsOffers(state),
   };
 };
 
@@ -148,3 +172,14 @@ const actions = {
 };
 
 export const NamesPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_NamesPanel);
+
+const OfferButton = ({ offer, onClick }) => {
+  // TODO: move to stylesheet.
+  const style = { width: '120px', margin: '10px' };
+
+  return (
+    <Button onClick={onClick} style={style}>
+      {offer.name} ({currency(Number(offer.amount))})
+    </Button>
+  );
+};

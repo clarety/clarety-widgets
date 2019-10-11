@@ -1,21 +1,33 @@
 import { Config } from 'clarety-utils';
 
-export const getEvent = state => state.settings.event;
+export const getSettings = (state) => state.settings;
 
-export const getEventName = state => {
+export const getEvent = (state) => getSettings(state).event;
+
+export const getEventName = (state) => {
   const event = getEvent(state);
   return event ? event.name : null;
 };
 
-export const getProgress = state => {
+export const getProgress = (state) => {
   // TODO: implement once no longer pushing panels.
   return 0;
 };
 
-export const getRegistrationTypes = state => {
+export const getRegistrationTypes = (state) => {
   const event = getEvent(state);
   return event ? event.registrationTypes: null;
 };
+
+export const getPanelData = (state) => state.panelData;
+
+export const getParticipants = (state) => getPanelData(state).participants;
+
+export const getParticipantsOffers = (state) => getParticipants(state).map(
+  participant => getOffers(state, participant.type)
+);
+
+export const getOffers = (state, type) => getRegistrationTypes(state)[type].offers;
 
 export const getExtendFields = state => {
   try {

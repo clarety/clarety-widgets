@@ -19,17 +19,17 @@ const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
 
 store.dispatch(setPanels([
-  { component: 'EventPanel', status: 'edit' },
+  { component: 'EventPanel' },
   { component: 'QtysPanel' },
-  {
-    component: 'LoginPanel',
-    settings: {
-      allowGuest: false,
-      createAccount: true,
-      showFirstName: true,
-      showLastName: true,
-    },
-  },
+  // {
+  //   component: 'LoginPanel',
+  //   settings: {
+  //     allowGuest: false,
+  //     createAccount: true,
+  //     showFirstName: true,
+  //     showLastName: true,
+  //   },
+  // },
   { component: 'NamesPanel' },
   { component: 'ReviewPanel' },
 ]));
