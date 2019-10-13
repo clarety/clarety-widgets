@@ -27,22 +27,27 @@ store.dispatch(setPanels([
     component: 'QtysPanel',
     settings: {},
   },
-  // {
-  //   component: 'LoginPanel',
-  //   settings: {
-  //     allowGuest: false,
-  //     createAccount: true,
-  //     showFirstName: true,
-  //     showLastName: true,
-  //   },
-  // },
+  {
+    component: 'LoginPanel',
+    settings: {
+      allowGuest: false,
+      createAccount: true,
+      showFirstName: true,
+      showLastName: true,
+    },
+  },
   {
     component: 'NamesPanel',
     settings: { showOffers: true },
   },
+  // {
+  //   component: 'ReviewPanel',
+  //   settings: {},
+  // },
   {
-    component: 'ReviewPanel',
+    component: 'RegistrationsPaymentPanel',
     settings: {},
+
   },
 ]));
 

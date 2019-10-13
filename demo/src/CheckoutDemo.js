@@ -23,7 +23,7 @@ CheckoutApp.setPanels([
     settings: { addressType: 'international' },
   },
   {
-    component: 'PaymentPanel',
+    component: 'CheckoutPaymentPanel',
     settings: {},
   },
 ]);

@@ -15,6 +15,8 @@ Config.init({
 
   storeId: 0,
   seriesId: 0,
+
+  devSitePath: 'http://localhost:3000/',
 });
 
 // Mock cookies.
