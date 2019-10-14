@@ -1,3 +1,4 @@
+import { types as sharedTypes } from 'shared/actions';
 import { types } from 'checkout/actions';
 
 const initialState = {
@@ -44,6 +45,14 @@ export const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         customer: action.result.customer,
+      };
+
+    // Logout
+
+    case sharedTypes.logoutSuccess:
+      return {
+        ...state,
+        customer: null,
       };
 
     // Shipping Options
