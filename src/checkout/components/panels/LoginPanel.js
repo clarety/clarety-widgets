@@ -105,19 +105,6 @@ class _LoginPanel extends BasePanel {
     nextPanel();
   };
 
-  onPressLogout = () => {
-    const { resetAllPanels, resetFormData, logout } = this.props;
-
-    this.onChangeField('email', '');
-    this.onChangeField('password', '');
-
-    this.setMode('check-email');
-
-    resetAllPanels();
-    resetFormData();
-    logout();
-  }
-
   onPressStayLoggedIn = () => {
     const { setFormData, nextPanel, customer } = this.props;
 
@@ -344,7 +331,7 @@ class _LoginPanel extends BasePanel {
       <React.Fragment>
         <p>You're currently logged-in as {this.props.customer.email}</p>
         <div className="text-right mt-3">
-          <Button title="Logout" onClick={this.onPressLogout} variant="link" />
+          <a href="selfservice/login.php?action=logout" className="btn btn-link">Logout</a>
           <Button title="Continue" onClick={this.onPressStayLoggedIn} />
         </div>
       </React.Fragment>
