@@ -1,5 +1,6 @@
+import Cookies from 'js-cookie';
 import { ClaretyApi } from 'clarety-utils';
-import { getPath } from 'shared/utils';
+import { getPath, getJwtSession } from 'shared/utils';
 import { createStripeToken, parseStripeError } from 'donate/utils';
 import { types } from 'checkout/actions';
 
@@ -58,6 +59,8 @@ export const makePayment = (paymentData, paymentMethod) => {
       dispatch(makePaymentFailure(result));
     } else {
       // Redirect on success.
+      const jwtSession = getJwtSession();
+      Cookies.set('jwtConfirm', jwtSession.jwtString);
       window.location.href = getPath('shop-app-confirm');
     }
   };
