@@ -98,6 +98,8 @@ export class PaymentPanel extends BasePanel {
 
         <ErrorMessages />
 
+        {this.renderCartSummary()}
+
         {paymentMethod
           ? this.renderForm()
           : this.renderSpinner()
@@ -106,8 +108,13 @@ export class PaymentPanel extends BasePanel {
     );
   }
 
+  renderCartSummary() {
+    // Override in subclass.
+    return null;
+  }
+
   renderForm() {
-    const { isBusy } = this.props;
+    const { isBusy, submitBtnTitle } = this.props;
     
     return (
       <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
@@ -116,7 +123,7 @@ export class PaymentPanel extends BasePanel {
             {this.renderPaymentMethodFields()}
 
             <div className="text-right mt-3">
-              <Button title="Place Order" type="submit" isBusy={isBusy} />
+              <Button title={submitBtnTitle || 'Place Order'} type="submit" isBusy={isBusy} />
             </div>
           </Form>
         </FormContext.Provider>
