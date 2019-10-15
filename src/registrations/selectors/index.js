@@ -37,7 +37,7 @@ export const getParticipantsOffers = (state) => getParticipants(state).map(
 
 export const getOffers = (state, type) => getRegistrationTypes(state)[type].offers;
 
-export const getExtendFields = state => {
+export const getExtendFields = (state) => {
   try {
     return state.settings.extendForms[0].extendFields;
   } catch (error) {
@@ -45,7 +45,7 @@ export const getExtendFields = state => {
   }
 };
 
-const getExtendFormId = state => {
+const getExtendFormId = (state) => {
   try {
     return state.settings.extendForms[0].formId;
   } catch (error) {
@@ -53,11 +53,13 @@ const getExtendFormId = state => {
   }
 };
 
-export const getSaleId = state => getCart(state).id;
+export const getSaleId = (state) => getCart(state).id;
 
-export const getIsLoggedIn = state => !!getAuth(state).jwt;
+export const getRegistrationMode = (state) => getCart(state).registrationMode;
 
-export const getCreateTeamPostData = state => {
+export const getIsLoggedIn = (state) => !!getAuth(state).jwt;
+
+export const getCreateTeamPostData = (state) => {
   const event = getEvent(state);
   const customer = getCustomer(state);
   const formData = getFormData(state);
@@ -144,7 +146,7 @@ const getFundraisingPostData = (state) => {
   };
 };
 
-const getDonationAmount = state => {
+const getDonationAmount = (state) => {
   const { frequency, selections } = state.panels.amountPanel;
   return selections[frequency].amount;
 };

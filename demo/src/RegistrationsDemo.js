@@ -11,6 +11,10 @@ RegistrationsApp.setClientIds({
 
 RegistrationsApp.setPanels([
   {
+    component: 'ModePanel',
+    settings: {},
+  },
+  {
     component: 'EventPanel',
     settings: {},
   },

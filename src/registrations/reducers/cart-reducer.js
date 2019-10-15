@@ -4,9 +4,13 @@ const initialState = {
   id: null,
   uid: null,
   jwt: null,
+
+  registrationMode: null,
+
   status: null,
   customer: null,
   items: null,
+
   summary: {
     total: null,
   },
@@ -16,6 +20,14 @@ const initialState = {
 
 export const cartReducer = (state = initialState, action) => {
   switch (action.type) {
+
+    // Registration Mode.
+
+    case types.setRegistrationMode:
+      return {
+        ...state,
+        registrationMode: action.mode,
+      };
 
     // Customer.
 

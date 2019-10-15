@@ -54,6 +54,9 @@
   "qtys.adult": "{qty, plural, one {# × Adult} other {# × Adults}}",
   "qtys.child": "{qty, plural, one {# × Child} other {# × Children}}",
 
+  "modePanel.editTitle": "Human Fund Walk 2020",
+  "modePanel.doneTitle": "Human Fund Walk 2020",
+
   "eventPanel.editTitle": "Which Location Are You Registering For?",
   "eventPanel.doneTitle": "Location",
 
