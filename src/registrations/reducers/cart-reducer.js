@@ -1,6 +1,7 @@
 import { types } from 'registrations/actions';
 
 const initialState = {
+  id: null,
   uid: null,
   jwt: null,
   status: null,
@@ -29,12 +30,17 @@ export const cartReducer = (state = initialState, action) => {
     case types.registrationCreateRequest:
       return {
         ...state,
+        id: null,
+        uid: null,
+        jwt: null,
+        status: null,
         errors: null,
       };
 
     case types.registrationCreateSuccess:
       return {
         ...state,
+        id: action.result.id,
         uid: action.result.uid,
         jwt: action.result.jwt,
         status: action.result.sale.status,

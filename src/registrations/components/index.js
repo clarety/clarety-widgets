@@ -21,6 +21,7 @@ export * from './panels/PaymentPanel';
 export * from './panels/QtysPanel';
 export * from './panels/ReviewPanel';
 export * from './panels/TeamPanel';
+export * from './panels/ValidatePanel';
 
 export * from './misc/Brand';
 export * from './misc/MiniCart';

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { PaymentPanel } from 'shared/components/panels/PaymentPanel';
-import { createRegistration, makePayment } from 'registrations/actions';
+import { makePayment } from 'registrations/actions';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -11,7 +11,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const actions = {
-  onShowPanel: createRegistration,
+  onShowPanel: () => ({ type: 'NO_OP' }),
   makePayment: makePayment,
 };
 

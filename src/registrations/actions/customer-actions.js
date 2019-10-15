@@ -5,8 +5,6 @@ import { types } from 'registrations/actions';
 
 export const createAcountAndLogin = () => {
   return async (dispatch, getState) => {
-    
-
     const didCreate = await dispatch(createAccount());
     if (!didCreate) return false;
 
@@ -17,8 +15,6 @@ export const createAcountAndLogin = () => {
     if (!didLogin) return false;
 
     const didFetch = await dispatch(fetchAuthCustomer());
-
-    
     return didFetch;
   };
 };

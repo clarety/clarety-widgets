@@ -31,10 +31,10 @@ RegistrationsApp.setPanels([
     component: 'NamesPanel',
     settings: { showOffers: true },
   },
-  // {
-  //   component: 'ReviewPanel',
-  //   settings: {},
-  // },
+  {
+    component: 'ValidatePanel',
+    settings: {},
+  },
   {
     component: 'RegistrationsPaymentPanel',
     settings: {},

@@ -1,6 +1,6 @@
 import { ClaretyApi, Config } from 'clarety-utils';
-import { setErrors } from 'form/actions';
-import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getPaymentPostData } from 'registrations/selectors';
+import { setErrors, clearErrors } from 'form/actions';
+import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getSaleId } from 'registrations/selectors';
 import { types } from 'registrations/actions';
 
 export const createRegistration = () => {
@@ -8,6 +8,7 @@ export const createRegistration = () => {
     const state = getState();
     const postData = getCreateRegistrationPostData(state);
 
+    dispatch(clearErrors());
     dispatch(registrationCreateRequest(postData));
 
     const storeId = Config.get('storeId');
@@ -41,6 +42,8 @@ export const submitRegistration = () => {
       window.location.href = result.redirect;
     } else {
       dispatch(registrationSubmitFailure(result));
+      dispatch(setErrors(result.validationErrors));
+      return false;
     }
   };
 };
@@ -48,15 +51,9 @@ export const submitRegistration = () => {
 export const makePayment = (paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     const state = getState();
-    // const postData = getPaymentPostData(state);
-
-    // TODO: get sale id.....
-    const saleId = '123123';
-
-    // need to be logged in and have auth header set...
 
     const postData = {
-      saleId: saleId,
+      saleId: getSaleId(state),
       ...paymentData,
     };
 
@@ -71,6 +68,8 @@ export const makePayment = (paymentData, paymentMethod) => {
       window.location.href = result.redirect;
     } else {
       dispatch(registrationSubmitFailure(result));
+      dispatch(setErrors(result.validationErrors));
+      return false;
     }
   };
 };

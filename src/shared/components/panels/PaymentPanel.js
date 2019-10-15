@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Col, Spinner } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
+import { ErrorMessages } from 'form/components';
 import { BasePanel, TextInput, CardNumberInput, CcvInput, ExpiryInput, Button } from 'checkout/components';
 import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { FormContext } from 'checkout/utils';
@@ -94,6 +95,8 @@ export class PaymentPanel extends BasePanel {
     return (
       <div className="panel">
         <EditPanelHeader number={index + 1} title="Payment Details" />
+
+        <ErrorMessages />
 
         {paymentMethod
           ? this.renderForm()

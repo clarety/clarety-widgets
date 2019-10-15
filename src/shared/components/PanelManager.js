@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { setPanelStatus, resetAllPanels } from 'shared/actions';
 import { OverrideContext } from 'shared/utils';
 import { CheckoutLoginPanel, CustomerPanel, AddressPanel, ShippingPanel, CheckoutPaymentPanel } from 'checkout/components';
-import { ScrollIntoView, EventPanel, QtysPanel, NamesPanel, RegistrationsLoginPanel, DetailsPanel, TeamPanel, DonatePanel, ReviewPanel, RegistrationsPaymentPanel } from 'registrations/components';
+import { ScrollIntoView, EventPanel, QtysPanel, NamesPanel, RegistrationsLoginPanel, DetailsPanel, TeamPanel, DonatePanel, ReviewPanel, ValidatePanel, RegistrationsPaymentPanel } from 'registrations/components';
 
 class _PanelManager extends React.Component {
   panelRefs = [];
@@ -89,6 +89,7 @@ class _PanelManager extends React.Component {
       case 'TeamPanel':                 return this.context.TeamPanel                 || TeamPanel;
       case 'DonatePanel':               return this.context.DonatePanel               || DonatePanel;
       case 'ReviewPanel':               return this.context.ReviewPanel               || ReviewPanel;
+      case 'ValidatePanel':             return this.context.ValidatePanel             || ValidatePanel;
       case 'RegistrationsPaymentPanel': return this.context.RegistrationsPaymentPanel || RegistrationsPaymentPanel;
 
       default: throw new Error(`Cannot resolve panel component ${panel.component}`);
