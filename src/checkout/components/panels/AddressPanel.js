@@ -4,9 +4,9 @@ import { Form, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { statuses, invalidatePanel } from 'shared/actions';
+import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'shared/components';
 import { setFormData } from 'form/actions';
 import { BasePanel, TextInput, PureCheckboxInput, StateInput, Button } from 'checkout/components';
-import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { createOrUpdateCustomer } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 

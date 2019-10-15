@@ -1,11 +1,9 @@
 import React from 'react';
 import { Form, Col, Spinner } from 'react-bootstrap';
-import BlockUi from 'react-block-ui';
+import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { ErrorMessages } from 'form/components';
 import { BasePanel, TextInput, CardNumberInput, CcvInput, ExpiryInput, Button } from 'checkout/components';
-import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { FormContext } from 'checkout/utils';
-// import 'react-block-ui/style.css';
 
 export class PaymentPanel extends BasePanel {
   onPressPlaceOrder = event => {
@@ -82,29 +80,42 @@ export class PaymentPanel extends BasePanel {
   }
 
   renderWait() {
-    const { index } = this.props;
+    const { layout, index } = this.props;
 
     return (
-      <WaitPanelHeader number={index + 1} title="Payment Details" />
+      <PanelHeader
+        status="wait"
+        layout={layout}
+        title="Payment Details"
+        number={index + 1}
+      />
     );
   }
 
   renderEdit() {
-    const { index, paymentMethod } = this.props;
+    const { layout, index, paymentMethod, isBusy } = this.props;
 
     return (
-      <div className="panel">
-        <EditPanelHeader number={index + 1} title="Payment Details" />
+      <PanelContainer layout={layout}>
+        <PanelHeader
+          status="edit"
+          layout={layout}
+          number={index + 1}
+          title="Payment Details"
+          intlId="paymentPanel.editTitle"
+        />
 
-        <ErrorMessages />
+        <PanelBody layout={layout} isBusy={isBusy}>
+          <ErrorMessages />
 
-        {this.renderCartSummary()}
+          {this.renderCartSummary()}
 
-        {paymentMethod
-          ? this.renderForm()
-          : this.renderSpinner()
-        }
-      </div>
+          {paymentMethod
+            ? this.renderForm()
+            : this.renderSpinner()
+          }
+        </PanelBody>
+      </PanelContainer>
     );
   }
 
@@ -117,17 +128,15 @@ export class PaymentPanel extends BasePanel {
     const { isBusy, submitBtnTitle } = this.props;
     
     return (
-      <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
-        <FormContext.Provider value={this.state}>
-          <Form onSubmit={this.onPressPlaceOrder}>
-            {this.renderPaymentMethodFields()}
+      <FormContext.Provider value={this.state}>
+        <Form onSubmit={this.onPressPlaceOrder}>
+          {this.renderPaymentMethodFields()}
 
-            <div className="text-right mt-3">
-              <Button title={submitBtnTitle || 'Place Order'} type="submit" isBusy={isBusy} />
-            </div>
-          </Form>
-        </FormContext.Provider>
-      </BlockUi>
+          <div className="text-right mt-3">
+            <Button title={submitBtnTitle || 'Place Order'} type="submit" isBusy={isBusy} />
+          </div>
+        </Form>
+      </FormContext.Provider>
     );
   }
 
@@ -183,11 +192,13 @@ export class PaymentPanel extends BasePanel {
   }
 
   renderDone() {
-    const { index } = this.props;
+    const { layout, index } = this.props;
     const cardNumber = this.state.formData['cardNumber'];
 
     return (
-      <DonePanelHeader
+      <PanelHeader
+        status="done"
+        layout={layout}
         number={index + 1}
         title={cardNumber}
         onPressEdit={this.onPressEdit}

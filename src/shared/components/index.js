@@ -1,3 +1,3 @@
-export * from './PanelManager';
+export * from './panel-layout';
 
-// export * from './panels/PaymentPanel';
+export * from './PanelManager';

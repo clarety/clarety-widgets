@@ -66,7 +66,7 @@
   "qtysPanel.message": " ",
 
   "loginPanel.editTitle": "Account Details",
-  "loginPanel.doneTitle": "Account Details",
+  "loginPanel.doneTitle": "You are logged in as",
 
   "namesPanel.editTitle": "Participant Names",
   "namesPanel.doneTitle": "Participants",

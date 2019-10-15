@@ -13,8 +13,6 @@ export * from './inputs/PhoneInput';
 export * from './inputs/StateInput';
 export * from './inputs/TextInput';
 
-export * from './misc/panel-headers';
-
 export * from './panels/BasePanel';
 export * from './panels/AddressPanel';
 export * from './panels/LoginPanel';

@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import { LoginPanel } from 'shared/components/panels/LoginPanel';
-
 import { statuses, login, logout } from 'shared/actions';
 import { getIsLoggedIn } from 'shared/selectors';
 import { setFormData, resetFormData } from 'form/actions';

@@ -11,7 +11,7 @@ class _RegistrationsPaymentPanel extends PaymentPanel {
     const { cart } = this.props;
 
     return (
-      <div className="m-5">
+      <div className="my-5">
         <h4>Registration Summary</h4>
 
         {cart.items.map((item, index) =>

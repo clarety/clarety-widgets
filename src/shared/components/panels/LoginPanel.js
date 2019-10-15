@@ -1,10 +1,8 @@
 import React from 'react';
+import { Col, Form, Button as BsButton } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
-import { Container, Col, Form } from 'react-bootstrap';
-import BlockUi from 'react-block-ui';
-import 'react-block-ui/style.css';
+import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { BasePanel, TextInput, EmailInput, Button } from 'checkout/components';
-import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'checkout/components';
 import { FormContext } from 'checkout/utils';
 
 export class LoginPanel extends BasePanel {
@@ -13,6 +11,10 @@ export class LoginPanel extends BasePanel {
 
     this.state.mode = props.isLoggedIn ? 'logged-in' : 'check-email';
   }
+
+  onClickEdit = () => {
+    this.props.editPanel();
+  };
 
   setMode(mode) {
     this.setState({ mode });
@@ -166,12 +168,15 @@ export class LoginPanel extends BasePanel {
   }
 
   renderWait() {
-    if (this.props.layout === 'stack') return null;
-
-    const { index } = this.props;
+    const { layout, index } = this.props;
 
     return (
-      <WaitPanelHeader number={index + 1} title="Contact Details" />
+      <PanelHeader
+        status="wait"
+        layout={layout}
+        number={index + 1}
+        title="Contact Details"
+      />
     );
   }
 
@@ -181,13 +186,14 @@ export class LoginPanel extends BasePanel {
     return (
       <PanelContainer layout={layout}>
         <PanelHeader
+          status="edit"
           layout={layout}
           number={index + 1}
           title="Contact Details"
           intlId="loginPanel.editTitle"
         />
 
-        <PanelBody layout={layout} isBusy={isBusy}>
+        <PanelBody layout={layout} status="edit" isBusy={isBusy}>
           {this.renderForm()}
         </PanelBody>
       </PanelContainer>
@@ -330,60 +336,29 @@ export class LoginPanel extends BasePanel {
 
   renderDone() {
     const { formData } = this.state;
-    const { index, isLoggedIn, customer } = this.props;
+    const { layout, index, isLoggedIn, customer } = this.props;
     let email = isLoggedIn ? customer.email : formData['email'];
 
     return (
-      <DonePanelHeader
-        number={index + 1}
-        title={email}
-        onPressEdit={this.onPressEdit}
-      />
+      <PanelContainer layout={layout} status="done">
+        <PanelHeader
+          status="done"
+          layout={layout}
+          number={index + 1}
+          title={email}
+          onPressEdit={this.onPressEdit}
+          intlId="loginPanel.doneTitle"
+        />
+
+        <PanelBody layout={layout} status="done">
+          <p>{email}</p>
+
+          <BsButton onClick={this.onClickEdit}>
+            <FormattedMessage id="btn.edit" />
+          </BsButton>
+        </PanelBody>
+
+      </PanelContainer>
     );
   }
 }
-
-
-// TODO: move...
-
-const PanelContainer = ({ layout, children }) => {
-  if (layout === 'stack') {
-    return <Container>{children}</Container>;
-  }
-
-  if (layout === 'accordian') {
-    return <div className="panel">{children}</div>;
-  }
-
-  return children;
-};
-
-const PanelHeader = ({ layout, title, number, intlId }) => {
-  if (layout === 'stack') {
-    return <StackPanelHeader intlId={intlId} />;
-  }
-
-  if (layout === 'accordian') {
-    return <AccordianPanelHeader number={number} title={title} />;
-  }
-};
-
-const PanelBody = ({ layout, isBusy, children }) => {
-  if (layout === 'stack') {
-    return <div className="panel-body">{children}</div>;
-  }
-
-  if (layout === 'accordian') {
-    return <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>{children}</BlockUi>;
-  }
-
-  return children;
-};
-
-const StackPanelHeader = ({ intlId }) => (
-  <FormattedMessage id={intlId} tagName="h2" />
-);
-
-const AccordianPanelHeader = ({ number, title }) => (
-  <EditPanelHeader number={number} title={title} />
-);
