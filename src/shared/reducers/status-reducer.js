@@ -68,6 +68,9 @@ export const statusReducer = (state = initialState, action) => {
     case regoTypes.registrationCreateFailure:
       return statuses.ready;
 
+    case regoTypes.registrationFetchSuccess:
+      return statuses.ready;
+
     case regoTypes.registrationSubmitRequest:
       return statuses.submitting;
 

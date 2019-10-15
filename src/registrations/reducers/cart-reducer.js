@@ -57,6 +57,18 @@ export const cartReducer = (state = initialState, action) => {
         errors: action.result.validationErrors,
       };
 
+    case types.registrationFetchSuccess:
+      return {
+        ...state,
+        id: action.result.id,
+        status: action.result.status,
+        items: action.result.salelines,
+        summary: {
+          ...state.summary,
+          total: action.result.total,
+        }
+      };
+
     // Default.
 
     default:

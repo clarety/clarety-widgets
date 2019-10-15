@@ -59,8 +59,8 @@ export class PaymentPanel extends BasePanel {
         type:             'gatewaycc',
         cardName:         this.state.formData.cardName,
         cardNumber:       this.state.formData.cardNumber,
-        expiryMonth:      this.state.formData.expiryMonth,
-        expiryYear:       '20' + this.state.formData.expiryYear,
+        cardExpiryMonth:  this.state.formData.expiryMonth,
+        cardExpiryYear:   '20' + this.state.formData.expiryYear,
         cardSecurityCode: this.state.formData.ccv,
       };
     }

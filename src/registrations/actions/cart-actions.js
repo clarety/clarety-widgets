@@ -1,27 +1,51 @@
 import { ClaretyApi, Config } from 'clarety-utils';
 import { setErrors, clearErrors } from 'form/actions';
-import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getSaleId } from 'registrations/selectors';
+import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getSaleId, getIsLoggedIn } from 'registrations/selectors';
 import { types } from 'registrations/actions';
 
 export const createRegistration = () => {
   return async (dispatch, getState) => {
     const state = getState();
+    const isLoggedIn = getIsLoggedIn(state);
     const postData = getCreateRegistrationPostData(state);
 
     dispatch(clearErrors());
     dispatch(registrationCreateRequest(postData));
 
-    const storeId = Config.get('storeId');
-    const results = await ClaretyApi.post('registration-sale-widget/', postData, { storeId });
-    const result = results[0];
+    const endpoint = isLoggedIn
+      ? 'registration-sale/'
+      : 'registration-sale-widget/';
 
-    if (result.status !== 'error') {
-      dispatch(registrationCreateSuccess(result));
-      return true;
-    } else {
+    const storeId = Config.get('storeId');
+    let results = await ClaretyApi.post(endpoint, postData, { storeId });
+    let result = results[0];
+
+    if (result.status === 'error') {
       dispatch(registrationCreateFailure(result));
       dispatch(setErrors(result.validationErrors));
-      return false;
+      return false; 
+    }
+
+    if (isLoggedIn) {
+
+      // The auth'd endpoint doesn't return the sale,
+      // so we need to make another request to fetch it.
+
+      dispatch(registrationFetchRequest(result.id));
+
+      results = await ClaretyApi.get(`sale/${result.id}`, { storeId });
+      result = results[0];
+
+      if (result) {
+        dispatch(registrationFetchSuccess(result));
+        return true;
+      } else {
+        throw new Error('[Clarety] Failed to get registration after creating it.');
+      }
+
+    } else {
+      dispatch(registrationCreateSuccess(result));
+      return true;
     }
   };
 };
@@ -54,6 +78,10 @@ export const makePayment = (paymentData, paymentMethod) => {
 
     const postData = {
       saleId: getSaleId(state),
+
+      gatewayToken: "",
+      fundraising: {},
+
       ...paymentData,
     };
 
@@ -92,6 +120,17 @@ const registrationCreateFailure = result => ({
   result,
 });
 
+// Fetch
+
+const registrationFetchRequest = id => ({
+  type: types.registrationFetchRequest,
+  id: id,
+});
+
+const registrationFetchSuccess = result => ({
+  type: types.registrationFetchSuccess,
+  result,
+});
 
 // Submit
 
