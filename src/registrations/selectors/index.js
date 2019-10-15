@@ -27,6 +27,8 @@ export const getRegistrationTypes = (state) => {
 
 export const getPanelData = (state) => state.panelData;
 
+export const getQtys = (state) => getPanelData(state).qtys;
+
 export const getCustomer = (state) => getCart(state).customer;
 
 export const getParticipants = (state) => getPanelData(state).participants;
@@ -57,6 +59,15 @@ export const getSaleId = (state) => getCart(state).id;
 
 export const getRegistrationMode = (state) => getCart(state).registrationMode;
 
+export const getChannel = (state) => {
+  const mode = getRegistrationMode(state);
+  if (mode === 'individual') return '7';
+  if (mode === 'group')      return '8';
+  if (mode === 'family')     return '9';
+
+  return undefined;
+};
+
 export const getIsLoggedIn = (state) => !!getAuth(state).jwt;
 
 export const getCreateTeamPostData = (state) => {
@@ -78,11 +89,13 @@ export const getCreateTeamPostData = (state) => {
 
 export const getCreateRegistrationPostData = (state) => {
   const event = getEvent(state);
+  const channel = getChannel(state);
   const participants = getParticipants(state);
   const fundraising = getFundraisingPostData(state);
 
   return {
     eventId: event.eventId,
+    channel: channel,
     registrations: participants.map(
       participant => getParticipantPostData(state, participant)
     ),

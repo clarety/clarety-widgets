@@ -105,7 +105,7 @@ export class PaymentPanel extends BasePanel {
           intlId="paymentPanel.editTitle"
         />
 
-        <PanelBody layout={layout} isBusy={isBusy}>
+        <PanelBody status="edit" layout={layout} isBusy={isBusy}>
           <ErrorMessages />
 
           {this.renderCartSummary()}

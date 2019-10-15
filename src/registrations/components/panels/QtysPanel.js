@@ -5,7 +5,7 @@ import { Container, Button, Form, Col } from 'react-bootstrap';
 import { insertPanels, removePanels } from 'shared/actions';
 import { BasePanel, Qty, QtyInput } from 'registrations/components';
 import { setQtys, resetQtys } from 'registrations/actions';
-import { getRegistrationTypes } from 'registrations/selectors';
+import { getRegistrationTypes, getRegistrationMode, getQtys } from 'registrations/selectors';
 
 class _QtysPanel extends BasePanel {
   state = {
@@ -18,6 +18,18 @@ class _QtysPanel extends BasePanel {
 
     this.props.setQtys(this.state.qtys);
     this.props.nextPanel();
+  };
+
+  onSelectType = (type) => {
+    const { setQtys, nextPanel } = this.props;
+
+    const qtys = { [type]: 1 };
+    this.setState({ qtys });
+
+    this.setupDetailsPanels(1);
+
+    setQtys(qtys);
+    nextPanel();
   };
 
   onClickEdit = () => {
@@ -65,23 +77,58 @@ class _QtysPanel extends BasePanel {
   }
 
   renderEdit() {
+    const { registrationMode } = this.props;
+
     return (
       <Container>
         <FormattedMessage id="qtysPanel.editTitle" tagName="h2" />
 
+        {registrationMode === 'individual'
+          ? this.renderIndividualForm()
+          : this.renderGroupForm()
+        }
+      </Container>  
+    );
+  }
+
+  renderIndividualForm() {
+    return (
+      <React.Fragment>
+        <Form className="panel-body panel-body-qtys">
+          {this.renderBtnInputs()}
+          <FormattedMessage id="qtysPanel.message" tagName="p" />
+        </Form>
+      </React.Fragment>
+    );
+  }  
+
+  renderGroupForm() {
+    return (
+      <React.Fragment>
         <Form className="panel-body panel-body-qtys">
           {this.renderQtyInputs()}
-
           <FormattedMessage id="qtysPanel.message" tagName="p" />
         </Form>
 
-        <Button
-          onClick={this.onClickNext}
-          disabled={!this.canContinue()}
-        >
+        <Button onClick={this.onClickNext} disabled={!this.canContinue()}>
           <FormattedMessage id="btn.next" />
         </Button>
-      </Container>
+      </React.Fragment>
+    );
+  }
+
+  renderBtnInputs() {
+    const { types } = this.props;
+
+    return Object.entries(types).map(([key, type]) =>
+      <div className="m-3">
+        <Button key={key} onClick={() => this.onSelectType(key)}>
+          {type.name}
+        </Button>
+        <FormattedMessage id={`qtysPanel.${key}.subtitle`}>
+          {txt => <p className="text-muted">{txt}</p>}
+        </FormattedMessage>
+      </div>
     );
   }
 
@@ -145,8 +192,9 @@ class _QtysPanel extends BasePanel {
 
 const mapStateToProps = state => {
   return {
+    registrationMode: getRegistrationMode(state),
     types: getRegistrationTypes(state),
-    qtys: state.panelData.qtys,
+    qtys: getQtys(state),
   };
 };
 
