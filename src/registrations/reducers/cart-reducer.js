@@ -4,6 +4,7 @@ const initialState = {
   uid: null,
   jwt: null,
   status: null,
+  customer: null,
   items: null,
   summary: {
     total: null,
@@ -14,6 +15,17 @@ const initialState = {
 
 export const cartReducer = (state = initialState, action) => {
   switch (action.type) {
+
+    // Customer.
+
+    case types.fetchAuthCustomerSuccess:
+      return {
+        ...state,
+        customer: action.result,
+      };
+
+    // Registration.
+
     case types.registrationCreateRequest:
       return {
         ...state,
@@ -38,6 +50,8 @@ export const cartReducer = (state = initialState, action) => {
         ...state,
         errors: action.result.validationErrors,
       };
+
+    // Default.
 
     default:
       return state;

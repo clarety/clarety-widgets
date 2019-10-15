@@ -58,11 +58,6 @@ export const makePayment = (paymentData, paymentMethod) => {
     const postData = {
       saleId: saleId,
       ...paymentData,
-      // cardNumber: "4242424242424242",
-      // cardName: "Adam Test",
-      // cardExpiryMonth: "12",
-      // cardExpiryYear: "2019",
-      // cardSecurityCode: "123",
     };
 
     dispatch(registrationSubmitRequest(postData));

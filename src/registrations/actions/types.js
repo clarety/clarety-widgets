@@ -40,6 +40,16 @@ export const types = {
   // NOTE: there's no registrationSubmitSuccess action, we just redirect.
   registrationSubmitFailure: 'REGISTRATION_SUBMIT_FAILURE',
 
+  // Customer Action Types
+
+  createAccountRequest: 'CREATE_ACCOUNT_REQUEST',
+  createAccountSuccess: 'CREATE_ACCOUNT_SUCCESS',
+  createAccountFailure: 'CREATE_ACCOUNT_FAILURE',
+
+  fetchAuthCustomerRequest: 'FETCH_AUTH_CUSTOMER_REQUEST',
+  fetchAuthCustomerSuccess: 'FETCH_AUTH_CUSTOMER_SUCCESS',
+  fetchAuthCustomerFailure: 'FETCH_AUTH_CUSTOMER_FAILURE',
+
   // Team Action Types
 
   searchTeamsRequest: 'SEARCH_TEAMS_REQUEST',

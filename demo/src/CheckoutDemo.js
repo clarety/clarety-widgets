@@ -11,7 +11,7 @@ CheckoutApp.setClientIds({
 
 CheckoutApp.setPanels([
   {
-    component: 'LoginPanel',
+    component: 'CheckoutLoginPanel',
     settings: { allowGuest: true, createAccount: false },
   },
   {

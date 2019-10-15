@@ -7,7 +7,7 @@ import 'intl-pluralrules'; // Polyfill for safari 12
 import { Spinner, Modal } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { statuses, setPanels } from 'shared/actions';
+import { statuses, setPanels, setClientIds } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { selectDefaults } from 'donate/actions';
 import { MiniCart } from 'registrations/components';
@@ -18,46 +18,27 @@ import { priceHandles } from 'registrations/utils';
 const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
 
-store.dispatch(setPanels([
-  {
-    component: 'EventPanel',
-    settings: {},
-  },
-  {
-    component: 'QtysPanel',
-    settings: {},
-  },
-  {
-    component: 'LoginPanel',
-    settings: {
-      allowGuest: false,
-      createAccount: true,
-      showFirstName: true,
-      showLastName: true,
-    },
-  },
-  {
-    component: 'NamesPanel',
-    settings: { showOffers: true },
-  },
-  // {
-  //   component: 'ReviewPanel',
-  //   settings: {},
-  // },
-  {
-    component: 'RegistrationsPaymentPanel',
-    settings: {},
+export class Registrations extends React.Component {
+  static setPanels(panels) {
+    store.dispatch(setPanels(panels));
+  }
 
-  },
-]));
+  static setClientIds({ dev, prod }) {
+    store.dispatch(setClientIds({ dev, prod }));
+  }
 
-export const Registrations = ({ translations }) => (
-  <IntlProvider locale="en" messages={translations}>
-    <ReduxProvider store={store}>
-      <Root />
-    </ReduxProvider>
-  </IntlProvider>
-);
+  render() {
+    const { translations } = this.props;
+
+    return (
+      <IntlProvider locale="en" messages={translations}>
+        <ReduxProvider store={store}>
+          <Root />
+        </ReduxProvider>
+      </IntlProvider>
+    );
+  }
+}
 
 class _Root extends React.Component {
   async componentDidMount() {

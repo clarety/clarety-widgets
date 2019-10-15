@@ -2,7 +2,45 @@ import React from 'react';
 import { Registrations, withOverrides, setupRegistrationsAxiosMock } from '../../src';
 import enTranslations from '../../src/registrations/intl/en.json';
 
-const App = withOverrides(Registrations, {});
+const RegistrationsApp = withOverrides(Registrations, {});
+
+RegistrationsApp.setClientIds({
+  dev:  '82ee4a2479780256c9bf9b951f5d1cfb',
+  prod: '',
+});
+
+RegistrationsApp.setPanels([
+  {
+    component: 'EventPanel',
+    settings: {},
+  },
+  {
+    component: 'QtysPanel',
+    settings: {},
+  },
+  {
+    component: 'RegistrationsLoginPanel',
+    settings: {
+      allowGuest: false,
+      createAccount: true,
+      showFirstName: true,
+      showLastName: true,
+    },
+  },
+  {
+    component: 'NamesPanel',
+    settings: { showOffers: true },
+  },
+  // {
+  //   component: 'ReviewPanel',
+  //   settings: {},
+  // },
+  {
+    component: 'RegistrationsPaymentPanel',
+    settings: {},
+
+  },
+]);
 
 export default class RegistrationsDemo extends React.Component {
   componentWillMount() {
@@ -12,7 +50,7 @@ export default class RegistrationsDemo extends React.Component {
   render() {
     return (
       <div className="registrations">
-        <App translations={enTranslations} />
+        <RegistrationsApp translations={enTranslations} />
       </div>
     );
   }

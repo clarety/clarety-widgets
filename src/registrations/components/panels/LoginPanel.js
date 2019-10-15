@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import { LoginPanel } from 'shared/components/panels/LoginPanel';
-
 import { statuses, login, logout } from 'shared/actions';
 import { getIsLoggedIn } from 'shared/selectors';
 import { setFormData, resetFormData } from 'form/actions';
-import { hasAccount, fetchAuthCustomer } from 'checkout/actions';
+import { hasAccount } from 'checkout/actions';
+import { fetchAuthCustomer, createAcountAndLogin } from 'registrations/actions';
 
 const mapStateToProps = state => {
   return {
@@ -20,10 +20,10 @@ const actions = {
   login: login,
   logout: logout,
   fetchAuthCustomer: fetchAuthCustomer,
-  createAccount: undefined,
+  createAccount: createAcountAndLogin,
 
   setFormData: setFormData,
   resetFormData: resetFormData,
 };
 
-export const CheckoutLoginPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(LoginPanel);
+export const RegistrationsLoginPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(LoginPanel);
