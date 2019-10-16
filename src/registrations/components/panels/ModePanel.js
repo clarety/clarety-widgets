@@ -32,7 +32,7 @@ class _ModePanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title="Mother's Day Classic 2020"
+          title="Registrations"
           intlId="modePanel.editTitle"
         />        
 

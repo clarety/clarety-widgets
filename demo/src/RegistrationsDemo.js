@@ -15,6 +15,10 @@ RegistrationsApp.setPanels([
     settings: {},
   },
   {
+    component: 'DonatePanel',
+    settings: {},
+  },
+  {
     component: 'EventPanel',
     settings: {},
   },

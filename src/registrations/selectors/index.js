@@ -2,9 +2,15 @@ import { Config } from 'clarety-utils';
 
 export const getSettings = (state) => state.settings;
 
+export const getSetting = (state, setting) => getSettings(state)[setting];
+
 export const getAuth = (state) => state.auth;
 
 export const getCart = (state) => state.cart;
+
+export const getPanels = (state) => state.panels;
+
+export const getPanelData = (state) => state.panelData;
 
 export const getFormData = (state) => state.formData;
 
@@ -25,9 +31,13 @@ export const getRegistrationTypes = (state) => {
   return event ? event.registrationTypes: null;
 };
 
-export const getPanelData = (state) => state.panelData;
-
 export const getQtys = (state) => getPanelData(state).qtys;
+
+export const getCartTotal = (state) => {
+  const total = getDonationAmount(state) + getSelectedOffersTotal(state);
+  const currency = getSetting(state, 'currency');
+  return `${currency.code} ${currency.symbol}${total.toFixed(2)}`;
+};
 
 export const getCustomer = (state) => getCart(state).customer;
 
@@ -61,6 +71,16 @@ export const getOffersForAllParticipants = (state) => getParticipants(state).map
 );
 
 export const getOffers = (state, type) => getRegistrationTypes(state)[type].offers;
+
+export const getSelectedOffersTotal = (state) => {
+  const participants = getParticipants(state);
+
+  return participants.reduce((total, participant) =>
+    participant.offer
+      ? Number(participant.offer.amount) + total
+      : total
+  , 0);
+};
 
 export const getExtendFields = (state) => {
   try {
@@ -182,9 +202,13 @@ const getFundraisingPostData = (state) => {
   };
 };
 
+const getAmountPanel = (state) => getPanels(state).amountPanel;
+
 const getDonationAmount = (state) => {
-  const { frequency, selections } = state.panels.amountPanel;
-  return selections[frequency].amount;
+  const { frequency, selections } = getAmountPanel(state);
+  const selection = selections[frequency];
+
+  return selection ? Number(selection.amount) : 0;
 };
 
 export const getSubmitRegistrationPostData = (state) => {
