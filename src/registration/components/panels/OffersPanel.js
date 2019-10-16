@@ -12,31 +12,17 @@ class _RegistrationOffersPanel extends BasePanel {
     names: [],
     offers: [],
     prefills: [],
-  };  
-
-  onChangeName = (index, name) => {
-    this.setState(prevState => {
-      const names = [...prevState.names];
-      names[index] = name;
-      return { names };
-    });
   };
 
-  onClickOffer = (index, offer) => {
-    this.setState(prevState => {
-      const offers = [...prevState.offers];
-      offers[index] = offer;
-      return { offers };
-    });
-  };
+  updateProperty = (property, index, value) => this.setState(prevState => ({
+    [property]: Object.assign([...prevState[property]], { [index]: value }),
+  }));
 
-  onSelectPrefill = (index, value) => {
-    this.setState(prevState => {
-      const prefills = [...prevState.prefills];
-      prefills[index] = value;
-      return { prefills };
-    });
-  };
+  onChangeName = (index, name) => this.updateProperty('names', index, name);
+
+  onSelectOffer = (index, offer) => this.updateProperty('offers', index, offer);
+
+  onSelectPrefill = (index, prefill) => this.updateProperty('prefills', index, prefill);
 
   onClickNext = event => {
     event.preventDefault();
@@ -127,7 +113,7 @@ class _RegistrationOffersPanel extends BasePanel {
   }
 
   renderPrefillOptions(index) {
-    const value = this.state.prefills[index];
+    const prefill = this.state.prefills[index];
     const options = this.getPrefillOptions(index);
     const onChange = event => this.onSelectPrefill(index, event.target.value);
 
@@ -137,7 +123,7 @@ class _RegistrationOffersPanel extends BasePanel {
           <Form.Label>
             <FormattedMessage id={`namesPanel.prefillPrompt`} />
           </Form.Label>
-          <Form.Control as="select" onChange={onChange} value={value}>
+          <Form.Control as="select" onChange={onChange} value={prefill}>
             <option hidden>Select</option>
             {options.map(option =>
               <option key={options.value} value={option.value}>{option.label}</option>
@@ -145,7 +131,7 @@ class _RegistrationOffersPanel extends BasePanel {
           </Form.Control>
         </Form.Group>
 
-        {value === 'other' &&
+        {prefill === 'other' &&
           this.renderNameInput(index)
         }
       </Col>
@@ -179,7 +165,7 @@ class _RegistrationOffersPanel extends BasePanel {
         key={offer.offerId}
         offer={offer}
         isSelected={offer === selectedOffer}
-        onClick={() => this.onClickOffer(index, offer)}
+        onClick={() => this.onSelectOffer(index, offer)}
       />
     );
   }
