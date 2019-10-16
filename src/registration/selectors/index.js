@@ -21,9 +21,14 @@ export const getEventName = (state) => {
   return event ? event.name : null;
 };
 
+export const getPanelCount = (state) => state.panelManager.length;
+
+export const getCurrentPanelIndex = (state) => state.panelManager.findIndex(panel => panel.status === 'edit');
+
 export const getProgress = (state) => {
-  // TODO: implement once no longer pushing panels.
-  return 0;
+  const index = getCurrentPanelIndex(state);
+  const count = getPanelCount(state);
+  return index / (count - 1) * 100;
 };
 
 export const getRegistrationTypes = (state) => {

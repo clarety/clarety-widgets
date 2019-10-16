@@ -1,6 +1,7 @@
 import React from 'react';
 import { Registration, withOverrides, setupRegistrationAxiosMock } from '../../src';
 import enTranslations from '../../src/registration/intl/en.json';
+import '../../src/registration/style.scss';
 
 const RegistrationApp = withOverrides(Registration, {});
 

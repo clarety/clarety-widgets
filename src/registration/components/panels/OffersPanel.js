@@ -126,7 +126,7 @@ class _RegistrationOffersPanel extends BasePanel {
           <Form.Control as="select" onChange={onChange} value={prefill}>
             <option hidden>Select</option>
             {options.map(option =>
-              <option key={options.value} value={option.value}>{option.label}</option>
+              <option key={option.value} value={option.value}>{option.label}</option>
             )}
           </Form.Control>
         </Form.Group>
