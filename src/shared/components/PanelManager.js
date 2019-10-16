@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { setPanelStatus, resetAllPanels } from 'shared/actions';
 import { OverrideContext } from 'shared/utils';
 import { CheckoutLoginPanel, CustomerPanel, AddressPanel, ShippingPanel, CheckoutPaymentPanel } from 'checkout/components';
-import { ScrollIntoView, ModePanel, EventPanel, QtysPanel, RegistrationsOffersPanel, RegistrationsLoginPanel, DetailsPanel, TeamPanel, DonatePanel, ReviewPanel, ValidatePanel, RegistrationsPaymentPanel } from 'registrations/components';
+import { ScrollIntoView, ModePanel, EventPanel, QtysPanel, RegistrationOffersPanel, RegistrationLoginPanel, DetailsPanel, TeamPanel, DonatePanel, ReviewPanel, ValidatePanel, RegistrationPaymentPanel } from 'registration/components';
 
 class _PanelManager extends React.Component {
   panelRefs = [];
@@ -80,18 +80,18 @@ class _PanelManager extends React.Component {
       case 'PaymentPanel':              return this.context.PaymentPanel              || PaymentPanel;
       case 'CheckoutPaymentPanel':      return this.context.CheckoutPaymentPanel      || CheckoutPaymentPanel;
 
-      // Registrations panels
+      // Registration panels
       case 'ModePanel':                 return this.context.ModePanel                 || ModePanel;
       case 'EventPanel':                return this.context.EventPanel                || EventPanel;
       case 'QtysPanel':                 return this.context.QtysPanel                 || QtysPanel;
-      case 'RegistrationsLoginPanel':   return this.context.RegistrationsLoginPanel   || RegistrationsLoginPanel;
-      case 'RegistrationsOffersPanel':  return this.context.RegistrationsOffersPanel  || RegistrationsOffersPanel;
+      case 'RegistrationLoginPanel':   return this.context.RegistrationLoginPanel   || RegistrationLoginPanel;
+      case 'RegistrationOffersPanel':  return this.context.RegistrationOffersPanel  || RegistrationOffersPanel;
       case 'DetailsPanel':              return this.context.DetailsPanel              || DetailsPanel;
       case 'TeamPanel':                 return this.context.TeamPanel                 || TeamPanel;
       case 'DonatePanel':               return this.context.DonatePanel               || DonatePanel;
       case 'ReviewPanel':               return this.context.ReviewPanel               || ReviewPanel;
       case 'ValidatePanel':             return this.context.ValidatePanel             || ValidatePanel;
-      case 'RegistrationsPaymentPanel': return this.context.RegistrationsPaymentPanel || RegistrationsPaymentPanel;
+      case 'RegistrationPaymentPanel': return this.context.RegistrationPaymentPanel || RegistrationPaymentPanel;
 
       default: throw new Error(`Cannot resolve panel component ${panel.component}`);
     }

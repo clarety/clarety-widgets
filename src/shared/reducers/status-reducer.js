@@ -1,6 +1,6 @@
 import { types, statuses } from 'shared/actions';
 import { types as checkoutTypes } from 'checkout/actions/types';
-import { types as regoTypes } from 'registrations/actions/types';
+import { types as regoTypes } from 'registration/actions/types';
 
 const initialState = statuses.initializing;
 
@@ -53,7 +53,7 @@ export const statusReducer = (state = initialState, action) => {
     case checkoutTypes.applyPromoCodeFailure:
       return statuses.ready;
 
-    // Registrations
+    // Registration
 
     case regoTypes.fetchEventsRequest:
       return statuses.initializing;

@@ -8,7 +8,7 @@ export const statuses = {
   // Checkout
   busyPromoCode: 'busy-promo-code',
 
-  // Registrations
+  // Registration
   validating: 'validating',
   submitting: 'submitting',
 };

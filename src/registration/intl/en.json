@@ -1,0 +1,112 @@
+{
+  "app.title": "Registration",
+
+  "btn.next": "Continue",
+  "btn.edit": "Modify",
+  "btn.reset": "Start Over",
+  "btn.submit": "Submit Registration",
+  "btn.retry": "Try Again",
+  "btn.yes": "Yes",
+  "btn.no": "No",
+  "btn.cancel": "Cancel",
+  "btn.createTeam": "Create Team",
+
+  "label.firstName": "First Name",
+  "label.lastName": "Last Name",
+  "label.email": "Email",
+  "label.gender": "Gender",
+  "label.dateOfBirth": "Date Of Birth",
+  "label.mobile": "Mobile",
+  
+  "label.team.search": "Team Search",
+  "label.team.name": "Team Name",
+  "label.team.type": "Team Type",
+  "label.team.password": "Team Password",
+
+  "label.optional": "Optional",
+
+  "label.registrationformformemergencycontact": "Emergency Contact Name",
+  "label.registrationformformemergencycontact1": "Emergency Contact Number",
+  "label.registrationformformsupportsocial": "Are you willing to support the Walk for Freedom efforts through social media?",
+  "label.registrationformformsupportvolunteer": "Are you willing to volunteer at the Walk for Freedom event?",
+  "label.registrationformformsupportresources": "Are you willing to sponsor/mobilize resources for the walk?",
+
+  "busy.init": "Just A Moment",
+  "busy.validate": "Checking Your Registration Details",
+  "busy.submit": "Submitting Your Registration",
+
+  "date.day": "Day",
+  "date.month": "Month",
+  "date.year": "Year",
+  "date.month1": "January",
+  "date.month2": "February",
+  "date.month3": "March",
+  "date.month4": "April",
+  "date.month5": "May",
+  "date.month6": "June",
+  "date.month7": "July",
+  "date.month8": "August",
+  "date.month9": "September",
+  "date.month10": "October",
+  "date.month11": "November",
+  "date.month12": "December",
+
+  "qtys.adult": "{qty, plural, one {# × Adult} other {# × Adults}}",
+  "qtys.child": "{qty, plural, one {# × Child} other {# × Children}}",
+
+  "modePanel.editTitle": "Registration",
+  "modePanel.doneTitle": "Registration",
+
+  "eventPanel.editTitle": "Which Location Are You Registering For?",
+  "eventPanel.doneTitle": "Location",
+
+  "qtysPanel.editTitle": "Participant Selection",
+  "qtysPanel.doneTitle": "Registration",
+  "qtysPanel.adult.title": "Adults",
+  "qtysPanel.adult.subtitle": "Ages 17+",
+  "qtysPanel.child.title": "Children",
+  "qtysPanel.child.subtitle": "Ages 13 - 17",
+  "qtysPanel.message": " ",
+
+  "loginPanel.editTitle": "Account Details",
+  "loginPanel.doneTitle": "You are logged in as",
+
+  "namesPanel.editTitle": "Participant Names",
+  "namesPanel.doneTitle": "Participants",
+  "namesPanel.adult.title": "Adult Registration",
+  "namesPanel.child.title": "Child Registration",
+  "namesPanel.prefillPrompt": "Who is this registration for?",
+
+  "teamPanel.editTitle": "Do you want to participate with a team?",
+  "teamPanel.doneTitle": "Your Team",
+  "teamPanel.message.1": "Combine your efforts and participate as a team! Either create a new team or join one that’s already been created.",
+  "teamPanel.message.2": "If you are registering with an existing team, please contact your team leader for the team name and password (if applicable) before proceeding with the team registration process.",
+  "teamPanel.createTeamTitle": "Create New Team",
+  "teamPanel.noTeam": "No Team",
+
+  "detailsPanel.editTitle": "Registration Details For {firstName}",
+  "detailsPanel.customerFormTitle": "Personal Details",
+  "detailsPanel.extendFormTitle": "Event Details",
+  "detailsPanel.doneTitle": "Registration Details For {firstName}",
+
+  "donatePanel.editTitle": "Make A Donation",
+  "donatePanel.doneTitle": "Your Donation",
+  "donatePanel.summaryText": "Amount: {amount}",
+  
+  "reviewPanel.errorTitle": "We Found Some Problems With Your Registration",
+  "reviewPanel.errorSubtitle": "Please correct the issues and try again.",
+  "reviewPanel.reviewTitle": "Please Review Your Registration",
+
+  "validation.required": "This is a required field.",
+  "validation.email": "Please enter a valid email.",
+  "validation.age.adult": "Participant must be 17 years old on the day of the walk to attend.",
+  "validation.phone": "Emergency phone number needs to be different to your mobile number.",
+
+  "option.": " ",
+
+  "option.Yes": "Yes",
+  "option.No": "No",
+
+  "option.Male": "Male",
+  "option.Female": "Female"
+}
