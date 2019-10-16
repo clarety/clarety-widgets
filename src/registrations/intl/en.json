@@ -75,6 +75,7 @@
   "namesPanel.doneTitle": "Participants",
   "namesPanel.adult.title": "Adult Registration",
   "namesPanel.child.title": "Child Registration",
+  "namesPanel.prefillPrompt": "Who is this registration for?",
 
   "teamPanel.editTitle": "Do you want to participate with a team?",
   "teamPanel.doneTitle": "Your Team",

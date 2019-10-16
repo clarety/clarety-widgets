@@ -33,7 +33,10 @@ RegistrationsApp.setPanels([
   },
   {
     component: 'NamesPanel',
-    settings: { showOffers: true },
+    settings: {
+      showOffers: true,
+      showPrefill: true,
+    },
   },
   {
     component: 'ValidatePanel',

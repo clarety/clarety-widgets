@@ -11,7 +11,8 @@ class _NamesPanel extends BasePanel {
   state = {
     names: [],
     offers: [],
-  };
+    prefills: [],
+  };  
 
   onChangeName = (index, name) => {
     this.setState(prevState => {
@@ -26,6 +27,14 @@ class _NamesPanel extends BasePanel {
       const offers = [...prevState.offers];
       offers[index] = offer;
       return { offers };
+    });
+  };
+
+  onSelectPrefill = (index, value) => {
+    this.setState(prevState => {
+      const prefills = [...prevState.prefills];
+      prefills[index] = value;
+      return { prefills };
     });
   };
 
@@ -86,8 +95,7 @@ class _NamesPanel extends BasePanel {
 
   renderRows() {
     const { participants, settings } = this.props;
-    const { names } = this.state;
-
+    
     return participants.map((participant, index) =>
       <Row key={index} className="mb-3 align-items-center">
         <Col xs={2}>
@@ -106,7 +114,60 @@ class _NamesPanel extends BasePanel {
           </Col>
         }
 
-        <Col>
+        {settings.showPrefill
+          ? this.renderPrefillOptions(index)
+          : this.renderNameInput(index)
+        }
+      </Row>
+    );
+  }
+
+  renderPrefillOptions(index) {
+    const value = this.state.prefills[index];
+    const options = this.getPrefillOptions(index);
+    const onChange = event => this.onSelectPrefill(index, event.target.value);
+
+    return (
+      <Col>
+        <Form.Group controlId={`prefill-options-${index}`}>
+          <Form.Label>
+            <FormattedMessage id={`namesPanel.prefillPrompt`} />
+          </Form.Label>
+          <Form.Control as="select" onChange={onChange} value={value}>
+            <option hidden>Select</option>
+            {options.map(option =>
+              <option key={options.value} value={option.value}>{option.label}</option>
+            )}
+          </Form.Control>
+        </Form.Group>
+
+        {value === 'other' &&
+          this.renderNameInput(index)
+        }
+      </Col>
+    );
+  }
+
+  getPrefillOptions(index) {
+    const { prefills } = this.state;
+
+    const options = [];
+
+    const yourselfIndex = prefills.indexOf('yourself');
+    if (yourselfIndex === index || yourselfIndex === -1) {
+      options.push({ value: 'yourself', label: 'Yourself' });
+    }
+
+    options.push({ value: 'other', label: 'Other' });
+
+    return options;
+  }
+
+  renderNameInput(index) {
+    const { names } = this.state;
+
+    return (
+      <Col>
         <FormattedMessage id={`label.firstName`}>
           {label =>
             <Form.Control
@@ -115,9 +176,8 @@ class _NamesPanel extends BasePanel {
               onChange={event => this.onChangeName(index, event.target.value)}
             />
           }
-          </FormattedMessage>
-        </Col>
-      </Row>
+        </FormattedMessage>
+      </Col>
     );
   }
 
@@ -160,19 +220,34 @@ class _NamesPanel extends BasePanel {
 
   canContinue() {
     const { participants, settings } = this.props;
-    const { names, offers } = this.state;
+    const { names, offers, prefills } = this.state;
 
-    if (names.length !== participants.length) return false;
+    const count = participants.length;
 
-    for (let name of names) {
-      if (!name || !name.trim()) return false;
-    }
+    // If showing offers, every participant needs a selected offer.
 
     if (settings.showOffers) {
-      if (offers.length !== participants.length) return false;
+      for (let index = 0; index < count; index++) {
+        if (!offers[index]) return false;
+      }
+    }
 
-      for (let offer of offers) {
-        if (!offer) return false;
+    if (settings.showPrefill) {
+      // If showing prefills, every participant needs a prefil selection,
+      // and any 'other' prefills need a name.
+
+      for (let index = 0; index < count; index++) {
+        if (!prefills[index]) return false;
+        if (prefills[index] === 'other') {
+          if (!names[index] || !names[index].trim()) return false;
+        }
+      }
+
+    } else {
+      // If not showing prefils, every participant needs name.
+
+      for (let index = 0; index < count; index++) {
+        if (!names[index] || !names[index].trim()) return false;
       }
     }
 
