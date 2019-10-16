@@ -36,7 +36,7 @@ RegistrationsApp.setPanels([
     },
   },
   {
-    component: 'NamesPanel',
+    component: 'RegistrationsOffersPanel',
     settings: {
       showOffers: true,
       showPrefill: true,

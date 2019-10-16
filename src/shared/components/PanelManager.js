@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { setPanelStatus, resetAllPanels } from 'shared/actions';
 import { OverrideContext } from 'shared/utils';
 import { CheckoutLoginPanel, CustomerPanel, AddressPanel, ShippingPanel, CheckoutPaymentPanel } from 'checkout/components';
-import { ScrollIntoView, ModePanel, EventPanel, QtysPanel, NamesPanel, RegistrationsLoginPanel, DetailsPanel, TeamPanel, DonatePanel, ReviewPanel, ValidatePanel, RegistrationsPaymentPanel } from 'registrations/components';
+import { ScrollIntoView, ModePanel, EventPanel, QtysPanel, RegistrationsOffersPanel, RegistrationsLoginPanel, DetailsPanel, TeamPanel, DonatePanel, ReviewPanel, ValidatePanel, RegistrationsPaymentPanel } from 'registrations/components';
 
 class _PanelManager extends React.Component {
   panelRefs = [];
@@ -73,19 +73,19 @@ class _PanelManager extends React.Component {
   resolvePanelComponent(panel) {
     switch (panel.component) {
       // Checkout panels
-      case 'CheckoutLoginPanel':   return this.context.CheckoutLoginPanel   || CheckoutLoginPanel;
-      case 'CustomerPanel':        return this.context.CustomerPanel        || CustomerPanel;
-      case 'AddressPanel':         return this.context.AddressPanel         || AddressPanel;
-      case 'ShippingPanel':        return this.context.ShippingPanel        || ShippingPanel;
-      case 'PaymentPanel':         return this.context.PaymentPanel         || PaymentPanel;
-      case 'CheckoutPaymentPanel': return this.context.CheckoutPaymentPanel || CheckoutPaymentPanel;
+      case 'CheckoutLoginPanel':        return this.context.CheckoutLoginPanel        || CheckoutLoginPanel;
+      case 'CustomerPanel':             return this.context.CustomerPanel             || CustomerPanel;
+      case 'AddressPanel':              return this.context.AddressPanel              || AddressPanel;
+      case 'ShippingPanel':             return this.context.ShippingPanel             || ShippingPanel;
+      case 'PaymentPanel':              return this.context.PaymentPanel              || PaymentPanel;
+      case 'CheckoutPaymentPanel':      return this.context.CheckoutPaymentPanel      || CheckoutPaymentPanel;
 
       // Registrations panels
       case 'ModePanel':                 return this.context.ModePanel                 || ModePanel;
       case 'EventPanel':                return this.context.EventPanel                || EventPanel;
       case 'QtysPanel':                 return this.context.QtysPanel                 || QtysPanel;
       case 'RegistrationsLoginPanel':   return this.context.RegistrationsLoginPanel   || RegistrationsLoginPanel;
-      case 'NamesPanel':                return this.context.NamesPanel                || NamesPanel;
+      case 'RegistrationsOffersPanel':  return this.context.RegistrationsOffersPanel  || RegistrationsOffersPanel;
       case 'DetailsPanel':              return this.context.DetailsPanel              || DetailsPanel;
       case 'TeamPanel':                 return this.context.TeamPanel                 || TeamPanel;
       case 'DonatePanel':               return this.context.DonatePanel               || DonatePanel;

@@ -17,7 +17,7 @@ export * from './panels/DonatePanel';
 export * from './panels/EventPanel';
 export * from './panels/LoginPanel';
 export * from './panels/ModePanel';
-export * from './panels/NamesPanel';
+export * from './panels/OffersPanel';
 export * from './panels/PaymentPanel';
 export * from './panels/QtysPanel';
 export * from './panels/ReviewPanel';

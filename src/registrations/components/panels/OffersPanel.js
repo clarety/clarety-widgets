@@ -7,7 +7,7 @@ import { BasePanel } from 'registrations/components';
 import { setFirstNames, resetFirstNames, setOffers, resetOffers, prefillDetails } from 'registrations/actions';
 import { getParticipants, getOffersForAllParticipants, getPreviousParticipants } from 'registrations/selectors';
 
-class _NamesPanel extends BasePanel {
+class _RegistrationsOffersPanel extends BasePanel {
   state = {
     names: [],
     offers: [],
@@ -282,7 +282,7 @@ const actions = {
   resetOffers: resetOffers,
 };
 
-export const NamesPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_NamesPanel);
+export const RegistrationsOffersPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_RegistrationsOffersPanel);
 
 const OfferButton = ({ offer, isSelected, onClick }) => {
   const style = { width: '120px', margin: '10px' };
