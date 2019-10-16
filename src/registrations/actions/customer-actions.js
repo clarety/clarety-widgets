@@ -1,4 +1,4 @@
-import { ClaretyApi } from 'clarety-utils';
+import { ClaretyApi, Config } from 'clarety-utils';
 import { setStatus, login } from 'shared/actions';
 import { parseNestedElements } from 'shared/utils';
 import { types } from 'registrations/actions';
@@ -49,7 +49,9 @@ export const fetchAuthCustomer = () => {
 
     dispatch(setStatus('busy'));
 
-    let results = await ClaretyApi.get('registration-customer/');
+    const previousSeriesId = Config.get('previousSeriesId');
+
+    let results = await ClaretyApi.get('registration-customer/', { previousSeriesId });
     const result = results[0];
 
     dispatch(setStatus('ready'));

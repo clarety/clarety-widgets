@@ -1,5 +1,5 @@
 import { types } from 'registrations/actions';
-import { getCustomer } from 'registrations/selectors';
+import { getCustomer, getPreviousParticipants } from 'registrations/selectors';
 
 export const setEvent = (eventId) => ({
   type: types.panelDataSetEvent,
@@ -40,14 +40,21 @@ export const resetOffers = () => ({
 export const prefillDetails = (prefills) => {
   return (dispatch, getState) => {
     const state = getState();
+    const customer = getCustomer(state);
+    const previous = getPreviousParticipants(state);
 
     prefills.forEach((prefill, index) => {
-      if (prefill === 'other') return;
+      if (prefill === 'other') {
+        dispatch(resetDetails(index));
+      }
 
       if (prefill === 'yourself') {
-        const customer = getCustomer(state);
         dispatch(setDetails(index, customer, {}));
-        return;
+      }
+      
+      const participant = previous.find(prev => prev.id === prefill);
+      if (participant) {
+        dispatch(setDetails(index, participant, {}));
       }
     });
   };

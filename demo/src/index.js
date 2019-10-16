@@ -14,7 +14,8 @@ Config.init({
   phoneCountry: 'AU',
 
   storeId: 0,
-  seriesId: 0,
+  seriesId: 3,
+  previousSeriesId: 1,
 
   devSitePath: 'http://localhost:3000/',
 });

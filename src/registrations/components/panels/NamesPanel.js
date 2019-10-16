@@ -5,7 +5,7 @@ import { Container, Button, Form, Row, Col } from 'react-bootstrap';
 import { currency } from 'shared/utils';
 import { BasePanel } from 'registrations/components';
 import { setFirstNames, resetFirstNames, setOffers, resetOffers, prefillDetails } from 'registrations/actions';
-import { getParticipants, getParticipantsOffers } from 'registrations/selectors';
+import { getParticipants, getParticipantsOffers, getPreviousParticipants } from 'registrations/selectors';
 
 class _NamesPanel extends BasePanel {
   state = {
@@ -153,18 +153,25 @@ class _NamesPanel extends BasePanel {
   }
 
   getPrefillOptions(index) {
-    const { prefills } = this.state;
-
     const options = [];
 
-    const yourselfIndex = prefills.indexOf('yourself');
-    if (yourselfIndex === index || yourselfIndex === -1) {
-      options.push({ value: 'yourself', label: 'Yourself' });
-    }
+    this.maybeAddOption(options, index, 'yourself', 'Yourself');
+
+    this.props.previousParticipants.forEach(participant => {
+      const name = `${participant.firstName} ${participant.lastName}`;
+      this.maybeAddOption(options, index, participant.id, name);
+    });
 
     options.push({ value: 'other', label: 'Other' });
 
     return options;
+  }
+
+  maybeAddOption(options, index, value, label) {
+    const valueIndex = this.state.prefills.indexOf(value);
+    if (valueIndex === index || valueIndex === -1) {
+      options.push({ value, label });
+    }
   }
 
   renderNameInput(index) {
@@ -263,6 +270,7 @@ const mapStateToProps = state => {
   return {
     participants: getParticipants(state),
     offers: getParticipantsOffers(state),
+    previousParticipants: getPreviousParticipants(state),
   };
 };
 

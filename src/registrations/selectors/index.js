@@ -31,6 +31,11 @@ export const getQtys = (state) => getPanelData(state).qtys;
 
 export const getCustomer = (state) => getCart(state).customer;
 
+export const getPreviousParticipants = (state) => {
+  const customer = getCustomer(state);
+  return customer ? customer.previous : [];
+};
+
 export const getParticipants = (state) => getPanelData(state).participants;
 
 export const getParticipantsOffers = (state) => getParticipants(state).map(
