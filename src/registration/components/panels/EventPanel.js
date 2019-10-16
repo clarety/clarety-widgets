@@ -92,7 +92,7 @@ class _EventPanel extends BasePanel {
         <p className="lead">{selectedEvent.name}</p>
 
         <Button onClick={this.onClickEdit} variant="action">
-          <FormattedMessage id="btn.reset" />
+          <FormattedMessage id="btn.edit" />
         </Button>
       </Container>
     );

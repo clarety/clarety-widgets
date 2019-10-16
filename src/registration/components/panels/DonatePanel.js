@@ -19,6 +19,8 @@ export class _DonatePanel extends _AmountPanel {
     this.props.editPanel();
   }
 
+  reset() {}
+
   // TODO: remove once _AmountPanel extends BasePanel
   render() {
     switch (this.props.status) {
