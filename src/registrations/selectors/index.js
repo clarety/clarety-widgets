@@ -38,7 +38,25 @@ export const getPreviousParticipants = (state) => {
 
 export const getParticipants = (state) => getPanelData(state).participants;
 
-export const getParticipantsOffers = (state) => getParticipants(state).map(
+export const getParticipant = (state, index) => getParticipants(state)[index];
+
+export const getPartcipantOffer = (state, index) => {
+  // Use selected offer if possible.
+  const participant = getParticipant(state, index);
+  if (participant.offer) return participant.offer;
+
+  // Otherwise, use first offer for type.
+  const offers = getOffers(state, participant.type);
+  return offers[0];
+};
+
+export const getIsPrefilled = (state, index) => {
+  // If participant has a customer ID then they've been prefilled.
+  const participant = getParticipant(state, index);
+  return participant.customer && participant.customer.id;
+};
+
+export const getOffersForAllParticipants = (state) => getParticipants(state).map(
   participant => getOffers(state, participant.type)
 );
 

@@ -5,7 +5,7 @@ import { Container, Button, Form, Row, Col } from 'react-bootstrap';
 import { currency } from 'shared/utils';
 import { BasePanel } from 'registrations/components';
 import { setFirstNames, resetFirstNames, setOffers, resetOffers, prefillDetails } from 'registrations/actions';
-import { getParticipants, getParticipantsOffers, getPreviousParticipants } from 'registrations/selectors';
+import { getParticipants, getOffersForAllParticipants, getPreviousParticipants } from 'registrations/selectors';
 
 class _NamesPanel extends BasePanel {
   state = {
@@ -152,28 +152,6 @@ class _NamesPanel extends BasePanel {
     );
   }
 
-  getPrefillOptions(index) {
-    const options = [];
-
-    this.maybeAddOption(options, index, 'yourself', 'Yourself');
-
-    this.props.previousParticipants.forEach(participant => {
-      const name = `${participant.firstName} ${participant.lastName}`;
-      this.maybeAddOption(options, index, participant.id, name);
-    });
-
-    options.push({ value: 'other', label: 'Other' });
-
-    return options;
-  }
-
-  maybeAddOption(options, index, value, label) {
-    const valueIndex = this.state.prefills.indexOf(value);
-    if (valueIndex === index || valueIndex === -1) {
-      options.push({ value, label });
-    }
-  }
-
   renderNameInput(index) {
     const { names } = this.state;
 
@@ -229,6 +207,28 @@ class _NamesPanel extends BasePanel {
     );
   }
 
+  getPrefillOptions(index) {
+    const options = [];
+
+    this.maybeAddOption(options, index, 'yourself', 'Yourself');
+
+    this.props.previousParticipants.forEach(participant => {
+      const name = `${participant.firstName} ${participant.lastName}`;
+      this.maybeAddOption(options, index, participant.id, name);
+    });
+
+    options.push({ value: 'other', label: 'Other' });
+
+    return options;
+  }
+
+  maybeAddOption(options, index, value, label) {
+    const valueIndex = this.state.prefills.indexOf(value);
+    if (valueIndex === index || valueIndex === -1) {
+      options.push({ value, label });
+    }
+  }
+
   canContinue() {
     const { participants, settings } = this.props;
     const { names, offers, prefills } = this.state;
@@ -269,7 +269,7 @@ class _NamesPanel extends BasePanel {
 const mapStateToProps = state => {
   return {
     participants: getParticipants(state),
-    offers: getParticipantsOffers(state),
+    offers: getOffersForAllParticipants(state),
     previousParticipants: getPreviousParticipants(state),
   };
 };

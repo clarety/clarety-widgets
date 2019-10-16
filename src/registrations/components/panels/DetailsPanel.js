@@ -5,7 +5,7 @@ import { Container, Button, Form, Row, Col, Alert } from 'react-bootstrap';
 import { BasePanel, TextInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput } from 'registrations/components';
 import { setDetails, setAdditionalData, setErrors, resetDetails } from 'registrations/actions';
 import { getGenderOptions } from 'registrations/utils';
-import { getEvent, getExtendFields } from 'registrations/selectors';
+import { getEvent, getExtendFields, getParticipant, getPartcipantOffer, getIsPrefilled } from 'registrations/selectors';
 import { FormContext, scrollIntoView } from 'registrations/utils';
 
 export class _DetailsPanel extends BasePanel {
@@ -199,6 +199,8 @@ export class _DetailsPanel extends BasePanel {
   }
 
   renderCustomerForm() {
+    const { isPrefilled } = this.props;
+
     const genderOptions = this.translateOptions(
       getGenderOptions(this.props.settings)
     );
@@ -206,12 +208,12 @@ export class _DetailsPanel extends BasePanel {
     return (
       <FormContext.Provider value={this.state.customerFormContext}>
         <Form.Row>
-          <Col md={6}><TextInput field="firstName" required /></Col>
-          <Col md={6}><TextInput field="lastName" required /></Col>
+          <Col md={6}><TextInput field="firstName" disabled={isPrefilled} required /></Col>
+          <Col md={6}><TextInput field="lastName" disabled={isPrefilled} required /></Col>
         </Form.Row>
         <Form.Row>
           <Col>
-            <EmailInput field="email" required />
+            <EmailInput field="email" disabled={isPrefilled} required />
           </Col>
         </Form.Row>
         <Form.Row>
@@ -341,18 +343,19 @@ export class _DetailsPanel extends BasePanel {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { participantIndex } = ownProps;
-
   const event = getEvent(state);
-  const participant = state.panelData.participants[participantIndex];
-  const offer = event.registrationTypes[participant.type].offers[0];
+  const participant = getParticipant(state, ownProps.participantIndex);
+  const extendFields = getExtendFields(state);
+  const isPrefilled = getIsPrefilled(state, ownProps.participantIndex);
+  const offer = getPartcipantOffer(state, ownProps.participantIndex);
   const eventDate = new Date(offer.ageCalculationDate || event.startDate);
 
   return {
     settings: state.settings,
     event: event,
     participant: participant,
-    extendFields: getExtendFields(state),
+    extendFields: extendFields,
+    isPrefilled: isPrefilled,
     eventDate: eventDate,
     minAge: Number(offer.minAgeOver),
     maxAge: Number(offer.maxAgeUnder),
