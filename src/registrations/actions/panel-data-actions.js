@@ -1,4 +1,5 @@
 import { types } from 'registrations/actions';
+import { getCustomer } from 'registrations/selectors';
 
 export const setEvent = (eventId) => ({
   type: types.panelDataSetEvent,
@@ -35,6 +36,22 @@ export const setOffers = (offers) => ({
 export const resetOffers = () => ({
   type: types.panelDataResetOffers,
 });
+
+export const prefillDetails = (prefills) => {
+  return (dispatch, getState) => {
+    const state = getState();
+
+    prefills.forEach((prefill, index) => {
+      if (prefill === 'other') return;
+
+      if (prefill === 'yourself') {
+        const customer = getCustomer(state);
+        dispatch(setDetails(index, customer, {}));
+        return;
+      }
+    });
+  };
+};
 
 export const setDetails = (index, customerForm, extendForm) => ({
   type: types.panelDataSetDetails,

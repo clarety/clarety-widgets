@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { Container, Button, Form, Row, Col } from 'react-bootstrap';
 import { currency } from 'shared/utils';
 import { BasePanel } from 'registrations/components';
-import { setFirstNames, resetFirstNames, setOffers, resetOffers } from 'registrations/actions';
+import { setFirstNames, resetFirstNames, setOffers, resetOffers, prefillDetails } from 'registrations/actions';
 import { getParticipants, getParticipantsOffers } from 'registrations/selectors';
 
 class _NamesPanel extends BasePanel {
@@ -43,10 +43,14 @@ class _NamesPanel extends BasePanel {
 
     if (!this.canContinue()) return;
 
-    const { setFirstNames, setOffers, nextPanel, settings } = this.props;
-    setFirstNames(this.state.names);
+    const { settings, setFirstNames, setOffers, prefillDetails, nextPanel } = this.props;
+    const { names, offers, prefills } = this.state;
 
-    if (settings.showOffers) setOffers(this.state.offers);
+    setFirstNames(names);
+
+    if (settings.showOffers) setOffers(offers);
+
+    if (settings.showPrefill) prefillDetails(prefills);
 
     nextPanel();
   };
@@ -265,6 +269,7 @@ const mapStateToProps = state => {
 const actions = {
   setFirstNames: setFirstNames,
   resetFirstNames: resetFirstNames,
+  prefillDetails: prefillDetails,
   setOffers: setOffers,
   resetOffers: resetOffers,
 };
