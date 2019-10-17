@@ -63,9 +63,9 @@ const AccordianPanelHeader = ({ status, number, title, onPressEdit }) => {
 };
 
 const AccordianPanelBody = ({ status, isBusy, children }) => {
-  if (status === 'wait') return <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>{children}</BlockUi>;
+  if (status === 'wait') return null;
   if (status === 'edit') return <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>{children}</BlockUi>;
-  if (status === 'done') return <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>{children}</BlockUi>;
+  if (status === 'done') return null;
 
   throw new Error(`[Clarety] AccordianPanelBody: Unhanlded status ${status}`);
 };

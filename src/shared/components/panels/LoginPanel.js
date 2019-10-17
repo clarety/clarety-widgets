@@ -8,7 +8,7 @@ import { FormContext } from 'checkout/utils';
 export class LoginPanel extends BasePanel {
   constructor(props) {
     super(props);
-    this.state.mode = 'check-email';
+    this.state.mode = props.isLoggedIn ? 'logged-in' : 'check-email';
   }
 
   onShowPanel() {
@@ -108,6 +108,13 @@ export class LoginPanel extends BasePanel {
     setFormData({ 'customer.email': customer.email });
     nextPanel();
   }
+
+  onPressLogout = async () => {
+    this.onChangeField('email', '');
+    this.onChangeField('password', '');
+    await this.props.logout();
+    this.setMode('check-email');
+  };
 
   componentDidUpdate(prevProps, prevState) {
     super.componentDidUpdate(prevProps, prevState);
@@ -328,11 +335,16 @@ export class LoginPanel extends BasePanel {
   }
 
   renderIsLoggedInForm() {
+    const { settings } = this.props;
+
     return (
       <React.Fragment>
         <p>You're currently logged-in as {this.props.customer.email}</p>
         <div className="text-right mt-3">
-          <a href="selfservice/login.php?action=logout" className="btn btn-link">Logout</a>
+          {settings.useSelfServiceLogout
+            ? <a href="selfservice/login.php?action=logout" className="btn btn-link">Logout</a>
+            : <Button title="Logout" onClick={this.onPressLogout} variant="link" />
+          }
           <Button title="Continue" onClick={this.onPressStayLoggedIn} />
         </div>
       </React.Fragment>
