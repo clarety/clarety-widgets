@@ -1,8 +1,8 @@
 import React from 'react';
-import { connect } from "react-redux";
-import { QtyInput, TotalLine, CartItemDescription, CartItemVariationDescription } from "cart/components";
-import { updateItemQuantity } from "../actions";
-import { Row, Col } from "react-bootstrap";
+import { connect } from 'react-redux';
+import { Row, Col } from 'react-bootstrap';
+import { QtyInput, TotalLine, CartItemDescription, CartItemVariationDescription } from 'cart/components';
+import { updateItemQuantity } from 'cart/actions';
 
 class _CartItem extends React.Component {
     timeout = null;

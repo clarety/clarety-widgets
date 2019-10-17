@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Col, Row, Spinner } from "react-bootstrap";
+import { Col, Row, Spinner } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faShoppingCart, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const _CartHeader = ({ isBusy }) => (
     <Row className="cart-widget__header">

@@ -3,7 +3,7 @@ import { Cart, setupCartAxiosMock } from '../../src';
 
 export default class CheckoutDemo extends React.Component {
   componentWillMount() {
-    // setupCartAxiosMock();
+    setupCartAxiosMock();
   }
 
   render() {

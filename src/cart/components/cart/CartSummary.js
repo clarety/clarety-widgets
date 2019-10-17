@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Row, Col } from "react-bootstrap";
-import { CartItem, TotalLine } from "cart/components";
+import { Row, Col } from 'react-bootstrap';
+import { CartItem, TotalLine } from 'cart/components';
 
 class _CartSummary extends React.Component {
   render() {
