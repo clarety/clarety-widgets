@@ -14,10 +14,13 @@ const _ErrorMessages = ({ errors }) => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
+  const errors = ownProps.showAll
+    ? state.errors
+    : state.errors.filter(error => !error.field);
+
   return {
-    // Filter out any field errors.
-    errors: state.errors.filter(error => !error.field),
+    errors: errors,
   };
 };
 
