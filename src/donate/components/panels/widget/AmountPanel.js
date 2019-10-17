@@ -1,9 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Card, Form, Col } from 'react-bootstrap';
+import { clearItems } from 'shared/actions';
+import { OverrideContext } from 'shared/utils';
 import { SubmitButton, ErrorMessages } from 'form/components';
 import { BasePanel, StepIndicator, FrequencySelect, SuggestedAmount, SuggestedAmountLg, VariableAmount, VariableAmountLg } from 'donate/components';
-import { connectAmountPanel } from 'donate/utils';
-import { OverrideContext } from 'shared/utils';
+import { selectAmount, submitAmountPanel } from 'donate/actions';
+import { getSelectedAmount } from 'donate/selectors';
 
 export class _AmountPanel extends BasePanel {
   componentWillMount() {
@@ -135,5 +138,25 @@ export class _AmountPanel extends BasePanel {
 }
 
 _AmountPanel.contextType = OverrideContext;
+
+const mapStateToProps = state => {
+  const { amountPanel } = state.panels;
+
+  return {
+    offers: state.settings.offers,
+    frequency: amountPanel.frequency,
+    selections: amountPanel.selections,
+    selectedAmount: getSelectedAmount(state),
+    errors: state.errors,
+  };
+};
+
+const actions = {
+  selectAmount: selectAmount,
+  submitAmountPanel: submitAmountPanel,
+  clearItems: clearItems,
+};
+
+export const connectAmountPanel = connect(mapStateToProps, actions);
 
 export const AmountPanel = connectAmountPanel(_AmountPanel);

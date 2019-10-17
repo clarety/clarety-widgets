@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Container, Button, Form } from 'react-bootstrap';
 import { clearItems } from 'shared/actions';
-import { _AmountPanel } from 'donate/components';
+import { _AmountPanel } from 'donate/components/panels/widget/AmountPanel';
 import { selectAmount, submitAmountPanel } from 'donate/actions';
 import { getSelectedAmount } from 'donate/selectors';
 
@@ -19,6 +19,7 @@ export class _DonatePanel extends _AmountPanel {
     this.props.editPanel();
   }
 
+  // TODO: remove once _AmountPanel extends BasePanel
   reset() {}
 
   // TODO: remove once _AmountPanel extends BasePanel

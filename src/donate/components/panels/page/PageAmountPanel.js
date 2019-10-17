@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
-import { _AmountPanel, FrequencySelect } from 'donate/components';
-import { connectAmountPanel } from 'donate/utils';
+import { _AmountPanel, connectAmountPanel } from 'donate/components/panels/widget/AmountPanel';
+import { FrequencySelect } from 'donate/components';
 import { OverrideContext } from 'shared/utils';
 
 export class _PageAmountPanel extends _AmountPanel {

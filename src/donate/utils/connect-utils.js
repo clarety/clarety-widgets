@@ -5,10 +5,9 @@ import { routerMiddleware } from 'connected-react-router';
 import { Provider as ReduxProvider, connect } from 'react-redux';
 import { createMemoryHistory } from 'history';
 import { OverrideContext } from 'shared/utils';
-import { clearItems } from 'shared/actions';
 import { formatPrice } from 'form/utils';
 import { createRootReducer } from 'donate/reducers';
-import { selectAmount, submitAmountPanel, submitDetailsPanel, submitPaymentPanel } from 'donate/actions';
+import { submitDetailsPanel, submitPaymentPanel } from 'donate/actions';
 import { getIsBusy, getSelectedFrequency, getSelectedAmount, getFrequencyLabel } from 'donate/selectors';
 import { DonateWidget, DonatePage } from 'donate/components';
 import { Actions, PageActions } from 'donate/actions';
@@ -56,28 +55,6 @@ export function createDonatePage({ components, actions, validations } = {}) {
   validations = validations || new Validations;
 
   return wrapDonateComponent(DonatePage, { components, actions, validations });
-}
-
-export function connectAmountPanel(ViewComponent) {
-  const mapStateToProps = state => {
-    const { amountPanel } = state.panels;
-  
-    return {
-      offers: state.settings.offers,
-      frequency: amountPanel.frequency,
-      selections: amountPanel.selections,
-      selectedAmount: getSelectedAmount(state),
-      errors: state.errors,
-    };
-  };
-  
-  const actions = {
-    selectAmount: selectAmount,
-    submitAmountPanel: submitAmountPanel,
-    clearItems: clearItems,
-  };
-
-  return connect(mapStateToProps, actions)(ViewComponent);
 }
 
 export function connectDetailsPanel(ViewComponent) {
