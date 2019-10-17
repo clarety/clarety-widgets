@@ -8,8 +8,13 @@ import { FormContext } from 'checkout/utils';
 export class LoginPanel extends BasePanel {
   constructor(props) {
     super(props);
+    this.state.mode = 'check-email';
+  }
 
-    this.state.mode = props.isLoggedIn ? 'logged-in' : 'check-email';
+  onShowPanel() {
+    if (this.props.isLoggedIn) {
+      this.setMode('logged-in');
+    }
   }
 
   onClickEdit = () => {

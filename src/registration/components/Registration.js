@@ -7,11 +7,13 @@ import 'intl-pluralrules'; // Polyfill for safari 12
 import { Spinner, Modal } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { statuses, setPanels, setClientIds } from 'shared/actions';
+import { ClaretyApi } from 'clarety-utils';
+import { statuses, setPanels, setClientIds, setAuth } from 'shared/actions';
 import { PanelManager } from 'shared/components';
+import { getJwtAccount } from 'shared/utils';
 import { selectDefaults } from 'donate/actions';
 import { MiniCart } from 'registration/components';
-import { fetchEvents, setPriceHandles } from 'registration/actions';
+import { fetchEvents, setPriceHandles, fetchAuthCustomer } from 'registration/actions';
 import { rootReducer } from 'registration/reducers';
 import { priceHandles } from 'registration/utils';
 
@@ -42,7 +44,14 @@ export class Registration extends React.Component {
 
 class _Root extends React.Component {
   async componentDidMount() {
-    const { fetchEvents, selectDefaultDonations, setPriceHandles } = this.props;
+    const { fetchEvents, selectDefaultDonations, setPriceHandles, setAuth, fetchAuthCustomer } = this.props;
+
+    const jwtAccount = getJwtAccount();
+    if (jwtAccount) {
+      ClaretyApi.setAuth(jwtAccount.jwtString);
+      setAuth(jwtAccount.jwtString);
+      await fetchAuthCustomer();
+    }
 
     const didFetch = await fetchEvents();
     if (!didFetch) return;
@@ -81,6 +90,9 @@ const mapStateToProps = state => {
 };
 
 const actions = {
+  setAuth: setAuth,
+  fetchAuthCustomer: fetchAuthCustomer,
+
   fetchEvents: fetchEvents,
   setPriceHandles: setPriceHandles,
   selectDefaultDonations: selectDefaults,

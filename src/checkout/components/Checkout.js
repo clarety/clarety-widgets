@@ -11,7 +11,6 @@ import { getIsCartComplete } from 'shared/selectors';
 import { fetchCart, fetchCustomer } from 'checkout/actions';
 import { rootReducer } from 'checkout/reducers';
 import { CartSummary } from 'checkout/components';
-// import 'checkout/style.scss';
 
 const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
