@@ -1,10 +1,12 @@
 export * from './inputs/QtyInput';
-export * from './Item/';
 
-export * from './CartItem';
+export * from './cart-item/CartItemDescription';
+export * from './cart-item/CartItemVariationDescription';
+export * from './cart-item/TotalLine';
+export * from './cart-item/CartItem';
 
-export * from './CartHeader';
-export * from './CartSummary';
-export * from './CartFooter';
+export * from './cart/CartHeader';
+export * from './cart/CartSummary';
+export * from './cart/CartFooter';
 
 export * from './Cart';

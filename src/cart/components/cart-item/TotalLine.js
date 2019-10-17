@@ -1,6 +1,6 @@
 import React from 'react';
+import { Col } from 'react-bootstrap';
 import { currency } from 'shared/utils';
-import { Col } from "react-bootstrap";
 
 
 export const TotalLine = ({ label, value, fallback }) => {
