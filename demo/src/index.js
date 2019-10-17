@@ -11,6 +11,7 @@ import CartDemo from './CartDemo';
 
 Config.init({
   instanceKey: 'clarety-baseline',
+  devSitePath: 'localhost:3000',
   phoneCountry: 'AU',
 
   storeId: 0,
