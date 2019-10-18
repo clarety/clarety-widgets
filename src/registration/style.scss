@@ -10,14 +10,13 @@
     z-index: 1020;
   }
 
-  .section {
+  .stack-panel {
     padding: 60px 0;
     border-bottom: 1px solid $gray-300;
+  }
 
-    &:last-of-type {
-      border: none;
-      min-height: 100vh;
-    }
+  .panel-last .stack-panel {
+    min-height: 100vh;
   }
 
   h4 {
@@ -60,6 +59,10 @@
     }
   }
 
+  .panel-actions {
+    margin-top: 2rem;
+  }
+
   .modal-dialog {
     max-width: 400px;
     margin-top: -60px;
@@ -67,6 +70,10 @@
 
   .modal-body {
     padding: 1.5rem;
+  }
+
+  .form-group {
+    text-align: left;
   }
 
   .invalid-feedback {
@@ -115,11 +122,11 @@
 
   .panel-body {
     margin: 40px auto;
-    text-align: left;
-
-    &-qtys { max-width: 500px; }
-    &-names { max-width: 600px; }
   }
+
+  .qtys .panel-body { max-width: 500px; }
+  .offers .panel-body { max-width: 600px; }
+  .payment .panel-body { max-width: 600px; }
 
   .input-group-qty {
     margin-left: auto;

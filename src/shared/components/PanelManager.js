@@ -48,7 +48,7 @@ class _PanelManager extends React.Component {
     const PanelComponent = this.resolvePanelComponent(panel);
     
     const shouldScroll = layout === 'stack' && panel.status === 'edit';
-    const className = layout === 'stack' ? 'section' : undefined;
+    const className = shouldScroll ? 'panel panel-last' : 'panel';
 
     return (
       <ScrollIntoView isActive={shouldScroll} key={panel.id} className={className}>
@@ -84,14 +84,14 @@ class _PanelManager extends React.Component {
       case 'ModePanel':                 return this.context.ModePanel                 || ModePanel;
       case 'EventPanel':                return this.context.EventPanel                || EventPanel;
       case 'QtysPanel':                 return this.context.QtysPanel                 || QtysPanel;
-      case 'RegistrationLoginPanel':   return this.context.RegistrationLoginPanel   || RegistrationLoginPanel;
-      case 'RegistrationOffersPanel':  return this.context.RegistrationOffersPanel  || RegistrationOffersPanel;
+      case 'RegistrationLoginPanel':    return this.context.RegistrationLoginPanel    || RegistrationLoginPanel;
+      case 'RegistrationOffersPanel':   return this.context.RegistrationOffersPanel   || RegistrationOffersPanel;
       case 'DetailsPanel':              return this.context.DetailsPanel              || DetailsPanel;
       case 'TeamPanel':                 return this.context.TeamPanel                 || TeamPanel;
       case 'DonatePanel':               return this.context.DonatePanel               || DonatePanel;
       case 'ReviewPanel':               return this.context.ReviewPanel               || ReviewPanel;
       case 'ValidatePanel':             return this.context.ValidatePanel             || ValidatePanel;
-      case 'RegistrationPaymentPanel': return this.context.RegistrationPaymentPanel || RegistrationPaymentPanel;
+      case 'RegistrationPaymentPanel':  return this.context.RegistrationPaymentPanel  || RegistrationPaymentPanel;
 
       default: throw new Error(`Cannot resolve panel component ${panel.component}`);
     }

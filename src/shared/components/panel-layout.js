@@ -4,9 +4,15 @@ import { Container, Button } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 
-export const PanelContainer = ({ layout, children }) => {
+export const PanelContainer = ({ layout, name, children }) => {
   if (layout === 'stack') {
-    return <Container>{children}</Container>;
+    return (
+      <div className="stack-panel">
+        <Container className={name}>
+          {children}
+        </Container>
+      </div>
+    );
   }
 
   if (layout === 'accordian') {
@@ -16,9 +22,9 @@ export const PanelContainer = ({ layout, children }) => {
   return children;
 };
 
-export const PanelHeader = ({ layout, status, title, number, intlId, onPressEdit }) => {
+export const PanelHeader = ({ layout, status, title, number, intlId, intlValues, onPressEdit }) => {
   if (layout === 'stack') {
-    return <StackPanelHeader status={status} intlId={intlId} onPressEdit={onPressEdit} />;
+    return <StackPanelHeader status={status} intlId={intlId} intlValues={intlValues} onPressEdit={onPressEdit} />;
   }
 
   if (layout === 'accordian') {
@@ -41,10 +47,10 @@ export const PanelBody = ({ layout, status, isBusy, children }) => {
 
 // Stack
 
-const StackPanelHeader = ({ status, intlId }) => {
+const StackPanelHeader = ({ status, intlId, intlValues }) => {
   if (status === 'wait') return null;
-  if (status === 'edit') return <FormattedMessage id={intlId} tagName="h2" />;
-  if (status === 'done') return <FormattedMessage id={intlId} tagName="h4" />;
+  if (status === 'edit') return <FormattedMessage tagName="h2" id={intlId} values={intlValues} />;
+  if (status === 'done') return <FormattedMessage tagName="h4" id={intlId} values={intlValues} />;
 };
 
 const StackPanelBody = ({ status, isBusy, children }) => {

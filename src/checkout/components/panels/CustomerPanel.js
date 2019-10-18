@@ -155,7 +155,7 @@ class _CustomerPanel extends BasePanel {
                 </Form.Row>
               }
 
-              <div className="text-right mt-3">
+              <div className="panel-actions">
                 <Button title="Continue" type="submit" />
               </div>
             </Form>

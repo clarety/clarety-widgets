@@ -243,7 +243,7 @@ export class LoginPanel extends BasePanel {
 
   renderCheckEmailButton() {
     return (
-      <div className="text-right mt-3">
+      <div className="panel-actions">
         <Button title="Continue" type="submit" isBusy={this.props.isBusy} />
       </div>
     );
@@ -253,7 +253,7 @@ export class LoginPanel extends BasePanel {
     return (
       <React.Fragment>
         <p>There is no account associated with this email, would you like to create one or checkout as a guest?</p>
-        <div className="text-right mt-3">
+        <div className="panel-actions">
           <Button title="Guest Checkout" onClick={this.onPressGuestCheckout} variant="link" />
           <Button title="Create Account" onClick={this.onPressShowCreateAccountForm} />
         </div>
@@ -279,7 +279,7 @@ export class LoginPanel extends BasePanel {
             </Col>
           </Form.Row>
 
-          <div className="text-right mt-3">
+          <div className="panel-actions">
             <Button title="Login" type="submit" isBusy={this.props.isBusy} />
           </div>
         </Form>
@@ -324,7 +324,7 @@ export class LoginPanel extends BasePanel {
             </Form.Row>
           }
 
-          <div className="text-right mt-3">
+          <div className="panel-actions">
             <Button title="Cancel" onClick={this.onPressCancelCreateAccount} variant="link" />
             <Button title="Continue" type="submit" isBusy={this.props.isBusy} />
           </div>
@@ -340,7 +340,7 @@ export class LoginPanel extends BasePanel {
     return (
       <React.Fragment>
         <p>You're currently logged-in as {this.props.customer.email}</p>
-        <div className="text-right mt-3">
+        <div className="panel-actions">
           {settings.useSelfServiceLogout
             ? <a href="selfservice/login.php?action=logout" className="btn btn-link">Logout</a>
             : <Button title="Logout" onClick={this.onPressLogout} variant="link" />

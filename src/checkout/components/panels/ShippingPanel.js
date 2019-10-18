@@ -56,7 +56,7 @@ class _ShippingPanel extends BasePanel {
       <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
         {shippingOptions && shippingOptions.map(this.renderShippingOption)}
 
-        <div className="text-right mt-3">
+        <div className="panel-actions">
           <Button
             title="Continue"
             onClick={this.onPressContinue}

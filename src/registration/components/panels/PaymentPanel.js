@@ -11,9 +11,7 @@ class _RegistrationPaymentPanel extends PaymentPanel {
     const { cart } = this.props;
 
     return (
-      <div className="my-5">
-        <h4>Registration Summary</h4>
-
+      <div className="my-5 text-left">
         {cart.items.map((item, index) =>
           <CartItem key={index} item={item} />
         )}
@@ -43,13 +41,9 @@ export const RegistrationPaymentPanel = connect(mapStateToProps, actions, null, 
 
 
 const CartItem = ({ item }) => (
-  <Row className="cart-item">
-    <Col>
-      <Row as="dl">
-        <dt className="col">{item.description}</dt>
-        <dd className="col text-right">{item.total}</dd>
-      </Row>
-    </Col>
+  <Row as="dl" className="cart-item">
+    <Col as="dt">{item.description}</Col>
+    <Col as="dd" xs={3} className="text-right">{item.total}</Col>
   </Row>
 );
 
@@ -69,8 +63,8 @@ const TotalLine = ({ label, value }) => {
 
   return (
     <Row as="dl">
-      <dt className="col">{label}</dt>
-      <dd className="col text-right">{currency(value)}</dd>
+      <Col as="dt">{label}</Col>
+      <Col as="dd" xs={3} className="text-right">{currency(value)}</Col>
     </Row>
   );
 };

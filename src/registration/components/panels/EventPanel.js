@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { Container, Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import Select from 'react-select';
+import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { Button } from 'form/components';
 import { BasePanel } from 'registration/components';
 import { setEvent, resetEvent, fetchFullEvent } from 'registration/actions';
@@ -52,13 +53,20 @@ class _EventPanel extends BasePanel {
   }
   
   renderEdit() {
-    const { events, isBusy } = this.props;
+    const { layout, index, events, isBusy } = this.props;
 
     return (
-      <Container>
-        <FormattedMessage id="eventPanel.editTitle" tagName="h2" />
+      <PanelContainer layout={layout} status="edit">
+        <PanelHeader
+          status="edit"
+          layout={layout}
+          number={index + 1}
+          title="Select Event"
+          intlId="eventPanel.editTitle"
+        />
 
-        <div className="panel-body">
+        <PanelBody layout={layout} status="edit" isBusy={isBusy}>
+
           <Form.Group>
             <Select
               options={events}
@@ -69,32 +77,46 @@ class _EventPanel extends BasePanel {
               classNamePrefix="react-select"
             />
           </Form.Group>
-        </div>
 
-        <Button
-          onClick={this.onClickNext}
-          disabled={!this.state.event}
-          isBusy={isBusy}
-          variant="action"
-        >
-          <FormattedMessage id="btn.next" />
-        </Button>
-      </Container>
+          <div className="panel-actions">
+            <Button
+              onClick={this.onClickNext}
+              disabled={!this.state.event}
+              isBusy={isBusy}
+            >
+              <FormattedMessage id="btn.next" />
+            </Button>
+          </div>
+
+        </PanelBody>
+      </PanelContainer>
     );
   }
 
   renderDone() {
-    const { selectedEvent } = this.props;
+    const { layout, index, selectedEvent } = this.props;
 
     return (
-      <Container>
-        <FormattedMessage id="eventPanel.doneTitle" tagName="h4" />
-        <p className="lead">{selectedEvent.name}</p>
+      <PanelContainer layout={layout} status="done">
+        <PanelHeader
+          status="done"
+          layout={layout}
+          number={index + 1}
+          title={selectedEvent}
+          onPressEdit={this.onPressEdit}
+          intlId="eventPanel.doneTitle"
+        />
 
-        <Button onClick={this.onClickEdit} variant="action">
-          <FormattedMessage id="btn.edit" />
-        </Button>
-      </Container>
+        <PanelBody layout={layout} status="done">
+
+          <p className="lead">{selectedEvent.name}</p>
+
+          <Button onClick={this.onClickEdit}>
+            <FormattedMessage id="btn.edit" />
+          </Button>
+          
+        </PanelBody>
+      </PanelContainer>
     );
   }
 }

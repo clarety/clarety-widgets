@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { Container, Button, Form, Row, Col } from 'react-bootstrap';
+import { Button, Form, Row, Col } from 'react-bootstrap';
+import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { currency } from 'shared/utils';
 import { BasePanel } from 'registration/components';
 import { setFirstNames, resetFirstNames, setOffers, resetOffers, prefillDetails } from 'registration/actions';
@@ -66,20 +67,32 @@ class _RegistrationOffersPanel extends BasePanel {
   }
 
   renderEdit() {
+    const { layout, index } = this.props;
+
     return (
-      <Container>
-        <FormattedMessage id="namesPanel.editTitle" tagName="h2" />
+      <PanelContainer layout={layout} status="edit" name="offers">
+        <PanelHeader
+          status="edit"
+          layout={layout}
+          number={index + 1}
+          title="Participants"
+          intlId="namesPanel.editTitle"
+        />
 
-        <Form onSubmit={this.onClickNext} className="panel-body panel-body-names">
-          {this.renderRows()}
+        <PanelBody layout={layout} status="edit">
 
-          <div className="text-center mt-5">
-            <Button type="submit" disabled={!this.canContinue()}>
-              <FormattedMessage id="btn.next" />
-            </Button>
-          </div>
-        </Form>
-      </Container>
+          <Form onSubmit={this.onClickNext}>
+            {this.renderRows()}
+
+            <div className="panel-actions">
+              <Button type="submit" disabled={!this.canContinue()}>
+                <FormattedMessage id="btn.next" />
+              </Button>
+            </div>
+          </Form>
+
+        </PanelBody>
+      </PanelContainer>
     );
   }
 
@@ -171,25 +184,36 @@ class _RegistrationOffersPanel extends BasePanel {
   }
 
   renderDone() {
-    const { participants } = this.props;
+    const { layout, index, participants } = this.props;
 
     return (
-      <Container>
-        <FormattedMessage id="namesPanel.doneTitle" tagName="h4" />
+      <PanelContainer layout={layout} status="done">
+        <PanelHeader
+          status="done"
+          layout={layout}
+          number={index + 1}
+          title="Participants"
+          onPressEdit={this.onPressEdit}
+          intlId="namesPanel.doneTitle"
+        />
 
-        <p>
-          {participants.map((participant, index) =>
-            <React.Fragment key={index}>
-              <span className="lead">{index + 1}. {participant.customer.firstName}</span>
-              <br />
-            </React.Fragment>
-          )}
-        </p>
+        <PanelBody layout={layout} status="done">
 
-        <Button onClick={this.onClickEdit}>
-          <FormattedMessage id="btn.edit" />
-        </Button>
-      </Container>
+          <p>
+            {participants.map((participant, index) =>
+              <React.Fragment key={index}>
+                <span className="lead">{index + 1}. {participant.customer.firstName}</span>
+                <br />
+              </React.Fragment>
+            )}
+          </p>
+
+          <Button onClick={this.onClickEdit}>
+            <FormattedMessage id="btn.edit" />
+          </Button>
+
+        </PanelBody>
+      </PanelContainer>
     );
   }
 

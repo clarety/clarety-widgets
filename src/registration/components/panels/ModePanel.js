@@ -27,21 +27,25 @@ class _ModePanel extends BasePanel {
     const { layout, isBusy, index } = this.props;
 
     return (
-      <PanelContainer layout={layout}>
+      <PanelContainer layout={layout} status="edit">
         <PanelHeader
           status="edit"
           layout={layout}
           number={index + 1}
           title="Registration"
           intlId="modePanel.editTitle"
-        />        
+        />
 
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
+
           <p>Are you registering as an individual, group, or family?</p>
 
-          <Button onClick={() => this.onSelectMode('individual')}>Individual</Button>
-          <Button onClick={() => this.onSelectMode('group')}>Group</Button>
-          <Button onClick={() => this.onSelectMode('family')}>Family</Button>
+          <div className="panel-actions">
+            <Button onClick={() => this.onSelectMode('individual')}>Individual</Button>
+            <Button onClick={() => this.onSelectMode('group')}>Group</Button>
+            <Button onClick={() => this.onSelectMode('family')}>Family</Button>
+          </div>
+
         </PanelBody>
       </PanelContainer>
     );
@@ -62,11 +66,13 @@ class _ModePanel extends BasePanel {
         />
 
         <PanelBody layout={layout} status="done">
+
           <p>{capitalize(selectedMode)} Registration</p>
 
           <Button onClick={this.onClickEdit}>
             <FormattedMessage id="btn.edit" />
           </Button>
+
         </PanelBody>
       </PanelContainer>
     );

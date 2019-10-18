@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { Container, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
+import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { ErrorMessages } from 'form/components';
 import { BasePanel } from 'registration/components';
 import { createRegistration } from 'registration/actions';
@@ -35,17 +36,30 @@ class _ValidatePanel extends BasePanel {
   }
   
   renderErrors() {
+    const { layout, index } = this.props;
+
     return (
-      <Container>
-        <FormattedMessage id="reviewPanel.errorTitle" tagName="h2" />
-        <FormattedMessage id="reviewPanel.errorSubtitle" tagName="p" />
+      <PanelContainer layout={layout} status="edit">
+        <PanelHeader
+          status="edit"
+          layout={layout}
+          number={index + 1}
+          title="An Error Occured"
+          intlId="reviewPanel.errorTitle"
+        />
 
-        <ErrorMessages showAll />
+        <PanelBody layout={layout} status="edit">
 
-        <Button onClick={this.onClickRetry}>
-          <FormattedMessage id="btn.retry" />
-        </Button>
-      </Container>
+          <FormattedMessage id="reviewPanel.errorSubtitle" tagName="p" />
+
+          <ErrorMessages showAll />
+
+          <Button onClick={this.onClickRetry}>
+            <FormattedMessage id="btn.retry" />
+          </Button>
+
+        </PanelBody>
+      </PanelContainer>
     );
   }
 }

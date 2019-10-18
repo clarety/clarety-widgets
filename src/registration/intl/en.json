@@ -103,7 +103,7 @@
   "reviewPanel.errorSubtitle": "Please correct the issues and try again.",
   "reviewPanel.reviewTitle": "Please Review Your Registration",
 
-  "paymentPanel.editTitle": "Payment Details",
+  "paymentPanel.editTitle": "Registration Summary",
 
   "validation.required": "This is a required field.",
   "validation.email": "Please enter a valid email.",

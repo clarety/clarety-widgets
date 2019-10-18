@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { Container, Button, Form } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
+import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { clearItems } from 'shared/actions';
 import { _AmountPanel } from 'donate/components/panels/widget/AmountPanel';
 import { selectAmount, submitAmountPanel } from 'donate/actions';
@@ -36,49 +37,70 @@ export class _DonatePanel extends _AmountPanel {
   }
 
   renderEdit() {
-    const { frequency } = this.props;
+    const { layout, index, frequency } = this.props;
     
     const offer = this._getOffer(frequency);
     const variableAmount = this._getVariableAmount(offer);
 
     return (
-      <Container>
-        <FormattedMessage id="donatePanel.editTitle" tagName="h2" />
+      <PanelContainer layout={layout} status="edit">
+        <PanelHeader
+          status="edit"
+          layout={layout}
+          number={index + 1}
+          title="Donation"
+          intlId="donatePanel.editTitle"
+        />
 
-        <Form onSubmit={this.onClickNext} className="panel-body panel-body-donate">
+        <Form onSubmit={this.onClickNext}>
+          <PanelBody layout={layout} status="edit">
 
-          <div className="card-deck flex-column mt-3 mx-n3 text-left flex-lg-row">
-            {offer.amounts.map(this.renderSuggestedAmount)}
-            {this.renderVariableAmount(variableAmount)}
-          </div>
+            <div className="card-deck flex-column mt-3 mx-n3 text-left flex-lg-row">
+              {offer.amounts.map(this.renderSuggestedAmount)}
+              {this.renderVariableAmount(variableAmount)}
+            </div>
 
-          <div className="text-center mt-5">
-            <Button type="submit"> 
-              <FormattedMessage id="btn.next" />
-            </Button>
-          </div>
+            <div className="panel-actions">
+              <Button type="submit"> 
+                <FormattedMessage id="btn.next" />
+              </Button>
+            </div>
 
+          </PanelBody>
         </Form>
-      </Container>
+      </PanelContainer>
     );
   }
 
   renderDone() {
+    const { layout, index, selectedAmount } = this.props;
+
     return (
-      <Container>
-        <FormattedMessage id="donatePanel.doneTitle" tagName="h4" />
+      <PanelContainer layout={layout} status="done">
+        <PanelHeader
+          status="done"
+          layout={layout}
+          number={index + 1}
+          title={selectedAmount}
+          onPressEdit={this.onPressEdit}
+          intlId="donatePanel.doneTitle"
+        />
 
-        <FormattedMessage
-          id="donatePanel.summaryText"
-          values={{ amount: this.props.selectedAmount }}
-        >
-          {text => <p className="lead">{text}</p>}
-        </FormattedMessage>
+        <PanelBody layout={layout} status="done">
 
-        <Button onClick={this.onClickEdit}>
-          <FormattedMessage id="btn.edit" />
-        </Button>
-      </Container>
+          <FormattedMessage
+            id="donatePanel.summaryText"
+            values={{ amount: selectedAmount }}
+          >
+            {text => <p className="lead">{text}</p>}
+          </FormattedMessage>
+
+          <Button onClick={this.onClickEdit}>
+            <FormattedMessage id="btn.edit" />
+          </Button>
+
+        </PanelBody>
+      </PanelContainer>
     );
   }
 }

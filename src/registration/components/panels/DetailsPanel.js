@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Container, Button, Form, Row, Col, Alert } from 'react-bootstrap';
+import { Button, Form, Row, Col, Alert } from 'react-bootstrap';
+import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { BasePanel, TextInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput } from 'registration/components';
 import { setDetails, setAdditionalData, setErrors, resetDetails } from 'registration/actions';
 import { getGenderOptions } from 'registration/utils';
@@ -99,7 +100,7 @@ export class _DetailsPanel extends BasePanel {
 
   validateFields(errors) {
     const { formData } = this.state.customerFormContext;
-    const { eventDate, minAge, maxAge, settings } = this.props;
+    const { eventDate, minAge, maxAge, appSettings } = this.props;
 
     this.validateRequired('firstName', formData, errors);
     this.validateRequired('lastName', formData, errors);
@@ -119,7 +120,7 @@ export class _DetailsPanel extends BasePanel {
       errors: errors,
     });
 
-    if (settings.showAddress) {
+    if (appSettings.showAddress) {
       this.validateRequired('billing.address1', formData, errors);
       this.validateRequired('billing.suburb', formData, errors);
       this.validateRequired('billing.state', formData, errors);
@@ -156,52 +157,60 @@ export class _DetailsPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { registrationErrors } = this.props;
+    const { layout, index, registrationErrors } = this.props;
     const { firstName } = this.state.customerFormContext.formData;
 
     return (
-      <Container ref={ref => this.ref = ref}>
-        <FormattedMessage
-          id="detailsPanel.editTitle"
-          tagName="h2"
-          values={{
-            firstName: <span className="text-primary">{firstName}</span>
-          }}
-        />
+      <PanelContainer layout={layout} status="edit">
+        <div ref={ref => this.ref = ref}>
+          <PanelHeader
+            status="edit"
+            layout={layout}
 
-        <Form onSubmit={this.onClickNext}>
-          <div className="panel-body">
-            <Row className="mt-5">
-              <Col lg={6}>
-                <FormattedMessage id="detailsPanel.customerFormTitle">
-                  {txt => <h4 className="mb-4">{txt}</h4>}
-                </FormattedMessage>
-                {this.renderCustomerForm()}
-              </Col>
-              <Col lg={6}>
-                <FormattedMessage id="detailsPanel.extendFormTitle">
-                  {txt => <h4 className="mb-4">{txt}</h4>}
-                </FormattedMessage>
-                {this.renderExtendForm()}
-              </Col>
-            </Row>
-          </div>
+            number={index + 1}
+            title="Registration Details"
 
-          {registrationErrors &&
-            <Alert variant="danger">
-              <ul className="list-unstyled">
-                {registrationErrors.map((error, index) =>
-                  <li key={index}>{error.message}</li>
-                )}
-              </ul>
-            </Alert>
-          }
+            intlId="detailsPanel.editTitle"
+            intlValues={{
+              firstName: <span className="text-primary">{firstName}</span>
+            }}
+          />
 
-          <Button type="submit">
-            <FormattedMessage id="btn.next" />
-          </Button>
-        </Form>
-      </Container>
+          <Form onSubmit={this.onClickNext}>
+
+            <PanelBody layout={layout} status="edit">
+              <Row className="mt-5">
+                <Col lg={6}>
+                  <FormattedMessage id="detailsPanel.customerFormTitle">
+                    {txt => <h4 className="mb-4">{txt}</h4>}
+                  </FormattedMessage>
+                  {this.renderCustomerForm()}
+                </Col>
+                <Col lg={6}>
+                  <FormattedMessage id="detailsPanel.extendFormTitle">
+                    {txt => <h4 className="mb-4">{txt}</h4>}
+                  </FormattedMessage>
+                  {this.renderExtendForm()}
+                </Col>
+              </Row>
+            </PanelBody>
+
+            {registrationErrors &&
+              <Alert variant="danger">
+                <ul className="list-unstyled">
+                  {registrationErrors.map((error, index) =>
+                    <li key={index}>{error.message}</li>
+                  )}
+                </ul>
+              </Alert>
+            }
+
+            <Button type="submit">
+              <FormattedMessage id="btn.next" />
+            </Button>
+          </Form>
+        </div>
+      </PanelContainer>
     );
   }
 
@@ -308,16 +317,27 @@ export class _DetailsPanel extends BasePanel {
   };
 
   renderDone() {
+    const { layout, index } = this.props;
     const { firstName } = this.props.participant.customer;
 
     return (
-      <Container>
-        <FormattedMessage id="detailsPanel.doneTitle" values={{ firstName }} tagName="h4" />
+      <PanelContainer layout={layout} status="done">
+        <PanelHeader
+          status="done"
+          layout={layout}
+          number={index + 1}
+          title={firstName}
+          onPressEdit={this.onPressEdit}
+          intlId="detailsPanel.doneTitle"
+          intlValues={{ firstName }}
+        />
 
-        <Button onClick={this.onClickEdit}>
-          <FormattedMessage id="btn.edit" />
-        </Button>
-      </Container>
+        <PanelBody layout={layout} status="done">
+          <Button onClick={this.onClickEdit}>
+            <FormattedMessage id="btn.edit" />
+          </Button>
+        </PanelBody>
+      </PanelContainer>
     );
   }
 

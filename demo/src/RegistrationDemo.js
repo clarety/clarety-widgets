@@ -26,6 +26,10 @@ RegistrationApp.setPanels([
     settings: {},
   },
   {
+    component: 'TeamPanel',
+    settings: {},
+  },
+  {
     component: 'QtysPanel',
     settings: {},
   },

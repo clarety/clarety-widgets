@@ -141,7 +141,7 @@ class _AddressPanel extends BasePanel {
 
               {!billingIsSameAsShipping && this.renderAddressForm('Billing Address', 'customer.billing')}
               
-              <div className="text-right mt-3">
+              <div className="panel-actions">
                 <Button title="Continue" type="submit" isBusy={isBusy} />
               </div>
             </Form>

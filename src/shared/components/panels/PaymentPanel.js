@@ -96,7 +96,7 @@ export class PaymentPanel extends BasePanel {
     const { layout, index, paymentMethod, isBusy } = this.props;
 
     return (
-      <PanelContainer layout={layout}>
+      <PanelContainer layout={layout} status="edit" name="payment">
         <PanelHeader
           status="edit"
           layout={layout}
@@ -132,7 +132,7 @@ export class PaymentPanel extends BasePanel {
         <Form onSubmit={this.onPressPlaceOrder}>
           {this.renderPaymentMethodFields()}
 
-          <div className="text-right mt-3">
+          <div className="panel-actions">
             <Button title={submitBtnTitle || 'Place Order'} type="submit" isBusy={isBusy} />
           </div>
         </Form>

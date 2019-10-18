@@ -6,7 +6,7 @@ export const priceHandles = [
         amount: '0.00',
         title: 'None',
         description: 'Can provide bandages and painkillers in an emergency.',
-        image: 'https://placeimg.com/160/130/nature',
+        image: 'https://placeimg.com/160/130/tech',
       },
       {
         amount: '30.00',
@@ -20,13 +20,6 @@ export const priceHandles = [
         description:
           'Could save a life by providing antivenom after a snakebite.',
         image: 'https://placeimg.com/160/130/people',
-      },
-      {
-        amount: '100.00',
-        title: 'Title Three',
-        description: 'Can help keep a flight nurse on board an aircraft.',
-        image: 'https://placeimg.com/160/130/tech',
-        default: true,
       },
       {
         variable: true,

@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { Container, Button, Form, Col } from 'react-bootstrap';
+import { Button, Form, Col } from 'react-bootstrap';
+import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { insertPanels, removePanels } from 'shared/actions';
 import { BasePanel, Qty, QtyInput } from 'registration/components';
 import { setQtys, resetQtys } from 'registration/actions';
@@ -77,24 +78,32 @@ class _QtysPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { registrationMode } = this.props;
+    const { layout, index, registrationMode } = this.props;
 
     return (
-      <Container>
-        <FormattedMessage id="qtysPanel.editTitle" tagName="h2" />
+      <PanelContainer layout={layout} status="edit" name="qtys">
+        <PanelHeader
+          status="edit"
+          layout={layout}
+          number={index + 1}
+          title="Participants"
+          intlId="qtysPanel.editTitle"
+        />
 
-        {registrationMode === 'individual'
-          ? this.renderIndividualForm()
-          : this.renderGroupForm()
-        }
-      </Container>  
+        <PanelBody layout={layout} status="edit">
+          {registrationMode === 'individual'
+            ? this.renderIndividualForm()
+            : this.renderGroupForm()
+          }
+        </PanelBody>
+      </PanelContainer>  
     );
   }
 
   renderIndividualForm() {
     return (
       <React.Fragment>
-        <Form className="panel-body panel-body-qtys">
+        <Form>
           {this.renderBtnInputs()}
           <FormattedMessage id="qtysPanel.message" tagName="p" />
         </Form>
@@ -105,7 +114,7 @@ class _QtysPanel extends BasePanel {
   renderGroupForm() {
     return (
       <React.Fragment>
-        <Form className="panel-body panel-body-qtys">
+        <Form>
           {this.renderQtyInputs()}
           <FormattedMessage id="qtysPanel.message" tagName="p" />
         </Form>
@@ -158,22 +167,33 @@ class _QtysPanel extends BasePanel {
   }
 
   renderDone() {
-    const { qtys } = this.props;
+    const { layout, index, qtys } = this.props;
 
     return (
-      <Container>
-        <FormattedMessage id="qtysPanel.doneTitle" tagName="h4" />
-
-        <p className="lead">
-          {Object.keys(qtys).map(key =>
-            <Qty key={key} type={key} qty={qtys[key]} />
-          )}
-        </p>
+      <PanelContainer layout={layout} status="done">
+        <PanelHeader
+          status="done"
+          layout={layout}
+          number={index + 1}
+          title="Participants"
+          onPressEdit={this.onPressEdit}
+          intlId="qtysPanel.doneTitle"
+        />
         
-        <Button onClick={this.onClickEdit}>
-          <FormattedMessage id="btn.edit" />
-        </Button>
-      </Container>
+        <PanelBody layout={layout} status="done">
+
+          <p className="lead">
+            {Object.keys(qtys).map(key =>
+              <Qty key={key} type={key} qty={qtys[key]} />
+            )}
+          </p>
+          
+          <Button onClick={this.onClickEdit}>
+            <FormattedMessage id="btn.edit" />
+          </Button>
+
+        </PanelBody>
+      </PanelContainer>
     );
   }
 

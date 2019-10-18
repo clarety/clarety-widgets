@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { Container, Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
+import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { Button, TextInput as FormTextInput, SelectInput as FormSelectInput } from 'form/components';
 import { BasePanel, TeamSearchInput } from 'registration/components';
 import { setTeamPanelMode, checkTeamPassword, selectTeam, createTeam } from 'registration/actions';
@@ -57,18 +58,29 @@ export class _TeamPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { mode } = this.props;
+    const { layout, index, mode } = this.props;
 
     return (
-      <Container>
-        <FormattedMessage id="teamPanel.editTitle" tagName="h2" />
-        <FormattedMessage id="teamPanel.message.1" tagName="p" />
-        <FormattedMessage id="teamPanel.message.2" tagName="p" />
+      <PanelContainer layout={layout} status="edit">
+        <PanelHeader
+          status="edit"
+          layout={layout}
+          number={index + 1}
+          title="Teams"
+          intlId="teamPanel.editTitle"
+        />
 
-        {mode === 'prompt' && this.renderPrompt()}
-        {mode === 'search' && this.renderSearch()}
-        {mode === 'create' && this.renderCreate()}
-      </Container>
+        <PanelBody layout={layout} status="edit">
+
+          <FormattedMessage id="teamPanel.message.1" tagName="p" />
+          <FormattedMessage id="teamPanel.message.2" tagName="p" />
+
+          {mode === 'prompt' && this.renderPrompt()}
+          {mode === 'search' && this.renderSearch()}
+          {mode === 'create' && this.renderCreate()}
+
+        </PanelBody>
+      </PanelContainer>
     );
   }
 
@@ -180,21 +192,32 @@ export class _TeamPanel extends BasePanel {
   }
 
   renderDone() {
-    const { selectedTeam } = this.props;
+    const { layout, index, selectedTeam } = this.props;
 
     return (
-      <Container>
-        <FormattedMessage id="teamPanel.doneTitle" tagName="h4" />
+      <PanelContainer layout={layout} status="done">
+        <PanelHeader
+          status="done"
+          layout={layout}
+          number={index + 1}
+          title={selectedTeam}
+          onPressEdit={this.onPressEdit}
+          intlId="teamPanel.doneTitle"
+        />
 
-        {selectedTeam !== null
-          ? <p>{selectedTeam.name}</p>
-          : <FormattedMessage id="teamPanel.noTeam" tagName="p" />
-        }
+        <PanelBody layout={layout} status="done">
 
-        <Button onClick={this.onClickEdit}>
-          <FormattedMessage id="btn.edit" />
-        </Button>
-      </Container>
+          {selectedTeam !== null
+            ? <p>{selectedTeam.name}</p>
+            : <FormattedMessage id="teamPanel.noTeam" tagName="p" />
+          }
+
+          <Button onClick={this.onClickEdit}>
+            <FormattedMessage id="btn.edit" />
+          </Button>
+
+        </PanelBody>
+      </PanelContainer>
     );
   }
 }
