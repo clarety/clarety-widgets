@@ -157,19 +157,6 @@ const getParticipantPostData = (state, participant) => {
   const productId = getProductId(state, participant);
   const customer = participant.customer;
 
-  // TODO: TEMP: baseline currently errors if I don't provide an address...
-  if (location.hostname === 'localhost') {
-    console.log('using dummy billing address on localhost');
-    customer.billing = {
-      address1: '42 Wallaby Way',
-      address2: '',
-      suburb: 'Sydney',
-      state: 'NSW',
-      postcode: '2000',
-      country: 'Australia',
-    };    
-  }
-
   return {
     quantity: 1,
     offerId: offerId,

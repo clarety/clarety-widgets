@@ -10,6 +10,8 @@ RegistrationApp.setClientIds({
   prod: '',
 });
 
+RegistrationApp.setShowAddress(true);
+
 RegistrationApp.setPanels([
   {
     component: 'ModePanel',

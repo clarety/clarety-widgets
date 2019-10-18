@@ -17,6 +17,12 @@
   "label.gender": "Gender",
   "label.dateOfBirth": "Date Of Birth",
   "label.mobile": "Mobile",
+
+  "label.billing.address1": "Address 1",
+  "label.billing.address2": "Address 2",
+  "label.billing.suburb": "Suburb",
+  "label.billing.state": "State",
+  "label.billing.postcode": "Postcode",
   
   "label.team.search": "Team Search",
   "label.team.name": "Team Name",
@@ -96,6 +102,8 @@
   "reviewPanel.errorTitle": "We Found Some Problems With Your Registration",
   "reviewPanel.errorSubtitle": "Please correct the issues and try again.",
   "reviewPanel.reviewTitle": "Please Review Your Registration",
+
+  "paymentPanel.editTitle": "Payment Details",
 
   "validation.required": "This is a required field.",
   "validation.email": "Please enter a valid email.",

@@ -7,6 +7,7 @@ export function withOverrides(Component, overrides) {
     // Pass through static functions.
     static setPanels(panels) { Component.setPanels(panels); }
     static setClientIds(ids) { Component.setClientIds(ids); }
+    static setShowAddress(showAddress) { Component.setShowAddress(showAddress); }
 
     render() {
       return (

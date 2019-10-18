@@ -39,6 +39,13 @@ export const setClientIds = ({ dev, prod }) => ({
   },
 });
 
+export const setShowAddress = (showAddress) => ({
+  type: types.updateSettings,
+  settings: {
+    showAddress: showAddress,
+  },
+});
+
 
 const fetchSettingsRequest = endpoint => ({
   type: types.fetchSettingsRequest,

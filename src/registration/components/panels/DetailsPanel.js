@@ -99,7 +99,7 @@ export class _DetailsPanel extends BasePanel {
 
   validateFields(errors) {
     const { formData } = this.state.customerFormContext;
-    const { eventDate, minAge, maxAge } = this.props;
+    const { eventDate, minAge, maxAge, settings } = this.props;
 
     this.validateRequired('firstName', formData, errors);
     this.validateRequired('lastName', formData, errors);
@@ -118,6 +118,13 @@ export class _DetailsPanel extends BasePanel {
       maxAge: maxAge,
       errors: errors,
     });
+
+    if (settings.showAddress) {
+      this.validateRequired('billing.address1', formData, errors);
+      this.validateRequired('billing.suburb', formData, errors);
+      this.validateRequired('billing.state', formData, errors);
+      this.validateRequired('billing.postcode', formData, errors);
+    }
   }
 
   onSubmitForm() {
@@ -199,10 +206,10 @@ export class _DetailsPanel extends BasePanel {
   }
 
   renderCustomerForm() {
-    const { isPrefilled } = this.props;
+    const { isPrefilled, appSettings } = this.props;
 
     const genderOptions = this.translateOptions(
-      getGenderOptions(this.props.settings)
+      getGenderOptions(appSettings)
     );
 
     return (
@@ -237,6 +244,40 @@ export class _DetailsPanel extends BasePanel {
             <PhoneInput field="mobile" required />
           </Col>
         </Form.Row>
+
+        {appSettings.showAddress &&
+          <React.Fragment>
+
+            <Form.Row>
+              <Col>
+                <TextInput field="billing.address1" placeholder="Address 1 *" required />
+              </Col>
+            </Form.Row>
+
+            <Form.Row>
+              <Col>
+                <TextInput field="billing.address2" placeholder="Address 2" />
+              </Col>
+            </Form.Row>
+
+            <Form.Row>
+              <Col>
+                <TextInput field="billing.suburb" placeholder="Suburb *" required />
+              </Col>
+            </Form.Row>
+
+            <Form.Row>
+              <Col>
+                <TextInput field="billing.state" placeholder="City *" required />
+              </Col>
+              <Col>
+                <TextInput field="billing.postcode" placeholder="Postcode *" type="number" required />
+              </Col>
+            </Form.Row>
+
+          </React.Fragment>
+        }
+
       </FormContext.Provider>
     );
   }
@@ -351,7 +392,7 @@ const mapStateToProps = (state, ownProps) => {
   const eventDate = new Date(offer.ageCalculationDate || event.startDate);
 
   return {
-    settings: state.settings,
+    appSettings: state.settings,
     event: event,
     participant: participant,
     extendFields: extendFields,
