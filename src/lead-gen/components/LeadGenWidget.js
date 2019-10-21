@@ -5,6 +5,7 @@ import thunkMiddleware from 'redux-thunk';
 import { statuses, setPanels, setStatus, setVariant, setStore, setConfirmPageUrl, setTracking, fetchSettings } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Recaptcha } from 'form/components';
+import { SosProgress } from 'lead-gen/components';
 import { rootReducer } from 'lead-gen/reducers';
 
 const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -49,6 +50,7 @@ export class _LeadGenRoot extends React.Component {
 
     return (
       <div className="clarety-lead-gen-widget h-100">
+        <SosProgress current={900} goal={4000} />
         <PanelManager layout="tabs" />
         <Recaptcha siteKey={reCaptchaKey} />
       </div>

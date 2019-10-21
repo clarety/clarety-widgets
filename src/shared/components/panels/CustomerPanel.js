@@ -61,7 +61,7 @@ export class CustomerPanel extends BasePanel {
 
             {this.renderAddressFields()}
 
-            <Row>
+            <Row className="panel-actions">
               <Col className="text-center">
                 <SubmitButton title={submitBtnText} />
               </Col>
@@ -85,6 +85,10 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderAddressFields() {
+    if (this.props.addressType === 'none') {
+      return null;
+    }
+
     if (this.props.addressType === 'postcode-only') {
       return this.renderPostCodeField();
     }

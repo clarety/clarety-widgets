@@ -1,3 +1,4 @@
+import { ClaretyApi } from 'clarety-utils';
 import { parseNestedElements } from 'shared/utils';
 import { types } from './types';
 
@@ -8,10 +9,10 @@ export const createLead = () => {
     const postData = parseNestedElements(formData);
     dispatch(createLeadRequest(postData));
 
-    // TODO: make api request.
-    const result = {};
+    const results = await ClaretyApi.post('leads/', postData);
+    const result = results[0];
 
-    if (result.validationErrors) {
+    if (result.status === 'error') {
       dispatch(createLeadfailure(result));
     } else {
       dispatch(createLeadSuccess(result));
