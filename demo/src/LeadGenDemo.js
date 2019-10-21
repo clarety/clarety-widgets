@@ -1,5 +1,6 @@
 import React from 'react';
 import { LeadGenWidget } from '../../src/';
+import '../../src/lead-gen/style.scss';
 
 const LeadGenDemo = () => (
   <div className="container my-5">

@@ -1,43 +1,35 @@
 import React from 'react';
-import { Card, Form, Row, Col } from 'react-bootstrap';
-import BlockUi from 'react-block-ui';
-import { BasePanel } from 'shared/components';
-import { scrollIntoView } from 'shared/utils';
+import { Form, Row, Col } from 'react-bootstrap';
+import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { TextInput, EmailInput, PhoneInput, CheckboxInput, StateInput, PostcodeInput, SubmitButton, ErrorMessages, FormElement } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
-  componentDidMount() {
-    scrollIntoView(this);
-  }
-
   onClickSubmit = async (event) => {
     event.preventDefault();
     this.props.onSubmit();
   };
 
-  render() {
-    return (
-      <form onSubmit={this.onClickSubmit}>
-        {this.renderContent()}
-      </form>
-    );
-  }
+  renderEdit() {
+    const { layout, index, isBusy } = this.props;
+    const { title, subtitle } = this.props;
 
-  renderContent() {
-    const { isBusy, title, subtitle, submitBtnText } = this.props;
-    const { showOptIn, optInText } = this.props;
+    const { submitBtnText, showOptIn, optInText } = this.props;
 
     return (
-      <Card>
-        <Card.Body>
+      <PanelContainer layout={layout} status="edit">
+        <PanelHeader
+          status="edit"
+          layout={layout}
+          number={index + 1}
+          title={title}
+          subtitle={subtitle}
+        />
 
+        <PanelBody status="edit" layout={layout} isBusy={isBusy}>
           <ErrorMessages />
 
-          <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
+          <Form onSubmit={this.onClickSubmit}>
 
-            {title && <h2>{title}</h2>}
-            {subtitle && <p>{subtitle}</p>}
-        
             <Form.Row>
               <Col sm>
                 <Form.Group>
@@ -85,10 +77,10 @@ export class CustomerPanel extends BasePanel {
               </Form.Row>
             }
 
-          </BlockUi>
+          </Form>
 
-        </Card.Body>
-      </Card>
+        </PanelBody>
+      </PanelContainer>
     );
   }
 

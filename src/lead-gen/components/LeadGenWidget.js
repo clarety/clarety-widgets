@@ -2,13 +2,20 @@ import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { connect, Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
-import { statuses, setStatus, setVariant, setStore, setConfirmPageUrl, setTracking, fetchSettings } from 'shared/actions';
+import { statuses, setPanels, setStatus, setVariant, setStore, setConfirmPageUrl, setTracking, fetchSettings } from 'shared/actions';
+import { PanelManager } from 'shared/components';
 import { Recaptcha } from 'form/components';
-import { LeadGenCustomerPanel } from 'lead-gen/components';
 import { rootReducer } from 'lead-gen/reducers';
 
 const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
+
+store.dispatch(setPanels([
+  {
+    component: 'LeadGenCustomerPanel',
+    settings: {},
+  }
+]));
 
 export class _LeadGenRoot extends React.Component {
   componentWillMount() {
@@ -29,7 +36,7 @@ export class _LeadGenRoot extends React.Component {
   }
 
   render() {
-    const { status, forceMdLayout, variant, reCaptchaKey } = this.props;
+    const { status, variant, reCaptchaKey } = this.props;
 
     // Show a loading indicator while we init.
     if (status === statuses.initializing) {
@@ -42,10 +49,7 @@ export class _LeadGenRoot extends React.Component {
 
     return (
       <div className="clarety-lead-gen-widget h-100">
-
-
-        <LeadGenCustomerPanel forceMd={forceMdLayout} />
-
+        <PanelManager layout="tabs" />
         <Recaptcha siteKey={reCaptchaKey} />
       </div>
     );

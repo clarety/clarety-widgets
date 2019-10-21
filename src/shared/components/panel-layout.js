@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Container, Button } from 'react-bootstrap';
+import { Container, Card, Button } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 
@@ -19,16 +19,24 @@ export const PanelContainer = ({ layout, name, children }) => {
     return <div className="panel">{children}</div>;
   }
 
+  if (layout === 'tabs') {
+    return <Card>{children}</Card>;
+  }
+
   return children;
 };
 
-export const PanelHeader = ({ layout, status, title, number, intlId, intlValues, onPressEdit }) => {
+export const PanelHeader = ({ layout, status, title, subtitle, number, intlId, intlValues, onPressEdit }) => {
   if (layout === 'stack') {
     return <StackPanelHeader status={status} intlId={intlId} intlValues={intlValues} onPressEdit={onPressEdit} />;
   }
 
   if (layout === 'accordian') {
     return <AccordianPanelHeader status={status} number={number} title={title} onPressEdit={onPressEdit} />;
+  }
+
+  if (layout === 'tabs') {
+    return <TabsPanelHeader title={title} subtitle={subtitle} />;
   }
 };
 
@@ -39,6 +47,10 @@ export const PanelBody = ({ layout, status, isBusy, children }) => {
 
   if (layout === 'accordian') {
     return <AccordianPanelBody status={status} isBusy={isBusy}>{children}</AccordianPanelBody>;
+  }
+
+  if (layout === 'tabs') {
+    return <TabsPanelBody isBusy={isBusy}>{children}</TabsPanelBody>;
   }
 
   return children;
@@ -96,4 +108,22 @@ export const DonePanelHeader = ({ number, title, onPressEdit }) => (
     <p>{title}</p>
     <Button onClick={onPressEdit} variant="edit">Edit</Button>
   </div>
+);
+
+
+// Tabs
+
+const TabsPanelHeader = ({ title, subtitle }) => (
+  <div className="panel-header">
+    <h2>{title}</h2>
+    <p>{subtitle}</p>
+  </div>
+);
+
+const TabsPanelBody = ({ isBusy, children }) => (
+  <Card.Body>
+    <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
+      {children}
+    </BlockUi>
+  </Card.Body>
 );

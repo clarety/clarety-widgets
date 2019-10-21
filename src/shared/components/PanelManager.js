@@ -4,6 +4,7 @@ import { setPanelStatus, resetAllPanels } from 'shared/actions';
 import { OverrideContext } from 'shared/utils';
 import { CheckoutLoginPanel, CustomerPanel, AddressPanel, ShippingPanel, CheckoutPaymentPanel } from 'checkout/components';
 import { ScrollIntoView, ModePanel, EventPanel, QtysPanel, RegistrationOffersPanel, RegistrationLoginPanel, DetailsPanel, TeamPanel, DonatePanel, ReviewPanel, ValidatePanel, RegistrationPaymentPanel } from 'registration/components';
+import { LeadGenCustomerPanel } from 'lead-gen/components';
 
 class _PanelManager extends React.Component {
   panelRefs = [];
@@ -92,6 +93,9 @@ class _PanelManager extends React.Component {
       case 'ReviewPanel':               return this.context.ReviewPanel               || ReviewPanel;
       case 'ValidatePanel':             return this.context.ValidatePanel             || ValidatePanel;
       case 'RegistrationPaymentPanel':  return this.context.RegistrationPaymentPanel  || RegistrationPaymentPanel;
+
+      // Lead gen panels
+      case 'LeadGenCustomerPanel':      return LeadGenCustomerPanel;
 
       default: throw new Error(`Cannot resolve panel component ${panel.component}`);
     }
