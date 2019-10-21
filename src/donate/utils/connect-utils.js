@@ -66,7 +66,7 @@ export function connectDetailsPanel(ViewComponent) {
   };
   
   const actions = {
-    submitDetailsPanel: submitDetailsPanel,
+    onSubmit: submitDetailsPanel,
   };
   
   return connect(mapStateToProps, actions)(ViewComponent);

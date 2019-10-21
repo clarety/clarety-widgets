@@ -20,6 +20,7 @@ module.exports = {
           'checkout':     './src/checkout',
           'donate':       './src/donate',
           'form':         './src/form',
+          'lead-gen':     './src/lead-gen',
           'registration': './src/registration',
           'shared':       './src/shared',
           'subscribe':    './src/subscribe',

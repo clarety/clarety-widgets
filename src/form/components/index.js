@@ -13,6 +13,7 @@ export * from './inputs/payment/ExpiryInput';
 export * from './inputs/general/BackButton';
 export * from './inputs/general/Button';
 export * from './inputs/general/CheckboxInput';
+export * from './inputs/general/EmailInput';
 export * from './inputs/general/FormElement';
 export * from './inputs/general/PhoneInput';
 export * from './inputs/general/SelectInput';

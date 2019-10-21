@@ -8,6 +8,7 @@ import DonateDemo from './DonateDemo';
 import RegistrationDemo from './RegistrationDemo';
 import CheckoutDemo from './CheckoutDemo';
 import CartDemo from './CartDemo';
+import LeadGenDemo from './LeadGenDemo';
 
 Config.init({
   instanceKey: 'clarety-baseline',
@@ -39,6 +40,7 @@ const Demo = () => {
   if (url.endsWith('registrations')) return <RegistrationDemo />;
   if (url.endsWith('checkout'))      return <CheckoutDemo />;
   if (url.endsWith('cart'))          return <CartDemo />;
+  if (url.endsWith('lead-gen'))           return <LeadGenDemo />;
 
   return (
     <div className="list-group m-5">
@@ -48,6 +50,7 @@ const Demo = () => {
       <a href="registrations" className="list-group-item list-group-item-action">Registration Demo</a>
       <a href="checkout" className="list-group-item list-group-item-action">Checkout Demo</a>
       <a href="cart" className="list-group-item list-group-item-action">Cart Demo</a>
+      <a href="lead-gen" className="list-group-item list-group-item-action">Lead Gen Demo</a>
     </div>
   );
 };

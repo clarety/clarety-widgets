@@ -17,3 +17,5 @@ export { setupCheckoutAxiosMock } from 'checkout/mocks';
 
 export { Cart } from 'cart/components';
 export { setupCartAxiosMock } from 'cart/mocks';
+
+export { LeadGenWidget } from 'lead-gen/components';
