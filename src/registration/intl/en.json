@@ -78,11 +78,11 @@
   "loginPanel.editTitle": "Account Details",
   "loginPanel.doneTitle": "You are logged in as",
 
-  "namesPanel.editTitle": "Participant Names",
-  "namesPanel.doneTitle": "Participants",
-  "namesPanel.adult.title": "Adult Registration",
-  "namesPanel.child.title": "Child Registration",
-  "namesPanel.prefillPrompt": "Who is this registration for?",
+  "offersPanel.editTitle": "Participant Selection",
+  "offersPanel.doneTitle": "Participants",
+  "offersPanel.adult.title": "Adult Registration",
+  "offersPanel.child.title": "Child Registration",
+  "offersPanel.prefillPrompt": "Who is this registration for?",
 
   "teamPanel.editTitle": "Do you want to participate with a team?",
   "teamPanel.doneTitle": "Your Team",

@@ -76,7 +76,7 @@ class _RegistrationOffersPanel extends BasePanel {
           layout={layout}
           number={index + 1}
           title="Participants"
-          intlId="namesPanel.editTitle"
+          intlId="offersPanel.editTitle"
         />
 
         <PanelBody layout={layout} status="edit">
@@ -106,7 +106,7 @@ class _RegistrationOffersPanel extends BasePanel {
         </Col>
         
         <Col>
-          <FormattedMessage id={`namesPanel.${participant.type}.title`}>
+          <FormattedMessage id={`offersPanel.${participant.type}.title`}>
             {txt => <p className="lead m-0">{txt}</p>}
           </FormattedMessage>
         </Col>
@@ -134,7 +134,7 @@ class _RegistrationOffersPanel extends BasePanel {
       <Col>
         <Form.Group controlId={`prefill-options-${index}`}>
           <Form.Label>
-            <FormattedMessage id={`namesPanel.prefillPrompt`} />
+            <FormattedMessage id={`offersPanel.prefillPrompt`} />
           </Form.Label>
           <Form.Control as="select" onChange={onChange} value={prefill}>
             <option hidden>Select</option>
@@ -194,7 +194,7 @@ class _RegistrationOffersPanel extends BasePanel {
           number={index + 1}
           title="Participants"
           onPressEdit={this.onPressEdit}
-          intlId="namesPanel.doneTitle"
+          intlId="offersPanel.doneTitle"
         />
 
         <PanelBody layout={layout} status="done">
