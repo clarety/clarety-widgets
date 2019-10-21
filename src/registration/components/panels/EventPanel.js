@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Form } from 'react-bootstrap';
 import Select from 'react-select';
-import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
+import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { Button } from 'form/components';
-import { BasePanel } from 'registration/components';
 import { setEvent, resetEvent, fetchFullEvent } from 'registration/actions';
 import { getEvent } from 'registration/selectors';
 

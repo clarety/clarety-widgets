@@ -2,9 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Button, Form, Row, Col } from 'react-bootstrap';
-import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
+import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { currency } from 'shared/utils';
-import { BasePanel } from 'registration/components';
 import { setFirstNames, resetFirstNames, setOffers, resetOffers, prefillDetails } from 'registration/actions';
 import { getParticipants, getOffersForAllParticipants, getPreviousParticipants } from 'registration/selectors';
 

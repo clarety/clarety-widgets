@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Button, Form, Col } from 'react-bootstrap';
-import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
+import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { insertPanels, removePanels } from 'shared/actions';
-import { BasePanel, Qty, QtyInput } from 'registration/components';
+import { Qty, QtyInput } from 'registration/components';
 import { setQtys, resetQtys } from 'registration/actions';
 import { getRegistrationTypes, getRegistrationMode, getQtys } from 'registration/selectors';
 

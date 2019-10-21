@@ -2,8 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Button } from 'react-bootstrap';
-import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { BasePanel } from 'registration/components';
+import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { setRegistrationMode } from 'registration/actions';
 import { getRegistrationMode } from 'registration/selectors';
 

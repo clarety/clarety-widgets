@@ -2,9 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Button } from 'react-bootstrap';
-import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
+import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { ErrorMessages } from 'form/components';
-import { BasePanel } from 'registration/components';
 import { createRegistration } from 'registration/actions';
 
 class _ValidatePanel extends BasePanel {

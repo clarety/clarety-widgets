@@ -1,9 +1,9 @@
 import React from 'react';
 import { Card, Form, Row, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
+import { BasePanel } from 'shared/components';
 import { scrollIntoView } from 'shared/utils';
 import { TextInput, EmailInput, PhoneInput, CheckboxInput, StateInput, PostcodeInput, SubmitButton, ErrorMessages, FormElement } from 'form/components';
-import { BasePanel } from 'donate/components';
 
 export class CustomerPanel extends BasePanel {
   componentDidMount() {
