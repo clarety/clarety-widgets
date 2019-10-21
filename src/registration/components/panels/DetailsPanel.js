@@ -17,7 +17,7 @@ export class _DetailsPanel extends BasePanel {
 
     this.state = {
       customerFormContext: {
-        formData: { ...props.participant.customer },
+        formData: this.getCustomerFormData(props.participant.customer),
         errors: [],
         onChange: this.onCustomerFormChange,
       },
@@ -34,9 +34,7 @@ export class _DetailsPanel extends BasePanel {
       this.setState({
         customerFormContext: {
           ...this.state.customerFormContext,
-          formData: {
-            ...this.props.participant.customer,
-          },
+          formData: this.getCustomerFormData(this.props.participant.customer),
           errors: this.props.participant.errors || [],
         },
         extendFormContext: {
@@ -48,6 +46,32 @@ export class _DetailsPanel extends BasePanel {
         },
       });
     }
+  }
+
+  getCustomerFormData(customer) {
+    if (!customer) return {};
+
+    const formData = {
+      firstName:        customer.firstName,
+      lastName:         customer.lastName,
+      email:            customer.email,
+      mobile:           customer.mobile,
+      gender:           customer.gender,
+      dateOfBirthDay:   customer.dateOfBirthDay,
+      dateOfBirthMonth: customer.dateOfBirthMonth,
+      dateOfBirthYear:  customer.dateOfBirthYear,
+    };
+
+    if (customer.billing) {
+      formData['billing.address1'] = customer.billing.address1;
+      formData['billing.address2'] = customer.billing.address2;
+      formData['billing.suburb']   = customer.billing.suburb;
+      formData['billing.state']    = customer.billing.state;
+      formData['billing.postcode'] = customer.billing.postcode;
+      formData['billing.country']  = customer.billing.country;
+    }
+
+    return formData;
   }
 
   onClickNext = async event => {
@@ -125,6 +149,7 @@ export class _DetailsPanel extends BasePanel {
       this.validateRequired('billing.suburb', formData, errors);
       this.validateRequired('billing.state', formData, errors);
       this.validateRequired('billing.postcode', formData, errors);
+      this.validateRequired('billing.country', formData, errors);
     }
   }
 
@@ -281,6 +306,12 @@ export class _DetailsPanel extends BasePanel {
               </Col>
               <Col>
                 <TextInput field="billing.postcode" placeholder="Postcode *" type="number" required />
+              </Col>
+            </Form.Row>
+
+            <Form.Row>
+              <Col>
+                <TextInput field="billing.country" placeholder="Country *" required />
               </Col>
             </Form.Row>
 

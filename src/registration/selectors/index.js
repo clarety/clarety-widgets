@@ -1,4 +1,5 @@
 import { Config } from 'clarety-utils';
+import { parseNestedElements } from 'shared/utils';
 
 export const getSettings = (state) => state.settings;
 
@@ -155,7 +156,7 @@ const getParticipantPostData = (state, participant) => {
   const extendFormId = getExtendFormId(state);
   const offerId = getOfferId(state, participant);
   const productId = getProductId(state, participant);
-  const customer = participant.customer;
+  const customer = parseNestedElements(participant.customer);
 
   return {
     quantity: 1,

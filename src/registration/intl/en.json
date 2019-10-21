@@ -23,6 +23,7 @@
   "label.billing.suburb": "Suburb",
   "label.billing.state": "State",
   "label.billing.postcode": "Postcode",
+  "label.billing.country": "Country",
   
   "label.team.search": "Team Search",
   "label.team.name": "Team Name",
