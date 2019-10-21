@@ -80,8 +80,8 @@
 
   "offersPanel.editTitle": "Participant Selection",
   "offersPanel.doneTitle": "Participants",
-  "offersPanel.adult.title": "Adult Registration",
-  "offersPanel.child.title": "Child Registration",
+  "offersPanel.adult.title": "Adult",
+  "offersPanel.child.title": "Child",
   "offersPanel.prefillPrompt": "Who is this registration for?",
 
   "teamPanel.editTitle": "Do you want to participate with a team?",

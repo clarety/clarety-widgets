@@ -125,8 +125,31 @@
   }
 
   .qtys .panel-body { max-width: 500px; }
-  .offers .panel-body { max-width: 600px; }
   .payment .panel-body { max-width: 600px; }
+
+  .btn-offer {
+    width: 120px;
+    margin: 10px;
+    background: $white;
+    color: $black;
+    border: 1px solid $primary;
+
+    .offer-name {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.8rem;
+    }
+
+    .offer-price {
+      display: block;
+      font-size: 1.2rem;
+    }
+
+    &.selected {
+      background: $primary;
+      color: $white;
+    }
+  }
 
   .input-group-qty {
     margin-left: auto;
@@ -147,21 +170,12 @@
   $circle-size: 40px;
   .circle {
     display: block;
-    border: 1px solid $black;
-    line-height: $circle-size;
-    border-radius: $circle-size;
     width: $circle-size;
     height: $circle-size;
+    margin: 0 auto;
+    border: 1px solid $black;
+    border-radius: $circle-size;
+    line-height: $circle-size;
     text-align: center;
   }
-
-  .table-sale {
-    text-align: right;
-
-    tr > th:nth-child(1),
-    tr > td:nth-child(1) {
-      text-align: left;
-    }
-  }
-
 }

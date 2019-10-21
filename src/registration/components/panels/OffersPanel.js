@@ -101,26 +101,28 @@ class _RegistrationOffersPanel extends BasePanel {
     
     return participants.map((participant, index) =>
       <Row key={index} className="mb-3 align-items-center">
-        <Col xs={2}>
+        <Col md={1}>
           <span className="circle">{index + 1}</span>
         </Col>
         
-        <Col>
+        <Col md={1}>
           <FormattedMessage id={`offersPanel.${participant.type}.title`}>
             {txt => <p className="lead m-0">{txt}</p>}
           </FormattedMessage>
         </Col>
 
         {settings.showOffers &&
-          <Col>
+          <Col md={6}>
             {this.renderOffers(index)}
           </Col>
         }
 
-        {settings.showPrefill
-          ? this.renderPrefillOptions(index)
-          : this.renderNameInput(index)
-        }
+        <Col md={4}>
+          {settings.showPrefill
+            ? this.renderPrefillOptions(index)
+            : this.renderNameInput(index)
+          }
+        </Col>
       </Row>
     );
   }
@@ -131,7 +133,7 @@ class _RegistrationOffersPanel extends BasePanel {
     const onChange = event => this.onSelectPrefill(index, event.target.value);
 
     return (
-      <Col>
+      <React.Fragment>
         <Form.Group controlId={`prefill-options-${index}`}>
           <Form.Label>
             <FormattedMessage id={`offersPanel.prefillPrompt`} />
@@ -147,7 +149,7 @@ class _RegistrationOffersPanel extends BasePanel {
         {prefill === 'other' &&
           this.renderNameInput(index)
         }
-      </Col>
+      </React.Fragment>
     );
   }
 
@@ -155,17 +157,15 @@ class _RegistrationOffersPanel extends BasePanel {
     const { names } = this.state;
 
     return (
-      <Col>
-        <FormattedMessage id={`label.firstName`}>
-          {label =>
-            <Form.Control
-              placeholder={label}
-              value={names[index] || ''}
-              onChange={event => this.onChangeName(index, event.target.value)}
-            />
-          }
-        </FormattedMessage>
-      </Col>
+      <FormattedMessage id={`label.firstName`}>
+        {label =>
+          <Form.Control
+            placeholder={label}
+            value={names[index] || ''}
+            onChange={event => this.onChangeName(index, event.target.value)}
+          />
+        }
+      </FormattedMessage>
     );
   }
 
@@ -295,12 +295,12 @@ const actions = {
 export const RegistrationOffersPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_RegistrationOffersPanel);
 
 const OfferButton = ({ offer, isSelected, onClick }) => {
-  const style = { width: '120px', margin: '10px' };
-  const variant = isSelected ? 'primary' : 'secondary';
+  const className = isSelected ? 'btn btn-offer selected' : 'btn btn-offer';
 
   return (
-    <Button onClick={onClick} style={style} variant={variant}>
-      {offer.name} ({currency(Number(offer.amount))})
+    <Button onClick={onClick} className={className}>
+      <span className="offer-name">{offer.name}</span>
+      <span className="offer-price">{currency(Number(offer.amount))}</span>
     </Button>
   );
 };
