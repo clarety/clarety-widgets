@@ -19,6 +19,7 @@ function setPanels(state, action) {
   return action.panels.map((panel, index) => ({
     id: nextId(),
     component: panel.component || null,
+    connect: panel.connect || null,
     status: panel.status || (index == 0 ? 'edit' : 'wait'),
     isValid: false,
     data: panel.data || {},

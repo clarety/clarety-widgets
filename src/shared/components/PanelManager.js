@@ -2,12 +2,36 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { setPanelStatus, resetAllPanels } from 'shared/actions';
 import { OverrideContext } from 'shared/utils';
-import { CheckoutLoginPanel, CustomerPanel, AddressPanel, ShippingPanel, CheckoutPaymentPanel } from 'checkout/components';
-import { ScrollIntoView, ModePanel, EventPanel, QtysPanel, RegistrationOffersPanel, RegistrationLoginPanel, DetailsPanel, TeamPanel, DonatePanel, ReviewPanel, ValidatePanel, RegistrationPaymentPanel } from 'registration/components';
-import { LeadGenCustomerPanel } from 'lead-gen/components';
+import { Resources } from 'shared/utils/resources';
+import { ScrollIntoView } from 'registration/components';
 
 class _PanelManager extends React.Component {
   panelRefs = [];
+  components = {};
+
+  constructor(props, context) {
+    super(props, context);
+
+    this.setupPanelComponents(props.panels, context);
+  }
+
+  setupPanelComponents(panels, context) {
+    panels.forEach(panel => {
+      let panelComponent = Resources.getComponent(panel.component, context);
+
+      if (panel.connect) {
+        const panelConnect = Resources.getConnect(panel.connect, context);
+        panelComponent = connect(
+          panelConnect.mapStateToProps,
+          panelConnect.actions,
+          null,
+          { forwardRef: true }
+        )(panelComponent);
+      }
+      
+      this.components[panel.component] = panelComponent;
+    });
+  }
 
   nextPanel = currentIndex => {
     this.setStatus(currentIndex, 'done');
@@ -46,7 +70,7 @@ class _PanelManager extends React.Component {
 
   renderPanel = (panel, index) => {
     const { layout, settings } = this.props;
-    const PanelComponent = this.resolvePanelComponent(panel);
+    const PanelComponent = this.components[panel.component];
     const panelSettings = settings.panels[panel.component];
     
     const shouldScroll = layout === 'stack' && panel.status === 'edit';
@@ -71,36 +95,6 @@ class _PanelManager extends React.Component {
       </ScrollIntoView>
     );
   };
-
-  resolvePanelComponent(panel) {
-    switch (panel.component) {
-      // Checkout panels
-      case 'CheckoutLoginPanel':        return this.context.CheckoutLoginPanel       || CheckoutLoginPanel;
-      case 'CustomerPanel':             return this.context.CustomerPanel            || CustomerPanel;
-      case 'AddressPanel':              return this.context.AddressPanel             || AddressPanel;
-      case 'ShippingPanel':             return this.context.ShippingPanel            || ShippingPanel;
-      case 'PaymentPanel':              return this.context.PaymentPanel             || PaymentPanel;
-      case 'CheckoutPaymentPanel':      return this.context.CheckoutPaymentPanel     || CheckoutPaymentPanel;
-
-      // Registration panels
-      case 'ModePanel':                 return this.context.ModePanel                || ModePanel;
-      case 'EventPanel':                return this.context.EventPanel               || EventPanel;
-      case 'QtysPanel':                 return this.context.QtysPanel                || QtysPanel;
-      case 'RegistrationLoginPanel':    return this.context.RegistrationLoginPanel   || RegistrationLoginPanel;
-      case 'RegistrationOffersPanel':   return this.context.RegistrationOffersPanel  || RegistrationOffersPanel;
-      case 'DetailsPanel':              return this.context.DetailsPanel             || DetailsPanel;
-      case 'TeamPanel':                 return this.context.TeamPanel                || TeamPanel;
-      case 'DonatePanel':               return this.context.DonatePanel              || DonatePanel;
-      case 'ReviewPanel':               return this.context.ReviewPanel              || ReviewPanel;
-      case 'ValidatePanel':             return this.context.ValidatePanel            || ValidatePanel;
-      case 'RegistrationPaymentPanel':  return this.context.RegistrationPaymentPanel || RegistrationPaymentPanel;
-
-      // Lead gen panels
-      case 'LeadGenCustomerPanel':      return LeadGenCustomerPanel;
-
-      default: throw new Error(`Cannot resolve panel component ${panel.component}`);
-    }
-  }
 
   getPanel(index) {
     const panelKey = this.getPanelKey(index);

@@ -15,7 +15,7 @@ export * from './inputs/TextInput';
 
 export * from './panels/BasePanel';
 export * from './panels/AddressPanel';
-export * from './panels/LoginPanel';
+export * from './panels/LoginConnect';
 export * from './panels/PaymentPanel';
 export * from './panels/CustomerPanel';
 export * from './panels/ShippingPanel';

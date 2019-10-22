@@ -11,8 +11,12 @@ CheckoutApp.setClientIds({
 
 CheckoutApp.setPanels([
   {
-    component: 'CheckoutLoginPanel',
-    settings: { allowGuest: true, createAccount: false },
+    component: 'LoginPanel',
+    connect: 'CheckoutLoginConnect',
+    settings: {
+      allowGuest: true,
+      createAccount: false,
+    },
   },
   {
     component: 'CustomerPanel',
@@ -20,7 +24,9 @@ CheckoutApp.setPanels([
   },
   {
     component: 'AddressPanel',
-    settings: { addressType: 'international' },
+    settings: {
+      addressType: 'international',
+    },
   },
   {
     component: 'ShippingPanel',

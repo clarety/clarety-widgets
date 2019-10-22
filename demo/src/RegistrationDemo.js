@@ -32,7 +32,8 @@ RegistrationApp.setPanels([
     settings: {},
   },
   {
-    component: 'RegistrationLoginPanel',
+    component: 'LoginPanel',
+    connect: 'RegistrationLoginConnect',
     settings: {
       allowGuest: false,
       createAccount: true,
