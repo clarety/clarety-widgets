@@ -23,6 +23,10 @@ CheckoutApp.setPanels([
     settings: { addressType: 'international' },
   },
   {
+    component: 'ShippingPanel',
+    settings: {},
+  },
+  {
     component: 'CheckoutPaymentPanel',
     settings: {},
   },

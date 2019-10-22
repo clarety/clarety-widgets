@@ -83,12 +83,17 @@ export class PaymentPanel extends BasePanel {
     const { layout, index } = this.props;
 
     return (
-      <PanelHeader
-        status="wait"
-        layout={layout}
-        title="Payment Details"
-        number={index + 1}
-      />
+      <PanelContainer layout={layout} status="wait">
+        <PanelHeader
+          status="wait"
+          layout={layout}
+          title="Payment Details"
+          number={index + 1}
+        />
+
+        <PanelBody layout={layout} status="wait">
+        </PanelBody>
+      </PanelContainer>
     );
   }
 

@@ -181,7 +181,20 @@ export class _DetailsPanel extends BasePanel {
   }
 
   renderWait() {
-    return null;
+    const { layout, index } = this.props;
+
+    return (
+      <PanelContainer layout={layout} status="wait">
+        <PanelHeader
+          status="wait"
+          layout={layout}
+          number={index + 1}
+        />
+        
+        <PanelBody layout={layout} status="wait">
+        </PanelBody>
+      </PanelContainer>
+    );
   }
 
   renderEdit() {
@@ -194,10 +207,7 @@ export class _DetailsPanel extends BasePanel {
           <PanelHeader
             status="edit"
             layout={layout}
-
             number={index + 1}
-            title="Registration Details"
-
             intlId="detailsPanel.editTitle"
             intlValues={{
               firstName: <span className="text-primary">{firstName}</span>
@@ -360,10 +370,9 @@ export class _DetailsPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title={firstName}
-          onPressEdit={this.onPressEdit}
           intlId="detailsPanel.doneTitle"
           intlValues={{ firstName }}
+          onPressEdit={this.onPressEdit}
         />
 
         <PanelBody layout={layout} status="done">

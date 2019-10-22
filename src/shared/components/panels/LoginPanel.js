@@ -183,12 +183,17 @@ export class LoginPanel extends BasePanel {
     const { layout, index } = this.props;
 
     return (
-      <PanelHeader
-        status="wait"
-        layout={layout}
-        number={index + 1}
-        title="Contact Details"
-      />
+      <PanelContainer layout={layout} status="wait">
+        <PanelHeader
+          status="wait"
+          layout={layout}
+          number={index + 1}
+          title="Contact Details"
+        />
+
+        <PanelBody layout={layout} status="wait">
+        </PanelBody>
+      </PanelContainer>
     );
   }
 
@@ -374,7 +379,6 @@ export class LoginPanel extends BasePanel {
             <FormattedMessage id="btn.edit" />
           </BsButton>
         </PanelBody>
-
       </PanelContainer>
     );
   }

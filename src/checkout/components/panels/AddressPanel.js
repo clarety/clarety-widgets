@@ -1,10 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
-import BlockUi from 'react-block-ui';
-import 'react-block-ui/style.css';
 import { statuses, invalidatePanel } from 'shared/actions';
-import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'shared/components';
+import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { setFormData } from 'form/actions';
 import { BasePanel, TextInput, PureCheckboxInput, StateInput, Button } from 'checkout/components';
 import { createOrUpdateCustomer } from 'checkout/actions';
@@ -110,20 +108,37 @@ class _AddressPanel extends BasePanel {
   }
 
   renderWait() {
+    const { layout, index } = this.props;
+
     return (
-      <WaitPanelHeader number="3" title="Shipping Details" />
+      <PanelContainer layout={layout} status="wait">
+        <PanelHeader
+          status="wait"
+          layout={layout}
+          number={index + 1}
+          title="Shipping Details"
+        />
+
+        <PanelBody layout={layout} status="wait">
+        </PanelBody>
+      </PanelContainer>
     );
   }
 
   renderEdit() {
-    const { isBusy } = this.props;
+    const { layout, isBusy, index } = this.props;
     const { billingIsSameAsShipping } = this.state;
 
     return (
-      <div className="panel">
-        <EditPanelHeader number="3" title="Shipping Details" />
+      <PanelContainer layout={layout}>
+        <PanelHeader
+          status="edit"
+          layout={layout}
+          number={index + 1}
+          title="Shipping Details"
+        />
         
-        <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
+        <PanelBody layout={layout} status="edit" isBusy={isBusy}>
           <FormContext.Provider value={this.state}>
             <Form onSubmit={this.onPressContinue}>
               {this.renderAddressForm('Shipping Address', 'customer.delivery')}
@@ -146,8 +161,8 @@ class _AddressPanel extends BasePanel {
               </div>
             </Form>
           </FormContext.Provider>
-        </BlockUi>
-      </div>
+        </PanelBody>
+      </PanelContainer>
     );
   }
 
@@ -231,17 +246,25 @@ class _AddressPanel extends BasePanel {
 
   renderDone() {
     const { formData } = this.state;
+    const { layout, index } = this.props;
     const address = formData['customer.delivery.address1'];
     const suburb = formData['customer.delivery.suburb'];
 
     const title = `${address}, ${suburb}`;
 
     return (
-      <DonePanelHeader
-        number="3"
-        title={title}
-        onPressEdit={this.onPressEdit}
-      />
+      <PanelContainer layout={layout} status="done">
+        <PanelHeader
+          status="done"
+          layout={layout}
+          number={index + 1}
+          title={title}
+          onPressEdit={this.onPressEdit}
+        />
+
+        <PanelBody layout={layout} status="done">
+        </PanelBody>
+      </PanelContainer>
     );
   }
 }

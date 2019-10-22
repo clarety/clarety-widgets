@@ -19,7 +19,20 @@ class _ReviewPanel extends BasePanel {
   }
 
   renderWait() {
-    return null;
+    const { layout, index } = this.props;
+
+    return (
+      <PanelContainer layout={layout} status="wait">
+        <PanelHeader
+          status="wait"
+          layout={layout}
+          number={index + 1}
+        />
+
+        <PanelBody layout={layout} status="wait">
+        </PanelBody>
+      </PanelContainer>
+    );
   }
 
   renderEdit() {
@@ -36,7 +49,12 @@ class _ReviewPanel extends BasePanel {
 
     return (
       <PanelContainer layout={layout} status="edit">
-        <FormattedMessage id="reviewPanel.errorTitle" tagName="h2" />
+        <PanelHeader
+          status="edit"
+          layout={layout}
+          number={index + 1}
+          intlId="reviewPanel.errorTitle"
+        />
 
         <PanelBody layout={layout} status="edit">
 
@@ -54,7 +72,12 @@ class _ReviewPanel extends BasePanel {
   renderReview() {
     return (
       <PanelContainer layout={layout} status="edit">
-        <FormattedMessage id="reviewPanel.reviewTitle" tagName="h2" />
+        <PanelHeader
+          status="edit"
+          layout={layout}
+          number={index + 1}
+          intlId="reviewPanel.reviewTitle"
+        />
 
         <PanelBody layout={layout} status="edit">
 

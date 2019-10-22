@@ -74,7 +74,20 @@ class _QtysPanel extends BasePanel {
   }
 
   renderWait() {
-    return null;
+    const { layout, index } = this.props;
+
+    return (
+      <PanelContainer layout={layout} status="wait">
+        <PanelHeader
+          status="wait"
+          layout={layout}
+          number={index + 1}
+        />
+
+        <PanelBody layout={layout} status="wait">
+        </PanelBody>
+      </PanelContainer>
+    );
   }
 
   renderEdit() {
@@ -86,7 +99,6 @@ class _QtysPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title="Participants"
           intlId="qtysPanel.editTitle"
         />
 
@@ -175,9 +187,8 @@ class _QtysPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title="Participants"
-          onPressEdit={this.onPressEdit}
           intlId="qtysPanel.doneTitle"
+          onPressEdit={this.onPressEdit}
         />
         
         <PanelBody layout={layout} status="done">

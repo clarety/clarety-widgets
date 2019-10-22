@@ -1,10 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Spinner } from 'react-bootstrap';
-import BlockUi from 'react-block-ui';
-import 'react-block-ui/style.css';
 import { statuses } from 'shared/actions';
-import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'shared/components';
+import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { setFormData } from 'form/actions';
 import { BasePanel, Button } from 'checkout/components';
 import { updateSale, fetchShippingOptions } from 'checkout/actions';
@@ -28,32 +26,47 @@ class _ShippingPanel extends BasePanel {
   }
 
   renderWait() {
-    const { index } = this.props;
+    const { layout, index } = this.props;
+
     return (
-      <WaitPanelHeader number={index + 1} title="Shipping Options" />
+      <PanelContainer layout={layout} status="wait">
+        <PanelHeader
+          status="wait"
+          layout={layout}
+          number={index + 1}
+          title="Shipping Options"
+        />
+        <PanelBody layout={layout} status="wait">
+        </PanelBody>
+      </PanelContainer>
     );
   }
 
   renderEdit() {
-    const { shippingOptions, index } = this.props;
+    const { layout, shippingOptions, index } = this.props;
 
     return (
-      <div className="panel">
-        <EditPanelHeader number={index + 1} title="Shipping Options" />
+      <PanelContainer layout={layout}>
+        <PanelHeader
+          status="edit"
+          layout={layout}
+          number={index + 1}
+          title="Shipping Options"
+        />
 
         {shippingOptions
           ? this.renderForm()
           : this.renderSpinner()
         }
-      </div>
+      </PanelContainer>
     );
   }
 
   renderForm() {
-    const { shippingOptions, canContinue, isBusy } = this.props;
+    const { layout, isBusy, shippingOptions, canContinue } = this.props;
 
     return (
-      <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
+      <PanelBody layout={layout} status="edit" isBusy={isBusy}>
         {shippingOptions && shippingOptions.map(this.renderShippingOption)}
 
         <div className="panel-actions">
@@ -64,7 +77,7 @@ class _ShippingPanel extends BasePanel {
             disabled={!canContinue}
           />
         </div>
-      </BlockUi>
+      </PanelBody>
     );
   }
 
@@ -97,14 +110,21 @@ class _ShippingPanel extends BasePanel {
   }
 
   renderDone() {
-    const { selectedOptionName, index } = this.props;
+    const { layout, index, selectedOptionName } = this.props;
 
     return (
-      <DonePanelHeader
-        number={index + 1}
-        title={selectedOptionName}
-        onPressEdit={this.onPressEdit}
-      />
+      <PanelContainer layout={layout} status="done">
+        <PanelHeader
+          status="done"
+          layout={layout}
+          number={index + 1}
+          title={selectedOptionName}
+          onPressEdit={this.onPressEdit}
+        />
+
+        <PanelBody layout={layout} status="done">
+        </PanelBody>
+      </PanelContainer>
     );
   }
 }

@@ -33,7 +33,20 @@ export class _DonatePanel extends _AmountPanel {
   }
 
   renderWait() {
-    return null;
+    const { layout, index } = this.props;
+
+    return (
+      <PanelContainer layout={layout} status="wait">
+        <PanelHeader
+          status="wait"
+          layout={layout}
+          number={index + 1}
+        />
+        
+        <PanelBody layout={layout} status="wait">
+        </PanelBody>
+      </PanelContainer>
+    );
   }
 
   renderEdit() {
@@ -48,12 +61,11 @@ export class _DonatePanel extends _AmountPanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title="Donation"
           intlId="donatePanel.editTitle"
         />
 
-        <Form onSubmit={this.onClickNext}>
-          <PanelBody layout={layout} status="edit">
+        <PanelBody layout={layout} status="edit">
+          <Form onSubmit={this.onClickNext}>
 
             <div className="card-deck flex-column mt-3 mx-n3 text-left flex-lg-row">
               {offer.amounts.map(this.renderSuggestedAmount)}
@@ -65,9 +77,9 @@ export class _DonatePanel extends _AmountPanel {
                 <FormattedMessage id="btn.next" />
               </Button>
             </div>
-
-          </PanelBody>
-        </Form>
+            
+          </Form>
+        </PanelBody>
       </PanelContainer>
     );
   }
@@ -81,9 +93,8 @@ export class _DonatePanel extends _AmountPanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title={selectedAmount}
-          onPressEdit={this.onPressEdit}
           intlId="donatePanel.doneTitle"
+          onPressEdit={this.onPressEdit}
         />
 
         <PanelBody layout={layout} status="done">

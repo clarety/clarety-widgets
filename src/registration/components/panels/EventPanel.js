@@ -48,7 +48,20 @@ class _EventPanel extends BasePanel {
   }
 
   renderWait() {
-    return null;
+    const { layout, index } = this.props;
+
+    return (
+      <PanelContainer layout={layout} status="wait">
+        <PanelHeader
+          status="wait"
+          layout={layout}
+          number={index + 1}
+        />
+
+        <PanelBody layout={layout} status="wait">
+        </PanelBody>
+      </PanelContainer>
+    );
   }
   
   renderEdit() {
@@ -60,7 +73,6 @@ class _EventPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title="Select Event"
           intlId="eventPanel.editTitle"
         />
 
@@ -101,9 +113,8 @@ class _EventPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title={selectedEvent}
-          onPressEdit={this.onPressEdit}
           intlId="eventPanel.doneTitle"
+          onPressEdit={this.onPressEdit}
         />
 
         <PanelBody layout={layout} status="done">

@@ -19,7 +19,20 @@ class _ModePanel extends BasePanel {
   };
 
   renderWait() {
-    return null;
+    const { layout, index } = this.props;
+
+    return (
+      <PanelContainer layout={layout} status="wait">
+        <PanelHeader
+          status="wait"
+          layout={layout}
+          number={index + 1}
+        />
+
+        <PanelBody layout={layout} status="wait">
+        </PanelBody>
+      </PanelContainer>
+    );
   }
 
   renderEdit() {
@@ -31,7 +44,6 @@ class _ModePanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title="Registration"
           intlId="modePanel.editTitle"
         />
 
@@ -59,9 +71,8 @@ class _ModePanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title={selectedMode}
-          onPressEdit={this.onPressEdit}
           intlId="modePanel.doneTitle"
+          onPressEdit={this.onPressEdit}
         />
 
         <PanelBody layout={layout} status="done">

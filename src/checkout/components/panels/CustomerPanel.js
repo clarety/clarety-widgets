@@ -1,10 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
-import BlockUi from 'react-block-ui';
-import 'react-block-ui/style.css';
 import { statuses } from 'shared/actions';
-import { WaitPanelHeader, EditPanelHeader, DonePanelHeader } from 'shared/components';
+import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { setFormData } from 'form/actions';
 import { BasePanel, TextInput, PhoneInput, DobInput, Button } from 'checkout/components';
 import { FormContext } from 'checkout/utils';
@@ -93,21 +91,36 @@ class _CustomerPanel extends BasePanel {
   }
 
   renderWait() {
-    const { index } = this.props;
-    
+    const { layout, index } = this.props;
+
     return (
-      <WaitPanelHeader number={index + 1} title="Personal Details" />
+      <PanelContainer layout={layout} status="wait">
+        <PanelHeader
+          status="wait"
+          layout={layout}
+          number={index + 1}
+          title="Personal Details"
+        />
+
+        <PanelBody layout={layout} status="wait">
+        </PanelBody>
+      </PanelContainer>
     );
   }
 
   renderEdit() {
-    const { isBusy, index, settings } = this.props;
+    const { layout, isBusy, index, settings } = this.props;
 
     return (
-      <div className="panel">
-        <EditPanelHeader number={index + 1} title="Personal Details" />
+      <PanelContainer layout={layout}>
+        <PanelHeader
+          status="edit"
+          layout={layout}
+          number={index + 1}
+          title="Personal Details"
+        />
         
-        <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
+        <PanelBody layout={layout} status="edit" isBusy={isBusy}>
           <FormContext.Provider value={this.state}>
             <Form onSubmit={this.onPressContinue}>
               <Form.Row>
@@ -160,13 +173,13 @@ class _CustomerPanel extends BasePanel {
               </div>
             </Form>
           </FormContext.Provider>
-        </BlockUi>
-      </div>
+        </PanelBody>
+      </PanelContainer>
     );
   }
 
   renderDone() {
-    const { index } = this.props;
+    const { layout, index } = this.props;
     const { formData } = this.state;
     const firstName = formData['customer.firstName'];
     const lastName = formData['customer.lastName'];
@@ -176,11 +189,18 @@ class _CustomerPanel extends BasePanel {
     if (phone) title += `, ${phone}`;
 
     return (
-      <DonePanelHeader
-        number={index + 1}
-        title={title}
-        onPressEdit={this.onPressEdit}
-      />
+      <PanelContainer layout={layout} status="done">
+        <PanelHeader
+          status="done"
+          layout={layout}
+          number={index + 1}
+          title={title}
+          onPressEdit={this.onPressEdit}
+        />
+
+        <PanelBody layout={layout} status="done">
+        </PanelBody>
+      </PanelContainer>
     );
   }
 }

@@ -116,7 +116,7 @@ export const DonePanelHeader = ({ number, title, onPressEdit }) => (
 const TabsPanelHeader = ({ title, subtitle }) => (
   <div className="panel-header">
     <h2 className="title">{title}</h2>
-    <p className="subtitle">{subtitle}</p>
+    {subtitle && <p className="subtitle">{subtitle}</p>}
   </div>
 );
 

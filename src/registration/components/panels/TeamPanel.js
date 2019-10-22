@@ -54,7 +54,20 @@ export class _TeamPanel extends BasePanel {
   };
 
   renderWait() {
-    return null;
+    const { layout, index } = this.props;
+
+    return (
+      <PanelContainer layout={layout} status="wait">
+        <PanelHeader
+          status="wait"
+          layout={layout}
+          number={index + 1}
+        />
+
+        <PanelBody layout={layout} status="wait">
+        </PanelBody>
+      </PanelContainer>
+    );
   }
 
   renderEdit() {
@@ -66,7 +79,6 @@ export class _TeamPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title="Teams"
           intlId="teamPanel.editTitle"
         />
 
@@ -200,9 +212,8 @@ export class _TeamPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title={selectedTeam}
-          onPressEdit={this.onPressEdit}
           intlId="teamPanel.doneTitle"
+          onPressEdit={this.onPressEdit}
         />
 
         <PanelBody layout={layout} status="done">

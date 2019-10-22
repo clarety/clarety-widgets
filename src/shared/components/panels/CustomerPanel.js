@@ -9,11 +9,28 @@ export class CustomerPanel extends BasePanel {
     this.props.onSubmit();
   };
 
+  renderWait() {
+    const { layout, index } = this.props;
+
+    return (
+      <PanelContainer layout={layout} status="wait">
+        <PanelHeader
+          status="wait"
+          layout={layout}
+          number={index + 1}
+          title="Personal Details"
+          intlId="customerPanel.waitTitle"
+        />
+
+        <PanelBody layout={layout} status="wait">
+        </PanelBody>
+      </PanelContainer>
+    );
+  }
+
   renderEdit() {
     const { layout, index, isBusy } = this.props;
-    const { title, subtitle } = this.props;
-
-    const { submitBtnText, showOptIn, optInText } = this.props;
+    const { title, subtitle, submitBtnText, showOptIn, optInText } = this.props;
 
     return (
       <PanelContainer layout={layout} status="edit">
@@ -23,6 +40,7 @@ export class CustomerPanel extends BasePanel {
           number={index + 1}
           title={title}
           subtitle={subtitle}
+          intlId="customerPanel.editTitle"
         />
 
         <PanelBody status="edit" layout={layout} isBusy={isBusy}>
@@ -145,6 +163,24 @@ export class CustomerPanel extends BasePanel {
 
         <FormElement field="customer.billing.country" value="AU" />
       </React.Fragment>
+    );
+  }
+
+  renderDone() {
+    const { layout, index } = this.props;
+
+    return (
+      <PanelContainer layout={layout} status="done">
+        <PanelHeader
+          status="done"
+          layout={layout}
+          number={index + 1}
+          onPressEdit={this.onPressEdit}
+        />
+
+        <PanelBody layout={layout} status="done">
+        </PanelBody>
+      </PanelContainer>
     );
   }
 }
