@@ -17,17 +17,23 @@ const LeadGenDemo = () => (
       <div className="donate-widget col-lg-6">
         <LeadGenWidget
           storeCode="AU"
+          caseTypeUid="ctp_rdjr"
+          confirmPageUrl="http://dev-tnc.claretycontrol.com/sites/natureaustralia-org-au/content/donate-confirm/gjf19l/donate-confirm"
 
-          singleOfferId="8"
-          recurringOfferId="17"
+          variant="sos"
+          headingText="This is the heading"
+          subHeadingText="This is the button"
+          buttonText="This is the sub heading"
+          showOptIn="1"
+          optInText="This is the opt in"
+          phoneOption="mobile"
+          addressOption="postcode"
 
-          sourceId="17"
-          responseId="e9c2e351d90b11e996fd"
-          emailResponseId="1234"
+          sourceUid="src_dy4v"
+          responseId=""
+          emailResponseId=""
 
-          reCaptchaKey="1234"
-
-          forceMdLayout
+          reCaptchaKey="6LdBAbkUAAAAAKmGXpndv5B8JP7T9oOEoVmztVp9"
         />
       </div>
 
