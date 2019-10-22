@@ -10,8 +10,6 @@ RegistrationApp.setClientIds({
   prod: '',
 });
 
-RegistrationApp.setShowAddress(true);
-
 RegistrationApp.setPanels([
   {
     component: 'ModePanel',
@@ -50,13 +48,18 @@ RegistrationApp.setPanels([
     },
   },
   {
+    component: 'DetailsPanel',
+    settings: {
+      showAddress: true,
+    },
+  },
+  {
     component: 'ValidatePanel',
     settings: {},
   },
   {
     component: 'RegistrationPaymentPanel',
     settings: {},
-
   },
 ]);
 

@@ -8,7 +8,7 @@ import { Spinner, Modal } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { ClaretyApi } from 'clarety-utils';
-import { statuses, setPanels, setClientIds, setAuth, setShowAddress } from 'shared/actions';
+import { statuses, setPanels, setClientIds, setAuth } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { getJwtAccount } from 'shared/utils';
 import { selectDefaults } from 'donate/actions';
@@ -27,10 +27,6 @@ export class Registration extends React.Component {
 
   static setClientIds({ dev, prod }) {
     store.dispatch(setClientIds({ dev, prod }));
-  }
-
-  static setShowAddress(showAddress) {
-    store.dispatch(setShowAddress(showAddress));
   }
 
   render() {

@@ -45,8 +45,9 @@ class _PanelManager extends React.Component {
   }
 
   renderPanel = (panel, index) => {
-    const { layout } = this.props;
+    const { layout, settings } = this.props;
     const PanelComponent = this.resolvePanelComponent(panel);
+    const panelSettings = settings.panels[panel.component];
     
     const shouldScroll = layout === 'stack' && panel.status === 'edit';
     const className = shouldScroll ? 'panel panel-last' : 'panel';
@@ -60,7 +61,7 @@ class _PanelManager extends React.Component {
 
           status={panel.status}
           layout={layout}
-          settings={panel.settings}
+          settings={panelSettings}
           {...panel.data}
 
           nextPanel={() => this.nextPanel(index)}
@@ -74,25 +75,25 @@ class _PanelManager extends React.Component {
   resolvePanelComponent(panel) {
     switch (panel.component) {
       // Checkout panels
-      case 'CheckoutLoginPanel':        return this.context.CheckoutLoginPanel        || CheckoutLoginPanel;
-      case 'CustomerPanel':             return this.context.CustomerPanel             || CustomerPanel;
-      case 'AddressPanel':              return this.context.AddressPanel              || AddressPanel;
-      case 'ShippingPanel':             return this.context.ShippingPanel             || ShippingPanel;
-      case 'PaymentPanel':              return this.context.PaymentPanel              || PaymentPanel;
-      case 'CheckoutPaymentPanel':      return this.context.CheckoutPaymentPanel      || CheckoutPaymentPanel;
+      case 'CheckoutLoginPanel':        return this.context.CheckoutLoginPanel       || CheckoutLoginPanel;
+      case 'CustomerPanel':             return this.context.CustomerPanel            || CustomerPanel;
+      case 'AddressPanel':              return this.context.AddressPanel             || AddressPanel;
+      case 'ShippingPanel':             return this.context.ShippingPanel            || ShippingPanel;
+      case 'PaymentPanel':              return this.context.PaymentPanel             || PaymentPanel;
+      case 'CheckoutPaymentPanel':      return this.context.CheckoutPaymentPanel     || CheckoutPaymentPanel;
 
       // Registration panels
-      case 'ModePanel':                 return this.context.ModePanel                 || ModePanel;
-      case 'EventPanel':                return this.context.EventPanel                || EventPanel;
-      case 'QtysPanel':                 return this.context.QtysPanel                 || QtysPanel;
-      case 'RegistrationLoginPanel':    return this.context.RegistrationLoginPanel    || RegistrationLoginPanel;
-      case 'RegistrationOffersPanel':   return this.context.RegistrationOffersPanel   || RegistrationOffersPanel;
-      case 'DetailsPanel':              return this.context.DetailsPanel              || DetailsPanel;
-      case 'TeamPanel':                 return this.context.TeamPanel                 || TeamPanel;
-      case 'DonatePanel':               return this.context.DonatePanel               || DonatePanel;
-      case 'ReviewPanel':               return this.context.ReviewPanel               || ReviewPanel;
-      case 'ValidatePanel':             return this.context.ValidatePanel             || ValidatePanel;
-      case 'RegistrationPaymentPanel':  return this.context.RegistrationPaymentPanel  || RegistrationPaymentPanel;
+      case 'ModePanel':                 return this.context.ModePanel                || ModePanel;
+      case 'EventPanel':                return this.context.EventPanel               || EventPanel;
+      case 'QtysPanel':                 return this.context.QtysPanel                || QtysPanel;
+      case 'RegistrationLoginPanel':    return this.context.RegistrationLoginPanel   || RegistrationLoginPanel;
+      case 'RegistrationOffersPanel':   return this.context.RegistrationOffersPanel  || RegistrationOffersPanel;
+      case 'DetailsPanel':              return this.context.DetailsPanel             || DetailsPanel;
+      case 'TeamPanel':                 return this.context.TeamPanel                || TeamPanel;
+      case 'DonatePanel':               return this.context.DonatePanel              || DonatePanel;
+      case 'ReviewPanel':               return this.context.ReviewPanel              || ReviewPanel;
+      case 'ValidatePanel':             return this.context.ValidatePanel            || ValidatePanel;
+      case 'RegistrationPaymentPanel':  return this.context.RegistrationPaymentPanel || RegistrationPaymentPanel;
 
       // Lead gen panels
       case 'LeadGenCustomerPanel':      return LeadGenCustomerPanel;
@@ -129,6 +130,7 @@ _PanelManager.contextType = OverrideContext;
 const mapStateToProps = state => {
   return {
     panels: state.panelManager,
+    settings: state.settings,
   };
 };
 

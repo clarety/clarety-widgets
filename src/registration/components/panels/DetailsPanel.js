@@ -15,6 +15,9 @@ export class _DetailsPanel extends BasePanel {
   constructor(props) {
     super(props);
 
+    // We can't populate state without a participant.
+    if (!props.participant) return;
+    
     this.state = {
       customerFormContext: {
         formData: this.getCustomerFormData(props.participant.customer),
@@ -124,7 +127,7 @@ export class _DetailsPanel extends BasePanel {
 
   validateFields(errors) {
     const { formData } = this.state.customerFormContext;
-    const { eventDate, minAge, maxAge, appSettings } = this.props;
+    const { eventDate, minAge, maxAge, settings } = this.props;
 
     this.validateRequired('firstName', formData, errors);
     this.validateRequired('lastName', formData, errors);
@@ -144,7 +147,7 @@ export class _DetailsPanel extends BasePanel {
       errors: errors,
     });
 
-    if (appSettings.showAddress) {
+    if (settings.showAddress) {
       this.validateRequired('billing.address1', formData, errors);
       this.validateRequired('billing.suburb', formData, errors);
       this.validateRequired('billing.state', formData, errors);
@@ -240,7 +243,7 @@ export class _DetailsPanel extends BasePanel {
   }
 
   renderCustomerForm() {
-    const { isPrefilled, appSettings } = this.props;
+    const { isPrefilled, appSettings, settings } = this.props;
 
     const genderOptions = this.translateOptions(
       getGenderOptions(appSettings)
@@ -279,7 +282,7 @@ export class _DetailsPanel extends BasePanel {
           </Col>
         </Form.Row>
 
-        {appSettings.showAddress &&
+        {settings.showAddress &&
           <React.Fragment>
 
             <Form.Row>
@@ -435,8 +438,12 @@ export class _DetailsPanel extends BasePanel {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const event = getEvent(state);
   const participant = getParticipant(state, ownProps.participantIndex);
+
+  // We can't map state until we have a participant.
+  if (!participant) return {};
+
+  const event = getEvent(state);
   const extendFields = getExtendFields(state);
   const isPrefilled = getIsPrefilled(state, ownProps.participantIndex);
   const offer = getPartcipantOffer(state, ownProps.participantIndex);
