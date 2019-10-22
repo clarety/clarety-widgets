@@ -55,18 +55,18 @@ class _PanelManager extends React.Component {
     return (
       <ScrollIntoView isActive={shouldScroll} key={panel.id} className={className}>
         <PanelComponent
-          key={panel.id}
           index={index}
-          ref={ref => this.panelRefs[index] = ref}
-
           status={panel.status}
           layout={layout}
           settings={panelSettings}
+          
           {...panel.data}
 
           nextPanel={() => this.nextPanel(index)}
           editPanel={() => this.editPanel(index)}
           resetAllPanels={this.resetAllPanels}
+
+          ref={ref => this.panelRefs[index] = ref}
         />
       </ScrollIntoView>
     );

@@ -94,7 +94,7 @@ class _QtysPanel extends BasePanel {
     const { layout, index, registrationMode } = this.props;
 
     return (
-      <PanelContainer layout={layout} status="edit" name="qtys">
+      <PanelContainer layout={layout} status="edit" className="qtys">
         <PanelHeader
           status="edit"
           layout={layout}

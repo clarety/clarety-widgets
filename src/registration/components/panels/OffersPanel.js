@@ -82,7 +82,7 @@ class _RegistrationOffersPanel extends BasePanel {
     const { layout, index } = this.props;
 
     return (
-      <PanelContainer layout={layout} status="edit" name="offers">
+      <PanelContainer layout={layout} status="edit" className="offers">
         <PanelHeader
           status="edit"
           layout={layout}

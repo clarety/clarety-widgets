@@ -4,23 +4,17 @@ import { Container, Card, Button } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 
-export const PanelContainer = ({ layout, name, children }) => {
+export const PanelContainer = ({ layout, className, children }) => {
   if (layout === 'stack') {
-    return (
-      <div className="stack-panel">
-        <Container className={name}>
-          {children}
-        </Container>
-      </div>
-    );
+    return (<StackPanelContainer className={className}>{children}</StackPanelContainer>);
   }
 
   if (layout === 'accordian') {
-    return <div className="panel">{children}</div>;
+    return (<AccordianPanelContainer>{children}</AccordianPanelContainer>);
   }
 
   if (layout === 'tabs') {
-    return <Card>{children}</Card>;
+    return (<TabsPanelContainer>{children}</TabsPanelContainer>);
   }
 
   return children;
@@ -59,6 +53,14 @@ export const PanelBody = ({ layout, status, isBusy, children }) => {
 
 // Stack
 
+const StackPanelContainer = ({ className, children }) => (
+  <div className="stack-panel">
+    <Container className={className}>
+      {children}
+    </Container>
+  </div>
+);
+
 const StackPanelHeader = ({ status, intlId, intlValues }) => {
   if (status === 'wait') return null;
   if (status === 'edit') return <FormattedMessage tagName="h2" id={intlId} values={intlValues} />;
@@ -73,6 +75,12 @@ const StackPanelBody = ({ status, isBusy, children }) => {
 
 
 // Accordian
+
+const AccordianPanelContainer = ({ children }) => (
+  <div className="panel">
+    {children}
+  </div>
+);
 
 const AccordianPanelHeader = ({ status, number, title, onPressEdit }) => {
   if (status === 'wait') return <WaitPanelHeader number={number} title={title} />;
@@ -112,6 +120,12 @@ export const DonePanelHeader = ({ number, title, onPressEdit }) => (
 
 
 // Tabs
+
+const TabsPanelContainer = ({ children }) => (
+  <Card>
+    {children}
+  </Card>
+);
 
 const TabsPanelHeader = ({ title, subtitle }) => (
   <div className="panel-header">

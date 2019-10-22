@@ -101,7 +101,7 @@ export class PaymentPanel extends BasePanel {
     const { layout, index, paymentMethod, isBusy } = this.props;
 
     return (
-      <PanelContainer layout={layout} status="edit" name="payment">
+      <PanelContainer layout={layout} status="edit" className="payment">
         <PanelHeader
           status="edit"
           layout={layout}
