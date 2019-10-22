@@ -1,39 +1,39 @@
 import React from 'react';
-import { Checkout, setupCheckoutAxiosMock, withOverrides } from '../../src';
+import { LoginPanel } from '../../src/shared/components';
+import { CustomerPanel, AddressPanel, ShippingPanel, CheckoutPaymentPanel, CheckoutLoginConnect } from '../../src/checkout/components';
+import { Checkout, setupCheckoutAxiosMock } from '../../src';
 import '../../src/checkout/style.scss';
 
-const CheckoutApp = withOverrides(Checkout, {});
-
-CheckoutApp.setClientIds({
+Checkout.setClientIds({
   dev:  '82ee4a2479780256c9bf9b951f5d1cfb',
   prod: '',
 });
 
-CheckoutApp.setPanels([
+Checkout.setPanels([
   {
-    component: 'LoginPanel',
-    connect: 'CheckoutLoginConnect',
+    component: LoginPanel,
+    connect: CheckoutLoginConnect,
     settings: {
       allowGuest: true,
       createAccount: false,
     },
   },
   {
-    component: 'CustomerPanel',
+    component: CustomerPanel,
     settings: {},
   },
   {
-    component: 'AddressPanel',
+    component: AddressPanel,
     settings: {
       addressType: 'international',
     },
   },
   {
-    component: 'ShippingPanel',
+    component: ShippingPanel,
     settings: {},
   },
   {
-    component: 'CheckoutPaymentPanel',
+    component: CheckoutPaymentPanel,
     settings: {},
   },
 ]);
@@ -46,7 +46,7 @@ export default class CheckoutDemo extends React.Component {
   render() {
     return (
       <div className="checkout">
-        <CheckoutApp />
+        <Checkout />
       </div>
     );
   }

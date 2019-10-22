@@ -284,3 +284,4 @@ const actions = {
 };
 
 export const AddressPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_AddressPanel);
+AddressPanel.name = 'AddressPanel';

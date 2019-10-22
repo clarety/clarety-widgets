@@ -146,3 +146,4 @@ const actions = {
 };
 
 export const ShippingPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_ShippingPanel);
+ShippingPanel.name = 'ShippingPanel';

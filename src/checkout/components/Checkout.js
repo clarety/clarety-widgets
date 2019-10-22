@@ -4,9 +4,9 @@ import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import { ClaretyApi } from 'clarety-utils';
+import { Resources, getJwtSession, getJwtAccount } from 'shared/utils';
 import { PanelManager } from 'shared/components';
 import { setPanels, setClientIds, setAuth } from 'shared/actions';
-import { getJwtSession, getJwtAccount } from 'shared/utils';
 import { getIsCartComplete } from 'shared/selectors';
 import { fetchCart, fetchCustomer } from 'checkout/actions';
 import { rootReducer } from 'checkout/reducers';
@@ -19,6 +19,14 @@ export class Checkout extends React.Component {
   state = { isReady: false, isCartComplete: false };
 
   static setPanels(panels) {
+    for (const panel of panels) {
+      Resources.setComponent(panel.component.name, panel.component);
+
+      if (panel.connect) {
+        Resources.setConnect(panel.connect.name, panel.connect);
+      }
+    }
+
     store.dispatch(setPanels(panels));
   }
 

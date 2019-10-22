@@ -18,8 +18,8 @@ export const panelManagerReducer = (state = initialState, action) => {
 function setPanels(state, action) {
   return action.panels.map((panel, index) => ({
     id: nextId(),
-    component: panel.component || null,
-    connect: panel.connect || null,
+    component: panel.component ? panel.component.name : null,
+    connect: panel.connect ? panel.connect.name : null,
     status: panel.status || (index == 0 ? 'edit' : 'wait'),
     isValid: false,
     data: panel.data || {},
@@ -31,7 +31,7 @@ function insertPanels(state, action) {
 
   const panels = action.panels.map(panel => ({
     id: nextId(),
-    component: panel.component || null,
+    component: panel.component ? panel.component.name : null,
     status: panel.status || 'wait',
     isValid: panel.isValid || false,
     data: panel.data || {},

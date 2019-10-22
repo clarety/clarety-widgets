@@ -218,3 +218,4 @@ const actions = {
 };
 
 export const CustomerPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_CustomerPanel);
+CustomerPanel.name = 'CustomerPanel';

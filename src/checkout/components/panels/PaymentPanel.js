@@ -17,3 +17,4 @@ const actions = {
 };
 
 export const CheckoutPaymentPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(PaymentPanel);
+CheckoutPaymentPanel.name = 'CheckoutPaymentPanel';

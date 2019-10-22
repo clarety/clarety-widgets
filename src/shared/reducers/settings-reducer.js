@@ -22,7 +22,7 @@ function setPanelSettings(state, action) {
   return {
     ...state,
     panels: action.panels.reduce((panels, panel) => {
-      panels[panel.component] = panel.settings;
+      panels[panel.component.name] = panel.settings;
       return panels;
     }, {}),
   };

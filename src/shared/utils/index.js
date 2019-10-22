@@ -1,3 +1,5 @@
+export * from './resources';
+
 export * from './element-utils';
 export * from './instance-utils';
 export * from './override-utils';

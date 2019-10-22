@@ -1,26 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { setPanelStatus, resetAllPanels } from 'shared/actions';
-import { OverrideContext } from 'shared/utils';
-import { Resources } from 'shared/utils/resources';
+import { Resources } from 'shared/utils';
 import { ScrollIntoView } from 'registration/components';
 
 class _PanelManager extends React.Component {
-  panelRefs = [];
   components = {};
+  panelRefs = [];
 
-  constructor(props, context) {
-    super(props, context);
-
-    this.setupPanelComponents(props.panels, context);
+  constructor(props) {
+    super(props);
+    this.setupPanelComponents(props.panels);
   }
 
-  setupPanelComponents(panels, context) {
+  setupPanelComponents(panels) {
     panels.forEach(panel => {
-      let panelComponent = Resources.getComponent(panel.component, context);
+      let panelComponent = Resources.getComponent(panel.component);
 
       if (panel.connect) {
-        const panelConnect = Resources.getConnect(panel.connect, context);
+        const panelConnect = Resources.getConnect(panel.connect);
         panelComponent = connect(
           panelConnect.mapStateToProps,
           panelConnect.actions,
@@ -118,8 +116,6 @@ class _PanelManager extends React.Component {
     this.panelRefs[index].reset();
   }
 }
-
-_PanelManager.contextType = OverrideContext;
 
 const mapStateToProps = state => {
   return {
