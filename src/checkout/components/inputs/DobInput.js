@@ -1,8 +1,7 @@
 import React from 'react';
 import { Form, Col } from 'react-bootstrap';
-// TODO: these imports should come from shared...
+import { FormContext } from 'shared/utils';
 import { currentYear, iterate } from 'registration/utils';
-import { FormContext } from 'checkout/utils';
 import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Form, Col, Spinner } from 'react-bootstrap';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
+import { FormContext } from 'shared/utils';
 import { ErrorMessages } from 'form/components';
 import { BasePanel, TextInput, CardNumberInput, CcvInput, ExpiryInput, Button } from 'checkout/components';
-import { FormContext } from 'checkout/utils';
 
 export class PaymentPanel extends BasePanel {
   onPressPlaceOrder = event => {

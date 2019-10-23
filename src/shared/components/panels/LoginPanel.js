@@ -2,8 +2,8 @@ import React from 'react';
 import { Col, Form, Button as BsButton } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
+import { FormContext } from 'shared/utils';
 import { BasePanel, TextInput, EmailInput, Button } from 'checkout/components';
-import { FormContext } from 'checkout/utils';
 
 export class LoginPanel extends BasePanel {
   constructor(props) {

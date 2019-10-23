@@ -2,9 +2,9 @@ import React from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Button, Form, Row, Col, Alert } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
+import { FormContext } from 'shared/utils';
 import { TextInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput } from 'registration/components';
-import { getGenderOptions } from 'registration/utils';
-import { FormContext, scrollIntoView } from 'registration/utils';
+import { getGenderOptions, scrollIntoView } from 'registration/utils';
 
 export const DetailsPanel = injectIntl(class extends BasePanel {
   ref = React.createRef();

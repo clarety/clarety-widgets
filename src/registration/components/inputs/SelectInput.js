@@ -2,7 +2,7 @@ import React from 'react';
 import { Form } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 import Select from 'react-select';
-import { FormContext } from 'registration/utils';
+import { FormContext } from 'shared/utils';
 import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
 

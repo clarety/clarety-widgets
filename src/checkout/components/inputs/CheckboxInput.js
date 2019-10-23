@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, FormCheck } from 'react-bootstrap';
-import { FormContext } from 'checkout/utils';
+import { FormContext } from 'shared/utils';
 import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
 

@@ -1,7 +1,4 @@
-import React from 'react';
 import { getElementOptions } from 'shared/utils';
-
-export const FormContext = React.createContext();
 
 export const currentYear = new Date().getFullYear();
 
@@ -21,10 +18,6 @@ export function iterate(from, to, callback) {
   }
 
   return results;
-}
-
-export function calcProgress(participantCount, participantIndex) {
-  return 40 + (40 / participantCount) * (participantIndex + 1);
 }
 
 export function scrollIntoView(elementRef) {

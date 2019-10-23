@@ -1,8 +1,11 @@
+import React from 'react';
 import ReactDOM from 'react-dom';
 import Cookies from 'js-cookie';
 import jwtDecode from 'jwt-decode';
 import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed';
 import { Config } from 'clarety-utils';
+
+export const FormContext = React.createContext();
 
 export function renderWidget(elementId, component) {
   const element = document.getElementById(elementId);

@@ -3,7 +3,7 @@ import { Form } from 'react-bootstrap';
 import ReactPhoneNumberInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { Config } from 'clarety-utils';
-import { FormContext } from 'checkout/utils';
+import { FormContext } from 'shared/utils';
 import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
 

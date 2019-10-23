@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import ReactPhoneNumberInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { Config } from 'clarety-utils';
-import { FormContext } from 'registration/utils';
+import { FormContext } from 'shared/utils';
 import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
 

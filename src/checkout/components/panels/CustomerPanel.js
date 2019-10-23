@@ -1,8 +1,8 @@
 import React from 'react';
 import { Form, Col } from 'react-bootstrap';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
+import { FormContext } from 'shared/utils';
 import { BasePanel, TextInput, PhoneInput, DobInput, Button } from 'checkout/components';
-import { FormContext } from 'checkout/utils';
 
 export class CustomerPanel extends BasePanel {
   onPressContinue = event => {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Form, Col } from 'react-bootstrap';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
+import { FormContext } from 'shared/utils';
 import { BasePanel, TextInput, PureCheckboxInput, StateInput, Button } from 'checkout/components';
-import { FormContext } from 'checkout/utils';
 
 export class AddressPanel extends BasePanel {
   onPressContinue = async event => {

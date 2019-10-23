@@ -1,9 +1,10 @@
 import React from 'react';
 import { Form, Col } from 'react-bootstrap';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { FormContext, currentYear, iterate } from 'registration/utils';
+import { FormContext } from 'shared/utils';
 import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
+import { currentYear, iterate } from 'registration/utils';
 
 class _PureDobInput extends React.PureComponent {
   render() {

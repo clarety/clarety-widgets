@@ -1,8 +1,8 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
+import { FormContext } from 'shared/utils';
 import { getValidationError, cleanCcv } from 'form/utils';
 import { FieldError } from 'form/components';
-import { FormContext } from 'checkout/utils';
 import './CcvInput.css';
 
 class PureCcvInput extends React.PureComponent {

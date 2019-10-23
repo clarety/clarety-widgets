@@ -1,8 +1,8 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
+import { FormContext } from 'shared/utils';
 import { getValidationError, formatExpiry, cleanExpiry } from 'form/utils';
 import { FieldError } from 'form/components';
-import { FormContext } from 'checkout/utils';
 import './ExpiryInput.css';
 
 class PureExpiryInput extends React.PureComponent {
