@@ -1,14 +1,10 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
-import { statuses, invalidatePanel } from 'shared/actions';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { setFormData } from 'form/actions';
 import { BasePanel, TextInput, PureCheckboxInput, StateInput, Button } from 'checkout/components';
-import { createOrUpdateCustomer } from 'checkout/actions';
 import { FormContext } from 'checkout/utils';
 
-class _AddressPanel extends BasePanel {
+export class AddressPanel extends BasePanel {
   onPressContinue = async event => {
     event.preventDefault();
 
@@ -268,20 +264,3 @@ class _AddressPanel extends BasePanel {
     );
   }
 }
-
-const mapStateToProps = state => {
-  return {
-    isBusy: state.status === statuses.busy,
-    customer: state.cart.customer,
-    errors: state.errors,
-  };
-};
-
-const actions = {
-  setFormData: setFormData,
-  createOrUpdateCustomer: createOrUpdateCustomer,
-  invalidatePanel: invalidatePanel,
-};
-
-export const AddressPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_AddressPanel);
-AddressPanel.name = 'AddressPanel';

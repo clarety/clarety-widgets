@@ -15,9 +15,12 @@ export * from './inputs/TextInput';
 
 export * from './panels/BasePanel';
 export * from './panels/AddressPanel';
+export * from './panels/AddressConnect';
+export * from './panels/CustomerPanel';
+export * from './panels/CustomerConnect';
 export * from './panels/LoginConnect';
 export * from './panels/PaymentConnect';
-export * from './panels/CustomerPanel';
 export * from './panels/ShippingPanel';
+export * from './panels/ShippingConnect';
 
 export * from './Checkout';

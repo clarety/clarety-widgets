@@ -1,13 +1,10 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Form, Col } from 'react-bootstrap';
-import { statuses } from 'shared/actions';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { setFormData } from 'form/actions';
 import { BasePanel, TextInput, PhoneInput, DobInput, Button } from 'checkout/components';
 import { FormContext } from 'checkout/utils';
 
-class _CustomerPanel extends BasePanel {
+export class CustomerPanel extends BasePanel {
   onPressContinue = event => {
     event.preventDefault();
 
@@ -204,18 +201,3 @@ class _CustomerPanel extends BasePanel {
     );
   }
 }
-
-const mapStateToProps = state => {
-  return {
-    isBusy: state.status === statuses.busy,
-    customer: state.cart.customer,
-    errors: state.errors,
-  };
-};
-
-const actions = {
-  setFormData: setFormData,
-};
-
-export const CustomerPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_CustomerPanel);
-CustomerPanel.name = 'CustomerPanel';

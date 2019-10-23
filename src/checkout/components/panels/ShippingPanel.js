@@ -1,15 +1,10 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Form, Spinner } from 'react-bootstrap';
-import { statuses } from 'shared/actions';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { setFormData } from 'form/actions';
 import { BasePanel, Button } from 'checkout/components';
-import { updateSale, fetchShippingOptions } from 'checkout/actions';
-import { hasSelectedShippingOption, getSelectedShippingOptionLabel } from 'checkout/selectors';
 import { currency } from 'shared/utils';
 
-class _ShippingPanel extends BasePanel {
+export class ShippingPanel extends BasePanel {
   onPressContinue = async () => {
     const { canContinue, nextPanel } = this.props;
     if (!canContinue) return;
@@ -128,22 +123,3 @@ class _ShippingPanel extends BasePanel {
     );
   }
 }
-
-const mapStateToProps = state => {
-  return {
-    isBusy: state.status === statuses.busy,
-    canContinue: hasSelectedShippingOption(state),
-    selectedOptionUid: state.formData['sale.shippingOption'],
-    shippingOptions: state.cart.shippingOptions,
-    selectedOptionName: getSelectedShippingOptionLabel(state),
-  };
-};
-
-const actions = {
-  fetchShippingOptions: fetchShippingOptions,
-  setFormData: setFormData,
-  updateSale: updateSale,
-};
-
-export const ShippingPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_ShippingPanel);
-ShippingPanel.name = 'ShippingPanel';

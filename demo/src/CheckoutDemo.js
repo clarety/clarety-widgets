@@ -1,7 +1,7 @@
 import React from 'react';
 import { LoginPanel, PaymentPanel } from '../../src/shared/components';
 import { CustomerPanel, AddressPanel, ShippingPanel } from '../../src/checkout/components';
-import { LoginConnect, PaymentConnect } from '../../src/checkout/components';
+import { LoginConnect, CustomerConnect, AddressConnect, ShippingConnect, PaymentConnect } from '../../src/checkout/components';
 import { Checkout, setupCheckoutAxiosMock } from '../../src';
 import '../../src/checkout/style.scss';
 
@@ -21,16 +21,19 @@ Checkout.setPanels([
   },
   {
     component: CustomerPanel,
+    connect: CustomerConnect,
     settings: {},
   },
   {
     component: AddressPanel,
+    connect: AddressConnect,
     settings: {
       addressType: 'international',
     },
   },
   {
     component: ShippingPanel,
+    connect: ShippingConnect,
     settings: {},
   },
   {
