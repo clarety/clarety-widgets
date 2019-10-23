@@ -17,7 +17,6 @@ import { MiniCart } from 'registration/components';
 import { fetchEvents, setPriceHandles, fetchAuthCustomer } from 'registration/actions';
 import { rootReducer } from 'registration/reducers';
 import { priceHandles } from 'registration/utils';
-import { setupRegistrationAxiosMock } from 'registration/mocks';
 
 const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));

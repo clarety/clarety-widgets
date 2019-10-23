@@ -1,15 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Button, Form, Row, Col, Alert } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { TextInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput } from 'registration/components';
-import { setDetails, setAdditionalData, setErrors, resetDetails } from 'registration/actions';
 import { getGenderOptions } from 'registration/utils';
-import { getEvent, getExtendFields, getParticipant, getPartcipantOffer, getIsPrefilled } from 'registration/selectors';
 import { FormContext, scrollIntoView } from 'registration/utils';
 
-export class _DetailsPanel extends BasePanel {
+export const DetailsPanel = injectIntl(class extends BasePanel {
   ref = React.createRef();
 
   constructor(props) {
@@ -444,49 +441,6 @@ export class _DetailsPanel extends BasePanel {
       label: intl.formatMessage({ id: `option.${option.label}` }),
     }));
   }
-}
+}, { forwardRef: true });
 
-const mapStateToProps = (state, ownProps) => {
-  const participant = getParticipant(state, ownProps.participantIndex);
-
-  // We can't map state until we have a participant.
-  if (!participant) return {};
-
-  const event = getEvent(state);
-  const extendFields = getExtendFields(state);
-  const isPrefilled = getIsPrefilled(state, ownProps.participantIndex);
-  const offer = getPartcipantOffer(state, ownProps.participantIndex);
-  const eventDate = new Date(offer.ageCalculationDate || event.startDate);
-
-  return {
-    appSettings: state.settings,
-    event: event,
-    participant: participant,
-    extendFields: extendFields,
-    isPrefilled: isPrefilled,
-    eventDate: eventDate,
-    minAge: Number(offer.minAgeOver),
-    maxAge: Number(offer.maxAgeUnder),
-    registrationErrors: state.cart.errors,
-  };
-};
-
-const actions = {
-  setDetails: setDetails,
-  setAdditionalData: setAdditionalData,
-  setErrors: setErrors,
-  resetDetails: resetDetails,
-};
-
-export const connectDetailsPanel = Component => injectIntl(
-  connect(
-    mapStateToProps,
-    actions,
-    null,
-    { forwardRef: true }
-  )(Component),
-  { forwardRef: true }
-);
-
-export const DetailsPanel = connectDetailsPanel(_DetailsPanel);
 DetailsPanel.name = 'DetailsPanel';

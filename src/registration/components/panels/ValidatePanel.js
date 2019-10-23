@@ -1,12 +1,10 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Button } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { ErrorMessages } from 'form/components';
-import { createRegistration } from 'registration/actions';
 
-class _ValidatePanel extends BasePanel {
+export class ValidatePanel extends BasePanel {
   async onShowPanel() {
     const { createRegistration, nextPanel } = this.props;
 
@@ -62,16 +60,3 @@ class _ValidatePanel extends BasePanel {
     );
   }
 }
-
-const mapStateToProps = state => {
-  return {
-    hasErrors: state.errors.length > 0,
-  };
-};
-
-const actions = {
-  createRegistration: createRegistration,
-};
-
-export const ValidatePanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_ValidatePanel);
-ValidatePanel.name = 'ValidatePanel';

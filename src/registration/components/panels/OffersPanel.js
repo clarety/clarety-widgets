@@ -1,13 +1,10 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { currency } from 'shared/utils';
-import { setFirstNames, resetFirstNames, setOffers, resetOffers, prefillDetails } from 'registration/actions';
-import { getParticipants, getOffersForAllParticipants, getPreviousParticipants } from 'registration/selectors';
 
-class _OffersPanel extends BasePanel {
+export class OffersPanel extends BasePanel {
   state = {
     names: [],
     offers: [],
@@ -285,25 +282,6 @@ class _OffersPanel extends BasePanel {
     return true;
   }
 }
-
-const mapStateToProps = state => {
-  return {
-    participants: getParticipants(state),
-    offers: getOffersForAllParticipants(state),
-    previousParticipants: getPreviousParticipants(state),
-  };
-};
-
-const actions = {
-  setFirstNames: setFirstNames,
-  resetFirstNames: resetFirstNames,
-  prefillDetails: prefillDetails,
-  setOffers: setOffers,
-  resetOffers: resetOffers,
-};
-
-export const OffersPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_OffersPanel);
-OffersPanel.name = 'OffersPanel';
 
 const OfferButton = ({ offer, isSelected, onClick }) => {
   const className = isSelected ? 'btn btn-offer selected' : 'btn btn-offer';

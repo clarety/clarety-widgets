@@ -1,12 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Button } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { setRegistrationMode } from 'registration/actions';
-import { getRegistrationMode } from 'registration/selectors';
 
-class _ModePanel extends BasePanel {
+export class ModePanel extends BasePanel {
   onSelectMode = (mode) => {
     const { setRegistrationMode, nextPanel } = this.props;
 
@@ -88,19 +85,6 @@ class _ModePanel extends BasePanel {
     );
   }
 }
-
-const mapStateToProps = state => {
-  return {
-    selectedMode: getRegistrationMode(state),
-  };
-};
-
-const actions = {
-  setRegistrationMode,
-};
-
-export const ModePanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_ModePanel);
-ModePanel.name = 'ModePanel';
 
 function capitalize(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);

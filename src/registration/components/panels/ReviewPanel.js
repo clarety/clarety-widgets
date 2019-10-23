@@ -1,11 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Button } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { createRegistration, submitRegistration } from 'registration/actions';
 
-class _ReviewPanel extends BasePanel {
+export class ReviewPanel extends BasePanel {
   onClickNext = () => {
     this.props.submitRegistration();
   };
@@ -96,18 +94,3 @@ class _ReviewPanel extends BasePanel {
     );
   }
 }
-
-const mapStateToProps = state => {
-  return {
-    hasErrors: state.errors.length > 0,
-    registration: state.cart.items,
-  };
-};
-
-const actions = {
-  createRegistration: createRegistration,
-  submitRegistration: submitRegistration,
-};
-
-export const ReviewPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_ReviewPanel);
-ReviewPanel.name = 'ReviewPanel';

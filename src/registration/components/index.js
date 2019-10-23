@@ -11,17 +11,26 @@ export * from './inputs/TeamSearchInput';
 export * from './inputs/TextInput';
 
 export * from './panels/DetailsPanel';
+export * from './panels/DetailsConnect';
 export * from './panels/DonatePanel';
+export * from './panels/DonateConnect';
 export * from './panels/EventPanel';
+export * from './panels/EventConnect';
 export * from './panels/LoginConnect';
 export * from './panels/ModePanel';
+export * from './panels/ModeConnect';
 export * from './panels/OffersPanel';
+export * from './panels/OffersConnect';
 export * from './panels/PaymentPanel';
 export * from './panels/PaymentConnect';
 export * from './panels/QtysPanel';
+export * from './panels/QtysConnect';
 export * from './panels/ReviewPanel';
+export * from './panels/ReviewConnect';
 export * from './panels/TeamPanel';
+export * from './panels/TeamConnect';
 export * from './panels/ValidatePanel';
+export * from './panels/ValidateConnect';
 
 export * from './misc/Brand';
 export * from './misc/MiniCart';

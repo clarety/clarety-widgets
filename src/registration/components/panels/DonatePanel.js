@@ -1,14 +1,10 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Button, Form } from 'react-bootstrap';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { clearItems } from 'shared/actions';
 import { _AmountPanel } from 'donate/components/panels/widget/AmountPanel';
-import { selectAmount, submitAmountPanel } from 'donate/actions';
-import { getSelectedAmount } from 'donate/selectors';
 
-export class _DonatePanel extends _AmountPanel {
+export class DonatePanel extends _AmountPanel {
   onClickNext = event => {
     event.preventDefault();
 
@@ -115,25 +111,3 @@ export class _DonatePanel extends _AmountPanel {
     );
   }
 }
-
-const mapStateToProps = state => {
-  const { amountPanel } = state.panels;
-
-  return {
-    offers: state.settings.priceHandles,
-    frequency: amountPanel.frequency,
-    selections: amountPanel.selections,
-    selectedAmount: getSelectedAmount(state),
-    errors: state.cart.errors,
-  };
-};
-
-const actions = {
-  selectAmount: selectAmount,
-  submitAmountPanel: submitAmountPanel,
-  clearItems: clearItems,
-};
-
-export const connectDonatePanel = connect(mapStateToProps, actions, null, { forwardRef: true });
-export const DonatePanel = connectDonatePanel(_DonatePanel);
-DonatePanel.name = 'DonatePanel';

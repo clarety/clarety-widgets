@@ -1,14 +1,10 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Button, Form, Col } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { insertPanels, removePanels } from 'shared/actions';
 import { DetailsPanel, Qty, QtyInput } from 'registration/components';
-import { setQtys, resetQtys } from 'registration/actions';
-import { getRegistrationTypes, getRegistrationMode, getQtys } from 'registration/selectors';
 
-class _QtysPanel extends BasePanel {
+export class QtysPanel extends BasePanel {
   state = {
     qtys: {},
   };
@@ -220,21 +216,3 @@ class _QtysPanel extends BasePanel {
     return Object.values(this.state.qtys).reduce((sum, value) => sum + value, 0);
   }
 }
-
-const mapStateToProps = state => {
-  return {
-    registrationMode: getRegistrationMode(state),
-    types: getRegistrationTypes(state),
-    qtys: getQtys(state),
-  };
-};
-
-const actions = {
-  setQtys: setQtys,
-  resetQtys: resetQtys,
-  insertPanels: insertPanels,
-  removePanels: removePanels,
-};
-
-export const QtysPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_QtysPanel);
-QtysPanel.name = 'QtysPanel';

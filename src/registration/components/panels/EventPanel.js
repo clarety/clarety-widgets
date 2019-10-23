@@ -1,14 +1,11 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { Form } from 'react-bootstrap';
 import Select from 'react-select';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { Button } from 'form/components';
-import { setEvent, resetEvent, fetchFullEvent } from 'registration/actions';
-import { getEvent } from 'registration/selectors';
 
-class _EventPanel extends BasePanel {
+export class EventPanel extends BasePanel {
   state = {
     event: null,
   };
@@ -130,20 +127,3 @@ class _EventPanel extends BasePanel {
     );
   }
 }
-
-const mapStateToProps = state => {
-  return {
-    isBusy: state.settings.isBusy,
-    events: state.settings.events,
-    selectedEvent: getEvent(state),
-  };
-};
-
-const actions = {
-  setEvent: setEvent,
-  resetEvent: resetEvent,
-  fetchFullEvent: fetchFullEvent,
-};
-
-export const EventPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_EventPanel);
-EventPanel.name = 'EventPanel';
