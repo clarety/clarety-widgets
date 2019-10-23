@@ -29,8 +29,7 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, index, isBusy } = this.props;
-    const { title, subtitle, submitBtnText, showOptIn, optInText } = this.props;
+    const { layout, index, isBusy, settings } = this.props;
 
     return (
       <PanelContainer layout={layout} status="edit">
@@ -38,8 +37,8 @@ export class CustomerPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title={title}
-          subtitle={subtitle}
+          title={settings.title}
+          subtitle={settings.subtitle}
           intlId="customerPanel.editTitle"
         />
 
@@ -72,24 +71,24 @@ export class CustomerPanel extends BasePanel {
             <Form.Row>
               <Col>
                 <Form.Group>
-                  <PhoneInput field="customer.mobile" placeholder="Mobile Number" country="AU" />
+                  <PhoneInput field="customer.mobile" placeholder="Mobile" country="AU" />
                 </Form.Group>
               </Col>
             </Form.Row>
 
-            {this.renderAddressFields()}
+            {this.renderAddressFields(settings.addressType)}
 
             <Row className="panel-actions">
               <Col className="text-center">
-                <SubmitButton title={submitBtnText} />
+                <SubmitButton title={settings.submitBtnText} />
               </Col>
             </Row>
 
-            {showOptIn &&
+            {settings.showOptIn &&
               <Form.Row>
                 <Col className="text-center">
                   <Form.Group>
-                    <CheckboxInput field="customer.optIn" label={optInText} />
+                    <CheckboxInput field="customer.optIn" label={settings.optInText} />
                   </Form.Group>
                 </Col>
               </Form.Row>
@@ -102,12 +101,12 @@ export class CustomerPanel extends BasePanel {
     );
   }
 
-  renderAddressFields() {
-    if (this.props.addressType === 'none') {
+  renderAddressFields(addressType) {
+    if (addressType === 'none') {
       return null;
     }
 
-    if (this.props.addressType === 'postcode-only') {
+    if (addressType === 'postcode') {
       return this.renderPostCodeField();
     }
 

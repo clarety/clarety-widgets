@@ -5,7 +5,8 @@ export const types = {
 
   // Settings Action Types
 
-  updateSettings: 'UPDATE_SETTINGS',
+  updateSettings:       'UPDATE_SETTINGS',
+  updatePanelSettings:  'UPDATE_PANEL_SETTINGS',
 
   fetchSettingsRequest: 'FETCH_SETTINGS_REQUEST',
   fetchSettingsSuccess: 'FETCH_SETTINGS_SUCCESS',

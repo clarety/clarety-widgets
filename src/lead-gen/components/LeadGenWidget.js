@@ -2,7 +2,7 @@ import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { connect, Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
-import { statuses, setPanels, setStatus, setVariant, setStore, setConfirmPageUrl, setTracking, fetchSettings } from 'shared/actions';
+import { statuses, setPanels, setStatus, setVariant, setStore, setConfirmPageUrl, setTracking, setPanelSettings, fetchSettings } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
@@ -14,16 +14,28 @@ const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMidd
 
 export class _LeadGenRoot extends React.Component {
   componentWillMount() {
-    const { setStatus, setVariant, setStore, setConfirmPageUrl, setTracking, fetchSettings } = this.props;
-    const { storeCode, variant, confirmPageUrl, reCaptchaKey } = this.props;
-    const { sourceId, responseId, emailResponseId } = this.props;
+    if (!this.props.reCaptchaKey) throw new Error('[Clarety] missing reCaptcha key');
 
-    if (!reCaptchaKey) throw new Error('[Clarety] missing reCaptcha key');
+    const { setStatus, setVariant, setStore } = this.props;
+    const { setConfirmPageUrl, setTracking, setPanelSettings, fetchSettings } = this.props;
 
+    const { storeCode, variant, confirmPageUrl } = this.props;
     setVariant(variant);
     setStore(storeCode);
     setConfirmPageUrl(confirmPageUrl);
-    setTracking({ sourceId, responseId, emailResponseId });
+
+    const { sourceUid, responseId, emailResponseId } = this.props;
+    setTracking({ sourceUid, responseId, emailResponseId });
+
+    setPanelSettings('CustomerPanel', {
+      title: this.props.headingText,
+      subtitle: this.props.subHeadingText,
+      submitBtnText: this.props.buttonText,
+      showOptIn: this.props.showOptIn === '1',
+      optInText: this.props.optInText,
+      phoneType: this.props.phoneOption,
+      addressType: this.props.addressOption,
+    });
 
     // TODO: fetch settings when API is ready...
     // fetchSettings('lead-gen/', { store: storeCode });
@@ -64,6 +76,7 @@ const actions = {
   setStore: setStore,
   setConfirmPageUrl: setConfirmPageUrl,
   setTracking: setTracking,
+  setPanelSettings: setPanelSettings,
   fetchSettings: fetchSettings,
 };
 

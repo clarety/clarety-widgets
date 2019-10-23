@@ -32,8 +32,8 @@ const LeadGenDemo = () => (
 
           variant="sos"
           headingText="This is the heading"
-          subHeadingText="This is the button"
-          buttonText="This is the sub heading"
+          subHeadingText="This is the sub heading"
+          buttonText="This is the button"
           showOptIn="1"
           optInText="This is the opt in"
           phoneOption="mobile"

@@ -17,14 +17,20 @@ export const fetchSettings = (endpoint, params) => {
   };
 };
 
-export const setVariant = variant => ({
+export const setPanelSettings = (component, settings) => ({
+  type: types.updatePanelSettings,
+  component: component,
+  settings: settings,
+});
+
+export const setVariant = (variant) => ({
   type: types.updateSettings,
   settings: {
     variant: variant,
   },
 });
 
-export const setConfirmPageUrl = confirmPageUrl => ({
+export const setConfirmPageUrl = (confirmPageUrl) => ({
   type: types.updateSettings,
   settings: {
     confirmPageUrl: confirmPageUrl,
@@ -40,12 +46,12 @@ export const setClientIds = ({ dev, prod }) => ({
 });
 
 
-const fetchSettingsRequest = endpoint => ({
+const fetchSettingsRequest = (endpoint) => ({
   type: types.fetchSettingsRequest,
   endpoint,
 });
 
-const fetchSettingsSuccess = result => ({
+const fetchSettingsSuccess = (result) => ({
   type: types.fetchSettingsSuccess,
   result,
 });
