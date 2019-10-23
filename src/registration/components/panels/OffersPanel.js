@@ -7,7 +7,7 @@ import { currency } from 'shared/utils';
 import { setFirstNames, resetFirstNames, setOffers, resetOffers, prefillDetails } from 'registration/actions';
 import { getParticipants, getOffersForAllParticipants, getPreviousParticipants } from 'registration/selectors';
 
-class _RegistrationOffersPanel extends BasePanel {
+class _OffersPanel extends BasePanel {
   state = {
     names: [],
     offers: [],
@@ -302,8 +302,8 @@ const actions = {
   resetOffers: resetOffers,
 };
 
-export const RegistrationOffersPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_RegistrationOffersPanel);
-RegistrationOffersPanel.name = 'RegistrationOffersPanel';
+export const OffersPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_OffersPanel);
+OffersPanel.name = 'OffersPanel';
 
 const OfferButton = ({ offer, isSelected, onClick }) => {
   const className = isSelected ? 'btn btn-offer selected' : 'btn btn-offer';

@@ -4,7 +4,7 @@ import { setFormData, resetFormData } from 'form/actions';
 import { hasAccount } from 'checkout/actions';
 import { fetchAuthCustomer, createAcountAndLogin } from 'registration/actions';
 
-export class RegistrationLoginConnect {
+export class LoginConnect {
   static mapStateToProps = (state) => {
     return {
       isBusy: state.status === statuses.busy,

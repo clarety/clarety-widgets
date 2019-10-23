@@ -1,7 +1,7 @@
 import React from 'react';
 import { LoginPanel } from '../../src/shared/components';
-import { ModePanel, DonatePanel, EventPanel, TeamPanel, QtysPanel, RegistrationOffersPanel, DetailsPanel, ValidatePanel, RegistrationPaymentPanel } from '../../src/registration/components';
-import { RegistrationLoginConnect } from '../../src/registration/components';
+import { ModePanel, DonatePanel, EventPanel, TeamPanel, QtysPanel, OffersPanel, DetailsPanel, ValidatePanel, PaymentPanel } from '../../src/registration/components';
+import { LoginConnect, PaymentConnect } from '../../src/registration/components';
 import { Registration, setupRegistrationAxiosMock, withOverrides } from '../../src';
 import enTranslations from '../../src/registration/intl/en.json';
 import '../../src/registration/style.scss';
@@ -36,7 +36,7 @@ RegistrationApp.setPanels([
   },
   {
     component: LoginPanel,
-    connect: RegistrationLoginConnect,
+    connect: LoginConnect,
     settings: {
       allowGuest: false,
       createAccount: true,
@@ -45,7 +45,7 @@ RegistrationApp.setPanels([
     },
   },
   {
-    component: RegistrationOffersPanel,
+    component: OffersPanel,
     settings: {
       showOffers: true,
       showPrefill: true,
@@ -62,7 +62,8 @@ RegistrationApp.setPanels([
     settings: {},
   },
   {
-    component: RegistrationPaymentPanel,
+    component: PaymentPanel,
+    connect: PaymentConnect,
     settings: {},
   },
 ]);

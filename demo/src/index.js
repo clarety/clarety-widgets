@@ -2,13 +2,6 @@ import React from 'react';
 import { render } from 'react-dom';
 import Cookies from 'js-cookie';
 import { Config } from '../../src';
-import SubscribeDemo from './SubscribeDemo';
-import DonatePageDemo from './DonatePageDemo';
-import DonateDemo from './DonateDemo';
-import RegistrationDemo from './RegistrationDemo';
-import CheckoutDemo from './CheckoutDemo';
-import CartDemo from './CartDemo';
-import LeadGenDemo from './LeadGenDemo';
 
 Config.init({
   instanceKey: 'clarety-baseline',
@@ -32,20 +25,47 @@ Cookies.set('jwtSession', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0
 const Demo = () => {
   const url = window.location.href;
 
-  if (url.endsWith('subscribe'))     return <SubscribeDemo />;
-  if (url.endsWith('donate-page'))   return <DonatePageDemo />;
-  if (url.endsWith('donate'))        return <DonateDemo />;
-  if (url.endsWith('registrations')) return <RegistrationDemo />;
-  if (url.endsWith('checkout'))      return <CheckoutDemo />;
-  if (url.endsWith('cart'))          return <CartDemo />;
-  if (url.endsWith('lead-gen'))           return <LeadGenDemo />;
+  if (url.endsWith('subscribe')) {
+    const SubscribeDemo = require('./SubscribeDemo').default;
+    return <SubscribeDemo />;
+  }
+
+  if (url.endsWith('donate-page')) {
+    const DonatePageDemo = require('./DonatePageDemo').default;
+    return <DonatePageDemo />;
+  }
+
+  if (url.endsWith('donate')) {
+    const DonateDemo = require('./DonateDemo').default;
+    return <DonateDemo />;
+  }
+
+  if (url.endsWith('registration')){
+    const RegistrationDemo = require('./RegistrationDemo').default;
+    return <RegistrationDemo />;
+  }
+
+  if (url.endsWith('checkout')) {
+    const CheckoutDemo = require('./CheckoutDemo').default;
+    return <CheckoutDemo />;
+  }
+
+  if (url.endsWith('cart')) {
+    const CartDemo = require('./CartDemo').default;
+    return <CartDemo />;
+  }
+
+  if (url.endsWith('lead-gen')) {
+    const LeadGenDemo = require('./LeadGenDemo').default;
+    return <LeadGenDemo />;
+  }
 
   return (
     <div className="list-group m-5">
       <a href="subscribe" className="list-group-item list-group-item-action">Subscribe Widget Demo</a>
       <a href="donate" className="list-group-item list-group-item-action">Donate Widget Demo</a>
       <a href="donate-page" className="list-group-item list-group-item-action">Donate Page Demo</a>
-      <a href="registrations" className="list-group-item list-group-item-action">Registration Demo</a>
+      <a href="registration" className="list-group-item list-group-item-action">Registration Demo</a>
       <a href="checkout" className="list-group-item list-group-item-action">Checkout Demo</a>
       <a href="cart" className="list-group-item list-group-item-action">Cart Demo</a>
       <a href="lead-gen" className="list-group-item list-group-item-action">Lead Gen Demo</a>

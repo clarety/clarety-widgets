@@ -17,6 +17,7 @@ export * from './panels/LoginConnect';
 export * from './panels/ModePanel';
 export * from './panels/OffersPanel';
 export * from './panels/PaymentPanel';
+export * from './panels/PaymentConnect';
 export * from './panels/QtysPanel';
 export * from './panels/ReviewPanel';
 export * from './panels/TeamPanel';

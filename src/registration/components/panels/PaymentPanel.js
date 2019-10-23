@@ -1,12 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Row, Col } from 'react-bootstrap';
-import { PaymentPanel } from 'shared/components/panels/PaymentPanel';
+import { PaymentPanel as SharedPaymentPanel } from 'shared/components/panels/PaymentPanel';
 import { currency } from 'shared/utils';
-import { makePayment } from 'registration/actions';
-import { getCart } from 'registration/selectors';
 
-class _RegistrationPaymentPanel extends PaymentPanel {
+export class PaymentPanel extends SharedPaymentPanel {
   renderCartSummary() {
     const { cart } = this.props;
 
@@ -21,24 +18,6 @@ class _RegistrationPaymentPanel extends PaymentPanel {
     );
   }
 }
-
-const mapStateToProps = (state, ownProps) => {
-  return {
-    isBusy: state.status === 'busy',
-    errors: state.errors,
-    paymentMethod: { type: 'gatewaycc' },
-    submitBtnTitle: 'Submit Registration',
-    cart: getCart(state),
-  };
-};
-
-const actions = {
-  onShowPanel: () => ({ type: 'NO_OP' }),
-  makePayment: makePayment,
-};
-
-export const RegistrationPaymentPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_RegistrationPaymentPanel);
-RegistrationPaymentPanel.name = 'RegistrationPaymentPanel';
 
 const CartItem = ({ item }) => (
   <Row as="dl" className="cart-item">

@@ -63,7 +63,7 @@ class _QtysPanel extends BasePanel {
 
     // Insert new panels.
     insertPanels({
-      afterComponent: 'RegistrationOffersPanel',
+      afterComponent: 'OffersPanel',
       panels: detailsPanels,
     });
   }
