@@ -146,3 +146,4 @@ const actions = {
 };
 
 export const EventPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_EventPanel);
+EventPanel.name = 'EventPanel';

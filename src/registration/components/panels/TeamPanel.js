@@ -261,3 +261,4 @@ const actions = {
 
 export const connectTeamPanel = connect(mapStateToProps, actions, null, { forwardRef: true });
 export const TeamPanel = connectTeamPanel(_TeamPanel);
+TeamPanel.name = 'TeamPanel';

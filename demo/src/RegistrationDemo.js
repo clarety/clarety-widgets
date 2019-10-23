@@ -1,5 +1,8 @@
 import React from 'react';
-import { Registration, withOverrides, setupRegistrationAxiosMock } from '../../src';
+import { LoginPanel } from '../../src/shared/components';
+import { ModePanel, DonatePanel, EventPanel, TeamPanel, QtysPanel, RegistrationOffersPanel, DetailsPanel, ValidatePanel, RegistrationPaymentPanel } from '../../src/registration/components';
+import { RegistrationLoginConnect } from '../../src/registration/components';
+import { Registration, setupRegistrationAxiosMock, withOverrides } from '../../src';
 import enTranslations from '../../src/registration/intl/en.json';
 import '../../src/registration/style.scss';
 
@@ -12,28 +15,28 @@ RegistrationApp.setClientIds({
 
 RegistrationApp.setPanels([
   {
-    component: 'ModePanel',
+    component: ModePanel,
     settings: {},
   },
   {
-    component: 'DonatePanel',
+    component: DonatePanel,
     settings: {},
   },
   {
-    component: 'EventPanel',
+    component: EventPanel,
     settings: {},
   },
   {
-    component: 'TeamPanel',
+    component: TeamPanel,
     settings: {},
   },
   {
-    component: 'QtysPanel',
+    component: QtysPanel,
     settings: {},
   },
   {
-    component: 'LoginPanel',
-    connect: 'RegistrationLoginConnect',
+    component: LoginPanel,
+    connect: RegistrationLoginConnect,
     settings: {
       allowGuest: false,
       createAccount: true,
@@ -42,24 +45,24 @@ RegistrationApp.setPanels([
     },
   },
   {
-    component: 'RegistrationOffersPanel',
+    component: RegistrationOffersPanel,
     settings: {
       showOffers: true,
       showPrefill: true,
     },
   },
   {
-    component: 'DetailsPanel',
+    component: DetailsPanel,
     settings: {
       showAddress: true,
     },
   },
   {
-    component: 'ValidatePanel',
+    component: ValidatePanel,
     settings: {},
   },
   {
-    component: 'RegistrationPaymentPanel',
+    component: RegistrationPaymentPanel,
     settings: {},
   },
 ]);

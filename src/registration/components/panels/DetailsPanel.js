@@ -489,3 +489,4 @@ export const connectDetailsPanel = Component => injectIntl(
 );
 
 export const DetailsPanel = connectDetailsPanel(_DetailsPanel);
+DetailsPanel.name = 'DetailsPanel';

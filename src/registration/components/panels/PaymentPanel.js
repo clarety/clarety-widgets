@@ -38,7 +38,7 @@ const actions = {
 };
 
 export const RegistrationPaymentPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_RegistrationPaymentPanel);
-
+RegistrationPaymentPanel.name = 'RegistrationPaymentPanel';
 
 const CartItem = ({ item }) => (
   <Row as="dl" className="cart-item">

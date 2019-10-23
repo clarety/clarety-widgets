@@ -17,4 +17,14 @@ export class Resources {
   static setConnect(name, connect) {
     this._connects[name] = connect;
   }
+
+  static setPanels(panels) {
+    for (const panel of panels) {
+      this.setComponent(panel.component.name, panel.component);
+
+      if (panel.connect) {
+        this.setConnect(panel.connect.name, panel.connect);
+      }
+    }
+  }
 }

@@ -74,3 +74,4 @@ const actions = {
 };
 
 export const ValidatePanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_ValidatePanel);
+ValidatePanel.name = 'ValidatePanel';

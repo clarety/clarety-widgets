@@ -303,6 +303,7 @@ const actions = {
 };
 
 export const RegistrationOffersPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_RegistrationOffersPanel);
+RegistrationOffersPanel.name = 'RegistrationOffersPanel';
 
 const OfferButton = ({ offer, isSelected, onClick }) => {
   const className = isSelected ? 'btn btn-offer selected' : 'btn btn-offer';

@@ -4,17 +4,17 @@ import { setFormData, resetFormData } from 'form/actions';
 import { hasAccount } from 'checkout/actions';
 import { fetchAuthCustomer, createAcountAndLogin } from 'registration/actions';
 
-export const RegistrationLoginConnect = {
-  mapStateToProps: (state) => {
+export class RegistrationLoginConnect {
+  static mapStateToProps = (state) => {
     return {
       isBusy: state.status === statuses.busy,
       isLoggedIn: getIsLoggedIn(state),
       customer: state.cart.customer,
       errors: state.errors,
     };
-  },
+  };
   
-  actions: {
+  static actions = {
     hasAccount: hasAccount,
     login: login,
     logout: logout,
@@ -23,5 +23,5 @@ export const RegistrationLoginConnect = {
   
     setFormData: setFormData,
     resetFormData: resetFormData,
-  },
+  };
 };

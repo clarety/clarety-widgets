@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { Button, Form, Col } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { insertPanels, removePanels } from 'shared/actions';
-import { Qty, QtyInput } from 'registration/components';
+import { DetailsPanel, Qty, QtyInput } from 'registration/components';
 import { setQtys, resetQtys } from 'registration/actions';
 import { getRegistrationTypes, getRegistrationMode, getQtys } from 'registration/selectors';
 
@@ -56,7 +56,7 @@ class _QtysPanel extends BasePanel {
     const detailsPanels = [];
     for (let participantIndex = 0; participantIndex < participantCount; participantIndex++) {
       detailsPanels.push({
-        component: 'DetailsPanel',
+        component: DetailsPanel,
         data: { participantIndex },
       });
     }
@@ -237,3 +237,4 @@ const actions = {
 };
 
 export const QtysPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_QtysPanel);
+QtysPanel.name = 'QtysPanel';

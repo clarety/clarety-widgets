@@ -10,18 +10,23 @@ import 'react-block-ui/style.css';
 import { ClaretyApi } from 'clarety-utils';
 import { statuses, setPanels, setClientIds, setAuth } from 'shared/actions';
 import { PanelManager } from 'shared/components';
-import { getJwtAccount } from 'shared/utils';
+import { Resources, getJwtAccount } from 'shared/utils';
 import { selectDefaults } from 'donate/actions';
+import { Brand } from 'registration/components/misc/Brand';
 import { MiniCart } from 'registration/components';
 import { fetchEvents, setPriceHandles, fetchAuthCustomer } from 'registration/actions';
 import { rootReducer } from 'registration/reducers';
 import { priceHandles } from 'registration/utils';
+import { setupRegistrationAxiosMock } from 'registration/mocks';
 
 const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
 
+Resources.setComponent('Brand', Brand);
+
 export class Registration extends React.Component {
   static setPanels(panels) {
+    Resources.setPanels(panels);
     store.dispatch(setPanels(panels));
   }
 

@@ -136,3 +136,4 @@ const actions = {
 
 export const connectDonatePanel = connect(mapStateToProps, actions, null, { forwardRef: true });
 export const DonatePanel = connectDonatePanel(_DonatePanel);
+DonatePanel.name = 'DonatePanel';

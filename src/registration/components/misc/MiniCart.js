@@ -1,20 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Navbar, ProgressBar, Row, Col } from 'react-bootstrap';
-import { Brand, Qty } from 'registration/components';
+import { Resources } from 'shared/utils';
+import { Qty } from 'registration/components';
 import { getEventName, getQtys, getCartTotal, getProgress } from 'registration/selectors';
-import { OverrideContext } from 'shared/utils';
 
 class _MiniCart extends React.Component {
   render() {
     const { eventName, qtys, cartTotal, progress } = this.props;
-    const BrandComponent = this.context.Brand || Brand;
+    const Brand = Resources.getComponent('Brand');
 
     return (
       <Navbar sticky="top">
         <Row noGutters>
           <Col>
-            <BrandComponent />
+            <Brand />
           </Col>
 
           <Col className="d-none d-sm-block">
@@ -38,8 +38,6 @@ class _MiniCart extends React.Component {
     );
   }
 }
-
-_MiniCart.contextType = OverrideContext;
 
 const mapStateToProps = state => {
   return {

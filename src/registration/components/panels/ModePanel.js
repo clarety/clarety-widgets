@@ -100,6 +100,7 @@ const actions = {
 };
 
 export const ModePanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_ModePanel);
+ModePanel.name = 'ModePanel';
 
 function capitalize(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);

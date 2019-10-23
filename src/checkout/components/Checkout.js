@@ -19,14 +19,7 @@ export class Checkout extends React.Component {
   state = { isReady: false, isCartComplete: false };
 
   static setPanels(panels) {
-    for (const panel of panels) {
-      Resources.setComponent(panel.component.name, panel.component);
-
-      if (panel.connect) {
-        Resources.setConnect(panel.connect.name, panel.connect);
-      }
-    }
-
+    Resources.setPanels(panels);
     store.dispatch(setPanels(panels));
   }
 

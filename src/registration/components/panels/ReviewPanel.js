@@ -110,3 +110,4 @@ const actions = {
 };
 
 export const ReviewPanel = connect(mapStateToProps, actions, null, { forwardRef: true })(_ReviewPanel);
+ReviewPanel.name = 'ReviewPanel';
