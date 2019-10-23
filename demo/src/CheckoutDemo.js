@@ -1,6 +1,7 @@
 import React from 'react';
-import { LoginPanel } from '../../src/shared/components';
-import { CustomerPanel, AddressPanel, ShippingPanel, CheckoutPaymentPanel, CheckoutLoginConnect } from '../../src/checkout/components';
+import { LoginPanel, PaymentPanel } from '../../src/shared/components';
+import { CustomerPanel, AddressPanel, ShippingPanel } from '../../src/checkout/components';
+import { LoginConnect, PaymentConnect } from '../../src/checkout/components';
 import { Checkout, setupCheckoutAxiosMock } from '../../src';
 import '../../src/checkout/style.scss';
 
@@ -12,7 +13,7 @@ Checkout.setClientIds({
 Checkout.setPanels([
   {
     component: LoginPanel,
-    connect: CheckoutLoginConnect,
+    connect: LoginConnect,
     settings: {
       allowGuest: true,
       createAccount: false,
@@ -33,7 +34,8 @@ Checkout.setPanels([
     settings: {},
   },
   {
-    component: CheckoutPaymentPanel,
+    component: PaymentPanel,
+    connect: PaymentConnect,
     settings: {},
   },
 ]);

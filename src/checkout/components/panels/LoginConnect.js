@@ -3,7 +3,7 @@ import { getIsLoggedIn } from 'shared/selectors';
 import { setFormData, resetFormData } from 'form/actions';
 import { hasAccount, fetchAuthCustomer } from 'checkout/actions';
 
-export class CheckoutLoginConnect {
+export class LoginConnect {
   static mapStateToProps = (state) => {
     return {
       isBusy: state.status === statuses.busy,
