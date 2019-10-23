@@ -2,7 +2,7 @@ import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { connect, Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
-import { statuses, setPanels, setStatus, setVariant, setStore, setConfirmPageUrl, setTracking, setPanelSettings, fetchSettings } from 'shared/actions';
+import { statuses, setPanels, setStatus, setVariant, setStore, setConfirmPageUrl, setTrackingData, setPanelSettings, fetchSettings } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
@@ -17,7 +17,7 @@ export class _LeadGenRoot extends React.Component {
     if (!this.props.reCaptchaKey) throw new Error('[Clarety] missing reCaptcha key');
 
     const { setStatus, setVariant, setStore } = this.props;
-    const { setConfirmPageUrl, setTracking, setPanelSettings, fetchSettings } = this.props;
+    const { setConfirmPageUrl, setTrackingData, setPanelSettings, fetchSettings } = this.props;
 
     const { storeCode, variant, confirmPageUrl } = this.props;
     setVariant(variant);
@@ -25,7 +25,7 @@ export class _LeadGenRoot extends React.Component {
     setConfirmPageUrl(confirmPageUrl);
 
     const { sourceUid, responseId, emailResponseId } = this.props;
-    setTracking({ sourceUid, responseId, emailResponseId });
+    setTrackingData({ sourceUid, responseId, emailResponseId });
 
     setPanelSettings('CustomerPanel', {
       title: this.props.headingText,
@@ -75,7 +75,7 @@ const actions = {
   setVariant: setVariant,
   setStore: setStore,
   setConfirmPageUrl: setConfirmPageUrl,
-  setTracking: setTracking,
+  setTrackingData: setTrackingData,
   setPanelSettings: setPanelSettings,
   fetchSettings: fetchSettings,
 };

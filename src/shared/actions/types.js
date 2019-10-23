@@ -22,10 +22,10 @@ export const types = {
 
   updateCartData: 'UPDATE_CART_DATA',
 
-  setStore:       'SET_STORE',
-  setCustomer:    'SET_CUSTOMER',
-  setTracking:    'SET_TRACKING',
-  setRecaptcha:   'SET_RECAPTCHA',
+  setStore:        'SET_STORE',
+  setCustomer:     'SET_CUSTOMER',
+  setTrackingData: 'SET_TRACKING_DATA',
+  setRecaptcha:    'SET_RECAPTCHA',
 
   // Auth Action Types
 

@@ -6,14 +6,17 @@ const initialState = {
 
   store: null,
 
-  sourceId: null,
-  responseId: null,
-  emailResponseId: null,
-
   status: null,
   items: [],
   customer: {},
   payment: {},
+
+  tracking: {
+    sourceId: null,
+    sourceUid: null,
+    responseId: null,
+    emailResponseId: null,
+  },
 
   recaptcha: null,
 };
@@ -65,12 +68,15 @@ export const cartReducer = (state = initialState, action) => {
         payment: {},
       };
 
-    case types.setTracking:
+    case types.setTrackingData:
       return {
         ...state,
-        sourceId: action.sourceId,
-        responseId: action.responseId,
-        emailResponseId: action.emailResponseId,
+        tracking: {
+          sourceId: action.sourceId,
+          sourceUid: action.sourceUid,
+          responseId: action.responseId,
+          emailResponseId: action.emailResponseId,
+        },
       };
 
     case types.setRecaptcha:

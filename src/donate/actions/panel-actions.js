@@ -2,10 +2,10 @@ import { push as pushRoute } from 'connected-react-router';
 import Cookies from 'js-cookie';
 import { statuses, setStatus, addItem, setCustomer, updateCartData, clearItems } from 'shared/actions';
 import { parseNestedElements } from 'shared/utils';
+import { executeRecaptcha } from 'form/components';
 import { setErrors } from 'form/actions';
 import { makePaymentSuccess, makePaymentFailure } from 'donate/actions';
 import { getAmountPanelSelection, getSelectedOffer } from 'donate/selectors';
-import { executeRecaptcha } from 'form/components';
 
 export const submitAmountPanel = () => {
   return (dispatch, getState, { actions, validations }) => {

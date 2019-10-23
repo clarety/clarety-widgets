@@ -1,4 +1,5 @@
 import { statuses } from 'shared/actions';
+import { getCart, getTrackingData, getRecaptcha } from 'shared/selectors';
 
 export function getIsBusy(state) {
   return state.status !== statuses.ready;
@@ -47,21 +48,22 @@ export function getSelectedOffer(state) {
 }
 
 export function getPaymentPostData(state) {
-  const { cart } = state;
+  const cart = getCart(state);
+  const trackingData = getTrackingData(state);
+  const recaptcha = getRecaptcha(state);
+
   return {
     store: cart.store,
     uid: cart.uid,
     jwt: cart.jwt,
 
-    sourceId: cart.sourceId,
-    responseId: cart.responseId,
-    emailResponseId: cart.emailResponseId,
-
     saleline: cart.items[0],
     customer: cart.customer,
     payment: cart.payment,
 
-    recaptchaResponse: cart.recaptcha,
+    ...trackingData,
+
+    recaptchaResponse: recaptcha,
   };
 }
 

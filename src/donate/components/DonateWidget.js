@@ -2,14 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router'
 import { Switch, Route } from 'react-router-dom';
-import { statuses, setVariant, setStore, setConfirmPageUrl, setTracking, fetchSettings } from 'shared/actions';
+import { statuses, setVariant, setStore, setConfirmPageUrl, setTrackingData, fetchSettings } from 'shared/actions';
 import { OverrideContext } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { AmountPanel, DetailsPanel, PaymentPanel, SuccessPanel } from 'donate/components';
 
 export class _DonateWidget extends React.Component {
   componentWillMount() {
-    const { setVariant, setStore, setConfirmPageUrl, setTracking, fetchSettings } = this.props;
+    const { setVariant, setStore, setConfirmPageUrl, setTrackingData, fetchSettings } = this.props;
     const { storeCode, singleOfferId, recurringOfferId, variant, confirmPageUrl, reCaptchaKey } = this.props;
     const { sourceId, responseId, emailResponseId } = this.props;
 
@@ -20,7 +20,7 @@ export class _DonateWidget extends React.Component {
     setVariant(variant);
     setStore(storeCode);
     setConfirmPageUrl(confirmPageUrl);
-    setTracking({ sourceId, responseId, emailResponseId });
+    setTrackingData({ sourceId, responseId, emailResponseId });
 
     fetchSettings('donations/', {
       store: storeCode,
@@ -83,7 +83,7 @@ const actions = {
   setVariant: setVariant,
   setStore: setStore,
   setConfirmPageUrl: setConfirmPageUrl,
-  setTracking: setTracking,
+  setTrackingData: setTrackingData,
   fetchSettings: fetchSettings,
 };
 

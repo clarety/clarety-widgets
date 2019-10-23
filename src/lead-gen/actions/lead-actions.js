@@ -1,22 +1,25 @@
 import { ClaretyApi } from 'clarety-utils';
-import { parseNestedElements } from 'shared/utils';
+import { executeRecaptcha } from 'form/components';
+import { getLeadPostData } from 'lead-gen/selectors';
 import { types } from './types';
 
 export const createLead = () => {
   return async (dispatch, getState) => {
-    const { formData } = getState();
+    // executeRecaptcha(async () => {
+      const state = getState();
 
-    const postData = parseNestedElements(formData);
-    dispatch(createLeadRequest(postData));
+      const postData = getLeadPostData(state);
+      dispatch(createLeadRequest(postData));
 
-    const results = await ClaretyApi.post('leads/', postData);
-    const result = results[0];
+      const results = await ClaretyApi.post('leads/', postData);
+      const result = results[0];
 
-    if (result.status === 'error') {
-      dispatch(createLeadfailure(result));
-    } else {
-      dispatch(createLeadSuccess(result));
-    }
+      if (result.status === 'error') {
+        dispatch(createLeadfailure(result));
+      } else {
+        dispatch(createLeadSuccess(result));
+      }
+    // });
   };
 };
 
