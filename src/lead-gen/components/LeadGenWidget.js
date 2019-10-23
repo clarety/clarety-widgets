@@ -4,19 +4,13 @@ import { connect, Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import { statuses, setPanels, setStatus, setVariant, setStore, setConfirmPageUrl, setTracking, fetchSettings } from 'shared/actions';
 import { PanelManager } from 'shared/components';
+import { Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { SosProgress } from 'lead-gen/components';
 import { rootReducer } from 'lead-gen/reducers';
 
 const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
-
-store.dispatch(setPanels([
-  {
-    component: 'LeadGenCustomerPanel',
-    settings: {},
-  }
-]));
 
 export class _LeadGenRoot extends React.Component {
   componentWillMount() {
@@ -76,6 +70,11 @@ const actions = {
 const LeadGenRoot = connect(mapStateToProps, actions)(_LeadGenRoot);
 
 export class LeadGenWidget extends React.Component {
+  static setPanels(panels) {
+    Resources.setPanels(panels);
+    store.dispatch(setPanels(panels));
+  }
+
   render() {
     return (
       <Provider store={store}>

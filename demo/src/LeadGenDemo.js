@@ -1,6 +1,16 @@
 import React from 'react';
+import { CustomerPanel } from '../../src/shared/components';
+import { CustomerConnect } from '../../src/lead-gen/components';
 import { LeadGenWidget } from '../../src/';
 import '../../src/lead-gen/style.scss';
+
+LeadGenWidget.setPanels([
+  {
+    component: CustomerPanel,
+    connect: CustomerConnect,
+    settings: {},
+  }
+]);
 
 const LeadGenDemo = () => (
   <div className="container my-5">
