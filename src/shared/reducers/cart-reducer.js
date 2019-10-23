@@ -68,6 +68,12 @@ export const cartReducer = (state = initialState, action) => {
         payment: {},
       };
 
+    case types.setCaseTypeUid:
+      return {
+        ...state,
+        caseTypeUid: action.caseTypeUid,
+      };
+
     case types.setTrackingData:
       return {
         ...state,

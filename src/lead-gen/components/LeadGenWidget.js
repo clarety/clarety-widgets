@@ -2,7 +2,7 @@ import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { connect, Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
-import { statuses, setPanels, setStatus, setVariant, setStore, setConfirmPageUrl, setTrackingData, setPanelSettings, fetchSettings } from 'shared/actions';
+import { statuses, setPanels, setStatus, setVariant, setStore, setConfirmPageUrl, setTrackingData, setPanelSettings, setCaseTypeUid, fetchSettings } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
@@ -17,9 +17,10 @@ export class _LeadGenRoot extends React.Component {
     if (!this.props.reCaptchaKey) throw new Error('[Clarety] missing reCaptcha key');
 
     const { setStatus, setVariant, setStore } = this.props;
-    const { setConfirmPageUrl, setTrackingData, setPanelSettings, fetchSettings } = this.props;
+    const { setCaseTypeUid, setConfirmPageUrl, setTrackingData, setPanelSettings, fetchSettings } = this.props;
 
-    const { storeCode, variant, confirmPageUrl } = this.props;
+    const { caseTypeUid, storeCode, variant, confirmPageUrl } = this.props;
+    setCaseTypeUid(caseTypeUid);
     setVariant(variant);
     setStore(storeCode);
     setConfirmPageUrl(confirmPageUrl);
@@ -72,6 +73,7 @@ const mapStateToProps = state => {
 
 const actions = {
   setStatus: setStatus,
+  setCaseTypeUid: setCaseTypeUid,
   setVariant: setVariant,
   setStore: setStore,
   setConfirmPageUrl: setConfirmPageUrl,

@@ -88,7 +88,7 @@ export class CustomerPanel extends BasePanel {
               <Form.Row>
                 <Col className="text-center">
                   <Form.Group>
-                    <CheckboxInput field="customer.optIn" label={settings.optInText} />
+                    <CheckboxInput field="optIn" label={settings.optInText} />
                   </Form.Group>
                 </Col>
               </Form.Row>

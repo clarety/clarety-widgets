@@ -27,7 +27,7 @@ const LeadGenDemo = () => (
       <div className="donate-widget col-lg-6">
         <LeadGenWidget
           storeCode="AU"
-          caseTypeUid="ctp_rdjr"
+          caseTypeUid="ctp_7e27"
           confirmPageUrl="http://dev-tnc.claretycontrol.com/sites/natureaustralia-org-au/content/donate-confirm/gjf19l/donate-confirm"
 
           variant="sos"

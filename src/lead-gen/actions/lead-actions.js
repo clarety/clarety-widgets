@@ -11,13 +11,18 @@ export const createLead = () => {
       const postData = getLeadPostData(state);
       dispatch(createLeadRequest(postData));
 
-      const results = await ClaretyApi.post('leads/', postData);
+      const results = await ClaretyApi.post('cases/lead/', postData);
       const result = results[0];
 
       if (result.status === 'error') {
-        dispatch(createLeadfailure(result));
+        dispatch(createLeadFailure(result));
       } else {
         dispatch(createLeadSuccess(result));
+
+        // Redirect on success.
+        if (state.settings.confirmPageUrl) {
+          window.location.href = state.settings.confirmPageUrl;
+        }
       }
     // });
   };

@@ -38,6 +38,11 @@ export const clearPayment = () => ({
   type: types.clearPayment,
 });
 
+export const setCaseTypeUid = (caseTypeUid) => ({
+  type: types.setCaseTypeUid,
+  caseTypeUid: caseTypeUid,
+});
+
 export const setTrackingData = ({ sourceId, sourceUid, responseId, emailResponseId }) => ({
   type: types.setTrackingData,
   sourceId: sourceId,

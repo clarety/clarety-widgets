@@ -24,6 +24,7 @@ export const types = {
 
   setStore:        'SET_STORE',
   setCustomer:     'SET_CUSTOMER',
+  setCaseTypeUid:  'SET_CASE_TYPE_UID',
   setTrackingData: 'SET_TRACKING_DATA',
   setRecaptcha:    'SET_RECAPTCHA',
 
