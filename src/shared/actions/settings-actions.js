@@ -1,12 +1,12 @@
 import { ClaretyApi } from 'clarety-utils';
 import { types, statuses, setStatus } from 'shared/actions';
 
-export const fetchSettings = (endpoint, params) => {
+export const fetchSettings = (endpoint, params, map) => {
   return async dispatch => {
     dispatch(fetchSettingsRequest(endpoint));
 
     const results = await ClaretyApi.get(`widgets/${endpoint}`, params);
-    const result = results[0];
+    const result = map ? map(results[0]) : results[0];
 
     if (result) {
       dispatch(fetchSettingsSuccess(result));

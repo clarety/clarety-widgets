@@ -2,12 +2,14 @@ import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { connect, Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
-import { statuses, setPanels, setStatus, setVariant, setStore, setConfirmPageUrl, setTrackingData, setPanelSettings, setCaseTypeUid, fetchSettings } from 'shared/actions';
+import { statuses, setPanels, setVariant, setStore, setConfirmPageUrl, setTrackingData, setPanelSettings, setCaseTypeUid, fetchSettings } from 'shared/actions';
+import { getSetting } from 'shared/selectors';
 import { PanelManager } from 'shared/components';
 import { Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { SosProgress } from 'lead-gen/components';
 import { rootReducer } from 'lead-gen/reducers';
+import { settingsMap } from 'lead-gen/utils';
 
 const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
@@ -16,7 +18,7 @@ export class _LeadGenRoot extends React.Component {
   componentWillMount() {
     if (!this.props.reCaptchaKey) throw new Error('[Clarety] missing reCaptcha key');
 
-    const { setStatus, setVariant, setStore } = this.props;
+    const { setVariant, setStore } = this.props;
     const { setCaseTypeUid, setConfirmPageUrl, setTrackingData, setPanelSettings, fetchSettings } = this.props;
 
     const { caseTypeUid, storeCode, variant, confirmPageUrl } = this.props;
@@ -38,13 +40,11 @@ export class _LeadGenRoot extends React.Component {
       addressType: this.props.addressOption,
     });
 
-    // TODO: fetch settings when API is ready...
-    // fetchSettings('lead-gen/', { store: storeCode });
-    setStatus('ready');
+    fetchSettings('leadgen/', { caseTypeUid, variant }, settingsMap);
   }
 
   render() {
-    const { status, variant, reCaptchaKey } = this.props;
+    const { status, variant, reCaptchaKey, sos } = this.props;
 
     // Show a loading indicator while we init.
     if (status === statuses.initializing) {
@@ -57,7 +57,7 @@ export class _LeadGenRoot extends React.Component {
 
     return (
       <div className="clarety-lead-gen-widget h-100">
-        <SosProgress current={900} goal={4000} />
+        {variant === 'sos' && <SosProgress sos={sos} />}
         <PanelManager layout="tabs" />
         <Recaptcha siteKey={reCaptchaKey} />
       </div>
@@ -68,11 +68,11 @@ export class _LeadGenRoot extends React.Component {
 const mapStateToProps = state => {
   return {
     status: state.status,
+    sos: getSetting(state, 'sos'),
   };
 };
 
 const actions = {
-  setStatus: setStatus,
   setCaseTypeUid: setCaseTypeUid,
   setVariant: setVariant,
   setStore: setStore,
