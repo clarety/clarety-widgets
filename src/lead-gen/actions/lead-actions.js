@@ -1,5 +1,5 @@
 import { ClaretyApi } from 'clarety-utils';
-import { setStatus, setPanelSettings } from 'shared/actions';
+import { setStatus, setPanelSettings, updateAppSettings } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
 import { getCmsConfirmContent } from 'shared/utils';
 import { setErrors } from 'form/actions';
@@ -27,9 +27,7 @@ export const createLead = () => {
         return false;
       } else {
         dispatch(createLeadSuccess(result));
-
-        // TODO: update sos count...
-        // dispatch(incrementSosCounter());
+        dispatch(incrementSosCounter());
         
         if (state.settings.confirmPageUrl) {
           // Redirect.
@@ -45,6 +43,21 @@ export const createLead = () => {
         }
       }
     // });
+  };
+};
+
+export const incrementSosCounter = () => {
+  return async (dispatch, getState) => {
+    const state = getState();
+
+    const sos = getSetting(state, 'sos');
+
+    dispatch(updateAppSettings({
+      sos: {
+        ...sos,
+        current: sos.current + 1,
+      }
+    }));
   };
 };
 

@@ -47,7 +47,7 @@ export function getCmsConfirmContent(elementId, fields) {
   let confirmContent = document
     .querySelector(`#${elementId}`)
     .closest('.cms-zone')
-    .nextSibling
+    .nextElementSibling
     .querySelector('.cms-zone')
     .innerHTML;
 

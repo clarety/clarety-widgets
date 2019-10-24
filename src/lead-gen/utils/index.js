@@ -3,8 +3,8 @@ export const settingsMap = (result) => {
 
   return {
     sos: {
-      current: sos.current || sos.actual,
-      goal: sos.goal,
+      current: Number(sos.current || sos.actual),
+      goal: Number(sos.goal),
     },
   };
 };
