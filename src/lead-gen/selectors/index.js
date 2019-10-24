@@ -1,7 +1,7 @@
-import { getCart, getParsedFormData, getTrackingData, getRecaptcha } from 'shared/selectors';
+import { getSetting, getParsedFormData, getTrackingData, getRecaptcha } from 'shared/selectors';
 
 export const getLeadPostData = (state) => {
-  const caseTypeUid = getCaseTypeUid(state);
+  const caseTypeUid = getSetting(state, 'caseTypeUid');
   const formData = getParsedFormData(state);
   const trackingData = getTrackingData(state);
   const recaptcha = getRecaptcha(state);
@@ -14,4 +14,3 @@ export const getLeadPostData = (state) => {
   };
 };
 
-export const getCaseTypeUid = (state) => getCart(state).caseTypeUid;

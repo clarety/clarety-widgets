@@ -24,27 +24,46 @@ const LeadGenDemo = () => (
         <p className="lead">Fusce dapibus, tellus ac cursus commodo. Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
       </div>
 
-      <div className="donate-widget col-lg-6">
-        <LeadGenWidget
-          storeCode="AU"
-          caseTypeUid="ctp_q6oq"
-          confirmPageUrl="http://dev-tnc.claretycontrol.com/sites/natureaustralia-org-au/content/donate-confirm/gjf19l/donate-confirm"
+      <div className="col-lg-6">
+        <div className="cms-zone">
+          <div id="cmscontentitem_1044" className="content_app-CmsReactLeadGenApp">
+            <div className="content_app_react_leadgen h-100">
+              <div id="leadgenwidget_1044" className="lead-gen-widget">
+                <LeadGenWidget
+                  elementId="leadgenwidget_1044"
 
-          variant="sos"
-          headingText="This is the heading"
-          subHeadingText="This is the sub heading"
-          buttonText="This is the button"
-          showOptIn="1"
-          optInText="This is the opt in"
-          phoneOption="mobile"
-          addressOption="postcode"
+                  storeCode="AU"
+                  caseTypeUid="ctp_q6oq"
+                  confirmPageUrl="http://dev-tnc.claretycontrol.com/sites/natureaustralia-org-au/content/donate-confirm/gjf19l/donate-confirm"
 
-          sourceUid="src_dy4v"
-          responseId=""
-          emailResponseId=""
+                  variant="sos"
+                  headingText="This is the heading"
+                  subHeadingText="This is the sub heading"
+                  buttonText="This is the button"
+                  showOptIn="1"
+                  optInText="This is the opt in"
+                  phoneOption="mobile"
+                  addressOption="postcode"
 
-          reCaptchaKey="6LdBAbkUAAAAAKmGXpndv5B8JP7T9oOEoVmztVp9"
-        />
+                  sourceUid="src_dy4v"
+                  responseId=""
+                  emailResponseId=""
+
+                  reCaptchaKey="6LdBAbkUAAAAAKmGXpndv5B8JP7T9oOEoVmztVp9"
+                />
+              </div>
+            </div>
+          </div>
+          <div style={{ clear: 'both' }}></div>
+        </div>
+        <div className="confirmcontent" style={{ display: 'none' }}>
+          <div className="cms-zone">
+            <div id="cmscontentitem_1043" className="content_html">
+              <p style={{ textAlign: 'center' }}>Thanks ##firstname## for your support. &nbsp;You have made the Quokka very happy! &nbsp;&nbsp;</p>
+            </div>
+            <div style={{ clear: 'both' }}></div>
+          </div>
+        </div>
       </div>
 
     </div>

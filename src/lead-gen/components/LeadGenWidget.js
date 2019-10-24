@@ -2,7 +2,7 @@ import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { connect, Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
-import { statuses, setPanels, setVariant, setStore, setConfirmPageUrl, setTrackingData, setPanelSettings, setCaseTypeUid, fetchSettings } from 'shared/actions';
+import { statuses, setPanels, updateAppSettings, setTrackingData, setPanelSettings, fetchSettings } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
 import { PanelManager } from 'shared/components';
 import { Resources } from 'shared/utils';
@@ -18,14 +18,15 @@ export class _LeadGenRoot extends React.Component {
   componentWillMount() {
     if (!this.props.reCaptchaKey) throw new Error('[Clarety] missing reCaptcha key');
 
-    const { setVariant, setStore } = this.props;
-    const { setCaseTypeUid, setConfirmPageUrl, setTrackingData, setPanelSettings, fetchSettings } = this.props;
+    const { updateAppSettings, setTrackingData, setPanelSettings, fetchSettings } = this.props;
 
-    const { caseTypeUid, storeCode, variant, confirmPageUrl } = this.props;
-    setCaseTypeUid(caseTypeUid);
-    setVariant(variant);
-    setStore(storeCode);
-    setConfirmPageUrl(confirmPageUrl);
+    updateAppSettings({
+      widgetElementId: this.props.elementId,
+      storeCode: this.props.storeCode,
+      caseTypeUid: this.props.caseTypeUid,
+      variant: this.props.variant,
+      confirmPageUrl: this.props.confirmPageUrl,
+    });
 
     const { sourceUid, responseId, emailResponseId } = this.props;
     setTrackingData({ sourceUid, responseId, emailResponseId });
@@ -40,6 +41,7 @@ export class _LeadGenRoot extends React.Component {
       addressType: this.props.addressOption,
     });
 
+    const { caseTypeUid, variant } = this.props;
     fetchSettings('leadgen/', { caseTypeUid, variant }, settingsMap);
   }
 
@@ -73,10 +75,7 @@ const mapStateToProps = state => {
 };
 
 const actions = {
-  setCaseTypeUid: setCaseTypeUid,
-  setVariant: setVariant,
-  setStore: setStore,
-  setConfirmPageUrl: setConfirmPageUrl,
+  updateAppSettings: updateAppSettings,
   setTrackingData: setTrackingData,
   setPanelSettings: setPanelSettings,
   fetchSettings: fetchSettings,
