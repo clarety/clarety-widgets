@@ -2,9 +2,8 @@ import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider as ReduxProvider, connect } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
-import { IntlProvider, FormattedMessage } from 'react-intl';
+import { IntlProvider } from 'react-intl';
 import 'intl-pluralrules'; // Polyfill for safari 12
-import { Spinner, Modal } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { ClaretyApi } from 'clarety-utils';
@@ -13,7 +12,7 @@ import { PanelManager } from 'shared/components';
 import { Resources, getJwtAccount } from 'shared/utils';
 import { selectDefaults } from 'donate/actions';
 import { Brand } from 'registration/components/misc/Brand';
-import { MiniCart } from 'registration/components';
+import { MiniCart, BusyOverlay } from 'registration/components';
 import { fetchEvents, setPriceHandles, fetchAuthCustomer } from 'registration/actions';
 import { rootReducer } from 'registration/reducers';
 import { priceHandles } from 'registration/utils';
@@ -23,30 +22,7 @@ const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMidd
 
 Resources.setComponent('Brand', Brand);
 
-export class Registration extends React.Component {
-  static setPanels(panels) {
-    Resources.setPanels(panels);
-    store.dispatch(setPanels(panels));
-  }
-
-  static setClientIds({ dev, prod }) {
-    store.dispatch(setClientIds({ dev, prod }));
-  }
-
-  render() {
-    const { translations } = this.props;
-
-    return (
-      <IntlProvider locale="en" messages={translations}>
-        <ReduxProvider store={store}>
-          <Root />
-        </ReduxProvider>
-      </IntlProvider>
-    );
-  }
-}
-
-class _Root extends React.Component {
+class _RegistrationRoot extends React.Component {
   async componentDidMount() {
     const { fetchEvents, selectDefaultDonations, setPriceHandles, setAuth, fetchAuthCustomer } = this.props;
 
@@ -102,13 +78,27 @@ const actions = {
   selectDefaultDonations: selectDefaults,
 };
 
-const Root = connect(mapStateToProps, actions)(_Root);
+const RegistrationRoot = connect(mapStateToProps, actions)(_RegistrationRoot);
 
-const BusyOverlay = ({ messageId }) => (
-  <Modal.Dialog>
-    <Modal.Body>
-      <FormattedMessage id={messageId} tagName="h5" />
-      <Spinner animation="border" className="mt-3" />
-    </Modal.Body>
-  </Modal.Dialog>
-);
+export class Registration extends React.Component {
+  static setPanels(panels) {
+    Resources.setPanels(panels);
+    store.dispatch(setPanels(panels));
+  }
+
+  static setClientIds({ dev, prod }) {
+    store.dispatch(setClientIds({ dev, prod }));
+  }
+
+  render() {
+    const { translations } = this.props;
+
+    return (
+      <IntlProvider locale="en" messages={translations}>
+        <ReduxProvider store={store}>
+          <RegistrationRoot />
+        </ReduxProvider>
+      </IntlProvider>
+    );
+  }
+}
