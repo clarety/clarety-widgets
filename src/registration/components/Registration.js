@@ -36,8 +36,8 @@ class _RegistrationRoot extends React.Component {
     const didFetch = await fetchEvents();
     if (!didFetch) return;
 
-    const { sourceUid, responseId, emailResponseId } = this.props;
-    setTrackingData({ sourceUid, responseId, emailResponseId });
+    const { sourceId, sourceUid, responseId, emailResponseId } = this.props;
+    setTrackingData({ sourceId, sourceUid, responseId, emailResponseId });
 
     await fetchSettings('donations/', {
       store: this.props.storeCode,

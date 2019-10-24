@@ -1,3 +1,4 @@
+import { types as sharedTypes } from 'shared/actions';
 import { types } from 'registration/actions';
 
 const initialState = {
@@ -10,6 +11,13 @@ const initialState = {
   status: null,
   customer: null,
   items: null,
+
+  tracking: {
+    sourceId: null,
+    sourceUid: null,
+    responseId: null,
+    emailResponseId: null,
+  },
 
   summary: {
     total: null,
@@ -35,6 +43,19 @@ export const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         customer: action.result,
+      };
+
+    // Tracking.
+
+    case sharedTypes.setTrackingData:
+      return {
+        ...state,
+        tracking: {
+          sourceId: action.sourceId,
+          sourceUid: action.sourceUid,
+          responseId: action.responseId,
+          emailResponseId: action.emailResponseId,
+        },
       };
 
     // Registration.
