@@ -1,5 +1,5 @@
 import React from 'react';
-import { CustomerPanel } from '../../src/shared/components';
+import { CustomerPanel, CmsConfirmPanel } from '../../src/shared/components';
 import { CustomerConnect } from '../../src/lead-gen/components';
 import { LeadGenWidget } from '../../src/';
 import '../../src/lead-gen/style.scss';
@@ -8,6 +8,11 @@ LeadGenWidget.setPanels([
   {
     component: CustomerPanel,
     connect: CustomerConnect,
+    settings: {},
+  },
+  {
+    component: CmsConfirmPanel,
+    connect: undefined,
     settings: {},
   }
 ]);
@@ -34,9 +39,9 @@ const LeadGenDemo = () => (
 
                   storeCode="AU"
                   caseTypeUid="ctp_q6oq"
-                  confirmPageUrl="http://dev-tnc.claretycontrol.com/sites/natureaustralia-org-au/content/donate-confirm/gjf19l/donate-confirm"
-
                   variant="sos"
+                  // confirmPageUrl="http://dev-tnc.claretycontrol.com/sites/natureaustralia-org-au/content/donate-confirm/gjf19l/donate-confirm"
+
                   headingText="This is the heading"
                   subHeadingText="This is the sub heading"
                   buttonText="This is the button"

@@ -5,6 +5,7 @@ export * from './donation/VariableAmount';
 export * from './donation/VariableAmountLg';
 
 export * from './panels/BasePanel';
+export * from './panels/CmsConfirmPanel';
 export * from './panels/CustomerPanel';
 export * from './panels/DonationPanel';
 export * from './panels/LoginPanel';

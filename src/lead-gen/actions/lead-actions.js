@@ -1,8 +1,10 @@
 import { ClaretyApi } from 'clarety-utils';
-import { setStatus } from 'shared/actions';
+import { setStatus, setPanelSettings } from 'shared/actions';
+import { getSetting } from 'shared/selectors';
+import { getCmsConfirmContent } from 'shared/utils';
 import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
-import { getLeadPostData } from 'lead-gen/selectors';
+import { getLeadPostData, getCmsConfirmContentFields } from 'lead-gen/selectors';
 import { types } from './types';
 
 export const createLead = () => {
@@ -21,16 +23,27 @@ export const createLead = () => {
       if (result.status === 'error') {
         dispatch(createLeadFailure(result));
         dispatch(setErrors(result.validationErrors));
+        dispatch(setStatus('ready'));
+        return false;
       } else {
         dispatch(createLeadSuccess(result));
 
-        // Redirect on success.
+        // TODO: update sos count...
+        // dispatch(incrementSosCounter());
+        
         if (state.settings.confirmPageUrl) {
+          // Redirect.
           window.location.href = state.settings.confirmPageUrl;
+        } else {
+          // Show CMS confirm content.
+          const elementId = getSetting(state, 'widgetElementId');
+          const fields = getCmsConfirmContentFields(state);
+          const confirmContent = getCmsConfirmContent(elementId, fields);
+          dispatch(setPanelSettings('CmsConfirmPanel', { confirmContent }));
+
+          return true;
         }
       }
-
-      dispatch(setStatus('ready'));
     // });
   };
 };

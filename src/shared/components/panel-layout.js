@@ -4,7 +4,7 @@ import { Container, Card, Button } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 
-export const PanelContainer = ({ layout, className, children }) => {
+export const PanelContainer = ({ layout, status, className, children }) => {
   if (layout === 'stack') {
     return (<StackPanelContainer className={className}>{children}</StackPanelContainer>);
   }
@@ -14,7 +14,7 @@ export const PanelContainer = ({ layout, className, children }) => {
   }
 
   if (layout === 'tabs') {
-    return (<TabsPanelContainer>{children}</TabsPanelContainer>);
+    return (<TabsPanelContainer status={status}>{children}</TabsPanelContainer>);
   }
 
   return children;
@@ -30,7 +30,7 @@ export const PanelHeader = ({ layout, status, title, subtitle, number, intlId, i
   }
 
   if (layout === 'tabs') {
-    return <TabsPanelHeader title={title} subtitle={subtitle} />;
+    return <TabsPanelHeader status={status} title={title} subtitle={subtitle} />;
   }
 };
 
@@ -44,7 +44,7 @@ export const PanelBody = ({ layout, status, isBusy, children }) => {
   }
 
   if (layout === 'tabs') {
-    return <TabsPanelBody isBusy={isBusy}>{children}</TabsPanelBody>;
+    return <TabsPanelBody status={status} isBusy={isBusy}>{children}</TabsPanelBody>;
   }
 
   return children;
@@ -121,23 +121,35 @@ export const DonePanelHeader = ({ number, title, onPressEdit }) => (
 
 // Tabs
 
-const TabsPanelContainer = ({ children }) => (
-  <Card>
-    {children}
-  </Card>
-);
+const TabsPanelContainer = ({ status, children }) => {
+  if (status !== 'edit') return null;
 
-const TabsPanelHeader = ({ title, subtitle }) => (
-  <div className="panel-header">
-    <h2 className="title">{title}</h2>
-    {subtitle && <p className="subtitle">{subtitle}</p>}
-  </div>
-);
-
-const TabsPanelBody = ({ isBusy, children }) => (
-  <Card.Body>
-    <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
+  return (
+    <Card>
       {children}
-    </BlockUi>
-  </Card.Body>
-);
+    </Card>
+  );
+};
+
+const TabsPanelHeader = ({ status, title, subtitle }) => {
+  if (status !== 'edit') return null;
+
+  return (
+    <div className="panel-header">
+      <h2 className="title">{title}</h2>
+      {subtitle && <p className="subtitle">{subtitle}</p>}
+    </div>
+  );
+}
+
+const TabsPanelBody = ({ status, isBusy, children }) => {
+  if (status !== 'edit') return null;
+
+  return (
+    <Card.Body>
+      <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
+        {children}
+      </BlockUi>
+    </Card.Body>
+  );
+};

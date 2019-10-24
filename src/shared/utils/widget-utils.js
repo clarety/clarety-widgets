@@ -43,6 +43,21 @@ export function nextId() {
   return _nextId++;
 }
 
+export function getCmsConfirmContent(elementId, fields) {
+  let confirmContent = document
+    .querySelector(`#${elementId}`)
+    .closest('.cms-zone')
+    .nextSibling
+    .querySelector('.cms-zone')
+    .innerHTML;
+
+  for (let field of fields) {
+    confirmContent = confirmContent.replace(field.match, field.value);
+  }
+
+  return confirmContent;
+}
+
 export function scrollIntoView(component) {
   const node = ReactDOM.findDOMNode(component);
   scrollIntoViewIfNeeded(node, {

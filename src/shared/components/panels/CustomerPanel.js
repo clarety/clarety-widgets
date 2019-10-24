@@ -8,9 +8,13 @@ export class CustomerPanel extends BasePanel {
   onClickSubmit = async (event) => {
     event.preventDefault();
 
-    if (this.validate()) {
-      this.props.onSubmit();
-    }
+    const didValidate = this.validate();
+    if (!didValidate) return;
+    
+    const didSubmit = await this.props.onSubmit();
+    if (!didSubmit) return;
+
+    this.props.nextPanel();
   };
 
   validate() {

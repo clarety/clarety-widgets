@@ -14,3 +14,13 @@ export const getLeadPostData = (state) => {
   };
 };
 
+export const getCmsConfirmContentFields = (state) => {
+  const formData = getParsedFormData(state);
+
+  return [
+    {
+      match: /##firstname##/g,
+      value: formData.customer.firstName,
+    }
+  ];
+};
