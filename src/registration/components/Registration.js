@@ -7,7 +7,7 @@ import 'intl-pluralrules'; // Polyfill for safari 12
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { ClaretyApi } from 'clarety-utils';
-import { statuses, setPanels, setClientIds, setAuth, setTrackingData, fetchSettings } from 'shared/actions';
+import { statuses, setPanels, setClientIds, setAuth, setTrackingData, fetchSettings, updateAppSettings } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources, getJwtAccount } from 'shared/utils';
 import { Brand } from 'registration/components/misc/Brand';
@@ -23,7 +23,13 @@ Resources.setComponent('Brand', Brand);
 
 class _RegistrationRoot extends React.Component {
   async componentDidMount() {
-    const { fetchEvents, setTrackingData, fetchSettings } = this.props;
+    const { updateAppSettings, fetchEvents, setTrackingData, fetchSettings } = this.props;
+
+    updateAppSettings({
+      storeId: this.props.storeId,
+      seriesId: this.props.seriesId,
+      previousSeriesId: this.props.previousSeriesId,
+    });
 
     const jwtAccount = getJwtAccount();
     if (jwtAccount) {
@@ -76,6 +82,8 @@ const mapStateToProps = state => {
 };
 
 const actions = {
+  updateAppSettings: updateAppSettings,
+
   setAuth: setAuth,
   fetchAuthCustomer: fetchAuthCustomer,
 

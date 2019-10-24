@@ -125,7 +125,7 @@ export const getCreateTeamPostData = (state) => {
   const formData = getFormData(state);
 
   return {
-    seriesId: Config.get('seriesId'),
+    seriesId: getSetting(state, 'seriesId'),
     eventId: event.eventId,
     teamId: '', // NOTE: the api wants an empty string...
     customerId: customer.id,

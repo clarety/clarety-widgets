@@ -45,12 +45,13 @@ export const createAccount = () => {
 
 export const fetchAuthCustomer = () => {
   return async (dispatch, getState) => {
+    const state = getState();
+
     dispatch(fetchAuthCustomerRequest());
 
     dispatch(setStatus('busy'));
 
-    const previousSeriesId = Config.get('previousSeriesId');
-
+    const { previousSeriesId } = state.settings;
     let results = await ClaretyApi.get('registration-customer/', { previousSeriesId });
     const result = results[0];
 

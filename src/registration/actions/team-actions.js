@@ -6,10 +6,11 @@ import { types } from 'registration/actions';
 
 export const searchTeams = query => {
   return async (dispatch, getState) => {
+    const state = getState();
+
     dispatch(searchTeamsRequest(query));
 
-    const storeId = Config.get('storeId');
-    const seriesId = Config.get('seriesId');
+    const { storeId, seriesId } = state.settings;
     const results = await ClaretyApi.get('registration-teams/', { query, seriesId, storeId });
     
     dispatch(searchTeamsSuccess(results));
@@ -24,7 +25,7 @@ export const createTeam = () => {
     dispatch(clearErrors());
     dispatch(createTeamRequest(postData));
     
-    const storeId = Config.get('storeId');
+    const { storeId } = state.settings;
     const results = await ClaretyApi.post('registration-teams/', postData, { storeId });
     const result = results[0];
 
@@ -44,10 +45,11 @@ export const createTeam = () => {
 
 export const fetchTeam = teamId => {
   return async (dispatch, getState) => {
+    const state = getState();
+
     dispatch(fetchTeamRequest(teamId));
 
-    const storeId = Config.get('storeId');
-    const seriesId = Config.get('seriesId');
+    const { storeId, seriesId } = state.settings;
     const results = await ClaretyApi.get('registration-teams/', { seriesId, storeId, teamId });
     const result = results[0];
 
@@ -64,8 +66,9 @@ export const fetchTeam = teamId => {
 
 export const checkTeamPassword = (team, password) => {
   return async (dispatch, getState) => {
-    const storeId = Config.get('storeId');
-    const seriesId = Config.get('seriesId');
+    const state = getState();
+
+    const { storeId, seriesId } = state.settings;
 
     const postData = {
       teamId: team.teamId,

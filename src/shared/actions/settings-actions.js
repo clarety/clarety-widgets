@@ -23,6 +23,11 @@ export const setPanelSettings = (component, settings) => ({
   settings: settings,
 });
 
+export const updateAppSettings = (settings) => ({
+  type: types.updateSettings,
+  settings: settings,
+});
+
 export const setVariant = (variant) => ({
   type: types.updateSettings,
   settings: {

@@ -21,7 +21,7 @@ export const createRegistration = () => {
       ? 'registration-sale/'
       : 'registration-sale-widget/';
 
-    const storeId = Config.get('storeId');
+    const { storeId } = state.settings;
     let results = await ClaretyApi.post(endpoint, postData, { storeId });
     let result = results[0];
 
@@ -62,7 +62,7 @@ export const submitRegistration = () => {
 
     dispatch(registrationSubmitRequest(postData));
 
-    const storeId = Config.get('storeId');
+    const { storeId } = state.settings;
     const results = await ClaretyApi.post('registration-payment-widget/', postData, { storeId });
     const result = results[0];
 
@@ -92,7 +92,7 @@ export const makePayment = (paymentData, paymentMethod) => {
 
     dispatch(registrationSubmitRequest(postData));
 
-    const storeId = Config.get('storeId');
+    const { storeId } = state.settings;
     const results = await ClaretyApi.post('registration-payment/', postData, { storeId });
     const result = results[0];
 

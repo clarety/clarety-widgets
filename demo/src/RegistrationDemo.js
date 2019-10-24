@@ -32,16 +32,6 @@ RegistrationApp.setPanels([
     settings: {},
   },
   {
-    component: TeamPanel,
-    connect: TeamConnect,
-    settings: {},
-  },
-  {
-    component: QtysPanel,
-    connect: QtysConnect,
-    settings: {},
-  },
-  {
     component: LoginPanel,
     connect: LoginConnect,
     settings: {
@@ -50,6 +40,16 @@ RegistrationApp.setPanels([
       showFirstName: true,
       showLastName: true,
     },
+  },
+  {
+    component: TeamPanel,
+    connect: TeamConnect,
+    settings: {},
+  },
+  {
+    component: QtysPanel,
+    connect: QtysConnect,
+    settings: {},
   },
   {
     component: OffersPanel,

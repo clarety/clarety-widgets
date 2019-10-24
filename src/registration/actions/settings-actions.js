@@ -2,11 +2,12 @@ import { ClaretyApi, Config } from 'clarety-utils';
 import { types } from 'registration/actions';
 
 export const fetchEvents = () => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
+    const state = getState();
+
     dispatch(fetchEventsRequest());
 
-    const storeId  = Config.get('storeId');
-    const seriesId = Config.get('seriesId');
+    const { storeId, seriesId } = state.settings;
     const results = await ClaretyApi.get('registration-events/', { storeId, seriesId });
 
     if (results) {
@@ -20,12 +21,13 @@ export const fetchEvents = () => {
 };
 
 export const fetchFullEvent = eventId => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
+    const state = getState();
+
     dispatch(fetchFullEventRequest(eventId));
 
     const endpoint = Config.get('fullEventEndpoint') || 'registration-full/';
-    const storeId  = Config.get('storeId');
-    const seriesId = Config.get('seriesId');
+    const { storeId, seriesId } = state.settings;
     const results = await ClaretyApi.get(endpoint, { storeId, seriesId, eventId });
 
     if (results) {
