@@ -1,13 +1,29 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
+import { requiredField } from 'shared/utils';
 import { TextInput, EmailInput, PhoneInput, CheckboxInput, StateInput, PostcodeInput, SubmitButton, ErrorMessages, FormElement } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
   onClickSubmit = async (event) => {
     event.preventDefault();
-    this.props.onSubmit();
+
+    if (this.validate()) {
+      this.props.onSubmit();
+    }
   };
+
+  validate() {
+    const { formData, setErrors } = this.props;
+    const errors = [];
+
+    requiredField(errors, formData, 'customer.firstName');
+    requiredField(errors, formData, 'customer.lastName');
+    requiredField(errors, formData, 'customer.email');
+
+    setErrors(errors);
+    return errors.length === 0;
+  }
 
   renderWait() {
     const { layout, index } = this.props;
@@ -80,7 +96,7 @@ export class CustomerPanel extends BasePanel {
 
             <Row className="panel-actions">
               <Col className="text-center">
-                <SubmitButton title={settings.submitBtnText} />
+                <SubmitButton title={settings.submitBtnText} isBusy={isBusy} />
               </Col>
             </Row>
 

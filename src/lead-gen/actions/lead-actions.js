@@ -1,4 +1,6 @@
 import { ClaretyApi } from 'clarety-utils';
+import { setStatus } from 'shared/actions';
+import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { getLeadPostData } from 'lead-gen/selectors';
 import { types } from './types';
@@ -8,6 +10,8 @@ export const createLead = () => {
     // executeRecaptcha(async () => {
       const state = getState();
 
+      dispatch(setStatus('busy'));
+
       const postData = getLeadPostData(state);
       dispatch(createLeadRequest(postData));
 
@@ -16,6 +20,7 @@ export const createLead = () => {
 
       if (result.status === 'error') {
         dispatch(createLeadFailure(result));
+        dispatch(setErrors(result.validationErrors));
       } else {
         dispatch(createLeadSuccess(result));
 
@@ -24,6 +29,8 @@ export const createLead = () => {
           window.location.href = state.settings.confirmPageUrl;
         }
       }
+
+      dispatch(setStatus('ready'));
     // });
   };
 };

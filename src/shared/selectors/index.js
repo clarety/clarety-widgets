@@ -5,6 +5,7 @@ export const getAuth = (state) => state.auth;
 export const getCart = (state) => state.cart;
 export const getSettings = (state) => state.settings;
 export const getFormData = (state) => state.formData;
+export const getErrors = (state) => state.errors;
 
 export const getIsLoggedIn = (state) => !!getAuth(state).jwt;
 
