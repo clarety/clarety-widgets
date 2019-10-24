@@ -7,15 +7,14 @@ import 'intl-pluralrules'; // Polyfill for safari 12
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { ClaretyApi } from 'clarety-utils';
-import { statuses, setPanels, setClientIds, setAuth } from 'shared/actions';
+import { statuses, setPanels, setClientIds, setAuth, setTrackingData, fetchSettings } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources, getJwtAccount } from 'shared/utils';
-import { selectDefaults } from 'donate/actions';
 import { Brand } from 'registration/components/misc/Brand';
 import { MiniCart, BusyOverlay } from 'registration/components';
-import { fetchEvents, setPriceHandles, fetchAuthCustomer } from 'registration/actions';
+import { fetchEvents, fetchAuthCustomer } from 'registration/actions';
 import { rootReducer } from 'registration/reducers';
-import { priceHandles } from 'registration/utils';
+import { mapDonationSettings } from 'registration/utils';
 
 const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
@@ -24,10 +23,11 @@ Resources.setComponent('Brand', Brand);
 
 class _RegistrationRoot extends React.Component {
   async componentDidMount() {
-    const { fetchEvents, selectDefaultDonations, setPriceHandles, setAuth, fetchAuthCustomer } = this.props;
+    const { fetchEvents, setTrackingData, fetchSettings } = this.props;
 
     const jwtAccount = getJwtAccount();
     if (jwtAccount) {
+      const { setAuth, fetchAuthCustomer } = this.props;
       ClaretyApi.setAuth(jwtAccount.jwtString);
       setAuth(jwtAccount.jwtString);
       await fetchAuthCustomer();
@@ -36,8 +36,14 @@ class _RegistrationRoot extends React.Component {
     const didFetch = await fetchEvents();
     if (!didFetch) return;
 
-    setPriceHandles(priceHandles);
-    selectDefaultDonations(priceHandles);
+    const { sourceUid, responseId, emailResponseId } = this.props;
+    setTrackingData({ sourceUid, responseId, emailResponseId });
+
+    await fetchSettings('donations/', {
+      store: this.props.storeCode,
+      offerSingle: this.props.singleOfferId,
+      offerRecurring: this.props.recurringOfferId,
+    }, mapDonationSettings);
   }
 
   render() {
@@ -74,8 +80,8 @@ const actions = {
   fetchAuthCustomer: fetchAuthCustomer,
 
   fetchEvents: fetchEvents,
-  setPriceHandles: setPriceHandles,
-  selectDefaultDonations: selectDefaults,
+  fetchSettings: fetchSettings,
+  setTrackingData: setTrackingData,
 };
 
 const RegistrationRoot = connect(mapStateToProps, actions)(_RegistrationRoot);
@@ -91,12 +97,10 @@ export class Registration extends React.Component {
   }
 
   render() {
-    const { translations } = this.props;
-
     return (
-      <IntlProvider locale="en" messages={translations}>
+      <IntlProvider locale="en" messages={this.props.translations}>
         <ReduxProvider store={store}>
-          <RegistrationRoot />
+          <RegistrationRoot {...this.props} />
         </ReduxProvider>
       </IntlProvider>
     );

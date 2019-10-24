@@ -89,15 +89,18 @@ export default class RegistrationDemo extends React.Component {
         <RegistrationApp
           translations={enTranslations}
 
-          storeCode="..."
-          seriesId="..."
+          storeId="0"
+          storeCode="AU"
 
-          singleOfferId="..."
-          recurringOfferId="..."
-          
-          sourceId="..."
-          responseId="..."
-          emailResponseId="..."
+          seriesId="3"
+          previousSeriesId="1"
+
+          singleOfferId="8"
+          recurringOfferId="17"
+
+          sourceId="17"
+          responseId="e9c2e351d90b11e996fd"
+          emailResponseId="1234"
         />
       </div>
     );

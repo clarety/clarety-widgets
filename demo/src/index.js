@@ -7,10 +7,6 @@ Config.init({
   instanceKey: 'clarety-baseline',
   devSitePath: 'http://localhost:3000/',
   phoneCountry: 'AU',
-
-  storeId: 0,
-  seriesId: 3,
-  previousSeriesId: 1,
 });
 
 // Mock cookies.
