@@ -1,7 +1,7 @@
 import React from 'react';
-import { LoginPanel } from '../../src/shared/components';
-import { ModePanel, DonatePanel, EventPanel, TeamPanel, QtysPanel, OffersPanel, DetailsPanel, ValidatePanel, PaymentPanel } from '../../src/registration/components';
-import { ModeConnect, EventConnect, LoginConnect, TeamConnect, QtysConnect, OffersConnect, DetailsConnect, DonateConnect, ValidateConnect, PaymentConnect } from '../../src/registration/components';
+import { DonationPanel, LoginPanel } from '../../src/shared/components';
+import { ModePanel, EventPanel, TeamPanel, QtysPanel, OffersPanel, DetailsPanel, ValidatePanel, PaymentPanel } from '../../src/registration/components';
+import { ModeConnect, EventConnect, LoginConnect, TeamConnect, QtysConnect, OffersConnect, DetailsConnect, DonationConnect, ValidateConnect, PaymentConnect } from '../../src/registration/components';
 import { Registration, setupRegistrationAxiosMock, withOverrides } from '../../src';
 import enTranslations from '../../src/registration/intl/en.json';
 import '../../src/registration/style.scss';
@@ -20,9 +20,11 @@ RegistrationApp.setPanels([
     settings: {},
   },
   {
-    component: DonatePanel,
-    connect: DonateConnect,
-    settings: {},
+    component: DonationPanel,
+    connect: DonationConnect,
+    settings: {
+      showFrequencySelect: false,
+    },
   },
   {
     component: EventPanel,
@@ -84,7 +86,19 @@ export default class RegistrationDemo extends React.Component {
   render() {
     return (
       <div className="registrations">
-        <RegistrationApp translations={enTranslations} />
+        <RegistrationApp
+          translations={enTranslations}
+
+          storeCode="..."
+          seriesId="..."
+
+          singleOfferId="..."
+          recurringOfferId="..."
+          
+          sourceId="..."
+          responseId="..."
+          emailResponseId="..."
+        />
       </div>
     );
   }

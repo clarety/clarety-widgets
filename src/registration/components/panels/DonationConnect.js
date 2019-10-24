@@ -2,7 +2,7 @@ import { clearItems } from 'shared/actions';
 import { selectAmount, submitAmountPanel } from 'donate/actions';
 import { getSelectedAmount } from 'donate/selectors';
 
-export class DonateConnect {
+export class DonationConnect {
   static mapStateToProps = (state) => {
     const { amountPanel } = state.panels;
 

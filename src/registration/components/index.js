@@ -12,8 +12,7 @@ export * from './inputs/TextInput';
 
 export * from './panels/DetailsPanel';
 export * from './panels/DetailsConnect';
-export * from './panels/DonatePanel';
-export * from './panels/DonateConnect';
+export * from './panels/DonationConnect';
 export * from './panels/EventPanel';
 export * from './panels/EventConnect';
 export * from './panels/LoginConnect';

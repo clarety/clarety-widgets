@@ -96,9 +96,9 @@
   "detailsPanel.extendFormTitle": "Event Details",
   "detailsPanel.doneTitle": "Registration Details For {firstName}",
 
-  "donatePanel.editTitle": "Make A Donation",
-  "donatePanel.doneTitle": "Your Donation",
-  "donatePanel.summaryText": "Amount: {amount}",
+  "donationPanel.editTitle": "Make A Donation",
+  "donationPanel.doneTitle": "Your Donation",
+  "donationPanel.summaryText": "Amount: {amount}",
   
   "reviewPanel.errorTitle": "We Found Some Problems With Your Registration",
   "reviewPanel.errorSubtitle": "Please correct the issues and try again.",
