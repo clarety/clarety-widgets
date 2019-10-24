@@ -106,11 +106,8 @@ export class DonationPanel extends BasePanel {
   }
 
   renderSuggestedAmount = suggestedAmount => {
-    const { selections, frequency, selectAmount, forceMd } = this.props;
+    const { selections, frequency, selectAmount } = this.props;
     const currentSelection = selections[frequency];
-
-    const SuggestedAmountComponent = this.context.SuggestedAmount || SuggestedAmount;
-    const SuggestedAmountLgComponent = this.context.SuggestedAmountLg || SuggestedAmountLg;
 
     // Ignore variable amount, we'll add a field below the suggested amounts.
     if (suggestedAmount.variable) return null;
@@ -118,22 +115,18 @@ export class DonationPanel extends BasePanel {
     const isSelected = !currentSelection.isVariableAmount && currentSelection.amount === suggestedAmount.amount;
     return (
       <React.Fragment key={suggestedAmount.amount}>
-        <SuggestedAmountComponent
+        <SuggestedAmount
           key={suggestedAmount.amount}
           amountInfo={suggestedAmount}
           onClick={amount => selectAmount(frequency, amount)}
           isSelected={isSelected}
-          forceMd={forceMd}
         />
-        {!forceMd &&
-          <SuggestedAmountLgComponent
-            key={`${suggestedAmount.amount}-lg`}
-            amountInfo={suggestedAmount}
-            onClick={amount => selectAmount(frequency, amount)}
-            isSelected={isSelected}
-            forceMd={forceMd}
-          />
-        }
+        <SuggestedAmountLg
+          key={`${suggestedAmount.amount}-lg`}
+          amountInfo={suggestedAmount}
+          onClick={amount => selectAmount(frequency, amount)}
+          isSelected={isSelected}
+        />
       </React.Fragment>
     );
   };
@@ -141,29 +134,22 @@ export class DonationPanel extends BasePanel {
   renderVariableAmount(variableAmount) {
     if (!variableAmount) return null;
 
-    const { selections, frequency, selectAmount, forceMd } = this.props;
+    const { selections, frequency, selectAmount } = this.props;
     const currentSelection = selections[frequency];
-
-    const VariableAmountComponent = this.context.VariableAmount || VariableAmount;
-    const VariableAmountLgComponent = this.context.VariableAmountLg || VariableAmountLg;
 
     return (
       <React.Fragment>
-        <VariableAmountComponent
+        <VariableAmount
           value={currentSelection.variableAmount || ''}
           onChange={amount => selectAmount(frequency, amount, true)}
           isSelected={currentSelection.isVariableAmount}
-          forceMd={forceMd}
         />
-        {!forceMd &&
-          <VariableAmountLgComponent
-            value={currentSelection.variableAmount || ''}
-            amountInfo={variableAmount}
-            onChange={amount => selectAmount(frequency, amount, true)}
-            isSelected={currentSelection.isVariableAmount}
-            forceMd={forceMd}
-          />
-        }
+        <VariableAmountLg
+          value={currentSelection.variableAmount || ''}
+          amountInfo={variableAmount}
+          onChange={amount => selectAmount(frequency, amount, true)}
+          isSelected={currentSelection.isVariableAmount}
+        />
       </React.Fragment>
     );
   }

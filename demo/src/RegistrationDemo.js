@@ -2,18 +2,16 @@ import React from 'react';
 import { DonationPanel, LoginPanel } from '../../src/shared/components';
 import { ModePanel, EventPanel, TeamPanel, QtysPanel, OffersPanel, DetailsPanel, ValidatePanel, PaymentPanel } from '../../src/registration/components';
 import { ModeConnect, EventConnect, LoginConnect, TeamConnect, QtysConnect, OffersConnect, DetailsConnect, DonationConnect, ValidateConnect, PaymentConnect } from '../../src/registration/components';
-import { Registration, setupRegistrationAxiosMock, withOverrides } from '../../src';
+import { Registration, setupRegistrationAxiosMock } from '../../src';
 import enTranslations from '../../src/registration/intl/en.json';
 import '../../src/registration/style.scss';
 
-const RegistrationApp = withOverrides(Registration, {});
-
-RegistrationApp.setClientIds({
+Registration.setClientIds({
   dev:  '82ee4a2479780256c9bf9b951f5d1cfb',
   prod: '',
 });
 
-RegistrationApp.setPanels([
+Registration.setPanels([
   {
     component: ModePanel,
     connect: ModeConnect,
@@ -86,7 +84,7 @@ export default class RegistrationDemo extends React.Component {
   render() {
     return (
       <div className="registrations">
-        <RegistrationApp
+        <Registration
           translations={enTranslations}
 
           storeId="0"

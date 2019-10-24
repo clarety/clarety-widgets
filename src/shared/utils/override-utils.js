@@ -4,10 +4,6 @@ export const OverrideContext = React.createContext();
 
 export function withOverrides(Component, overrides) {
   class Wrapper extends React.Component {
-    // Pass through static functions.
-    static setPanels(panels) { Component.setPanels(panels); }
-    static setClientIds(ids) { Component.setClientIds(ids); }
-
     render() {
       return (
         <OverrideContext.Provider value={overrides}>
