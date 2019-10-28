@@ -47,6 +47,10 @@ export const types = {
 
   // Customer Action Types
 
+  hasAccountRequest: 'HAS_ACCOUNT_REQUEST',
+  hasAccountSuccess: 'HAS_ACCOUNT_SUCCESS',
+  hasAccountFailure: 'HAS_ACCOUNT_FAILURE',
+
   createAccountRequest: 'CREATE_ACCOUNT_REQUEST',
   createAccountSuccess: 'CREATE_ACCOUNT_SUCCESS',
   createAccountFailure: 'CREATE_ACCOUNT_FAILURE',

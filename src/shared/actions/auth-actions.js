@@ -4,6 +4,12 @@ import { ClaretyApi } from 'clarety-utils';
 import { types } from 'shared/actions';
 import { getClientId } from 'shared/selectors';
 
+export const emailStatuses = {
+  notChecked: 'not-checked',
+  noAccount:  'no-account',
+  hasAccount: 'has-account',
+};
+
 export const setAuth = (jwt) => ({
   type: types.setAuth,
   jwt: jwt,

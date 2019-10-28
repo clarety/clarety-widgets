@@ -1,7 +1,24 @@
 import { ClaretyApi, Config } from 'clarety-utils';
-import { setStatus, login } from 'shared/actions';
+import { setStatus, login, emailStatuses } from 'shared/actions';
 import { parseNestedElements } from 'shared/utils';
 import { types } from 'registration/actions';
+
+export const hasAccount = email => {
+  return async dispatch => {
+    dispatch(hasAccountRequest(email));
+
+    const results = await ClaretyApi.get('customer-search/', { email });
+    const result = results[0];
+
+    if (result.status === 'error') {
+      dispatch(hasAccountFailure(result));
+      return emailStatuses.notChecked;
+    } else {
+      dispatch(hasAccountSuccess(result));
+      return result.exists ? emailStatuses.hasAccount : emailStatuses.noAccount;
+    }
+  };
+};
 
 export const createAcountAndLogin = () => {
   return async (dispatch, getState) => {
@@ -66,6 +83,23 @@ export const fetchAuthCustomer = () => {
     }
   };
 };
+
+// Has Account
+
+const hasAccountRequest = email => ({
+  type: types.hasAccountRequest,
+  email: email,
+});
+
+const hasAccountSuccess = result => ({
+  type: types.hasAccountSuccess,
+  result: result,
+});
+
+const hasAccountFailure = result => ({
+  type: types.hasAccountFailure,
+  result: result,
+});
 
 // Create Account
 
