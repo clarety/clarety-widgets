@@ -7,7 +7,8 @@ import enTranslations from '../../src/registration/intl/en.json';
 import '../../src/registration/style.scss';
 
 Registration.setClientIds({
-  dev:  '82ee4a2479780256c9bf9b951f5d1cfb',
+  // dev:  '82ee4a2479780256c9bf9b951f5d1cfb',
+  dev:  '60efcad7dc9df95cb418032c39565a79',
   prod: '',
 });
 
@@ -17,13 +18,13 @@ Registration.setPanels([
     connect: ModeConnect,
     settings: {},
   },
-  {
-    component: DonationPanel,
-    connect: DonationConnect,
-    settings: {
-      showFrequencySelect: false,
-    },
-  },
+  // {
+  //   component: DonationPanel,
+  //   connect: DonationConnect,
+  //   settings: {
+  //     showFrequencySelect: false,
+  //   },
+  // },
   {
     component: EventPanel,
     connect: EventConnect,
@@ -40,13 +41,13 @@ Registration.setPanels([
     },
   },
   {
-    component: TeamPanel,
-    connect: TeamConnect,
+    component: QtysPanel,
+    connect: QtysConnect,
     settings: {},
   },
   {
-    component: QtysPanel,
-    connect: QtysConnect,
+    component: TeamPanel,
+    connect: TeamConnect,
     settings: {},
   },
   {
@@ -90,8 +91,8 @@ export default class RegistrationDemo extends React.Component {
           storeId="0"
           storeCode="AU"
 
-          seriesId="3"
-          previousSeriesId="1"
+          seriesId="9"
+          previousSeriesId="8"
 
           singleOfferId="8"
           recurringOfferId="17"
