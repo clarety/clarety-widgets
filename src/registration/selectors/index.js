@@ -1,4 +1,3 @@
-import { Config } from 'clarety-utils';
 import { parseNestedElements } from 'shared/utils';
 
 export const getSettings = (state) => state.settings;
@@ -66,8 +65,18 @@ export const getPartcipantOffer = (state, index) => {
   return offers[0];
 };
 
+export const getRegistrationProducts = (state, index) => getPartcipantOffer(state, index).registrationProducts;
+
+export const getProducts = (state, index) => getRegistrationProducts(state, index)[0].products;
+
+export const getWaveOptions = (state, index) => getProducts(state, index).map(
+  product => ({
+    label: product.name,
+    value: product.productId,
+}));
+
 export const getIsPrefilled = (state, index) => {
-  // If participant has a customer ID then they've been prefilled.
+  // If participant has a customer ID then they've been pre-filled.
   const participant = getParticipant(state, index);
   return participant.customer && participant.customer.id;
 };
@@ -183,6 +192,12 @@ const getOfferId = (state, participant) => {
 };
 
 const getProductId = (state, participant) => {
+  // Use wave if selected.
+  if (participant.extendForm.wave) {
+    return participant.extendForm.wave;
+  }
+
+  // Otherwise, use first product of offer.
   const offer = getOfferForParticipant(state, participant);
   return offer.registrationProducts[0].products[0].productId;
 };

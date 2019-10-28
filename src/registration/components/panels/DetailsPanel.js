@@ -124,7 +124,8 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
 
   validateFields(errors) {
     const { formData } = this.state.customerFormContext;
-    const { eventDate, minAge, maxAge, settings } = this.props;
+    const extendFormData = this.state.extendFormContext.formData;
+    const { eventDate, minAge, maxAge, settings, waveOptions } = this.props;
 
     this.validateRequired('firstName', formData, errors);
     this.validateRequired('lastName', formData, errors);
@@ -150,6 +151,10 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
       this.validateRequired('billing.state', formData, errors);
       this.validateRequired('billing.postcode', formData, errors);
       this.validateRequired('billing.country', formData, errors);
+    }
+
+    if (waveOptions.length > 1)  {
+      this.validateRequired('wave', extendFormData, errors);
     }
   }
 
@@ -335,6 +340,8 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
   renderExtendForm() {
     return (
       <FormContext.Provider value={this.state.extendFormContext}>
+        {this.renderWaveSelect()}
+
         {this.props.extendFields.map(field =>
           <Form.Row key={field.columnKey}>
             <Col>
@@ -343,6 +350,21 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
           </Form.Row>
         )}
       </FormContext.Provider>
+    );
+  }
+
+  renderWaveSelect() {
+    const { waveOptions } = this.props;
+
+    if (waveOptions.length <= 1) return;
+
+    return (
+      <SimpleSelectInput
+        field="wave"
+        options={waveOptions}
+        placeholder="Select Wave"
+        required={true}
+      />
     );
   }
 
