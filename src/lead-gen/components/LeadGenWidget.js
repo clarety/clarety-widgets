@@ -7,7 +7,7 @@ import { getSetting } from 'shared/selectors';
 import { PanelManager } from 'shared/components';
 import { Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
-import { SosProgress } from 'lead-gen/components';
+import { SosProgress, ImageHeader } from 'lead-gen/components';
 import { rootReducer } from 'lead-gen/reducers';
 import { settingsMap } from 'lead-gen/utils';
 
@@ -46,7 +46,7 @@ export class _LeadGenRoot extends React.Component {
   }
 
   render() {
-    const { status, variant, reCaptchaKey, sos } = this.props;
+    const { status, variant, reCaptchaKey, sos, headingImage, headingText } = this.props;
 
     // Show a loading indicator while we init.
     if (status === statuses.initializing) {
@@ -60,6 +60,8 @@ export class _LeadGenRoot extends React.Component {
     return (
       <div className="clarety-lead-gen-widget h-100">
         {variant === 'sos' && <SosProgress sos={sos} />}
+        {variant === 'download' && <ImageHeader title={headingText} image={headingImage} />}
+
         <PanelManager layout="tabs" />
         <Recaptcha siteKey={reCaptchaKey} />
       </div>

@@ -39,11 +39,13 @@ const LeadGenDemo = () => (
 
                   storeCode="AU"
                   caseTypeUid="ctp_q6oq"
-                  variant="sos"
+                  // variant="sos"
+                  variant="download"
                   // confirmPageUrl="http://dev-tnc.claretycontrol.com/sites/natureaustralia-org-au/content/donate-confirm/gjf19l/donate-confirm"
 
                   headingText="This is the heading"
-                  subHeadingText="This is the sub heading"
+                  // subHeadingText="This is the sub heading"
+                  headingImage="https://placeimg.com/180/260/nature"
                   buttonText="This is the button"
                   showOptIn="1"
                   optInText="This is the opt in"
