@@ -346,12 +346,16 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
     );
   }
 
-  renderExtendField = field => {
+  renderExtendField = (field) => {
     switch (field.type) {
       case 'select':      return <SimpleSelectInput field={field.columnKey} options={this.translateOptions(field.options)} required={field.required} />;
       case 'text':        return <TextInput field={field.columnKey} required={field.required} />;
       case 'phonenumber': return <PhoneInput field={field.columnKey} required={field.required} />;
       case 'checkbox':    return <CheckboxInput field={field.columnKey} required={field.required} />;
+
+      // TODO:
+      case 'radio':       return null;
+      case 'title':       return null;
       
       default: throw new Error(`Extend field type not supported: ${field.type}`);
     }

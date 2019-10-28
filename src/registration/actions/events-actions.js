@@ -8,10 +8,11 @@ export const fetchEvents = () => {
     dispatch(fetchEventsRequest());
 
     const { storeId, seriesId } = state.settings;
-    const results = await ClaretyApi.get('registration-events/', { storeId, seriesId });
+    const results = await ClaretyApi.get('registration-series-events/', { storeId, seriesId });
+    const result = results[0];
 
-    if (results) {
-      dispatch(fetchEventsSuccess(results));
+    if (result) {
+      dispatch(fetchEventsSuccess(result));
       return true;
     } else {
       dispatch(fetchEventsFailure());

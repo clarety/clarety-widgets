@@ -26,7 +26,7 @@ export const settingsReducer = (state = initialState, action) => {
     case types.fetchEventsSuccess:
       return {
         ...state,
-        events: action.results,
+        events: action.results.events,
       };
 
     case types.fetchFullEventRequest:
