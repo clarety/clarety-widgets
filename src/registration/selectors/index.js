@@ -36,7 +36,16 @@ export const getRegistrationTypes = (state) => {
   return event ? event.registrationTypes: null;
 };
 
-export const getQtys = (state) => getPanelData(state).qtys;
+export const getQtys = (state) => {
+  const participants = getParticipants(state);
+
+  const qtys = {};
+  for (const participant of participants) {
+    qtys[participant.type] = (qtys[participant.type] || 0) + 1;
+  }
+
+  return qtys;
+};
 
 export const getCartTotal = (state) => {
   const total = getDonationAmount(state) + getSelectedOffersTotal(state) + getAddOnsTotal(state);

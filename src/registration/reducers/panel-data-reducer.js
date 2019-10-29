@@ -1,7 +1,6 @@
 import { types } from 'registration/actions';
 
 const initialState = {
-  qtys: {},
   participants: [],
 };
 
@@ -31,23 +30,21 @@ export const panelDataReducer = (state = initialState, action) => {
 
 function setQtys(state, action) {
   const participants = [];
-  for (const [key, value] of Object.entries(action.qtys)) {
-    for (let index = 0; index < value; index++) {
-      participants.push({ type: key });
+  for (const [type, count] of Object.entries(action.qtys)) {
+    for (let index = 0; index < count; index++) {
+      participants.push({ type: type });
     }
   }
 
   return {
     ...state,
-    qtys: action.qtys,
     participants,
   };
 }
 
 function resetQtys(state, action) {
   return {
-    ...state,
-    qtys: initialState.qtys,
+    ...state
   };
 }
 
