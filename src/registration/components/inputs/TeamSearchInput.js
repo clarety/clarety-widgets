@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { searchTeams, selectTeam } from 'registration/actions';
+import { getTeams } from 'registration/selectors';
 
 export class _TeamSeachInput extends React.Component {
   timout = null;
@@ -38,12 +39,12 @@ export class _TeamSeachInput extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { teamPanel } = state.panels;
+  const { isBusySearch, searchResults, selectedTeam } = getTeams(state);
 
   return {
-    isBusySearch: teamPanel.isBusySearch,
-    searchResults: teamPanel.searchResults,
-    selectedTeam: teamPanel.selectedTeam,
+    isBusySearch: isBusySearch,
+    searchResults: searchResults,
+    selectedTeam: selectedTeam,
   };
 };
 

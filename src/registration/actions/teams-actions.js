@@ -1,10 +1,10 @@
-import { ClaretyApi, Config } from 'clarety-utils';
+import { ClaretyApi } from 'clarety-utils';
 import { setErrors, clearErrors } from 'form/actions';
 import { getCreateTeamPostData } from 'registration/selectors';
 import { parseTeamErrors } from 'registration/utils';
 import { types } from 'registration/actions';
 
-export const searchTeams = query => {
+export const searchTeams = (query) => {
   return async (dispatch, getState) => {
     const state = getState();
 
@@ -43,7 +43,7 @@ export const createTeam = () => {
   };
 };
 
-export const fetchTeam = teamId => {
+export const fetchTeam = (teamId) => {
   return async (dispatch, getState) => {
     const state = getState();
 
@@ -102,63 +102,63 @@ export const selectTeam = team => ({
 
 // Fetch
 
-const fetchTeamRequest = teamId => ({
+const fetchTeamRequest = (teamId) => ({
   type: types.fetchTeamRequest,
   teamId: teamId,
 });
 
-const fetchTeamSuccess = result => ({
+const fetchTeamSuccess = (result) => ({
   type: types.fetchTeamSuccess,
   result,
 });
 
-const fetchTeamFailure = result => ({
+const fetchTeamFailure = (result) => ({
   type: types.fetchTeamFailure,
   result,
 });
 
 // Search
 
-const searchTeamsRequest = query => ({
+const searchTeamsRequest = (query) => ({
   type: types.searchTeamsRequest,
   query: query,
 });
 
-const searchTeamsSuccess = results => ({
+const searchTeamsSuccess = (results) => ({
   type: types.searchTeamsSuccess,
   results,
 });
 
 // Create
 
-const createTeamRequest = postData => ({
+const createTeamRequest = (postData) => ({
   type: types.createTeamRequest,
   postData: postData,
 });
 
-const createTeamSuccess = result => ({
+const createTeamSuccess = (result) => ({
   type: types.createTeamSuccess,
   result,
 });
 
-const createTeamFailure = result => ({
+const createTeamFailure = (result) => ({
   type: types.createTeamFailure,
   result,
 });
 
 // Check Password
 
-const checkTeamPasswordRequest = postData => ({
+const checkTeamPasswordRequest = (postData) => ({
   type: types.checkTeamPasswordRequest,
   postData: postData,
 });
 
-const checkTeamPasswordSuccess = result => ({
+const checkTeamPasswordSuccess = (result) => ({
   type: types.checkTeamPasswordSuccess,
   result,
 });
 
-const checkTeamPasswordFailure = result => ({
+const checkTeamPasswordFailure = (result) => ({
   type: types.checkTeamPasswordFailure,
   result,
 });

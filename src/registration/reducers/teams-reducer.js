@@ -5,11 +5,12 @@ const initialState = {
   isBusySearch: false,
   isBusyPassword: false,
   isBusyCreate: false,
+
   searchResults: [],
   selectedTeam: null,
 };
 
-export const teamPanelReducer = (state = initialState, action) => {
+export const teamsReducer = (state = initialState, action) => {
   switch (action.type) {
     // Select
     

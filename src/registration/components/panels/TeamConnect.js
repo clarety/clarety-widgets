@@ -1,9 +1,9 @@
 import { checkTeamPassword, selectTeam, createTeam } from 'registration/actions';
+import { getTeams } from 'registration/selectors';
 
 export class TeamConnect {
   static mapStateToProps = (state) => {
-    const { teamPanel } = state.panels;
-    const { selectedTeam, isBusyPassword, isBusyCreate } = teamPanel;
+    const { selectedTeam, isBusyPassword, isBusyCreate } = getTeams(state);
 
     const canContinue = selectedTeam && !selectedTeam.passwordRequired;
     const requiresPassword = selectedTeam && !!selectedTeam.passwordRequired;

@@ -14,6 +14,8 @@ export const getFormData = (state) => state.formData;
 
 export const getParticipants = (state) => state.participants;
 
+export const getTeams = (state) => state.teams;
+
 export const getEvent = (state) => getSettings(state).event;
 
 export const getEventName = (state) => {
