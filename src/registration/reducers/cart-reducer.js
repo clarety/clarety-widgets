@@ -1,100 +1,58 @@
-import { types as sharedTypes } from 'shared/actions';
+import { cartReducer as sharedCartReducer } from 'shared/reducers';
 import { types } from 'registration/actions';
 
-const initialState = {
-  id: null,
-  uid: null,
-  jwt: null,
-
-  status: null,
-  customer: null,
-  items: null,
-
-  tracking: {
-    sourceId: null,
-    sourceUid: null,
-    responseId: null,
-    emailResponseId: null,
-  },
-
-  summary: {
-    total: null,
-  },
-
-  errors: null,
-};
-
-export const cartReducer = (state = initialState, action) => {
+export const cartReducer = (state, action) => {
   switch (action.type) {
-
-    // Customer.
-
-    case types.fetchAuthCustomerSuccess:
-      return {
-        ...state,
-        customer: action.result,
-      };
-
-    // Tracking.
-
-    case sharedTypes.setTrackingData:
-      return {
-        ...state,
-        tracking: {
-          sourceId: action.sourceId,
-          sourceUid: action.sourceUid,
-          responseId: action.responseId,
-          emailResponseId: action.emailResponseId,
-        },
-      };
-
-    // Registration.
-
-    case types.registrationCreateRequest:
-      return {
-        ...state,
-        id: null,
-        uid: null,
-        jwt: null,
-        status: null,
-        errors: null,
-      };
-
-    case types.registrationCreateSuccess:
-      return {
-        ...state,
-        id: action.result.id,
-        uid: action.result.uid,
-        jwt: action.result.jwt,
-        status: action.result.sale.status,
-        items: action.result.sale.salelines,
-        summary: {
-          ...state.summary,
-          total: action.result.sale.total,
-        }
-      };
-
-    case types.registrationCreateFailure:
-      return {
-        ...state,
-        errors: action.result.validationErrors,
-      };
-
-    case types.registrationFetchSuccess:
-      return {
-        ...state,
-        id: action.result.id,
-        status: action.result.status,
-        items: action.result.salelines,
-        summary: {
-          ...state.summary,
-          total: action.result.total,
-        }
-      };
-
-    // Default.
-
-    default:
-      return state;
+    case types.registrationCreateRequest: return registrationCreateRequest(state, action);
+    case types.registrationCreateSuccess: return registrationCreateSuccess(state, action);
+    case types.registrationCreateFailure: return registrationCreateFailure(state, action);
+    case types.registrationFetchSuccess:  return registrationFetchSuccess(state, action);
+    default:                              return sharedCartReducer(state, action);
   }
 };
+
+function registrationCreateRequest(state, action) {
+  return {
+    ...state,
+    id: null,
+    uid: null,
+    jwt: null,
+    status: null,
+    errors: null,
+  };
+}
+
+function registrationCreateSuccess(state, action) {
+  return {
+    ...state,
+    id: action.result.id,
+    uid: action.result.uid,
+    jwt: action.result.jwt,
+    status: action.result.sale.status,
+    items: action.result.sale.salelines,
+    summary: {
+      ...state.summary,
+      total: action.result.sale.total,
+    }
+  };
+}
+
+function registrationCreateFailure(state, action) {
+  return {
+    ...state,
+    errors: action.result.validationErrors,
+  };
+}
+
+function registrationFetchSuccess(state, action) {
+  return {
+    ...state,
+    id: action.result.id,
+    status: action.result.status,
+    items: action.result.salelines,
+    summary: {
+      ...state.summary,
+      total: action.result.total,
+    }
+  };
+}

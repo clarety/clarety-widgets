@@ -1,15 +1,24 @@
 import { types } from 'shared/actions';
 
 const initialState = {
+  id: null,
   uid: null,
   jwt: null,
 
   store: null,
-
   status: null,
+
   items: [],
   customer: {},
   payment: {},
+
+  summary: {
+    total: null,
+  },
+
+  recaptcha: null,
+
+  errors: null,
 
   tracking: {
     sourceId: null,
@@ -17,8 +26,6 @@ const initialState = {
     responseId: null,
     emailResponseId: null,
   },
-
-  recaptcha: null,
 };
 
 export const cartReducer = (state = initialState, action) => {

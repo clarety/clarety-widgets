@@ -1,5 +1,5 @@
 import { ClaretyApi, Config } from 'clarety-utils';
-import { setStatus, login, emailStatuses } from 'shared/actions';
+import { setStatus, setCustomer, login, emailStatuses } from 'shared/actions';
 import { parseNestedElements } from 'shared/utils';
 import { types } from 'registration/actions';
 
@@ -79,6 +79,7 @@ export const fetchAuthCustomer = () => {
       return false;
     } else {
       dispatch(fetchAuthCustomerSuccess(result));
+      dispatch(setCustomer(result));
       return true;
     }
   };
