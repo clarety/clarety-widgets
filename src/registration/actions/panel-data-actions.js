@@ -2,30 +2,30 @@ import { types } from 'registration/actions';
 import { getCustomer, getPreviousParticipants } from 'registration/selectors';
 
 export const setQtys = (qtys) => ({
-  type: types.panelDataSetQtys,
+  type: types.setParticipantQtys,
   qtys: qtys,
 });
 
 export const resetQtys = () => ({
-  type: types.panelDataResetQtys,
+  type: types.resetParticipantQtys,
 });
 
 export const setFirstNames = (firstNames) => ({
-  type: types.panelDataSetFirstNames,
+  type: types.setParticipantFirstNames,
   firstNames: firstNames,
 });
 
 export const resetFirstNames = () => ({
-  type: types.panelDataResetFirstNames,
+  type: types.resetParticipantFirstNames,
 });
 
 export const setOffers = (offers) => ({
-  type: types.panelDataSetOffers,
+  type: types.setParticipantOffers,
   offers: offers,
 });
 
 export const resetOffers = () => ({
-  type: types.panelDataResetOffers,
+  type: types.resetParticipantOffers,
 });
 
 export const prefillDetails = (prefills) => {
@@ -52,31 +52,31 @@ export const prefillDetails = (prefills) => {
 };
 
 export const setDetails = (index, customerForm, extendForm) => ({
-  type: types.panelDataSetDetails,
+  type: types.setParticipantDetails,
   index: index,
   customerForm: customerForm,
   extendForm: extendForm,
 });
 
+export const resetDetails = (index) => ({
+  type: types.resetParticipantDetails,
+  index: index,
+});
+
 export const setAdditionalData = (index, additionalData) => ({
-  type: types.panelDataSetAdditionalData,
+  type: types.setParticipantAdditionalData,
   index: index,
   additionalData: additionalData,
 });
 
 export const updateAddOn = (index, addOn, isSelected) => ({
-  type: isSelected ? types.panelDataSelectAddOn : types.panelDataDeselectAddOn,
+  type: isSelected ? types.selectParticipantAddOn : types.deselectParticipantAddOn,
   index: index,
   addOn: addOn,
 });
 
 export const setErrors = (index, errors) => ({
-  type: types.panelDataSetErrors,
+  type: types.setParticipantErrors,
   index: index,
   errors: errors,
-});
-
-export const resetDetails = (index) => ({
-  type: types.panelDataResetDetails,
-  index: index,
 });

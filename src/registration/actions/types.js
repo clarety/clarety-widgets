@@ -15,20 +15,20 @@ export const types = {
 
   setPriceHandles: 'SET_PRICE_HANDLES',
 
-  // Panel Data Action Types
+  // Participant Action Types
 
-  panelDataSetQtys:           'PANEL_DATA_SET_QTYS',
-  panelDataResetQtys:         'PANEL_DATA_RESET_QTYS',
-  panelDataSetFirstNames:     'PANEL_DATA_SET_FIRST_NAMES',
-  panelDataResetFirstNames:   'PANEL_DATA_RESET_FIRST_NAMES',
-  panelDataSetOffers:         'PANEL_DATA_SET_OFFERS',
-  panelDataResetOffers:       'PANEL_DATA_RESET_OFFERS',
-  panelDataSetDetails:        'PANEL_DATA_SET_DETAILS',
-  panelDataSetAdditionalData: 'PANEL_DATA_SET_ADDITIONAL_DATA',
-  panelDataSelectAddOn:       'PANEL_DATA_SELECT_ADD_ON',
-  panelDataDeselectAddOn:     'PANEL_DATA_DESELECT_ADD_ON',
-  panelDataSetErrors:         'PANEL_DATA_SET_ERRORS',
-  panelDataResetDetails:      'PANEL_DATA_RESET_DETAILS',
+  setParticipantQtys:           'SET_PARTICIPANT_QTYS',
+  resetParticipantQtys:         'RESET_PARTICIPANT_QTYS',
+  setParticipantFirstNames:     'SET_PARTICIPANT_FIRST_NAMES',
+  resetParticipantFirstNames:   'RESET_PARTICIPANT_FIRST_NAMES',
+  setParticipantOffers:         'SET_PARTICIPANT_OFFERS',
+  resetParticipantOffers:       'RESET_PARTICIPANT_OFFERS',
+  setParticipantDetails:        'SET_PARTICIPANT_DETAILS',
+  resetParticipantDetails:      'RESET_PARTICIPANT_DETAILS',
+  setParticipantAdditionalData: 'SET_PARTICIPANT_ADDITIONAL_DATA',
+  selectParticipantAddOn:       'SELECT_PARTICIPANT_ADD_ON',
+  deselectParticipantAddOn:     'DESELECT_PARTICIPANT_ADD_ON',
+  setParticipantErrors:         'SET_PARTICIPANT_ERRORS',
 
   // Cart Action Types
 

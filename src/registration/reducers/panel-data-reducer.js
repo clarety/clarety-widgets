@@ -4,25 +4,25 @@ const initialState = [];
 
 export const panelDataReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.panelDataSetQtys:           return setQtys(state, action);
-    case types.panelDataResetQtys:         return resetQtys(state, action);
+    case types.setParticipantQtys:           return setQtys(state, action);
+    case types.resetParticipantQtys:         return resetQtys(state, action);
 
-    case types.panelDataSetFirstNames:     return setFirstNames(state, action);
-    case types.panelDataResetFirstNames:   return resetFirstNames(state, action);
+    case types.setParticipantFirstNames:     return setFirstNames(state, action);
+    case types.resetParticipantFirstNames:   return resetFirstNames(state, action);
 
-    case types.panelDataSetOffers:         return setOffers(state, action);
-    case types.panelDataResetOffers:       return resetOffers(state, action);
+    case types.setParticipantOffers:         return setOffers(state, action);
+    case types.resetParticipantOffers:       return resetOffers(state, action);
 
-    case types.panelDataSetDetails:        return setDetails(state, action);
-    case types.panelDataResetDetails:      return resetDetails(state, action);
+    case types.setParticipantDetails:        return setDetails(state, action);
+    case types.resetParticipantDetails:      return resetDetails(state, action);
 
-    case types.panelDataSelectAddOn:       return selectAddOn(state, action);
-    case types.panelDataDeselectAddOn:     return deselectAddOn(state, action);
+    case types.selectParticipantAddOn:       return selectAddOn(state, action);
+    case types.deselectParticipantAddOn:     return deselectAddOn(state, action);
 
-    case types.panelDataSetAdditionalData: return setAdditionalData(state, action);
-    case types.panelDataSetErrors:         return setErrors(state, action);
+    case types.setParticipantAdditionalData: return setAdditionalData(state, action);
+    case types.setParticipantErrors:         return setErrors(state, action);
     
-    default:                               return state;
+    default:                                 return state;
   }
 };
 
