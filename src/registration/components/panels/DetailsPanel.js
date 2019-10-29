@@ -15,37 +15,31 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
     // We can't populate state without a participant.
     if (!props.participant) return;
     
-    this.state = {
-      customerFormContext: {
-        formData: this.getCustomerFormData(props.participant.customer),
-        errors: [],
-        onChange: this.onCustomerFormChange,
-      },
-      extendFormContext: {
-        formData: { ...props.participant.extendForm },
-        errors: [],
-        onChange: this.onExtendFormChange,
-      },
-    };
+    this.state = this.getStateForParticipant(props.participant);
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.participant !== this.props.participant) {
-      this.setState({
-        customerFormContext: {
-          ...this.state.customerFormContext,
-          formData: this.getCustomerFormData(this.props.participant.customer),
-          errors: this.props.participant.errors || [],
-        },
-        extendFormContext: {
-          ...this.state.extendFormContext,
-          formData: {
-            ...this.props.participant.extendForm,
-          },
-          errors: this.props.participant.errors || [],
-        },
-      });
+    const { participant } = this.props;
+
+    if (participant && participant !== prevProps.participant) {
+      const state = this.getStateForParticipant(participant);
+      this.setState(state);
     }
+  }
+
+  getStateForParticipant(participant) {
+    return {
+      customerFormContext: {
+        formData: this.getCustomerFormData(participant.customer),
+        errors: participant.errors || [],
+        onChange: this.onCustomerFormChange,
+      },
+      extendFormContext: {
+        formData: { ...participant.extendForm },
+        errors: participant.errors || [],
+        onChange: this.onExtendFormChange,
+      },
+    };
   }
 
   getCustomerFormData(customer) {
