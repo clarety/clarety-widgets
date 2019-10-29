@@ -1,23 +1,11 @@
-import { clearItems } from 'shared/actions';
-import { selectAmount, submitAmountPanel } from 'donate/actions';
-import { getSelectedAmount } from 'donate/selectors';
+import { getSetting } from 'shared/selectors';
 
 export class DonationConnect {
   static mapStateToProps = (state) => {
-    const { amountPanel } = state.panels;
-
     return {
-      offers: state.settings.priceHandles,
-      frequency: amountPanel.frequency,
-      selections: amountPanel.selections,
-      selectedAmount: getSelectedAmount(state),
-      errors: state.cart.errors,
+      priceHandles: getSetting(state, 'priceHandles'),
     };
   };
 
-  static actions = {
-    selectAmount: selectAmount,
-    submitAmountPanel: submitAmountPanel,
-    clearItems: clearItems,
-  };
+  static actions = {};
 }

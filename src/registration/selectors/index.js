@@ -236,13 +236,9 @@ const getFundraisingPostData = (state) => {
   };
 };
 
-const getAmountPanel = (state) => getPanels(state).amountPanel;
-
+// TODO: remove this once donation is added to cart.
 const getDonationAmount = (state) => {
-  const { frequency, selections } = getAmountPanel(state);
-  const selection = selections[frequency];
-
-  return selection ? Number(selection.amount) : 0;
+  return 0;
 };
 
 export const getSubmitRegistrationPostData = (state) => {

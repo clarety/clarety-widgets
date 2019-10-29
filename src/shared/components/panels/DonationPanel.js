@@ -3,9 +3,38 @@ import { FormattedMessage } from 'react-intl';
 import { Form, Button } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FrequencySelect, SuggestedAmount, SuggestedAmountLg, VariableAmount, VariableAmountLg } from 'shared/components';
+import { currency } from 'shared/utils';
 import { ErrorMessages } from 'form/components';
 
 export class DonationPanel extends BasePanel {
+  state = {
+    frequency: null,
+    selections: {},
+  };
+
+  onChangeFrequency = (frequency) => {
+    this.setState({ frequency });
+  };
+
+  onSelectAmount = (frequency, amount, isVariableAmount = false) => {
+    this.setState(prevState => {
+      const prevVariableAmount = prevState.selections[frequency].variableAmount;
+
+      const selection = {
+        amount,
+        isVariableAmount,
+        variableAmount: isVariableAmount ? amount : prevVariableAmount,
+      };
+
+      return {
+        selections: {
+          ...prevState.selections,
+          [frequency]: selection,
+        },  
+      };
+    });
+  };
+
   onClickNext = (event) => {
     event.preventDefault();
     this.props.nextPanel();
@@ -14,6 +43,35 @@ export class DonationPanel extends BasePanel {
   onClickEdit = (event) => {
     event.preventDefault();
     this.props.editPanel();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { priceHandles } = this.props;
+
+    if (prevProps.priceHandles !== priceHandles) {
+      this.selectDefaultAmounts();
+    }
+  }
+
+  selectDefaultAmounts() {
+    const { priceHandles } = this.props;
+
+    const defaultFrequency = priceHandles[0].frequency;
+    const defaultSelections = {};
+
+    for (let offer of priceHandles) {
+      const defaultAmount = offer.amounts.find(amount => amount.default);
+
+      defaultSelections[offer.frequency] = {
+        amount: defaultAmount ? defaultAmount.amount : 0,
+        isVariableAmount: false,
+      };
+    }
+
+    this.setState({
+      frequency: defaultFrequency,
+      selections: defaultSelections,
+    });
   }
 
   renderWait() {
@@ -34,10 +92,11 @@ export class DonationPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, index, frequency, settings } = this.props;
+    const { layout, index, settings } = this.props;
+    const { frequency } = this.state;
     
-    const offer = this._getOffer(frequency);
-    const variableAmount = this._getVariableAmount(offer);
+    const offer = this.getOffer(frequency);
+    const variableAmount = this.getVariableAmount(offer);
 
     return (
       <PanelContainer layout={layout} status="edit">
@@ -54,7 +113,10 @@ export class DonationPanel extends BasePanel {
             <ErrorMessages />
 
             {settings.showFrequencySelect &&
-              <FrequencySelect />
+              <FrequencySelect
+                value={frequency}
+                onChange={this.onChangeFrequency}
+              />
             }
 
             <div className="card-deck flex-column mt-3 mx-n3 text-left flex-lg-row">
@@ -75,7 +137,8 @@ export class DonationPanel extends BasePanel {
   }
 
   renderDone() {
-    const { layout, index, selectedAmount } = this.props;
+    const { layout, index } = this.props;
+    const selectedAmount = this.getSelectedAmount();
 
     return (
       <PanelContainer layout={layout} status="done">
@@ -106,11 +169,11 @@ export class DonationPanel extends BasePanel {
   }
 
   renderSuggestedAmount = suggestedAmount => {
-    const { selections, frequency, selectAmount } = this.props;
-    const currentSelection = selections[frequency];
-
     // Ignore variable amount, we'll add a field below the suggested amounts.
     if (suggestedAmount.variable) return null;
+
+    const { frequency, selections } = this.state;
+    const currentSelection = selections[frequency];
 
     const isSelected = !currentSelection.isVariableAmount && currentSelection.amount === suggestedAmount.amount;
     return (
@@ -118,13 +181,13 @@ export class DonationPanel extends BasePanel {
         <SuggestedAmount
           key={suggestedAmount.amount}
           amountInfo={suggestedAmount}
-          onClick={amount => selectAmount(frequency, amount)}
+          onClick={amount => this.onSelectAmount(frequency, amount)}
           isSelected={isSelected}
         />
         <SuggestedAmountLg
           key={`${suggestedAmount.amount}-lg`}
           amountInfo={suggestedAmount}
-          onClick={amount => selectAmount(frequency, amount)}
+          onClick={amount => this.onSelectAmount(frequency, amount)}
           isSelected={isSelected}
         />
       </React.Fragment>
@@ -134,31 +197,41 @@ export class DonationPanel extends BasePanel {
   renderVariableAmount(variableAmount) {
     if (!variableAmount) return null;
 
-    const { selections, frequency, selectAmount } = this.props;
+    const { frequency, selections } = this.state;
     const currentSelection = selections[frequency];
 
     return (
       <React.Fragment>
         <VariableAmount
           value={currentSelection.variableAmount || ''}
-          onChange={amount => selectAmount(frequency, amount, true)}
+          onChange={amount => this.onSelectAmount(frequency, amount, true)}
           isSelected={currentSelection.isVariableAmount}
         />
         <VariableAmountLg
           value={currentSelection.variableAmount || ''}
           amountInfo={variableAmount}
-          onChange={amount => selectAmount(frequency, amount, true)}
+          onChange={amount => this.onSelectAmount(frequency, amount, true)}
           isSelected={currentSelection.isVariableAmount}
         />
       </React.Fragment>
     );
   }
 
-  _getOffer = frequency => {
-    return this.props.offers.find(offer => offer.frequency === frequency);
+  getOffer(frequency) {
+    return this.props.priceHandles.find(offer => offer.frequency === frequency);
   };
 
-  _getVariableAmount = offer => {
+  getVariableAmount(offer) {
     return offer.amounts.find(amount => amount.variable === true);
   };
+
+  getSelectedAmount() {
+    const { frequency, selections } = this.state;
+  
+    const selection = selections[frequency];
+  
+    if (!selection || !selection.amount) return 'None';
+
+    return currency(Number(selection.amount));
+  }
 }
