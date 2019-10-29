@@ -10,11 +10,11 @@ import { ClaretyApi } from 'clarety-utils';
 import { statuses, setPanels, setClientIds, setAuth, setTrackingData, fetchSettings, updateAppSettings } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources, getJwtAccount } from 'shared/utils';
+import { mapDonationSettings } from 'donate/utils';
 import { Brand } from 'registration/components/misc/Brand';
 import { MiniCart, BusyOverlay } from 'registration/components';
 import { fetchEvents, fetchAuthCustomer } from 'registration/actions';
 import { rootReducer } from 'registration/reducers';
-import { mapDonationSettings } from 'registration/utils';
 
 const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));

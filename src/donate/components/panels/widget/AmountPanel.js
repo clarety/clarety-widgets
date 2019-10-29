@@ -143,7 +143,7 @@ const mapStateToProps = state => {
   const { amountPanel } = state.panels;
 
   return {
-    offers: state.settings.offers,
+    offers: state.settings.priceHandles,
     frequency: amountPanel.frequency,
     selections: amountPanel.selections,
     selectedAmount: getSelectedAmount(state),

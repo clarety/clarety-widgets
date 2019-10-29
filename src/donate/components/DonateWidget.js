@@ -6,6 +6,7 @@ import { statuses, setVariant, setStore, setConfirmPageUrl, setTrackingData, fet
 import { OverrideContext } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { AmountPanel, DetailsPanel, PaymentPanel, SuccessPanel } from 'donate/components';
+import { mapDonationSettings } from 'donate/utils';
 
 export class _DonateWidget extends React.Component {
   componentWillMount() {
@@ -26,7 +27,7 @@ export class _DonateWidget extends React.Component {
       store: storeCode,
       offerSingle: singleOfferId,
       offerRecurring: recurringOfferId,
-    });
+    }, mapDonationSettings);
   }
 
   render() {

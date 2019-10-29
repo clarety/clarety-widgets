@@ -66,7 +66,3 @@ export function parseTeamErrors(result) {
 
   return errors;
 };
-
-export const mapDonationSettings = (result) => ({
-  priceHandles: result.offers,
-});
