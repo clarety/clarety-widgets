@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-import { searchTeams, selectTeam } from 'registration/actions';
+import { setOrganisation } from 'shared/actions';
+import { getOrganisation } from 'shared/selectors';
+import { searchTeams } from 'registration/actions';
 import { getTeams } from 'registration/selectors';
 
 export class _TeamSeachInput extends React.Component {
@@ -16,7 +18,7 @@ export class _TeamSeachInput extends React.Component {
   };
 
   onSelectTeam = team => {
-    this.props.selectTeam(team);
+    this.props.setOrganisation(team);
   };
 
   render() {
@@ -39,7 +41,8 @@ export class _TeamSeachInput extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { isBusySearch, searchResults, selectedTeam } = getTeams(state);
+  const { isBusySearch, searchResults } = getTeams(state);
+  const selectedTeam = getOrganisation(state);
 
   return {
     isBusySearch: isBusySearch,
@@ -50,7 +53,7 @@ const mapStateToProps = state => {
 
 const actions = {
   searchTeams: searchTeams,
-  selectTeam: selectTeam,
+  setOrganisation: setOrganisation,
 };
 
 export const connectTeamSearchInput = connect(mapStateToProps, actions);

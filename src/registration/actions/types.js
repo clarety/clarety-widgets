@@ -73,6 +73,4 @@ export const types = {
   checkTeamPasswordRequest: 'CHECK_TEAM_PASSWORD_REQUEST',
   checkTeamPasswordSuccess: 'CHECK_TEAM_PASSWORD_SUCCESS',
   checkTeamPasswordFailure: 'CHECK_TEAM_PASSWORD_FAILURE',
-
-  selectTeam: 'SELECT_TEAM',
 };

@@ -10,6 +10,7 @@ const initialState = {
 
   items: [],
   customer: {},
+  organisation: {},
   payment: {},
 
   summary: {
@@ -61,6 +62,12 @@ export const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         customer: action.customer,
+      };
+
+    case types.setOrganisation:
+      return {
+        ...state,
+        organisation: action.organisation,
       };
 
     case types.setPayment:

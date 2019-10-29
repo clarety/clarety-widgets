@@ -1,3 +1,4 @@
+import { getOrganisation } from 'shared/selectors';
 import { parseNestedElements } from 'shared/utils';
 
 export const getSettings = (state) => state.settings;
@@ -175,9 +176,11 @@ export const getCreateRegistrationPostData = (state) => {
   const channel = getChannel(state);
   const participants = getParticipants(state);
   const fundraising = getFundraisingPostData(state);
+  const organisation = getOrganisation(state);
 
   return {
     eventId: event.eventId,
+    organisationId: organisation ? organisation.teamId : '',
     channel: channel,
     registrations: participants.map(
       participant => getParticipantPostData(state, participant)

@@ -5,20 +5,11 @@ const initialState = {
   isBusySearch: false,
   isBusyPassword: false,
   isBusyCreate: false,
-
   searchResults: [],
-  selectedTeam: null,
 };
 
 export const teamsReducer = (state = initialState, action) => {
   switch (action.type) {
-    // Select
-    
-    case types.selectTeam:
-      return {
-        ...state,
-        selectedTeam: action.team,
-      };
 
     // Fetch
 

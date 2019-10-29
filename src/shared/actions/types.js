@@ -24,6 +24,7 @@ export const types = {
 
   setStore:        'SET_STORE',
   setCustomer:     'SET_CUSTOMER',
+  setOrganisation: 'SET_ORGANISATION',
   setTrackingData: 'SET_TRACKING_DATA',
   setRecaptcha:    'SET_RECAPTCHA',
 

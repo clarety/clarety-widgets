@@ -26,7 +26,7 @@ export class TeamPanel extends BasePanel {
   };
 
   onClickNo = () => {
-    this.props.selectTeam(null);
+    this.props.setOrganisation(null);
     this.props.nextPanel();
   };
 

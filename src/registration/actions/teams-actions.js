@@ -1,4 +1,5 @@
 import { ClaretyApi } from 'clarety-utils';
+import { setOrganisation } from 'shared/actions';
 import { setErrors, clearErrors } from 'form/actions';
 import { getCreateTeamPostData } from 'registration/selectors';
 import { parseTeamErrors } from 'registration/utils';
@@ -31,7 +32,7 @@ export const createTeam = () => {
 
     if (!result.errors) {
       const team = await dispatch(fetchTeam(result.teamId));
-      dispatch(selectTeam(team));
+      dispatch(setOrganisation(team));
       dispatch(createTeamSuccess(result));
       return true;
     } else {
@@ -93,11 +94,6 @@ export const checkTeamPassword = (team, password) => {
     }
   };
 };
-
-export const selectTeam = team => ({
-  type: types.selectTeam,
-  team: team,
-});
 
 
 // Fetch

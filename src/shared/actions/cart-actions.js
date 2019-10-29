@@ -14,22 +14,27 @@ export const clearItems = () => ({
   type: types.clearItems,
 });
 
-export const updateCartData = data => ({
+export const updateCartData = (data) => ({
   type: types.updateCartData,
   data: data,
 });
 
-export const setStore = store => ({
+export const setStore = (store) => ({
   type: types.setStore,
   store: store,
 });
 
-export const setCustomer = customer => ({
+export const setCustomer = (customer) => ({
   type: types.setCustomer,
   customer: customer,
 });
 
-export const setPayment = payment => ({
+export const setOrganisation = (organisation) => ({
+  type: types.setOrganisation,
+  organisation: organisation,
+});
+
+export const setPayment = (payment) => ({
   type: types.setPayment,
   payment: payment,
 });
@@ -46,7 +51,7 @@ export const setTrackingData = ({ sourceId, sourceUid, responseId, emailResponse
   emailResponseId: emailResponseId,
 });
 
-export const setRecaptcha = recaptcha => ({
+export const setRecaptcha = (recaptcha) => ({
   type: types.setRecaptcha,
   recaptcha: recaptcha,
 });

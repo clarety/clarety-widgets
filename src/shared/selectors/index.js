@@ -13,6 +13,8 @@ export const getSetting = (state, setting) => getSettings(state)[setting];
 
 export const getIsCartComplete = (state) => getCart(state).status === 'Complete';
 
+export const getOrganisation = (state) => getCart(state).organisation;
+
 export const getClientId = (state) => {
   const env = getEnv();
 
