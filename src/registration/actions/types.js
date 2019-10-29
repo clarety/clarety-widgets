@@ -17,8 +17,6 @@ export const types = {
 
   // Panel Data Action Types
 
-  panelDataSetEvent:          'PANEL_DATA_SET_EVENT',
-  panelDataResetEvent:        'PANEL_DATA_RESET_EVENT',
   panelDataSetQtys:           'PANEL_DATA_SET_QTYS',
   panelDataResetQtys:         'PANEL_DATA_RESET_QTYS',
   panelDataSetFirstNames:     'PANEL_DATA_SET_FIRST_NAMES',

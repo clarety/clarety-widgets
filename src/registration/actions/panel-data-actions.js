@@ -1,15 +1,6 @@
 import { types } from 'registration/actions';
 import { getCustomer, getPreviousParticipants } from 'registration/selectors';
 
-export const setEvent = (eventId) => ({
-  type: types.panelDataSetEvent,
-  eventId: eventId,
-});
-
-export const resetEvent = () => ({
-  type: types.panelDataResetEvent,
-});
-
 export const setQtys = (qtys) => ({
   type: types.panelDataSetQtys,
   qtys: qtys,

@@ -1,16 +1,12 @@
 import { types } from 'registration/actions';
 
 const initialState = {
-  eventId: null,
   qtys: {},
   participants: [],
 };
 
 export const panelDataReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.panelDataSetEvent:          return setEvent(state, action);
-    case types.panelDataResetEvent:        return resetEvent(state, action);
-
     case types.panelDataSetQtys:           return setQtys(state, action);
     case types.panelDataResetQtys:         return resetQtys(state, action);
 
@@ -32,20 +28,6 @@ export const panelDataReducer = (state = initialState, action) => {
     default:                               return state;
   }
 };
-
-function setEvent(state, action) {
-  return {
-    ...state,
-    eventId: action.eventId,
-  };
-}
-
-function resetEvent(state, action) {
-  return {
-    ...state,
-    eventId: null,
-  };
-}
 
 function setQtys(state, action) {
   const participants = [];

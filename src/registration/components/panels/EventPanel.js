@@ -22,12 +22,10 @@ export class EventPanel extends BasePanel {
   }
 
   onClickNext = async () => {
-    const { setEvent, fetchFullEvent, nextPanel } = this.props;
+    const { fetchFullEvent, nextPanel } = this.props;
     const { event } = this.state;
 
     if (!event) return;
-
-    setEvent(event.eventId);
 
     const didFetch = await fetchFullEvent(event.eventId);
     if (!didFetch) return;
@@ -37,11 +35,9 @@ export class EventPanel extends BasePanel {
 
   onClickEdit = () => {
     this.props.editPanel();
-    this.props.resetEvent();
   };
 
   reset() {
-    this.props.resetEvent();
   }
 
   renderWait() {

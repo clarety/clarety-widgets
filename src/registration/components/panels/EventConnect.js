@@ -11,8 +11,6 @@ export class EventConnect {
   };
 
   static actions = {
-    setEvent: setEvent,
-    resetEvent: resetEvent,
     fetchFullEvent: fetchFullEvent,
   };
 }
