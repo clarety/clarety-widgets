@@ -2,7 +2,7 @@ import { types } from 'registration/actions';
 
 const initialState = [];
 
-export const panelDataReducer = (state = initialState, action) => {
+export const participantsReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.setParticipantQtys:           return setQtys(state, action);
     case types.resetParticipantQtys:         return resetQtys(state, action);

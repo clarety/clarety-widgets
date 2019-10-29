@@ -10,9 +10,9 @@ export const getCart = (state) => state.cart;
 
 export const getPanels = (state) => state.panels;
 
-export const getPanelData = (state) => state.panelData;
-
 export const getFormData = (state) => state.formData;
+
+export const getParticipants = (state) => state.participants;
 
 export const getEvent = (state) => getSettings(state).event;
 
@@ -59,8 +59,6 @@ export const getPreviousParticipants = (state) => {
   const customer = getCustomer(state);
   return customer ? customer.previous : [];
 };
-
-export const getParticipants = (state) => getPanelData(state);
 
 export const getParticipant = (state, index) => getParticipants(state)[index];
 
