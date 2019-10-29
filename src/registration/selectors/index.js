@@ -60,7 +60,7 @@ export const getPreviousParticipants = (state) => {
   return customer ? customer.previous : [];
 };
 
-export const getParticipants = (state) => getPanelData(state).participants;
+export const getParticipants = (state) => getPanelData(state);
 
 export const getParticipant = (state, index) => getParticipants(state)[index];
 

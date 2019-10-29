@@ -1,8 +1,6 @@
 import { types } from 'registration/actions';
 
-const initialState = {
-  participants: [],
-};
+const initialState = [];
 
 export const panelDataReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -36,159 +34,120 @@ function setQtys(state, action) {
     }
   }
 
-  return {
-    ...state,
-    participants,
-  };
+  return participants;
 }
 
 function resetQtys(state, action) {
-  return {
-    ...state
-  };
+  return [];
 }
 
 function setFirstNames(state, action) {
-  return {
-    ...state,
-    participants: state.participants.map((participant, index) =>
-      ({
-        ...participant,
-        customer: {
-          ...participant.customer,
-          firstName: action.firstNames[index],
-        },
-        addOns: [],
-      })
-    ),
-  };
+  return state.map((participant, index) => ({
+    ...participant,
+    customer: {
+      ...participant.customer,
+      firstName: action.firstNames[index],
+    },
+    addOns: [],
+  }));
 }
 
 function resetFirstNames(state, action) {
-  return {
-    ...state,
-    participants: state.participants.map((participant) => ({
-      ...participant,
-      customer: {
-        firstName: undefined,
-      },
-    })),
-  };
+  return state.map((participant) => ({
+    ...participant,
+    customer: {
+      firstName: undefined,
+    },
+  }));
 }
 
 function setOffers(state, action) {
-  return {
-    ...state,
-    participants: state.participants.map((participant, index) =>
-      ({
-        ...participant,
-        offer: action.offers[index],
-      })
-    ),
-  };
+  return state.map((participant, index) => ({
+    ...participant,
+    offer: action.offers[index],
+  }));
 }
 
 function resetOffers(state, action) {
-  return {
-    ...state,
-    participants: state.participants.map((participant) => ({
-      ...participant,
-      offer: undefined,
-    })),
-  };
+  return state.map((participant) => ({
+    ...participant,
+    offer: undefined,
+  }));
 }
 
 function setDetails(state, action) {
-  return {
-    ...state,
-    participants: state.participants.map((participant, index) => {
-      if (index !== action.index) return participant;
+  return state.map((participant, index) => {
+    if (index !== action.index) return participant;
 
-      return {
-        ...participant,
-        customer: action.customerForm,
-        extendForm: action.extendForm,
-        errors: [],
-      };
-    }),
-  };
+    return {
+      ...participant,
+      customer: action.customerForm,
+      extendForm: action.extendForm,
+      errors: [],
+    };
+  });
 }
 
 function resetDetails(state, action) {
-  return {
-    ...state,
-    participants: state.participants.map((participant, index) => {
-      if (index !== action.index) return participant;
+  return state.map((participant, index) => {
+    if (index !== action.index) return participant;
 
-      return {
-        ...participant,
-        customer: {
-          firstName: participant.customer.firstName,
-        },
-        extendForm: {},
-        errors: [],
-      };
-    }),
-  };
+    return {
+      ...participant,
+      customer: {
+        firstName: participant.customer.firstName,
+      },
+      extendForm: {},
+      errors: [],
+    };
+  });
 }
 
 function setAdditionalData(state, action) {
-  return {
-    ...state,
-    participants: state.participants.map((participant, index) => {
-      if (index !== action.index) return participant;
+  return state.map((participant, index) => {
+    if (index !== action.index) return participant;
 
-      return {
-        ...participant,
-        additionalData: action.additionalData,
-      };
-    }),
-  };
+    return {
+      ...participant,
+      additionalData: action.additionalData,
+    };
+  });
 }
 
 function selectAddOn(state, action) {
-  return {
-    ...state,
-    participants: state.participants.map((participant, index) => {
-      if (index !== action.index) return participant;
+  return state.map((participant, index) => {
+    if (index !== action.index) return participant;
 
-      return {
-        ...participant,
-        addOns: [
-          ...participant.addOns,
-          action.addOn,
-        ],
-      }; 
-    }),
-  };
+    return {
+      ...participant,
+      addOns: [
+        ...participant.addOns,
+        action.addOn,
+      ],
+    }; 
+  });
 }
 
 function deselectAddOn(state, action) {
-  return {
-    ...state,
-    participants: state.participants.map((participant, index) => {
-      if (index !== action.index) return participant;
+  return state.map((participant, index) => {
+    if (index !== action.index) return participant;
 
-      return {
-        ...participant,
-        addOns: participant.addOns.filter(
-          addOn => addOn.offerId !== action.addOn.offerId
-        ),
-      };
-    }),
-  };
+    return {
+      ...participant,
+      addOns: participant.addOns.filter(
+        addOn => addOn.offerId !== action.addOn.offerId
+      ),
+    };
+  });
 }
 
 function setErrors(state, action) {
-  return {
-    ...state,
-    participants: state.participants.map((participant, index) => {
-      if (index !== action.index) return participant;
+  return state.map((participant, index) => {
+    if (index !== action.index) return participant;
 
-      return {
-        ...participant,
-        errors: action.errors,
-      };
-    }),
-  };
+    return {
+      ...participant,
+      errors: action.errors,
+    };
+  });
 }
