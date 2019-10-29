@@ -1,11 +1,12 @@
 import { insertPanels, removePanels } from 'shared/actions';
+import { getSetting } from 'shared/selectors';
 import { setQtys, resetQtys } from 'registration/actions';
-import { getRegistrationTypes, getRegistrationMode, getQtys } from 'registration/selectors';
+import { getRegistrationTypes, getQtys } from 'registration/selectors';
 
 export class QtysConnect {
   static mapStateToProps = (state) => {
     return {
-      registrationMode: getRegistrationMode(state),
+      registrationMode: getSetting(state, 'registrationMode'),
       types: getRegistrationTypes(state),
       qtys: getQtys(state),
     };

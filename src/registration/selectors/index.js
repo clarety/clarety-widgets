@@ -142,10 +142,8 @@ const getExtendFormId = (state) => {
 
 export const getSaleId = (state) => getCart(state).id;
 
-export const getRegistrationMode = (state) => getCart(state).registrationMode;
-
 export const getChannel = (state) => {
-  const mode = getRegistrationMode(state);
+  const mode = getSetting(state, 'registrationMode');
   if (mode === 'individual') return '7';
   if (mode === 'group')      return '8';
   if (mode === 'family')     return '9';

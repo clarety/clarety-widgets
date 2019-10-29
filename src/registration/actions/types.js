@@ -32,8 +32,6 @@ export const types = {
 
   // Cart Action Types
 
-  setRegistrationMode:       'SET_REGISTRATION_MODE',
-
   registrationCreateRequest: 'REGISTRATION_CREATE_REQUEST',
   registrationCreateSuccess: 'REGISTRATION_CREATE_SUCCESS',
   registrationCreateFailure: 'REGISTRATION_CREATE_FAILURE',

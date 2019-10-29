@@ -5,9 +5,9 @@ import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/compon
 
 export class ModePanel extends BasePanel {
   onSelectMode = (mode) => {
-    const { setRegistrationMode, nextPanel } = this.props;
+    const { updateAppSettings, nextPanel } = this.props;
 
-    setRegistrationMode(mode);
+    updateAppSettings({ registrationMode: mode });
     nextPanel();
   };
 

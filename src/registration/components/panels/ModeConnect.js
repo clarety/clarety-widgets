@@ -1,14 +1,14 @@
-import { setRegistrationMode } from 'registration/actions';
-import { getRegistrationMode } from 'registration/selectors';
+import { updateAppSettings } from 'shared/actions';
+import { getSetting } from 'shared/selectors';
 
 export class ModeConnect {
   static mapStateToProps = (state) => {
     return {
-      selectedMode: getRegistrationMode(state),
+      selectedMode: getSetting(state, 'registrationMode'),
     };
   };
   
   static actions = {
-    setRegistrationMode,
+    updateAppSettings: updateAppSettings,
   };
 }

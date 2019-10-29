@@ -3,11 +3,6 @@ import { setErrors, clearErrors } from 'form/actions';
 import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getSaleId, getIsLoggedIn } from 'registration/selectors';
 import { types } from 'registration/actions';
 
-export const setRegistrationMode = (mode) => ({
-  type: types.setRegistrationMode,
-  mode: mode,
-});
-
 export const createRegistration = () => {
   return async (dispatch, getState) => {
     const state = getState();
