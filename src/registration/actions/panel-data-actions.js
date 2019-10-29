@@ -73,6 +73,12 @@ export const setAdditionalData = (index, additionalData) => ({
   additionalData: additionalData,
 });
 
+export const updateAddOn = (index, addOn, isSelected) => ({
+  type: isSelected ? types.panelDataSelectAddOn : types.panelDataDeselectAddOn,
+  index: index,
+  addOn: addOn,
+});
+
 export const setErrors = (index, errors) => ({
   type: types.panelDataSetErrors,
   index: index,

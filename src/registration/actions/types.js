@@ -27,6 +27,8 @@ export const types = {
   panelDataResetOffers:       'PANEL_DATA_RESET_OFFERS',
   panelDataSetDetails:        'PANEL_DATA_SET_DETAILS',
   panelDataSetAdditionalData: 'PANEL_DATA_SET_ADDITIONAL_DATA',
+  panelDataSelectAddOn:       'PANEL_DATA_SELECT_ADD_ON',
+  panelDataDeselectAddOn:     'PANEL_DATA_DESELECT_ADD_ON',
   panelDataSetErrors:         'PANEL_DATA_SET_ERRORS',
   panelDataResetDetails:      'PANEL_DATA_RESET_DETAILS',
 

@@ -39,7 +39,7 @@ export const getRegistrationTypes = (state) => {
 export const getQtys = (state) => getPanelData(state).qtys;
 
 export const getCartTotal = (state) => {
-  const total = getDonationAmount(state) + getSelectedOffersTotal(state);
+  const total = getDonationAmount(state) + getSelectedOffersTotal(state) + getAddOnsTotal(state);
   const currency = getSetting(state, 'currency');
   return `${currency.code} ${currency.symbol}${total.toFixed(2)}`;
 };
@@ -75,6 +75,8 @@ export const getWaveOptions = (state, index) => getProducts(state, index).map(
     value: product.productId,
 }));
 
+export const getAddOns = (state) => getEvent(state).addOns;
+
 export const getIsPrefilled = (state, index) => {
   // If participant has a customer ID then they've been pre-filled.
   const participant = getParticipant(state, index);
@@ -95,6 +97,22 @@ export const getSelectedOffersTotal = (state) => {
       ? Number(participant.offer.amount) + total
       : total
   , 0);
+};
+
+export const getAddOnsTotal = (state) => {
+  const participants = getParticipants(state);
+
+  let total = 0;
+
+  for (const participant of participants) {
+    if (!participant.addOns) continue;
+
+    for (const addOn of participant.addOns) {
+      total += addOn.price;
+    }
+  }
+
+  return total;
 };
 
 export const getExtendFields = (state) => {
@@ -175,6 +193,7 @@ const getParticipantPostData = (state, participant) => {
       customer: customer,
       extendFormId: extendFormId,
       extendForm: participant.extendForm,
+      addons: participant.addOns,
       ...participant.additionalData,
     }],
   };

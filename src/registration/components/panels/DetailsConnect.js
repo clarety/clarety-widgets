@@ -1,5 +1,5 @@
-import { setDetails, setAdditionalData, setErrors, resetDetails } from 'registration/actions';
-import { getEvent, getExtendFields, getParticipant, getWaveOptions, getPartcipantOffer, getIsPrefilled } from 'registration/selectors';
+import { setDetails, setAdditionalData, updateAddOn, setErrors, resetDetails } from 'registration/actions';
+import { getEvent, getExtendFields, getParticipant, getWaveOptions, getAddOns, getPartcipantOffer, getIsPrefilled } from 'registration/selectors';
 
 export class DetailsConnect {
   static mapStateToProps = (state, ownProps) => {
@@ -11,6 +11,7 @@ export class DetailsConnect {
     const event = getEvent(state);
     const extendFields = getExtendFields(state);
     const waveOptions = getWaveOptions(state, ownProps.participantIndex);
+    const addOns = getAddOns(state, ownProps.participantIndex);
     const isPrefilled = getIsPrefilled(state, ownProps.participantIndex);
     const offer = getPartcipantOffer(state, ownProps.participantIndex);
     const eventDate = new Date(offer.ageCalculationDate || event.startDate);
@@ -21,6 +22,7 @@ export class DetailsConnect {
       participant: participant,
       extendFields: extendFields,
       waveOptions: waveOptions,
+      addOns: addOns,
       isPrefilled: isPrefilled,
       eventDate: eventDate,
       minAge: Number(offer.minAgeOver),
@@ -32,6 +34,7 @@ export class DetailsConnect {
   static actions = {
     setDetails: setDetails,
     setAdditionalData: setAdditionalData,
+    updateAddOn: updateAddOn,
     setErrors: setErrors,
     resetDetails: resetDetails,
   };

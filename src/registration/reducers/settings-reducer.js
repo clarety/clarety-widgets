@@ -39,7 +39,7 @@ export const settingsReducer = (state = initialState, action) => {
       return {
         ...state,
         isBusy: false,
-        event: action.result.events[0],
+        event: convertEvent(action.result.events[0]),
         extendForms: convertSelectFields(action.result.extendForms),
         elements: action.result.elements,
       };
@@ -74,3 +74,14 @@ function convertSelectFields(extendForms) {
 
   return extendForms;
 }
+
+function convertEvent(event) {
+  return {
+    ...event,
+    addOns: event.addOns.map(addOn => ({
+      offerId: addOn.offerId,
+      name: addOn.name,
+      price: Number(addOn.price),
+    })),
+  };
+};

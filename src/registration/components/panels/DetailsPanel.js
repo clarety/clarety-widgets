@@ -1,8 +1,8 @@
 import React from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Button, Form, Row, Col, Alert } from 'react-bootstrap';
+import { Button, Form, Row, Col, Alert, FormCheck } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { FormContext } from 'shared/utils';
+import { FormContext, currency } from 'shared/utils';
 import { TextInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput } from 'registration/components';
 import { getGenderOptions, scrollIntoView } from 'registration/utils';
 
@@ -341,14 +341,8 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
     return (
       <FormContext.Provider value={this.state.extendFormContext}>
         {this.renderWaveSelect()}
-
-        {this.props.extendFields.map(field =>
-          <Form.Row key={field.columnKey}>
-            <Col>
-              {this.renderExtendField(field)}
-            </Col>
-          </Form.Row>
-        )}
+        {this.renderAddOns()}
+        {/* {this.renderExtendFields()} */}
       </FormContext.Provider>
     );
   }
@@ -365,6 +359,35 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
         placeholder="Select Wave"
         required={true}
       />
+    );
+  }
+
+  renderAddOns() {
+    const { addOns, participantIndex, updateAddOn } = this.props;
+
+    return addOns.map(addOn =>
+      <Form.Group controlId={addOn.offerId} key={addOn.offerId}>
+        <FormCheck>
+          <FormCheck.Input
+            onChange={event => updateAddOn(participantIndex, addOn, event.target.checked)}
+          />
+          <FormCheck.Label>
+            {addOn.name} - {currency(addOn.price)}
+          </FormCheck.Label>
+        </FormCheck>
+      </Form.Group>
+    );
+  }
+
+  renderExtendFields() {
+    const { extendFields } = this.props;
+
+    return extendFields.map(field =>
+      <Form.Row key={field.columnKey}>
+        <Col>
+          {this.renderExtendField(field)}
+        </Col>
+      </Form.Row>
     );
   }
 

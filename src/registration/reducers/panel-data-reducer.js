@@ -23,6 +23,9 @@ export const panelDataReducer = (state = initialState, action) => {
     case types.panelDataSetDetails:        return setDetails(state, action);
     case types.panelDataResetDetails:      return resetDetails(state, action);
 
+    case types.panelDataSelectAddOn:       return selectAddOn(state, action);
+    case types.panelDataDeselectAddOn:     return deselectAddOn(state, action);
+
     case types.panelDataSetAdditionalData: return setAdditionalData(state, action);
     case types.panelDataSetErrors:         return setErrors(state, action);
     
@@ -76,6 +79,7 @@ function setFirstNames(state, action) {
           ...participant.customer,
           firstName: action.firstNames[index],
         },
+        addOns: [],
       })
     ),
   };
@@ -158,6 +162,39 @@ function setAdditionalData(state, action) {
       return {
         ...participant,
         additionalData: action.additionalData,
+      };
+    }),
+  };
+}
+
+function selectAddOn(state, action) {
+  return {
+    ...state,
+    participants: state.participants.map((participant, index) => {
+      if (index !== action.index) return participant;
+
+      return {
+        ...participant,
+        addOns: [
+          ...participant.addOns,
+          action.addOn,
+        ],
+      }; 
+    }),
+  };
+}
+
+function deselectAddOn(state, action) {
+  return {
+    ...state,
+    participants: state.participants.map((participant, index) => {
+      if (index !== action.index) return participant;
+
+      return {
+        ...participant,
+        addOns: participant.addOns.filter(
+          addOn => addOn.offerId !== action.addOn.offerId
+        ),
       };
     }),
   };
