@@ -77,6 +77,4 @@ export const types = {
   checkTeamPasswordFailure: 'CHECK_TEAM_PASSWORD_FAILURE',
 
   selectTeam: 'SELECT_TEAM',
-
-  setTeamPanelMode: 'SET_TEAM_PANEL_MODE',
 };

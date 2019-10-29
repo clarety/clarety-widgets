@@ -6,6 +6,8 @@ import { Button, TextInput as FormTextInput, SelectInput as FormSelectInput } fr
 import { TeamSearchInput } from 'registration/components';
 
 export class TeamPanel extends BasePanel {
+  state = { mode: 'prompt' };
+
   onClickNext = async event => {
     event.preventDefault();
     const { selectedTeam, formData, checkTeamPassword, nextPanel } = this.props;
@@ -19,7 +21,7 @@ export class TeamPanel extends BasePanel {
   };
 
   onClickEdit = () => {
-    this.props.setPanelMode('prompt');
+    this.setPanelMode('prompt');
     this.props.editPanel();
   };
 
@@ -29,15 +31,15 @@ export class TeamPanel extends BasePanel {
   };
 
   onClickYes = () => {
-    this.props.setPanelMode('search');
+    this.setPanelMode('search');
   };
 
   onClickCancel = () => {
-    this.props.setPanelMode('prompt');
+    this.setPanelMode('prompt');
   };
 
   onClickCreate = () => {
-    this.props.setPanelMode('create');
+    this.setPanelMode('create');
   };
 
   onSubmitCreateForm = async event => {
@@ -50,6 +52,8 @@ export class TeamPanel extends BasePanel {
 
     nextPanel();
   };
+
+  setPanelMode = (mode) => this.setState({ mode });
 
   renderWait() {
     const { layout, index } = this.props;
@@ -69,7 +73,8 @@ export class TeamPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, index, mode } = this.props;
+    const { layout, index } = this.props;
+    const { mode } = this.state;
 
     return (
       <PanelContainer layout={layout} status="edit">

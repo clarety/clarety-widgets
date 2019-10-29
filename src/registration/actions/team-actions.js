@@ -99,11 +99,6 @@ export const selectTeam = team => ({
   team: team,
 });
 
-export const setTeamPanelMode = mode => ({
-  type: types.setTeamPanelMode,
-  mode: mode,
-});
-
 
 // Fetch
 

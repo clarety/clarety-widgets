@@ -1,15 +1,14 @@
-import { setTeamPanelMode, checkTeamPassword, selectTeam, createTeam } from 'registration/actions';
+import { checkTeamPassword, selectTeam, createTeam } from 'registration/actions';
 
 export class TeamConnect {
   static mapStateToProps = (state) => {
     const { teamPanel } = state.panels;
-    const { mode, selectedTeam, isBusyPassword, isBusyCreate } = teamPanel;
+    const { selectedTeam, isBusyPassword, isBusyCreate } = teamPanel;
 
     const canContinue = selectedTeam && !selectedTeam.passwordRequired;
     const requiresPassword = selectedTeam && !!selectedTeam.passwordRequired;
 
     return {
-      mode: mode,
       selectedTeam: selectedTeam,
       canContinue: canContinue,
       requiresPassword: requiresPassword,
@@ -21,7 +20,6 @@ export class TeamConnect {
   };
 
   static actions = {
-    setPanelMode: setTeamPanelMode,
     checkTeamPassword: checkTeamPassword,
     selectTeam: selectTeam,
     createTeam: createTeam,
