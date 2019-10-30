@@ -1,3 +1,4 @@
+import { addItem, removeItemsWithPanel } from 'shared/actions';
 import { setFirstNames, resetFirstNames, setOffers, resetOffers, prefillDetails } from 'registration/actions';
 import { getParticipants, getOffersForAllParticipants, getPreviousParticipants } from 'registration/selectors';
 
@@ -16,5 +17,7 @@ export class OffersConnect {
     prefillDetails: prefillDetails,
     setOffers: setOffers,
     resetOffers: resetOffers,
+    addToCart: addItem,
+    removeItemsWithPanel: removeItemsWithPanel,
   };
 }

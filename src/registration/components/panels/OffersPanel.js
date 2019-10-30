@@ -21,7 +21,7 @@ export class OffersPanel extends BasePanel {
 
   onSelectPrefill = (index, prefill) => this.updateProperty('prefills', index, prefill);
 
-  onClickNext = event => {
+  onClickNext = (event) => {
     event.preventDefault();
 
     if (!this.canContinue()) return;
@@ -31,31 +31,59 @@ export class OffersPanel extends BasePanel {
 
     setFirstNames(names);
 
-    if (settings.showOffers) setOffers(offers);
+    if (settings.showOffers) {
+      setOffers(offers);
+      this.addOffersToCart();
+    }
 
-    if (settings.showPrefill) prefillDetails(prefills);
+    if (settings.showPrefill) {
+      prefillDetails(prefills);
+    }
 
     nextPanel();
   };
 
   onClickEdit = () => {
+    const { participants, editPanel, settings } = this.props;
+
+    if (settings.showOffers) {
+      this.removeOffersFromCart();
+    }
+
     // Update our component state with the names from the store.
-    const { participants } = this.props;
     this.setState({
       names: participants.map(participant => participant.customer.firstName),
     });
 
-    this.props.editPanel();
+    editPanel();
   };
 
   reset() {
     const { resetFirstNames, resetOffers, settings } = this.props;
 
-    this.setState({ names: [], offers: [] });
+    if (settings.showOffers) {
+      resetOffers();
+      this.removeOffersFromCart();
+    }
 
     resetFirstNames();
 
-    if (settings.showOffers) resetOffers();
+    this.setState({ names: [], offers: [], prefills: [] });
+  }
+
+  addOffersToCart() {
+    this.state.offers.forEach((offer, index) =>
+      this.props.addToCart({
+        offerId: offer.offerId,
+        price: offer.price,
+        panel: 'OffersPanel',
+        options: { participantIndex: index },
+      })
+    );
+  }
+
+  removeOffersFromCart() {
+    this.props.removeItemsWithPanel('OffersPanel');
   }
 
   renderWait() {

@@ -64,7 +64,7 @@ function resetFirstNames(state, action) {
 function setOffers(state, action) {
   return state.map((participant, index) => ({
     ...participant,
-    offer: action.offers[index],
+    offerId: action.offers[index].offerId,
   }));
 }
 

@@ -14,19 +14,22 @@ export const types = {
 
   // Cart Action Types
 
-  addItem:        'ADD_ITEM',
-  clearItems:     'CLEAR_ITEMS',
+  addItem:               'ADD_ITEM',
+  updateItem:            'UPDATE_ITEM',
+  removeItem:            'REMOVE_ITEM',
+  clearItems:            'CLEAR_ITEMS',
+  removeItemsWithPanel : 'REMOVE_ITEMS_WITH_PANEL',
 
-  setPayment:     'SET_PAYMENT',
-  clearPayment:   'CLEAR_PAYMENT',
+  setPayment:            'SET_PAYMENT',
+  clearPayment:          'CLEAR_PAYMENT',
 
-  updateCartData: 'UPDATE_CART_DATA',
+  updateCartData:        'UPDATE_CART_DATA',
 
-  setStore:        'SET_STORE',
-  setCustomer:     'SET_CUSTOMER',
-  setOrganisation: 'SET_ORGANISATION',
-  setTrackingData: 'SET_TRACKING_DATA',
-  setRecaptcha:    'SET_RECAPTCHA',
+  setStore:              'SET_STORE',
+  setCustomer:           'SET_CUSTOMER',
+  setOrganisation:       'SET_ORGANISATION',
+  setTrackingData:       'SET_TRACKING_DATA',
+  setRecaptcha:          'SET_RECAPTCHA',
 
   // Auth Action Types
 

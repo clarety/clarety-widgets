@@ -1,13 +1,35 @@
 import { types } from 'shared/actions';
 
-export const addItem = ({ offerUid, offerPaymentUid, quantity = 1, price = undefined }) => ({
+export const addItem = ({ offerId, offerUid, offerPaymentUid, offerProductId, quantity, price, panel, options }) => ({
   type: types.addItem,
   item: {
-    offerUid,
-    offerPaymentUid,
-    quantity,
+    offerId: offerId,
+    offerUid: offerUid,
+    offerPaymentUid: offerPaymentUid,
+    offerProductId: offerProductId,
+
+    quantity: quantity || 1,
     price: Number(price),
+
+    panel: panel,
+    options: options,
   },
+});
+
+export const updateItem = ({ index, item }) => ({
+  type: types.updateItem,
+  index: index,
+  item: item,
+});
+
+export const removeItem = ({ index }) => ({
+  type: types.removeItem,
+  index: index,
+});
+
+export const removeItemsWithPanel = (panel) => ({
+  type: types.removeItemsWithPanel,
+  panel: panel,
 });
 
 export const clearItems = () => ({

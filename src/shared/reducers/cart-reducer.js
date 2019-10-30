@@ -40,6 +40,31 @@ export const cartReducer = (state = initialState, action) => {
         ],
       };
 
+    case types.updateItem:
+      return {
+        ...state,
+        items: state.items.map((item, index) => {
+          if (index !== action.index) return item;
+
+          return {
+            ...item,
+            ...action.item,
+          };
+        })
+      };
+
+    case types.removeItem:
+      return {
+        ...state,
+        items: state.items.filter((item, index) => index !== action.index),
+      };
+
+    case types.removeItemsWithPanel:
+      return {
+        ...state,
+        items: state.items.filter(item => item.panel !== action.panel),
+      };
+
     case types.clearItems:
       return {
         ...state,

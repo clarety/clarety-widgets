@@ -51,7 +51,9 @@ export const getQtys = (state) => {
 };
 
 export const getCartTotal = (state) => {
-  const total = getDonationAmount(state) + getSelectedOffersTotal(state) + getAddOnsTotal(state);
+  const { items } = getCart(state);
+  const total = items.reduce((total, item) => total += item.price * item.quantity, 0);
+
   const currency = getSetting(state, 'currency');
   return `${currency.code} ${currency.symbol}${total.toFixed(2)}`;
 };
@@ -65,17 +67,16 @@ export const getPreviousParticipants = (state) => {
 
 export const getParticipant = (state, index) => getParticipants(state)[index];
 
-export const getPartcipantOffer = (state, index) => {
-  // Use selected offer if possible.
+export const getParticipantOffer = (state, index) => {
   const participant = getParticipant(state, index);
-  if (participant.offer) return participant.offer;
-
-  // Otherwise, use first offer for type.
-  const offers = getOffers(state, participant.type);
-  return offers[0];
+  return getOffer(state, participant);
 };
 
-export const getWaves = (state, index) => getPartcipantOffer(state, index).waves;
+export const getWaves = (state, index) => {
+  const participant = getParticipant(state, index);
+  const offer = getOffer(state, participant);
+  return offer.waves;
+};
 
 export const getWaveOptions = (state, index) => getWaves(state, index).map(
   product => ({
@@ -96,16 +97,6 @@ export const getOffersForAllParticipants = (state) => getParticipants(state).map
 );
 
 export const getOffers = (state, type) => getRegistrationTypes(state)[type].offers;
-
-export const getSelectedOffersTotal = (state) => {
-  const participants = getParticipants(state);
-
-  return participants.reduce((total, participant) =>
-    participant.offer
-      ? Number(participant.offer.amount) + total
-      : total
-  , 0);
-};
 
 export const getAddOnsTotal = (state) => {
   const participants = getParticipants(state);
@@ -190,7 +181,7 @@ export const getCreateRegistrationPostData = (state) => {
 const getParticipantPostData = (state, participant) => {
   const extendFormId = getExtendFormId(state);
   const offerId = getOfferId(state, participant);
-  const productId = getProductId(state, participant);
+  const productId = getWaveProductId(state, participant);
   const customer = parseNestedElements(participant.customer);
 
   return {
@@ -207,27 +198,25 @@ const getParticipantPostData = (state, participant) => {
   };
 };
 
-const getOfferForParticipant = (state, participant) => {
-  // If participant has a selected offer, use it.
-  // Otherwise, use the first offer for the registration type.
-  return participant.offer || getOffers(state, participant.type)[0];
-};
-
 const getOfferId = (state, participant) => {
-  const offer = getOfferForParticipant(state, participant);
-  return offer.offerId;
+  return participant.offerId || getDefaultOffer(state, participant).offerId;
 };
 
-const getProductId = (state, participant) => {
-  // Use wave if selected.
-  if (participant.extendForm.wave) {
-    return participant.extendForm.wave;
-  }
+const getOffer = (state, participant) => {
+  const offers = getOffers(state, participant.type);
 
-  // Otherwise, use first product of offer.
-  const offer = getOfferForParticipant(state, participant);
-  return offer.registrationProducts[0].products[0].productId;
+  if (!participant.offerId) return offers[0];
+
+  return offers.find(offer => offer.offerId === participant.offerId);
+}
+
+const getDefaultOffer = (state, participant) => getOffers(state, participant.type)[0];
+
+const getWaveProductId = (state, participant) => {
+  return participant.extendForm.wave || getDefaultWave(state, participant).productId;
 };
+
+const getDefaultWave = (state, participant) => getDefaultOffer(state, participant).waves[0];
 
 const getFundraisingPostData = (state) => {
   const donationAmount = getDonationAmount(state);
