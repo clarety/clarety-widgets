@@ -75,11 +75,9 @@ export const getPartcipantOffer = (state, index) => {
   return offers[0];
 };
 
-export const getRegistrationProducts = (state, index) => getPartcipantOffer(state, index).registrationProducts;
+export const getWaves = (state, index) => getPartcipantOffer(state, index).waves;
 
-export const getProducts = (state, index) => getRegistrationProducts(state, index)[0].products;
-
-export const getWaveOptions = (state, index) => getProducts(state, index).map(
+export const getWaveOptions = (state, index) => getWaves(state, index).map(
   product => ({
     label: product.name,
     value: product.productId,
@@ -127,7 +125,7 @@ export const getAddOnsTotal = (state) => {
 
 export const getExtendFields = (state) => {
   try {
-    return state.settings.extendForms[0].extendFields;
+    return state.settings.extendForm.extendFields;
   } catch (error) {
     return null;
   }
@@ -135,7 +133,7 @@ export const getExtendFields = (state) => {
 
 const getExtendFormId = (state) => {
   try {
-    return state.settings.extendForms[0].formId;
+    return state.settings.extendForm.formId;
   } catch (error) {
     return null;
   }
@@ -196,8 +194,8 @@ const getParticipantPostData = (state, participant) => {
   const customer = parseNestedElements(participant.customer);
 
   return {
-    quantity: 1,
     offerId: offerId,
+    quantity: 1,
     participants: [{
       productId: productId,
       customer: customer,

@@ -289,7 +289,7 @@ const OfferButton = ({ offer, isSelected, onClick }) => {
   return (
     <Button onClick={onClick} className={className}>
       <span className="offer-name">{offer.name}</span>
-      <span className="offer-price">{currency(Number(offer.amount))}</span>
+      <span className="offer-price">{currency(offer.price)}</span>
     </Button>
   );
 };
