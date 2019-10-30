@@ -180,8 +180,8 @@ export const getCreateRegistrationPostData = (state) => {
 
 const getParticipantPostData = (state, participant) => {
   const extendFormId = getExtendFormId(state);
-  const offerId = getOfferId(state, participant);
-  const productId = getWaveProductId(state, participant);
+  const offerId = participant.offerId || getDefaultOffer(state, participant).offerId;
+  const productId = participant.waveProductId || getDefaultWave(state, participant).productId;
   const customer = parseNestedElements(participant.customer);
 
   return {
@@ -198,10 +198,6 @@ const getParticipantPostData = (state, participant) => {
   };
 };
 
-const getOfferId = (state, participant) => {
-  return participant.offerId || getDefaultOffer(state, participant).offerId;
-};
-
 const getOffer = (state, participant) => {
   const offers = getOffers(state, participant.type);
 
@@ -211,10 +207,6 @@ const getOffer = (state, participant) => {
 }
 
 const getDefaultOffer = (state, participant) => getOffers(state, participant.type)[0];
-
-const getWaveProductId = (state, participant) => {
-  return participant.extendForm.wave || getDefaultWave(state, participant).productId;
-};
 
 const getDefaultWave = (state, participant) => getDefaultOffer(state, participant).waves[0];
 

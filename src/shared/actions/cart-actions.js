@@ -16,13 +16,13 @@ export const addItem = ({ offerId, offerUid, offerPaymentUid, offerProductId, qu
   },
 });
 
-export const updateItem = ({ index, item }) => ({
+export const updateItem = (index, item) => ({
   type: types.updateItem,
   index: index,
   item: item,
 });
 
-export const removeItem = ({ index }) => ({
+export const removeItem = (index) => ({
   type: types.removeItem,
   index: index,
 });

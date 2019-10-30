@@ -71,12 +71,21 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
   onClickNext = async event => {
     event.preventDefault();
 
-    const { nextPanel, setDetails, participantIndex } = this.props;
+    const { nextPanel, setDetails, participantIndex, waveOptions, setParticipantWave } = this.props;
     const { customerFormContext, extendFormContext } = this.state;
 
     if (this.validate()) {
       this.onSubmitForm();
-      setDetails(participantIndex, customerFormContext.formData, extendFormContext.formData);
+
+      const waveProductId = extendFormContext.formData.wave;
+      extendFormContext.formData.wave = undefined;
+
+      if (waveOptions.length > 1) {
+        setParticipantWave(participantIndex, waveProductId);
+      }
+
+      setDetails(participantIndex, customerFormContext.formData, extendFormContext.formData, waveProductId);
+
       nextPanel();
     }
   };

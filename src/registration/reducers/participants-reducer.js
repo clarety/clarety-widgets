@@ -83,6 +83,7 @@ function setDetails(state, action) {
       ...participant,
       customer: action.customerForm,
       extendForm: action.extendForm,
+      waveProductId: action.waveProductId,
       errors: [],
     };
   });

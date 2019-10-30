@@ -51,11 +51,12 @@ export const prefillDetails = (prefills) => {
   };
 };
 
-export const setDetails = (index, customerForm, extendForm) => ({
+export const setDetails = (index, customerForm, extendForm, waveProductId) => ({
   type: types.setParticipantDetails,
   index: index,
   customerForm: customerForm,
   extendForm: extendForm,
+  waveProductId: waveProductId,
 });
 
 export const resetDetails = (index) => ({

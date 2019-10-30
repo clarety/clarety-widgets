@@ -1,7 +1,24 @@
-import { ClaretyApi, Config } from 'clarety-utils';
+import { ClaretyApi } from 'clarety-utils';
+import { updateItem } from 'shared/actions';
+import { getCart } from 'shared/selectors';
 import { setErrors, clearErrors } from 'form/actions';
 import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getSaleId, getIsLoggedIn } from 'registration/selectors';
 import { types } from 'registration/actions';
+
+export const setParticipantWave = (participantIndex, waveProductId) => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const cart = getCart(state);
+
+    const index = cart.items.findIndex(item =>
+      item.options && item.options.participantIndex === participantIndex
+    );
+
+    dispatch(updateItem(index, {
+      productId: waveProductId,
+    }));
+  };
+};
 
 export const createRegistration = () => {
   return async (dispatch, getState) => {
