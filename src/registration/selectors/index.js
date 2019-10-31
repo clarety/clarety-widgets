@@ -167,6 +167,7 @@ const getParticipantPostData = (state, participant) => {
   const productId = participant.waveProductId || getDefaultWave(state, participant).productId;
   const customer = parseNestedElements(participant.customer);
   const extendFormId = getExtendFormId(state);
+  const addOns = getParticipantAddOns(participant);
 
   return {
     offerId: offerId,
@@ -176,11 +177,13 @@ const getParticipantPostData = (state, participant) => {
       customer: customer,
       extendFormId: extendFormId,
       extendForm: participant.extendForm,
-      addons: participant.addOns,
+      addons: addOns,
       ...participant.additionalData,
     }],
   };
 };
+
+const getParticipantAddOns = (participant) => participant.addOns.map(offerId => ({ offerId }));
 
 const getOffer = (state, participant) => {
   const offers = getOffers(state, participant.type);

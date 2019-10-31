@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Button, Form, Row, Col, Alert } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { FormContext } from 'shared/utils';
+import { FormContext, parseNestedElements } from 'shared/utils';
 import { TextInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput } from 'registration/components';
 import { getGenderOptions, scrollIntoView } from 'registration/utils';
 
@@ -12,87 +12,47 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
   constructor(props) {
     super(props);
 
-    // We can't populate state without a participant.
-    if (!props.participant) return;
-    
-    this.state = this.getStateForParticipant(props.participant);
+    this.state = {
+      formData: {},
+      errors: [],
+      onChange: this.onFormChange,
+    };
   }
 
   componentDidUpdate(prevProps) {
     const { participant } = this.props;
 
-    if (participant && participant !== prevProps.participant) {
-      const state = this.getStateForParticipant(participant);
-      this.setState(state);
-    }
-  }
-
-  getStateForParticipant(participant) {
-    return {
-      customerFormContext: {
-        formData: this.getCustomerFormData(participant.customer),
-        errors: participant.errors || [],
-        onChange: this.onCustomerFormChange,
-      },
-      extendFormContext: {
-        formData: { ...participant.extendForm },
-        errors: participant.errors || [],
-        onChange: this.onExtendFormChange,
-      },
-    };
-  }
-
-  getCustomerFormData(customer) {
-    if (!customer) return {};
-
-    const formData = {
-      firstName:        customer.firstName,
-      lastName:         customer.lastName,
-      email:            customer.email,
-      mobile:           customer.mobile,
-      gender:           customer.gender,
-      dateOfBirthDay:   customer.dateOfBirthDay,
-      dateOfBirthMonth: customer.dateOfBirthMonth,
-      dateOfBirthYear:  customer.dateOfBirthYear,
-    };
-
-    if (customer.billing) {
-      formData['billing.address1'] = customer.billing.address1;
-      formData['billing.address2'] = customer.billing.address2;
-      formData['billing.suburb']   = customer.billing.suburb;
-      formData['billing.state']    = customer.billing.state;
-      formData['billing.postcode'] = customer.billing.postcode;
-      formData['billing.country']  = customer.billing.country;
+    if (participant && participant.errors !== prevProps.participant.errors) {
+      this.setState({ errors: participant.errors });
     }
 
-    return formData;
+    if (participant && participant.customer !== prevProps.participant.customer) {
+      this.prefillCustomerFormData(participant.customer);
+    }
   }
 
   onClickNext = async event => {
     event.preventDefault();
 
-    const { nextPanel, setDetails, participantIndex, waveOptions, setWaveInCart } = this.props;
-    const { customerFormContext, extendFormContext } = this.state;
+    const { nextPanel, setDetails, participantIndex, setWaveInCart } = this.props;
 
     if (this.validate()) {
       this.onSubmitForm();
 
-      const waveProductId = extendFormContext.formData.wave;
-      extendFormContext.formData.wave = undefined;
+      const formData = parseNestedElements(this.state.formData);
+      
+      // Update cart.
+      const addOns = this.getSelectedAddOns(formData);
+      this.addAddOnsToCart(addOns);
+      setWaveInCart(participantIndex, formData.waveProductId);
 
-      if (waveOptions.length > 1) {
-        setWaveInCart(participantIndex, waveProductId);
-      }
-
-      const selectedAddOns = this.getSelectedAddOns();
-      this.addAddOnsToCart(selectedAddOns);
-
+      // Update partcipant.
       setDetails(
         participantIndex,
-        customerFormContext.formData,
-        extendFormContext.formData,
-        waveProductId,
-        selectedAddOns,
+        formData.customer,
+        formData.extendForm,
+        formData.waveProductId,
+        addOns,
       );
 
       nextPanel();
@@ -105,29 +65,47 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
     editPanel();
   };
 
-  onCustomerFormChange = (field, value) => {
+  onFormChange = (field, value) => {
     this.setState(prevState => ({
-      customerFormContext: {
-        ...prevState.customerFormContext,
-        formData: {
-          ...prevState.customerFormContext.formData,
-          [field]: value,
-        }
+      formData: {
+        ...prevState.formData,
+        [field]: value,
       }
     }));
   }
 
-  onExtendFormChange = (field, value) => {
+  prefillCustomerFormData(customer) {
+    const formData = {};
+
+    formData['customer.firstName']        = customer.firstName;
+    formData['customer.lastName']         = customer.lastName;
+    formData['customer.email']            = customer.email;
+    formData['customer.mobile']           = customer.mobile;
+    formData['customer.gender']           = customer.gender;
+    formData['customer.dateOfBirthDay']   = customer.dateOfBirthDay;
+    formData['customer.dateOfBirthMonth'] = customer.dateOfBirthMonth;
+    formData['customer.dateOfBirthYear']  = customer.dateOfBirthYear;
+
+    if (customer.billing) {
+      formData['customer.billing.address1'] = customer.billing.address1;
+      formData['customer.billing.address2'] = customer.billing.address2;
+      formData['customer.billing.suburb']   = customer.billing.suburb;
+      formData['customer.billing.state']    = customer.billing.state;
+      formData['customer.billing.postcode'] = customer.billing.postcode;
+      formData['customer.billing.country']  = customer.billing.country;
+    }
+
     this.setState(prevState => ({
-      extendFormContext: {
-        ...prevState.extendFormContext,
-        formData: {
-          ...prevState.extendFormContext.formData,
-          [field]: value,
-        }
+      formData: {
+        ...prevState.formData,
+        ...formData,
       }
     }));
-  };
+  }
+
+  getSelectedAddOns(formData) {
+    return Object.keys(formData.addOns || {}).filter(offerId => !!formData.addOns[offerId]);
+  }
 
   validate() {
     const errors = [];
@@ -137,21 +115,20 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
   }
 
   validateFields(errors) {
-    const { formData } = this.state.customerFormContext;
-    const extendFormData = this.state.extendFormContext.formData;
     const { eventDate, minAge, maxAge, settings, waveOptions } = this.props;
+    const { formData } = this.state;
 
-    this.validateRequired('firstName', formData, errors);
-    this.validateRequired('lastName', formData, errors);
-    this.validateEmail('email', formData, errors);
-    this.validateRequired('gender', formData, errors);
-    this.validateRequired('dateOfBirthDay', formData, errors);
-    this.validateRequired('dateOfBirthMonth', formData, errors);
-    this.validateRequired('dateOfBirthYear', formData, errors);
-    this.validatePhone('mobile', formData, errors);
+    this.validateRequired('customer.firstName', formData, errors);
+    this.validateRequired('customer.lastName', formData, errors);
+    this.validateEmail('customer.email', formData, errors);
+    this.validateRequired('customer.gender', formData, errors);
+    this.validateRequired('customer.dateOfBirthDay', formData, errors);
+    this.validateRequired('customer.dateOfBirthMonth', formData, errors);
+    this.validateRequired('customer.dateOfBirthYear', formData, errors);
+    this.validatePhone('customer.mobile', formData, errors);
 
     this.validateDob({
-      field: 'dateOfBirth',
+      field: 'customer.dateOfBirth',
       dob: this.getDob(),
       eventDate: eventDate,
       minAge: minAge,
@@ -160,54 +137,41 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
     });
 
     if (settings.showAddress) {
-      this.validateRequired('billing.address1', formData, errors);
-      this.validateRequired('billing.suburb', formData, errors);
-      this.validateRequired('billing.state', formData, errors);
-      this.validateRequired('billing.postcode', formData, errors);
-      this.validateRequired('billing.country', formData, errors);
+      this.validateRequired('customer.billing.address1', formData, errors);
+      this.validateRequired('customer.billing.suburb', formData, errors);
+      this.validateRequired('customer.billing.state', formData, errors);
+      this.validateRequired('customer.billing.postcode', formData, errors);
+      this.validateRequired('customer.billing.country', formData, errors);
     }
 
     if (waveOptions.length > 1)  {
-      this.validateRequired('wave', extendFormData, errors);
+      this.validateRequired('waveProductId', formData, errors);
     }
   }
 
   onSubmitForm() {
-    // Left empty in the base implementation,
-    // but can be overridden in the instance.
-  }
-
-  getSelectedAddOns() {
-    const { formData } = this.state.extendFormContext;
-
-    return this.props.addOns.filter(
-      addOn => !!formData[`addOns.${addOn.offerId}`]
-    );
+    // Override in subclass.
   }
 
   addAddOnsToCart(addOns) {
     const { addToCart, participantIndex } = this.props;
-    
-    addOns.forEach(addOn => addToCart({
-      offerId: addOn.offerId,
-      type: 'add-on',
-      price: addOn.price,
-      options: { participantIndex },
-    }));
+
+    addOns.forEach(offerId => {
+      const offer = this.props.addOns.find(offer => offer.offerId === offerId);
+
+      addToCart({
+        offerId: offer.offerId,
+        type: 'add-on',
+        price: offer.price,
+        options: { participantIndex },
+      });
+    });
   }
 
   setErrors(errors) {
     const { setErrors, participantIndex } = this.props;
     setErrors(participantIndex, errors);
     scrollIntoView(this.ref);
-  }
-
-  getCustomerFieldValue(field) {
-    return this.state.customerFormContext.formData[field];
-  }
-
-  getExtendFieldValue(field) {
-    return this.state.extendFormContext.formData[field];
   }
 
   reset() {
@@ -235,7 +199,7 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
 
   renderEdit() {
     const { layout, index, registrationErrors } = this.props;
-    const { firstName } = this.state.customerFormContext.formData;
+    const firstName = this.state.formData['customer.firstName'];
 
     return (
       <PanelContainer layout={layout} status="edit">
@@ -296,35 +260,35 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
     );
 
     return (
-      <FormContext.Provider value={this.state.customerFormContext}>
+      <FormContext.Provider value={this.state}>
         <Form.Row>
-          <Col md={6}><TextInput field="firstName" disabled={isPrefilled} required /></Col>
-          <Col md={6}><TextInput field="lastName" disabled={isPrefilled} required /></Col>
+          <Col md={6}><TextInput field="customer.firstName" disabled={isPrefilled} required /></Col>
+          <Col md={6}><TextInput field="customer.lastName" disabled={isPrefilled} required /></Col>
         </Form.Row>
         <Form.Row>
           <Col>
-            <EmailInput field="email" disabled={isPrefilled} required />
+            <EmailInput field="customer.email" disabled={isPrefilled} required />
           </Col>
         </Form.Row>
         <Form.Row>
           <Col>
-            <SimpleSelectInput field="gender" options={genderOptions} required />
+            <SimpleSelectInput field="customer.gender" options={genderOptions} required />
           </Col>
         </Form.Row>
         <Form.Row>
           <Col>
             <DobInput
-              field="dateOfBirth"
-              dayField="dateOfBirthDay"
-              monthField="dateOfBirthMonth"
-              yearField="dateOfBirthYear"
+              field="customer.dateOfBirth"
+              dayField="customer.dateOfBirthDay"
+              monthField="customer.dateOfBirthMonth"
+              yearField="customer.dateOfBirthYear"
               required
             />
           </Col>
         </Form.Row>
         <Form.Row>
           <Col>
-            <PhoneInput field="mobile" required />
+            <PhoneInput field="customer.mobile" required />
           </Col>
         </Form.Row>
 
@@ -333,34 +297,34 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
 
             <Form.Row>
               <Col>
-                <TextInput field="billing.address1" placeholder="Address 1 *" required />
+                <TextInput field="customer.billing.address1" placeholder="Address 1 *" required />
               </Col>
             </Form.Row>
 
             <Form.Row>
               <Col>
-                <TextInput field="billing.address2" placeholder="Address 2" />
+                <TextInput field="customer.billing.address2" placeholder="Address 2" />
               </Col>
             </Form.Row>
 
             <Form.Row>
               <Col>
-                <TextInput field="billing.suburb" placeholder="Suburb *" required />
+                <TextInput field="customer.billing.suburb" placeholder="Suburb *" required />
               </Col>
             </Form.Row>
 
             <Form.Row>
               <Col>
-                <TextInput field="billing.state" placeholder="City *" required />
+                <TextInput field="customer.billing.state" placeholder="City *" required />
               </Col>
               <Col>
-                <TextInput field="billing.postcode" placeholder="Postcode *" type="number" required />
+                <TextInput field="customer.billing.postcode" placeholder="Postcode *" type="number" required />
               </Col>
             </Form.Row>
 
             <Form.Row>
               <Col>
-                <TextInput field="billing.country" placeholder="Country *" required />
+                <TextInput field="customer.billing.country" placeholder="Country *" required />
               </Col>
             </Form.Row>
 
@@ -373,7 +337,7 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
 
   renderExtendForm() {
     return (
-      <FormContext.Provider value={this.state.extendFormContext}>
+      <FormContext.Provider value={this.state}>
         {this.renderWaveSelect()}
         {this.renderAddOns()}
         {/* {this.renderExtendFields()} */}
@@ -388,7 +352,7 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
 
     return (
       <SimpleSelectInput
-        field="wave"
+        field="waveProductId"
         options={waveOptions}
         placeholder="Select Wave"
         required={true}
@@ -420,10 +384,10 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
 
   renderExtendField = (field) => {
     switch (field.type) {
-      case 'select':      return <SimpleSelectInput field={field.columnKey} options={this.translateOptions(field.options)} required={field.required} />;
-      case 'text':        return <TextInput field={field.columnKey} required={field.required} />;
-      case 'phonenumber': return <PhoneInput field={field.columnKey} required={field.required} />;
-      case 'checkbox':    return <CheckboxInput field={field.columnKey} required={field.required} />;
+      case 'select':      return <SimpleSelectInput field={`extendForm.${field.columnKey}`} options={this.translateOptions(field.options)} required={field.required} />;
+      case 'text':        return <TextInput field={`extendForm.${field.columnKey}`} required={field.required} />;
+      case 'phonenumber': return <PhoneInput field={`extendForm.${field.columnKey}`} required={field.required} />;
+      case 'checkbox':    return <CheckboxInput field={`extendForm.${field.columnKey}`} required={field.required} />;
 
       // TODO:
       case 'radio':       return null;
@@ -458,8 +422,13 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
   }
 
   getDob() {
-    const { dateOfBirthDay, dateOfBirthMonth, dateOfBirthYear } = this.state.customerFormContext.formData;
-    return new Date(Number(dateOfBirthYear), Number(dateOfBirthMonth) - 1, Number(dateOfBirthDay));
+    const { formData } = this.state;
+
+    const day   = formData['customer.dateOfBirthDay'];
+    const month = formData['customer.dateOfBirthMonth'];
+    const year  = formData['customer.dateOfBirthYear'];
+    
+    return new Date(Number(year), Number(month) - 1, Number(day));
   }
 
   validateRequired(field, formData, errors, message) {

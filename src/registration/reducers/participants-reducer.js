@@ -82,9 +82,9 @@ function setDetails(state, action) {
     return {
       ...participant,
       customer: action.customerForm,
-      extendForm: action.extendForm,
+      extendForm: action.extendForm || {},
       waveProductId: action.waveProductId,
-      addOns: action.addOns,
+      addOns: action.addOns || [],
       errors: [],
     };
   });

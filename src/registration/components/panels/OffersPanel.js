@@ -173,7 +173,7 @@ export class OffersPanel extends BasePanel {
       <React.Fragment>
         <Form.Group controlId={`prefill-options-${index}`}>
           <Form.Label>
-            <FormattedMessage id={`offersPanel.prefillPrompt`} />
+            <FormattedMessage id="offersPanel.prefillPrompt" />
           </Form.Label>
           <Form.Control as="select" onChange={onChange} value={prefill}>
             <option hidden>Select</option>
@@ -194,7 +194,7 @@ export class OffersPanel extends BasePanel {
     const { names } = this.state;
 
     return (
-      <FormattedMessage id={`label.firstName`}>
+      <FormattedMessage id="label.customer.firstName">
         {label =>
           <Form.Control
             placeholder={label}

@@ -13,7 +13,7 @@ class _PureDobInput extends React.PureComponent {
     return (
       <Form.Group controlId="dateOfBirth">
         <Form.Label>
-          <FormattedMessage id="label.dateOfBirth" />
+          <FormattedMessage id="label.customer.dateOfBirth" />
           {required && ' *'}
         </Form.Label>
 
