@@ -6,7 +6,7 @@ import 'react-block-ui/style.css';
 
 export const PanelContainer = ({ layout, status, className, children }) => {
   if (layout === 'stack') {
-    return (<StackPanelContainer className={className}>{children}</StackPanelContainer>);
+    return (<StackPanelContainer status={status} className={className}>{children}</StackPanelContainer>);
   }
 
   if (layout === 'accordian') {
@@ -53,13 +53,17 @@ export const PanelBody = ({ layout, status, isBusy, children }) => {
 
 // Stack
 
-const StackPanelContainer = ({ className, children }) => (
-  <div className="stack-panel">
-    <Container className={className}>
-      {children}
-    </Container>
-  </div>
-);
+const StackPanelContainer = ({ status, className, children }) => {
+  if (status === 'wait') return null;
+
+  return (
+    <div className="stack-panel">
+      <Container className={className}>
+        {children}
+      </Container>
+    </div>
+  );
+};
 
 const StackPanelHeader = ({ status, intlId, intlValues }) => {
   if (status === 'wait') return null;
