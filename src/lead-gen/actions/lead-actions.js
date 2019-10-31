@@ -17,7 +17,7 @@ export const createLead = () => {
       const postData = getLeadPostData(state);
       dispatch(createLeadRequest(postData));
 
-      const results = await ClaretyApi.post('cases/lead/', postData);
+      const results = await ClaretyApi.post('cases/leads/', postData);
       const result = results[0];
 
       if (result.status === 'error') {
