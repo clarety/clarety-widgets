@@ -98,22 +98,6 @@ export const getOffersForAllParticipants = (state) => getParticipants(state).map
 
 export const getOffers = (state, type) => getRegistrationTypes(state)[type].offers;
 
-export const getAddOnsTotal = (state) => {
-  const participants = getParticipants(state);
-
-  let total = 0;
-
-  for (const participant of participants) {
-    if (!participant.addOns) continue;
-
-    for (const addOn of participant.addOns) {
-      total += addOn.price;
-    }
-  }
-
-  return total;
-};
-
 export const getExtendFields = (state) => {
   try {
     return state.settings.extendForm.extendFields;
@@ -179,10 +163,10 @@ export const getCreateRegistrationPostData = (state) => {
 };
 
 const getParticipantPostData = (state, participant) => {
-  const extendFormId = getExtendFormId(state);
   const offerId = participant.offerId || getDefaultOffer(state, participant).offerId;
   const productId = participant.waveProductId || getDefaultWave(state, participant).productId;
   const customer = parseNestedElements(participant.customer);
+  const extendFormId = getExtendFormId(state);
 
   return {
     offerId: offerId,

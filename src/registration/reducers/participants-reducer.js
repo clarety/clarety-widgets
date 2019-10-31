@@ -84,6 +84,7 @@ function setDetails(state, action) {
       customer: action.customerForm,
       extendForm: action.extendForm,
       waveProductId: action.waveProductId,
+      addOns: action.addOns,
       errors: [],
     };
   });
@@ -111,33 +112,6 @@ function setAdditionalData(state, action) {
     return {
       ...participant,
       additionalData: action.additionalData,
-    };
-  });
-}
-
-function selectAddOn(state, action) {
-  return state.map((participant, index) => {
-    if (index !== action.index) return participant;
-
-    return {
-      ...participant,
-      addOns: [
-        ...participant.addOns,
-        action.addOn,
-      ],
-    }; 
-  });
-}
-
-function deselectAddOn(state, action) {
-  return state.map((participant, index) => {
-    if (index !== action.index) return participant;
-
-    return {
-      ...participant,
-      addOns: participant.addOns.filter(
-        addOn => addOn.offerId !== action.addOn.offerId
-      ),
     };
   });
 }

@@ -1,6 +1,6 @@
 import { types } from 'shared/actions';
 
-export const addItem = ({ offerId, offerUid, offerPaymentUid, offerProductId, quantity, price, panel, options }) => ({
+export const addItem = ({ offerId, offerUid, offerPaymentUid, offerProductId, type, quantity, price, panel, options }) => ({
   type: types.addItem,
   item: {
     offerId: offerId,
@@ -11,8 +11,9 @@ export const addItem = ({ offerId, offerUid, offerPaymentUid, offerProductId, qu
     quantity: quantity || 1,
     price: Number(price),
 
+    type: type,
     panel: panel,
-    options: options,
+    options: options || {},
   },
 });
 

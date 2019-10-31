@@ -51,12 +51,13 @@ export const prefillDetails = (prefills) => {
   };
 };
 
-export const setDetails = (index, customerForm, extendForm, waveProductId) => ({
+export const setDetails = (index, customerForm, extendForm, waveProductId, addOns) => ({
   type: types.setParticipantDetails,
   index: index,
   customerForm: customerForm,
   extendForm: extendForm,
   waveProductId: waveProductId,
+  addOns: addOns,
 });
 
 export const resetDetails = (index) => ({
@@ -68,12 +69,6 @@ export const setAdditionalData = (index, additionalData) => ({
   type: types.setParticipantAdditionalData,
   index: index,
   additionalData: additionalData,
-});
-
-export const updateAddOn = (index, addOn, isSelected) => ({
-  type: isSelected ? types.selectParticipantAddOn : types.deselectParticipantAddOn,
-  index: index,
-  addOn: addOn,
 });
 
 export const setErrors = (index, errors) => ({

@@ -1,8 +1,8 @@
 import React from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Button, Form, Row, Col, Alert, FormCheck } from 'react-bootstrap';
+import { Button, Form, Row, Col, Alert } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { FormContext, currency } from 'shared/utils';
+import { FormContext } from 'shared/utils';
 import { TextInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput } from 'registration/components';
 import { getGenderOptions, scrollIntoView } from 'registration/utils';
 
@@ -71,7 +71,7 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
   onClickNext = async event => {
     event.preventDefault();
 
-    const { nextPanel, setDetails, participantIndex, waveOptions, setParticipantWave } = this.props;
+    const { nextPanel, setDetails, participantIndex, waveOptions, setWaveInCart } = this.props;
     const { customerFormContext, extendFormContext } = this.state;
 
     if (this.validate()) {
@@ -81,17 +81,28 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
       extendFormContext.formData.wave = undefined;
 
       if (waveOptions.length > 1) {
-        setParticipantWave(participantIndex, waveProductId);
+        setWaveInCart(participantIndex, waveProductId);
       }
 
-      setDetails(participantIndex, customerFormContext.formData, extendFormContext.formData, waveProductId);
+      const selectedAddOns = this.getSelectedAddOns();
+      this.addAddOnsToCart(selectedAddOns);
+
+      setDetails(
+        participantIndex,
+        customerFormContext.formData,
+        extendFormContext.formData,
+        waveProductId,
+        selectedAddOns,
+      );
 
       nextPanel();
     }
   };
 
   onClickEdit = () => {
-    this.props.editPanel();
+    const { editPanel, participantIndex, removeAddOnsFromCart } = this.props;
+    removeAddOnsFromCart(participantIndex);
+    editPanel();
   };
 
   onCustomerFormChange = (field, value) => {
@@ -166,6 +177,25 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
     // but can be overridden in the instance.
   }
 
+  getSelectedAddOns() {
+    const { formData } = this.state.extendFormContext;
+
+    return this.props.addOns.filter(
+      addOn => !!formData[`addOns.${addOn.offerId}`]
+    );
+  }
+
+  addAddOnsToCart(addOns) {
+    const { addToCart, participantIndex } = this.props;
+    
+    addOns.forEach(addOn => addToCart({
+      offerId: addOn.offerId,
+      type: 'add-on',
+      price: addOn.price,
+      options: { participantIndex },
+    }));
+  }
+
   setErrors(errors) {
     const { setErrors, participantIndex } = this.props;
     setErrors(participantIndex, errors);
@@ -181,8 +211,9 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
   }
 
   reset() {
-    const { resetDetails, participantIndex } = this.props;
+    const { resetDetails, participantIndex, removeAddOnsFromCart } = this.props;
     resetDetails(participantIndex);
+    removeAddOnsFromCart(participantIndex);
   }
 
   renderWait() {
@@ -366,19 +397,12 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
   }
 
   renderAddOns() {
-    const { addOns, participantIndex, updateAddOn } = this.props;
-
-    return addOns.map(addOn =>
-      <Form.Group controlId={addOn.offerId} key={addOn.offerId}>
-        <FormCheck>
-          <FormCheck.Input
-            onChange={event => updateAddOn(participantIndex, addOn, event.target.checked)}
-          />
-          <FormCheck.Label>
-            {addOn.name} - {currency(addOn.price)}
-          </FormCheck.Label>
-        </FormCheck>
-      </Form.Group>
+    return this.props.addOns.map(addOn =>
+      <CheckboxInput
+        key={addOn.offerId}
+        field={`addOns.${addOn.offerId}`}
+        label={addOn.name}
+      />
     );
   }
 

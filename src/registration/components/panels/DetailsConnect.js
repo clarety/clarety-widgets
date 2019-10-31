@@ -1,4 +1,5 @@
-import { setDetails, setAdditionalData, updateAddOn, setErrors, resetDetails, setParticipantWave } from 'registration/actions';
+import { addItem } from 'shared/actions';
+import { setDetails, setAdditionalData, setErrors, resetDetails, setWaveInCart, removeAddOnsFromCart } from 'registration/actions';
 import { getEvent, getExtendFields, getParticipant, getWaveOptions, getAddOns, getParticipantOffer, getIsPrefilled } from 'registration/selectors';
 
 export class DetailsConnect {
@@ -34,8 +35,9 @@ export class DetailsConnect {
   static actions = {
     setDetails: setDetails,
     setAdditionalData: setAdditionalData,
-    setParticipantWave: setParticipantWave,
-    updateAddOn: updateAddOn,
+    addToCart: addItem,
+    setWaveInCart: setWaveInCart,
+    removeAddOnsFromCart: removeAddOnsFromCart,
     setErrors: setErrors,
     resetDetails: resetDetails,
   };

@@ -26,8 +26,6 @@ export const types = {
   setParticipantDetails:        'SET_PARTICIPANT_DETAILS',
   resetParticipantDetails:      'RESET_PARTICIPANT_DETAILS',
   setParticipantAdditionalData: 'SET_PARTICIPANT_ADDITIONAL_DATA',
-  selectParticipantAddOn:       'SELECT_PARTICIPANT_ADD_ON',
-  deselectParticipantAddOn:     'DESELECT_PARTICIPANT_ADD_ON',
   setParticipantErrors:         'SET_PARTICIPANT_ERRORS',
 
   // Cart Action Types

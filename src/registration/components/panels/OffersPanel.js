@@ -76,6 +76,7 @@ export class OffersPanel extends BasePanel {
       this.props.addToCart({
         offerId: offer.offerId,
         price: offer.price,
+        type: 'event',
         panel: 'OffersPanel',
         options: { participantIndex: index },
       })

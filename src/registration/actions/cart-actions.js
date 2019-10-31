@@ -1,22 +1,43 @@
 import { ClaretyApi } from 'clarety-utils';
-import { updateItem } from 'shared/actions';
+import { updateItem, removeItem } from 'shared/actions';
 import { getCart } from 'shared/selectors';
 import { setErrors, clearErrors } from 'form/actions';
 import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getSaleId, getIsLoggedIn } from 'registration/selectors';
 import { types } from 'registration/actions';
 
-export const setParticipantWave = (participantIndex, waveProductId) => {
+export const setWaveInCart = (participantIndex, waveProductId) => {
   return async (dispatch, getState) => {
     const state = getState();
     const cart = getCart(state);
 
     const index = cart.items.findIndex(item =>
-      item.options && item.options.participantIndex === participantIndex
+      item.type === 'event' &&
+      item.options.participantIndex === participantIndex
     );
 
     dispatch(updateItem(index, {
       productId: waveProductId,
     }));
+  };
+};
+
+export const removeAddOnsFromCart = (participantIndex) => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const cart = getCart(state);
+
+    // Iterate backwards since we're removing items by index.
+    for (let itemIndex = cart.items.length - 1; itemIndex >= 0; itemIndex--) {
+      const item = cart.items[itemIndex];
+
+      const shouldRemove =
+        item.type === 'add-on' &&
+        item.options.participantIndex === participantIndex;
+
+      if (shouldRemove) {
+        dispatch(removeItem(itemIndex));
+      }
+    }
   };
 };
 
