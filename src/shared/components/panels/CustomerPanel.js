@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { requiredField } from 'shared/utils';
+import { requiredField, emailField } from 'shared/utils';
 import { TextInput, EmailInput, PhoneInput, CheckboxInput, StateInput, PostcodeInput, SubmitButton, ErrorMessages, FormElement } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
@@ -18,15 +18,46 @@ export class CustomerPanel extends BasePanel {
   };
 
   validate() {
-    const { formData, setErrors } = this.props;
+    const { formData, setErrors, settings } = this.props;
     const errors = [];
 
     requiredField(errors, formData, 'customer.firstName');
     requiredField(errors, formData, 'customer.lastName');
     requiredField(errors, formData, 'customer.email');
+    emailField(errors, formData, 'customer.email');
+
+    if (settings.isPhoneRequired) {
+      requiredField(errors, formData, 'customer.mobile');
+    }
+
+    this.validateAddress(errors);
 
     setErrors(errors);
     return errors.length === 0;
+  }
+
+  validateAddress(errors) {
+    const { formData, settings } = this.props;
+    const { addressType, isAddressRequired } = settings;
+
+    if (!isAddressRequired) return;
+
+    if (addressType === 'postcode') {
+      requiredField(errors, formData, 'customer.billing.postcode');
+    }
+
+    if (addressType === 'australian') {
+      requiredField(errors, formData, 'customer.billing.address1');
+      requiredField(errors, formData, 'customer.billing.suburb');
+      requiredField(errors, formData, 'customer.billing.state');
+      requiredField(errors, formData, 'customer.billing.postcode');
+    }
+
+    if (addressType === 'international') {
+      throw new Erorr('[Clarety] Customer Panel validate international address not implemented');
+    }
+
+    return errors;
   }
 
   renderWait() {
@@ -73,6 +104,7 @@ export class CustomerPanel extends BasePanel {
                   <TextInput field="customer.firstName" placeholder="First Name *" />
                 </Form.Group>
               </Col>
+
               <Col sm>
                 <Form.Group>
                   <TextInput field="customer.lastName" placeholder="Last Name *" />
@@ -83,20 +115,13 @@ export class CustomerPanel extends BasePanel {
             <Form.Row>
               <Col>
                 <Form.Group>
-                  <EmailInput field="customer.email" placeholder="Email" />
+                  <EmailInput field="customer.email" placeholder="Email *" />
                 </Form.Group>
               </Col>
             </Form.Row>
 
-            <Form.Row>
-              <Col>
-                <Form.Group>
-                  <PhoneInput field="customer.mobile" placeholder="Mobile" country="AU" />
-                </Form.Group>
-              </Col>
-            </Form.Row>
-
-            {this.renderAddressFields(settings.addressType)}
+            {this.renderPhoneField()}
+            {this.renderAddressFields()}
 
             <Row className="panel-actions">
               <Col className="text-center">
@@ -121,24 +146,50 @@ export class CustomerPanel extends BasePanel {
     );
   }
 
-  renderAddressFields(addressType) {
-    if (addressType === 'none') {
-      return null;
+  renderPhoneField() {
+    const { settings } = this.props;
+
+    if (settings.phoneType === 'mobile') {
+      return (
+        <Form.Row>
+          <Col>
+            <Form.Group>
+              <PhoneInput field="customer.mobile" placeholder="Mobile" required={settings.isPhoneRequired} />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+      );
     }
+
+    return null;
+  }
+
+  renderAddressFields() {
+    const { addressType } = this.props.settings;
 
     if (addressType === 'postcode') {
       return this.renderPostCodeField();
     }
 
-    return this.renderAustralianAddressFields();
+    if (addressType === 'australian') {
+      return this.renderAustralianAddressFields();
+    }
+
+    if (addressType === 'international') {
+      return this.renderInternationalAddressFields();
+    }
+
+    return null;
   }
 
   renderPostCodeField() {
+    const { settings } = this.props;
+
     return (
       <Form.Row>
         <Col sm>
           <Form.Group>
-            <PostcodeInput field="customer.billing.postcode" placeholder="Postcode" />
+            <PostcodeInput field="customer.billing.postcode" placeholder="Postcode" required={settings.isAddressRequired} />
           </Form.Group>
         </Col>
         <Col sm></Col>
@@ -147,12 +198,22 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderAustralianAddressFields() {
+    const { settings } = this.props;
+
     return (
       <React.Fragment>
         <Form.Row>
           <Col>
             <Form.Group>
-              <TextInput field="customer.billing.address1" placeholder="Address" />
+              <TextInput field="customer.billing.address1" placeholder="Street Address 1" required={settings.isAddressRequired} />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col>
+            <Form.Group>
+              <TextInput field="customer.billing.address2" placeholder="Street Address 2" />
             </Form.Group>
           </Col>
         </Form.Row>
@@ -160,13 +221,13 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col sm>
             <Form.Group>
-              <TextInput field="customer.billing.suburb" placeholder="Suburb" />
+              <TextInput field="customer.billing.suburb" placeholder="Suburb" required={settings.isAddressRequired} />
             </Form.Group>
           </Col>
 
           <Col sm>
             <Form.Group>
-              <StateInput field="customer.billing.state" placeholder="State" />
+              <StateInput field="customer.billing.state" placeholder="State" required={settings.isAddressRequired} />
             </Form.Group>
           </Col>
         </Form.Row>
@@ -174,7 +235,7 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col sm>
             <Form.Group>
-              <PostcodeInput field="customer.billing.postcode" placeholder="Postcode" />
+              <PostcodeInput field="customer.billing.postcode" placeholder="Postcode" required={settings.isAddressRequired} />
             </Form.Group>
           </Col>
           <Col sm></Col>
@@ -183,6 +244,10 @@ export class CustomerPanel extends BasePanel {
         <FormElement field="customer.billing.country" value="AU" />
       </React.Fragment>
     );
+  }
+
+  renderInternationalAddressFields() {
+    throw new Erorr('[Clarety] Customer Panel render international address not implemented');
   }
 
   renderDone() {

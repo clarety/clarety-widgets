@@ -9,7 +9,7 @@ import { Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { SosProgress, ImageHeader } from 'lead-gen/components';
 import { rootReducer } from 'lead-gen/reducers';
-import { settingsMap } from 'lead-gen/utils';
+import { settingsMap, getCustomerPanelSettingsFromWidgetProps } from 'lead-gen/utils';
 
 const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
@@ -31,15 +31,8 @@ export class _LeadGenRoot extends React.Component {
     const { sourceUid, responseId, emailResponseId } = this.props;
     setTrackingData({ sourceUid, responseId, emailResponseId });
 
-    setPanelSettings('CustomerPanel', {
-      title: this.props.headingText,
-      subtitle: this.props.subHeadingText,
-      submitBtnText: this.props.buttonText,
-      showOptIn: this.props.showOptIn === '1',
-      optInText: this.props.optInText,
-      phoneType: this.props.phoneOption,
-      addressType: this.props.addressOption,
-    });
+    const customerPanelSettings = getCustomerPanelSettingsFromWidgetProps(this.props);
+    setPanelSettings('CustomerPanel', customerPanelSettings);
 
     const { caseTypeUid, variant } = this.props;
     fetchSettings('leadgen/', { caseTypeUid, variant }, settingsMap);

@@ -13,3 +13,13 @@ export function requiredField(errors, formData, field) {
     });
   }
 }
+
+export function emailField(errors, formData, field) {
+  const value = formData[field];
+  if (!validateEmail(value)) {
+    errors.push({
+      field: field,
+      message: 'Please enter a valid email.',
+    });
+  }
+}

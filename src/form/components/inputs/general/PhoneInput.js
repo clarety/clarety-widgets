@@ -9,6 +9,8 @@ import { getValidationError } from 'form/utils';
 const _PhoneInput = ({ value, placeholder, country, onChange, error, required }) => {
   country = country || Config.get('phoneCountry') || 'AU';
 
+  if (placeholder && required) placeholder += ' *';
+
   return (
     <React.Fragment>
       <ReactPhoneNumberInput

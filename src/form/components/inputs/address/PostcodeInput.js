@@ -5,17 +5,21 @@ import { updateFormData } from 'form/actions';
 import { getValidationError } from 'form/utils';
 import { FieldError } from 'form/components';
 
-const _PostcodeInput = ({ value, placeholder, error, onChange }) => (
-  <React.Fragment>
-    <Form.Control
-      value={value}
-      placeholder={placeholder}
-      onChange={onChange}
-      isInvalid={!!error}
-    />
-    <FieldError error={error} />
-  </React.Fragment>
-);
+const _PostcodeInput = ({ value, placeholder, error, onChange, required }) => {
+  if (placeholder && required) placeholder += ' *';
+
+  return (
+    <React.Fragment>
+      <Form.Control
+        value={value}
+        placeholder={placeholder}
+        onChange={onChange}
+        isInvalid={!!error}
+      />
+      <FieldError error={error} />
+    </React.Fragment>
+  );
+};
 
 const mapStateToProps = (state, { field }) => {
   return {

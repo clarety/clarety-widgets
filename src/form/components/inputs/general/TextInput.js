@@ -5,19 +5,23 @@ import { updateFormData } from 'form/actions';
 import { getValidationError } from 'form/utils';
 import { FieldError } from 'form/components';
 
-const _TextInput = ({ value, type, placeholder, testId, error, onChange }) => (
-  <React.Fragment>
-    <Form.Control
-      type={type || 'text'}
-      placeholder={placeholder}
-      value={value}
-      onChange={onChange}
-      data-testid={testId}
-      isInvalid={error !== null}
-    />
-    <FieldError error={error} />
-  </React.Fragment>
-);
+const _TextInput = ({ value, type, placeholder, testId, error, onChange, required }) => {
+  if (placeholder && required) placeholder += ' *';
+
+  return (
+    <React.Fragment>
+      <Form.Control
+        type={type || 'text'}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        data-testid={testId}
+        isInvalid={error !== null}
+      />
+      <FieldError error={error} />
+    </React.Fragment>
+  );
+};
 
 const mapStateToProps = (state, { field }) => {
   return {
