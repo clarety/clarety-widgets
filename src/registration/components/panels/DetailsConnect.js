@@ -1,10 +1,11 @@
 import { addItem } from 'shared/actions';
 import { setDetails, setAdditionalData, setErrors, resetDetails, setWaveInCart, removeAddOnsFromCart } from 'registration/actions';
-import { getEvent, getExtendFields, getParticipant, getWaveOptions, getAddOns, getParticipantOffer, getIsPrefilled } from 'registration/selectors';
+import { getEvent, getExtendFields, getParticipant, getWaveOptions, getAddOns, getParticipantOffer, getIsPrefilled, getFirstParticipant } from 'registration/selectors';
 
 export class DetailsConnect {
   static mapStateToProps = (state, ownProps) => {
     const participant = getParticipant(state, ownProps.participantIndex);
+    const firstParticipant = getParticipant(state, 0);
 
     // We can't map state until we have a participant.
     if (!participant) return {};
@@ -21,6 +22,7 @@ export class DetailsConnect {
       appSettings: state.settings,
       event: event,
       participant: participant,
+      firstParticipant: firstParticipant,
       extendFields: extendFields,
       waveOptions: waveOptions,
       addOns: addOns,

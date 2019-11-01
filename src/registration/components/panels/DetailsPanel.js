@@ -36,6 +36,8 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
 
     const { nextPanel, setDetails, participantIndex, setWaveInCart } = this.props;
 
+    this.copyAutofilledFields();
+
     if (this.validate()) {
       this.onSubmitForm();
 
@@ -101,6 +103,28 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
         ...formData,
       }
     }));
+  }
+
+  copyAutofilledFields() {
+    const { firstParticipant } = this.props;
+    const { formData } = this.state;
+
+    if (formData['autofill.email']) {
+      formData['customer.email'] = firstParticipant.customer.email;
+    }
+
+    if (formData['autofill.mobile']) {
+      formData['customer.mobile'] = firstParticipant.customer.mobile;
+    }
+
+    if (formData['autofill.address']) {
+      formData['customer.billing.address1'] = firstParticipant.customer.billing.address1;
+      formData['customer.billing.address2'] = firstParticipant.customer.billing.address2;
+      formData['customer.billing.suburb']   = firstParticipant.customer.billing.suburb;
+      formData['customer.billing.state']    = firstParticipant.customer.billing.state;
+      formData['customer.billing.postcode'] = firstParticipant.customer.billing.postcode;
+      formData['customer.billing.country']  = firstParticipant.customer.billing.country;
+    }
   }
 
   getSelectedAddOns(formData) {
@@ -253,11 +277,17 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
   }
 
   renderCustomerForm() {
-    const { isPrefilled, appSettings, settings } = this.props;
+    const { isPrefilled, appSettings, settings, participantIndex } = this.props;
+    const { formData } = this.state;
 
     const genderOptions = this.translateOptions(
       getGenderOptions(appSettings)
     );
+
+    const showAutofill = participantIndex !== 0;
+    const showEmail   = !formData['autofill.email'];
+    const showMobile  = !formData['autofill.mobile'];
+    const showAddress = !formData['autofill.address'];
 
     return (
       <FormContext.Provider value={this.state}>
@@ -265,16 +295,29 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
           <Col md={6}><TextInput field="customer.firstName" disabled={isPrefilled} required /></Col>
           <Col md={6}><TextInput field="customer.lastName" disabled={isPrefilled} required /></Col>
         </Form.Row>
-        <Form.Row>
-          <Col>
-            <EmailInput field="customer.email" disabled={isPrefilled} required />
-          </Col>
-        </Form.Row>
+
+        {showAutofill &&
+          <Form.Row>
+            <Col>
+              <CheckboxInput field="autofill.email" label="Use email from first participant?" />
+            </Col>
+          </Form.Row>
+        }
+
+        {showEmail &&
+          <Form.Row>
+            <Col>
+              <EmailInput field="customer.email" disabled={isPrefilled} required />
+            </Col>
+          </Form.Row>
+        }
+
         <Form.Row>
           <Col>
             <SimpleSelectInput field="customer.gender" options={genderOptions} required />
           </Col>
         </Form.Row>
+
         <Form.Row>
           <Col>
             <DobInput
@@ -286,13 +329,32 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
             />
           </Col>
         </Form.Row>
-        <Form.Row>
-          <Col>
-            <PhoneInput field="customer.mobile" required />
-          </Col>
-        </Form.Row>
 
-        {settings.showAddress &&
+        {showAutofill &&
+          <Form.Row>
+            <Col>
+              <CheckboxInput field="autofill.mobile" label="Use mobile from first participant?" />
+            </Col>
+          </Form.Row>
+        }
+
+        {showMobile &&
+          <Form.Row>
+            <Col>
+              <PhoneInput field="customer.mobile" required />
+            </Col>
+          </Form.Row>
+        }
+
+        {showAutofill &&
+          <Form.Row>
+            <Col>
+              <CheckboxInput field="autofill.address" label="Use address from first participant?" />
+            </Col>
+          </Form.Row>
+        }
+
+        {settings.showAddress && showAddress &&
           <React.Fragment>
 
             <Form.Row>
