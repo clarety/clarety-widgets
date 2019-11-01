@@ -18,7 +18,8 @@ export const types = {
   updateItem:            'UPDATE_ITEM',
   removeItem:            'REMOVE_ITEM',
   clearItems:            'CLEAR_ITEMS',
-  removeItemsWithPanel : 'REMOVE_ITEMS_WITH_PANEL',
+  removeItemsWithPanel:  'REMOVE_ITEMS_WITH_PANEL',
+  removeItemsWithType:   'REMOVE_ITEMS_WITH_TYPE',
 
   setPayment:            'SET_PAYMENT',
   clearPayment:          'CLEAR_PAYMENT',

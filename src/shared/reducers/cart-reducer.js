@@ -65,6 +65,12 @@ export const cartReducer = (state = initialState, action) => {
         items: state.items.filter(item => item.panel !== action.panel),
       };
 
+    case types.removeItemsWithType:
+      return {
+        ...state,
+        items: state.items.filter(item => item.type !== action.itemType),
+      };
+
     case types.clearItems:
       return {
         ...state,

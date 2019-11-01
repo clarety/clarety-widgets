@@ -37,11 +37,26 @@ export class DonationPanel extends BasePanel {
 
   onClickNext = (event) => {
     event.preventDefault();
-    this.props.nextPanel();
+
+    const { addToCart, nextPanel } = this.props;
+    const { frequency, selections } = this.state;
+
+    const offer = this.getOffer(frequency);
+    const selection = selections[frequency];
+
+    addToCart({
+      type: 'donation',
+      offerUid: offer.offerUid,
+      offerPaymentUid: offer.offerPaymentUid,
+      price: selection.amount,
+    });
+
+    nextPanel();
   };
 
   onClickEdit = (event) => {
     event.preventDefault();
+    this.props.removeItemsWithType('donation');
     this.props.editPanel();
   }
 
@@ -72,6 +87,10 @@ export class DonationPanel extends BasePanel {
       frequency: defaultFrequency,
       selections: defaultSelections,
     });
+  }
+
+  reset() {
+    this.props.removeItemsWithType('donation');
   }
 
   renderWait() {

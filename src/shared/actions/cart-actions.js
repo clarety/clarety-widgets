@@ -33,6 +33,11 @@ export const removeItemsWithPanel = (panel) => ({
   panel: panel,
 });
 
+export const removeItemsWithType = (type) => ({
+  type: types.removeItemsWithType,
+  itemType: type,
+});
+
 export const clearItems = () => ({
   type: types.clearItems,
 });

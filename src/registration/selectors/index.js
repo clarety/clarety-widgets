@@ -198,16 +198,16 @@ const getDefaultOffer = (state, participant) => getOffers(state, participant.typ
 const getDefaultWave = (state, participant) => getDefaultOffer(state, participant).waves[0];
 
 const getFundraisingPostData = (state) => {
-  const donationAmount = getDonationAmount(state);
-
   return {
-    donationAmount: donationAmount,
+    donationAmount: getDonationAmount(state),
   };
 };
 
-// TODO: remove this once donation is added to cart.
 const getDonationAmount = (state) => {
-  return 0;
+  const cart = getCart(state);
+  const item = cart.items.find(item => item.type === 'donation');
+  
+  return item ? item.price : 0;
 };
 
 export const getSubmitRegistrationPostData = (state) => {

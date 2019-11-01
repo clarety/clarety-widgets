@@ -1,3 +1,4 @@
+import { addItem, removeItemsWithType } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
 
 export class DonationConnect {
@@ -7,5 +8,8 @@ export class DonationConnect {
     };
   };
 
-  static actions = {};
+  static actions = {
+    addToCart: addItem,
+    removeItemsWithType: removeItemsWithType,
+  };
 }

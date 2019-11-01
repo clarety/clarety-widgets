@@ -7,8 +7,8 @@ import enTranslations from '../../src/registration/intl/en.json';
 import '../../src/registration/style.scss';
 
 Registration.setClientIds({
-  // dev:  '82ee4a2479780256c9bf9b951f5d1cfb',
-  dev:  '60efcad7dc9df95cb418032c39565a79',
+  // dev:  '82ee4a2479780256c9bf9b951f5d1cfb', // baseline
+  dev:  '60efcad7dc9df95cb418032c39565a79',    // mdc
   prod: '',
 });
 

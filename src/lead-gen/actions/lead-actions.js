@@ -31,6 +31,7 @@ export const createLead = () => {
         
         if (state.settings.confirmPageUrl) {
           // Redirect.
+          // TODO: set 'jwtConfirm' cookie.
           window.location.href = state.settings.confirmPageUrl;
         } else {
           // Show CMS confirm content.
