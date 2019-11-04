@@ -10,11 +10,11 @@ export const PanelContainer = ({ layout, status, className, children }) => {
   }
 
   if (layout === 'accordian') {
-    return (<AccordianPanelContainer>{children}</AccordianPanelContainer>);
+    return (<AccordianPanelContainer status={status} className={className}>{children}</AccordianPanelContainer>);
   }
 
   if (layout === 'tabs') {
-    return (<TabsPanelContainer status={status}>{children}</TabsPanelContainer>);
+    return (<TabsPanelContainer status={status} className={className}>{children}</TabsPanelContainer>);
   }
 
   return children;
@@ -57,7 +57,7 @@ const StackPanelContainer = ({ status, className, children }) => {
   if (status === 'wait') return null;
 
   return (
-    <div className="stack-panel">
+    <div className={`stack-panel stack-panel-${status}`}>
       <Container className={className}>
         {children}
       </Container>
@@ -67,14 +67,28 @@ const StackPanelContainer = ({ status, className, children }) => {
 
 const StackPanelHeader = ({ status, intlId, intlValues }) => {
   if (status === 'wait') return null;
-  if (status === 'edit') return <FormattedMessage tagName="h2" id={intlId} values={intlValues} />;
-  if (status === 'done') return <FormattedMessage tagName="h4" id={intlId} values={intlValues} />;
+
+  if (status === 'edit') {
+    return (
+      <FormattedMessage id={intlId} values={intlValues} >
+        {text => <h2 className="panel-header panel-header-edit">{text}</h2>}
+      </FormattedMessage>
+    );
+  }
+
+  if (status === 'done') {
+    return (
+      <FormattedMessage id={intlId} values={intlValues}>
+        {text => <h4 className="panel-header panel-header-done">{text}</h4>}
+      </FormattedMessage>
+    );
+  }
 };
 
 const StackPanelBody = ({ status, isBusy, children }) => {
   if (status === 'wait') return null;
-  if (status === 'edit') return <div className="panel-body">{children}</div>;
-  if (status === 'done') return <div className="panel-body">{children}</div>;
+  if (status === 'edit') return <div className="panel-body panel-body-edit">{children}</div>;
+  if (status === 'done') return <div className="panel-body panel-body-done">{children}</div>;
 };
 
 

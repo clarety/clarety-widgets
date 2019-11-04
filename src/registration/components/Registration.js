@@ -11,7 +11,7 @@ import { statuses, setPanels, setClientIds, setAuth, setTrackingData, fetchSetti
 import { PanelManager } from 'shared/components';
 import { Resources, getJwtAccount } from 'shared/utils';
 import { mapDonationSettings } from 'donate/utils';
-import { Brand } from 'registration/components/misc/Brand';
+import { NavBarBrand } from 'registration/components/misc/NavBarBrand';
 import { MiniCart, BusyOverlay } from 'registration/components';
 import { fetchEvents, fetchAuthCustomer } from 'registration/actions';
 import { rootReducer } from 'registration/reducers';
@@ -19,7 +19,7 @@ import { rootReducer } from 'registration/reducers';
 const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
 
-Resources.setComponent('Brand', Brand);
+Resources.setComponent('NavBarBrand', NavBarBrand);
 
 class _RegistrationRoot extends React.Component {
   async componentDidMount() {

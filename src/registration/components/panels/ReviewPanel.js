@@ -81,7 +81,7 @@ export class ReviewPanel extends BasePanel {
 
           <div className="panel-body text-center">
             {this.props.registration.map((registration, index) =>
-              <p key={index} className="lead">{registration.description}</p>
+              <p key={index}>{registration.description}</p>
             )}
           </div>
 

@@ -127,9 +127,11 @@ export class QtysPanel extends BasePanel {
           <FormattedMessage id="qtysPanel.message" tagName="p" />
         </Form>
 
-        <Button onClick={this.onClickNext} disabled={!this.canContinue()}>
-          <FormattedMessage id="btn.next" />
-        </Button>
+        <div className="panel-actions">
+          <Button onClick={this.onClickNext} disabled={!this.canContinue()}>
+            <FormattedMessage id="btn.next" />
+          </Button>
+        </div>
       </React.Fragment>
     );
   }
@@ -163,7 +165,7 @@ export class QtysPanel extends BasePanel {
               </FormattedMessage>
             </Form.Label>
           </Col>
-          <Col>
+          <Col md="auto">
             <QtyInput
               value={this.state.qtys[type] || 0}
               onChange={qty => this.onChangeQty(type, qty)}
@@ -189,7 +191,7 @@ export class QtysPanel extends BasePanel {
         
         <PanelBody layout={layout} status="done">
 
-          <p className="lead">
+          <p>
             {Object.keys(qtys).map(key =>
               <Qty key={key} type={key} qty={qtys[key]} />
             )}

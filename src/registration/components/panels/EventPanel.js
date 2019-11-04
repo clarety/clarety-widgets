@@ -112,7 +112,7 @@ export class EventPanel extends BasePanel {
 
         <PanelBody layout={layout} status="done">
 
-          <p className="lead">{selectedEvent.name}</p>
+          <p>{selectedEvent.name}</p>
 
           <Button onClick={this.onClickEdit}>
             <FormattedMessage id="btn.edit" />

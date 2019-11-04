@@ -201,7 +201,7 @@ export class LoginPanel extends BasePanel {
     const { layout, isBusy, index } = this.props;
 
     return (
-      <PanelContainer layout={layout}>
+      <PanelContainer layout={layout}  className="login">
         <PanelHeader
           status="edit"
           layout={layout}
@@ -330,7 +330,9 @@ export class LoginPanel extends BasePanel {
           }
 
           <div className="panel-actions">
-            <Button title="Cancel" onClick={this.onPressCancelCreateAccount} variant="link" />
+            {settings.allowGuest &&
+              <Button title="Cancel" onClick={this.onPressCancelCreateAccount} variant="link" />
+            }
             <Button title="Continue" type="submit" isBusy={this.props.isBusy} />
           </div>
 

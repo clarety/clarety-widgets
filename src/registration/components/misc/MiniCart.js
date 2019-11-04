@@ -8,13 +8,13 @@ import { getEventName, getQtys, getCartTotal, getProgress } from 'registration/s
 class _MiniCart extends React.Component {
   render() {
     const { eventName, qtys, cartTotal, progress } = this.props;
-    const Brand = Resources.getComponent('Brand');
+    const NavBarBrand = Resources.getComponent('NavBarBrand');
 
     return (
       <Navbar sticky="top">
         <Row noGutters>
           <Col>
-            <Brand />
+            <NavBarBrand />
           </Col>
 
           <Col className="d-none d-sm-block">

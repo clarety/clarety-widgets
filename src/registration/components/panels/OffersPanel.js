@@ -144,7 +144,7 @@ export class OffersPanel extends BasePanel {
         
         <Col md={1}>
           <FormattedMessage id={`offersPanel.${participant.type}.title`}>
-            {txt => <p className="lead m-0">{txt}</p>}
+            {txt => <p className="m-0">{txt}</p>}
           </FormattedMessage>
         </Col>
 
@@ -238,7 +238,7 @@ export class OffersPanel extends BasePanel {
           <p>
             {participants.map((participant, index) =>
               <React.Fragment key={index}>
-                <span className="lead">{index + 1}. {participant.customer.firstName}</span>
+                <span>{index + 1}. {participant.customer.firstName}</span>
                 <br />
               </React.Fragment>
             )}
@@ -313,10 +313,10 @@ export class OffersPanel extends BasePanel {
 }
 
 const OfferButton = ({ offer, isSelected, onClick }) => {
-  const className = isSelected ? 'btn btn-offer selected' : 'btn btn-offer';
+  const className = isSelected ? 'selected' : '';
 
   return (
-    <Button onClick={onClick} className={className}>
+    <Button onClick={onClick} className={className} variant="offer">
       <span className="offer-name">{offer.name}</span>
       <span className="offer-price">{currency(offer.price)}</span>
     </Button>
