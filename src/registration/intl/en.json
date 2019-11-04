@@ -93,7 +93,7 @@
   "teamPanel.createTeamTitle": "Create New Team",
   "teamPanel.noTeam": "No Team",
 
-  "detailsPanel.editTitle": "Registration Details For {firstName}",
+  "detailsPanel.editTitle": "Registration Details For <b>{firstName}</b>",
   "detailsPanel.customerFormTitle": "Personal Details",
   "detailsPanel.extendFormTitle": "Event Details",
   "detailsPanel.doneTitle": "Registration Details For {firstName}",

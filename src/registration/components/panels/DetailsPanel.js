@@ -6,7 +6,7 @@ import { FormContext, parseNestedElements } from 'shared/utils';
 import { TextInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput } from 'registration/components';
 import { getGenderOptions, scrollIntoView } from 'registration/utils';
 
-export const DetailsPanel = injectIntl(class extends BasePanel {
+export class _DetailsPanel extends BasePanel {
   ref = React.createRef();
 
   constructor(props) {
@@ -234,7 +234,8 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
             number={index + 1}
             intlId="detailsPanel.editTitle"
             intlValues={{
-              firstName: <span className="text-primary">{firstName}</span>
+              b: text => <span className="text-highlight">{text}</span>,
+              firstName: firstName,
             }}
           />
 
@@ -548,6 +549,7 @@ export const DetailsPanel = injectIntl(class extends BasePanel {
       label: intl.formatMessage({ id: `option.${option.label}` }),
     }));
   }
-}, { forwardRef: true });
+}
 
+export const DetailsPanel = injectIntl(_DetailsPanel, { forwardRef: true });
 DetailsPanel.name = 'DetailsPanel';
