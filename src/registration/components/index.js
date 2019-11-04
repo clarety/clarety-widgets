@@ -5,6 +5,7 @@ export * from './inputs/DobInput';
 export * from './inputs/EmailInput';
 export * from './inputs/PhoneInput';
 export * from './inputs/QtyInput';
+export * from './inputs/RadioGroupInput';
 export * from './inputs/SelectInput';
 export * from './inputs/SimpleSelectInput';
 export * from './inputs/TeamSearchInput';
