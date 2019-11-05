@@ -1,17 +1,19 @@
 import { setOrganisation } from 'shared/actions';
 import { getOrganisation } from 'shared/selectors';
 import { checkTeamPassword, createTeam } from 'registration/actions';
-import { getTeams } from 'registration/selectors';
+import { getTeams, getIsCorporateTeam } from 'registration/selectors';
 
 export class TeamConnect {
   static mapStateToProps = (state) => {
     const { isBusyPassword, isBusyCreate } = getTeams(state);
     const selectedTeam = getOrganisation(state);
+    const isCorporateTeam = getIsCorporateTeam(state);
     const canContinue = selectedTeam && !selectedTeam.passwordRequired;
     const requiresPassword = selectedTeam && !!selectedTeam.passwordRequired;
 
     return {
       selectedTeam: selectedTeam,
+      isCorporateTeam: isCorporateTeam,
       canContinue: canContinue,
       requiresPassword: requiresPassword,
       isBusyPassword: isBusyPassword,

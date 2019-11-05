@@ -28,13 +28,13 @@ export class EventPanel extends BasePanel {
 
     if (!event) return;
 
+    if (promoCode) {
+      const isValidPromoCode = await checkPromoCode(promoCode);
+      if (!isValidPromoCode) return;
+    }
+
     const didFetch = await fetchFullEvent(event.eventId);
     if (!didFetch) return;
-
-    if (promoCode) {
-      const isPromoCodeOk = await checkPromoCode(promoCode);
-      if (!isPromoCodeOk) return;
-    }
 
     nextPanel();
   };

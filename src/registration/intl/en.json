@@ -89,6 +89,7 @@
   "offersPanel.prefillPrompt": "Who is this registration for?",
 
   "teamPanel.editTitle": "Do you want to participate with a team?",
+  "teamPanel.corporateTeamTitle": "Your Team",
   "teamPanel.doneTitle": "Your Team",
   "teamPanel.message.1": "Combine your efforts and participate as a team! Either create a new team or join one that’s already been created.",
   "teamPanel.message.2": "If you are registering with an existing team, please contact your team leader for the team name and password (if applicable) before proceeding with the team registration process.",

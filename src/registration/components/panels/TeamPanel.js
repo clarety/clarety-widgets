@@ -12,7 +12,7 @@ export class TeamPanel extends BasePanel {
     event.preventDefault();
     const { selectedTeam, formData, checkTeamPassword, nextPanel } = this.props;
 
-    if (selectedTeam.passwordRequired) {
+    if (selectedTeam.passwordRequired && !selectedTeam.isCorporateTeam) {
       const isCorrect = await checkTeamPassword(selectedTeam, formData['team.passwordCheck']);
       if (!isCorrect) return;
     }
@@ -73,6 +73,41 @@ export class TeamPanel extends BasePanel {
   }
 
   renderEdit() {
+    if (this.props.isCorporateTeam) {
+      return this.renderCorporateTeam();
+    } else {
+      return this.renderTeamSelect();
+    }
+  }
+
+  renderCorporateTeam() {
+    const { layout, index, selectedTeam } = this.props;
+
+    return (
+      <PanelContainer layout={layout} status="edit">
+        <PanelHeader
+          status="edit"
+          layout={layout}
+          number={index + 1}
+          intlId="teamPanel.corporateTeamTitle"
+        />
+
+        <PanelBody layout={layout} status="edit">
+
+          <p>You are participating with the {selectedTeam.name} team.</p>
+
+          <div className="panel-actions">
+            <Button onClick={this.onClickNext}>
+              <FormattedMessage id="btn.next" />
+            </Button>
+          </div>
+
+        </PanelBody>
+      </PanelContainer>
+    );
+  }
+
+  renderTeamSelect() {
     const { layout, index } = this.props;
     const { mode } = this.state;
 
