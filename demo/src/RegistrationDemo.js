@@ -28,7 +28,9 @@ Registration.setPanels([
   {
     component: EventPanel,
     connect: EventConnect,
-    settings: {},
+    settings: {
+      showPromoCode: true,
+    },
   },
   {
     component: LoginPanel,

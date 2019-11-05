@@ -5,6 +5,7 @@ const initialState = {
   isBusySearch: false,
   isBusyPassword: false,
   isBusyCreate: false,
+  isBusyPromoCode: false,
   searchResults: [],
 };
 
@@ -69,6 +70,21 @@ export const teamsReducer = (state = initialState, action) => {
       return {
         ...state,
         isBusyPassword: false,
+      };
+
+    // Promo Code
+
+    case types.checkPromoCodeRequest:
+      return {
+        ...state,
+        isBusyPromoCode: true,
+      };
+
+    case types.checkPromoCodeSuccess:
+    case types.checkPromoCodeFailure:
+      return {
+        ...state,
+        isBusyPromoCode: false,
       };
 
     default:

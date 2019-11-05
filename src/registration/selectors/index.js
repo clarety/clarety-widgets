@@ -92,6 +92,13 @@ export const getIsPrefilled = (state, index) => {
   return participant.customer && participant.customer.id;
 };
 
+export const getIsCorporateTeam = (state, index) => {
+  const cart = getCart(state);
+  if (!cart.organisation) return false;
+
+  return !!cart.organisation.isCorporateTeam;
+};
+
 export const getOffersForAllParticipants = (state) => getParticipants(state).map(
   participant => getOffers(state, participant.type)
 );

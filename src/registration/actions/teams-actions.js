@@ -95,6 +95,34 @@ export const checkTeamPassword = (team, password) => {
   };
 };
 
+export const checkPromoCode = (promoCode) => {
+  return async (dispatch, getState) => {
+    dispatch(clearErrors());
+    dispatch(setOrganisation(null));
+    dispatch(checkPromoCodeRequest(promoCode));
+
+    const results = await ClaretyApi.get('registration-promocode/', { promoCode });
+    const result = results[0];
+
+    if (result.corporateTeam) {
+      result.team.isCorporateTeam = true;
+      dispatch(setOrganisation(result.team));
+      
+      dispatch(checkPromoCodeSuccess(result));
+      return true;
+    } else {
+      dispatch(setErrors([{
+        field: 'promoCode',
+        message: 'Invalid promo code',
+      }]));
+
+      dispatch(checkPromoCodeFailure(result));
+
+      return false;
+    }
+  };
+};
+
 
 // Fetch
 
@@ -156,5 +184,22 @@ const checkTeamPasswordSuccess = (result) => ({
 
 const checkTeamPasswordFailure = (result) => ({
   type: types.checkTeamPasswordFailure,
+  result,
+});
+
+// Check Promo Code
+
+const checkPromoCodeRequest = (promoCode) => ({
+  type: types.checkPromoCodeRequest,
+  promoCode: promoCode,
+});
+
+const checkPromoCodeSuccess = (result) => ({
+  type: types.checkPromoCodeSuccess,
+  result,
+});
+
+const checkPromoCodeFailure = (result) => ({
+  type: types.checkPromoCodeFailure,
   result,
 });

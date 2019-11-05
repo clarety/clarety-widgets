@@ -1,6 +1,6 @@
 import { addItem } from 'shared/actions';
 import { setDetails, setAdditionalData, setErrors, resetDetails, setWaveInCart, removeAddOnsFromCart } from 'registration/actions';
-import { getEvent, getExtendFields, getParticipant, getWaveOptions, getAddOns, getParticipantOffer, getIsPrefilled, getFirstParticipant } from 'registration/selectors';
+import { getEvent, getExtendFields, getParticipant, getWaveOptions, getAddOns, getParticipantOffer, getIsPrefilled, getIsCorporateTeam } from 'registration/selectors';
 
 export class DetailsConnect {
   static mapStateToProps = (state, ownProps) => {
@@ -15,6 +15,7 @@ export class DetailsConnect {
     const waveOptions = getWaveOptions(state, ownProps.participantIndex);
     const addOns = getAddOns(state, ownProps.participantIndex);
     const isPrefilled = getIsPrefilled(state, ownProps.participantIndex);
+    const isCorporateTeam = getIsCorporateTeam(state, ownProps.participantIndex);
     const offer = getParticipantOffer(state, ownProps.participantIndex);
     const eventDate = new Date(offer.ageCalculationDate || event.startDate);
 
@@ -27,6 +28,7 @@ export class DetailsConnect {
       waveOptions: waveOptions,
       addOns: addOns,
       isPrefilled: isPrefilled,
+      isCorporateTeam: isCorporateTeam,
       eventDate: eventDate,
       minAge: Number(offer.minAgeOver),
       maxAge: Number(offer.maxAgeUnder),

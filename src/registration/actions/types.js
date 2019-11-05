@@ -71,4 +71,8 @@ export const types = {
   checkTeamPasswordRequest: 'CHECK_TEAM_PASSWORD_REQUEST',
   checkTeamPasswordSuccess: 'CHECK_TEAM_PASSWORD_SUCCESS',
   checkTeamPasswordFailure: 'CHECK_TEAM_PASSWORD_FAILURE',
+
+  checkPromoCodeRequest: 'CHECK_PROMO_CODE_REQUEST',
+  checkPromoCodeSuccess: 'CHECK_PROMO_CODE_SUCCESS',
+  checkPromoCodeFailure: 'CHECK_PROMO_CODE_FAILURE',
 };

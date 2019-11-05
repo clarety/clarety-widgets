@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { Form } from 'react-bootstrap';
 import Select from 'react-select';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { Button } from 'form/components';
+import { Button, TextInput } from 'form/components';
 
 export class EventPanel extends BasePanel {
   state = {
@@ -22,13 +22,19 @@ export class EventPanel extends BasePanel {
   }
 
   onClickNext = async () => {
-    const { fetchFullEvent, nextPanel } = this.props;
+    const { formData, fetchFullEvent, checkPromoCode, nextPanel } = this.props;
     const { event } = this.state;
+    const promoCode = formData['promoCode'];
 
     if (!event) return;
 
     const didFetch = await fetchFullEvent(event.eventId);
     if (!didFetch) return;
+
+    if (promoCode) {
+      const isPromoCodeOk = await checkPromoCode(promoCode);
+      if (!isPromoCodeOk) return;
+    }
 
     nextPanel();
   };
@@ -58,7 +64,7 @@ export class EventPanel extends BasePanel {
   }
   
   renderEdit() {
-    const { layout, index, events, isBusy } = this.props;
+    const { layout, index, events, isBusy, settings } = this.props;
 
     return (
       <PanelContainer layout={layout} status="edit">
@@ -81,6 +87,15 @@ export class EventPanel extends BasePanel {
               classNamePrefix="react-select"
             />
           </Form.Group>
+
+          {settings.showPromoCode &&
+            <Form.Group controlId="promoCode">
+              <Form.Label>
+                <FormattedMessage id="label.promoCode" />
+              </Form.Label>
+              <TextInput field="promoCode" />
+            </Form.Group>
+          }
 
           <div className="panel-actions">
             <Button

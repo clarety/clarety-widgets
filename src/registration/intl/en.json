@@ -32,6 +32,8 @@
   "label.team.type": "Team Type",
   "label.team.password": "Team Password",
 
+  "label.promoCode": "If applicable, enter the promo code provided",
+
   "label.optional": "Optional",
 
   "label.registrationformformemergencycontact": "Emergency Contact Name",
