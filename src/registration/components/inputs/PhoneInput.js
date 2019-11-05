@@ -10,7 +10,7 @@ import { getValidationError } from 'form/utils';
 
 class PurePhoneInput extends React.PureComponent {
   render() {
-    const { field, value, onChange, translationId, error, required } = this.props;
+    const { field, label, value, onChange, translationId, error, required } = this.props;
     const country = Config.get('phoneCountry');
 
     const className = error ? 'form-control is-invalid' : 'form-control';
@@ -18,7 +18,7 @@ class PurePhoneInput extends React.PureComponent {
     return (
       <Form.Group controlId={field}>
         <Form.Label>
-          <FormattedMessage id={translationId || `label.${field}`} />
+          {label || <FormattedMessage id={translationId || `label.${field}`} />}
           {required && ' *'}
         </Form.Label>
         <ReactPhoneNumberInput

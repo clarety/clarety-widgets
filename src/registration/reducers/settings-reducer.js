@@ -10,7 +10,7 @@ const initialState = {
   events: null,
   event: null,
 
-  extendForms: null,
+  extendForm: null,
   elements: null,
 
   priceHandles: null,

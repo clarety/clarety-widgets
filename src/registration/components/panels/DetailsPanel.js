@@ -20,6 +20,8 @@ export class _DetailsPanel extends BasePanel {
   }
 
   componentDidUpdate(prevProps) {
+    super.componentDidUpdate(prevProps);
+
     const { participant } = this.props;
 
     if (participant && participant.errors !== prevProps.participant.errors) {
@@ -403,7 +405,7 @@ export class _DetailsPanel extends BasePanel {
       <FormContext.Provider value={this.state}>
         {this.renderWaveSelect()}
         {this.renderAddOns()}
-        {/* {this.renderExtendFields()} */}
+        {this.renderExtendFields()}
       </FormContext.Provider>
     );
   }
@@ -482,6 +484,14 @@ export class _DetailsPanel extends BasePanel {
         </PanelBody>
       </PanelContainer>
     );
+  }
+
+  getExtendFieldOptions(columnKey) {
+    const field = this.props.extendFields.find(
+      field => field.columnKey === columnKey
+    );
+
+    return field ? field.options : [];
   }
 
   getDob() {
