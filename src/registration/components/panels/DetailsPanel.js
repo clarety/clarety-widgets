@@ -532,6 +532,15 @@ export class _DetailsPanel extends BasePanel {
     }
   }
 
+  validateUniqueEmergencyNumber(emergencyPhoneField, customerPhoneField, formData, errors, message) {
+    const { intl } = this.props;
+
+    if (formData[emergencyPhoneField] === formData[customerPhoneField]) {
+      message = message || intl.formatMessage({ id: 'validation.phone.unique' });
+      errors.push({ field: emergencyPhoneField, message: message });
+    }
+  }
+
   validateDob({ field, dob, eventDate, minAge, maxAge, errors }) {
     const { intl, participant } = this.props;
     const message = intl.formatMessage({ id: `validation.age.${participant.type}` });
