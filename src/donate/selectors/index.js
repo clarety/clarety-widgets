@@ -42,7 +42,7 @@ export function getAmountPanelSelection(state) {
 export function getSelectedOffer(state) {
   const { settings, panels } = state;
 
-  return settings.offers.find(
+  return settings.priceHandles.find(
     offer => offer.frequency === panels.amountPanel.frequency
   );
 }
