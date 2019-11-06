@@ -140,7 +140,9 @@ export class EventPanel extends BasePanel {
 
     if (!state) return events;
 
-    return events.filter(event => event.state === state);
+    return events
+      .filter(event => event.state === state)
+      .sort((a, b) => b.listOrder - a.listOrder);
   }
 
   renderPromoCode() {

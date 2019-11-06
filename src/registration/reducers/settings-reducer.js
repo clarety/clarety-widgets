@@ -26,7 +26,7 @@ export const settingsReducer = (state = initialState, action) => {
     case types.fetchEventsSuccess:
       return {
         ...state,
-        events: action.results.events,
+        events: convertEventList(action.results.events),
       };
 
     case types.fetchFullEventRequest:
@@ -40,7 +40,7 @@ export const settingsReducer = (state = initialState, action) => {
         ...state,
         isBusy: false,
         event: convertEvent(action.result.events[0]),
-        extendForm: convertSelectFields(action.result.extendForms[0]),
+        extendForm: convertExtendForm(action.result.extendForms[0]),
         elements: action.result.elements,
       };
 
@@ -55,22 +55,11 @@ export const settingsReducer = (state = initialState, action) => {
   }
 };
 
-// Select field options are currently provided in a single object
-// { 'QLD': 'Queensland', 'VIC': 'Victoria' }
-// we want an array of objects containing values and labels
-// [{ value: 'QLD', label: 'Queensland' }, { value: 'VIC', label: 'Victoria' }]
-function convertSelectFields(extendForm) {
-  for (let field of extendForm.extendFields) {
-    // Check if field has an options object.
-    if (field.options && typeof field.options === 'object') {
-      // Map options to an array of values and labels.
-      field.options = Object.entries(field.options).map(
-        ([key, value]) => ({ value: key, label: value })
-      );
-    }
-  }
-
-  return extendForm;
+function convertEventList(events) {
+  return events.map(event => ({
+    ...event,
+    listOrder: Number(event.listOrder),
+  }));
 }
 
 function convertEvent(event) {
@@ -117,4 +106,22 @@ function convertRegistrationOffers(offers) {
 
 function convertRegistrationWaves(registrationProducts) {
   return registrationProducts[0].products;
+}
+
+// Select field options are currently provided in a single object
+// { 'QLD': 'Queensland', 'VIC': 'Victoria' }
+// we want an array of objects containing values and labels
+// [{ value: 'QLD', label: 'Queensland' }, { value: 'VIC', label: 'Victoria' }]
+function convertExtendForm(extendForm) {
+  for (let field of extendForm.extendFields) {
+    // Check if field has an options object.
+    if (field.options && typeof field.options === 'object') {
+      // Map options to an array of values and labels.
+      field.options = Object.entries(field.options).map(
+        ([key, value]) => ({ value: key, label: value })
+      );
+    }
+  }
+
+  return extendForm;
 }
