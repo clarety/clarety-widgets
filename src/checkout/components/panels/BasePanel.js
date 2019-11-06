@@ -1,5 +1,5 @@
 import React from 'react';
-import { validateRequired, validateEmail, validatePassword, validateCardNumber, validateCardExpiry, validateCcv } from 'checkout/utils';
+import { validateRequired, validateEmail, validatePassword, validateCardNumber, validateCardExpiry, validateCcv } from 'shared/utils/validation-utils';
 
 export class BasePanel extends React.Component {
   constructor(props) {

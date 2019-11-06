@@ -124,8 +124,10 @@
     margin: 40px auto;
   }
 
-  .qtys .panel-body { max-width: 500px; }
-  .payment .panel-body { max-width: 600px; }
+  .event-panel .panel-body { max-width: 600px; }
+  .login-panel .panel-body { max-width: 600px; }
+  .qtys-panel .panel-body { max-width: 500px; }
+  .payment-panel .panel-body { max-width: 600px; }
 
   .btn-offer {
     width: 120px;

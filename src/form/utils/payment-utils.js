@@ -1,16 +1,12 @@
-import creditCardType from 'credit-card-type';
+import cardValidator from 'card-validator';
 
-export const getCardType = number => {
-  if (!number) return 'unknown';
-
-  const matches = creditCardType(number);
-  if (!matches[0]) return 'unknown';
-
-  return matches[0].type;
+export const getCardType = (number) => {
+  const { card } = cardValidator.number(number);
+  return card ? card.type : 'unknown';
 };
 
 // Split numbers into groups of 4.
-export const formatCardNumber = number => {
+export const formatCardNumber = (number) => {
   const groups = [];
 
   for (let i = 0; i < number.length; i += 4) {
@@ -22,7 +18,7 @@ export const formatCardNumber = number => {
 }
 
 // Remove anything that isn't a number.
-export const cleanCardNumber = number => {
+export const cleanCardNumber = (number) => {
   return number.replace(/[^0-9]/g, '').substring(0, 20);
 };
 
@@ -37,7 +33,7 @@ export const formatExpiry = (month, year) => {
   return `${month} / ${year}`;
 };
 
-export const cleanExpiry = expiry => {
+export const cleanExpiry = (expiry) => {
   let [month, year] = expiry.replace(/\s/g, '').split('/');
 
   if (month) month = _cleanDigits(month, 2);
@@ -60,13 +56,13 @@ export const cleanExpiry = expiry => {
   return { month, year };
 };
 
-export const cleanCcv = ccv => _cleanDigits(ccv, 4);
+export const cleanCcv = (ccv) => _cleanDigits(ccv, 4);
 
-export const cleanDecimal = number => {
+export const cleanDecimal = (number) => {
   return number.replace(/[^0-9.]/g, '');
 };
 
-export const formatPrice = price => {
+export const formatPrice = (price) => {
   return '$' + price.toFixed(2);
 }
 

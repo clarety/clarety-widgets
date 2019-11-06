@@ -116,10 +116,6 @@ export const makePayment = (paymentData, paymentMethod) => {
 
     const postData = {
       saleId: getSaleId(state),
-
-      gatewayToken: "",
-      fundraising: {},
-
       ...paymentData,
     };
 
