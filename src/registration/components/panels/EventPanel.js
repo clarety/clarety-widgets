@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Form } from 'react-bootstrap';
+import { Form, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import Select from 'react-select';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { Button, TextInput } from 'form/components';
@@ -8,6 +8,7 @@ import { Button, TextInput } from 'form/components';
 export class EventPanel extends BasePanel {
   state = {
     event: null,
+    state: null,
   };
 
   componentDidMount() {
@@ -20,6 +21,8 @@ export class EventPanel extends BasePanel {
       this.setState({ event });
     }
   }
+
+  onSelectState = (state) => this.setState({ state });
 
   onClickNext = async () => {
     const { formData, fetchFullEvent, checkPromoCode, nextPanel } = this.props;
@@ -64,10 +67,10 @@ export class EventPanel extends BasePanel {
   }
   
   renderEdit() {
-    const { layout, index, events, isBusy, settings } = this.props;
+    const { layout, index, isBusy, settings } = this.props;
 
     return (
-      <PanelContainer layout={layout} status="edit">
+      <PanelContainer layout={layout} status="edit" className="event-panel">
         <PanelHeader
           status="edit"
           layout={layout}
@@ -77,25 +80,9 @@ export class EventPanel extends BasePanel {
 
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
 
-          <Form.Group>
-            <Select
-              options={events}
-              value={this.state.event}
-              onChange={event => this.setState({ event })}
-              getOptionLabel={event => event.name}
-              getOptionValue={event => event.eventId}
-              classNamePrefix="react-select"
-            />
-          </Form.Group>
-
-          {settings.showPromoCode &&
-            <Form.Group controlId="promoCode">
-              <Form.Label>
-                <FormattedMessage id="label.promoCode" />
-              </Form.Label>
-              <TextInput field="promoCode" />
-            </Form.Group>
-          }
+          {settings.showStateButtons && this.renderStateButtons()}
+          {this.renderEventSelect()}
+          {settings.showPromoCode && this.renderPromoCode()}
 
           <div className="panel-actions">
             <Button
@@ -109,6 +96,61 @@ export class EventPanel extends BasePanel {
 
         </PanelBody>
       </PanelContainer>
+    );
+  }
+
+  renderStateButtons() {
+    return (
+      <div className="text-center mb-3">
+        <ToggleButtonGroup
+          type="radio"
+          name="state"
+          value={this.state.state}
+          onChange={this.onSelectState}
+        >
+          {this.props.stateOptions.map(option => (
+            <ToggleButton value={option.value} key={option.value}>
+              {option.label}
+            </ToggleButton>
+          ))}
+        </ToggleButtonGroup>
+      </div>
+    );
+  }
+
+  renderEventSelect() {
+    return (
+      <Form.Group>
+        <Select
+          options={this.getEventOptions()}
+          value={this.state.event}
+          onChange={event => this.setState({ event })}
+          placeholder="Select event"
+          getOptionLabel={event => event.name}
+          getOptionValue={event => event.eventId}
+          classNamePrefix="react-select"
+        />
+      </Form.Group>
+    );
+  }
+
+  getEventOptions() {
+    const { events } = this.props;
+    const { state } = this.state;
+
+    if (!state) return events;
+
+    return events.filter(event => event.state === state);
+  }
+
+  renderPromoCode() {
+    return (
+      <Form.Group controlId="promoCode">
+        <Form.Label>
+          <FormattedMessage id="label.promoCode" />
+        </Form.Label>
+        <TextInput field="promoCode" placeholder="Promo code (optional)" />
+      </Form.Group>
     );
   }
 

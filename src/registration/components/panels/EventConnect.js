@@ -1,5 +1,5 @@
 import { fetchFullEvent, checkPromoCode } from 'registration/actions';
-import { getEvent, getTeams } from 'registration/selectors';
+import { getEvents, getEvent, getTeams, getStateOptions } from 'registration/selectors';
 
 export class EventConnect {
   static mapStateToProps = (state) => {
@@ -7,7 +7,8 @@ export class EventConnect {
 
     return {
       isBusy: state.settings.isBusy || teams.isBusyPromoCode,
-      events: state.settings.events,
+      events: getEvents(state),
+      stateOptions: getStateOptions(state),
       selectedEvent: getEvent(state),
       formData: state.formData,
     };

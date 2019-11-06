@@ -17,6 +17,8 @@ export const getParticipants = (state) => state.participants;
 
 export const getTeams = (state) => state.teams;
 
+export const getEvents = (state) => getSettings(state).events;
+
 export const getEvent = (state) => getSettings(state).event;
 
 export const getEventName = (state) => {
@@ -70,6 +72,22 @@ export const getParticipant = (state, index) => getParticipants(state)[index];
 export const getParticipantOffer = (state, index) => {
   const participant = getParticipant(state, index);
   return getOffer(state, participant);
+};
+
+export const getStateOptions = (state) => {
+  const events = getEvents(state);
+  if (!events) return [];
+
+  const states = {};
+
+  for (const event of events) {
+    states[event.state] = true;
+  }
+
+  return Object.keys(states).sort().map(state => ({
+    value: state,
+    label: state,
+  }));
 };
 
 export const getWaves = (state, index) => {

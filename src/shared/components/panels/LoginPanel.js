@@ -201,7 +201,7 @@ export class LoginPanel extends BasePanel {
     const { layout, isBusy, index } = this.props;
 
     return (
-      <PanelContainer layout={layout}  className="login">
+      <PanelContainer layout={layout}  className="login-panel">
         <PanelHeader
           status="edit"
           layout={layout}

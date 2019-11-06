@@ -90,7 +90,7 @@ export class QtysPanel extends BasePanel {
     const { layout, index, registrationMode } = this.props;
 
     return (
-      <PanelContainer layout={layout} status="edit" className="qtys">
+      <PanelContainer layout={layout} status="edit" className="qtys-panel">
         <PanelHeader
           status="edit"
           layout={layout}
