@@ -43,19 +43,23 @@ class PureExpiryInput extends React.PureComponent {
   };
   
   render() {
-    const { field, expiryMonth, expiryYear, error, required } = this.props;
+    let { field, label, expiryMonth, expiryYear, error, required, hideLabel } = this.props;
+    if (required) label += ' *';
 
     return (
       <Form.Group controlId={field}>
+        <Form.Label srOnly={hideLabel}>{label}</Form.Label>
+
         <Form.Control
           value={formatExpiry(expiryMonth, expiryYear)}
           onChange={this.onChange}
           onKeyDown={this.onKeyDown}
-          placeholder={'MM / YY'}
+          placeholder={hideLabel ? label : 'MM / YY'}
           required={required}
           isInvalid={!!error}
           className="expiry-input"
         />
+        
         <FieldError error={error} />
       </Form.Group>
     );

@@ -169,27 +169,22 @@ export class PaymentPanel extends BasePanel {
       <React.Fragment>
         <Form.Row>
           <Col>
-            <TextInput field="cardName" placeholder="Name On Card *" />
+            <TextInput label="Name On Card" field="cardName" required />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <CardNumberInput field="cardNumber" placeholder="Card Number *" />
+            <CardNumberInput label="Card Number" field="cardNumber" required />
           </Col>
         </Form.Row>
 
         <Form.Row>
-          <Col>Expiry Date *</Col>
-          <Col>CCV *</Col>
-        </Form.Row>
-
-        <Form.Row>
           <Col>
-            <ExpiryInput field="expiry" monthField="expiryMonth" yearField="expiryYear" />
+            <ExpiryInput label="Expiry Date" field="expiry" monthField="expiryMonth" yearField="expiryYear" required />
           </Col>
           <Col>
-            <CcvInput field="ccv" />
+            <CcvInput label="CCV" field="ccv" required />
           </Col>
         </Form.Row>
       </React.Fragment>

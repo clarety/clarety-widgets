@@ -6,17 +6,21 @@ import { getValidationError } from 'form/utils';
 
 class PureTextInput extends React.PureComponent {
   render() {
-    const { field, placeholder, type, value, onChange, error, required } = this.props;
+    let { field, label, placeholder, type, value, onChange, error, required, hideLabel } = this.props;
+    if (required) label += ' *';
 
     return (
       <Form.Group controlId={field}>
+        <Form.Label srOnly={hideLabel}>{label}</Form.Label>
+
         <Form.Control
           value={value}
           onChange={event => onChange(field, event.target.value)}
-          placeholder={placeholder}
+          placeholder={hideLabel ? label : placeholder}
           type={type || 'text'}
           isInvalid={!!error}
         />
+        
         <FieldError error={error} />
       </Form.Group>
     );

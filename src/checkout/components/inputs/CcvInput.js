@@ -13,13 +13,16 @@ class PureCcvInput extends React.PureComponent {
   };
 
   render() {
-    const { value, field, placeholder, error, required } = this.props;
+    let { value, field, label, placeholder, error, required, hideLabel } = this.props;
+    if (required) label += ' *';
 
     return (
       <Form.Group controlId={field}>
+        <Form.Label srOnly={hideLabel}>{label}</Form.Label>
+
         <Form.Control
           value={value}
-          placeholder={placeholder || '•••'}
+          placeholder={hideLabel ? label : (placeholder || '•••')}
           onChange={this.onChange}
           required={required}
           isInvalid={!!error}

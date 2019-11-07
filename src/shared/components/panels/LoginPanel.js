@@ -233,7 +233,7 @@ export class LoginPanel extends BasePanel {
         <Form onSubmit={this.onPressCheckEmail}>
           <Form.Row>
             <Col>
-              <EmailInput field="email" placeholder="Email *" />
+              <EmailInput label="Email" field="email" required />
             </Col>
           </Form.Row>
 
@@ -274,13 +274,13 @@ export class LoginPanel extends BasePanel {
 
           <Form.Row>
             <Col>
-              <EmailInput field="email" placeholder="Email *" />
+              <EmailInput label="Email" field="email" required />
             </Col>
           </Form.Row>
 
           <Form.Row>
             <Col>
-              <TextInput field="password" type="password" placeholder="Password *" />
+              <TextInput label="Password" field="password" type="password" required />
             </Col>
           </Form.Row>
 
@@ -303,20 +303,20 @@ export class LoginPanel extends BasePanel {
 
           <Form.Row>
             <Col>
-              <EmailInput field="email" placeholder="Email *" />
+              <EmailInput label="Email" field="email" required />
             </Col>
           </Form.Row>
 
           <Form.Row>
             <Col>
-              <TextInput field="password" type="password" placeholder="Password *" />
+              <TextInput label="Password" field="password" type="password" required />
             </Col>
           </Form.Row>
 
           {settings.showFirstName &&
             <Form.Row>
               <Col>
-                <TextInput field="firstName" placeholder="First Name *" />
+                <TextInput label="First Name" field="firstName" required />
               </Col>
             </Form.Row>
           }
@@ -324,7 +324,7 @@ export class LoginPanel extends BasePanel {
           {settings.showLastName &&
             <Form.Row>
               <Col>
-                <TextInput field="lastName" placeholder="Last Name *" />
+                <TextInput label="Last Name" field="lastName" required />
               </Col>
             </Form.Row>
           }
