@@ -11,6 +11,7 @@ export const createLead = () => {
   return async (dispatch, getState) => {
     // executeRecaptcha(async () => {
       const state = getState();
+      const { settings } = state;
 
       dispatch(setStatus('busy'));
 
@@ -29,10 +30,19 @@ export const createLead = () => {
         dispatch(createLeadSuccess(result));
         dispatch(incrementSosCounter());
         
-        if (state.settings.confirmPageUrl) {
+        // Download file.
+        if (settings.variant === 'download') {
+          if (!settings.download || !settings.download.file) {
+            console.log('Missing download file setting');
+          } else {
+            window.open(settings.download.file);
+          }
+        }
+        
+        if (settings.confirmPageUrl) {
           // Redirect.
           // TODO: set 'jwtConfirm' cookie.
-          window.location.href = state.settings.confirmPageUrl;
+          window.location.href = settings.confirmPageUrl;
         } else {
           // Show CMS confirm content.
           const elementId = getSetting(state, 'widgetElementId');
