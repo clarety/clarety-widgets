@@ -18,13 +18,13 @@ Registration.setPanels([
     connect: ModeConnect,
     settings: {},
   },
-  // {
-  //   component: DonationPanel,
-  //   connect: DonationConnect,
-  //   settings: {
-  //     showFrequencySelect: false,
-  //   },
-  // },
+  {
+    component: DonationPanel,
+    connect: DonationConnect,
+    settings: {
+      showFrequencySelect: false,
+    },
+  },
   {
     component: EventPanel,
     connect: EventConnect,
@@ -97,8 +97,11 @@ export default class RegistrationDemo extends React.Component {
           seriesId="9"
           previousSeriesId="8"
 
-          singleOfferId="8"
-          recurringOfferId="17"
+          // mdc
+          singleOfferId="55"
+
+          // baseline
+          // singleOfferId="8"
 
           sourceId="17"
           responseId="e9c2e351d90b11e996fd"
