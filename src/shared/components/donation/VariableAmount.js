@@ -16,7 +16,7 @@ const _VariableAmount = ({ value, amountInfo, isSelected, onChange, currency, fo
           <InputGroup.Text>{currency.symbol}</InputGroup.Text>
         </InputGroup.Prepend>
         <Form.Control
-          placeholder="Other Amount"
+          placeholder="Enter Amount"
           ref={input}
           value={value}
           type="text"

@@ -13,7 +13,7 @@ const _VariableAmountLg = ({ value, amountInfo, isSelected, onChange, currency, 
     <Card
       className={cardClassName}
       style={{ cursor: 'pointer' }}
-      bg={isSelected ? 'info' : 'light'}
+      bg={isSelected ? 'primary' : 'light'}
       text={isSelected ? 'white' : null}
       onClick={() => input.current.focus()}
     >
@@ -26,7 +26,7 @@ const _VariableAmountLg = ({ value, amountInfo, isSelected, onChange, currency, 
               <InputGroup.Text>{currency.symbol}</InputGroup.Text>
             </InputGroup.Prepend>
             <Form.Control
-              placeholder="Other Amount"
+              placeholder="Enter Amount"
               ref={input}
               value={value}
               type="text"
