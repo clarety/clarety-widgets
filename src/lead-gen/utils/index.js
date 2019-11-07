@@ -14,10 +14,10 @@ export const settingsMap = (result) => {
   };
 };
 
-export function getCustomerPanelSettingsFromWidgetProps(props, variant) {
+export function getCustomerPanelSettingsFromWidgetProps(props) {
   return {
-    title:             variant === 'sos' && props.headingText,
-    subtitle:          variant === 'sos' && props.subHeadingText,
+    title:             props.variant === 'sos' && props.headingText,
+    subtitle:          props.variant === 'sos' && props.subHeadingText,
     submitBtnText:     props.buttonText,
     showOptIn:         props.showOptIn === '1',
     optInText:         props.optInText,

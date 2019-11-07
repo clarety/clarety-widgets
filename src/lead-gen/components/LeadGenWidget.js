@@ -32,7 +32,7 @@ export class _LeadGenRoot extends React.Component {
     const { sourceUid, responseId, emailResponseId } = this.props;
     setTrackingData({ sourceUid, responseId, emailResponseId });
 
-    const customerPanelSettings = getCustomerPanelSettingsFromWidgetProps(this.props, variant);
+    const customerPanelSettings = getCustomerPanelSettingsFromWidgetProps(this.props);
     setPanelSettings('CustomerPanel', customerPanelSettings);
 
     const { caseTypeUid, variant } = this.props;
