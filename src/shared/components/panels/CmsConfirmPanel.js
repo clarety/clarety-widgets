@@ -1,5 +1,5 @@
 import React from 'react';
-import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
+import { BasePanel, PanelContainer, PanelBody } from 'shared/components';
 
 export class CmsConfirmPanel extends BasePanel {
   renderWait() {
@@ -11,7 +11,7 @@ export class CmsConfirmPanel extends BasePanel {
     const html = { __html: settings.confirmContent };
 
     return (
-      <PanelContainer layout={layout} status="edit">
+      <PanelContainer layout={layout} status="edit" className="cms-confirm-panel">
         <PanelBody layout={layout} status="edit">
 
           <div dangerouslySetInnerHTML={html} />

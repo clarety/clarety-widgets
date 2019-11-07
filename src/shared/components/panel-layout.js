@@ -147,11 +147,11 @@ export const DonePanelHeader = ({ number, title, onPressEdit }) => (
 
 // Tabs
 
-const TabsPanelContainer = ({ status, children }) => {
+const TabsPanelContainer = ({ status, className, children }) => {
   if (status !== 'edit') return null;
 
   return (
-    <Card>
+    <Card className={className}>
       {children}
     </Card>
   );
