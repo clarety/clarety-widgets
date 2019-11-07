@@ -10,6 +10,7 @@ import { Recaptcha } from 'form/components';
 import { SosProgress, ImageHeader } from 'lead-gen/components';
 import { rootReducer } from 'lead-gen/reducers';
 import { settingsMap, getCustomerPanelSettingsFromWidgetProps } from 'lead-gen/utils';
+import { getIsShowingConfirmation } from 'lead-gen/selectors';
 
 const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
@@ -31,7 +32,7 @@ export class _LeadGenRoot extends React.Component {
     const { sourceUid, responseId, emailResponseId } = this.props;
     setTrackingData({ sourceUid, responseId, emailResponseId });
 
-    const customerPanelSettings = getCustomerPanelSettingsFromWidgetProps(this.props);
+    const customerPanelSettings = getCustomerPanelSettingsFromWidgetProps(this.props, variant);
     setPanelSettings('CustomerPanel', customerPanelSettings);
 
     const { caseTypeUid, variant } = this.props;
@@ -39,7 +40,7 @@ export class _LeadGenRoot extends React.Component {
   }
 
   render() {
-    const { status, variant, reCaptchaKey, sos, headingImage, headingText } = this.props;
+    const { status, variant, reCaptchaKey } = this.props;
 
     // Show a loading indicator while we init.
     if (status === statuses.initializing) {
@@ -52,12 +53,30 @@ export class _LeadGenRoot extends React.Component {
 
     return (
       <div className="clarety-lead-gen-widget h-100">
-        {variant === 'sos' && <SosProgress sos={sos} />}
-        {variant === 'download' && <ImageHeader title={headingText} image={headingImage} />}
+        {variant === 'sos' && this.renderSosHeader()}
+        {variant === 'download' && this.renderDownloadHeader()}
 
         <PanelManager layout="tabs" />
         <Recaptcha siteKey={reCaptchaKey} />
       </div>
+    );
+  }
+
+  renderSosHeader() {
+    return <SosProgress sos={this.props.sos} />;
+  }
+
+  renderDownloadHeader() {
+    const { download, headingText, subHeadingText, isShowingConfirmation } = this.props;
+
+    if (isShowingConfirmation) return null;
+
+    return (
+      <ImageHeader
+        title={headingText}
+        subtitle={subHeadingText}
+        image={download.image}
+      />
     );
   }
 }
@@ -66,6 +85,8 @@ const mapStateToProps = state => {
   return {
     status: state.status,
     sos: getSetting(state, 'sos'),
+    download: getSetting(state, 'download'),
+    isShowingConfirmation: getIsShowingConfirmation(state),
   };
 };
 

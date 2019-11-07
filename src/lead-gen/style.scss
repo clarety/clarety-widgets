@@ -16,6 +16,20 @@
     }
   }
 
+  .image-header {
+    padding: 1.25rem;
+
+    img {
+      max-width: 160px;
+    }
+
+    &-title {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+
   .panel-header {
     text-align: center;
     padding: 20px 20px 0;

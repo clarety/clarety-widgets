@@ -1,18 +1,23 @@
 export const settingsMap = (result) => {
-  const sos = result.sos || result.Sos;
-
+  const { sos, download } = result;
+  
   return {
     sos: {
-      current: Number(sos.current || sos.actual),
+      current: Number(sos.actual),
       goal: Number(sos.goal),
+    },
+
+    download: {
+      image: download.coverImage,
+      file: download.file,
     },
   };
 };
 
-export function getCustomerPanelSettingsFromWidgetProps(props) {
+export function getCustomerPanelSettingsFromWidgetProps(props, variant) {
   return {
-    title:             props.headingText,
-    subtitle:          props.subHeadingText,
+    title:             variant === 'sos' && props.headingText,
+    subtitle:          variant === 'sos' && props.subHeadingText,
     submitBtnText:     props.buttonText,
     showOptIn:         props.showOptIn === '1',
     optInText:         props.optInText,

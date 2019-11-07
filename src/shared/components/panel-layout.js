@@ -159,6 +159,7 @@ const TabsPanelContainer = ({ status, children }) => {
 
 const TabsPanelHeader = ({ status, title, subtitle }) => {
   if (status !== 'edit') return null;
+  if (!title) return null;
 
   return (
     <div className="panel-header">

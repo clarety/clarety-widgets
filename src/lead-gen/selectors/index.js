@@ -1,4 +1,4 @@
-import { getSetting, getParsedFormData, getTrackingData, getRecaptcha } from 'shared/selectors';
+import { getSetting, getParsedFormData, getTrackingData, getRecaptcha, getCurrentPanelComponentName } from 'shared/selectors';
 
 export const getLeadPostData = (state) => {
   const caseTypeUid = getSetting(state, 'caseTypeUid');
@@ -24,3 +24,5 @@ export const getCmsConfirmContentFields = (state) => {
     }
   ];
 };
+
+export const getIsShowingConfirmation = (state) => getSetting(state, 'isShowingConfirmation');

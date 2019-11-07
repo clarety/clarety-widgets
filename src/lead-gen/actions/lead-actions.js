@@ -40,6 +40,8 @@ export const createLead = () => {
           const confirmContent = getCmsConfirmContent(elementId, fields);
           dispatch(setPanelSettings('CmsConfirmPanel', { confirmContent }));
 
+          dispatch(updateAppSettings({ isShowingConfirmation: true }));
+
           return true;
         }
       }
