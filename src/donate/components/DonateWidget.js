@@ -16,7 +16,6 @@ export class _DonateWidget extends React.Component {
 
     if (!singleOfferId && !recurringOfferId) throw new Error('[Clarety] Either a singleOfferId or recurringOfferId prop is required');
     if (!reCaptchaKey) throw new Error('[Clarety] missing reCaptcha key');
-    if (!window.Stripe) throw new Error('[Clarety] Stripe not found');
 
     setVariant(variant);
     setStore(storeCode);
