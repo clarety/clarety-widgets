@@ -45,21 +45,22 @@ export class PaymentPanel extends BasePanel {
   validateCreditCardFields(errors) {
     this.validateRequired('cardName', errors);
     this.validateCardNumber('cardNumber', errors);
-    this.validateCardExpiry('expiry', 'expiryMonth', 'expiryYear', errors);
-    this.validateCcv('ccv', errors);
+    this.validateCardExpiry('cardExpiry', 'cardExpiryMonth', 'cardExpiryYear', errors);
+    this.validateCcv('cardSecurityCode', errors);
   }
 
   getPaymentData() {
     const { paymentMethod } = this.props;
+    const { formData } = this.state;
 
     if (paymentMethod.type === 'gatewaycc') {
       return {
         type:             'gatewaycc',
-        cardName:         this.state.formData.cardName,
-        cardNumber:       this.state.formData.cardNumber,
-        cardExpiryMonth:  this.state.formData.expiryMonth,
-        cardExpiryYear:   '20' + this.state.formData.expiryYear,
-        cardSecurityCode: this.state.formData.ccv,
+        cardName:         formData.cardName,
+        cardNumber:       formData.cardNumber,
+        cardExpiryMonth:  formData.cardExpiryMonth,
+        cardExpiryYear:   '20' + formData.cardExpiryYear,
+        cardSecurityCode: formData.cardSecurityCode,
       };
     }
 
@@ -181,10 +182,10 @@ export class PaymentPanel extends BasePanel {
 
         <Form.Row>
           <Col>
-            <ExpiryInput label="Expiry Date" field="expiry" monthField="expiryMonth" yearField="expiryYear" required />
+            <ExpiryInput label="Expiry Date" field="cardExpiry" monthField="cardExpiryMonth" yearField="cardExpiryYear" required />
           </Col>
           <Col>
-            <CcvInput label="CCV" field="ccv" required />
+            <CcvInput label="CCV" field="cardSecurityCode" required />
           </Col>
         </Form.Row>
       </React.Fragment>
