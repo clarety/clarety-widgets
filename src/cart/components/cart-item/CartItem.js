@@ -39,7 +39,7 @@ class _CartItem extends React.Component {
 
         return (
             <div className="cart-widget__summary__item" key={item.id}>
-                <Row className="align-items-center">
+                <Row>
                     <Col xs={3}>
                         <img src={item.image} className="img-fluid"/>
                     </Col>
@@ -48,23 +48,24 @@ class _CartItem extends React.Component {
                             key={item.id}
                             item={item}
                         />
-                    </Col>
-                </Row>
-                <Row className="justify-content-end">
-                    <TotalLine label="Amount" value={item.price} />
-                    <CartItemVariationDescription
-                        key={item.id}
-                        item={item}
-                    />
-                    <Col as="dt" xs={9}>
-                        Quantity
-                    </Col>
-                    <Col as="dd" xs={3} className="text-right">
-                        <QtyInput
-                            value={quantity}
-                            onChange={ this.onQuantityChange }
-                            onInputChange={ this.onInputChange }
-                        />
+
+                        <Row className="justify-content-end">
+                            <TotalLine label="Amount" value={item.price} />
+                            <CartItemVariationDescription
+                                key={item.id}
+                                item={item}
+                            />
+                            <Col as="dt" xs={9}>
+                                Quantity
+                            </Col>
+                            <Col as="dd" xs={3} className="text-right">
+                                <QtyInput
+                                    value={quantity}
+                                    onChange={ this.onQuantityChange }
+                                    onInputChange={ this.onInputChange }
+                                />
+                            </Col>
+                        </Row>
                     </Col>
                 </Row>
             </div>
