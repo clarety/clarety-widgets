@@ -1,7 +1,7 @@
 import { makePayment } from 'registration/actions';
 import { getCart, getPaymentMethod } from 'registration/selectors';
 
-export class PaymentConnect {
+export class RegistrationPaymentConnect {
   static mapStateToProps = (state, ownProps) => {
     const paymentMethod = getPaymentMethod(state);
 

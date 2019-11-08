@@ -3,7 +3,7 @@ import { Row, Col } from 'react-bootstrap';
 import { PaymentPanel as SharedPaymentPanel } from 'shared/components/panels/PaymentPanel';
 import { currency } from 'shared/utils';
 
-export class PaymentPanel extends SharedPaymentPanel {
+export class RegistrationPaymentPanel extends SharedPaymentPanel {
   renderCartSummary() {
     const { cart } = this.props;
 

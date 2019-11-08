@@ -4,7 +4,7 @@ import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext } from 'shared/utils';
 import { BasePanel, TextInput, PhoneInput, DobInput, Button } from 'checkout/components';
 
-export class CustomerPanel extends BasePanel {
+export class CheckoutCustomerPanel extends BasePanel {
   onPressContinue = event => {
     event.preventDefault();
 
