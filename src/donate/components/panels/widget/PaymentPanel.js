@@ -16,7 +16,7 @@ export class _PaymentPanel extends BasePanel {
 
   onSubmit = event => {
     event.preventDefault();
-    this.props.submitPaymentPanel();
+    this.props.onSubmit();
   };
 
   render() {

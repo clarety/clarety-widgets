@@ -16,7 +16,7 @@ export class _DetailsPanel extends BasePanel {
 
   onSubmit = async event => {
     event.preventDefault();
-    this.props.submitDetailsPanel();
+    this.props.onSubmit();
   };
 
   render() {

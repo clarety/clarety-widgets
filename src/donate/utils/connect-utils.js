@@ -83,7 +83,7 @@ export function connectPaymentPanel(ViewComponent) {
   };
   
   const actions = {
-    submitPaymentPanel: submitPaymentPanel,
+    onSubmit: submitPaymentPanel,
   };
 
   return connect(mapStateToProps, actions)(ViewComponent);
