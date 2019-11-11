@@ -1,5 +1,5 @@
 import { addItem } from 'shared/actions';
-import { setDetails, setAdditionalData, setErrors, resetDetails, setWaveInCart, removeAddOnsFromCart } from 'registration/actions';
+import { setDetails, setAdditionalData, setErrors, resetDetails, setWaveInCart, addAddOnToCart, removeAddOnsFromCart } from 'registration/actions';
 import { getEvent, getExtendFields, getParticipant, getWaveOptions, getAddOns, getParticipantOffer, getIsPrefilled, getIsCorporateTeam } from 'registration/selectors';
 
 export class DetailsConnect {
@@ -41,6 +41,7 @@ export class DetailsConnect {
     setAdditionalData: setAdditionalData,
     addToCart: addItem,
     setWaveInCart: setWaveInCart,
+    addAddOnToCart: addAddOnToCart,
     removeAddOnsFromCart: removeAddOnsFromCart,
     setErrors: setErrors,
     resetDetails: resetDetails,

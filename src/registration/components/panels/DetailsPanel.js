@@ -46,8 +46,8 @@ export class _DetailsPanel extends BasePanel {
       const formData = parseNestedElements(this.state.formData);
       
       // Update cart.
-      const addOns = this.getSelectedAddOns(formData);
-      this.addAddOnsToCart(addOns);
+      const selectedAddOns = this.getSelectedAddOns(formData);
+      this.addAddOnsToCart(selectedAddOns);
       setWaveInCart(participantIndex, formData.waveProductId);
 
       // Update partcipant.
@@ -56,7 +56,7 @@ export class _DetailsPanel extends BasePanel {
         formData.customer,
         formData.extendForm,
         formData.waveProductId,
-        addOns,
+        selectedAddOns,
       );
 
       nextPanel();
@@ -179,18 +179,19 @@ export class _DetailsPanel extends BasePanel {
     // Override in subclass.
   }
 
-  addAddOnsToCart(addOns) {
-    const { addToCart, participantIndex } = this.props;
+  addAddOnsToCart(selectedAddOns) {
+    const { addAddOnToCart, participantIndex } = this.props;
 
-    addOns.forEach(offerId => {
+    selectedAddOns.forEach(offerId => {
       const offer = this.props.addOns.find(offer => offer.offerId === offerId);
 
-      addToCart({
+      const item = {
         offerId: offer.offerId,
         type: 'add-on',
         price: offer.price,
-        options: { participantIndex },
-      });
+      };
+
+      addAddOnToCart(item, participantIndex);
     });
   }
 

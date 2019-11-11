@@ -1,5 +1,5 @@
 import { ClaretyApi } from 'clarety-utils';
-import { updateItem, removeItem } from 'shared/actions';
+import { addItem, updateItem, removeItem } from 'shared/actions';
 import { getCart } from 'shared/selectors';
 import { setErrors, clearErrors } from 'form/actions';
 import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getSaleId, getIsLoggedIn } from 'registration/selectors';
@@ -21,6 +21,34 @@ export const setWaveInCart = (participantIndex, waveProductId) => {
   };
 };
 
+export const addAddOnToCart = (item, participantIndex) => {
+  return (dispatch, getState) => {
+    const state = getState();
+    const cart = getCart(state);
+
+    const index = cart.items.findIndex(cartItem => cartItem.offerId === item.offerId);
+
+    if (index === -1) {
+      // Add new item.
+      item.options = {
+        participants: [participantIndex],
+      };
+      dispatch(addItem(item));
+    } else {
+      // Update existing item.
+      const cartItem = cart.items[index];
+      cartItem.quantity += 1;
+      cartItem.options = {
+        participants: [
+          ...cartItem.options.participants,
+          participantIndex,
+        ],
+      };
+      dispatch(updateItem(index, cartItem));
+    }
+  };
+};
+
 export const removeAddOnsFromCart = (participantIndex) => {
   return async (dispatch, getState) => {
     const state = getState();
@@ -30,12 +58,19 @@ export const removeAddOnsFromCart = (participantIndex) => {
     for (let itemIndex = cart.items.length - 1; itemIndex >= 0; itemIndex--) {
       const item = cart.items[itemIndex];
 
-      const shouldRemove =
-        item.type === 'add-on' &&
-        item.options.participantIndex === participantIndex;
+      // Make sure this is one of our add-ons.
+      if (item.type !== 'add-on') continue;
+      if (!item.options || !item.options.participants) continue;
+      if (!item.options.participants.includes(participantIndex)) continue;
 
-      if (shouldRemove) {
+      if (item.quantity === 1) {
+        // Remove item.
         dispatch(removeItem(itemIndex));
+      } else {
+        // Update item.
+        item.quantity -= 1;
+        item.options.participants = item.options.participants.filter(index => index !== participantIndex);
+        dispatch(updateItem(item));
       }
     }
   };

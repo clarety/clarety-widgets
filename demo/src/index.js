@@ -4,8 +4,8 @@ import Cookies from 'js-cookie';
 import { Config } from '../../src';
 
 Config.init({
-  instanceKey: 'clarety-baseline',
-  // instanceKey: 'mdc',
+  // instanceKey: 'clarety-baseline',
+  instanceKey: 'mdc',
   devSitePath: 'http://localhost:3000/',
   phoneCountry: 'AU',
 });
