@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { setPanelStatus, resetAllPanels } from 'shared/actions';
+import { ScrollIntoView } from 'shared/components';
 import { Resources } from 'shared/utils';
-import { ScrollIntoView } from 'registration/components';
 
 class _PanelManager extends React.Component {
   components = {};

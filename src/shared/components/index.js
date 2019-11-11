@@ -4,6 +4,8 @@ export * from './donation/SuggestedAmountLg';
 export * from './donation/VariableAmount';
 export * from './donation/VariableAmountLg';
 
+export * from './misc/ScrollIntoView';
+
 export * from './panels/BasePanel';
 export * from './panels/CmsConfirmPanel';
 export * from './panels/CustomerPanel';

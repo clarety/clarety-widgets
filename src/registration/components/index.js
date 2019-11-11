@@ -36,4 +36,3 @@ export * from './misc/NavBarBrand';
 export * from './misc/BusyOverlay';
 export * from './misc/MiniCart';
 export * from './misc/Qty';
-export * from './misc/ScrollIntoView';
