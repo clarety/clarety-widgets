@@ -29,11 +29,11 @@ export const fetchPaymentMethods = () => {
 export const makePayment = (paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     const { cart } = getState();
-
     const { options } = paymentMethod;
-
-    // Fetch stripe token.
+    
     if (options && options.gateway === gateways.stripe) {
+      // Fetch stripe token.
+
       dispatch(stripeTokenRequest(paymentData, options.stripeKey));
 
       const stripeToken = await createStripeToken(paymentData, options.stripeKey);
@@ -48,6 +48,12 @@ export const makePayment = (paymentData, paymentMethod) => {
 
       // Overwrite payment data with token.
       paymentData = { gatewayToken: stripeToken.id };
+    } else {
+      // Carts API has different expiry field names.
+      paymentData.expiryMonth = paymentData.cardExpiryMonth;
+      paymentData.cardExpiryMonth = undefined;
+      paymentData.expiryYear = paymentData.cardExpiryYear;
+      paymentData.cardExpiryYear = undefined;
     }
 
     dispatch(makePaymentRequest(paymentData));

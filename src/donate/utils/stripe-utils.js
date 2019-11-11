@@ -6,8 +6,8 @@ export const createStripeToken = ({ cardNumber, expiryMonth, expiryYear, ccv }, 
 
   const card = {
     number: cardNumber,
-    exp_month: expiryMonth,
-    exp_year: expiryYear,
+    exp_month: cardExpiryMonth,
+    exp_year: cardExpiryYear,
     cvc: ccv,
   };
 
