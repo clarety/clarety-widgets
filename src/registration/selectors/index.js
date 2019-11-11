@@ -188,15 +188,16 @@ export const getCreateRegistrationPostData = (state) => {
     eventId: event.eventId,
     organisationId: organisation ? organisation.teamId : '',
     channel: channel,
-    registrations: participants.map(
-      participant => getParticipantPostData(state, participant)
+    registrations: participants.map((participant, index) =>
+      getParticipantPostData(state, participant, index)
     ),
     fundraising: fundraising,
   };
 };
 
-const getParticipantPostData = (state, participant) => {
+const getParticipantPostData = (state, participant, index) => {
   const offerId = participant.offerId || getDefaultOffer(state, participant).offerId;
+  const appRef = getParticipantAppRef(state, index);
   const productId = participant.waveProductId || getDefaultWave(state, participant).productId;
   const customer = parseNestedElements(participant.customer);
   const extendFormId = getExtendFormId(state);
@@ -204,6 +205,7 @@ const getParticipantPostData = (state, participant) => {
 
   return {
     offerId: offerId,
+    appRef: appRef,
     quantity: 1,
     participants: [{
       productId: productId,
@@ -214,6 +216,20 @@ const getParticipantPostData = (state, participant) => {
       ...participant.additionalData,
     }],
   };
+};
+
+const getParticipantAppRef = (state, index) => {
+  const cart = getCart(state);
+
+  for (const item of cart.items) {
+    if (item.type !== 'event') continue;
+
+    if (item.options.participantIndex === index) {
+      return item.appRef;
+    }
+  }
+
+  return null;
 };
 
 const getParticipantAddOns = (participant) => participant.addOns.map(offerId => ({ offerId }));

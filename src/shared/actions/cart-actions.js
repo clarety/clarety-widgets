@@ -1,3 +1,4 @@
+import uuid from 'uuid/v4';
 import { types } from 'shared/actions';
 
 export const addItem = ({ offerId, offerUid, offerPaymentUid, offerProductId, type, quantity, price, panel, options }) => ({
@@ -14,6 +15,8 @@ export const addItem = ({ offerId, offerUid, offerPaymentUid, offerProductId, ty
     type: type,
     panel: panel,
     options: options || {},
+
+    appRef: uuid(),
   },
 });
 

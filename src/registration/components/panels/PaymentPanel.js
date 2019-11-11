@@ -22,7 +22,7 @@ export class RegistrationPaymentPanel extends SharedPaymentPanel {
 const CartItem = ({ item }) => (
   <Row as="dl" className="cart-item">
     <Col as="dt">{item.description}</Col>
-    <Col as="dd" xs={3} className="text-right">{item.total}</Col>
+    <Col as="dd" xs={3} className="text-right">{currency(item.total)}</Col>
   </Row>
 );
 

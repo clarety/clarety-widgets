@@ -40,7 +40,8 @@
     "react-select": "^3.0.4",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "scroll-into-view-if-needed": "^2.2.20"
+    "scroll-into-view-if-needed": "^2.2.20",
+    "uuid": "^3.3.3"
   },
   "peerDependencies": {
     "bootstrap": "^4.3.1",

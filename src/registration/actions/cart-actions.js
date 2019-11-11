@@ -97,25 +97,6 @@ export const createRegistration = () => {
       dispatch(registrationCreateFailure(result));
       dispatch(setErrors(result.validationErrors));
       return false; 
-    }
-
-    if (isLoggedIn) {
-
-      // The auth'd endpoint doesn't return the sale,
-      // so we need to make another request to fetch it.
-
-      dispatch(registrationFetchRequest(result.id));
-
-      results = await ClaretyApi.get(`sale/${result.id}`, { storeId });
-      result = results[0];
-
-      if (result) {
-        dispatch(registrationFetchSuccess(result));
-        return true;
-      } else {
-        throw new Error('[Clarety] Failed to get registration after creating it.');
-      }
-
     } else {
       dispatch(registrationCreateSuccess(result));
       return true;
