@@ -1,6 +1,5 @@
 import { types, statuses } from 'shared/actions';
 import { types as checkoutTypes } from 'checkout/actions/types';
-import { types as regoTypes } from 'registration/actions/types';
 
 const initialState = statuses.initializing;
 
@@ -51,30 +50,6 @@ export const statusReducer = (state = initialState, action) => {
     case checkoutTypes.stripeTokenFailure:
     case checkoutTypes.applyPromoCodeSuccess:
     case checkoutTypes.applyPromoCodeFailure:
-      return statuses.ready;
-
-    // Registration
-
-    case regoTypes.fetchEventsRequest:
-      return statuses.initializing;
-
-    case regoTypes.fetchEventsSuccess:
-      return statuses.ready;
-
-    case regoTypes.registrationCreateRequest:
-      return statuses.validating;
-
-    case regoTypes.registrationCreateSuccess:
-    case regoTypes.registrationCreateFailure:
-      return statuses.ready;
-
-    case regoTypes.registrationFetchSuccess:
-      return statuses.ready;
-
-    case regoTypes.registrationSubmitRequest:
-      return statuses.submitting;
-
-    case regoTypes.registrationSubmitFailure:
       return statuses.ready;
 
     // Default
