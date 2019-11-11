@@ -3,7 +3,7 @@ import { getIsLoggedIn } from 'shared/selectors';
 import { setFormData, resetFormData } from 'form/actions';
 import { hasAccount, fetchAuthCustomer, createAcountAndLogin } from 'registration/actions';
 
-export class LoginConnect {
+export class RegistrationLoginConnect {
   static mapStateToProps = (state) => {
     return {
       isBusy: state.status === statuses.busy,
