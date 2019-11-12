@@ -35,6 +35,13 @@ export class DonationPanel extends BasePanel {
     });
   };
 
+  onClickNone = (event) => {
+    event.preventDefault();
+    this.onChangeFrequency('single');
+    this.onSelectAmount('single', 0, false);
+    this.props.nextPanel();
+  };
+
   onClickNext = (event) => {
     event.preventDefault();
 
@@ -144,6 +151,11 @@ export class DonationPanel extends BasePanel {
             </div>
 
             <div className="panel-actions">
+              {settings.showNoneButton &&
+                <Button onClick={this.onClickNone}>
+                  <FormattedMessage id="btn.none" />
+                </Button>
+              }
               <Button type="submit"> 
                 <FormattedMessage id="btn.next" />
               </Button>
@@ -171,12 +183,7 @@ export class DonationPanel extends BasePanel {
 
         <PanelBody layout={layout} status="done">
 
-          <FormattedMessage
-            id="donationPanel.summaryText"
-            values={{ amount: selectedAmount }}
-          >
-            {text => <p className="lead">{text}</p>}
-          </FormattedMessage>
+          <p>{selectedAmount}</p>
 
           <Button onClick={this.onClickEdit}>
             <FormattedMessage id="btn.edit" />
@@ -222,13 +229,14 @@ export class DonationPanel extends BasePanel {
     return (
       <React.Fragment>
         <VariableAmount
+          amountInfo={variableAmount}
           value={currentSelection.variableAmount || ''}
           onChange={amount => this.onSelectAmount(frequency, amount, true)}
           isSelected={currentSelection.isVariableAmount}
         />
         <VariableAmountLg
-          value={currentSelection.variableAmount || ''}
           amountInfo={variableAmount}
+          value={currentSelection.variableAmount || ''}
           onChange={amount => this.onSelectAmount(frequency, amount, true)}
           isSelected={currentSelection.isVariableAmount}
         />
@@ -249,7 +257,7 @@ export class DonationPanel extends BasePanel {
   
     const selection = selections[frequency];
   
-    if (!selection || !selection.amount) return 'None';
+    if (!selection || !selection.amount || selection.amount === '0') return 'None';
 
     return currency(Number(selection.amount));
   }

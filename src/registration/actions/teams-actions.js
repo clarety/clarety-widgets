@@ -1,5 +1,5 @@
 import { ClaretyApi } from 'clarety-utils';
-import { setOrganisation } from 'shared/actions';
+import { setOrganisation, removePanels } from 'shared/actions';
 import { setErrors, clearErrors } from 'form/actions';
 import { getCreateTeamPostData } from 'registration/selectors';
 import { parseTeamErrors } from 'registration/utils';
@@ -107,6 +107,9 @@ export const checkPromoCode = (promoCode) => {
     if (result.corporateTeam) {
       result.team.isCorporateTeam = true;
       dispatch(setOrganisation(result.team));
+
+      // No donations for corporate teams.
+      dispatch(removePanels({ withComponent: 'DonationPanel' }));
       
       dispatch(checkPromoCodeSuccess(result));
       return true;

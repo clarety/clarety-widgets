@@ -9,6 +9,7 @@
   "btn.yes": "Yes",
   "btn.no": "No",
   "btn.cancel": "Cancel",
+  "btn.none": "None",
   "btn.createTeam": "Create Team",
 
   "label.customer.firstName": "First Name",
