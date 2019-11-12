@@ -13,6 +13,10 @@ export class _AmountPanel extends BasePanel {
     this.props.clearItems();
   }
 
+  onHoverAmount = (amountInfo) => {
+    // Override in subclass.
+  };
+
   onSelectAmount = (frequency, amount, isVariableAmount) => {
     this.props.selectAmount(frequency, amount, isVariableAmount);
   };
@@ -86,6 +90,7 @@ export class _AmountPanel extends BasePanel {
           key={suggestedAmount.amount}
           amountInfo={suggestedAmount}
           onClick={amount => this.onSelectAmount(frequency, amount, false)}
+          onHover={this.onHoverAmount}
           isSelected={isSelected}
           forceMd={forceMd}
           index={index}
@@ -95,6 +100,7 @@ export class _AmountPanel extends BasePanel {
             key={`${suggestedAmount.amount}-lg`}
             amountInfo={suggestedAmount}
             onClick={amount => this.onSelectAmount(frequency, amount, false)}
+            onHover={this.onHoverAmount}
             isSelected={isSelected}
             forceMd={forceMd}
             index={index}
@@ -116,16 +122,19 @@ export class _AmountPanel extends BasePanel {
     return (
       <React.Fragment>
         <VariableAmountComponent
+          amountInfo={variableAmount}
           value={currentSelection.variableAmount || ''}
           onChange={amount => this.onSelectAmount(frequency, amount, true)}
+          onHover={this.onHoverAmount}
           isSelected={currentSelection.isVariableAmount}
           forceMd={forceMd}
         />
         {!forceMd &&
           <VariableAmountLgComponent
-            value={currentSelection.variableAmount || ''}
             amountInfo={variableAmount}
+            value={currentSelection.variableAmount || ''}
             onChange={amount => this.onSelectAmount(frequency, amount, true)}
+            onHover={this.onHoverAmount}
             isSelected={currentSelection.isVariableAmount}
             forceMd={forceMd}
           />
