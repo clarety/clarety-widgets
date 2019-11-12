@@ -191,18 +191,17 @@ export class OffersPanel extends BasePanel {
   }
 
   renderNameInput(index) {
-    const { names } = this.state;
-
     return (
-      <FormattedMessage id="label.customer.firstName">
-        {label =>
-          <Form.Control
-            placeholder={label}
-            value={names[index] || ''}
-            onChange={event => this.onChangeName(index, event.target.value)}
-          />
-        }
-      </FormattedMessage>
+      <Form.Group>
+        <Form.Label>
+          <FormattedMessage id="label.customer.firstName" /> *
+        </Form.Label>
+
+        <Form.Control
+          value={this.state.names[index] || ''}
+          onChange={event => this.onChangeName(index, event.target.value)}
+        />
+      </Form.Group>
     );
   }
 

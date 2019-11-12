@@ -231,6 +231,8 @@ export class LoginPanel extends BasePanel {
     return (
       <FormContext.Provider value={this.state}>
         <Form onSubmit={this.onPressCheckEmail}>
+          <p>Please type in an email address so we can check if you already have an account.</p>
+
           <Form.Row>
             <Col>
               <EmailInput label="Email" field="email" required />

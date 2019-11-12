@@ -19,18 +19,19 @@ Registration.setPanels([
     settings: {},
   },
   {
-    component: DonationPanel,
-    connect: DonationConnect,
-    settings: {
-      showFrequencySelect: false,
-    },
-  },
-  {
     component: EventPanel,
     connect: EventConnect,
     settings: {
       showStateButtons: true,
       showPromoCode: true,
+    },
+  },
+  {
+    component: DonationPanel,
+    connect: DonationConnect,
+    settings: {
+      showFrequencySelect: false,
+      showNoneButton: true,
     },
   },
   {
