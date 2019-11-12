@@ -13,7 +13,11 @@ export class _AmountPanel extends BasePanel {
     this.props.clearItems();
   }
 
-  onSubmit = event => {
+  onSelectAmount = (frequency, amount, isVariableAmount) => {
+    this.props.selectAmount(frequency, amount, isVariableAmount);
+  };
+
+  onSubmit = (event) => {
     event.preventDefault();
     this.props.submitAmountPanel();
   };
@@ -65,8 +69,8 @@ export class _AmountPanel extends BasePanel {
     );
   }
 
-  renderSuggestedAmount = suggestedAmount => {
-    const { selections, frequency, selectAmount, forceMd } = this.props;
+  renderSuggestedAmount = (suggestedAmount, index) => {
+    const { selections, frequency, forceMd } = this.props;
     const currentSelection = selections[frequency];
 
     const SuggestedAmountComponent = this.context.SuggestedAmount || SuggestedAmount;
@@ -81,17 +85,19 @@ export class _AmountPanel extends BasePanel {
         <SuggestedAmountComponent
           key={suggestedAmount.amount}
           amountInfo={suggestedAmount}
-          onClick={amount => selectAmount(frequency, amount)}
+          onClick={amount => this.onSelectAmount(frequency, amount, false)}
           isSelected={isSelected}
           forceMd={forceMd}
+          index={index}
         />
         {!forceMd &&
           <SuggestedAmountLgComponent
             key={`${suggestedAmount.amount}-lg`}
             amountInfo={suggestedAmount}
-            onClick={amount => selectAmount(frequency, amount)}
+            onClick={amount => this.onSelectAmount(frequency, amount, false)}
             isSelected={isSelected}
             forceMd={forceMd}
+            index={index}
           />
         }
       </React.Fragment>
@@ -101,7 +107,7 @@ export class _AmountPanel extends BasePanel {
   renderVariableAmount(variableAmount) {
     if (!variableAmount) return null;
 
-    const { selections, frequency, selectAmount, forceMd } = this.props;
+    const { selections, frequency, forceMd } = this.props;
     const currentSelection = selections[frequency];
 
     const VariableAmountComponent = this.context.VariableAmount || VariableAmount;
@@ -111,7 +117,7 @@ export class _AmountPanel extends BasePanel {
       <React.Fragment>
         <VariableAmountComponent
           value={currentSelection.variableAmount || ''}
-          onChange={amount => selectAmount(frequency, amount, true)}
+          onChange={amount => this.onSelectAmount(frequency, amount, true)}
           isSelected={currentSelection.isVariableAmount}
           forceMd={forceMd}
         />
@@ -119,7 +125,7 @@ export class _AmountPanel extends BasePanel {
           <VariableAmountLgComponent
             value={currentSelection.variableAmount || ''}
             amountInfo={variableAmount}
-            onChange={amount => selectAmount(frequency, amount, true)}
+            onChange={amount => this.onSelectAmount(frequency, amount, true)}
             isSelected={currentSelection.isVariableAmount}
             forceMd={forceMd}
           />
