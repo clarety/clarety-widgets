@@ -47,6 +47,10 @@ export const types = {
   hasAccountSuccess: 'HAS_ACCOUNT_SUCCESS',
   hasAccountFailure: 'HAS_ACCOUNT_FAILURE',
 
+  resetPasswordRequest: 'RESET_PASSWORD_REQUEST',
+  resetPasswordSuccess: 'RESET_PASSWORD_SUCCESS',
+  resetPasswordFailure: 'RESET_PASSWORD_FAILURE',
+
   createAccountRequest: 'CREATE_ACCOUNT_REQUEST',
   createAccountSuccess: 'CREATE_ACCOUNT_SUCCESS',
   createAccountFailure: 'CREATE_ACCOUNT_FAILURE',

@@ -25,7 +25,7 @@ export class LoginPanel extends BasePanel {
     this.setState({ mode });
   }
 
-  onPressCheckEmail = async event => {
+  onPressCheckEmail = async (event) => {
     event.preventDefault();
 
     const { hasAccount, settings, resetFormData } = this.props;
@@ -50,7 +50,7 @@ export class LoginPanel extends BasePanel {
     }
   };
 
-  onPressLogin = async event => {
+  onPressLogin = async (event) => {
     event.preventDefault();
 
     const { login, fetchAuthCustomer, nextPanel, setFormData } = this.props;
@@ -70,6 +70,10 @@ export class LoginPanel extends BasePanel {
     this.setMode('logged-in');
 
     nextPanel();
+  };
+
+  onPressResetPassword = () => {
+    this.props.resetPassword(this.state.formData.email);
   };
 
   onPressShowCreateAccountForm = () => {
@@ -283,6 +287,12 @@ export class LoginPanel extends BasePanel {
           <Form.Row>
             <Col>
               <TextInput label="Password" field="password" type="password" required />
+            </Col>
+          </Form.Row>
+
+          <Form.Row>
+            <Col>
+              <Button title="Reset My Password" variant="link" onClick={this.onPressResetPassword} />
             </Col>
           </Form.Row>
 

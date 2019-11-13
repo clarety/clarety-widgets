@@ -3,7 +3,7 @@ import { setStatus, setCustomer, login, emailStatuses } from 'shared/actions';
 import { parseNestedElements } from 'shared/utils';
 import { types } from 'registration/actions';
 
-export const hasAccount = email => {
+export const hasAccount = (email) => {
   return async dispatch => {
     dispatch(hasAccountRequest(email));
 
@@ -16,6 +16,23 @@ export const hasAccount = email => {
     } else {
       dispatch(hasAccountSuccess(result));
       return result.exists ? emailStatuses.hasAccount : emailStatuses.noAccount;
+    }
+  };
+};
+
+export const resetPassword = (email) => {
+  return async dispatch => {
+    dispatch(resetPasswordRequest(email));
+
+    const results = await ClaretyApi.post('customer-search/', { email, sendPassword: true });
+    const result = results[0];
+
+    if (result.errors) {
+      dispatch(resetPasswordFailure(result));
+      return false;
+    } else {
+      dispatch(resetPasswordSuccess(result));
+      return true;
     }
   };
 };
@@ -87,51 +104,68 @@ export const fetchAuthCustomer = () => {
 
 // Has Account
 
-const hasAccountRequest = email => ({
+const hasAccountRequest = (email) => ({
   type: types.hasAccountRequest,
   email: email,
 });
 
-const hasAccountSuccess = result => ({
+const hasAccountSuccess = (result) => ({
   type: types.hasAccountSuccess,
   result: result,
 });
 
-const hasAccountFailure = result => ({
+const hasAccountFailure = (result) => ({
   type: types.hasAccountFailure,
+  result: result,
+});
+
+// Reset Password
+
+const resetPasswordRequest = (email) => ({
+  type: types.resetPasswordRequest,
+  email: email,
+});
+
+const resetPasswordSuccess = (result) => ({
+  type: types.resetPasswordSuccess,
+  result: result,
+});
+
+const resetPasswordFailure = (result) => ({
+  type: types.resetPasswordFailure,
   result: result,
 });
 
 // Create Account
 
-const createAccountRequest = postData => ({
+const createAccountRequest = (postData) => ({
   type: types.createAccountRequest,
   postData: postData,
 });
 
-const createAccountSuccess = result => ({
+const createAccountSuccess = (result) => ({
   type: types.createAccountSuccess,
   result: result,
 });
 
-const createAccountFailure = result => ({
+const createAccountFailure = (result) => ({
   type: types.createAccountFailure,
   result: result,
 });
 
 // Fetch Auth Customer
 
-const fetchAuthCustomerRequest = postData => ({
+const fetchAuthCustomerRequest = (postData) => ({
   type: types.fetchAuthCustomerRequest,
   postData: postData,
 });
 
-const fetchAuthCustomerSuccess = result => ({
+const fetchAuthCustomerSuccess = (result) => ({
   type: types.fetchAuthCustomerSuccess,
   result: result,
 });
 
-const fetchAuthCustomerFailure = result => ({
+const fetchAuthCustomerFailure = (result) => ({
   type: types.fetchAuthCustomerFailure,
   result: result,
 });

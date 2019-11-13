@@ -1,7 +1,7 @@
 import { statuses, login, logout } from 'shared/actions';
 import { getIsLoggedIn } from 'shared/selectors';
 import { setFormData, resetFormData } from 'form/actions';
-import { hasAccount, fetchAuthCustomer, createAcountAndLogin } from 'registration/actions';
+import { hasAccount, fetchAuthCustomer, createAcountAndLogin, resetPassword } from 'registration/actions';
 
 export class RegistrationLoginConnect {
   static mapStateToProps = (state) => {
@@ -19,6 +19,7 @@ export class RegistrationLoginConnect {
     logout: logout,
     fetchAuthCustomer: fetchAuthCustomer,
     createAccount: createAcountAndLogin,
+    resetPassword: resetPassword,
   
     setFormData: setFormData,
     resetFormData: resetFormData,
