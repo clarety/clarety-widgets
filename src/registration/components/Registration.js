@@ -28,7 +28,8 @@ class _RegistrationRoot extends React.Component {
     updateAppSettings({
       storeId: this.props.storeId,
       seriesId: this.props.seriesId,
-      previousSeriesId: this.props.previousSeriesId,
+      prevSeriesId: this.props.prevSeriesId,
+      ...this.props.settings,
     });
 
     const jwtAccount = getJwtAccount();
@@ -47,8 +48,8 @@ class _RegistrationRoot extends React.Component {
 
     await fetchSettings('donations/', {
       store: this.props.storeCode,
-      offerSingle: this.props.singleOfferId,
-      offerRecurring: this.props.recurringOfferId,
+      offerSingle: this.props.donationSingleOfferId,
+      offerRecurring: this.props.donationRecurringOfferId,
     }, mapDonationSettings);
   }
 

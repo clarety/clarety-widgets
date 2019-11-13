@@ -96,13 +96,13 @@ export default class RegistrationDemo extends React.Component {
           storeCode="AU"
 
           seriesId="9"
-          previousSeriesId="8"
+          prevSeriesId="8"
 
           // mdc
-          singleOfferId="55"
+          donationSingleOfferId="55"
 
           // baseline
-          // singleOfferId="8"
+          // donationSingleOfferId="8"
 
           sourceId="17"
           responseId="e9c2e351d90b11e996fd"

@@ -89,8 +89,8 @@ export const fetchAuthCustomer = () => {
 
     dispatch(setStatus('busy'));
 
-    const { previousSeriesId } = state.settings;
-    let results = await ClaretyApi.get('registration-customer/', { previousSeriesId });
+    const { prevSeriesId } = state.settings;
+    let results = await ClaretyApi.get('registration-customer/', { previousSeriesId: prevSeriesId });
     const result = results[0];
 
     dispatch(setStatus('ready'));
