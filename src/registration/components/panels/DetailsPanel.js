@@ -288,7 +288,7 @@ export class _DetailsPanel extends BasePanel {
       getGenderOptions(appSettings)
     );
 
-    const showAutofill = participantIndex !== 0;
+    const showAutofill = participantIndex !== 0 && !isPrefilled;
     const showEmail   = !formData['autofill.email'];
     const showMobile  = !formData['autofill.mobile'];
     const showAddress = !formData['autofill.address'];

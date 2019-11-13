@@ -165,8 +165,14 @@ export class OffersPanel extends BasePanel {
   }
 
   renderPrefillOptions(index) {
-    const prefill = this.state.prefills[index];
+    const selectedOption = this.state.prefills[index];
     const options = this.getPrefillOptions(index);
+
+    // Auto-select 'other' if it's the only option.
+    if (!selectedOption && options.length === 1 && options[0].value === 'other') {
+      this.onSelectPrefill(index, 'other');
+    }
+
     const onChange = event => this.onSelectPrefill(index, event.target.value);
 
     return (
@@ -175,7 +181,7 @@ export class OffersPanel extends BasePanel {
           <Form.Label>
             <FormattedMessage id="offersPanel.prefillPrompt" />
           </Form.Label>
-          <Form.Control as="select" onChange={onChange} value={prefill}>
+          <Form.Control as="select" onChange={onChange} value={selectedOption}>
             <option hidden>Select</option>
             {options.map(option =>
               <option key={option.value} value={option.value}>{option.label}</option>
@@ -183,7 +189,7 @@ export class OffersPanel extends BasePanel {
           </Form.Control>
         </Form.Group>
 
-        {prefill === 'other' &&
+        {selectedOption === 'other' &&
           this.renderNameInput(index)
         }
       </React.Fragment>
@@ -267,6 +273,7 @@ export class OffersPanel extends BasePanel {
     return options;
   }
 
+  // Add an option if it hasn't already been selected by another partcipant.
   maybeAddOption(options, index, value, label) {
     const valueIndex = this.state.prefills.indexOf(value);
     if (valueIndex === index || valueIndex === -1) {
