@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Form } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { Button, TextInput as FormTextInput, SelectInput as FormSelectInput } from 'form/components';
+import { Button, TextInput, SelectInput, CheckboxInput } from 'form/components';
 import { TeamSearchInput } from 'registration/components';
 
 export class TeamPanel extends BasePanel {
@@ -169,7 +169,7 @@ export class TeamPanel extends BasePanel {
             <Form.Label>
               <FormattedMessage id="label.team.password" />
             </Form.Label>
-            <FormTextInput field="team.passwordCheck" type="password" />
+            <TextInput field="team.passwordCheck" type="password" />
           </Form.Group>
         }
 
@@ -190,7 +190,7 @@ export class TeamPanel extends BasePanel {
 
   renderCreate() {
     const { formData, isBusyCreate } = this.props;
-    const canContinue = !!formData['team.name'] && !!formData['team.type'];
+    const showPassword = formData['team.passwordRequired'];
 
     // TODO: move these options somewhere else...
     // TODO: translate...
@@ -211,34 +211,51 @@ export class TeamPanel extends BasePanel {
           <Form.Label>
             <FormattedMessage id="label.team.name" /> *
           </Form.Label>
-          <FormTextInput field="team.name" />
+          <TextInput field="team.name" />
         </Form.Group>
 
         <Form.Group controlId="team.type">
           <Form.Label>
             <FormattedMessage id="label.team.type" /> *
           </Form.Label>
-          <FormSelectInput field="team.type" options={teamTypeOptions} />
+          <SelectInput field="team.type" options={teamTypeOptions} />
         </Form.Group>
 
-        <Form.Group controlId="team.password">
-          <Form.Label>
-            <FormattedMessage id="label.team.password" />
-          </Form.Label>
-          <FormattedMessage id="label.optional">
-            {text => <FormTextInput field="team.password" placeholder={text} type="password" />}
-          </FormattedMessage>
+        <Form.Group controlId="team.passwordRequired">
+          <CheckboxInput
+            field="team.passwordRequired"
+            label={<FormattedMessage id="label.team.passwordRequired" />}
+          />
         </Form.Group>
+
+        {showPassword &&
+          <Form.Group controlId="team.password">
+            <Form.Label>
+              <FormattedMessage id="label.team.password" /> *
+            </Form.Label>
+            <TextInput field="team.password" type="password" />
+          </Form.Group>
+        }        
 
         <Button onClick={this.onClickCancel}>
           <FormattedMessage id="btn.cancel" />
         </Button>
 
-        <Button type="submit" disabled={!canContinue} isBusy={isBusyCreate}>
+        <Button type="submit" disabled={!this.canContinueCreate()} isBusy={isBusyCreate}>
           <FormattedMessage id="btn.createTeam" />
         </Button>
       </Form>
     );
+  }
+
+  canContinueCreate() {
+    const { formData } = this.props;
+
+    if (!formData['team.name']) return false;
+    if (!formData['team.type']) return false;
+    if (formData['team.passwordRequired'] && !formData['team.password']) return false;
+    
+    return true;
   }
 
   renderDone() {

@@ -465,7 +465,7 @@ export class _DetailsPanel extends BasePanel {
 
   renderDone() {
     const { layout, index } = this.props;
-    const { firstName } = this.props.participant.customer;
+    const { firstName, lastName } = this.props.participant.customer;
 
     return (
       <PanelContainer layout={layout} status="done">
@@ -474,11 +474,12 @@ export class _DetailsPanel extends BasePanel {
           layout={layout}
           number={index + 1}
           intlId="detailsPanel.doneTitle"
-          intlValues={{ firstName }}
           onPressEdit={this.onPressEdit}
         />
 
         <PanelBody layout={layout} status="done">
+          <p>{firstName} {lastName}</p>
+
           <Button onClick={this.onClickEdit}>
             <FormattedMessage id="btn.edit" />
           </Button>

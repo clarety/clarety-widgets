@@ -31,6 +31,7 @@
   "label.team.search": "Team Search",
   "label.team.name": "Team Name",
   "label.team.type": "Team Type",
+  "label.team.passwordRequired": "Should team members enter a password in order to join?",
   "label.team.password": "Team Password",
 
   "label.promoCode": "If applicable, enter the promo code provided",
@@ -100,7 +101,7 @@
   "detailsPanel.editTitle": "Registration Details For <b>{firstName}</b>",
   "detailsPanel.customerFormTitle": "Personal Details",
   "detailsPanel.extendFormTitle": "Event Details",
-  "detailsPanel.doneTitle": "Registration Details For {firstName}",
+  "detailsPanel.doneTitle": "Registration Details",
 
   "donationPanel.editTitle": "Make A Donation",
   "donationPanel.doneTitle": "Your Donation",
