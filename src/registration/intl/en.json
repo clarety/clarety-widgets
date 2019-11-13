@@ -105,7 +105,6 @@
 
   "donationPanel.editTitle": "Make A Donation",
   "donationPanel.doneTitle": "Your Donation",
-  "donationPanel.summaryText": "Amount: {amount}",
   
   "reviewPanel.errorTitle": "We Found Some Problems With Your Registration",
   "reviewPanel.errorSubtitle": "Please correct the issues and try again.",
