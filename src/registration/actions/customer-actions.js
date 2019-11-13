@@ -24,8 +24,12 @@ export const resetPassword = (email) => {
   return async dispatch => {
     dispatch(resetPasswordRequest(email));
 
+    dispatch(setStatus('busy-reset-password'));
+
     const results = await ClaretyApi.post('customer-search/', { email, sendPassword: true });
     const result = results[0];
+
+    dispatch(setStatus('ready'));
 
     if (result.errors) {
       dispatch(resetPasswordFailure(result));

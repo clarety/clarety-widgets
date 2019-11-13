@@ -152,10 +152,11 @@ export class DonationPanel extends BasePanel {
 
             <div className="panel-actions">
               {settings.showNoneButton &&
-                <Button onClick={this.onClickNone}>
+                <Button onClick={this.onClickNone} variant="link">
                   <FormattedMessage id="btn.none" />
                 </Button>
               }
+              
               <Button type="submit"> 
                 <FormattedMessage id="btn.next" />
               </Button>

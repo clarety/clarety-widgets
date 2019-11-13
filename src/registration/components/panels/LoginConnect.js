@@ -7,6 +7,7 @@ export class RegistrationLoginConnect {
   static mapStateToProps = (state) => {
     return {
       isBusy: state.status === statuses.busy,
+      isBusyResetPassword: state.status === 'busy-reset-password',
       isLoggedIn: getIsLoggedIn(state),
       customer: state.cart.customer,
       errors: state.errors,

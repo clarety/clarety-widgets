@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Form, Button as BsButton } from 'react-bootstrap';
+import { Row, Col, Form } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext } from 'shared/utils';
@@ -9,6 +9,7 @@ export class LoginPanel extends BasePanel {
   constructor(props) {
     super(props);
     this.state.mode = props.isLoggedIn ? 'logged-in' : 'check-email';
+    this.state.passwordResetStatus = 'ready';
   }
 
   onShowPanel() {
@@ -44,7 +45,10 @@ export class LoginPanel extends BasePanel {
         }
       }
 
-      if (emailStatus === 'has-account') this.setMode('login');
+      if (emailStatus === 'has-account') {
+        this.setMode('login');
+        this.setState({ passwordResetStatus: 'ready' });
+      }
 
       resetFormData();
     }
@@ -72,8 +76,13 @@ export class LoginPanel extends BasePanel {
     nextPanel();
   };
 
-  onPressResetPassword = () => {
-    this.props.resetPassword(this.state.formData.email);
+  onPressResetPassword = async () => {
+    const didReset = await this.props.resetPassword(this.state.formData.email);
+    if (didReset) {
+      this.setState({ passwordResetStatus: 'success' });
+    } else {
+      this.setState({ passwordResetStatus: 'fail' });
+    }
   };
 
   onPressShowCreateAccountForm = () => {
@@ -202,7 +211,7 @@ export class LoginPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, isBusy, index } = this.props;
+    const { layout, isBusy, isBusyResetPassword, index } = this.props;
 
     return (
       <PanelContainer layout={layout}  className="login-panel">
@@ -214,7 +223,7 @@ export class LoginPanel extends BasePanel {
           intlId="loginPanel.editTitle"
         />
 
-        <PanelBody layout={layout} status="edit" isBusy={isBusy}>
+        <PanelBody layout={layout} status="edit" isBusy={isBusy || isBusyResetPassword}>
           {this.renderForm()}
         </PanelBody>
       </PanelContainer>
@@ -273,6 +282,9 @@ export class LoginPanel extends BasePanel {
   }
   
   renderLoginForm() {
+    const { isBusy, isBusyResetPassword } = this.props;
+    const { passwordResetStatus } = this.state;
+
     return (
       <FormContext.Provider value={this.state}>
         <Form onSubmit={this.onPressLogin}>
@@ -290,14 +302,16 @@ export class LoginPanel extends BasePanel {
             </Col>
           </Form.Row>
 
-          <Form.Row>
+          <Row>
             <Col>
-              <Button title="Reset My Password" variant="link" onClick={this.onPressResetPassword} />
+              {passwordResetStatus === 'ready'   && <Button title="Reset My Password" variant="link" onClick={this.onPressResetPassword} isBusy={isBusyResetPassword} />}
+              {passwordResetStatus === 'success' && <p>A temporary password email has been sent to you. Please check your email.</p>}
+              {passwordResetStatus === 'failure' && <p>Sorry, we could not reset your password.</p>}
             </Col>
-          </Form.Row>
+          </Row>
 
           <div className="panel-actions">
-            <Button title="Login" type="submit" isBusy={this.props.isBusy} />
+            <Button title="Login" type="submit" isBusy={isBusy} />
           </div>
         </Form>
       </FormContext.Provider>
@@ -389,9 +403,10 @@ export class LoginPanel extends BasePanel {
         <PanelBody layout={layout} status="done">
           <p>{email}</p>
 
-          <BsButton onClick={this.onClickEdit}>
-            <FormattedMessage id="btn.edit" />
-          </BsButton>
+          <Button
+            onClick={this.onClickEdit}
+            title={<FormattedMessage id="btn.edit" />}
+          />
         </PanelBody>
       </PanelContainer>
     );
