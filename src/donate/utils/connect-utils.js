@@ -72,6 +72,20 @@ export function connectDetailsPanel(ViewComponent) {
   return connect(mapStateToProps, actions)(ViewComponent);
 }
 
+export function connectFundraisingPanel(ViewComponent) {
+  const mapStateToProps = state => {
+    return {
+      isBusy: getIsBusy(state),
+      errors: state.errors,
+    };
+  };
+  
+  const actions = {
+  };
+  
+  return connect(mapStateToProps, actions)(ViewComponent);
+}
+
 export function connectPaymentPanel(ViewComponent) {
   const mapStateToProps = state => {
     return {

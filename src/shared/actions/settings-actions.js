@@ -28,20 +28,6 @@ export const updateAppSettings = (settings) => ({
   settings: settings,
 });
 
-export const setVariant = (variant) => ({
-  type: types.updateSettings,
-  settings: {
-    variant: variant,
-  },
-});
-
-export const setConfirmPageUrl = (confirmPageUrl) => ({
-  type: types.updateSettings,
-  settings: {
-    confirmPageUrl: confirmPageUrl,
-  },
-});
-
 export const setClientIds = ({ dev, prod }) => ({
   type: types.updateSettings,
   settings: {

@@ -20,7 +20,9 @@ export class _PagePaymentPanel extends _PaymentPanel {
 
   renderContent() {
     return (
-      <Card>  
+      <Card>
+        <h3>Payment Details</h3>
+
         <Card.Body>
           <Row className="justify-content-center">
             <Col lg={6}>

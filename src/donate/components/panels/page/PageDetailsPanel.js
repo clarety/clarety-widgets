@@ -41,6 +41,8 @@ export class _PageDetailsPanel extends _DetailsPanel {
   renderContent() {
     return (
       <Card>
+        <h3>Your Details</h3>
+
         <Card.Body>
           <Row className="justify-content-center">
             <Col lg={6}>

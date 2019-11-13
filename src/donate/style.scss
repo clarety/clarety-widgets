@@ -1,15 +1,18 @@
-.donate-widget {
-  .btn {
-    min-width: auto;
-    padding: 12px 22px;
-  }
-
-  .card-icon {
-    display: inline-block;
-    width: 30px;
-    height: 20px;
+.clarety-donate-widget, .clarety-donate-page {
+  h3 {
     margin: 10px;
-    background-repeat: no-repeat;
+    font-size: 1.5rem;
+    text-align: center;
+  }
+}
+
+.clarety-donate-page {
+  .card {
+    border: none;
+  }
+  .card-footer {
+    background: none;
+    border: none;
   }
 }
 

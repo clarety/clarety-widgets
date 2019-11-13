@@ -9,6 +9,9 @@ const DonatePageDemo = () => (
     <div className="row">
       <div className="col">
         <DonatePage
+          showFundraising={true}
+          fundraisingPageUid="abc-123"
+
           storeCode="AU"
 
           singleOfferId="8"

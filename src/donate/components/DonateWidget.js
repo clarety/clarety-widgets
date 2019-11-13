@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router'
 import { Switch, Route } from 'react-router-dom';
-import { statuses, setVariant, setStore, setConfirmPageUrl, setTrackingData, fetchSettings } from 'shared/actions';
+import { statuses, setStore, setTrackingData, fetchSettings, updateAppSettings } from 'shared/actions';
 import { OverrideContext } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { AmountPanel, DetailsPanel, PaymentPanel, SuccessPanel } from 'donate/components';
@@ -10,16 +10,21 @@ import { mapDonationSettings } from 'donate/utils';
 
 export class _DonateWidget extends React.Component {
   componentWillMount() {
-    const { setVariant, setStore, setConfirmPageUrl, setTrackingData, fetchSettings } = this.props;
-    const { storeCode, singleOfferId, recurringOfferId, variant, confirmPageUrl, reCaptchaKey } = this.props;
+    const { updateAppSettings, setStore, setTrackingData, fetchSettings } = this.props;
+    const { storeCode, singleOfferId, recurringOfferId, reCaptchaKey } = this.props;
     const { sourceId, responseId, emailResponseId } = this.props;
 
     if (!singleOfferId && !recurringOfferId) throw new Error('[Clarety] Either a singleOfferId or recurringOfferId prop is required');
     if (!reCaptchaKey) throw new Error('[Clarety] missing reCaptcha key');
 
-    setVariant(variant);
+    updateAppSettings({
+      variant: this.props.variant,
+      confirmPageUrl: this.props.confirmPageUrl,
+      showFundraising: this.props.showFundraising,
+      fundraisingPageUid: this.props.fundraisingPageUid,
+    });
+
     setStore(storeCode);
-    setConfirmPageUrl(confirmPageUrl);
     setTrackingData({ sourceId, responseId, emailResponseId });
 
     fetchSettings('donations/', {
@@ -80,11 +85,10 @@ const mapStateToProps = state => {
 };
 
 const actions = {
-  setVariant: setVariant,
   setStore: setStore,
-  setConfirmPageUrl: setConfirmPageUrl,
   setTrackingData: setTrackingData,
   fetchSettings: fetchSettings,
+  updateAppSettings: updateAppSettings,
 };
 
 export const connectDonateWidget = connect(mapStateToProps, actions);

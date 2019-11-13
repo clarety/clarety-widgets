@@ -1,5 +1,5 @@
 import { statuses } from 'shared/actions';
-import { getCart, getTrackingData, getRecaptcha } from 'shared/selectors';
+import { getCart, getTrackingData, getRecaptcha, getSettings, getParsedFormData } from 'shared/selectors';
 
 export function getIsBusy(state) {
   return state.status !== statuses.ready;
@@ -51,8 +51,10 @@ export function getPaymentPostData(state) {
   const cart = getCart(state);
   const trackingData = getTrackingData(state);
   const recaptcha = getRecaptcha(state);
+  const settings = getSettings(state);
+  const formData = getParsedFormData(state);
 
-  return {
+  const postData = {
     store: cart.store,
     uid: cart.uid,
     jwt: cart.jwt,
@@ -65,6 +67,15 @@ export function getPaymentPostData(state) {
 
     recaptchaResponse: recaptcha,
   };
+
+  if (settings.showFundraising) {
+    postData.fundraising = {
+      pageUid: settings.fundraisingPageUid,
+      ...formData.fundraising,
+    };
+  }
+
+  return postData;
 }
 
 export function getPaymentData(formData) {
