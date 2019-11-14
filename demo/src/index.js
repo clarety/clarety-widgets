@@ -57,6 +57,11 @@ const Demo = () => {
     return <LeadGenDemo />;
   }
 
+  if (url.endsWith('fundraising-start')) {
+    const FundraisingStartDemo = require('./FundraisingStartDemo').default;
+    return <FundraisingStartDemo />;
+  }
+
   return (
     <div className="list-group m-5">
       <a href="subscribe" className="list-group-item list-group-item-action">Subscribe Widget Demo</a>
@@ -66,6 +71,7 @@ const Demo = () => {
       <a href="checkout" className="list-group-item list-group-item-action">Checkout Demo</a>
       <a href="cart" className="list-group-item list-group-item-action">Cart Demo</a>
       <a href="lead-gen" className="list-group-item list-group-item-action">Lead Gen Demo</a>
+      <a href="fundraising-start" className="list-group-item list-group-item-action">Fundraising Start Demo</a>
     </div>
   );
 };

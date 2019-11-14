@@ -16,14 +16,15 @@ module.exports = {
     plugins: [
       ['module-resolver', {
         'alias': {
-          'cart':         './src/cart',
-          'checkout':     './src/checkout',
-          'donate':       './src/donate',
-          'form':         './src/form',
-          'lead-gen':     './src/lead-gen',
-          'registration': './src/registration',
-          'shared':       './src/shared',
-          'subscribe':    './src/subscribe',
+          'cart':              './src/cart',
+          'checkout':          './src/checkout',
+          'donate':            './src/donate',
+          'form':              './src/form',
+          'fundraising-start': './src/fundraising-start',
+          'lead-gen':          './src/lead-gen',
+          'registration':      './src/registration',
+          'shared':            './src/shared',
+          'subscribe':         './src/subscribe',
         },
       }],
     ],
