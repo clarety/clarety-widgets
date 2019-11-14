@@ -43,7 +43,7 @@ export class _PageFundraisingPanel extends BasePanel {
   renderContent() {
     return (
       <Card>
-        <h3>Fundraising Details</h3>
+        <h4>Fundraising Details</h4>
 
         <Card.Body>
           <Row className="justify-content-center">
