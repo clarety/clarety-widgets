@@ -29,7 +29,7 @@ export class LoginPanel extends BasePanel {
   onPressCheckEmail = async (event) => {
     event.preventDefault();
 
-    const { hasAccount, settings, resetFormData } = this.props;
+    const { hasAccount, settings } = this.props;
     const { email } = this.state.formData;
 
     if (this.validate()) {
@@ -49,8 +49,6 @@ export class LoginPanel extends BasePanel {
         this.setMode('login');
         this.setState({ passwordResetStatus: 'ready' });
       }
-
-      resetFormData();
     }
   };
 
@@ -91,7 +89,7 @@ export class LoginPanel extends BasePanel {
 
   onPressCancelCreateAccount = () => {
     this.setMode('no-account');
-  }
+  };
 
   onPressCreateAccount = async (event) => {
     event.preventDefault();
@@ -120,7 +118,7 @@ export class LoginPanel extends BasePanel {
 
     setFormData({ 'customer.email': customer.email });
     nextPanel();
-  }
+  };
 
   onPressLogout = async () => {
     this.onChangeField('email', '');
@@ -304,13 +302,13 @@ export class LoginPanel extends BasePanel {
 
           <Row>
             <Col>
-              {passwordResetStatus === 'ready'   && <Button title="Reset My Password" variant="link" onClick={this.onPressResetPassword} isBusy={isBusyResetPassword} />}
               {passwordResetStatus === 'success' && <p>A temporary password email has been sent to you. Please check your email.</p>}
               {passwordResetStatus === 'failure' && <p>Sorry, we could not reset your password.</p>}
             </Col>
           </Row>
 
           <div className="panel-actions">
+            <Button title="Reset My Password" variant="link" onClick={this.onPressResetPassword} isBusy={isBusyResetPassword} />
             <Button title="Login" type="submit" isBusy={isBusy} />
           </div>
         </Form>

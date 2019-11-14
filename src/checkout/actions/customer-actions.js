@@ -1,6 +1,6 @@
 import jwtDecode from 'jwt-decode';
 import { ClaretyApi } from 'clarety-utils';
-import { emailStatuses } from 'shared/actions';
+import { emailStatuses, setCustomer } from 'shared/actions';
 import { parseNestedElements } from 'shared/utils';
 import { types } from 'checkout/actions';
 
@@ -21,7 +21,7 @@ export const hasAccount = email => {
   };
 };
 
-export const fetchCustomer = uid => {
+export const fetchCustomer = (uid) => {
   return async dispatch => {
     dispatch(fetchCustomerRequest(uid));
 
@@ -33,6 +33,7 @@ export const fetchCustomer = uid => {
       return false;
     } else {
       dispatch(fetchCustomerSuccess(result));
+      dispatch(setCustomer(result));
       return true;
     }
   };

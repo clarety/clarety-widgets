@@ -34,12 +34,6 @@ export const cartReducer = (state = initialState, action) => {
 
     // Customer
 
-    case types.fetchCustomerSuccess:
-      return {
-        ...state,
-        customer: action.result,
-      };
-
     case types.createCustomerSuccess:
     case types.updateCustomerSuccess:
       return {

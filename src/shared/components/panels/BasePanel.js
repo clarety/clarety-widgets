@@ -12,6 +12,10 @@ export class BasePanel extends React.Component {
     }
   }
 
+  onPressEdit = () => {
+    this.props.editPanel();
+  };
+
   onShowPanel() {
     // Override in subclass.
   }

@@ -1,0 +1,172 @@
+$white:      #FFFFFF;
+$light-grey: #CCCCCC;
+$mid-grey:   #999999;
+$dark-grey:  #455A65;
+$teal:       #00B9C5;
+
+$xs:    0px;
+$sm:  576px;
+$md:  768px;
+$lg:  992px;
+$xl: 1200px;
+
+.clarety-fundraising-start {
+  width: 460px;
+  margin: 0 auto;
+
+  h1 {
+    font-size: 40px;
+    font-weight: 300;
+  }
+
+  .btn {
+    min-width: 130px;
+    margin-left: 10px;
+  }
+
+  .col-summary {
+    padding: 48px;
+    background: #f8f9fa;
+
+    @media (min-width: #{$lg}) {
+      min-height: 100vh;
+    }
+  }
+
+  .col-checkout {
+    padding: 48px;
+  }
+
+  .cart-item {
+    padding: 20px 0 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+    &-title {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+  }
+
+  dl {
+    margin-bottom: 5px;
+    line-height: 1;
+  }
+
+  dt {
+    color: $mid-grey;
+    font-weight: normal;
+  }
+
+  .promo-code-form {
+    margin-top: 30px;
+  }
+
+  .cart-totals {
+    dl {
+      margin-left: 64px;
+    }
+  }
+
+  .panel {
+    margin-bottom: 20px;
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    padding: 17px 0;
+    border-bottom: 1px solid $light-grey;
+
+    h4 {
+      margin-bottom: 0;
+    }
+
+    p {
+      margin: 0;
+      flex-grow: 1;
+    }
+
+    .circle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+      border-radius: 20px;
+      color: $white;
+      font-weight: bold;
+      font-size: 13px;
+    }
+
+    .btn-edit {
+      min-width: auto;
+      padding: 0;
+      color: $teal;
+      font-size: 13px;
+    }
+
+    &.active {
+      margin-bottom: 15px;
+
+      h4 { color: $dark-grey; }
+      .circle { background: $dark-grey; }
+    }
+
+    &.inactive {
+      h4 { color: $light-grey; }
+      .circle { background: $light-grey; }
+    }
+  }
+
+  .panel-actions {
+    margin-top: 1rem;
+    text-align: right;
+  }
+
+  .shipping-option {
+    margin-bottom: 20px;
+    padding-left: 30px;
+
+    input {
+      margin-left: -30px;
+    }
+
+    label {
+      display: flex;
+    }
+
+    .name {
+      flex-grow: 1;
+    }
+
+    .date {
+      color: $mid-grey;
+      font-size: 13px;
+    }
+  }
+
+  // Hide number 'spinner' input controls.
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  // react-phone-number-input overrides
+  .react-phone-number-input__input {
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    border-radius: .25rem;
+    border: 1px solid #ced4da;
+    &:focus {
+      // border-color: $black;
+      border-color: #80bdff;
+    }
+  }
+}
