@@ -43,7 +43,7 @@ export function getGenderOptions(settings, ) {
     return [
       { value: 'Male', label: 'Male' },
       { value: 'Female', label: 'Female' },
-      { value: 'Prefer not to say', label: 'Prefer not to say' },
+      { value: 'Prefer to not say', label: 'Prefer to not say' },
     ];
   }
 }
