@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Form } from 'react-bootstrap';
+import { Row, Col, Form } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { Button, TextInput, SelectInput, CheckboxInput } from 'form/components';
 import { TeamSearchInput } from 'registration/components';
@@ -30,7 +30,7 @@ export class TeamPanel extends BasePanel {
     this.props.nextPanel();
   };
 
-  onClickYes = () => {
+  onClickSearch = () => {
     this.setPanelMode('search');
   };
 
@@ -59,7 +59,7 @@ export class TeamPanel extends BasePanel {
     const { layout, index } = this.props;
 
     return (
-      <PanelContainer layout={layout} status="wait">
+      <PanelContainer layout={layout} status="wait" className="team-panel">
         <PanelHeader
           status="wait"
           layout={layout}
@@ -84,7 +84,7 @@ export class TeamPanel extends BasePanel {
     const { layout, index, selectedTeam } = this.props;
 
     return (
-      <PanelContainer layout={layout} status="edit">
+      <PanelContainer layout={layout} status="edit" className="team-panel">
         <PanelHeader
           status="edit"
           layout={layout}
@@ -112,7 +112,7 @@ export class TeamPanel extends BasePanel {
     const { mode } = this.state;
 
     return (
-      <PanelContainer layout={layout} status="edit">
+      <PanelContainer layout={layout} status="edit" className="team-panel">
         <PanelHeader
           status="edit"
           layout={layout}
@@ -121,14 +121,9 @@ export class TeamPanel extends BasePanel {
         />
 
         <PanelBody layout={layout} status="edit">
-
-          <FormattedMessage id="teamPanel.message.1" tagName="p" />
-          <FormattedMessage id="teamPanel.message.2" tagName="p" />
-
           {mode === 'prompt' && this.renderPrompt()}
           {mode === 'search' && this.renderSearch()}
           {mode === 'create' && this.renderCreate()}
-
         </PanelBody>
       </PanelContainer>
     );
@@ -137,21 +132,36 @@ export class TeamPanel extends BasePanel {
   renderPrompt() {
     return (
       <Form className="panel-body panel-body-team">
-        <Button onClick={this.onClickNo}>
-          <FormattedMessage id="btn.no" />
-        </Button>
+        <FormattedMessage id="teamPanel.message.1" tagName="p" />
+        <FormattedMessage id="teamPanel.message.2" tagName="p" />
 
-        <Button onClick={this.onClickYes}>
-          <FormattedMessage id="btn.yes" />
-        </Button>
+        <div className="panel-actions">
+
+          <div className="d-md-inline mb-3">
+            <Button onClick={this.onClickNo}>
+              <FormattedMessage id="btn.noTeam" />
+            </Button>
+          </div>
+
+          <Button onClick={this.onClickCreate}>
+            <FormattedMessage id="btn.createTeam" />
+          </Button>
+
+          <Button onClick={this.onClickSearch}>
+            <FormattedMessage id="btn.searchTeams" />
+          </Button>
+
+        </div>
+
       </Form>
     );
   }
 
   renderSearch() {
     const { selectedTeam, isBusyPassword, formData } = this.props;
-    const canContinue = selectedTeam && (selectedTeam.passwordRequired ? !!formData['team.passwordCheck'] : true);
-    const showPassword = selectedTeam && !!selectedTeam.passwordRequired;
+    const hasSelectedTeam = selectedTeam && !!selectedTeam.teamId;
+    const canContinue = hasSelectedTeam && (selectedTeam.passwordRequired ? !!formData['team.passwordCheck'] : true);
+    const showPassword = hasSelectedTeam && !!selectedTeam.passwordRequired;
 
     return (
       <Form className="panel-body panel-body-team">
@@ -173,12 +183,8 @@ export class TeamPanel extends BasePanel {
           </Form.Group>
         }
 
-        <Button onClick={this.onClickCancel} disabled={isBusyPassword}>
+        <Button onClick={this.onClickCancel} disabled={isBusyPassword} variant="link">
           <FormattedMessage id="btn.cancel" />
-        </Button>
-
-        <Button onClick={this.onClickCreate} disabled={isBusyPassword}>
-          <FormattedMessage id="btn.createTeam" />
         </Button>
 
         <Button onClick={this.onClickNext} disabled={!canContinue} isBusy={isBusyPassword}>
@@ -237,7 +243,7 @@ export class TeamPanel extends BasePanel {
           </Form.Group>
         }        
 
-        <Button onClick={this.onClickCancel}>
+        <Button onClick={this.onClickCancel} variant="link">
           <FormattedMessage id="btn.cancel" />
         </Button>
 
@@ -262,7 +268,7 @@ export class TeamPanel extends BasePanel {
     const { layout, index, selectedTeam } = this.props;
 
     return (
-      <PanelContainer layout={layout} status="done">
+      <PanelContainer layout={layout} status="done" className="team-panel">
         <PanelHeader
           status="done"
           layout={layout}

@@ -8,13 +8,11 @@ export class TeamConnect {
     const { isBusyPassword, isBusyCreate } = getTeams(state);
     const selectedTeam = getOrganisation(state);
     const isCorporateTeam = getIsCorporateTeam(state);
-    const canContinue = selectedTeam && !selectedTeam.passwordRequired;
     const requiresPassword = selectedTeam && !!selectedTeam.passwordRequired;
 
     return {
       selectedTeam: selectedTeam,
       isCorporateTeam: isCorporateTeam,
-      canContinue: canContinue,
       requiresPassword: requiresPassword,
       isBusyPassword: isBusyPassword,
       isBusyCreate: isBusyCreate,

@@ -10,7 +10,10 @@
   "btn.no": "No",
   "btn.cancel": "Cancel",
   "btn.none": "None",
+
+  "btn.noTeam": "No Thanks",
   "btn.createTeam": "Create Team",
+  "btn.searchTeams": "Search Teams",
 
   "label.customer.firstName": "First Name",
   "label.customer.lastName": "Last Name",
