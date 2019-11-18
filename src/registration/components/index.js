@@ -1,6 +1,7 @@
 export * from './Registration';
 
 export * from './inputs/CheckboxInput';
+export * from './inputs/CountryInput';
 export * from './inputs/DobInput';
 export * from './inputs/EmailInput';
 export * from './inputs/PhoneInput';
@@ -8,6 +9,7 @@ export * from './inputs/QtyInput';
 export * from './inputs/RadioGroupInput';
 export * from './inputs/SelectInput';
 export * from './inputs/SimpleSelectInput';
+export * from './inputs/StateInput';
 export * from './inputs/TeamSearchInput';
 export * from './inputs/TextInput';
 

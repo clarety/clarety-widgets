@@ -41,8 +41,9 @@ export function getGenderOptions(settings, ) {
     return genderOptions;
   } else {
     return [
-      { value: 'Male',   label: 'Male' },
+      { value: 'Male', label: 'Male' },
       { value: 'Female', label: 'Female' },
+      { value: 'Prefer not to say', label: 'Prefer not to say' },
     ];
   }
 }

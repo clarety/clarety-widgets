@@ -17,12 +17,15 @@ class PureCheckboxInput extends React.PureComponent {
             onChange={event => onChange(field, event.target.checked)}
             isInvalid={!!error}
           />
+
           <FormCheck.Label>
             {label || <FormattedMessage id={translationId || `label.${field}`} />}
             {required && ' *'}
           </FormCheck.Label>
-          <br />
-          <FormattedHTMLMessage id={`explanation.${field}`} defaultMessage=" " />
+
+          <FormattedHTMLMessage id={`explanation.${field}`} defaultMessage=" ">
+            {text => text !== ' ' && <p className="explanation-text" dangerouslySetInnerHTML={{ __html: text }} />}
+          </FormattedHTMLMessage>
         </FormCheck>
         <FieldError error={error} />
       </Form.Group>

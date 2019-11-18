@@ -144,7 +144,7 @@ export class OffersPanel extends BasePanel {
         
         <Col md={1}>
           <FormattedMessage id={`offersPanel.${participant.type}.title`}>
-            {txt => <p className="m-0">{txt}</p>}
+            {txt => <h4 className="m-0">{txt}</h4>}
           </FormattedMessage>
         </Col>
 

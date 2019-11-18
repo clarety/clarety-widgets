@@ -3,7 +3,7 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import { Button, Form, Row, Col, Alert } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext, parseNestedElements } from 'shared/utils';
-import { TextInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput } from 'registration/components';
+import { TextInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput, StateInput, CountryInput } from 'registration/components';
 import { getGenderOptions, scrollIntoView } from 'registration/utils';
 
 export class _DetailsPanel extends BasePanel {
@@ -97,6 +97,8 @@ export class _DetailsPanel extends BasePanel {
       formData['customer.billing.state']    = customer.billing.state;
       formData['customer.billing.postcode'] = customer.billing.postcode;
       formData['customer.billing.country']  = customer.billing.country;
+    } else {
+      formData['customer.billing.country']  = 'AU';
     }
 
     this.setState(prevState => ({
@@ -293,6 +295,8 @@ export class _DetailsPanel extends BasePanel {
     const showMobile  = !formData['autofill.mobile'];
     const showAddress = !formData['autofill.address'];
 
+    const showAusStates = formData['customer.billing.country'] === 'AU';
+
     return (
       <FormContext.Provider value={this.state}>
         <Form.Row>
@@ -363,34 +367,37 @@ export class _DetailsPanel extends BasePanel {
 
             <Form.Row>
               <Col>
-                <TextInput field="customer.billing.address1" placeholder="Address 1 *" required />
+                <TextInput field="customer.billing.address1" label="Address 1" required />
               </Col>
             </Form.Row>
 
             <Form.Row>
               <Col>
-                <TextInput field="customer.billing.address2" placeholder="Address 2" />
+                <TextInput field="customer.billing.address2" label="Address 2" />
               </Col>
             </Form.Row>
 
             <Form.Row>
               <Col>
-                <TextInput field="customer.billing.suburb" placeholder="Suburb *" required />
+                <TextInput field="customer.billing.suburb" label="Suburb" required />
               </Col>
             </Form.Row>
 
             <Form.Row>
               <Col>
-                <TextInput field="customer.billing.state" placeholder="City *" required />
+                {showAusStates
+                  ? <StateInput field="customer.billing.state" label="State" country="AU" required />
+                  : <TextInput field="customer.billing.state" label="State" required />
+                }
               </Col>
               <Col>
-                <TextInput field="customer.billing.postcode" placeholder="Postcode *" type="number" required />
+                <TextInput field="customer.billing.postcode" label="Postcode" type="number" required />
               </Col>
             </Form.Row>
 
             <Form.Row>
               <Col>
-                <TextInput field="customer.billing.country" placeholder="Country *" required />
+                <CountryInput field="customer.billing.country" label="Country" required />
               </Col>
             </Form.Row>
 
