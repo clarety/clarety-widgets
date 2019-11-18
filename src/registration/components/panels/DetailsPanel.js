@@ -129,6 +129,13 @@ export class _DetailsPanel extends BasePanel {
       formData['customer.billing.postcode'] = firstParticipant.customer.billing.postcode;
       formData['customer.billing.country']  = firstParticipant.customer.billing.country;
     }
+
+    formData['customer.delivery.address1'] = formData['customer.billing.address1'];
+    formData['customer.delivery.address2'] = formData['customer.billing.address2'];
+    formData['customer.delivery.suburb']   = formData['customer.billing.suburb'];
+    formData['customer.delivery.state']    = formData['customer.billing.state'];
+    formData['customer.delivery.postcode'] = formData['customer.billing.postcode'];
+    formData['customer.delivery.country']  = formData['customer.billing.country'];
   }
 
   getSelectedAddOns(formData) {
