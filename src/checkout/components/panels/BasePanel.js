@@ -32,6 +32,7 @@ export class BasePanel extends React.Component {
         ...prevState.formData,
         [field]: value,
       },
+      errors: prevState.errors.filter(error => error.field !== field),
     }));
   };
 

@@ -74,7 +74,8 @@ export class _DetailsPanel extends BasePanel {
       formData: {
         ...prevState.formData,
         [field]: value,
-      }
+      },
+      errors: prevState.errors.filter(error => error.field !== field),
     }));
   }
 

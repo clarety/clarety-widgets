@@ -11,6 +11,9 @@ export const errorsReducer = (state = initialState, action) => {
     case types.clearErrors:
       return [];
 
+    case types.updateFormData:
+      return state.filter(error => error.field !== action.field);
+
     case sharedTypes.loginFailure:
       return [{
         field: 'password',
