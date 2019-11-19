@@ -81,6 +81,7 @@ export class _DetailsPanel extends BasePanel {
   prefillCustomerFormData(customer) {
     const formData = {};
 
+    formData['customer.id']               = customer.id;
     formData['customer.firstName']        = customer.firstName;
     formData['customer.lastName']         = customer.lastName;
     formData['customer.email']            = customer.email;
