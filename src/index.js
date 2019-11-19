@@ -21,3 +21,5 @@ export { setupCartAxiosMock } from 'cart/mocks';
 export { LeadGenWidget } from 'lead-gen/components';
 
 export { FundraisingStart } from 'fundraising-start/components';
+
+export { QuizWidget } from 'quiz/components';
