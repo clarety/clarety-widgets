@@ -24,6 +24,8 @@ export class _QuizWidgetRoot extends React.Component {
     updateAppSettings({
       widgetElementId: this.props.elementId,
       formId: this.props.formId,
+      caseTypeUid: this.props.caseTypeUid,
+      formId: this.props.formId,
       confirmPageUrl: this.props.confirmPageUrl,
       variant: this.props.variant,
     });
@@ -33,13 +35,6 @@ export class _QuizWidgetRoot extends React.Component {
       responseId: this.props.responseId,
       emailResponseId: this.props.emailResponseId,
     });
-
-    const jwtAccount = getJwtAccount();
-    if (jwtAccount) {
-      ClaretyApi.setAuth(jwtAccount.jwtString);
-      setAuth(jwtAccount.jwtString);
-      await fetchCustomer(jwtAccount.customer_uid);
-    }
 
     setStatus('ready');
     this.setState({ isInitialising: false });

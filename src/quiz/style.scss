@@ -1,0 +1,17 @@
+@import '~bootstrap/scss/bootstrap.scss';
+
+.clarety-quiz-widget {
+  .panel-header {
+    text-align: center;
+    padding: 20px 20px 0;
+
+    .subtitle {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+  }
+
+  .panel-actions {
+    margin: 10px 0 20px;
+  }
+}
