@@ -5,9 +5,10 @@ export const setPanels = panels => ({
   panels: panels,
 });
 
-export const insertPanels = ({ afterComponent, panels }) => ({
+export const insertPanels = ({ afterComponent, atIndex, panels }) => ({
   type: types.insertPanels,
   afterComponent: afterComponent,
+  atIndex: atIndex,
   panels: panels,
 });
 

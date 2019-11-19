@@ -3,11 +3,11 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { connect, Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import { ClaretyApi } from 'clarety-utils';
-import { setStatus, setAuth, setPanels, setClientIds, updateAppSettings, setTrackingData } from 'shared/actions';
+import { setStatus, setPanels, setClientIds, updateAppSettings, setTrackingData } from 'shared/actions';
 import { PanelManager } from 'shared/components';
-import { Resources, getJwtAccount } from 'shared/utils';
+import { Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
-import { fetchCustomer } from 'checkout/actions';
+import { setQuestions } from 'quiz/actions';
 import { rootReducer } from 'quiz/reducers';
 
 const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -19,7 +19,7 @@ export class _QuizWidgetRoot extends React.Component {
   async componentDidMount() {
     if (!this.props.reCaptchaKey) throw new Error('[Clarety] missing reCaptcha key');
 
-    const { updateAppSettings, setTrackingData, setStatus, setAuth, fetchCustomer } = this.props;
+    const { updateAppSettings, setTrackingData, setStatus, setQuestions } = this.props;
 
     updateAppSettings({
       widgetElementId: this.props.elementId,
@@ -35,6 +35,52 @@ export class _QuizWidgetRoot extends React.Component {
       responseId: this.props.responseId,
       emailResponseId: this.props.emailResponseId,
     });
+
+    // TODO: load questions from API...
+    setQuestions([
+      {
+        id: 'question1',
+        title: 'What is your greatest concern?',
+        options: [
+          {
+            label: 'Option One',
+            value: 'option1',
+            image: '//placeimg.com/420/315/animals?alt1',
+          },
+          {
+            label: 'Option Two',
+            value: 'option2',
+            image: '//placeimg.com/420/315/animals?alt2',
+          },
+          {
+            label: 'Option Three',
+            value: 'option3',
+            image: '//placeimg.com/420/315/animals?alt3',
+          }
+        ],
+      },
+      {
+        id: 'question2',
+        title: 'What is the airspeed velocity of an unladen swallow?',
+        options: [
+          {
+            label: 'Option One',
+            value: 'option1',
+            image: '//placeimg.com/420/315/animals?alt4?',
+          },
+          {
+            label: 'Option Two',
+            value: 'option2',
+            image: '//placeimg.com/420/315/animals?alt5',
+          },
+          {
+            label: 'Option Three',
+            value: 'option3',
+            image: '//placeimg.com/420/315/animals?alt6',
+          }
+        ],
+      },
+    ]);
 
     setStatus('ready');
     this.setState({ isInitialising: false });
@@ -64,11 +110,10 @@ const mapStateToProps = (state) => {
 };
 
 const actions = {
+  setQuestions: setQuestions,
   updateAppSettings: updateAppSettings,
   setTrackingData: setTrackingData,
   setStatus: setStatus,
-  setAuth: setAuth,
-  fetchCustomer: fetchCustomer,
 };
 
 const QuizWidgetRoot = connect(mapStateToProps, actions)(_QuizWidgetRoot);

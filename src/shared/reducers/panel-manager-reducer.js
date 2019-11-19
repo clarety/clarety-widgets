@@ -27,11 +27,20 @@ function setPanels(state, action) {
 }
 
 function insertPanels(state, action) {
-  const index = 1 + state.findIndex(panel => panel.component === action.afterComponent);
+  let index;
+
+  if (action.atIndex !== undefined) {
+    index = action.atIndex;
+  }
+
+  if (action.afterComponent) {
+    index = 1 + state.findIndex(panel => panel.component === action.afterComponent);
+  }
 
   const panels = action.panels.map(panel => ({
     id: nextId(),
     component: panel.component ? panel.component.name : null,
+    connect: panel.connect ? panel.connect.name : null,
     status: panel.status || 'wait',
     isValid: panel.isValid || false,
     data: panel.data || {},

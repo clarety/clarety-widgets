@@ -1,9 +1,32 @@
 import { ClaretyApi } from 'clarety-utils';
-import { setStatus } from 'shared/actions';
+import { setStatus, updateAppSettings } from 'shared/actions';
+import { removePanels, insertPanels, setPanelStatus } from 'shared/actions';
 import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { getQuizPostData } from 'quiz/selectors';
+import { QuestionPanel, QuestionConnect } from 'quiz/components';
 import { types } from './types';
+
+export const setQuestions = (questions) => {
+  return async (dispatch, getState) => {
+    dispatch(updateAppSettings({ questions }));
+
+    dispatch(removePanels({ withComponent: 'QuestionPanel' }));
+
+    const questionPanels = questions.map(question => ({
+      component: QuestionPanel,
+      connect: QuestionConnect,
+      data: { question },
+    }));
+
+    dispatch(insertPanels({
+      atIndex: 0,
+      panels: questionPanels,
+    }));
+
+    dispatch(setPanelStatus(0, 'edit'));
+  };
+};
 
 export const submitQuiz = () => {
   return async (dispatch, getState) => {
