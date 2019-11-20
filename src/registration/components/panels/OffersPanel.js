@@ -260,7 +260,9 @@ export class OffersPanel extends BasePanel {
   getPrefillOptions(index) {
     const options = [];
 
-    this.maybeAddOption(options, index, 'yourself', 'Yourself');
+    if (this.props.participants[index].type !== 'child') {
+      this.maybeAddOption(options, index, 'yourself', 'Yourself');
+    }
 
     this.props.previousParticipants.forEach(participant => {
       const name = `${participant.firstName} ${participant.lastName}`;
