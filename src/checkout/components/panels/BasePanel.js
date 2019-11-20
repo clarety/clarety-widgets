@@ -1,5 +1,5 @@
 import React from 'react';
-import { validateRequired, validateEmail, validatePassword, validateCardNumber, validateCardExpiry, validateCcv } from 'shared/utils/validation-utils';
+import { validateRequired, validateEmail, validatePassword, validateCardNumber, validateCardExpiry, validateCcv, validateDob } from 'shared/utils/validation-utils';
 
 export class BasePanel extends React.Component {
   constructor(props) {
@@ -97,5 +97,12 @@ export class BasePanel extends React.Component {
   validateCcv(field, errors) {
     const value = this.state.formData[field];
     validateCcv(value, field, errors);
+  }
+
+  validateDob({ field, dayField, monthField, yearField, comparisonDate, minAge, maxAge, errors }) {
+    const day   = this.state.formData[dayField];
+    const month = this.state.formData[monthField];
+    const year  = this.state.formData[yearField];
+    validateDob({ field, day, month, year, comparisonDate, minAge, maxAge, errors });
   }
 }

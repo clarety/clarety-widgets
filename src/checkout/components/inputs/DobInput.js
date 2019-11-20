@@ -7,10 +7,13 @@ import { getValidationError } from 'form/utils';
 
 class PureDobInput extends React.PureComponent {
   render() {
-    const { error, dayError, monthError, yearError } = this.props;
+    let { label, required, hideLabel, error, dayError, monthError, yearError } = this.props;
+    if (required) label += ' *';
 
     return (
-      <Form.Group controlId="dateOfBirth">
+      <Form.Group>
+        <Form.Label srOnly={hideLabel}>{label}</Form.Label>
+
         <Form.Row>
           <Col>
             {this.renderDayInput()}
@@ -32,12 +35,12 @@ class PureDobInput extends React.PureComponent {
   }
 
   renderDayInput() {
-    const { day, dayField, onChange, required, dayError } = this.props;
+    const { day, dayField, onChange, error, dayError } = this.props;
 
     const onChangeDay = event => onChange(dayField, event.target.value);
 
     return (
-      <Form.Control as="select" value={day} onChange={onChangeDay} required={required} isInvalid={!!dayError}>
+      <Form.Control as="select" value={day} onChange={onChangeDay} isInvalid={!!(error || dayError)}>
         <option value="" disabled hidden>Day</option>
 
         {iterate(1, 31, value => 
@@ -48,12 +51,12 @@ class PureDobInput extends React.PureComponent {
   }
 
   renderMonthInput() {
-    const { month, monthField, onChange, required, monthError } = this.props;
+    const { month, monthField, onChange, error, monthError } = this.props;
 
     const onChangeMonth = event => onChange(monthField, event.target.value);
 
     return (
-      <Form.Control as="select" value={month} onChange={onChangeMonth} required={required} isInvalid={!!monthError}>
+      <Form.Control as="select" value={month} onChange={onChangeMonth} isInvalid={!!(error || monthError)}>
         <option value="" disabled hidden>Month</option>
         <option value="1">January</option>
         <option value="2">February</option>
@@ -72,7 +75,7 @@ class PureDobInput extends React.PureComponent {
   }
 
   renderYearInput() {
-    const { year, yearField, onChange, required, maxYear, yearError } = this.props;
+    const { year, yearField, onChange, maxYear, error, yearError } = this.props;
 
     const startYear = maxYear || currentYear;
     const endYear = 1900;
@@ -80,7 +83,7 @@ class PureDobInput extends React.PureComponent {
     const onChangeYear = event => onChange(yearField, event.target.value);
 
     return (
-      <Form.Control as="select" value={year} onChange={onChangeYear} required={required} isInvalid={!!yearError}>
+      <Form.Control as="select" value={year} onChange={onChangeYear} isInvalid={!!(error || yearError)}>
         <option value="" disabled hidden>Year</option>
 
         {iterate(startYear, endYear, value => 

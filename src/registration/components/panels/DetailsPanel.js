@@ -103,6 +103,17 @@ export class _DetailsPanel extends BasePanel {
       formData['customer.billing.country']  = 'AU';
     }
 
+    if (customer.delivery) {
+      formData['customer.delivery.address1'] = customer.delivery.address1;
+      formData['customer.delivery.address2'] = customer.delivery.address2;
+      formData['customer.delivery.suburb']   = customer.delivery.suburb;
+      formData['customer.delivery.state']    = customer.delivery.state;
+      formData['customer.delivery.postcode'] = customer.delivery.postcode;
+      formData['customer.delivery.country']  = customer.delivery.country;
+    } else {
+      formData['customer.delivery.country']  = 'AU';
+    }
+
     this.setState(prevState => ({
       formData: {
         ...prevState.formData,
@@ -130,14 +141,23 @@ export class _DetailsPanel extends BasePanel {
       formData['customer.billing.state']    = firstParticipant.customer.billing.state;
       formData['customer.billing.postcode'] = firstParticipant.customer.billing.postcode;
       formData['customer.billing.country']  = firstParticipant.customer.billing.country;
+
+      formData['customer.delivery.address1'] = firstParticipant.customer.delivery.address1;
+      formData['customer.delivery.address2'] = firstParticipant.customer.delivery.address2;
+      formData['customer.delivery.suburb']   = firstParticipant.customer.delivery.suburb;
+      formData['customer.delivery.state']    = firstParticipant.customer.delivery.state;
+      formData['customer.delivery.postcode'] = firstParticipant.customer.delivery.postcode;
+      formData['customer.delivery.country']  = firstParticipant.customer.delivery.country;
     }
 
-    formData['customer.delivery.address1'] = formData['customer.billing.address1'];
-    formData['customer.delivery.address2'] = formData['customer.billing.address2'];
-    formData['customer.delivery.suburb']   = formData['customer.billing.suburb'];
-    formData['customer.delivery.state']    = formData['customer.billing.state'];
-    formData['customer.delivery.postcode'] = formData['customer.billing.postcode'];
-    formData['customer.delivery.country']  = formData['customer.billing.country'];
+    if (formData['autofill.delivery'] && !formData['autofill.address']) {
+      formData['customer.delivery.address1'] = formData['customer.billing.address1'];
+      formData['customer.delivery.address2'] = formData['customer.billing.address2'];
+      formData['customer.delivery.suburb']   = formData['customer.billing.suburb'];
+      formData['customer.delivery.state']    = formData['customer.billing.state'];
+      formData['customer.delivery.postcode'] = formData['customer.billing.postcode'];
+      formData['customer.delivery.country']  = formData['customer.billing.country'];
+    }
   }
 
   getSelectedAddOns(formData) {
@@ -173,7 +193,7 @@ export class _DetailsPanel extends BasePanel {
       errors: errors,
     });
 
-    if (settings.showAddress) {
+    if (settings.showBillingAddress) {
       this.validateRequired('customer.billing.address1', formData, errors);
       this.validateRequired('customer.billing.suburb', formData, errors);
       this.validateRequired('customer.billing.state', formData, errors);
@@ -292,7 +312,7 @@ export class _DetailsPanel extends BasePanel {
   }
 
   renderCustomerForm() {
-    const { isPrefilled, appSettings, settings, participantIndex } = this.props;
+    const { isPrefilled, appSettings, participantIndex } = this.props;
     const { formData } = this.state;
 
     const genderOptions = this.translateOptions(
@@ -302,12 +322,10 @@ export class _DetailsPanel extends BasePanel {
     const showAutofill = participantIndex !== 0 && !isPrefilled;
     const showEmail   = !formData['autofill.email'];
     const showMobile  = !formData['autofill.mobile'];
-    const showAddress = !formData['autofill.address'];
-
-    const showAusStates = formData['customer.billing.country'] === 'AU';
 
     return (
       <FormContext.Provider value={this.state}>
+
         <Form.Row>
           <Col md={6}><TextInput field="customer.firstName" disabled={isPrefilled} required /></Col>
           <Col md={6}><TextInput field="customer.lastName" disabled={isPrefilled} required /></Col>
@@ -371,49 +389,80 @@ export class _DetailsPanel extends BasePanel {
           </Form.Row>
         }
 
-        {settings.showAddress && showAddress &&
-          <React.Fragment>
-
-            <Form.Row>
-              <Col>
-                <TextInput field="customer.billing.address1" label="Address 1" required />
-              </Col>
-            </Form.Row>
-
-            <Form.Row>
-              <Col>
-                <TextInput field="customer.billing.address2" label="Address 2" />
-              </Col>
-            </Form.Row>
-
-            <Form.Row>
-              <Col>
-                <TextInput field="customer.billing.suburb" label="Suburb" required />
-              </Col>
-            </Form.Row>
-
-            <Form.Row>
-              <Col>
-                {showAusStates
-                  ? <StateInput field="customer.billing.state" label="State" country="AU" required />
-                  : <TextInput field="customer.billing.state" label="State" required />
-                }
-              </Col>
-              <Col>
-                <TextInput field="customer.billing.postcode" label="Postcode" type="number" required />
-              </Col>
-            </Form.Row>
-
-            <Form.Row>
-              <Col>
-                <CountryInput field="customer.billing.country" label="Country" required />
-              </Col>
-            </Form.Row>
-
-          </React.Fragment>
-        }
+        {this.renderCustomerAddress()}
 
       </FormContext.Provider>
+    );
+  }
+
+  renderCustomerAddress() {
+    const { settings } = this.props;
+    const { formData } = this.state;
+
+    if (!!formData['autofill.address']) return null;
+    
+    const showDelivery = !formData['autofill.delivery'];
+
+    return (
+      <React.Fragment>
+        {settings.showBillingAddress && this.renderAddressFields('Billing Address', 'billing')}
+
+        {settings.showDeliveryAddress &&
+          <Form.Row>
+            <Col>
+              <CheckboxInput field="autofill.delivery" label="Delivery Address is same as Billing Address" />
+            </Col>
+          </Form.Row>
+        }
+
+        {settings.showDeliveryAddress && showDelivery && this.renderAddressFields('Delivery Address', 'delivery')}
+      </React.Fragment>
+    );
+  }
+
+  renderAddressFields(title, type) {
+    const showAusStates = this.state.formData['customer.billing.country'] === 'AU';
+
+    return (
+      <React.Fragment>
+        <h4 className="extend-form-subtitle">{title}</h4>
+
+        <Form.Row>
+          <Col>
+            <TextInput field={`customer.${type}.address1`} label="Address 1" required />
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col>
+            <TextInput field={`customer.${type}.address2`} label="Address 2" />
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col>
+            <TextInput field={`customer.${type}.suburb`} label="Suburb" required />
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col>
+            {showAusStates
+              ? <StateInput field={`customer.${type}.state`} label="State" country="AU" required />
+              : <TextInput field={`customer.${type}.state`} label="State" required />
+            }
+          </Col>
+          <Col>
+            <TextInput field={`customer.${type}.postcode`} label="Postcode" type="number" required />
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col>
+            <CountryInput field={`customer.${type}.country`} label="Country" required />
+          </Col>
+        </Form.Row>
+      </React.Fragment>
     );
   }
 

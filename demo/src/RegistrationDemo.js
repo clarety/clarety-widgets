@@ -66,7 +66,8 @@ Registration.setPanels([
     component: DetailsPanel,
     connect: DetailsConnect,
     settings: {
-      showAddress: true,
+      showBillingAddress: true,
+      showDeliveryAddress: true,
     },
   },
   {

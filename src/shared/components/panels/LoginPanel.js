@@ -3,7 +3,7 @@ import { Row, Col, Form } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext } from 'shared/utils';
-import { BasePanel, TextInput, EmailInput, Button } from 'checkout/components';
+import { BasePanel, TextInput, EmailInput, DobInput, Button } from 'checkout/components';
 
 export class LoginPanel extends BasePanel {
   constructor(props) {
@@ -154,8 +154,26 @@ export class LoginPanel extends BasePanel {
     if (mode === 'create-account') {
       this.validateEmail('email', errors);
       this.validatePassword('password', errors);
+
       if (settings.showFirstName) this.validateRequired('firstName', errors);
-      if (settings.showLastName) this.validateRequired('lastName', errors);
+      if (settings.showLastName)  this.validateRequired('lastName', errors);
+
+      if (settings.showDob) {
+        this.validateRequired('dateOfBirthDay', errors);
+        this.validateRequired('dateOfBirthMonth', errors);
+        this.validateRequired('dateOfBirthYear', errors);
+
+        if (settings.minAge) {
+          this.validateDob({
+            field: 'dateOfBirth',
+            dayField: 'dateOfBirthDay',
+            monthField: 'dateOfBirthMonth',
+            yearField: 'dateOfBirthYear',
+            minAge: settings.minAge,
+            errors: errors,
+          });
+        }
+      }
     }
 
     if (mode === 'login') {
@@ -177,6 +195,12 @@ export class LoginPanel extends BasePanel {
 
     if (settings.showFirstName) formData['customer.firstName'] = this.state.formData.firstName;
     if (settings.showLastName)  formData['customer.lastName']  = this.state.formData.lastName;
+
+    if (settings.showDob) {
+      formData['customer.dateOfBirthDay']   = this.state.formData.dateOfBirthDay;
+      formData['customer.dateOfBirthMonth'] = this.state.formData.dateOfBirthMonth;
+      formData['customer.dateOfBirthYear']  = this.state.formData.dateOfBirthYear;
+    }
 
     return formData;
   }
@@ -349,6 +373,21 @@ export class LoginPanel extends BasePanel {
             <Form.Row>
               <Col>
                 <TextInput label="Last Name" field="lastName" required />
+              </Col>
+            </Form.Row>
+          }
+
+          {settings.showDob &&
+            <Form.Row>
+              <Col>
+                <DobInput
+                  label="Date Of Birth"
+                  field="dateOfBirth"
+                  dayField="dateOfBirthDay"
+                  monthField="dateOfBirthMonth"
+                  yearField="dateOfBirthYear"
+                  required
+                />
               </Col>
             </Form.Row>
           }
