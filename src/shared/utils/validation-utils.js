@@ -73,3 +73,25 @@ export function validateCcv(ccv, field, errors) {
     });
   }
 }
+
+export function validateDob({ field, day, month, year, comparisonDate, minAge, maxAge, errors }) {
+  day   = Number(day);
+  month = Number(month) - 1
+  year  = Number(year) + minAge;
+
+  comparisonDate = comparisonDate || new Date();
+
+  if (minAge) {
+    const turnsMinAge = new Date(year + minAge, month, day);
+    if (turnsMinAge > comparisonDate) {
+      errors.push({ 'field': field, 'message': `You must be at least ${minAge}.` });
+    }
+  }
+
+  if (maxAge) {
+    const turnsMaxAge = new Date(year + maxAge, month, day);
+    if (turnsMaxAge < comparisonDate) {
+      errors.push({ 'field': field, 'message': `You must not be older than ${maxAge}.` });
+    }
+  }
+}
