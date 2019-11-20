@@ -108,7 +108,7 @@ export class OffersPanel extends BasePanel {
     const { layout, index } = this.props;
 
     return (
-      <PanelContainer layout={layout} status="edit" className="offers">
+      <PanelContainer layout={layout} status="edit" className="offers-panel">
         <PanelHeader
           status="edit"
           layout={layout}
@@ -137,24 +137,21 @@ export class OffersPanel extends BasePanel {
     const { participants, settings } = this.props;
     
     return participants.map((participant, index) =>
-      <Row key={index} className="mb-3 align-items-center">
-        <Col md={1}>
+      <Row key={index} className="row-participant">
+        <Col xs={12} lg={3}>
           <span className="circle">{index + 1}</span>
-        </Col>
-        
-        <Col md={1}>
-          <FormattedMessage id={`offersPanel.${participant.type}.title`}>
-            {txt => <h4 className="m-0">{txt}</h4>}
-          </FormattedMessage>
+          <FormattedMessage id={`offersPanel.${participant.type}.title`} tagName="h4" />
         </Col>
 
         {settings.showOffers &&
-          <Col md={6}>
-            {this.renderOffers(index)}
+          <Col xs={12} lg={6}>
+            <Row>
+              {this.renderOffers(index)}
+            </Row>
           </Col>
         }
 
-        <Col md={4}>
+        <Col xs={12} lg={3}>
           {settings.showPrefill
             ? this.renderPrefillOptions(index)
             : this.renderNameInput(index)
@@ -216,12 +213,14 @@ export class OffersPanel extends BasePanel {
     const selectedOffer = this.state.offers[index];
 
     return offers[index].map(offer => 
-      <OfferButton
-        key={offer.offerId}
-        offer={offer}
-        isSelected={offer === selectedOffer}
-        onClick={() => this.onSelectOffer(index, offer)}
-      />
+      <Col sm={4} lg={3}>
+        <OfferButton
+          key={offer.offerId}
+          offer={offer}
+          isSelected={offer === selectedOffer}
+          onClick={() => this.onSelectOffer(index, offer)}
+        />
+      </Col>
     );
   }
 
@@ -323,7 +322,7 @@ const OfferButton = ({ offer, isSelected, onClick }) => {
 
   return (
     <Button onClick={onClick} className={className} variant="offer">
-      <span className="offer-name">{offer.name}</span>
+      <span className="offer-name">{offer.shortDescription}</span>
       <span className="offer-price">{currency(offer.price)}</span>
     </Button>
   );

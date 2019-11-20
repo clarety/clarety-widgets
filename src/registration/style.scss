@@ -130,27 +130,57 @@
   .team-panel .panel-body { max-width: 600px; }
   .payment-panel .panel-body { max-width: 600px; }
 
-  .btn-offer {
-    width: 120px;
-    margin: 10px;
-    background: $white;
-    color: $black;
-    border: 1px solid $primary;
+  .offers-panel {
+    .row-participant {
+      padding: 15px;
 
-    .offer-name {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 0.8rem;
+      &:nth-child(even) { background: $gray-300; }
     }
 
-    .offer-price {
-      display: block;
-      font-size: 1.2rem;
+    h4 {
+      display: inline-block;
+      margin-left: 20px;
+      margin-bottom: 0;
     }
 
-    &.selected {
-      background: $primary;
-      color: $white;
+    $circle-size: 40px;
+    .circle {
+      display: inline-block;
+      width: $circle-size;
+      height: $circle-size;
+      margin: 0 auto;
+      border: 1px solid $black;
+      border-radius: $circle-size;
+      line-height: $circle-size;
+      text-align: center;
+    }
+
+    .btn-offer {
+      width: 100%;
+      padding: 6px;
+      background: $white;
+      color: $black;
+      border: 1px solid $primary;
+
+      @include media-breakpoint-down(lg) {
+        margin: 10px 0;
+      }
+  
+      .offer-name {
+        display: block;
+        margin-bottom: 2px;
+        font-size: 0.8rem;
+      }
+  
+      .offer-price {
+        display: block;
+        font-size: 1rem;
+      }
+  
+      &.selected {
+        background: $primary;
+        color: $white;
+      }
     }
   }
 
@@ -168,17 +198,5 @@
     button {
       width: 40px;
     }
-  }
-
-  $circle-size: 40px;
-  .circle {
-    display: block;
-    width: $circle-size;
-    height: $circle-size;
-    margin: 0 auto;
-    border: 1px solid $black;
-    border-radius: $circle-size;
-    line-height: $circle-size;
-    text-align: center;
   }
 }
