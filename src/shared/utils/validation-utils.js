@@ -79,7 +79,7 @@ export function validateDob({ field, day, month, year, comparisonDate, minAge, m
   month = Number(month) - 1
   year  = Number(year);
 
-  comparisonDate = comparisonDate || Date.now();
+  comparisonDate = comparisonDate || new Date();
 
   if (minAge) {
     const turnsMinAge = new Date(year + minAge, month, day);
