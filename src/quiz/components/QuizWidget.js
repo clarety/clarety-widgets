@@ -1,17 +1,14 @@
 import React from 'react';
-import { createStore, applyMiddleware, compose } from 'redux';
 import { connect, Provider } from 'react-redux';
-import thunkMiddleware from 'redux-thunk';
 import { ClaretyApi } from 'clarety-utils';
 import { setStatus, setPanels, setClientIds, updateAppSettings, setTrackingData } from 'shared/actions';
 import { PanelManager } from 'shared/components';
-import { Resources } from 'shared/utils';
+import { Resources, configureStore } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { setQuestions } from 'quiz/actions';
 import { rootReducer } from 'quiz/reducers';
 
-const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
+const store = configureStore(rootReducer);
 
 export class _QuizWidgetRoot extends React.Component {
   state = { isInitialising: true };
