@@ -138,20 +138,20 @@ export class OffersPanel extends BasePanel {
     
     return participants.map((participant, index) =>
       <Row key={index} className="row-participant">
-        <Col xs={12} lg={3}>
+        <Col xs={12} xl={3}>
           <span className="circle">{index + 1}</span>
           <FormattedMessage id={`offersPanel.${participant.type}.title`} tagName="h4" />
         </Col>
 
         {settings.showOffers &&
-          <Col xs={12} lg={6}>
+          <Col xs={12} xl={6}>
             <Row>
               {this.renderOffers(index)}
             </Row>
           </Col>
         }
 
-        <Col xs={12} lg={3}>
+        <Col xs={12} xl={3}>
           {settings.showPrefill
             ? this.renderPrefillOptions(index)
             : this.renderNameInput(index)
@@ -213,7 +213,7 @@ export class OffersPanel extends BasePanel {
     const selectedOffer = this.state.offers[index];
 
     return offers[index].map(offer => 
-      <Col sm={4} lg={3}>
+      <Col sm={4} xl={3}>
         <OfferButton
           key={offer.offerId}
           offer={offer}
