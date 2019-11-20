@@ -77,7 +77,7 @@ export function validateCcv(ccv, field, errors) {
 export function validateDob({ field, day, month, year, comparisonDate, minAge, maxAge, errors }) {
   day   = Number(day);
   month = Number(month) - 1
-  year  = Number(year) + minAge;
+  year  = Number(year);
 
   comparisonDate = comparisonDate || Date.now();
 
