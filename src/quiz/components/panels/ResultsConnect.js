@@ -7,6 +7,7 @@ export class ResultsConnect {
     return {
       questions: getQuestions(state),
       quizType: getSetting(state, 'quizType'),
+      resultsOnly: getSetting(state, 'resultsOnly'),
     }
   };
 

@@ -6,6 +6,12 @@ export class BasePanel extends React.Component {
     // Called by panel manager.
   }
 
+  componentDidMount() {
+    if (this.props.status === 'edit') {
+      this.onShowPanel();
+    }
+  }
+
   componentDidUpdate(prevProps) {
     if (prevProps.status === 'wait' && this.props.status === 'edit') {
       this.onShowPanel();

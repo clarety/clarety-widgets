@@ -1,39 +1,60 @@
 import { ClaretyApi } from 'clarety-utils';
-import { setStatus, updateAppSettings } from 'shared/actions';
-import { removePanels, insertPanels, setPanelStatus, setPanelSettings } from 'shared/actions';
+import { setStatus, removePanels, insertPanels, setPanelStatus, setPanelSettings } from 'shared/actions';
+import { getSetting } from 'shared/selectors';
 import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
-import { settingsMap, getCustomerPanelSettingsFromWidgetProps } from 'lead-gen/utils';
+import { getCustomerPanelSettingsFromWidgetProps } from 'lead-gen/utils';
 import { getQuizPostData } from 'quiz/selectors';
 import { QuestionPanel, QuestionConnect } from 'quiz/components';
 import { types } from './types';
 
-export const setQuestions = (questions) => {
+export const setupPanels = (props) => {
   return async (dispatch, getState) => {
-    dispatch(updateAppSettings({ questions }));
+    const state = getState();
 
-    dispatch(removePanels({ withComponent: 'QuestionPanel' }));
+    const resultsOnly = getSetting(state, 'resultsOnly');
+    if (resultsOnly) {
+      // Remove question and customer panels.
+      // TODO: what about other panels?
+      dispatch(removePanels({ withComponent: 'QuestionPanel' }));
+      dispatch(removePanels({ withComponent: 'CustomerPanel' }));
+      dispatch(setPanelStatus(0, 'edit'));
+    } else {
+      // Setup question and customer panels.
+      dispatch(setupQuestionPanels());
+      dispatch(setupCustomerPanel(props));
+    }
 
-    const questionPanels = questions.map(question => ({
-      component: QuestionPanel,
-      connect: QuestionConnect,
-      data: { question },
-    }));
-
-    dispatch(insertPanels({
-      atIndex: 0,
-      panels: questionPanels,
-    }));
-
-    dispatch(setPanelStatus(0, 'edit'));
   };
 };
 
-export const setupCustomerPanel = (props) => {
+const setupQuestionPanels = () => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const questions = getSetting(state, 'questions');
+
+    dispatch(removePanels({ withComponent: 'QuestionPanel' }));
+
+      const questionPanels = questions.map(question => ({
+        component: QuestionPanel,
+        connect: QuestionConnect,
+        data: { question },
+      }));
+
+      dispatch(insertPanels({
+        atIndex: 0,
+        panels: questionPanels,
+      }));
+
+      dispatch(setPanelStatus(0, 'edit'));
+  };
+};
+
+const setupCustomerPanel = (props) => {
   return async (dispatch, getState) => {
     if (props.caseTypeUid) {
-      const settings = getCustomerPanelSettingsFromWidgetProps(props);
-      dispatch(setPanelSettings('CustomerPanel', settings));
+      const panelSettings = getCustomerPanelSettingsFromWidgetProps(props);
+      dispatch(setPanelSettings('CustomerPanel', panelSettings));
     } else {
       // Remove customer panel if we don't have a case type.
       dispatch(removePanels({ withComponent: 'CustomerPanel' }));

@@ -1,13 +1,15 @@
 import React from 'react';
-import { Form, ProgressBar, Spinner } from 'react-bootstrap';
-import { Row, Col, Card, Button } from 'react-bootstrap';
+import { Row, Col, Card, ProgressBar, Spinner } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 
 export class ResultsPanel extends BasePanel {
   state = { mode: 'loading' };
 
   async onShowPanel() {
-    await this.props.submitQuiz();
+    const { resultsOnly, submitQuiz } = this.props;
+
+    if (!resultsOnly) await submitQuiz();
+    
     this.setState({ mode: 'results' });
   }
 

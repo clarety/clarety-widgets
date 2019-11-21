@@ -4,7 +4,7 @@ import { setStatus, setPanels, setClientIds, updateAppSettings, setTrackingData 
 import { PanelManager } from 'shared/components';
 import { Resources, configureStore } from 'shared/utils';
 import { Recaptcha } from 'form/components';
-import { setQuestions, setupCustomerPanel } from 'quiz/actions';
+import { setupPanels } from 'quiz/actions';
 import { rootReducer } from 'quiz/reducers';
 
 const store = configureStore(rootReducer);
@@ -15,7 +15,7 @@ export class _QuizWidgetRoot extends React.Component {
   async componentDidMount() {
     if (!this.props.reCaptchaKey) throw new Error('[Clarety] missing reCaptcha key');
 
-    const { updateAppSettings, setTrackingData, setStatus, setQuestions, setupCustomerPanel } = this.props;
+    const { updateAppSettings, setTrackingData, setStatus, setupPanels } = this.props;
 
     updateAppSettings({
       widgetElementId: this.props.elementId,
@@ -33,10 +33,8 @@ export class _QuizWidgetRoot extends React.Component {
       emailResponseId: this.props.emailResponseId,
     });
 
-    setupCustomerPanel(this.props);
-
     // TODO: load questions from API...
-    setQuestions([
+    const questions = [
       {
         id: 'question1',
         title: 'What is your greatest concern?',
@@ -93,7 +91,10 @@ export class _QuizWidgetRoot extends React.Component {
           }
         ],
       },
-    ]);
+    ];
+
+    updateAppSettings({ questions });
+    setupPanels(this.props);
 
     setStatus('ready');
     this.setState({ isInitialising: false });
@@ -123,8 +124,7 @@ const mapStateToProps = (state) => {
 };
 
 const actions = {
-  setQuestions: setQuestions,
-  setupCustomerPanel: setupCustomerPanel,
+  setupPanels: setupPanels,
   updateAppSettings: updateAppSettings,
   setTrackingData: setTrackingData,
   setStatus: setStatus,
