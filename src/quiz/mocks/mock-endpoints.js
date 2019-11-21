@@ -11,4 +11,8 @@ export function setupQuizAxiosMock() {
   mock
     .onGet(`${api}/widgets/quiz/`)
     .reply(200, responses.getQuizSettingsSuccess);
+
+  mock
+    .onPost(`${api}/quizes/123-form-id/answers/`)
+    .reply(200, responses.submitQuizAnswersSuccess);
 }

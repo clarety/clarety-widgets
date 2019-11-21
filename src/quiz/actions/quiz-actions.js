@@ -74,10 +74,6 @@ export const submitQuiz = () => {
       dispatch(submitQuizRequest(postData));
 
       const results = await ClaretyApi.post(`quizes/${settings.formId}/answers/`, postData);
-
-      // TODO: TEMP: just return true until the endpoint is working...
-      return true;
-
       const result = results[0];
 
       if (result.status === 'error') {
@@ -90,7 +86,7 @@ export const submitQuiz = () => {
         
         if (settings.confirmPageUrl) {
           // Redirect.
-          // TODO: set 'jwtConfirm' cookie.
+          // TODO: set 'jwtConfirm' cookie?
           window.location.href = settings.confirmPageUrl;
         } else {
           return true;

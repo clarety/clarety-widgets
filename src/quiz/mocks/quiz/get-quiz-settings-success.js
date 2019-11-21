@@ -3,7 +3,7 @@ export const getQuizSettingsSuccess = {
   "success": true,
   "result": [
     {
-      "formId": "123",
+      "formId": "123-form-id",
       "quizType": "image-poll",
       "questions": [
         {
