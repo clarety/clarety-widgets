@@ -4,7 +4,6 @@ export const getQuizSettingsSuccess = {
   "result": [
     {
       "formId": "123-form-id",
-      "quizType": "image-poll", // "poll" || "image-poll" || "quiz" || etc...
       "questions": [
         {
           id: 'question1',
