@@ -1,6 +1,7 @@
 import { ClaretyApi } from 'clarety-utils';
 import { setStatus, removePanels, insertPanels, setPanelStatus, setPanelSettings } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
+import { saveState } from 'shared/utils';
 import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { getCustomerPanelSettingsFromWidgetProps } from 'lead-gen/utils';
@@ -83,6 +84,8 @@ export const submitQuiz = () => {
         return false;
       } else {
         dispatch(submitQuizSuccess(result));
+
+        saveState({ formData: state.formData });
         
         if (settings.confirmPageUrl) {
           // Redirect.

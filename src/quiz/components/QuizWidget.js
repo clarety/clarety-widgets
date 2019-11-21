@@ -7,7 +7,7 @@ import { Recaptcha } from 'form/components';
 import { setupPanels } from 'quiz/actions';
 import { rootReducer } from 'quiz/reducers';
 
-const store = configureStore(rootReducer);
+const store = configureStore(rootReducer, true);
 
 export class _QuizWidgetRoot extends React.Component {
   state = { isInitialising: true };
@@ -36,7 +36,7 @@ export class _QuizWidgetRoot extends React.Component {
     await fetchSettings('quiz/', { formId: this.props.formId });
 
     setupPanels(this.props);
-    
+
     setStatus('ready');
     this.setState({ isInitialising: false });
   }
