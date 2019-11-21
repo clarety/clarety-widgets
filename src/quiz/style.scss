@@ -11,6 +11,42 @@
     }
   }
 
+  .results-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 160px;
+  }
+
+  .poll-result {
+    .progress {
+      margin: 10px 0;
+      height: 40px;
+      font-size: 1rem;
+    }
+
+    .progress-bar {
+      padding-left: 20px;
+      background: lighten($primary, 25%);
+      color: black;
+      text-align: left;
+    }
+  }
+
+  .image-poll-result {
+    @extend .poll-result;
+
+    .card-body {
+      padding: 0;
+
+      .progress {
+        margin: 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+    }
+  }
+
   .panel-actions {
     margin: 10px 0 20px;
   }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { QuizWidget } from '../../src/';
 import { CustomerPanel } from '../../src/shared/components';
-import { QuestionPanel, QuestionConnect, QuizCustomerConnect } from '../../src/quiz/components';
+import { QuestionPanel, QuestionConnect, QuizCustomerConnect, ResultsPanel, ResultsConnect } from '../../src/quiz/components';
 import '../../src/quiz/style.scss';
 
 QuizWidget.setClientIds({
@@ -18,13 +18,12 @@ QuizWidget.setPanels([
   {
     component: CustomerPanel,
     connect: QuizCustomerConnect,
-    settings: {
-      title: 'This is the title',
-      subtitle: 'This is the subtitle',
-      submitBtnText: 'Button Text',
-      showOptIn: true,
-      optInText: 'This is the opt in',
-    },
+    settings: {},
+  },
+  {
+    component: ResultsPanel,
+    connect: ResultsConnect,
+    settings: {},
   },
 ]);
 
@@ -33,8 +32,18 @@ const QuizDemo = () => (
     <div className="row">
       <div className="col">
         <QuizWidget
-          formId="123-form-id"
           caseTypeUid="ctp_q6oq"
+          formId="123-form-id"
+          quizType="image-poll"
+          resultsOnly={true}
+
+          // Customer Panel
+          headingText="This is the heading"
+          subHeadingText="This is the sub heading"
+          buttonText="This is the button"
+          showOptIn="1"
+          optInText="This is the opt in"
+
           reCaptchaKey="..."
         />
       </div>

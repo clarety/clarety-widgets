@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect, Provider } from 'react-redux';
-import { ClaretyApi } from 'clarety-utils';
 import { setStatus, setPanels, setClientIds, updateAppSettings, setTrackingData } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources, configureStore } from 'shared/utils';
 import { Recaptcha } from 'form/components';
-import { setQuestions } from 'quiz/actions';
+import { setQuestions, setupCustomerPanel } from 'quiz/actions';
 import { rootReducer } from 'quiz/reducers';
 
 const store = configureStore(rootReducer);
@@ -16,13 +15,14 @@ export class _QuizWidgetRoot extends React.Component {
   async componentDidMount() {
     if (!this.props.reCaptchaKey) throw new Error('[Clarety] missing reCaptcha key');
 
-    const { updateAppSettings, setTrackingData, setStatus, setQuestions } = this.props;
+    const { updateAppSettings, setTrackingData, setStatus, setQuestions, setupCustomerPanel } = this.props;
 
     updateAppSettings({
       widgetElementId: this.props.elementId,
-      formId: this.props.formId,
       caseTypeUid: this.props.caseTypeUid,
       formId: this.props.formId,
+      quizType: this.props.quizType,
+      resultsOnly: this.props.resultsOnly,
       confirmPageUrl: this.props.confirmPageUrl,
       variant: this.props.variant,
     });
@@ -33,47 +33,63 @@ export class _QuizWidgetRoot extends React.Component {
       emailResponseId: this.props.emailResponseId,
     });
 
+    setupCustomerPanel(this.props);
+
     // TODO: load questions from API...
     setQuestions([
       {
         id: 'question1',
         title: 'What is your greatest concern?',
+        totalVotes: 70,
         options: [
           {
             label: 'Option One',
             value: 'option1',
             image: '//placeimg.com/420/315/animals?alt1',
+            votes: 10,
+            isCorrect: false,
           },
           {
             label: 'Option Two',
             value: 'option2',
             image: '//placeimg.com/420/315/animals?alt2',
+            votes: 40,
+            isCorrect: false,
           },
           {
             label: 'Option Three',
             value: 'option3',
             image: '//placeimg.com/420/315/animals?alt3',
+            votes: 20,
+            isCorrect: false,
           }
         ],
       },
       {
         id: 'question2',
         title: 'What is the airspeed velocity of an unladen swallow?',
+        totalVotes: 123,
         options: [
           {
             label: 'Option One',
             value: 'option1',
             image: '//placeimg.com/420/315/animals?alt4?',
+            votes: 100,
+            isCorrect: false,
           },
           {
             label: 'Option Two',
             value: 'option2',
             image: '//placeimg.com/420/315/animals?alt5',
+            votes: 3,
+            isCorrect: false,
           },
           {
             label: 'Option Three',
             value: 'option3',
             image: '//placeimg.com/420/315/animals?alt6',
+            votes: 20,
+            isCorrect: false,
           }
         ],
       },
@@ -108,6 +124,7 @@ const mapStateToProps = (state) => {
 
 const actions = {
   setQuestions: setQuestions,
+  setupCustomerPanel: setupCustomerPanel,
   updateAppSettings: updateAppSettings,
   setTrackingData: setTrackingData,
   setStatus: setStatus,

@@ -13,7 +13,7 @@ export class QuizCustomerConnect {
   };
 
   static actions = {
-    onSubmit: submitQuiz,
+    onSubmit: () => async () => true,
     setErrors: setErrors,
   };
 }

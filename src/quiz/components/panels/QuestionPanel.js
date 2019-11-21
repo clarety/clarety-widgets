@@ -43,11 +43,11 @@ export class QuestionPanel extends BasePanel {
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
           <Form>
             <Row>
-            {question.options.map(option =>
-              <Col key={option.value}>
-                <ThumbnailOption option={option} onPress={this.onPressOption} />
-              </Col>
-            )}
+              {question.options.map(option =>
+                <Col key={option.value}>
+                  <ThumbnailOption option={option} onPress={this.onPressOption} />
+                </Col>
+              )}
             </Row>
           </Form>
         </PanelBody>

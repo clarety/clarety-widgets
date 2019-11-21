@@ -1,8 +1,9 @@
 import { ClaretyApi } from 'clarety-utils';
 import { setStatus, updateAppSettings } from 'shared/actions';
-import { removePanels, insertPanels, setPanelStatus } from 'shared/actions';
+import { removePanels, insertPanels, setPanelStatus, setPanelSettings } from 'shared/actions';
 import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
+import { settingsMap, getCustomerPanelSettingsFromWidgetProps } from 'lead-gen/utils';
 import { getQuizPostData } from 'quiz/selectors';
 import { QuestionPanel, QuestionConnect } from 'quiz/components';
 import { types } from './types';
@@ -28,6 +29,18 @@ export const setQuestions = (questions) => {
   };
 };
 
+export const setupCustomerPanel = (props) => {
+  return async (dispatch, getState) => {
+    if (props.caseTypeUid) {
+      const settings = getCustomerPanelSettingsFromWidgetProps(props);
+      dispatch(setPanelSettings('CustomerPanel', settings));
+    } else {
+      // Remove customer panel if we don't have a case type.
+      dispatch(removePanels({ withComponent: 'CustomerPanel' }));
+    }
+  };
+};
+
 export const submitQuiz = () => {
   return async (dispatch, getState) => {
     // executeRecaptcha(async () => {
@@ -40,6 +53,10 @@ export const submitQuiz = () => {
       dispatch(submitQuizRequest(postData));
 
       const results = await ClaretyApi.post(`quizes/${settings.formId}/answers/`, postData);
+
+      // TODO: TEMP: just return true until the endpoint is working...
+      return true;
+
       const result = results[0];
 
       if (result.status === 'error') {
@@ -55,8 +72,6 @@ export const submitQuiz = () => {
           // TODO: set 'jwtConfirm' cookie.
           window.location.href = settings.confirmPageUrl;
         } else {
-          // TODO: show results...
-
           return true;
         }
       }
