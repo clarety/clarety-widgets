@@ -16,3 +16,12 @@ export const selectDefaults = offers => ({
   type: types.selectDefaults,
   offers: offers,
 });
+
+export const handleUrlParams = () => {
+  return async (dispatch, getState) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    const amount = Number(urlParams.get('amount'));
+    if (amount) dispatch(selectAmount('single', amount, true));
+  };
+};

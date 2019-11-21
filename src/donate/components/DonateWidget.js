@@ -5,12 +5,13 @@ import { Switch, Route } from 'react-router-dom';
 import { statuses, setStore, setTrackingData, fetchSettings, updateAppSettings } from 'shared/actions';
 import { OverrideContext } from 'shared/utils';
 import { Recaptcha } from 'form/components';
+import { handleUrlParams } from 'donate/actions';
 import { AmountPanel, DetailsPanel, PaymentPanel, SuccessPanel } from 'donate/components';
 import { mapDonationSettings } from 'donate/utils';
 
 export class _DonateWidget extends React.Component {
-  componentWillMount() {
-    const { updateAppSettings, setStore, setTrackingData, fetchSettings } = this.props;
+  async componentWillMount() {
+    const { updateAppSettings, setStore, setTrackingData, fetchSettings, handleUrlParams } = this.props;
     const { storeCode, singleOfferId, recurringOfferId, reCaptchaKey } = this.props;
     const { sourceId, responseId, emailResponseId } = this.props;
 
@@ -27,11 +28,13 @@ export class _DonateWidget extends React.Component {
     setStore(storeCode);
     setTrackingData({ sourceId, responseId, emailResponseId });
 
-    fetchSettings('donations/', {
+    await fetchSettings('donations/', {
       store: storeCode,
       offerSingle: singleOfferId,
       offerRecurring: recurringOfferId,
     }, mapDonationSettings);
+
+    handleUrlParams();
   }
 
   render() {
@@ -89,6 +92,7 @@ const actions = {
   setTrackingData: setTrackingData,
   fetchSettings: fetchSettings,
   updateAppSettings: updateAppSettings,
+  handleUrlParams: handleUrlParams,
 };
 
 export const connectDonateWidget = connect(mapStateToProps, actions);

@@ -27,12 +27,12 @@ const Demo = () => {
     return <SubscribeDemo />;
   }
 
-  if (url.endsWith('donate-page')) {
+  if (url.indexOf('donate-page') !== -1) {
     const DonatePageDemo = require('./DonatePageDemo').default;
     return <DonatePageDemo />;
   }
 
-  if (url.endsWith('donate')) {
+  if (url.indexOf('donate') !== -1) {
     const DonateDemo = require('./DonateDemo').default;
     return <DonateDemo />;
   }
