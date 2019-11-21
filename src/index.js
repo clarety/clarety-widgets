@@ -23,3 +23,4 @@ export { LeadGenWidget } from 'lead-gen/components';
 export { FundraisingStart } from 'fundraising-start/components';
 
 export { QuizWidget } from 'quiz/components';
+export { setupQuizAxiosMock } from 'quiz/mocks';

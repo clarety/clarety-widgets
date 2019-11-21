@@ -1,5 +1,5 @@
 import React from 'react';
-import { QuizWidget } from '../../src/';
+import { QuizWidget, setupQuizAxiosMock } from '../../src/';
 import { CustomerPanel } from '../../src/shared/components';
 import { QuestionPanel, QuestionConnect, QuizCustomerConnect, ResultsPanel, ResultsConnect } from '../../src/quiz/components';
 import '../../src/quiz/style.scss';
@@ -27,28 +27,33 @@ QuizWidget.setPanels([
   },
 ]);
 
-const QuizDemo = () => (
-  <div className="container my-5">
-    <div className="row">
-      <div className="col">
-        <QuizWidget
-          caseTypeUid="ctp_q6oq"
-          formId="123-form-id"
-          quizType="image-poll"
-          resultsOnly={true}
+export default class QuizDemo extends React.Component {
+  componentWillMount() {
+    setupQuizAxiosMock();
+  }
 
-          // Customer Panel
-          headingText="This is the heading"
-          subHeadingText="This is the sub heading"
-          buttonText="This is the button"
-          showOptIn="1"
-          optInText="This is the opt in"
+  render() {
+    return (
+      <div className="container my-5">
+        <div className="row">
+          <div className="col">
+            <QuizWidget
+              caseTypeUid="ctp_q6oq"
+              formId="123-form-id"
+              resultsOnly={true}
 
-          reCaptchaKey="..."
-        />
+              // Customer Panel
+              headingText="This is the heading"
+              subHeadingText="This is the sub heading"
+              buttonText="This is the button"
+              showOptIn="1"
+              optInText="This is the opt in"
+
+              reCaptchaKey="..."
+            />
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-);
-
-export default QuizDemo;
+    );
+  }
+}
