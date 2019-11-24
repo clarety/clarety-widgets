@@ -150,13 +150,13 @@ export class _DetailsPanel extends BasePanel {
       formData['customer.delivery.country']  = firstParticipant.customer.delivery.country;
     }
 
-    if (formData['autofill.delivery'] && !formData['autofill.address']) {
-      formData['customer.delivery.address1'] = formData['customer.billing.address1'];
-      formData['customer.delivery.address2'] = formData['customer.billing.address2'];
-      formData['customer.delivery.suburb']   = formData['customer.billing.suburb'];
-      formData['customer.delivery.state']    = formData['customer.billing.state'];
-      formData['customer.delivery.postcode'] = formData['customer.billing.postcode'];
-      formData['customer.delivery.country']  = formData['customer.billing.country'];
+    if (formData['autofill.billing'] && !formData['autofill.address']) {
+      formData['customer.billing.address1'] = formData['customer.delivery.address1'];
+      formData['customer.billing.address2'] = formData['customer.delivery.address2'];
+      formData['customer.billing.suburb']   = formData['customer.delivery.suburb'];
+      formData['customer.billing.state']    = formData['customer.delivery.state'];
+      formData['customer.billing.postcode'] = formData['customer.delivery.postcode'];
+      formData['customer.billing.country']  = formData['customer.delivery.country'] ;
     }
   }
 
@@ -401,27 +401,27 @@ export class _DetailsPanel extends BasePanel {
 
     if (!!formData['autofill.address']) return null;
     
-    const showDelivery = !formData['autofill.delivery'];
+    const showBilling = !formData['autofill.billing'];
 
     return (
       <React.Fragment>
-        {settings.showBillingAddress && this.renderAddressFields('Billing Address', 'billing')}
+        {settings.showDeliveryAddress && this.renderAddressFields('Delivery Address', 'delivery')}
 
-        {settings.showDeliveryAddress &&
+        {settings.showDeliveryAddress && settings.showBillingAddress &&
           <Form.Row>
             <Col>
-              <CheckboxInput field="autofill.delivery" label="Delivery Address is same as Billing Address" />
+              <CheckboxInput field="autofill.billing" label="Billing Address is same as Delivery Address" />
             </Col>
           </Form.Row>
         }
 
-        {settings.showDeliveryAddress && showDelivery && this.renderAddressFields('Delivery Address', 'delivery')}
+        {settings.showBillingAddress && showBilling && this.renderAddressFields('Billing Address', 'billing')}
       </React.Fragment>
     );
   }
 
   renderAddressFields(title, type) {
-    const showAusStates = this.state.formData['customer.billing.country'] === 'AU';
+    const showAusStates = this.state.formData[`customer.${type}.country`] === 'AU';
 
     return (
       <React.Fragment>
