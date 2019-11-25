@@ -21,7 +21,7 @@ export class _QuizWidgetRoot extends React.Component {
       widgetElementId: this.props.elementId,
       caseTypeUid: this.props.caseTypeUid,
       formId: this.props.formId,
-      quizType: this.props.quizType,
+      quizType: this.props.variant || 'quiz',
       resultsOnly: this.props.resultsOnly,
       confirmPageUrl: this.props.confirmPageUrl,
       variant: this.props.variant,

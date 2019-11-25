@@ -40,7 +40,7 @@ export default class QuizDemo extends React.Component {
             <QuizWidget
               caseTypeUid="ctp_q6oq"
               formId="123-form-id"
-              quizType="poll" // "poll" || "image-poll" || "quiz" || etc...
+              variant="poll" // "poll" || "image-poll" || "quiz" || etc...
               resultsOnly={true}
 
               // Customer Panel
