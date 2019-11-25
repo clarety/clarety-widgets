@@ -1,6 +1,6 @@
 import { addItem, removeItemsWithPanel } from 'shared/actions';
 import { setFirstNames, resetFirstNames, setOffers, resetOffers, prefillDetails } from 'registration/actions';
-import { getParticipants, getOffersForAllParticipants, getPreviousParticipants } from 'registration/selectors';
+import { getParticipants, getOffersForAllParticipants, getPreviousParticipants, getEvent } from 'registration/selectors';
 
 export class OffersConnect {
   static mapStateToProps = (state) => {
@@ -8,6 +8,7 @@ export class OffersConnect {
       participants: getParticipants(state),
       offers: getOffersForAllParticipants(state),
       previousParticipants: getPreviousParticipants(state),
+      event: getEvent(state),
     };
   };
 

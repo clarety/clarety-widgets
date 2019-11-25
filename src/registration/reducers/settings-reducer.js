@@ -99,9 +99,13 @@ function convertRegistrationOffers(offers) {
     price: Number(offer.amount),
     waves: convertRegistrationWaves(offer.registrationProducts),
     ageCalculationDate: offer.ageCalculationDate,
-    maxAgeUnder: offer.maxAgeUnder,
-    minAgeOver: offer.minAgeOver,
+    maxAgeUnder: convertAge(offer.maxAgeUnder),
+    minAgeOver: convertAge(offer.minAgeOver),
   }));
+}
+
+function convertAge(age) {
+  return age !== '' ? Number(age) : undefined;
 }
 
 function convertRegistrationWaves(registrationProducts) {

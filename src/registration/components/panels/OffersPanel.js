@@ -213,9 +213,8 @@ export class OffersPanel extends BasePanel {
     const selectedOffer = this.state.offers[index];
 
     return offers[index].map(offer => 
-      <Col sm={4} xl={3}>
+      <Col sm={4} xl={3} key={offer.offerId}>
         <OfferButton
-          key={offer.offerId}
           offer={offer}
           isSelected={offer === selectedOffer}
           onClick={() => this.onSelectOffer(index, offer)}
@@ -258,20 +257,48 @@ export class OffersPanel extends BasePanel {
   }
 
   getPrefillOptions(index) {
+    const { participants, previousParticipants, offers, event } = this.props;
+
     const options = [];
 
-    if (this.props.participants[index].type !== 'child') {
+    if (participants[index].type !== 'child') {
       this.maybeAddOption(options, index, 'yourself', 'Yourself');
     }
 
-    this.props.previousParticipants.forEach(participant => {
-      const name = `${participant.firstName} ${participant.lastName}`;
-      this.maybeAddOption(options, index, participant.id, name);
+    const offer = offers[index][0];
+    const eventDate = new Date(offer.ageCalculationDate || event.startDate);
+
+    previousParticipants.forEach(participant => {      
+      // Only add previous participants who are within the age range.
+      const { dateOfBirthYear, dateOfBirthMonth, dateOfBirthDay } = participant;
+      const dob = new Date(Number(dateOfBirthYear), Number(dateOfBirthMonth) - 1, Number(dateOfBirthDay));
+
+      let isOverMinAge  = this.isOverMinAge(offer.minAgeOver, dob, eventDate);
+      let isUnderMaxAge = this.isUnderMaxAge(offer.maxAgeUnder, dob, eventDate);
+
+      if (isOverMinAge && isUnderMaxAge) {
+        const name = `${participant.firstName} ${participant.lastName}`;
+        this.maybeAddOption(options, index, participant.id, name);
+      }
     });
 
     options.push({ value: 'other', label: 'Other' });
 
     return options;
+  }
+
+  isOverMinAge(minAge, dob, eventDate) {
+    if (minAge === undefined || minAge === '') return true;
+
+    const turnsMinAge = new Date(dob.getFullYear() + minAge, dob.getMonth(), dob.getDate());
+    return turnsMinAge < eventDate;
+  }
+
+  isUnderMaxAge(maxAge, dob, eventDate) {
+    if (maxAge === undefined || maxAge === '') return true;
+
+    const turnsMaxAge = new Date(dob.getFullYear() + maxAge, dob.getMonth(), dob.getDate());
+    return turnsMaxAge > eventDate;
   }
 
   // Add an option if it hasn't already been selected by another partcipant.

@@ -30,8 +30,8 @@ export class DetailsConnect {
       isPrefilled: isPrefilled,
       isCorporateTeam: isCorporateTeam,
       eventDate: eventDate,
-      minAge: Number(offer.minAgeOver),
-      maxAge: Number(offer.maxAgeUnder),
+      minAge: offer.minAgeOver,
+      maxAge: offer.maxAgeUnder,
       registrationErrors: state.cart.errors,
     };
   };
