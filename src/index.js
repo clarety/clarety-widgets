@@ -1,4 +1,5 @@
 export { Config } from 'clarety-utils';
+export { connect } from 'react-redux';
 
 export { renderWidget, Resources, getElementOptions, getSitePath, loadCss, withOverrides } from 'shared/utils';
 

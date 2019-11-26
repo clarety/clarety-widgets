@@ -1,6 +1,6 @@
 import { types } from 'donate/actions';
 
-export const selectFrequency = frequency => ({
+export const selectFrequency = (frequency) => ({
   type: types.selectFrequency,
   frequency: frequency,
 });
@@ -12,7 +12,17 @@ export const selectAmount = (frequency, amount, isVariableAmount = false) => ({
   isVariableAmount: isVariableAmount,
 });
 
-export const selectDefaults = offers => ({
+export const adjustAmount = (adjustment) => {
+  return (dispatch, getState) => {
+    const state = getState();
+    const { amountPanel } = state.panels;
+    const { frequency, selections } = amountPanel;
+    const newAmount = Number(selections[frequency].amount) + adjustment;
+    dispatch(selectAmount(frequency, newAmount.toFixed(2), true));
+  };
+};
+
+export const selectDefaults = (offers) => ({
   type: types.selectDefaults,
   offers: offers,
 });

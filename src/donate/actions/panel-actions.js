@@ -93,6 +93,7 @@ export class PanelActions {
       offerUid: offer.offerUid,
       offerPaymentUid: offer.offerPaymentUid,
       price: selection.amount,
+      type: 'donation',
     }));
   }
 

@@ -92,6 +92,7 @@ export function connectPaymentPanel(ViewComponent) {
       isBusy: getIsBusy(state),
       amount: getSelectedAmount(state),
       frequency: getSelectedFrequency(state),
+      formData: state.formData,
       errors: state.errors,
     };
   };

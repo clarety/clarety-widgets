@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { Button, Spinner } from 'react-bootstrap';
 import { statuses } from 'shared/actions';
 
-const _SubmitButton = ({ title, className, block, testId, isReady }) => (
-  <Button className={`btn-submit ${className}`} block={block} disabled={!isReady} type="submit" data-testid={testId}>
+const _SubmitButton = ({ title, className, block, testId, isReady, isDisabled }) => (
+  <Button className={`btn-submit ${className}`} block={block} disabled={isDisabled || !isReady} type="submit" data-testid={testId}>
     {isReady
       ? title
       : <Spinner animation="border" size="sm" />
