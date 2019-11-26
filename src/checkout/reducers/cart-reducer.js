@@ -41,6 +41,12 @@ export const cartReducer = (state = initialState, action) => {
         customer: action.result.customer,
       };
 
+    case sharedTypes.setCustomer:
+      return {
+        ...state,
+        customer: action.customer,
+      };
+
     // Logout
 
     case sharedTypes.logoutSuccess:
