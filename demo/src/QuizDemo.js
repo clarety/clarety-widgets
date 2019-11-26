@@ -38,10 +38,10 @@ export default class QuizDemo extends React.Component {
         <div className="row">
           <div className="col">
             <QuizWidget
-              caseTypeUid="ctp_q6oq"
+              // caseTypeUid="ctp_q6oq"
               formId="123-form-id"
               variant="poll" // "poll" || "image-poll" || "quiz" || etc...
-              resultsOnly={true}
+              // resultsOnly={true}
 
               // Customer Panel
               headingText="This is the heading"

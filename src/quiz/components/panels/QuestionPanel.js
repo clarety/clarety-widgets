@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Row, Col, Card, Button } from 'react-bootstrap';
+import { Row, Col, Card, Button } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 
 export class QuestionPanel extends BasePanel {
@@ -29,7 +29,7 @@ export class QuestionPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, isBusy, index, question } = this.props;
+    const { layout, isBusy, index, question, quizType } = this.props;
 
     return (
       <PanelContainer layout={layout} status="edit">
@@ -41,17 +41,30 @@ export class QuestionPanel extends BasePanel {
         />
         
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
-          <Form>
-            <Row>
-              {question.options.map(option =>
-                <Col key={option.value}>
-                  <ThumbnailOption option={option} onPress={this.onPressOption} />
-                </Col>
-              )}
-            </Row>
-          </Form>
+
+          {quizType === 'poll' && this.renderPollQuestion()}
+          {quizType === 'image-poll' && this.renderImagePollQuestion()}
+
         </PanelBody>
       </PanelContainer>
+    );
+  }
+
+  renderPollQuestion() {
+    return this.props.question.options.map(option =>
+      <TextOption key={option.value} option={option} onPress={this.onPressOption} />
+    );
+  }
+
+  renderImagePollQuestion() {
+    return (
+      <Row>
+        {this.props.question.options.map(option =>
+          <Col key={option.value}>
+            <ThumbnailOption option={option} onPress={this.onPressOption} />
+          </Col>
+        )}
+      </Row>
     );
   }
 
@@ -74,6 +87,10 @@ export class QuestionPanel extends BasePanel {
     );
   }
 }
+
+const TextOption = ({ option, onPress }) => (
+  <Button onClick={onPress} block>{option.label}</Button>
+);
 
 const ThumbnailOption = ({ option, onPress }) => (
   <Card onClick={() => onPress(option)} style={{ cursor: 'pointer' }}>
