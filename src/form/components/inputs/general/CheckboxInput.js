@@ -5,18 +5,32 @@ import { updateFormData } from 'form/actions';
 import { getValidationError } from 'form/utils';
 import { FieldError } from 'form/components';
 
-const _CheckboxInput = ({ value, field, label, error, onChange }) => (
-  <Form.Group controlId={field}>
-    <FormCheck>
-      <FormCheck.Input
-        checked={value}
-        onChange={onChange}
-      />
-      <FormCheck.Label>{label}</FormCheck.Label>
-    </FormCheck>
-    <FieldError error={error} />
-  </Form.Group>
-);
+class _CheckboxInput extends React.Component {
+  constructor(props) {
+    super(props);
+
+    if (props.initialValue !== undefined) {
+      props.setInitialValue(props.initialValue);
+    }
+  }
+
+  render() {
+    const { value, field, label, error, onChange } = this.props;
+
+    return (
+      <Form.Group controlId={field}>
+        <FormCheck>
+          <FormCheck.Input
+            checked={value}
+            onChange={onChange}
+          />
+          <FormCheck.Label>{label}</FormCheck.Label>
+        </FormCheck>
+        <FieldError error={error} />
+      </Form.Group>
+    );
+  }
+}
 
 const mapStateToProps = (state, { field }) => {
   return {
@@ -28,6 +42,7 @@ const mapStateToProps = (state, { field }) => {
 const mapDispatchToProps = (dispatch, { field }) => {
   return {
     onChange: event => dispatch(updateFormData(field, event.target.checked)),
+    setInitialValue: value => dispatch(updateFormData(field, value)),
   };
 };
 
