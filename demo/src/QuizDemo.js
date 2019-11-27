@@ -9,8 +9,8 @@ window.renderQuizWidget = (props) => {
 
   renderWidget(props.elementId,
     <QuizWidget
+      quizUid={props.quizUid}
       caseTypeUid={props.caseTypeUid}
-      formId={props.formId}
       variant={props.variant}
       resultsOnly={props.resultsOnly}
       headingText={props.headingText}
@@ -52,14 +52,14 @@ const initQuizWidget = (props) => {
 
 export default class QuizDemo extends React.Component {
   componentWillMount() {
-    setupQuizAxiosMock();
+    // setupQuizAxiosMock();
   }
 
   componentDidMount() {
     window.renderQuizWidget({
       elementId: 'quiz-widget-demo',
+      quizUid: 'quz_7er1',
       // caseTypeUid: 'ctp_q6oq',
-      formId: '123-form-id',
       variant: 'poll', // 'poll' || 'image-poll' || 'quiz' || etc...
       // resultsOnly: true,
       headingText: 'This is the heading',

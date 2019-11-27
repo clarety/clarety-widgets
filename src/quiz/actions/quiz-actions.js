@@ -70,7 +70,7 @@ export const submitQuiz = () => {
       const postData = getQuizPostData(state);
       dispatch(submitQuizRequest(postData));
 
-      const results = await ClaretyApi.post(`quizes/${settings.formId}/answers/`, postData);
+      const results = await ClaretyApi.post(`quizzes/${settings.quizUid}/answers/`, postData);
       const result = results[0];
 
       if (result.status === 'error') {

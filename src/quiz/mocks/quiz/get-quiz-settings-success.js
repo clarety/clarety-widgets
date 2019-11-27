@@ -3,7 +3,7 @@ export const getQuizSettingsSuccess = {
   "success": true,
   "result": [
     {
-      "formId": "123-form-id",
+      "quizUid": "123-quiz-uid",
       "questions": [
         {
           id: 'question1',

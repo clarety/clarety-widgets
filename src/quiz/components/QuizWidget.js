@@ -12,7 +12,7 @@ export class QuizWidget extends React.Component {
   static store;
 
   static init(props) {
-    const stateKey = `clarety-quiz-${props.formId}`;
+    const stateKey = `clarety-quiz-${props.quizUid}`;
     QuizWidget.store = configureStore(rootReducer, stateKey);
     QuizWidget.store.dispatch(updateAppSettings({ stateKey }));
   }
@@ -47,7 +47,7 @@ export class _QuizWidgetRoot extends React.Component {
       updateAppSettings({
         widgetElementId: this.props.elementId,
         caseTypeUid: this.props.caseTypeUid,
-        formId: this.props.formId,
+        quizUid: this.props.quizUid,
         quizType: this.props.variant || 'quiz',
         resultsOnly: this.props.resultsOnly,
         confirmPageUrl: this.props.confirmPageUrl,
@@ -60,7 +60,7 @@ export class _QuizWidgetRoot extends React.Component {
         emailResponseId: this.props.emailResponseId,
       });
   
-      await fetchSettings('quiz/', { formId: this.props.formId });
+      await fetchSettings('quiz/', { quizUid: this.props.quizUid });
     }
 
     setupPanels(this.props, isResumed || this.props.resultsOnly);
