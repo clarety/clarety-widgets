@@ -44,7 +44,7 @@ export class _PaymentPanel extends BasePanel {
 
               <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
 
-                <Card.Text className="text-center">
+                <Card.Text className="donation-summary">
                   Donation Amount: <b>{this.props.amount}</b>
                 </Card.Text>
         

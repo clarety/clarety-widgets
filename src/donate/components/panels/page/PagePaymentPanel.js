@@ -27,7 +27,7 @@ export class _PagePaymentPanel extends _PaymentPanel {
           <Row className="justify-content-center">
             <Col lg={6}>
 
-              <Card.Text className="text-center">
+              <Card.Text className="donation-summary">
                 Donation Amount: <b>{this.props.amount}</b>
               </Card.Text>
       
