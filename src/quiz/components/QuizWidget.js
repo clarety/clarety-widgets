@@ -7,6 +7,7 @@ import { getIsResumed } from 'shared/selectors';
 import { Recaptcha } from 'form/components';
 import { setupPanels } from 'quiz/actions';
 import { rootReducer } from 'quiz/reducers';
+import { settingsMap } from 'quiz/utils';
 
 export class QuizWidget extends React.Component {
   static store;
@@ -60,7 +61,7 @@ export class _QuizWidgetRoot extends React.Component {
         emailResponseId: this.props.emailResponseId,
       });
   
-      await fetchSettings('quiz/', { quizUid: this.props.quizUid });
+      await fetchSettings('quiz/', { quizUid: this.props.quizUid }, settingsMap);
     }
 
     setupPanels(this.props, isResumed || this.props.resultsOnly);
