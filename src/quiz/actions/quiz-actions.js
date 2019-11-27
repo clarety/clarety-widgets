@@ -1,6 +1,6 @@
 import { ClaretyApi } from 'clarety-utils';
-import { setStatus, removePanels, insertPanels, setPanelStatus, setPanelSettings } from 'shared/actions';
-import { getSetting } from 'shared/selectors';
+import { setStatus, removePanels, insertPanels, setPanelStatus, setPanelSettings, updateAppSettings } from 'shared/actions';
+import { getSetting, getFormData } from 'shared/selectors';
 import { saveState } from 'shared/utils';
 import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
@@ -84,6 +84,7 @@ export const submitQuiz = () => {
         return false;
       } else {
         dispatch(submitQuizSuccess(result));
+        dispatch(updateVoteCounts());
 
         saveState({ formData: state.formData });
         
@@ -96,6 +97,25 @@ export const submitQuiz = () => {
         }
       }
     // });
+  };
+};
+
+export const updateVoteCounts = () => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const formData = getFormData(state);
+    const questions = getSetting(state, 'questions');
+
+    // Increment vote count of questions and selected options.
+    questions.forEach(question => {
+      question.totalVotes++;
+
+      const selectedValue = formData[`answers.${question.id}`];
+      const selectedOption = question.options.find(option => option.value === selectedValue);
+      selectedOption.votes++;
+    });
+
+    dispatch(updateAppSettings({ questions }));
   };
 };
 

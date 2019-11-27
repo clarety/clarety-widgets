@@ -89,7 +89,9 @@ export class QuestionPanel extends BasePanel {
 }
 
 const TextOption = ({ option, onPress }) => (
-  <Button onClick={onPress} block>{option.label}</Button>
+  <Button onClick={() => onPress(option)} block>
+    {option.label}
+  </Button>
 );
 
 const ThumbnailOption = ({ option, onPress }) => (
