@@ -44,27 +44,27 @@ export class _QuizWidgetRoot extends React.Component {
 
     const { isResumed, updateAppSettings, setTrackingData, fetchSettings, setStatus, setupPanels } = this.props;
 
+    updateAppSettings({
+      widgetElementId: this.props.elementId,
+      caseTypeUid: this.props.caseTypeUid,
+      quizUid: this.props.quizUid,
+      quizType: this.props.variant || 'quiz',
+      resultsOnly: isResumed || this.props.resultsOnly,
+      confirmPageUrl: this.props.confirmPageUrl,
+      variant: this.props.variant,
+    });
+
+    setTrackingData({
+      sourceUid: this.props.sourceUid,
+      responseId: this.props.responseId,
+      emailResponseId: this.props.emailResponseId,
+    });
+
     if (!isResumed) {
-      updateAppSettings({
-        widgetElementId: this.props.elementId,
-        caseTypeUid: this.props.caseTypeUid,
-        quizUid: this.props.quizUid,
-        quizType: this.props.variant || 'quiz',
-        resultsOnly: this.props.resultsOnly,
-        confirmPageUrl: this.props.confirmPageUrl,
-        variant: this.props.variant,
-      });
-  
-      setTrackingData({
-        sourceUid: this.props.sourceUid,
-        responseId: this.props.responseId,
-        emailResponseId: this.props.emailResponseId,
-      });
-  
       await fetchSettings('quiz/', { quizUid: this.props.quizUid }, settingsMap);
     }
 
-    setupPanels(this.props, isResumed || this.props.resultsOnly);
+    setupPanels(this.props);
 
     setStatus('ready');
     this.setState({ isInitialising: false });

@@ -4,13 +4,18 @@ import { getSetting, getFormData } from 'shared/selectors';
 import { saveState } from 'shared/utils';
 import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
+import { createLeadRequest, createLeadSuccess, createLeadFailure } from 'lead-gen/actions';
+import { getLeadPostData } from 'lead-gen/selectors';
 import { getCustomerPanelSettingsFromWidgetProps } from 'lead-gen/utils';
 import { getQuizPostData } from 'quiz/selectors';
 import { QuestionPanel, QuestionConnect } from 'quiz/components';
 import { types } from './types';
 
-export const setupPanels = (props, resultsOnly) => {
+export const setupPanels = (props) => {
   return async (dispatch, getState) => {
+    const state = getState();
+    const resultsOnly = getSetting(state, 'resultsOnly');
+
     if (resultsOnly) {
       // Remove question and customer panels.
       // TODO: what about other panels?
@@ -82,6 +87,10 @@ export const submitQuiz = () => {
         dispatch(submitQuizSuccess(result));
         dispatch(updateVoteCounts());
 
+        if (settings.caseTypeUid) {
+          await dispatch(createLead(result.answersUid));
+        }
+
         const stateKey = getSetting(state, 'stateKey');
         saveState(stateKey, {
           settings: state.settings,
@@ -117,6 +126,31 @@ export const updateVoteCounts = () => {
     });
 
     dispatch(updateAppSettings({ questions }));
+  };
+};
+
+export const createLead = (answersUid) => {
+  return async (dispatch, getState) => {
+    const state = getState();
+
+    const postData = getLeadPostData(state);
+    postData.variant = 'quiz';
+    postData.answersUid = answersUid;
+
+    dispatch(createLeadRequest(postData));
+
+    const results = await ClaretyApi.post('cases/leads/', postData);
+    const result = results[0];
+
+    if (result.status === 'error') {
+      dispatch(createLeadFailure(result));
+      dispatch(setErrors(result.validationErrors));
+      dispatch(setStatus('ready'));
+      return false;
+    } else {
+      dispatch(createLeadSuccess(result));
+      return true;
+    }
   };
 };
 

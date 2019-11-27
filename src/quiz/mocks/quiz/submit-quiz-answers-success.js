@@ -3,8 +3,8 @@ export const submitQuizAnswersSuccess = {
   "success": true,
   "result": [
     {
-      "status": "ok",
-      "id": "321-answers-id",
+      "status": "success",
+      "answersUid": "321-answers-uid",
     }
   ]
 };
