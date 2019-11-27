@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "cart/*":              ["./src/cart/*"],
+      "checkout/*":          ["./src/checkout/*"],
+      "donate/*":            ["./src/donate/*"],
+      "form/*":              ["./src/form/*"],
+      "fundraising-start/*": ["./src/fundraising-start/*"],
+      "lead-gen/*":          ["./src/lead-gen/*"],
+      "quiz/*":              ["./src/quiz/*"],
+      "registration/*":      ["./src/registration/*"],
+      "shared/*":            ["./src/shared/*"],
+      "subscribe/*":         ["./src/subscribe/*"]
+    }
+  },
+  "exclude": ["node_modules", "es", "lib"]
+}
