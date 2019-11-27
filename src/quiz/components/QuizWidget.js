@@ -3,11 +3,37 @@ import { connect, Provider } from 'react-redux';
 import { setStatus, setPanels, setClientIds, updateAppSettings, setTrackingData, fetchSettings } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources, configureStore } from 'shared/utils';
+import { getIsResumed } from 'shared/selectors';
 import { Recaptcha } from 'form/components';
 import { setupPanels } from 'quiz/actions';
 import { rootReducer } from 'quiz/reducers';
 
-const store = configureStore(rootReducer, true);
+export class QuizWidget extends React.Component {
+  static store;
+
+  static init(props) {
+    const stateKey = `clarety-quiz-${props.formId}`;
+    QuizWidget.store = configureStore(rootReducer, stateKey);
+    QuizWidget.store.dispatch(updateAppSettings({ stateKey }));
+  }
+
+  static setPanels(panels) {
+    Resources.setPanels(panels);
+    QuizWidget.store.dispatch(setPanels(panels));
+  }
+
+  static setClientIds({ dev, prod }) {
+    QuizWidget.store.dispatch(setClientIds({ dev, prod }));
+  }
+
+  render() {
+    return (
+      <Provider store={QuizWidget.store}>
+        <QuizWidgetRoot {...this.props} />
+      </Provider>
+    );
+  }
+}
 
 export class _QuizWidgetRoot extends React.Component {
   state = { isInitialising: true };
@@ -15,27 +41,29 @@ export class _QuizWidgetRoot extends React.Component {
   async componentDidMount() {
     if (!this.props.reCaptchaKey) throw new Error('[Clarety] missing reCaptcha key');
 
-    const { updateAppSettings, setTrackingData, fetchSettings, setStatus, setupPanels } = this.props;
+    const { isResumed, updateAppSettings, setTrackingData, fetchSettings, setStatus, setupPanels } = this.props;
 
-    updateAppSettings({
-      widgetElementId: this.props.elementId,
-      caseTypeUid: this.props.caseTypeUid,
-      formId: this.props.formId,
-      quizType: this.props.variant || 'quiz',
-      resultsOnly: this.props.resultsOnly,
-      confirmPageUrl: this.props.confirmPageUrl,
-      variant: this.props.variant,
-    });
+    if (!isResumed) {
+      updateAppSettings({
+        widgetElementId: this.props.elementId,
+        caseTypeUid: this.props.caseTypeUid,
+        formId: this.props.formId,
+        quizType: this.props.variant || 'quiz',
+        resultsOnly: this.props.resultsOnly,
+        confirmPageUrl: this.props.confirmPageUrl,
+        variant: this.props.variant,
+      });
+  
+      setTrackingData({
+        sourceUid: this.props.sourceUid,
+        responseId: this.props.responseId,
+        emailResponseId: this.props.emailResponseId,
+      });
+  
+      await fetchSettings('quiz/', { formId: this.props.formId });
+    }
 
-    setTrackingData({
-      sourceUid: this.props.sourceUid,
-      responseId: this.props.responseId,
-      emailResponseId: this.props.emailResponseId,
-    });
-
-    await fetchSettings('quiz/', { formId: this.props.formId });
-
-    setupPanels(this.props);
+    setupPanels(this.props, isResumed || this.props.resultsOnly);
 
     setStatus('ready');
     this.setState({ isInitialising: false });
@@ -61,7 +89,9 @@ export class _QuizWidgetRoot extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  return {};
+  return {
+    isResumed: getIsResumed(state),
+  };
 };
 
 const actions = {
@@ -73,22 +103,3 @@ const actions = {
 };
 
 const QuizWidgetRoot = connect(mapStateToProps, actions)(_QuizWidgetRoot);
-
-export class QuizWidget extends React.Component {
-  static setPanels(panels) {
-    Resources.setPanels(panels);
-    store.dispatch(setPanels(panels));
-  }
-
-  static setClientIds({ dev, prod }) {
-    store.dispatch(setClientIds({ dev, prod }));
-  }
-
-  render() {
-    return (
-      <Provider store={store}>
-        <QuizWidgetRoot {...this.props} />
-      </Provider>
-    );
-  }
-}

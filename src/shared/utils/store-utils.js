@@ -1,8 +1,8 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 
-export function configureStore(reducer, loadFromLocalStorage) {
-  const preloadedState = loadFromLocalStorage ? loadState() : undefined;
+export function configureStore(reducer, stateKey = undefined) {
+  const preloadedState = stateKey ? loadState(stateKey) : undefined;
 
   const composeWithDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   const enhancer = composeWithDevTools(applyMiddleware(thunkMiddleware));
@@ -10,19 +10,24 @@ export function configureStore(reducer, loadFromLocalStorage) {
   return createStore(reducer, preloadedState, enhancer);
 }
 
-// TODO: need to uniquely identify each app on a domain...
-const stateKey = 'state';
-
-function loadState() {
+function loadState(stateKey) {
   try {
-    const state = localStorage.getItem(stateKey);
-    return state ? JSON.parse(state) : undefined;
+    const serializedState = localStorage.getItem(stateKey);
+    if (!serializedState) return undefined;
+
+    const state = JSON.parse(serializedState);
+
+    // Add 'isResumed' setting.
+    state.settings = state.settings || {};
+    state.settings.isResumed = true;
+    
+    return state;
   } catch (err) {
     return undefined;
   }
 }
 
-export function saveState(state) {
+export function saveState(stateKey, state) {
   try {
     localStorage.setItem(stateKey, JSON.stringify(state));
   } catch (err) {
@@ -30,7 +35,7 @@ export function saveState(state) {
   }
 }
 
-export function clearState() {
+export function clearState(stateKey) {
   try {
     localStorage.removeItem(stateKey);
   } catch (err) {

@@ -9,11 +9,8 @@ import { getQuizPostData } from 'quiz/selectors';
 import { QuestionPanel, QuestionConnect } from 'quiz/components';
 import { types } from './types';
 
-export const setupPanels = (props) => {
+export const setupPanels = (props, resultsOnly) => {
   return async (dispatch, getState) => {
-    const state = getState();
-
-    const resultsOnly = getSetting(state, 'resultsOnly');
     if (resultsOnly) {
       // Remove question and customer panels.
       // TODO: what about other panels?
@@ -25,7 +22,6 @@ export const setupPanels = (props) => {
       dispatch(setupQuestionPanels());
       dispatch(setupCustomerPanel(props));
     }
-
   };
 };
 
@@ -86,7 +82,12 @@ export const submitQuiz = () => {
         dispatch(submitQuizSuccess(result));
         dispatch(updateVoteCounts());
 
-        saveState({ formData: state.formData });
+        const stateKey = getSetting(state, 'stateKey');
+        saveState(stateKey, {
+          settings: state.settings,
+          formData: state.formData,
+          cart:     state.cart,
+        });
         
         if (settings.confirmPageUrl) {
           // Redirect.

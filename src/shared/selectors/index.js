@@ -11,6 +11,8 @@ export const getIsLoggedIn = (state) => !!getAuth(state).jwt;
 
 export const getSetting = (state, setting) => getSettings(state)[setting];
 
+export const getIsResumed = (state) => getSetting(state, 'isResumed');
+
 export const getIsCartComplete = (state) => getCart(state).status === 'Complete';
 
 export const getOrganisation = (state) => getCart(state).organisation;
