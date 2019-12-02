@@ -71,6 +71,8 @@ export class _QuizWidgetRoot extends React.Component {
   }
 
   render() {
+    const { variant, reCaptchaKey } = this.props;
+
     // Show a loading indicator while we init.
     if (this.state.isInitialising) {
       return (
@@ -81,9 +83,9 @@ export class _QuizWidgetRoot extends React.Component {
     }
 
     return (
-      <div className="clarety-quiz-widget h-100">
+      <div className={`clarety-quiz-widget ${variant} h-100`}>
         <PanelManager layout="tabs" />
-        <Recaptcha siteKey={this.props.reCaptchaKey} />
+        <Recaptcha siteKey={reCaptchaKey} />
       </div>
     );
   }
