@@ -17,7 +17,7 @@ export class ResultsPanel extends BasePanel {
     const { layout, index } = this.props;
 
     return (
-      <PanelContainer layout={layout} status="wait">
+      <PanelContainer layout={layout} status="wait" className="results-panel">
         <PanelHeader
           status="wait"
           layout={layout}
@@ -36,7 +36,7 @@ export class ResultsPanel extends BasePanel {
     const { mode } = this.state;
 
     return (
-      <PanelContainer layout={layout} status="edit">
+      <PanelContainer layout={layout} status="edit" className="results-panel">
         <PanelHeader
           status="edit"
           layout={layout}
@@ -90,7 +90,7 @@ export class ResultsPanel extends BasePanel {
 
         <Row>
           {question.options.map((option, index) =>
-            <Col key={index}>
+            <Col key={index} xs={12} sm={6} md={4} xl={3}>
               <ImagePollResult question={question} option={option} />
             </Col>
           )}
@@ -103,7 +103,7 @@ export class ResultsPanel extends BasePanel {
     const { layout, index } = this.props;
 
     return (
-      <PanelContainer layout={layout} status="done">
+      <PanelContainer layout={layout} status="done" className="results-panel">
         <PanelHeader
           status="done"
           layout={layout}

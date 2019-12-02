@@ -95,54 +95,56 @@ export class CustomerPanel extends BasePanel {
 
         <PanelBody status="edit" layout={layout} isBusy={isBusy}>
           <ErrorMessages />
-
-          <Form onSubmit={this.onClickSubmit}>
-
-            <Form.Row>
-              <Col sm>
-                <Form.Group>
-                  <TextInput field="customer.firstName" placeholder="First Name *" />
-                </Form.Group>
-              </Col>
-
-              <Col sm>
-                <Form.Group>
-                  <TextInput field="customer.lastName" placeholder="Last Name *" />
-                </Form.Group>
-              </Col>
-            </Form.Row>
-
-            <Form.Row>
-              <Col>
-                <Form.Group>
-                  <EmailInput field="customer.email" placeholder="Email *" />
-                </Form.Group>
-              </Col>
-            </Form.Row>
-
-            {this.renderPhoneField()}
-            {this.renderAddressFields()}
-
-            <Row className="panel-actions">
-              <Col className="text-center">
-                <SubmitButton title={settings.submitBtnText} isBusy={isBusy} />
-              </Col>
-            </Row>
-
-            {settings.showOptIn &&
-              <Form.Row>
-                <Col className="text-center">
-                  <Form.Group>
-                    <CheckboxInput field="optIn" label={settings.optInText} />
-                  </Form.Group>
-                </Col>
-              </Form.Row>
-            }
-
-          </Form>
-
+          {this.renderCustomerForm()}
         </PanelBody>
       </PanelContainer>
+    );
+  }
+
+  renderCustomerForm() {
+    const { isBusy, settings } = this.props;
+
+    return (
+      <Form onSubmit={this.onClickSubmit}>
+        <Form.Row>
+          <Col sm>
+            <Form.Group>
+              <TextInput field="customer.firstName" placeholder="First Name *" />
+            </Form.Group>
+          </Col>
+
+          <Col sm>
+            <Form.Group>
+              <TextInput field="customer.lastName" placeholder="Last Name *" />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col>
+            <Form.Group>
+              <EmailInput field="customer.email" placeholder="Email *" />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+
+        {this.renderPhoneField()}
+        {this.renderAddressFields()}
+
+        <Row className="panel-actions">
+          <Col className="text-center">
+            <SubmitButton title={settings.submitBtnText} isBusy={isBusy} />
+          </Col>
+        </Row>
+
+        {settings.showOptIn &&
+          <Form.Row className="opt-in">
+            <Col className="text-center">
+              <CheckboxInput field="optIn" label={settings.optInText} />
+            </Col>
+          </Form.Row>
+        }
+      </Form>
     );
   }
 
