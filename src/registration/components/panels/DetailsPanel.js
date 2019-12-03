@@ -312,7 +312,7 @@ export class _DetailsPanel extends BasePanel {
   }
 
   renderCustomerForm() {
-    const { isPrefilled, appSettings, participantIndex } = this.props;
+    const { isPrefilled, appSettings, settings, participantIndex } = this.props;
     const { formData } = this.state;
 
     const genderOptions = this.translateOptions(
@@ -320,6 +320,8 @@ export class _DetailsPanel extends BasePanel {
     );
 
     const showAutofill = participantIndex !== 0 && !isPrefilled;
+    const showAddressAutofill = showAutofill && (settings.showDeliveryAddress || settings.showBillingAddress);
+
     const showEmail   = !formData['autofill.email'];
     const showMobile  = !formData['autofill.mobile'];
 
@@ -381,7 +383,7 @@ export class _DetailsPanel extends BasePanel {
           </Form.Row>
         }
 
-        {showAutofill &&
+        {showAddressAutofill &&
           <Form.Row>
             <Col>
               <CheckboxInput field="autofill.address" label="Use address from first participant?" />

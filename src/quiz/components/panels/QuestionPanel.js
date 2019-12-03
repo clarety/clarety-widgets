@@ -51,8 +51,12 @@ export class QuestionPanel extends BasePanel {
   }
 
   renderPollQuestion() {
-    return this.props.question.options.map(option =>
-      <TextOption key={option.value} option={option} onPress={this.onPressOption} />
+    return (
+      <div className="quiz-options">
+        {this.props.question.options.map(option =>
+          <TextOption key={option.value} option={option} onPress={this.onPressOption} />
+        )}
+      </div>
     );
   }
 
@@ -89,7 +93,7 @@ export class QuestionPanel extends BasePanel {
 }
 
 const TextOption = ({ option, onPress }) => (
-  <Button onClick={() => onPress(option)} block>
+  <Button onClick={() => onPress(option)} variant="quiz-option">
     {option.label}
   </Button>
 );
