@@ -5,6 +5,8 @@ export class QuestionConnect {
   static mapStateToProps = (state) => {
     return {
       quizType: getSetting(state, 'quizType'),
+      quizName: getSetting(state, 'quizName'),
+      questions: getSetting(state, 'questions'),
     };
   };
 
