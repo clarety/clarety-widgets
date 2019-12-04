@@ -43,6 +43,7 @@ export class QuestionPanel extends BasePanel {
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
 
           {quizType === 'poll' && this.renderPollQuestion()}
+          {quizType === 'quiz' && this.renderPollQuestion()}
           {quizType === 'image-poll' && this.renderImagePollQuestion()}
 
         </PanelBody>

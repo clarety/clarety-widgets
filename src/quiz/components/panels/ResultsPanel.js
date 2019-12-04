@@ -65,10 +65,25 @@ export class ResultsPanel extends BasePanel {
   renderResults() {
     const { quizType } = this.props;
 
+    if (quizType === 'quiz')       return this.renderQuizResults();
     if (quizType === 'poll')       return this.renderPollResults();
     if (quizType === 'image-poll') return this.renderImagePollResults();
 
     throw new Error(`quiz type: '${quizType}' not handled`);
+  }
+
+  renderQuizResults() {
+    return this.props.questions.map((question, index) =>
+      <div key={index}>
+        <h4>{question.title}</h4>
+
+        <div className="poll-results">
+          {question.options.map((option, index) =>
+            <PollResult key={index} question={question} option={option} />
+          )}
+        </div>
+      </div>
+    );
   }
 
   renderPollResults() {
@@ -76,9 +91,11 @@ export class ResultsPanel extends BasePanel {
       <div key={index}>
         <h4>{question.title}</h4>
 
-        {question.options.map((option, index) =>
-          <PollResult key={index} question={question} option={option} />
-        )}
+        <div className="poll-results">
+          {question.options.map((option, index) =>
+            <PollResult key={index} question={question} option={option} />
+          )}
+        </div>
       </div>
     );
   }
@@ -120,18 +137,18 @@ export class ResultsPanel extends BasePanel {
 }
 
 const PollResult = ({ option, question }) => {
-  const percentage = (option.votes / question.totalVotes * 100).toFixed(0);
+  const percentage = (option.votes / question.totalVotes * 100).toFixed(0) + '%';
 
   return (
     <div className="poll-result">
-      <ProgressBar
-        now={percentage}
-        label={<span><b>{percentage}%</b>&nbsp;&nbsp;{option.label}</span>}
-      />
+      <div className="progress">
+        <div className="progress-bar" style={{ width: percentage }}></div>
+        <span className="progress-percentage">{percentage}</span>
+        <span className="progress-label">{option.label}</span>
+      </div>
     </div>
   );
 }
-
 
 const ImagePollResult = ({ option, question }) => {
   const percentage = (option.votes / question.totalVotes * 100).toFixed(0);

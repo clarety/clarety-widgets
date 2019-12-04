@@ -1,5 +1,5 @@
 import { updateFormData } from 'form/actions';
-import { getSetting } from 'shared/selectors';
+import { getSetting, getFormData } from 'shared/selectors';
 
 export class QuestionConnect {
   static mapStateToProps = (state) => {
@@ -7,6 +7,7 @@ export class QuestionConnect {
       quizType: getSetting(state, 'quizType'),
       quizName: getSetting(state, 'quizName'),
       questions: getSetting(state, 'questions'),
+      formData: getFormData(state),
     };
   };
 
