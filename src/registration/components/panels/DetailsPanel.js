@@ -19,6 +19,13 @@ export class _DetailsPanel extends BasePanel {
     };
   }
 
+  onShowPanel() {
+    super.onShowPanel();
+
+    // Pre-tick 'billing same as delivery'.
+    this.state.formData['autofill.billing'] = true;
+  }
+
   componentDidUpdate(prevProps) {
     super.componentDidUpdate(prevProps);
 
