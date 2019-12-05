@@ -46,12 +46,11 @@ export class ModePanel extends BasePanel {
 
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
 
-          <p>Are you registering as an individual, group, or family?</p>
+          <p>Are you registering as an individual or group?</p>
 
           <div className="panel-actions">
             <Button onClick={() => this.onSelectMode('individual')}>Individual</Button>
             <Button onClick={() => this.onSelectMode('group')}>Group</Button>
-            <Button onClick={() => this.onSelectMode('family')}>Family</Button>
           </div>
 
         </PanelBody>
