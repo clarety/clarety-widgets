@@ -37,6 +37,8 @@
       padding: 0;
     }
 
+    .row { width: 100% }
+
     .col {
       padding: 15px;
       height: 100px;
@@ -50,12 +52,14 @@
     background: transparent;
   }
 
-  .container {
-    padding: 0 20px;
-    text-align: center;
-
-    @include media-breakpoint-up(md) {
-      padding: 0 60px;
+  .panel {
+    .container {
+      padding: 0 20px;
+      text-align: center;
+  
+      @include media-breakpoint-up(md) {
+        padding: 0 60px;
+      }
     }
   }
 

@@ -296,7 +296,7 @@ export class LoginPanel extends BasePanel {
       <React.Fragment>
         <p>There is no account associated with this email, would you like to create one or checkout as a guest?</p>
         <div className="panel-actions">
-          <Button title="Guest Checkout" onClick={this.onPressGuestCheckout} variant="link" />
+          <Button title="Guest Checkout" onClick={this.onPressGuestCheckout} variant="secondary" />
           <Button title="Create Account" onClick={this.onPressShowCreateAccountForm} />
         </div>
       </React.Fragment>
@@ -332,7 +332,7 @@ export class LoginPanel extends BasePanel {
           </Row>
 
           <div className="panel-actions">
-            <Button title="Reset My Password" variant="link" onClick={this.onPressResetPassword} isBusy={isBusyResetPassword} />
+            <Button title="Reset My Password" variant="secondary" onClick={this.onPressResetPassword} isBusy={isBusyResetPassword} />
             <Button title="Login" type="submit" isBusy={isBusy} />
           </div>
         </Form>
@@ -394,7 +394,7 @@ export class LoginPanel extends BasePanel {
 
           <div className="panel-actions">
             {settings.allowGuest &&
-              <Button title="Cancel" onClick={this.onPressCancelCreateAccount} variant="link" />
+              <Button title="Cancel" onClick={this.onPressCancelCreateAccount} variant="secondary" />
             }
             <Button title="Continue" type="submit" isBusy={this.props.isBusy} />
           </div>
@@ -412,8 +412,8 @@ export class LoginPanel extends BasePanel {
         <p>You're currently logged-in as {this.props.customer.email}</p>
         <div className="panel-actions">
           {settings.useSelfServiceLogout
-            ? <a href="selfservice/login.php?action=logout" className="btn btn-link">Logout</a>
-            : <Button title="Logout" onClick={this.onPressLogout} variant="link" />
+            ? <a href="selfservice/login.php?action=logout" className="btn btn-secondary">Logout</a>
+            : <Button title="Logout" onClick={this.onPressLogout} variant="secondary" />
           }
           <Button title="Continue" onClick={this.onPressStayLoggedIn} />
         </div>

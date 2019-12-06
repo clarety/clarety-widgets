@@ -19,8 +19,9 @@ const _VariableAmountLg = ({ amountInfo, value, isSelected, onChange, onHover, c
     >
       <Card.Img src={amountInfo.image} variant="top" />
       <Card.Body>
-        <Card.Title className="mb-3">{amountInfo.description}</Card.Title>
-        <Card.Text as="div">
+        <Card.Title className="mb-2">{amountInfo.title}</Card.Title>
+        <Card.Text>{amountInfo.description}</Card.Text>
+        <div>
           <InputGroup>
             <InputGroup.Prepend>
               <InputGroup.Text>{currency.symbol}</InputGroup.Text>
@@ -36,7 +37,7 @@ const _VariableAmountLg = ({ amountInfo, value, isSelected, onChange, onHover, c
               data-testid="variable-amount-input"
             />
           </InputGroup>
-        </Card.Text>
+        </div>
       </Card.Body>
     </Card>
   );
