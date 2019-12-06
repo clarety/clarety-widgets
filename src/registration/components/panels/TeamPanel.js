@@ -138,7 +138,7 @@ export class TeamPanel extends BasePanel {
         <div className="panel-actions">
 
           <div className="d-md-inline mb-3">
-            <Button onClick={this.onClickNo}>
+            <Button onClick={this.onClickNo} variant="secondary">
               <FormattedMessage id="btn.noTeam" />
             </Button>
           </div>
@@ -183,7 +183,7 @@ export class TeamPanel extends BasePanel {
           </Form.Group>
         }
 
-        <Button onClick={this.onClickCancel} disabled={isBusyPassword} variant="link">
+        <Button onClick={this.onClickCancel} disabled={isBusyPassword} variant="secondary">
           <FormattedMessage id="btn.cancel" />
         </Button>
 
@@ -243,7 +243,7 @@ export class TeamPanel extends BasePanel {
           </Form.Group>
         }        
 
-        <Button onClick={this.onClickCancel} variant="link">
+        <Button onClick={this.onClickCancel} variant="secondary">
           <FormattedMessage id="btn.cancel" />
         </Button>
 
