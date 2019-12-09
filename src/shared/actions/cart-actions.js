@@ -74,6 +74,11 @@ export const clearPayment = () => ({
   type: types.clearPayment,
 });
 
+export const setPromoCode = (promoCode) => ({
+  type: types.setPromoCode,
+  promoCode: promoCode,
+});
+
 export const setTrackingData = ({ sourceId, sourceUid, responseId, emailResponseId }) => ({
   type: types.setTrackingData,
   sourceId: sourceId,
