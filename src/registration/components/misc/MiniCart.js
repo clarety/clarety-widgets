@@ -18,17 +18,17 @@ class _MiniCart extends React.Component {
               <NavBarBrand />
             </Col>
 
-            <Col className="d-none d-sm-block">
+            <Col className="d-none d-sm-flex align-items-center justify-content-center">
               {eventName}
             </Col>
 
-            <Col className="d-none d-sm-block">
+            <Col className="d-none d-sm-flex align-items-center justify-content-center">
               {Object.keys(qtys).map(key =>
                 <Qty key={key} type={key} qty={qtys[key]} />
               )}
             </Col>
 
-            <Col className="d-none d-sm-block">
+            <Col className="d-none d-sm-flex align-items-center justify-content-center">
               {cartTotal}
             </Col>
           </Row>
