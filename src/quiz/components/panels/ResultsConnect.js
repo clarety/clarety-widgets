@@ -1,4 +1,4 @@
-import { getSetting } from 'shared/selectors';
+import { getSetting, getFormData } from 'shared/selectors';
 import { getQuestions } from 'quiz/selectors';
 import { submitQuiz } from 'quiz/actions';
 
@@ -8,6 +8,7 @@ export class ResultsConnect {
       questions: getQuestions(state),
       quizType: getSetting(state, 'quizType'),
       resultsOnly: getSetting(state, 'resultsOnly'),
+      formData: getFormData(state),
     }
   };
 

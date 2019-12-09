@@ -65,7 +65,7 @@ export class QuestionPanel extends BasePanel {
     return (
       <Row>
         {this.props.question.options.map(option =>
-          <Col key={option.value}>
+          <Col key={option.value} xs={12} sm={6} lg={4}>
             <ThumbnailOption option={option} onPress={this.onPressOption} />
           </Col>
         )}
@@ -100,7 +100,7 @@ const TextOption = ({ option, onPress }) => (
 );
 
 const ThumbnailOption = ({ option, onPress }) => (
-  <Card onClick={() => onPress(option)} style={{ cursor: 'pointer' }}>
+  <Card className="quiz-option" onClick={() => onPress(option)} style={{ cursor: 'pointer' }}>
     <Card.Img variant="top" src={option.image} />
     <Card.Body className="text-center">
       <Card.Title>{option.label}</Card.Title>

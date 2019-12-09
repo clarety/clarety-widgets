@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Card, ProgressBar, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, Card, ProgressBar, Spinner } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 
 export class ResultsPanel extends BasePanel {
@@ -32,26 +32,9 @@ export class ResultsPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, isBusy, index } = this.props;
-    const { mode } = this.state;
+    if (this.state.mode === 'loading') return this.renderLoading();
 
-    return (
-      <PanelContainer layout={layout} status="edit" className="results-panel">
-        <PanelHeader
-          status="edit"
-          layout={layout}
-          number={index + 1}
-          title="Results"
-        />
-        
-        <PanelBody layout={layout} status="edit" isBusy={isBusy}>
-
-          {mode === 'loading' && this.renderLoading()}
-          {mode === 'results' && this.renderResults()}
-
-        </PanelBody>
-      </PanelContainer>
-    );
+    return this.renderResults();
   }
 
   renderLoading() {
@@ -73,46 +56,96 @@ export class ResultsPanel extends BasePanel {
   }
 
   renderQuizResults() {
-    return this.props.questions.map((question, index) =>
-      <div key={index}>
-        <h4>{question.title}</h4>
+    const { layout, isBusy, index, questions } = this.props;
 
-        <div className="poll-results">
-          {question.options.map((option, index) =>
-            <PollResult key={index} question={question} option={option} />
+    return (
+      <PanelContainer layout={layout} status="edit" className="results-panel">
+        <PanelHeader
+          status="edit"
+          layout={layout}
+          number={index + 1}
+          title={`You scored ${this.getScore()}/${questions.length}`}
+        />
+        
+        <PanelBody layout={layout} status="edit" isBusy={isBusy}>
+
+          {questions.map(question =>
+            <div key={question.id} className="quiz-result">
+              <h5 className="question">{question.title}</h5>
+              <p className="selected"><strong>You selected:</strong> {this.getSelectedAnswer(question).label}</p>
+              <p className="correct"><strong>Correct answer:</strong> {this.getCorrectAnswer(question).label}</p>
+            </div>
           )}
-        </div>
-      </div>
+
+        </PanelBody>
+      </PanelContainer>
     );
   }
 
-  renderPollResults() {
-    return this.props.questions.map((question, index) =>
-      <div key={index}>
-        <h4>{question.title}</h4>
+  getScore() {
+    return this.props.questions.reduce((count, question) => {
+      const selected = this.getSelectedAnswer(question);
+      const correct = this.getCorrectAnswer(question);
+      return selected === correct ? count + 1 : count;
+    }, 0);
+  }
 
-        <div className="poll-results">
-          {question.options.map((option, index) =>
-            <PollResult key={index} question={question} option={option} />
+  getSelectedAnswer(question) {
+    const value = this.props.formData[`answers.${question.id}`];
+    return question.options.find(option => option.value === value);
+  }
+
+  getCorrectAnswer(question) {
+    return question.options.find(option => option.isCorrect);
+  }
+
+  renderPollResults() {
+    const { layout, isBusy } = this.props;
+
+    return (
+      <PanelContainer layout={layout} status="edit" className="results-panel">        
+        <PanelBody layout={layout} status="edit" isBusy={isBusy}>
+
+          {this.props.questions.map(question =>
+            <div key={question.id}>
+              <h4>{question.title}</h4>
+
+              <Row>
+                {question.options.map(option =>
+                  <PollResult key={option.value} question={question} option={option} />
+                )}
+              </Row>
+            </div>
           )}
-        </div>
-      </div>
+
+        </PanelBody>
+      </PanelContainer>
     );
   }
 
   renderImagePollResults() {
-    return this.props.questions.map((question, index) =>
-      <div key={index}>
-        <h4>{question.title}</h4>
+    const { layout, isBusy } = this.props;
 
-        <Row>
-          {question.options.map((option, index) =>
-            <Col key={index} xs={12} sm={6} md={4} xl={3}>
-              <ImagePollResult question={question} option={option} />
-            </Col>
+    return (
+      <PanelContainer layout={layout} status="edit" className="results-panel">        
+        <PanelBody layout={layout} status="edit" isBusy={isBusy}>
+
+          {this.props.questions.map(question =>
+            <Container key={question.id}>
+              <h4>{question.title}</h4>
+
+              <Row>
+                {question.options.map(option =>
+                  <Col key={option.value} xs={12} sm={6} lg={4}>
+                    <ImagePollResult question={question} option={option} />
+                  </Col>
+                )}
+              </Row>
+            </Container>
           )}
-        </Row>
-      </div>
+
+        </PanelBody>
+      </PanelContainer>
     );
   }
 
@@ -154,11 +187,14 @@ const ImagePollResult = ({ option, question }) => {
   const percentage = (option.votes / question.totalVotes * 100).toFixed(0);
 
   return (
-    <Card className="image-poll-result">
-      <Card.Img variant="top" src={option.image} />
-      <Card.Body className="text-center">
-        <ProgressBar now={percentage} label={<b>{percentage}%</b>} />
-      </Card.Body>
-    </Card>
+    <div className="image-poll-result">
+      <Card>
+        <Card.Img variant="top" src={option.image} />
+        <Card.Body className="text-center">
+          <Card.Title>{option.label}</Card.Title>
+        </Card.Body>
+      </Card>
+      <ProgressBar now={percentage} label={<b>{percentage}%</b>} />
+    </div>
   );
 }

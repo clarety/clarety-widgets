@@ -58,9 +58,9 @@ export default class QuizDemo extends React.Component {
   componentDidMount() {
     window.renderQuizWidget({
       elementId: 'quiz-widget-demo',
-      quizUid: 'quz_7er1',
+      quizUid: 'quz_l2rn',
       variant: 'quiz', // 'poll' || 'image-poll' || 'quiz' || etc...
-      caseTypeUid: 'ctp_r563',
+      // caseTypeUid: 'ctp_r563',
       // resultsOnly: true,
       headingText: 'This is the heading',
       subHeadingText: 'This is the sub heading',
