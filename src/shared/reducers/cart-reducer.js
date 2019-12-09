@@ -12,6 +12,7 @@ const initialState = {
   customer: {},
   organisation: {},
   payment: {},
+  promoCode: '',
 
   summary: {
     total: null,
@@ -111,6 +112,12 @@ export const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         payment: {},
+      };
+
+    case types.setPromoCode:
+      return {
+        ...state,
+        promoCode: action.promoCode,
       };
 
     case types.setTrackingData:

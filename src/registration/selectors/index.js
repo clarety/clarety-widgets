@@ -1,4 +1,4 @@
-import { getOrganisation } from 'shared/selectors';
+import { getOrganisation, getPromoCode } from 'shared/selectors';
 import { parseNestedElements } from 'shared/utils';
 
 export const getSettings = (state) => state.settings;
@@ -180,6 +180,7 @@ export const getCreateTeamPostData = (state) => {
 export const getCreateRegistrationPostData = (state) => {
   const event = getEvent(state);
   const channel = getChannel(state);
+  const promoCode = getPromoCode(state);
   const participants = getParticipants(state);
   const fundraising = getFundraisingPostData(state);
   const organisation = getOrganisation(state);
@@ -188,6 +189,7 @@ export const getCreateRegistrationPostData = (state) => {
     eventId: event.eventId,
     organisationId: organisation ? organisation.teamId : '',
     channel: channel,
+    promoCode: promoCode,
     registrations: participants.map((participant, index) =>
       getParticipantPostData(state, participant, index)
     ),

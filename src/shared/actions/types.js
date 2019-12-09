@@ -29,6 +29,7 @@ export const types = {
   setStore:              'SET_STORE',
   setCustomer:           'SET_CUSTOMER',
   setOrganisation:       'SET_ORGANISATION',
+  setPromoCode:          'SET_PROMO_CODE',
   setTrackingData:       'SET_TRACKING_DATA',
   setRecaptcha:          'SET_RECAPTCHA',
 

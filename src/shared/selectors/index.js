@@ -32,6 +32,8 @@ export const getParsedFormData = (state) => {
   return parseNestedElements(formData);
 };
 
+export const getPromoCode = (state) => getCart(state).promoCode;
+
 export const getTrackingData = (state) => getCart(state).tracking;
 
 export const getRecaptcha = (state) => getCart(state).recaptcha;
