@@ -107,7 +107,7 @@ export class ResultsPanel extends BasePanel {
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
 
           {this.props.questions.map(question =>
-            <div key={question.id}>
+            <Container key={question.id}>
               <h4>{question.title}</h4>
 
               <Row>
@@ -115,7 +115,7 @@ export class ResultsPanel extends BasePanel {
                   <PollResult key={option.value} question={question} option={option} />
                 )}
               </Row>
-            </div>
+            </Container>
           )}
 
         </PanelBody>
