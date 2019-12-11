@@ -7,6 +7,6 @@ export const createFormReducer = history => combineReducers({
   router: connectRouter(history),
   status: statusReducer,
   errors: errorsReducer,
-  explain: settingsReducer,
+  settings: settingsReducer,
   formData: formDataReducer,
 });

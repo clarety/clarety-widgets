@@ -9,7 +9,8 @@ export const submitForm = (endpoint, formData) => {
     dispatch(setStatus(statuses.busy));
     dispatch(clearErrors());
 
-    const result = await ClaretyApi.post(endpoint, formData);
+    const results = await ClaretyApi.post(endpoint, formData);
+    const result = results[0];
 
     if (result.status === 'error') {
       dispatch(formSubmitFailure(result));

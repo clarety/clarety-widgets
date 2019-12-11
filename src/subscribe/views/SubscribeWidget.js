@@ -1,14 +1,31 @@
 import React from 'react';
-import { Col, Form, Alert } from 'react-bootstrap';
+import { InputGroup } from 'react-bootstrap';
 import { _BaseFormView } from 'form/views';
 import { connectFormToStore } from 'form/utils';
-import { TextInput, SelectInput, FormElement, ErrorMessages, SubmitButton } from 'form/components';
+import { TextInput, FormElement, ErrorMessages, SubmitButton } from 'form/components';
 
 export class _SubscribeWidget extends _BaseFormView {
+  className = 'clarety-subscribe-widget';
   endpoint = 'subscriptions/';
 
+  async componentDidMount() {
+    super.componentDidMount();
+
+    const { updateAppSettings, setTrackingData } = this.props;
+
+    updateAppSettings({
+      widgetElementId: this.props.elementId,
+      storeCode: this.props.storeCode,
+      caseTypeUid: this.props.caseTypeUid,
+      confirmPageUrl: this.props.confirmPageUrl,
+    });
+
+    const { sourceUid, responseId, emailResponseId } = this.props;
+    setTrackingData({ sourceUid, responseId, emailResponseId });
+  }
+
   renderForm() {
-    const { listCode } = this.props;
+    const { listCode, nameOption, buttonText } = this.props;
     if (!listCode) throw new Error('[Clarety] listCode prop is required');
 
     return (
@@ -17,30 +34,34 @@ export class _SubscribeWidget extends _BaseFormView {
 
         <FormElement field="code" value={listCode} />
 
-        <Form.Row className="mr-0 align-items-start">
-          <Col>
-            <TextInput field="firstName" placeholder="First Name" />
-          </Col>
+        <InputGroup>
+          {(nameOption === 'firstandlast' || !nameOption) &&
+            <React.Fragment>
+              <TextInput field="firstName" placeholder="First Name" />
+              <TextInput field="lastName" placeholder="Last Name" />
+            </React.Fragment>
+          }
 
-          <Col>
-            <TextInput field="email" type="email" placeholder="Email" />
-          </Col>
+          {nameOption === 'fullname' &&
+            <TextInput field="fullName" placeholder="Full Name" />
+          }
+          
+          <TextInput field="email" type="email" placeholder="Email" />
 
-          <Col>
-            <SelectInput field="country" placeholder="(Select Country)" testId="hello-test" />
-          </Col>
-
-          <SubmitButton title="Subscribe" className="ml-1" />
-        </Form.Row>
+          <InputGroup.Append>
+            <SubmitButton title={buttonText || 'Sign Up'} />
+          </InputGroup.Append>
+        </InputGroup>
       </div>
     );
   }
 
   renderSuccess() {
+    // TODO: show cms confirm content...
     return (
-      <Alert variant="success" style={{ animation: 'fadein 1s' }}>
+      <div>
         Thanks for subscribing!
-      </Alert>
+      </div>
     );
   }
 }

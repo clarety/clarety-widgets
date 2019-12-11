@@ -5,11 +5,12 @@ import { statuses } from 'shared/actions';
 import { connectFormToStore } from 'form/utils';
 
 export class _BaseFormView extends React.Component {
+  className = 'clarety-form-widget';
   endpoint = null;
 
   async componentDidMount() {
     if (!this.endpoint) throw new Error('[Clarety] BaseFormView "endpoint" must be overridden.');
-    this.props.fetchSettings(this.endpoint);
+    await this.props.fetchSettings(this.endpoint);
   }
 
   onSubmit = async event => {
@@ -25,16 +26,18 @@ export class _BaseFormView extends React.Component {
     }
 
     return (
-      <ConnectedRouter history={this.props.history}>
-        <Switch>
-          <Route path="/success" render={this.renderSuccess} />
-          <Route default render={route => (
-            <form onSubmit={this.onSubmit}>
-              {this.renderForm()}
-            </form>
-          )} />
-        </Switch>
-      </ConnectedRouter>
+      <div className={this.className}>
+        <ConnectedRouter history={this.props.history}>
+          <Switch>
+            <Route path="/success" render={this.renderSuccess} />
+            <Route default render={route => (
+              <form onSubmit={this.onSubmit}>
+                {this.renderForm()}
+              </form>
+            )} />
+          </Switch>
+        </ConnectedRouter>
+      </div>
     );
   }
 
