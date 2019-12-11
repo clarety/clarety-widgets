@@ -13,7 +13,7 @@ export class _FormWidget extends React.Component {
     await this.props.fetchSettings(this.endpoint);
   }
 
-  onSubmit = async event => {
+  onSubmit = async (event) => {
     const { submitForm, formData } = this.props;
 
     event.preventDefault();

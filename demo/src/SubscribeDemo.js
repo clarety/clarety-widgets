@@ -11,6 +11,7 @@ export default class SubscribeDemo extends React.Component {
       <div className="m-5">
         <SubscribeWidget
           listCode="newsletter"
+          nameOption="full"
         />
       </div>
     );

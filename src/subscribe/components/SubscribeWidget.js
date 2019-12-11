@@ -23,6 +23,25 @@ export class _SubscribeWidget extends _FormWidget {
     setTrackingData({ sourceUid, responseId, emailResponseId });
   }
 
+  onSubmit = async (event) => {
+    event.preventDefault();
+
+    const { submitForm, formData, nameOption } = this.props;
+
+    if (nameOption === 'full') {
+      // Split full name into first and last.
+      const fullName = (formData['fullName'] || '').trim();
+      const index = fullName.lastIndexOf(' ') + 1;
+      const firstName = (index !== 0) ? fullName.substring(0, index - 1) : fullName;
+      const lastName  = (index !== 0) ? fullName.substring(index, fullName.length) : '';
+
+      formData['firstName'] = firstName;
+      formData['lastName']  = lastName;
+    }
+
+    submitForm(this.endpoint, formData);
+  };
+
   renderForm() {
     const { listCode, nameOption, buttonText } = this.props;
     if (!listCode) throw new Error('[Clarety] listCode prop is required');
@@ -41,7 +60,7 @@ export class _SubscribeWidget extends _FormWidget {
             </React.Fragment>
           }
 
-          {nameOption === 'fullname' &&
+          {nameOption === 'full' &&
             <TextInput field="fullName" placeholder="Full Name" />
           }
           
