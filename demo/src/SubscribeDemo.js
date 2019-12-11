@@ -10,8 +10,9 @@ export default class SubscribeDemo extends React.Component {
     return (
       <div className="m-5">
         <SubscribeWidget
-          listCode="newsletter"
+          caseTypeUid="ctp_q6oq"
           nameOption="full"
+          buttonText="Join Now"
         />
       </div>
     );

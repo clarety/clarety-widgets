@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
-import { settingsReducer, statusReducer } from 'shared/reducers';
+import { settingsReducer, statusReducer, cartReducer } from 'shared/reducers';
 import { errorsReducer, formDataReducer } from 'form/reducers';
 
 export const createFormReducer = history => combineReducers({
@@ -9,4 +9,5 @@ export const createFormReducer = history => combineReducers({
   errors: errorsReducer,
   settings: settingsReducer,
   formData: formDataReducer,
+  cart: cartReducer,
 });

@@ -28,9 +28,13 @@ export const createLead = () => {
         return false;
       } else {
         dispatch(createLeadSuccess(result));
-        dispatch(incrementSosCounter());
+
+        // Sos.
+        if (settings.variant === 'sos') {
+          dispatch(incrementSosCounter());
+        }
         
-        // Download file.
+        // Download.
         if (settings.variant === 'download') {
           if (!settings.download || !settings.download.file) {
             console.log('Missing download file setting');

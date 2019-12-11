@@ -1,7 +1,8 @@
 import React from 'react';
 import { InputGroup } from 'react-bootstrap';
-import { _FormWidget, TextInput, FormElement, ErrorMessages, SubmitButton } from 'form/components';
+import { _FormWidget, TextInput, ErrorMessages, SubmitButton } from 'form/components';
 import { connectFormToStore } from 'form/utils';
+import { subscribe } from 'subscribe/actions';
 
 export class _SubscribeWidget extends _FormWidget {
   className = 'clarety-subscribe-widget';
@@ -17,6 +18,7 @@ export class _SubscribeWidget extends _FormWidget {
       storeCode: this.props.storeCode,
       caseTypeUid: this.props.caseTypeUid,
       confirmPageUrl: this.props.confirmPageUrl,
+      nameOption: this.props.nameOption,
     });
 
     const { sourceUid, responseId, emailResponseId } = this.props;
@@ -25,46 +27,30 @@ export class _SubscribeWidget extends _FormWidget {
 
   onSubmit = async (event) => {
     event.preventDefault();
-
-    const { submitForm, formData, nameOption } = this.props;
-
-    if (nameOption === 'full') {
-      // Split full name into first and last.
-      const fullName = (formData['fullName'] || '').trim();
-      const index = fullName.lastIndexOf(' ') + 1;
-      const firstName = (index !== 0) ? fullName.substring(0, index - 1) : fullName;
-      const lastName  = (index !== 0) ? fullName.substring(index, fullName.length) : '';
-
-      formData['firstName'] = firstName;
-      formData['lastName']  = lastName;
-    }
-
-    submitForm(this.endpoint, formData);
+    this.props.submitForm();
   };
 
   renderForm() {
-    const { listCode, nameOption, buttonText } = this.props;
-    if (!listCode) throw new Error('[Clarety] listCode prop is required');
+    const { caseTypeUid, nameOption, buttonText } = this.props;
+    if (!caseTypeUid) throw new Error('[Clarety] caseTypeUid prop is required');
 
     return (
       <div>
         <ErrorMessages />
 
-        <FormElement field="code" value={listCode} />
-
         <InputGroup>
           {(nameOption === 'firstandlast' || !nameOption) &&
             <React.Fragment>
-              <TextInput field="firstName" placeholder="First Name" />
-              <TextInput field="lastName" placeholder="Last Name" />
+              <TextInput field="customer.firstName" placeholder="First Name" />
+              <TextInput field="customer.lastName" placeholder="Last Name" />
             </React.Fragment>
           }
 
           {nameOption === 'full' &&
-            <TextInput field="fullName" placeholder="Full Name" />
+            <TextInput field="customer.fullName" placeholder="Full Name" />
           }
           
-          <TextInput field="email" type="email" placeholder="Email" />
+          <TextInput field="customer.email" type="email" placeholder="Email" />
 
           <InputGroup.Append>
             <SubmitButton title={buttonText || 'Sign Up'} />
@@ -84,4 +70,4 @@ export class _SubscribeWidget extends _FormWidget {
   }
 }
 
-export const SubscribeWidget = connectFormToStore(_SubscribeWidget);
+export const SubscribeWidget = connectFormToStore(_SubscribeWidget, subscribe);
