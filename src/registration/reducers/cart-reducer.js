@@ -67,6 +67,7 @@ function resolveCartItems(prevItems, items) {
       rewardDescription: item.rewardDescription,
       quantity: Number(item.quantity),
       price: Number(item.price),
+      discount: Number(item.discount),
       total: convertTotal(item.total),
     };
   });
