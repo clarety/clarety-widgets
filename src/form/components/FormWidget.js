@@ -4,12 +4,12 @@ import { Switch, Route } from 'react-router-dom';
 import { statuses } from 'shared/actions';
 import { connectFormToStore } from 'form/utils';
 
-export class _BaseFormView extends React.Component {
+export class _FormWidget extends React.Component {
   className = 'clarety-form-widget';
   endpoint = null;
 
   async componentDidMount() {
-    if (!this.endpoint) throw new Error('[Clarety] BaseFormView "endpoint" must be overridden.');
+    if (!this.endpoint) throw new Error('[Clarety] FormWidget "endpoint" must be overridden.');
     await this.props.fetchSettings(this.endpoint);
   }
 
@@ -42,12 +42,12 @@ export class _BaseFormView extends React.Component {
   }
 
   renderForm() {
-    throw new Error('[Clarety] BaseFormView "renderForm" must be overridden.');
+    throw new Error('[Clarety] FormWidget "renderForm" must be overridden.');
   }
 
   renderSuccess() {
-    throw new Error('[Clarety] BaseFormView "renderSuccess" must be overridden.');
+    throw new Error('[Clarety] FormWidget "renderSuccess" must be overridden.');
   }
 }
 
-export const BaseFormView = connectFormToStore(_BaseFormView);
+export const FormWidget = connectFormToStore(_FormWidget);

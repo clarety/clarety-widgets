@@ -1,10 +1,9 @@
 import React from 'react';
 import { InputGroup } from 'react-bootstrap';
-import { _BaseFormView } from 'form/views';
+import { _FormWidget, TextInput, FormElement, ErrorMessages, SubmitButton } from 'form/components';
 import { connectFormToStore } from 'form/utils';
-import { TextInput, FormElement, ErrorMessages, SubmitButton } from 'form/components';
 
-export class _SubscribeWidget extends _BaseFormView {
+export class _SubscribeWidget extends _FormWidget {
   className = 'clarety-subscribe-widget';
   endpoint = 'subscriptions/';
 

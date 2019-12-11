@@ -3,7 +3,7 @@ export { connect } from 'react-redux';
 
 export { renderWidget, Resources, getElementOptions, getSitePath, loadCss, withOverrides } from 'shared/utils';
 
-export { SubscribeWidget } from 'subscribe/views';
+export { SubscribeWidget } from 'subscribe/components';
 export { setupSubscribeAxiosMock } from 'subscribe/mocks';
 
 export { DonateWidget, DonatePage } from 'donate/components';
