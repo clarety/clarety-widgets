@@ -3,7 +3,7 @@ import { Form, Row, Col } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { requiredField, emailField } from 'shared/utils';
 import { InputGroup } from 'react-bootstrap';
-import { TextInput, ErrorMessages, SubmitButton } from 'form/components';
+import { TextInput, EmailInput, ErrorMessages, SubmitButton } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
   onClickSubmit = async (event) => {
@@ -22,17 +22,16 @@ export class CustomerPanel extends BasePanel {
     const { formData, setErrors, settings } = this.props;
     const errors = [];
 
-    requiredField(errors, formData, 'customer.email');
-    emailField(errors, formData, 'customer.email');
-
     if (settings.nameOption === 'firstandlast') {
-      requiredField(errors, formData, 'customer.firstName');
-      requiredField(errors, formData, 'customer.lastName');
+      requiredField(errors, formData, 'customer.firstName', 'First Name is required.');
+      requiredField(errors, formData, 'customer.lastName', 'Last Name is required.');
     }
 
     if (settings.nameOption === 'full') {
-      requiredField(errors, formData, 'customer.fullName');
+      requiredField(errors, formData, 'customer.fullName', 'Full Name is required.');
     }
+
+    emailField(errors, formData, 'customer.email');
 
     setErrors(errors);
     return errors.length === 0;
@@ -80,32 +79,31 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderCustomerForm() {
-    const { isBusy, settings } = this.props;
-    const { nameOption, buttonText } = settings;
+    const { nameOption, buttonText } = this.props.settings;
 
     return (
       <Form onSubmit={this.onClickSubmit}>
         
-        <ErrorMessages />
-
         <InputGroup>
           {(nameOption === 'firstandlast' || !nameOption) &&
             <React.Fragment>
-              <TextInput field="customer.firstName" placeholder="First Name" />
-              <TextInput field="customer.lastName" placeholder="Last Name" />
+              <TextInput field="customer.firstName" placeholder="First Name" hideErrors />
+              <TextInput field="customer.lastName" placeholder="Last Name" hideErrors />
             </React.Fragment>
           }
 
           {nameOption === 'full' &&
-            <TextInput field="customer.fullName" placeholder="Full Name" />
+            <TextInput field="customer.fullName" placeholder="Full Name" hideErrors />
           }
           
-          <TextInput field="customer.email" type="email" placeholder="Email" />
+          <EmailInput field="customer.email" type="email" placeholder="Email" hideErrors />
 
           <InputGroup.Append>
             <SubmitButton title={buttonText || 'Sign Up'} />
           </InputGroup.Append>
         </InputGroup>
+
+        <ErrorMessages showAll />
 
       </Form>
     );
