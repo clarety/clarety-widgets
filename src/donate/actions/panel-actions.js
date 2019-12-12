@@ -1,6 +1,6 @@
 import { push as pushRoute } from 'connected-react-router';
 import Cookies from 'js-cookie';
-import { statuses, setStatus, addItem, setCustomer, updateCartData, clearItems } from 'shared/actions';
+import { statuses, setStatus, addItem, setCustomer, updateCartData, clearItems, setRecaptcha } from 'shared/actions';
 import { parseNestedElements } from 'shared/utils';
 import { executeRecaptcha } from 'form/components';
 import { setErrors } from 'form/actions';
@@ -68,18 +68,20 @@ export class PanelActions {
     if (status !== statuses.ready) return;
     dispatch(setStatus(statuses.busy));
 
-    executeRecaptcha(async () => {
-      const errors = [];
-      const isValid = validations.validatePaymentPanel(errors, getState);
-      dispatch(setErrors(errors));
+    const recaptcha = await executeRecaptcha();
+    dispatch(setRecaptcha(recaptcha));
+    if (!recaptcha) return false;
 
-      if (isValid) {
-        const result = await actions.paymentActions.makePayment(dispatch, getState, { actions, validations });
-        this._handlePaymentResult(result, dispatch, getState);
-      } else {
-        dispatch(setStatus(statuses.ready));
-      }
-    });
+    const errors = [];
+    const isValid = validations.validatePaymentPanel(errors, getState);
+    dispatch(setErrors(errors));
+
+    if (isValid) {
+      const result = await actions.paymentActions.makePayment(dispatch, getState, { actions, validations });
+      this._handlePaymentResult(result, dispatch, getState);
+    } else {
+      dispatch(setStatus(statuses.ready));
+    }
   }
 
   _addDonationToCart(dispatch, getState) {
@@ -143,25 +145,28 @@ export class PagePanelActions extends PanelActions {
     if (status !== statuses.ready) return;
     dispatch(setStatus(statuses.busy));
 
-    executeRecaptcha(async () => {
-      // Validate.
-      const errors = [];
-      const isAmountValid  = validations.validateAmountPanel(errors, getState);
-      const isDetailsValid = validations.validateDetailsPanel(errors, getState);
-      const isPaymentValid = validations.validatePaymentPanel(errors, getState);
-      dispatch(setErrors(errors));
+    // ReCaptcha.
+    const recaptcha = await executeRecaptcha();
+    dispatch(setRecaptcha(recaptcha));
+    if (!recaptcha) return false;
 
-      if (isAmountValid && isDetailsValid && isPaymentValid) {
-        // Update store.
-        this._addDonationToCart(dispatch, getState);
-        this._addCustomerToCart(dispatch, getState);
+    // Validate.
+    const errors = [];
+    const isAmountValid  = validations.validateAmountPanel(errors, getState);
+    const isDetailsValid = validations.validateDetailsPanel(errors, getState);
+    const isPaymentValid = validations.validatePaymentPanel(errors, getState);
+    dispatch(setErrors(errors));
 
-        // Attempt payment.
-        const result = await actions.paymentActions.makePayment(dispatch, getState, { actions, validations });
-        this._handlePaymentResult(result, dispatch, getState);
-      } else {
-        dispatch(setStatus(statuses.ready));
-      }
-    });    
+    if (isAmountValid && isDetailsValid && isPaymentValid) {
+      // Update store.
+      this._addDonationToCart(dispatch, getState);
+      this._addCustomerToCart(dispatch, getState);
+
+      // Attempt payment.
+      const result = await actions.paymentActions.makePayment(dispatch, getState, { actions, validations });
+      this._handlePaymentResult(result, dispatch, getState);
+    } else {
+      dispatch(setStatus(statuses.ready));
+    }
   }
 }

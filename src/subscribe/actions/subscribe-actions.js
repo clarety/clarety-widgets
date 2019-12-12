@@ -1,5 +1,5 @@
 import { ClaretyApi } from 'clarety-utils';
-import { setStatus, setPanelSettings, updateAppSettings } from 'shared/actions';
+import { setStatus, setPanelSettings, updateAppSettings, setRecaptcha } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
 import { getCmsConfirmContent } from 'shared/utils';
 import { setErrors, clearErrors } from 'form/actions';
@@ -9,43 +9,45 @@ import { types } from './types';
 
 export const subscribe = () => {
   return async (dispatch, getState) => {
-    executeRecaptcha(async () => {
-      const state = getState();
-      const { settings } = state;
+    dispatch(setStatus('busy'));
+    dispatch(clearErrors());
 
-      dispatch(setStatus('busy'));
-      dispatch(clearErrors());
+    const recaptcha = await executeRecaptcha();
+    dispatch(setRecaptcha(recaptcha));
+    if (!recaptcha) return false;
 
-      const postData = getSubscribePostData(state);
-      dispatch(subscribeRequest(postData));
+    const state = getState();
+    const { settings } = state;
 
-      const results = await ClaretyApi.post('cases/leads/', postData);
-      const result = results[0];
+    const postData = getSubscribePostData(state);
+    dispatch(subscribeRequest(postData));
 
-      if (result.status === 'error') {
-        dispatch(subscribeFailure(result));
-        dispatch(setErrors(result.validationErrors));
-        dispatch(setStatus('ready'));
-        return false;
+    const results = await ClaretyApi.post('cases/leads/', postData);
+    const result = results[0];
+
+    if (result.status === 'error') {
+      dispatch(subscribeFailure(result));
+      dispatch(setErrors(result.validationErrors));
+      dispatch(setStatus('ready'));
+      return false;
+    } else {
+      dispatch(subscribeSuccess(result));
+
+      if (settings.confirmPageUrl) {
+        // Redirect.
+        window.location.href = settings.confirmPageUrl;
       } else {
-        dispatch(subscribeSuccess(result));
+        // Show CMS confirm content.
+        const elementId = getSetting(state, 'widgetElementId');
+        const fields = getCmsConfirmContentFields(state);
+        const confirmContent = getCmsConfirmContent(elementId, fields);
+        dispatch(setPanelSettings('CmsConfirmPanel', { confirmContent }));
 
-        if (settings.confirmPageUrl) {
-          // Redirect.
-          window.location.href = settings.confirmPageUrl;
-        } else {
-          // Show CMS confirm content.
-          const elementId = getSetting(state, 'widgetElementId');
-          const fields = getCmsConfirmContentFields(state);
-          const confirmContent = getCmsConfirmContent(elementId, fields);
-          dispatch(setPanelSettings('CmsConfirmPanel', { confirmContent }));
+        dispatch(updateAppSettings({ isShowingConfirmation: true }));
 
-          dispatch(updateAppSettings({ isShowingConfirmation: true }));
-
-          return true;
-        }
+        return true;
       }
-    });
+    }
   };
 };
 

@@ -1,7 +1,6 @@
 import { ClaretyApi } from 'clarety-utils';
 import { setStatus } from 'shared/actions';
 import { getSettings } from 'shared/selectors';
-import { executeRecaptcha } from 'form/components';
 import { getCampaignPostData } from 'fundraising-start/selectors';
 import { types } from './types';
 
