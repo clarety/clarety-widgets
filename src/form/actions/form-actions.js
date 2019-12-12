@@ -4,12 +4,13 @@ import { statuses, setStatus } from 'shared/actions';
 import { types, setErrors, clearErrors } from 'form/actions';
 
 export const submitForm = (endpoint, formData) => {
-  return async dispatch => {
+  return async (dispatch) => {
     dispatch(formSubmitRequest(endpoint, formData));
     dispatch(setStatus(statuses.busy));
     dispatch(clearErrors());
 
-    const result = await ClaretyApi.post(endpoint, formData);
+    const results = await ClaretyApi.post(endpoint, formData);
+    const result = results[0];
 
     if (result.status === 'error') {
       dispatch(formSubmitFailure(result));
@@ -22,18 +23,18 @@ export const submitForm = (endpoint, formData) => {
   };
 };
 
-const formSubmitRequest = (endpoint, formData) => ({
+export const formSubmitRequest = (endpoint, formData) => ({
   type: types.formSubmitRequest,
-  endpoint,
-  formData,
+  endpoint: endpoint,
+  formData: formData,
 });
 
-const formSubmitSuccess = result => ({
+export const formSubmitSuccess = (result) => ({
   type: types.formSubmitSuccess,
-  result,
+  result: result,
 });
 
-const formSubmitFailure = result => ({
+export const formSubmitFailure = (result) => ({
   type: types.formSubmitFailure,
-  result,
+  result: result,
 });

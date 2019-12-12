@@ -1,52 +1,24 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import ReCAPTCHA from 'react-google-recaptcha';
-import { setRecaptcha } from 'shared/actions';
 
-const recaptchaRef = React.createRef();
-let _callback = null;
+const _ref = React.createRef();
+let _resolve = null;
 
-export function executeRecaptcha(callback) {
-  _callback = callback;
+// Execute the reCaptcha programmatically,
+// returns a promise that will resolve to a token string or null.
+export const executeRecaptcha = () => new Promise(resolve => {
+  _resolve = resolve;
+  _ref.current.reset();
+  _ref.current.execute();
+});
 
-  if (recaptchaRef.current) {
-    recaptchaRef.current.reset();
-    recaptchaRef.current.execute();
-  } else {
-    callback();
-  }
-}
-
-export class _Recaptcha extends React.Component {
-  onChange = value => {
-    if (!value) return;
-
-    this.props.setRecaptcha(value);
-    if (_callback) _callback();
-  };
-
-  render() {
-    if (!this.props.siteKey) return null;
-
-    return (
-      <ReCAPTCHA
-        ref={recaptchaRef}
-        size="invisible"
-        sitekey={this.props.siteKey}
-        onChange={this.onChange}
-      />
-    );
-  }
-}
-
-const mapStateToProps = state => {
-  return {
-  };
-};
-
-const actions = {
-  setRecaptcha: setRecaptcha,
-};
-
-export const connectRecaptcha = connect(mapStateToProps, actions);
-export const Recaptcha = connectRecaptcha(_Recaptcha);
+export const Recaptcha = ({ siteKey }) => (
+  <ReCAPTCHA
+    ref={_ref}
+    size="invisible"
+    sitekey={siteKey}
+    onChange={(value) => _resolve(value)}
+    onErrored={() => _resolve(null)}
+    onExpired={() => _resolve(null)}
+  />
+);

@@ -2,53 +2,39 @@ import { ClaretyApi } from 'clarety-utils';
 import { setStatus, setPanelSettings, updateAppSettings, setRecaptcha } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
 import { getCmsConfirmContent } from 'shared/utils';
-import { setErrors } from 'form/actions';
+import { setErrors, clearErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
-import { getLeadPostData, getCmsConfirmContentFields } from 'lead-gen/selectors';
+import { getSubscribePostData, getCmsConfirmContentFields } from 'subscribe/selectors';
 import { types } from './types';
 
-export const createLead = () => {
+export const subscribe = () => {
   return async (dispatch, getState) => {
     dispatch(setStatus('busy'));
-
-    const state = getState();
-    const { settings } = state;
+    dispatch(clearErrors());
 
     const recaptcha = await executeRecaptcha();
     dispatch(setRecaptcha(recaptcha));
     if (!recaptcha) return false;
 
-    const postData = getLeadPostData(state);
-    dispatch(createLeadRequest(postData));
+    const state = getState();
+    const { settings } = state;
+
+    const postData = getSubscribePostData(state);
+    dispatch(subscribeRequest(postData));
 
     const results = await ClaretyApi.post('cases/leads/', postData);
     const result = results[0];
 
     if (result.status === 'error') {
-      dispatch(createLeadFailure(result));
+      dispatch(subscribeFailure(result));
       dispatch(setErrors(result.validationErrors));
       dispatch(setStatus('ready'));
       return false;
     } else {
-      dispatch(createLeadSuccess(result));
+      dispatch(subscribeSuccess(result));
 
-      // Sos.
-      if (settings.variant === 'sos') {
-        dispatch(incrementSosCounter());
-      }
-      
-      // Download.
-      if (settings.variant === 'download') {
-        if (!settings.download || !settings.download.file) {
-          console.log('Missing download file setting');
-        } else {
-          window.open(settings.download.file);
-        }
-      }
-      
       if (settings.confirmPageUrl) {
         // Redirect.
-        // TODO: set 'jwtConfirm' cookie.
         window.location.href = settings.confirmPageUrl;
       } else {
         // Show CMS confirm content.
@@ -65,33 +51,17 @@ export const createLead = () => {
   };
 };
 
-export const incrementSosCounter = () => {
-  return async (dispatch, getState) => {
-    const state = getState();
-
-    const sos = getSetting(state, 'sos');
-
-    dispatch(updateAppSettings({
-      sos: {
-        ...sos,
-        current: sos.current + 1,
-      }
-    }));
-  };
-};
-
-
-export const createLeadRequest = (postData) => ({
-  type: types.createLeadRequest,
+const subscribeRequest = (postData) => ({
+  type: types.subscribeRequest,
   postData: postData,
 });
 
-export const createLeadSuccess = (result) => ({
-  type: types.createLeadSuccess,
+const subscribeSuccess = (result) => ({
+  type: types.subscribeSuccess,
   result: result,
 });
 
-export const createLeadFailure = (result) => ({
-  type: types.createLeadFailure,
+const subscribeFailure = (result) => ({
+  type: types.subscribeFailure,
   result: result,
 });

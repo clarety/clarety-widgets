@@ -1,32 +1,32 @@
 import cardValidator from 'card-validator';
 
-export function requiredField(errors, formData, field) {
+export function requiredField(errors, formData, field, message) {
   const value = formData[field];
-  validateRequired(value, field, errors);
+  validateRequired(value, field, errors, message);
 }
 
-export function emailField(errors, formData, field) {
+export function emailField(errors, formData, field, message) {
   const email = formData[field];
-  validateEmail(email, field, errors);
+  validateEmail(email, field, errors, message);
 }
 
-export function validateRequired(value, field, errors) {
+export function validateRequired(value, field, errors, message) {
   if (!value) {
     errors.push({
       'field': field,
-      'message': 'This is a required field.',
+      'message': message || 'This is a required field.',
     });
   }
 }
 
-export function validateEmail(email, field, errors) {
+export function validateEmail(email, field, errors, message) {
   // NOTE: giant ugly regex from: https://emailregex.com/
   const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   if (!regex.test(email)) {
     errors.push({
       field: field,
-      message: 'Please enter a valid email.',
+      message: message || 'Please enter a valid email.',
     });
   }
 }

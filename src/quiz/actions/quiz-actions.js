@@ -1,5 +1,5 @@
 import { ClaretyApi } from 'clarety-utils';
-import { setStatus, removePanels, insertPanels, setPanelStatus, setPanelSettings, updateAppSettings } from 'shared/actions';
+import { setStatus, removePanels, insertPanels, setPanelStatus, setPanelSettings, updateAppSettings, setRecaptcha } from 'shared/actions';
 import { getSetting, getFormData } from 'shared/selectors';
 import { saveState } from 'shared/utils';
 import { setErrors } from 'form/actions';
@@ -66,47 +66,49 @@ const setupCustomerPanel = (props) => {
 
 export const submitQuiz = () => {
   return async (dispatch, getState) => {
-    // executeRecaptcha(async () => {
-      const state = getState();
-      const { settings } = state;
+    dispatch(setStatus('busy'));
 
-      dispatch(setStatus('busy'));
+    const recaptcha = await executeRecaptcha();
+    dispatch(setRecaptcha(recaptcha));
+    if (!recaptcha) return false;
 
-      const postData = getQuizPostData(state);
-      dispatch(submitQuizRequest(postData));
+    const state = getState();
+    const { settings } = state;
 
-      const results = await ClaretyApi.post(`forms/quizzes/${settings.quizUid}/answers/`, postData);
-      const result = results[0];
+    const postData = getQuizPostData(state);
+    dispatch(submitQuizRequest(postData));
 
-      if (result.status === 'error') {
-        dispatch(submitQuizFailure(result));
-        dispatch(setErrors(result.validationErrors));
-        dispatch(setStatus('ready'));
-        return false;
-      } else {
-        dispatch(submitQuizSuccess(result));
-        dispatch(updateVoteCounts());
+    const results = await ClaretyApi.post(`forms/quizzes/${settings.quizUid}/answers/`, postData);
+    const result = results[0];
 
-        if (settings.caseTypeUid) {
-          await dispatch(createLead(result.answersUid));
-        }
+    if (result.status === 'error') {
+      dispatch(submitQuizFailure(result));
+      dispatch(setErrors(result.validationErrors));
+      dispatch(setStatus('ready'));
+      return false;
+    } else {
+      dispatch(submitQuizSuccess(result));
+      dispatch(updateVoteCounts());
 
-        const stateKey = getSetting(state, 'stateKey');
-        saveState(stateKey, {
-          settings: state.settings,
-          formData: state.formData,
-          cart:     state.cart,
-        });
-        
-        if (settings.confirmPageUrl) {
-          // Redirect.
-          // TODO: set 'jwtConfirm' cookie?
-          window.location.href = settings.confirmPageUrl;
-        } else {
-          return true;
-        }
+      if (settings.caseTypeUid) {
+        await dispatch(createLead(result.answersUid));
       }
-    // });
+
+      const stateKey = getSetting(state, 'stateKey');
+      saveState(stateKey, {
+        settings: state.settings,
+        formData: state.formData,
+        cart:     state.cart,
+      });
+      
+      if (settings.confirmPageUrl) {
+        // Redirect.
+        // TODO: set 'jwtConfirm' cookie?
+        window.location.href = settings.confirmPageUrl;
+      } else {
+        return true;
+      }
+    }
   };
 };
 

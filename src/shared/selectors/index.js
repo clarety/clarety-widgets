@@ -2,6 +2,7 @@ import { getEnv } from 'clarety-utils';
 import { parseNestedElements } from 'shared/utils';
 
 export const getAuth = (state) => state.auth;
+export const getStatus = (state) => state.status;
 export const getCart = (state) => state.cart;
 export const getSettings = (state) => state.settings;
 export const getFormData = (state) => state.formData;

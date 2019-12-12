@@ -20,3 +20,5 @@ export * from './inputs/general/SelectInput';
 export * from './inputs/general/SubmitButton';
 export * from './inputs/general/TextAreaInput';
 export * from './inputs/general/TextInput';
+
+export * from './FormWidget';
