@@ -10,15 +10,19 @@ export class EventPanel extends BasePanel {
     event: null,
     state: null,
   };
+  
+  componentDidUpdate(prevProps) {
+    const { events } = this.props;
 
-  componentDidMount() {
-    // Preselect event via url param.
-    const urlParams = new URLSearchParams(window.location.search);
-    const eventId = urlParams.get('event');
+    if (events !== prevProps.events) {
+      // Preselect event via url param.
+      const urlParams = new URLSearchParams(window.location.search);
+      const eventId = urlParams.get('event');
 
-    if (eventId) {
-      const event = this.props.events.find(event => event.eventId === eventId);
-      this.setState({ event });
+      if (eventId) {
+        const event = events.find(event => event.eventId === eventId);
+        this.setState({ event });
+      }
     }
   }
 
@@ -101,20 +105,19 @@ export class EventPanel extends BasePanel {
 
   renderStateButtons() {
     return (
-      <div className="text-center mb-3">
-        <ToggleButtonGroup
-          type="radio"
-          name="state"
-          value={this.state.state}
-          onChange={this.onSelectState}
-        >
-          {this.props.stateOptions.map(option => (
-            <ToggleButton value={option.value} key={option.value}>
-              {option.label}
-            </ToggleButton>
-          ))}
-        </ToggleButtonGroup>
-      </div>
+      <ToggleButtonGroup
+        type="radio"
+        name="state"
+        value={this.state.state}
+        onChange={this.onSelectState}
+        className="state-buttons"
+      >
+        {this.props.stateOptions.map(option => (
+          <ToggleButton value={option.value} key={option.value}>
+            {option.label}
+          </ToggleButton>
+        ))}
+      </ToggleButtonGroup>
     );
   }
 
@@ -147,12 +150,14 @@ export class EventPanel extends BasePanel {
 
   renderPromoCode() {
     return (
-      <Form.Group controlId="promoCode">
-        <Form.Label>
-          <FormattedMessage id="label.promoCode" />
-        </Form.Label>
-        <TextInput field="promoCode" placeholder="Promo code (optional)" />
-      </Form.Group>
+      <div className="promo-code">
+        <Form.Group controlId="promoCode">
+          <Form.Label>
+            <FormattedMessage id="label.promoCode" />
+          </Form.Label>
+          <TextInput field="promoCode" placeholder="Promo code (optional)" />
+        </Form.Group>
+      </div>
     );
   }
 
