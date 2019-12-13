@@ -5,11 +5,11 @@ import thunkMiddleware from 'redux-thunk';
 import { statuses, setPanels, updateAppSettings, setTrackingData, setPanelSettings, fetchSettings } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
 import { PanelManager } from 'shared/components';
-import { Resources } from 'shared/utils';
+import { Resources, getCustomerPanelSettingsFromWidgetProps } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { SosProgress, ImageHeader } from 'lead-gen/components';
 import { rootReducer } from 'lead-gen/reducers';
-import { settingsMap, getCustomerPanelSettingsFromWidgetProps } from 'lead-gen/utils';
+import { settingsMap } from 'lead-gen/utils';
 import { getIsShowingConfirmation } from 'lead-gen/selectors';
 
 const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

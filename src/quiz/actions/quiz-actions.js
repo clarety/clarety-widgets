@@ -1,12 +1,11 @@
 import { ClaretyApi } from 'clarety-utils';
 import { setStatus, removePanels, insertPanels, setPanelStatus, setPanelSettings, updateAppSettings, setRecaptcha } from 'shared/actions';
 import { getSetting, getFormData } from 'shared/selectors';
-import { saveState } from 'shared/utils';
+import { saveState, getCustomerPanelSettingsFromWidgetProps } from 'shared/utils';
 import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { createLeadRequest, createLeadSuccess, createLeadFailure } from 'lead-gen/actions';
 import { getLeadPostData } from 'lead-gen/selectors';
-import { getCustomerPanelSettingsFromWidgetProps } from 'lead-gen/utils';
 import { getQuizPostData } from 'quiz/selectors';
 import { QuestionPanel, QuestionConnect } from 'quiz/components';
 import { types } from './types';

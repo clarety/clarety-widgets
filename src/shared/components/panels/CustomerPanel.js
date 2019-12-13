@@ -64,7 +64,7 @@ export class CustomerPanel extends BasePanel {
     const { layout, index } = this.props;
 
     return (
-      <PanelContainer layout={layout} status="wait">
+      <PanelContainer layout={layout} status="wait" className="customer-panel">
         <PanelHeader
           status="wait"
           layout={layout}
@@ -83,7 +83,7 @@ export class CustomerPanel extends BasePanel {
     const { layout, index, isBusy, settings } = this.props;
 
     return (
-      <PanelContainer layout={layout} status="edit">
+      <PanelContainer layout={layout} status="edit" className="customer-panel">
         <PanelHeader
           status="edit"
           layout={layout}
@@ -256,7 +256,7 @@ export class CustomerPanel extends BasePanel {
     const { layout, index } = this.props;
 
     return (
-      <PanelContainer layout={layout} status="done">
+      <PanelContainer layout={layout} status="done" className="customer-panel">
         <PanelHeader
           status="done"
           layout={layout}
