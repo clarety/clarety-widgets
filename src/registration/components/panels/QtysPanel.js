@@ -140,7 +140,7 @@ export class QtysPanel extends BasePanel {
     const { types } = this.props;
 
     return Object.entries(types).map(([key, type]) =>
-      <div className="m-3">
+      <div className="m-3" key={key}>
         <Button key={key} onClick={() => this.onSelectType(key)}>
           {type.name}
         </Button>

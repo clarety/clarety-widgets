@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Row, Col, Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { Button, TextInput, SelectInput, CheckboxInput } from 'form/components';
 import { TeamSearchInput } from 'registration/components';
@@ -130,6 +130,8 @@ export class TeamPanel extends BasePanel {
   }
 
   renderPrompt() {
+    const { settings } = this.props;
+
     return (
       <Form className="panel-body panel-body-team">
         <FormattedMessage id="teamPanel.message.1" tagName="p" />
@@ -143,9 +145,11 @@ export class TeamPanel extends BasePanel {
             </Button>
           </div>
 
-          <Button onClick={this.onClickCreate}>
-            <FormattedMessage id="btn.createTeam" />
-          </Button>
+          {settings.allowCreate &&
+            <Button onClick={this.onClickCreate}>
+              <FormattedMessage id="btn.createTeam" />
+            </Button>
+          }
 
           <Button onClick={this.onClickSearch}>
             <FormattedMessage id="btn.searchTeams" />

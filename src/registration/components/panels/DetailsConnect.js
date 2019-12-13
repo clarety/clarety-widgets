@@ -1,4 +1,5 @@
 import { addItem } from 'shared/actions';
+import { getVariant } from 'shared/selectors';
 import { setDetails, setAdditionalData, setErrors, resetDetails, setWaveInCart, addAddOnToCart, removeAddOnsFromCart } from 'registration/actions';
 import { getEvent, getExtendFields, getParticipant, getWaveOptions, getAddOns, getParticipantOffer, getIsPrefilled, getIsCorporateTeam } from 'registration/selectors';
 
@@ -10,6 +11,7 @@ export class DetailsConnect {
     // We can't map state until we have a participant.
     if (!participant) return {};
 
+    const variant = getVariant(state);
     const event = getEvent(state);
     const extendFields = getExtendFields(state);
     const waveOptions = getWaveOptions(state, ownProps.participantIndex);
@@ -20,6 +22,7 @@ export class DetailsConnect {
     const eventDate = new Date(offer.ageCalculationDate || event.startDate);
 
     return {
+      variant: variant,
       appSettings: state.settings,
       event: event,
       participant: participant,

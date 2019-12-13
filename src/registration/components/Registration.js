@@ -34,6 +34,7 @@ class _RegistrationRoot extends React.Component {
       storeId: this.props.storeId,
       seriesId: this.props.seriesId,
       prevSeriesId: this.props.prevSeriesId,
+      variant: this.props.variant,
       ...this.props.settings,
     });
 
@@ -59,10 +60,12 @@ class _RegistrationRoot extends React.Component {
   }
 
   render() {
+    const { isBlocking, isInitializing } = this.props;
+
     return (
-      <BlockUi blocking={this.props.isBlocking} loader={this.getLoader()}>
+      <BlockUi blocking={isBlocking} loader={this.getLoader()}>
         <MiniCart />
-        <PanelManager layout="stack" />
+        {!isInitializing && <PanelManager layout="stack" />}
       </BlockUi>
     );
   }
