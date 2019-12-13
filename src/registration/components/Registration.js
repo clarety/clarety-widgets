@@ -60,12 +60,12 @@ class _RegistrationRoot extends React.Component {
   }
 
   render() {
-    const { isBlocking, isInitializing } = this.props;
+    const { isBlocking } = this.props;
 
     return (
       <BlockUi blocking={isBlocking} loader={this.getLoader()}>
         <MiniCart />
-        {!isInitializing && <PanelManager layout="stack" />}
+        <PanelManager layout="stack" />
       </BlockUi>
     );
   }
