@@ -12,7 +12,7 @@ export function configureStore(reducer, stateKey = undefined) {
 
 function loadState(stateKey) {
   try {
-    const serializedState = localStorage.getItem(stateKey);
+    const serializedState = sessionStorage.getItem(stateKey);
     if (!serializedState) return undefined;
 
     const state = JSON.parse(serializedState);
@@ -29,7 +29,7 @@ function loadState(stateKey) {
 
 export function saveState(stateKey, state) {
   try {
-    localStorage.setItem(stateKey, JSON.stringify(state));
+    sessionStorage.setItem(stateKey, JSON.stringify(state));
   } catch (err) {
     // ignore...
   }
@@ -37,7 +37,7 @@ export function saveState(stateKey, state) {
 
 export function clearState(stateKey) {
   try {
-    localStorage.removeItem(stateKey);
+    sessionStorage.removeItem(stateKey);
   } catch (err) {
     // ignore...
   }
