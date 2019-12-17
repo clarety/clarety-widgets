@@ -2,7 +2,7 @@ import { ClaretyApi } from 'clarety-utils';
 import { addItem, updateItem, removeItem } from 'shared/actions';
 import { getCart } from 'shared/selectors';
 import { setErrors, clearErrors } from 'form/actions';
-import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getSaleId, getIsLoggedIn } from 'registration/selectors';
+import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getMakePaymentPostData, getIsLoggedIn } from 'registration/selectors';
 import { types } from 'registration/actions';
 
 export const setWaveInCart = (participantIndex, waveProductId) => {
@@ -130,10 +130,7 @@ export const makePayment = (paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     const state = getState();
 
-    const postData = {
-      saleId: getSaleId(state),
-      ...paymentData,
-    };
+    const postData = getMakePaymentPostData(state, paymentData);
 
     dispatch(registrationSubmitRequest(postData));
 
