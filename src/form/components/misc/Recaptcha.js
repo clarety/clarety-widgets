@@ -7,9 +7,13 @@ let _resolve = null;
 // Execute the reCaptcha programmatically,
 // returns a promise that will resolve to a token string or null.
 export const executeRecaptcha = () => new Promise(resolve => {
-  _resolve = resolve;
-  _ref.current.reset();
-  _ref.current.execute();
+  if (location.hostname === 'localhost') {
+    resolve('dev-recaptcha');
+  } else {
+    _resolve = resolve;
+    _ref.current.reset();
+    _ref.current.execute();
+  }
 });
 
 export const Recaptcha = ({ siteKey }) => (
