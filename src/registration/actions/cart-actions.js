@@ -137,8 +137,12 @@ export const makePayment = (paymentData, paymentMethod) => {
 
     dispatch(registrationSubmitRequest(postData));
 
+    const endpoint = getIsLoggedIn(state)
+      ? 'registration-payment/'
+      : 'registration-payment-widget/';
+
     const { storeId } = state.settings;
-    const results = await ClaretyApi.post('registration-payment/', postData, { storeId });
+    const results = await ClaretyApi.post(endpoint, postData, { storeId });
     const result = results[0];
 
     if (result && result.status !== 'error') {
