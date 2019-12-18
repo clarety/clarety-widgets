@@ -81,7 +81,7 @@ export const getStateOptions = (state) => {
   const states = {};
 
   for (const event of events) {
-    states[event.state] = true;
+    if (event.state) states[event.state] = true;
   }
 
   return Object.keys(states).sort().map(state => ({
