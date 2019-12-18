@@ -568,11 +568,22 @@ export class _DetailsPanel extends BasePanel {
     );
   }
 
-  getExtendFieldOptions(columnKey) {
-    const field = this.props.extendFields.find(
-      field => field.columnKey === columnKey
-    );
+  getExtendField(columnKey) {
+    return this.props.extendFields.find(field => field.columnKey === columnKey);
+  }
+  
+  getExtendFieldLabel(columnKey) {
+    const field = this.getExtendField(columnKey);
+    return field ? field.label : '';
+  }
 
+  getExtendFieldExplanation(columnKey) {
+    const field = this.getExtendField(columnKey);
+    return field ? field.explanation : '';
+  }
+
+  getExtendFieldOptions(columnKey) {
+    const field = this.getExtendField(columnKey);
     return field ? field.options : [];
   }
 
