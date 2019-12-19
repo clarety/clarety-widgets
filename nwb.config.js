@@ -19,6 +19,7 @@ module.exports = {
           'cart':              './src/cart',
           'checkout':          './src/checkout',
           'donate':            './src/donate',
+          'file-upload':       './src/file-upload',
           'form':              './src/form',
           'fundraising-start': './src/fundraising-start',
           'lead-gen':          './src/lead-gen',
