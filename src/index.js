@@ -25,3 +25,5 @@ export { FundraisingStart } from 'fundraising-start/components';
 
 export { QuizWidget } from 'quiz/components';
 export { setupQuizAxiosMock } from 'quiz/mocks';
+
+export { FileUploadWidget } from 'file-upload/components';

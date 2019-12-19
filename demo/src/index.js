@@ -68,6 +68,11 @@ const Demo = () => {
     return <FundraisingStartDemo />;
   }
 
+  if (url.endsWith('file-upload')) {
+    const FileUploadDemo = require('./FileUploadDemo').default;
+    return <FileUploadDemo />;
+  }
+
   return (
     <div className="list-group m-5">
       <a href="subscribe" className="list-group-item list-group-item-action">Subscribe Widget Demo</a>
@@ -79,6 +84,7 @@ const Demo = () => {
       <a href="lead-gen" className="list-group-item list-group-item-action">Lead Gen Demo</a>
       <a href="quiz" className="list-group-item list-group-item-action">Quiz Demo</a>
       <a href="fundraising-start" className="list-group-item list-group-item-action">Fundraising Start Demo</a>
+      <a href="file-upload" className="list-group-item list-group-item-action">File Upload Demo</a>
     </div>
   );
 };
