@@ -87,7 +87,7 @@ export const createRegistration = () => {
 
     const endpoint = isLoggedIn
       ? 'registration-sale/'
-      : 'registration-sale-widget/';
+      : 'registration-sale-express/';
 
     const { storeId } = state.settings;
     let results = await ClaretyApi.post(endpoint, postData, { storeId });
@@ -136,7 +136,7 @@ export const makePayment = (paymentData, paymentMethod) => {
 
     const endpoint = getIsLoggedIn(state)
       ? 'registration-payment/'
-      : 'registration-payment-widget/';
+      : 'registration-payment-express/';
 
     const { storeId } = state.settings;
     const results = await ClaretyApi.post(endpoint, postData, { storeId });
