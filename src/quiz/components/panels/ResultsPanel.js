@@ -8,9 +8,14 @@ export class ResultsPanel extends BasePanel {
   async onShowPanel() {
     const { resultsOnly, submitQuiz } = this.props;
 
-    if (!resultsOnly) await submitQuiz();
-    
-    this.setState({ mode: 'results' });
+    if (resultsOnly) {
+      this.setState({ mode: 'results' });  
+    } else {
+      const showResults = await submitQuiz();
+      if (showResults) {
+        this.setState({ mode: 'results' });
+      }
+    }
   }
 
   renderWait() {
