@@ -48,8 +48,11 @@ export const createLead = () => {
       
       if (settings.confirmPageUrl) {
         // Redirect.
-        // TODO: set 'jwtConfirm' cookie.
-        window.location.href = settings.confirmPageUrl;
+        // TODO: replace url param with jwt session cookie.
+        const redirect = result.caseUid
+          ? settings.confirmPageUrl + `?caseUid=${result.caseUid}`
+          : settings.confirmPageUrl;
+        window.location.href = redirect;
       } else {
         // Show CMS confirm content.
         const elementId = getSetting(state, 'widgetElementId');
