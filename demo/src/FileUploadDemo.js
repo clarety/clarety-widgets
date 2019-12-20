@@ -5,7 +5,11 @@ export default class FileUploadDemo extends React.Component {
   render() {
     return (
       <div className="m-5">
-        <FileUploadWidget />
+        <FileUploadWidget
+          // acceptedFileTypes={['image/*']}
+          maxFiles={1}
+          showImageEditor={true}
+        />
       </div>
     );
   }

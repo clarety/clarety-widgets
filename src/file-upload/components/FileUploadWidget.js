@@ -1,18 +1,42 @@
 import React from 'react';
 import { FilePond, registerPlugin } from 'react-filepond';
+import { create as createDoka } from '../react-doka/lib/doka.esm.min';
+import '../react-doka/lib/doka.min.css';
+
+// Filepond Plugins
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import 'filepond/dist/filepond.min.css';
+import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+import FilePondPluginImageEdit from 'filepond-plugin-image-edit';
+import 'filepond-plugin-image-edit/dist/filepond-plugin-image-edit.min.css';
+import FilePondPluginImageCrop from 'filepond-plugin-image-crop';
+import FilePondPluginImageResize from 'filepond-plugin-image-resize';
+import FilePondPluginImageFilter from 'filepond-plugin-image-filter';
+import FilePondPluginImageTransform from 'filepond-plugin-image-transform';
+
+registerPlugin(
+  FilePondPluginFileValidateType,
+  FilePondPluginFileValidateSize,
+  FilePondPluginImageExifOrientation,
+  FilePondPluginImageCrop,
+  FilePondPluginImageResize,
+  FilePondPluginImageFilter,
+  FilePondPluginImagePreview,
+  FilePondPluginImageEdit,
+  FilePondPluginImageTransform,
+);
 
 const uploadUrl = 'ajax.php?FileUpload/upload';
 
-registerPlugin(FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
-
 export class FileUploadWidget extends React.Component {
   static defaultProps = {
-    acceptedFileTypes: [],
-    maxFiles: null,
+    maxFiles: 1,
     maxFileSize: null,
+    acceptedFileTypes: null,
+    showImageEditor: false,
   };
 
   state = { uploads: [] };
@@ -38,22 +62,23 @@ export class FileUploadWidget extends React.Component {
 
   render() {
     const { uploads } = this.state;
-    const { maxFiles, acceptedFileTypes, maxFileSize } = this.props;
+    const { maxFiles, acceptedFileTypes, maxFileSize, showImageEditor, name } = this.props;
 
     return (
       <div className="file-uploader">
         <FilePond
           name="filepond"
-          allowMultiple={true}
+          imageEditEditor={showImageEditor ? createDoka() : null}
           maxFiles={maxFiles}
           server={uploadUrl}
+          allowFileTypeValidation={!!acceptedFileTypes}
           acceptedFileTypes={acceptedFileTypes}
           maxFileSize={maxFileSize}
           onprocessfile={this.onProcessFile}
           onremovefile={this.onRemoveFile}
         />
-        <input type="hidden" name="contactformfileupload" value={JSON.stringify(uploads)} />
-        <input type="hidden" name="filecount-contactformfileupload" value={uploads.length} />
+        <input type="hidden" name={name} value={JSON.stringify(uploads)} />
+        <input type="hidden" name={`filecount-${name}`} value={uploads.length} />
       </div>
     );
   }
