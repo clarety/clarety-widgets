@@ -89,9 +89,9 @@ export const submitQuiz = () => {
       dispatch(submitQuizSuccess(result));
       dispatch(updateVoteCounts());
 
-      if (settings.caseTypeUid) {
-        await dispatch(createLead(result.answersUid));
-      }
+      const caseUid = settings.caseTypeUid
+        ? await dispatch(createLead(result.answersUid))
+        : undefined;
 
       const stateKey = getSetting(state, 'stateKey');
       saveState(stateKey, {
@@ -103,8 +103,8 @@ export const submitQuiz = () => {
       if (settings.confirmPageUrl) {
         // Redirect.
         // TODO: replace url param with jwt session cookie.
-        const redirect = result.caseUid
-          ? settings.confirmPageUrl + `?caseUid=${result.caseUid}`
+        const redirect = caseUid
+          ? settings.confirmPageUrl + `?caseUid=${caseUid}`
           : settings.confirmPageUrl;
         window.location.href = redirect;
       } else {
@@ -153,7 +153,7 @@ export const createLead = (answersUid) => {
       return false;
     } else {
       dispatch(createLeadSuccess(result));
-      return true;
+      return result.caseUid;
     }
   };
 };
