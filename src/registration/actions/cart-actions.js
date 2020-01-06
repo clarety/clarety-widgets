@@ -112,7 +112,7 @@ export const submitRegistration = () => {
     dispatch(registrationSubmitRequest(postData));
 
     const { storeId } = state.settings;
-    const results = await ClaretyApi.post('registration-payment-express/', postData, { storeId });
+    const results = await ClaretyApi.post('registration-payment/', postData, { storeId });
     const result = results[0];
 
     if (result && result.status !== 'error') {
