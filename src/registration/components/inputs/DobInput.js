@@ -11,7 +11,7 @@ class _PureDobInput extends React.PureComponent {
     const { error, dayError, monthError, yearError, required } = this.props;
 
     return (
-      <Form.Group controlId="dateOfBirth">
+      <Form.Group>
         <Form.Label>
           <FormattedMessage id="label.customer.dateOfBirth" />
           {required && ' *'}

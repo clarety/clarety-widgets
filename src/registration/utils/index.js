@@ -34,7 +34,7 @@ export const getExtendField = (columnKey, settings) => {
   return settings.extendForms[0].extendFields.find(field => field.columnKey === columnKey);
 };
 
-export function getGenderOptions(settings, ) {
+export function getGenderOptions(settings) {
   let genderOptions = getElementOptions('customer.gender', settings);
 
   if (genderOptions) {
