@@ -30,6 +30,7 @@ class _RegistrationRoot extends React.Component {
   async componentDidMount() {
     const { updateAppSettings, fetchEvents, setTrackingData, fetchSettings } = this.props;
 
+    // Settings.
     updateAppSettings({
       storeId: this.props.storeId,
       seriesId: this.props.seriesId,
@@ -38,6 +39,7 @@ class _RegistrationRoot extends React.Component {
       ...this.props.settings,
     });
 
+    // Auth.
     const jwtAccount = getJwtAccount();
     if (jwtAccount) {
       const { setAuth, fetchAuthCustomer } = this.props;
@@ -46,17 +48,23 @@ class _RegistrationRoot extends React.Component {
       await fetchAuthCustomer();
     }
 
+    // Events.
     const didFetch = await fetchEvents();
     if (!didFetch) return;
 
+    // Tracking.
     const { sourceId, sourceUid, responseId, emailResponseId } = this.props;
     setTrackingData({ sourceId, sourceUid, responseId, emailResponseId });
 
-    await fetchSettings('donations/', {
-      store: this.props.storeCode,
-      offerSingle: this.props.donationSingleOfferId,
-      offerRecurring: this.props.donationRecurringOfferId,
-    }, mapDonationSettings);
+    // Donations.
+    const { storeCode, donationSingleOfferId, donationRecurringOfferId } = this.props;
+    if (donationSingleOfferId || donationRecurringOfferId) {
+      await fetchSettings('donations/', {
+        store: storeCode,
+        offerSingle: donationSingleOfferId,
+        offerRecurring: donationRecurringOfferId,
+      }, mapDonationSettings);
+    }
   }
 
   render() {
