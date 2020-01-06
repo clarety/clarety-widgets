@@ -1,6 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Button } from 'react-bootstrap';
+import { ErrorMessages } from 'form/components';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 
 export class ReviewPanel extends BasePanel {
@@ -58,6 +59,8 @@ export class ReviewPanel extends BasePanel {
 
           <FormattedMessage id="reviewPanel.errorSubtitle" tagName="p" />
 
+          <ErrorMessages showAll />
+
           <Button onClick={this.onClickRetry}>
             <FormattedMessage id="btn.retry" />
           </Button>
@@ -68,6 +71,8 @@ export class ReviewPanel extends BasePanel {
   }
 
   renderReview() {
+    const { layout, index } = this.props;
+
     return (
       <PanelContainer layout={layout} status="edit">
         <PanelHeader
