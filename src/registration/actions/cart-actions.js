@@ -93,13 +93,13 @@ export const createRegistration = () => {
     let results = await ClaretyApi.post(endpoint, postData, { storeId });
     let result = results[0];
 
-    if (result.status === 'error') {
-      dispatch(registrationCreateFailure(result));
-      dispatch(setErrors(result.validationErrors));
-      return false; 
-    } else {
+    if (result.status !== 'error') {
       dispatch(registrationCreateSuccess(result));
       return true;
+    } else {
+      dispatch(registrationCreateFailure(result));
+      dispatch(setErrors(result.validationErrors));
+      return false;
     }
   };
 };
@@ -115,7 +115,7 @@ export const submitRegistration = (paymentData, paymentMethod) => {
     const results = await ClaretyApi.post('registration-payment/', postData, { storeId });
     const result = results[0];
 
-    if (result && result.status !== 'error') {
+    if (result.status !== 'error') {
       // Redirect on success.
       window.location.href = result.redirect;
     } else {
