@@ -22,8 +22,17 @@ export class _DetailsPanel extends BasePanel {
   onShowPanel() {
     super.onShowPanel();
 
+    const { settings } = this.props;
+
     // Pre-tick 'billing same as delivery'.
-    this.state.formData['autofill.billing'] = true;
+    if (settings.showDeliveryAddress && settings.showBillingAddress) {
+      this.setState(prevState => ({
+        formData: {
+          ...prevState.formData,
+          'autofill.billing': true,
+        }
+      }));
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -335,8 +344,8 @@ export class _DetailsPanel extends BasePanel {
     const showAutofill = participantIndex !== 0 && !isPrefilled;
     const showAddressAutofill = showAutofill && (settings.showDeliveryAddress || settings.showBillingAddress);
 
-    const showEmail   = !formData['autofill.email'];
-    const showMobile  = !formData['autofill.mobile'];
+    const showEmail  = !formData['autofill.email'];
+    const showMobile = !formData['autofill.mobile'];
 
     return (
       <FormContext.Provider value={this.state}>
