@@ -117,6 +117,8 @@ function convertRegistrationWaves(registrationProducts) {
 // we want an array of objects containing values and labels
 // [{ value: 'QLD', label: 'Queensland' }, { value: 'VIC', label: 'Victoria' }]
 function convertExtendForm(extendForm) {
+  if (!extendForm) return null;
+
   for (let field of extendForm.extendFields) {
     // Check if field has an options object.
     if (field.options && typeof field.options === 'object') {
