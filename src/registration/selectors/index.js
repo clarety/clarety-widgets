@@ -261,20 +261,10 @@ const getDonationAmount = (state) => {
   return item ? item.price : 0;
 };
 
-export const getSubmitRegistrationPostData = (state) => {
+export const getSubmitRegistrationPostData = (state, paymentData) => {
   return {
     uid: state.cart.uid,
     jwt: state.cart.jwt,
-  };
-};
-
-export const getMakePaymentPostData = (state, paymentData) => {
-  const saleData = getIsLoggedIn(state)
-    ? { saleId: state.cart.id }
-    : { uid: state.cart.uid, jwt: state.cart.jwt };
-
-  return {
-    ...saleData,
     ...paymentData,
   };
 };

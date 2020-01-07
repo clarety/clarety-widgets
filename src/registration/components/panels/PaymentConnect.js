@@ -1,4 +1,4 @@
-import { makePayment } from 'registration/actions';
+import { submitRegistration } from 'registration/actions';
 import { getCart, getPaymentMethod } from 'registration/selectors';
 
 export class RegistrationPaymentConnect {
@@ -16,6 +16,6 @@ export class RegistrationPaymentConnect {
   
   static actions = {
     onShowPanel: () => ({ type: 'NO_OP' }),
-    makePayment: makePayment,
+    makePayment: submitRegistration,
   };
 }

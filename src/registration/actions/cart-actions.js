@@ -104,33 +104,10 @@ export const createRegistration = () => {
   };
 };
 
-export const submitRegistration = () => {
+export const submitRegistration = (paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     const state = getState();
-    const postData = getSubmitRegistrationPostData(state);
-
-    dispatch(registrationSubmitRequest(postData));
-
-    const { storeId } = state.settings;
-    const results = await ClaretyApi.post('registration-payment-express/', postData, { storeId });
-    const result = results[0];
-
-    if (result && result.status !== 'error') {
-      // Redirect on success.
-      window.location.href = result.redirect;
-    } else {
-      dispatch(registrationSubmitFailure(result));
-      dispatch(setErrors(result.validationErrors));
-      return false;
-    }
-  };
-};
-
-export const makePayment = (paymentData, paymentMethod) => {
-  return async (dispatch, getState) => {
-    const state = getState();
-
-    const postData = getMakePaymentPostData(state, paymentData);
+    const postData = getSubmitRegistrationPostData(state, paymentData);
 
     dispatch(registrationSubmitRequest(postData));
 
