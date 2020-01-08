@@ -147,7 +147,7 @@ export const getChannel = (state) => {
   if (mode === 'group')      return '8';
   if (mode === 'family')     return '9';
 
-  return undefined;
+  return '8';
 };
 
 export const getIsLoggedIn = (state) => !!getAuth(state).jwt;
