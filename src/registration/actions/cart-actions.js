@@ -2,7 +2,7 @@ import { ClaretyApi } from 'clarety-utils';
 import { addItem, updateItem, removeItem } from 'shared/actions';
 import { getCart } from 'shared/selectors';
 import { setErrors, clearErrors } from 'form/actions';
-import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getMakePaymentPostData, getIsLoggedIn } from 'registration/selectors';
+import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getMakePaymentPostData, getIsLoggedIn, getIsExpress } from 'registration/selectors';
 import { types } from 'registration/actions';
 
 export const setWaveInCart = (participantIndex, waveProductId) => {
@@ -80,12 +80,13 @@ export const createRegistration = () => {
   return async (dispatch, getState) => {
     const state = getState();
     const isLoggedIn = getIsLoggedIn(state);
+    const isExpress = getIsExpress(state);
     const postData = getCreateRegistrationPostData(state);
 
     dispatch(clearErrors());
     dispatch(registrationCreateRequest(postData));
 
-    const endpoint = isLoggedIn
+    const endpoint = isLoggedIn && !isExpress
       ? 'registration-sale/'
       : 'registration-sale-express/';
 
