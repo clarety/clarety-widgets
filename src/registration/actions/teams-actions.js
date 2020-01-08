@@ -1,5 +1,5 @@
 import { ClaretyApi } from 'clarety-utils';
-import { setOrganisation, removePanels, setPromoCode } from 'shared/actions';
+import { setOrganisation, removePanels, setPromoCode, updateAppSettings } from 'shared/actions';
 import { setErrors, clearErrors } from 'form/actions';
 import { getCreateTeamPostData } from 'registration/selectors';
 import { parseTeamErrors } from 'registration/utils';
@@ -107,6 +107,9 @@ export const checkPromoCode = (promoCode) => {
     if (result.corporateTeam) {
       result.team.isCorporateTeam = true;
       dispatch(setOrganisation(result.team));
+
+      // Corporate teams use group channel.
+      dispatch(updateAppSettings({ registrationMode: 'group' }));
 
       // No donations for corporate teams.
       dispatch(removePanels({ withComponent: 'DonationPanel' }));
