@@ -76,6 +76,7 @@ export class FileUploadWidget extends React.Component {
           maxFileSize={maxFileSize}
           onprocessfile={this.onProcessFile}
           onremovefile={this.onRemoveFile}
+          allowMultiple={true}
         />
         <input type="hidden" name={name} value={JSON.stringify(uploads)} />
         <input type="hidden" name={`filecount-${name}`} value={uploads.length} />
