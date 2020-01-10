@@ -64,10 +64,10 @@ function resolveCartItems(prevItems, items) {
     return {
       ...prevItem,
       description: item.description,
-      rewardDescription: item.rewardDescription,
       quantity: Number(item.quantity),
       price: Number(item.price),
       discount: Number(item.discount),
+      discountDescription: item.rewardDescription,
       total: convertTotal(item.total),
     };
   });
