@@ -24,7 +24,7 @@ class PureRadioGroupInput extends React.PureComponent {
               checked={option.value === value}
               onChange={event => onChange(field, option.value)}
             />
-            <FormCheck.Label>{option.label}</FormCheck.Label>
+            <FormCheck.Label><span dangerouslySetInnerHTML={{ __html: option.label }} /></FormCheck.Label>
           </FormCheck>
         )}
 
