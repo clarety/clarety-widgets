@@ -21,7 +21,12 @@ export class RegistrationPaymentPanel extends SharedPaymentPanel {
 
 const CartItem = ({ item }) => (
   <Row as="dl" className="cart-item">
-    <Col as="dt">{item.description}</Col>
+    <Col as="dt">
+      {item.description}
+      {item.discountDescription &&
+        <p className="discount-description">{item.discountDescription}</p>
+      }
+    </Col>
     <Col as="dd" xs={4} md={3} className="text-right">{currency(item.total)}</Col>
   </Row>
 );
