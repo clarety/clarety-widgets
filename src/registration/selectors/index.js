@@ -174,7 +174,7 @@ export const getCreateTeamPostData = (state) => {
     customerId:       customer.id,
     name:             formData['team.name'],
     type:             formData['team.type'],
-    passwordRequired: formData['team.passwordRequired'],
+    passwordRequired: formData['team.passwordRequired'] || false,
     password:         formData['team.passwordRequired'] ? formData['team.password'] : undefined,
   };
 };

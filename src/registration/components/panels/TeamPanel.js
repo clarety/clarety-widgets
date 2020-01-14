@@ -199,8 +199,9 @@ export class TeamPanel extends BasePanel {
   }
 
   renderCreate() {
-    const { formData, isBusyCreate } = this.props;
-    const showPassword = formData['team.passwordRequired'];
+    const { formData, isBusyCreate, settings } = this.props;
+    const showPasswordCheckbox = settings.showPassword;
+    const showPasswordInput = settings.showPassword && formData['team.passwordRequired'];
 
     // TODO: move these options somewhere else...
     // TODO: translate...
@@ -231,14 +232,16 @@ export class TeamPanel extends BasePanel {
           <SelectInput field="team.type" options={teamTypeOptions} />
         </Form.Group>
 
-        <Form.Group controlId="team.passwordRequired">
-          <CheckboxInput
-            field="team.passwordRequired"
-            label={<FormattedMessage id="label.team.passwordRequired" />}
-          />
-        </Form.Group>
+        {showPasswordCheckbox &&
+          <Form.Group controlId="team.passwordRequired">
+            <CheckboxInput
+              field="team.passwordRequired"
+              label={<FormattedMessage id="label.team.passwordRequired" />}
+            />
+          </Form.Group>
+        }
 
-        {showPassword &&
+        {showPasswordInput &&
           <Form.Group controlId="team.password">
             <Form.Label>
               <FormattedMessage id="label.team.password" /> *
