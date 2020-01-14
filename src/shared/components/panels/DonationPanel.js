@@ -104,7 +104,7 @@ export class DonationPanel extends BasePanel {
     const { layout, index } = this.props;
 
     return (
-      <PanelContainer layout={layout} status="wait">
+      <PanelContainer layout={layout} status="wait" className="donation-panel">
         <PanelHeader
           status="wait"
           layout={layout}
@@ -125,7 +125,7 @@ export class DonationPanel extends BasePanel {
     const variableAmount = this.getVariableAmount(offer);
 
     return (
-      <PanelContainer layout={layout} status="edit">
+      <PanelContainer layout={layout} status="edit" className="donation-panel">
         <PanelHeader
           status="edit"
           layout={layout}
@@ -134,6 +134,10 @@ export class DonationPanel extends BasePanel {
         />
 
         <PanelBody layout={layout} status="edit">
+          <FormattedMessage id="donationPanel.message">
+            {txt => txt && <p className="message-text">{txt}</p>}
+          </FormattedMessage>
+
           <Form onSubmit={this.onClickNext}>
 
             <ErrorMessages />
@@ -173,7 +177,7 @@ export class DonationPanel extends BasePanel {
     const selectedAmount = this.getSelectedAmount();
 
     return (
-      <PanelContainer layout={layout} status="done">
+      <PanelContainer layout={layout} status="done" className="donation-panel">
         <PanelHeader
           status="done"
           layout={layout}
