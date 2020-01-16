@@ -209,6 +209,8 @@ export class AddressPanel extends BasePanel {
   }
 
   renderAustralianAddressForm(title, fieldPrefix) {
+    const { settings } = this.props;
+
     return (
       <React.Fragment>
         <h5>{title}</h5>
