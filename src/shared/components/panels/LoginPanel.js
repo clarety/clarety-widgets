@@ -263,6 +263,8 @@ export class LoginPanel extends BasePanel {
   }
 
   renderEmailCheckForm(hasNoAccount) {
+    const { settings } = this.props;
+
     return (
       <FormContext.Provider value={this.state}>
         <Form onSubmit={this.onPressCheckEmail}>
@@ -270,7 +272,7 @@ export class LoginPanel extends BasePanel {
 
           <Form.Row>
             <Col>
-              <EmailInput label="Email" field="email" required />
+              <EmailInput label="Email" field="email" required hideLabel={settings.hideLabels} />
             </Col>
           </Form.Row>
 
@@ -304,7 +306,7 @@ export class LoginPanel extends BasePanel {
   }
   
   renderLoginForm() {
-    const { isBusy, isBusyResetPassword } = this.props;
+    const { isBusy, isBusyResetPassword, settings } = this.props;
     const { passwordResetStatus } = this.state;
 
     return (
@@ -314,13 +316,13 @@ export class LoginPanel extends BasePanel {
 
           <Form.Row>
             <Col>
-              <EmailInput label="Email" field="email" required />
+              <EmailInput label="Email" field="email" required hideLabel={settings.hideLabels} />
             </Col>
           </Form.Row>
 
           <Form.Row>
             <Col>
-              <TextInput label="Password" field="password" type="password" required />
+              <TextInput label="Password" field="password" type="password" required hideLabel={settings.hideLabels} />
             </Col>
           </Form.Row>
 
@@ -351,20 +353,20 @@ export class LoginPanel extends BasePanel {
 
           <Form.Row>
             <Col>
-              <EmailInput label="Email" field="email" required />
+              <EmailInput label="Email" field="email" required hideLabel={settings.hideLabels} />
             </Col>
           </Form.Row>
 
           <Form.Row>
             <Col>
-              <TextInput label="Password" field="password" type="password" required />
+              <TextInput label="Password" field="password" type="password" required hideLabel={settings.hideLabels} />
             </Col>
           </Form.Row>
 
           {settings.showFirstName &&
             <Form.Row>
               <Col>
-                <TextInput label="First Name" field="firstName" required />
+                <TextInput label="First Name" field="firstName" required hideLabel={settings.hideLabels} />
               </Col>
             </Form.Row>
           }
@@ -372,7 +374,7 @@ export class LoginPanel extends BasePanel {
           {settings.showLastName &&
             <Form.Row>
               <Col>
-                <TextInput label="Last Name" field="lastName" required />
+                <TextInput label="Last Name" field="lastName" required hideLabel={settings.hideLabels} />
               </Col>
             </Form.Row>
           }
@@ -387,6 +389,7 @@ export class LoginPanel extends BasePanel {
                   monthField="dateOfBirthMonth"
                   yearField="dateOfBirthYear"
                   required
+                  hideLabel={settings.hideLabels}
                 />
               </Col>
             </Form.Row>

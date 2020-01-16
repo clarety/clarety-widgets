@@ -155,7 +155,7 @@ export class EventPanel extends BasePanel {
           <Form.Label>
             <FormattedMessage id="label.promoCode" />
           </Form.Label>
-          <TextInput field="promoCode" placeholder="Promo code (optional)" />
+          <TextInput field="promoCode" placeholder="Promo code" />
         </Form.Group>
       </div>
     );

@@ -6,7 +6,7 @@ import { getValidationError } from 'form/utils';
 import { FieldError } from 'form/components';
 
 const _TextInput = ({ value, type, placeholder, testId, error, onChange, required, hideErrors }) => {
-  if (placeholder && required) placeholder += ' *';
+  if (placeholder && !required) placeholder += ' (Optional)';
 
   return (
     <React.Fragment>

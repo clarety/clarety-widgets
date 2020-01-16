@@ -20,7 +20,7 @@ class PureCheckboxInput extends React.PureComponent {
 
           <FormCheck.Label>
             {label || <FormattedMessage id={translationId || `label.${field}`} />}
-            {required && ' *'}
+            {!required && <span className="optional"> (Optional)</span>}
           </FormCheck.Label>
 
           <FormattedHTMLMessage id={`explanation.${field}`} defaultMessage=" ">

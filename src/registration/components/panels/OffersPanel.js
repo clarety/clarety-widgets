@@ -197,7 +197,7 @@ export class OffersPanel extends BasePanel {
     return (
       <Form.Group>
         <Form.Label>
-          <FormattedMessage id="label.customer.firstName" /> *
+          <FormattedMessage id="label.customer.firstName" />
         </Form.Label>
 
         <Form.Control

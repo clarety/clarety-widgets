@@ -173,33 +173,35 @@ export class AddressPanel extends BasePanel {
   }
 
   renderInternationalAddressForm(title, fieldPrefix) {
+    const { settings } = this.props;
+
     return (
       <React.Fragment>
         <h5>{title}</h5>
         <Form.Row>
           <Col>
-            <TextInput field={`${fieldPrefix}.address1`} placeholder="Address 1 *" />
+            <TextInput field={`${fieldPrefix}.address1`} label="Address 1" required hideLabel={settings.hideLabels} />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <TextInput field={`${fieldPrefix}.address2`} placeholder="Address 2" />
+            <TextInput field={`${fieldPrefix}.address2`} label="Address 2" hideLabel={settings.hideLabels} />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <TextInput field={`${fieldPrefix}.suburb`} placeholder="Suburb *" />
+            <TextInput field={`${fieldPrefix}.suburb`} label="Suburb" required hideLabel={settings.hideLabels} />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <TextInput field={`${fieldPrefix}.state`} placeholder="City *" />
+            <TextInput field={`${fieldPrefix}.state`} label="City" required hideLabel={settings.hideLabels} />
           </Col>
           <Col>
-            <TextInput field={`${fieldPrefix}.postcode`} placeholder="Postcode *" type="number" />
+            <TextInput field={`${fieldPrefix}.postcode`} label="Postcode" type="number" required hideLabel={settings.hideLabels} />
           </Col>
         </Form.Row>
       </React.Fragment>
@@ -212,28 +214,28 @@ export class AddressPanel extends BasePanel {
         <h5>{title}</h5>
         <Form.Row>
           <Col>
-            <TextInput field={`${fieldPrefix}.address1`} placeholder="Address *" />
+            <TextInput field={`${fieldPrefix}.address1`} label="Address" required hideLabel={settings.hideLabels} />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <TextInput field={`${fieldPrefix}.address2`} placeholder="Address 2" />
+            <TextInput field={`${fieldPrefix}.address2`} label="Address 2" hideLabel={settings.hideLabels} />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <TextInput field={`${fieldPrefix}.suburb`} placeholder="Suburb *" />
+            <TextInput field={`${fieldPrefix}.suburb`} label="Suburb" required hideLabel={settings.hideLabels} />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <StateInput field={`${fieldPrefix}.state`} placeholder="State *" />
+            <StateInput field={`${fieldPrefix}.state`} label="State" required hideLabel={settings.hideLabels} />
           </Col>
           <Col>
-            <TextInput field={`${fieldPrefix}.postcode`} placeholder="Postcode *" type="number" />
+            <TextInput field={`${fieldPrefix}.postcode`} label="Postcode" type="number" required hideLabel={settings.hideLabels} />
           </Col>
         </Form.Row>
       </React.Fragment>

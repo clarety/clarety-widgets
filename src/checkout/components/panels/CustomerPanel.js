@@ -122,45 +122,47 @@ export class CheckoutCustomerPanel extends BasePanel {
             <Form onSubmit={this.onPressContinue}>
               <Form.Row>
                 <Col sm={6}>
-                  <TextInput field="customer.firstName" placeholder="First Name *" />
+                  <TextInput field="customer.firstName" label="First Name" hideLabel required />
                 </Col>
                 <Col sm={6}>
-                  <TextInput field="customer.lastName" placeholder="Last Name *" />
+                  <TextInput field="customer.lastName" label="Last Name" hideLabel required />
                 </Col>
               </Form.Row>
 
               <Form.Row>
                 <Col sm={6}>
-                  <PhoneInput field="customer.phone1" placeholder="Home Phone" />
+                  <PhoneInput field="customer.phone1" label="Home Phone" hideLabel />
                 </Col>
                 <Col sm={6}>
-                  <PhoneInput field="customer.phone2" placeholder="Work Phone" />
+                  <PhoneInput field="customer.phone2" label="Work Phone" hideLabel />
                 </Col>
               </Form.Row>
 
               <Form.Row>
                 <Col sm={6}>
-                  <PhoneInput field="customer.mobile" placeholder="Mobile Phone" />
+                  <PhoneInput field="customer.mobile" label="Mobile Phone" hideLabel />
                 </Col>
                 <Col sm={6}>
                 </Col>
               </Form.Row>
 
               <Form.Row>
-                <Col>Date of Birth *</Col>
+                <Col>
+                  <DobInput
+                    label="Date of Birth"
+                    field="customer.dateOfBirth"
+                    dayField="customer.dateOfBirthDay"
+                    monthField="customer.dateOfBirthMonth"
+                    yearField="customer.dateOfBirthYear"
+                    required
+                  />
+                </Col>
               </Form.Row>
-
-              <DobInput
-                field="customer.dateOfBirth"
-                dayField="customer.dateOfBirthDay"
-                monthField="customer.dateOfBirthMonth"
-                yearField="customer.dateOfBirthYear"
-              />
 
               {settings.showSource &&
                 <Form.Row>
                   <Col>
-                    <TextInput field="sale.source" placeholder="How did you hear about us? *" />
+                    <TextInput field="sale.source" label="How did you hear about us?" hideLabel required />
                   </Col>
                 </Form.Row>
               }

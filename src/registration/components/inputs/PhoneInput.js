@@ -19,7 +19,7 @@ class PurePhoneInput extends React.PureComponent {
       <Form.Group controlId={field}>
         <Form.Label>
           {label || <FormattedMessage id={translationId || `label.${field}`} />}
-          {required && ' *'}
+          {!required && <span className="optional"> (Optional)</span>}
         </Form.Label>
         <ReactPhoneNumberInput
           value={value}

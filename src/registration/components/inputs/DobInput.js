@@ -14,7 +14,7 @@ class _PureDobInput extends React.PureComponent {
       <Form.Group>
         <Form.Label>
           <FormattedMessage id="label.customer.dateOfBirth" />
-          {required && ' *'}
+          {!required && <span className="optional"> (Optional)</span>}
         </Form.Label>
 
         <Form.Row>

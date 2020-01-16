@@ -44,11 +44,14 @@ class PureExpiryInput extends React.PureComponent {
   
   render() {
     let { field, label, expiryMonth, expiryYear, error, required, hideLabel } = this.props;
-    if (required) label += ' *';
+    if (!required && hideLabel) label += ' (Optional)';
 
     return (
       <Form.Group controlId={field}>
-        <Form.Label srOnly={hideLabel}>{label}</Form.Label>
+        <Form.Label srOnly={hideLabel}>
+          {label}
+          {!required && <span className="optional"> (Optional)</span>}
+        </Form.Label>
 
         <Form.Control
           value={formatExpiry(expiryMonth, expiryYear)}

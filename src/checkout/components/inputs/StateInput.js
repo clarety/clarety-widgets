@@ -7,11 +7,14 @@ import { getValidationError } from 'form/utils';
 class PureStateInput extends React.PureComponent {
   render() {
     let { value, field, onChange, label, placeholder, required, error, hideLabel } = this.props;
-    if (required) label += ' *';
+    if (!required && hideLabel) placeholder = label + ' (Optional)';
 
     return (
       <Form.Group controlId={field}>
-        <Form.Label srOnly={hideLabel}>{label}</Form.Label>
+        <Form.Label srOnly={hideLabel}>
+          {label}
+          {!required && <span className="optional"> (Optional)</span>}
+        </Form.Label>
 
         <Form.Control
           as="select"
@@ -20,7 +23,7 @@ class PureStateInput extends React.PureComponent {
           required={required}
           isInvalid={!!error}
         >
-          <option value="" disabled hidden>{hideLabel ? label : placeholder}</option>
+          <option value="" disabled hidden>{placeholder}</option>
           <option value="QLD">QLD</option>
           <option value="NSW">NSW</option>
           <option value="VIC">VIC</option>

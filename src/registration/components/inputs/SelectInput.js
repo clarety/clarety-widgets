@@ -35,7 +35,7 @@ class PureSelectInput extends React.PureComponent {
       <Form.Group controlId={field}>
         <Form.Label>
           <FormattedMessage id={translationId || `label.${field}`} />
-          {required && ' *'}
+          {!required && <span className="optional"> (Optional)</span>}
         </Form.Label>
         <Select
           value={this.state.value}
