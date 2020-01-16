@@ -13,7 +13,7 @@ class PureRadioGroupInput extends React.PureComponent {
       <Form.Group>
         <Form.Label>
           {label || <FormattedMessage id={translationId || `label.${field}`} />}
-          {required && ' *'}
+          {!required && <span className="optional"> (Optional)</span>}
         </Form.Label>
 
         {options.map(option =>

@@ -10,13 +10,16 @@ import { getValidationError } from 'form/utils';
 class PurePhoneInput extends React.PureComponent {
   render() {
     let { field, label, placeholder, value, onChange, error, required, hideLabel } = this.props;
-    if (required) label += ' *';
+    if (!required && hideLabel) placeholder = label + ' (Optional)';
 
     const country = Config.get('phoneCountry');
 
     return (
       <Form.Group controlId={field}>
-        <Form.Label srOnly={hideLabel}>{label}</Form.Label>
+        <Form.Label srOnly={hideLabel}>
+          {label}
+          {!required && <span className="optional"> (Optional)</span>}
+        </Form.Label>
 
         <ReactPhoneNumberInput
           value={value}

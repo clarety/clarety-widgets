@@ -8,11 +8,13 @@ import { getValidationError } from 'form/utils';
 class PureDobInput extends React.PureComponent {
   render() {
     let { label, required, hideLabel, error, dayError, monthError, yearError } = this.props;
-    if (required) label += ' *';
 
     return (
       <Form.Group>
-        <Form.Label srOnly={hideLabel}>{label}</Form.Label>
+        <Form.Label srOnly={hideLabel}>
+          {label}
+          {!required && <span className="optional"> (Optional)</span>}
+        </Form.Label>
 
         <Form.Row>
           <Col>

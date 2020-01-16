@@ -6,7 +6,7 @@ import { Checkout, setupCheckoutAxiosMock } from '../../src';
 import '../../src/checkout/style.scss';
 
 Checkout.setClientIds({
-  dev:  '82ee4a2479780256c9bf9b951f5d1cfb',
+  dev:  '82ee4a2479780256c9bf9b951f5d1cfb', // baseline
   prod: '',
 });
 
@@ -17,18 +17,22 @@ Checkout.setPanels([
     settings: {
       allowGuest: true,
       createAccount: false,
+      hideLabels: true,
     },
   },
   {
     component: CheckoutCustomerPanel,
     connect: CheckoutCustomerConnect,
-    settings: {},
+    settings: {
+      hideLabels: true,
+    },
   },
   {
     component: AddressPanel,
     connect: AddressConnect,
     settings: {
       addressType: 'international',
+      hideLabels: true,
     },
   },
   {
@@ -39,7 +43,9 @@ Checkout.setPanels([
   {
     component: PaymentPanel,
     connect: PaymentConnect,
-    settings: {},
+    settings: {
+      hideLabels: true,
+    },
   },
 ]);
 

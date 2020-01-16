@@ -4,8 +4,8 @@ import { currency } from 'shared/utils';
 
 export const CartItem = ({ item }) => (
   <Row className="cart-item">
-    <Col xs="auto">
-      <img src={item.image} width="50" height="50" />
+    <Col xs="auto" className="col-img">
+      {item.image && <img src={item.image} width="50" height="50" />}
     </Col>
 
     <Col>

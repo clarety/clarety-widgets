@@ -220,14 +220,14 @@ export class TeamPanel extends BasePanel {
 
         <Form.Group controlId="team.name">
           <Form.Label>
-            <FormattedMessage id="label.team.name" /> *
+            <FormattedMessage id="label.team.name" />
           </Form.Label>
           <TextInput field="team.name" />
         </Form.Group>
 
         <Form.Group controlId="team.type">
           <Form.Label>
-            <FormattedMessage id="label.team.type" /> *
+            <FormattedMessage id="label.team.type" />
           </Form.Label>
           <SelectInput field="team.type" options={teamTypeOptions} />
         </Form.Group>
@@ -244,7 +244,7 @@ export class TeamPanel extends BasePanel {
         {showPasswordInput &&
           <Form.Group controlId="team.password">
             <Form.Label>
-              <FormattedMessage id="label.team.password" /> *
+              <FormattedMessage id="label.team.password" />
             </Form.Label>
             <TextInput field="team.password" type="password" />
           </Form.Group>

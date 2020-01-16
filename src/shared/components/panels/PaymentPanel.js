@@ -166,26 +166,28 @@ export class PaymentPanel extends BasePanel {
   }
 
   renderCreditCardFields() {
+    const { settings } = this.props;
+
     return (
       <React.Fragment>
         <Form.Row>
           <Col>
-            <TextInput label="Name On Card" field="cardName" required />
+            <TextInput label="Name On Card" field="cardName" required hideLabel={settings.hideLabels} />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <CardNumberInput label="Card Number" field="cardNumber" required />
+            <CardNumberInput label="Card Number" field="cardNumber" required hideLabel={settings.hideLabels} />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <ExpiryInput label="Expiry Date" field="cardExpiry" monthField="cardExpiryMonth" yearField="cardExpiryYear" required />
+            <ExpiryInput label="Expiry (MM/YY)" field="cardExpiry" monthField="cardExpiryMonth" yearField="cardExpiryYear" required hideLabel={settings.hideLabels} />
           </Col>
           <Col>
-            <CcvInput label="CCV" field="cardSecurityCode" required />
+            <CcvInput label="CCV" field="cardSecurityCode" required hideLabel={settings.hideLabels} />
           </Col>
         </Form.Row>
       </React.Fragment>
