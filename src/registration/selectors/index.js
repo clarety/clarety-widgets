@@ -14,6 +14,7 @@ export const getPanels = (state) => state.panels;
 export const getFormData = (state) => state.formData;
 
 export const getParticipants = (state) => state.participants;
+export const getParticipantCount = (state) => getParticipants(state).length;
 
 export const getTeams = (state) => state.teams;
 
@@ -142,12 +143,18 @@ const getExtendFormId = (state) => {
 export const getSaleId = (state) => getCart(state).id;
 
 export const getChannel = (state) => {
-  const mode = getSetting(state, 'registrationMode');
-  if (mode === 'individual') return '7';
-  if (mode === 'group')      return '8';
-  if (mode === 'family')     return '9';
+  const individualChannel = '7';
+  const multipleChannel   = '8';
+  const familyChannel     = '9';
 
-  return '8';
+  if (getIsCorporateTeam(state)) return multipleChannel;
+  if (getParticipantCount(state) === 1) return individualChannel;
+
+  const mode = getSetting(state, 'registrationMode');
+  if (mode === 'group')  return multipleChannel;
+  if (mode === 'family') return familyChannel;
+
+  return multipleChannel;
 };
 
 export const getIsLoggedIn = (state) => !!getAuth(state).jwt;
