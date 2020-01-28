@@ -31,11 +31,26 @@ registerPlugin(
 
 const uploadUrl = 'ajax.php?FileUpload/upload';
 
+const mimeTypes = {
+  'txt':  'text/plain',
+  'jpeg': 'image/jpeg',
+  'jpg':  'image/jpeg',
+  'png':  'image/png',
+  'gif':  'image/gif',
+  'pdf':  'application/pdf',
+  'rtf':  'application/rtf',
+  'doc':  'application/msword',
+  'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+};
+
+const typeLabels = {};
+Object.entries(mimeTypes).forEach(([key, value]) => typeLabels[value] = key);
+
 export class FileUploadWidget extends React.Component {
   static defaultProps = {
     maxFiles: 1,
     maxFileSize: null,
-    acceptedFileTypes: null,
+    acceptedFileTypes: [],
     showImageEditor: false,
   };
 
@@ -62,21 +77,29 @@ export class FileUploadWidget extends React.Component {
 
   render() {
     const { uploads } = this.state;
-    const { maxFiles, acceptedFileTypes, maxFileSize, showImageEditor, name } = this.props;
+    const { maxFiles, showImageEditor, name } = this.props;
+
+    const acceptedFileTypes = this.props.acceptedFileTypes.map(type => mimeTypes[type]);
+    const maxFileSize = Number(this.props.maxFileSize || 0).toFixed(0) + 'KB';
 
     return (
       <div className="file-uploader">
         <FilePond
           name="filepond"
-          imageEditEditor={showImageEditor ? createDoka() : null}
-          maxFiles={maxFiles}
           server={uploadUrl}
-          allowFileTypeValidation={!!acceptedFileTypes}
-          acceptedFileTypes={acceptedFileTypes}
+
+          allowMultiple={maxFiles > 1}
+          maxFiles={maxFiles}
           maxFileSize={maxFileSize}
+
+          allowFileTypeValidation={true}
+          acceptedFileTypes={acceptedFileTypes}
+          fileValidateTypeLabelExpectedTypesMap={typeLabels}
+
           onprocessfile={this.onProcessFile}
           onremovefile={this.onRemoveFile}
-          allowMultiple={true}
+          
+          imageEditEditor={showImageEditor ? createDoka() : null}
         />
         <input type="hidden" name={name} value={JSON.stringify(uploads)} />
         <input type="hidden" name={`filecount-${name}`} value={uploads.length} />
