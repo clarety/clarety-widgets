@@ -35,12 +35,11 @@ const selectFrequency = (state, action) => {
 
 const selectAmount = (state, action) => {
   const { frequency, amount, isVariableAmount } = action;
-  const prevVariableAmount = state.selections[frequency].variableAmount;
 
   const selection = {
     amount,
     isVariableAmount,
-    variableAmount: isVariableAmount ? amount : prevVariableAmount,
+    variableAmount: isVariableAmount ? amount : '',
   };
 
   return {
