@@ -25,8 +25,8 @@ const initialState = {
   tracking: {
     sourceId: null,
     sourceUid: null,
-    responseId: null,
-    emailResponseId: null,
+    sendResponseUid: null,
+    emailResponseUid: null,
   },
 };
 
@@ -126,8 +126,8 @@ export const cartReducer = (state = initialState, action) => {
         tracking: {
           sourceId: action.sourceId,
           sourceUid: action.sourceUid,
-          responseId: action.responseId,
-          emailResponseId: action.emailResponseId,
+          sendResponseUid: action.responseId,
+          emailResponseUid: action.emailResponseId,
         },
       };
 
