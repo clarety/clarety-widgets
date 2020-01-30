@@ -1,4 +1,4 @@
-import { getOrganisation, getPromoCode } from 'shared/selectors';
+import { getOrganisation, getPromoCode, getTrackingData } from 'shared/selectors';
 import { parseNestedElements } from 'shared/utils';
 
 export const getSettings = (state) => state.settings;
@@ -193,6 +193,7 @@ export const getCreateRegistrationPostData = (state) => {
   const participants = getParticipants(state);
   const fundraising = getFundraisingPostData(state);
   const organisation = getOrganisation(state);
+  const trackingData = getTrackingData(state);
 
   return {
     eventId: event.eventId,
@@ -203,6 +204,7 @@ export const getCreateRegistrationPostData = (state) => {
       getParticipantPostData(state, participant, index)
     ),
     fundraising: fundraising,
+    ...trackingData,
   };
 };
 
