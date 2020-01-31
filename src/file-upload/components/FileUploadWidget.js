@@ -54,24 +54,45 @@ export class FileUploadWidget extends React.Component {
     showImageEditor: false,
   };
 
-  state = { uploads: [] };
+  constructor(props) {
+    super(props);
 
-  onProcessFile = (error, file) => {
+    this.state = { uploads: [], initialFiles: [] };
+    
+    if (props.previouslyUploaded) {
+      // json string contains '&quot;' so convert them to double quotes.
+      const json = props.previouslyUploaded.replace(/&quot;/g, '"');
+      const previouslyUploaded = JSON.parse(json);
+
+      this.state.uploads = previouslyUploaded;
+
+      this.state.initialFiles = previouslyUploaded.map(file => ({
+        source: file.token,
+        options: { type: 'local', file: file },
+      }));
+    }
+  }
+
+  onProcessFile = (error, fileItem) => {
     if (error) return;
 
-    const response = JSON.parse(file.serverId);
+    const response = JSON.parse(fileItem.serverId);
     const upload = response[0];
 
     this.setState(prevState => ({
-      uploads: [...prevState.uploads, { appRef: file.id, ...upload }]
+      uploads: [...prevState.uploads, upload]
     }));
   };
 
-  onRemoveFile = (error, file) => {
+  onUpdateFiles = (fileItems) => {
+    // we need this empty callback or previously uploaded files don't remove correctly... :(
+  };
+
+  onRemoveFile = (error, fileItem) => {
     if (error) return;
 
     this.setState(prevState => ({
-      uploads: prevState.uploads.filter(upload => upload.appRef !== file.id)
+      uploads: prevState.uploads.filter(upload => upload.token !== fileItem.file.token),
     }));
   };
 
@@ -86,6 +107,7 @@ export class FileUploadWidget extends React.Component {
       <div className="file-uploader">
         <FilePond
           name="filepond"
+          files={this.state.initialFiles}
           server={uploadUrl}
 
           allowMultiple={maxFiles > 1}
@@ -97,6 +119,7 @@ export class FileUploadWidget extends React.Component {
           fileValidateTypeLabelExpectedTypesMap={typeLabels}
 
           onprocessfile={this.onProcessFile}
+          onupdatefiles={this.onUpdateFiles}
           onremovefile={this.onRemoveFile}
           
           imageEditEditor={showImageEditor ? createDoka() : null}
