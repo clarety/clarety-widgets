@@ -1,5 +1,6 @@
 import React from 'react';
 import { FilePond, registerPlugin } from 'react-filepond';
+import { Status } from 'filepond';
 import { create as createDoka } from '../react-doka/lib/doka.esm.min';
 import '../react-doka/lib/doka.min.css';
 
@@ -73,19 +74,23 @@ export class FileUploadWidget extends React.Component {
     }
   }
 
-  onProcessFile = (error, fileItem) => {
-    if (error) return;
+  onProcessFile = (error, fileItem) => {    
+    this.dispatchEvent();
 
-    const response = JSON.parse(fileItem.serverId);
-    const upload = response[0];
+    if (!error) {
+      const response = JSON.parse(fileItem.serverId);
+      const upload = response[0];
 
-    this.setState(prevState => ({
-      uploads: [...prevState.uploads, upload]
-    }));
+      this.setState(prevState => ({
+        uploads: [...prevState.uploads, upload]
+      }));
+    }
   };
 
   onUpdateFiles = (fileItems) => {
-    // we need this empty callback or previously uploaded files don't remove correctly... :(
+    this.dispatchEvent();
+
+    // NOTE: we need this callback or previously uploaded files don't remove correctly... :(
   };
 
   onRemoveFile = (error, fileItem) => {
@@ -96,6 +101,26 @@ export class FileUploadWidget extends React.Component {
     }));
   };
 
+  dispatchEvent() {
+    if (!this.ref) return;
+
+    let event;
+    switch (this.pond._pond.status) {
+      case Status.EMPTY:
+      case Status.IDLE:
+      case Status.READY:
+        event = new Event('ready');
+        break;
+
+      case Status.ERROR:
+      case Status.BUSY:
+        event = new Event('busy');
+        break;
+    }
+
+    this.ref.dispatchEvent(event);
+  }
+
   render() {
     const { uploads } = this.state;
     const { maxFiles, showImageEditor, name } = this.props;
@@ -104,8 +129,10 @@ export class FileUploadWidget extends React.Component {
     const maxFileSize = Number(this.props.maxFileSize || 0).toFixed(0) + 'KB';
 
     return (
-      <div className="file-uploader">
+      <div className="file-uploader" ref={ref => this.ref = ref}>
         <FilePond
+          ref={ref => this.pond = ref}
+
           name="filepond"
           files={this.state.initialFiles}
           server={uploadUrl}
@@ -120,6 +147,7 @@ export class FileUploadWidget extends React.Component {
 
           onprocessfile={this.onProcessFile}
           onupdatefiles={this.onUpdateFiles}
+          onprocessfiles={this.onProcessFiles}
           onremovefile={this.onRemoveFile}
           
           imageEditEditor={showImageEditor ? createDoka() : null}
