@@ -145,11 +145,9 @@ export class FileUploadWidget extends React.Component {
           acceptedFileTypes={acceptedFileTypes}
           fileValidateTypeLabelExpectedTypesMap={typeLabels}
 
-          onaddfile={this.onAddFile}
-          onprocessfiles={this.onProcessFiles}
-
           onprocessfile={this.onProcessFile}
           onupdatefiles={this.onUpdateFiles}
+          onprocessfiles={this.onProcessFiles}
           onremovefile={this.onRemoveFile}
           
           imageEditEditor={showImageEditor ? createDoka() : null}
