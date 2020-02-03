@@ -248,7 +248,7 @@ const getOffer = (state, participant) => {
 
 const getDefaultOffer = (state, participant) => getOffers(state, participant.type)[0];
 
-const getDefaultWave = (state, participant) => getDefaultOffer(state, participant).waves[0];
+const getDefaultWave = (state, participant) => getOffer(state, participant).waves[0];
 
 const getFundraisingPostData = (state) => {
   return {
