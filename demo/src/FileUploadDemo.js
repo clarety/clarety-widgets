@@ -6,11 +6,19 @@ export default class FileUploadDemo extends React.Component {
     return (
       <div className="m-5">
         <FileUploadWidget
-          // acceptedFileTypes={['image/*']}
+          acceptedFileTypes={['jpg']}
           maxFiles={1}
-          showImageEditor={true}
+          maxFileSize="10000.00"
+          // showImageEditor={true}
         />
       </div>
     );
   }
 }
+
+// Vanilla JS event listeners.
+setTimeout(() => {
+  const uploader = document.querySelector('.file-uploader');
+  uploader.addEventListener('ready', () => console.log('uploader ready!'));
+  uploader.addEventListener('busy', () => console.log('uploader busy!'));
+}, 5000);
