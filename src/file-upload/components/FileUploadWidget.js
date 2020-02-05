@@ -102,23 +102,24 @@ export class FileUploadWidget extends React.Component {
   };
 
   dispatchEvent() {
-    if (!this.ref) return;
-
-    let event;
+    let eventType;
     switch (this.pond._pond.status) {
       case Status.EMPTY:
       case Status.IDLE:
       case Status.READY:
-        event = new Event('ready');
+        eventType = 'file-upload--ready';
         break;
 
       case Status.ERROR:
       case Status.BUSY:
-        event = new Event('busy');
+        eventType = 'file-upload--busy';
         break;
     }
 
-    this.ref.dispatchEvent(event);
+    const event = new Event(eventType);
+    event.inputName = this.props.name;
+
+    window.dispatchEvent(event);
   }
 
   render() {
@@ -129,7 +130,7 @@ export class FileUploadWidget extends React.Component {
     const maxFileSize = Number(this.props.maxFileSize || 0).toFixed(0) + 'KB';
 
     return (
-      <div className="file-uploader" ref={ref => this.ref = ref}>
+      <div className="file-uploader">
         <FilePond
           ref={ref => this.pond = ref}
 
