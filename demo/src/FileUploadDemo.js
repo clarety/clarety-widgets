@@ -6,6 +6,7 @@ export default class FileUploadDemo extends React.Component {
     return (
       <div className="m-5">
         <FileUploadWidget
+          name="test-file-upload"
           acceptedFileTypes={['jpg']}
           maxFiles={1}
           maxFileSize="10000.00"
@@ -18,7 +19,6 @@ export default class FileUploadDemo extends React.Component {
 
 // Vanilla JS event listeners.
 setTimeout(() => {
-  const uploader = document.querySelector('.file-uploader');
-  uploader.addEventListener('ready', () => console.log('uploader ready!'));
-  uploader.addEventListener('busy', () => console.log('uploader busy!'));
+  window.addEventListener('file-upload--ready', event => console.log('uploader ready!', event.inputName));
+  window.addEventListener('file-upload--busy', event => console.log('uploader busy!', event.inputName));
 }, 5000);
