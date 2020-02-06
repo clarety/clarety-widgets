@@ -1,5 +1,6 @@
 import React from 'react';
 import { FileUploadWidget } from '../../src';
+import './file-upload.css';
 
 export default class FileUploadDemo extends React.Component {
   render() {
@@ -7,8 +8,8 @@ export default class FileUploadDemo extends React.Component {
       <div className="m-5">
         <FileUploadWidget
           name="test-file-upload"
-          acceptedFileTypes={['jpg']}
-          maxFiles={1}
+          acceptedFileTypes={['jpg', 'png']}
+          maxFiles={10}
           maxFileSize="10000.00"
           // showImageEditor={true}
         />

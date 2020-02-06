@@ -135,7 +135,7 @@ export class FileUploadWidget extends React.Component {
           ref={ref => this.pond = ref}
 
           name="filepond"
-          files={this.state.initialFiles}
+          // files={this.state.initialFiles}
           server={uploadUrl}
 
           allowMultiple={maxFiles > 1}
