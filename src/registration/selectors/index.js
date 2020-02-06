@@ -55,7 +55,7 @@ export const getQtys = (state) => {
 
 export const getCartTotal = (state) => {
   const { items } = getCart(state);
-  const total = items.reduce((total, item) => total += (item.price - (item.discount || 0)) * item.quantity, 0);
+  const total = items.reduce((total, item) => total += (item.price * item.quantity) - (item.discount || 0), 0);
 
   const currency = getSetting(state, 'currency');
   return `${currency.code} ${currency.symbol}${total.toFixed(2)}`;
