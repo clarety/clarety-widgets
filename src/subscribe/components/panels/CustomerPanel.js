@@ -87,16 +87,16 @@ export class CustomerPanel extends BasePanel {
         <InputGroup>
           {(nameOption === 'firstandlast' || !nameOption) &&
             <React.Fragment>
-              <TextInput field="customer.firstName" placeholder="First Name" hideErrors />
-              <TextInput field="customer.lastName" placeholder="Last Name" hideErrors />
+              <TextInput field="customer.firstName" placeholder="First Name" hideErrors required />
+              <TextInput field="customer.lastName" placeholder="Last Name" hideErrors required />
             </React.Fragment>
           }
 
           {nameOption === 'full' &&
-            <TextInput field="customer.fullName" placeholder="Full Name" hideErrors />
+            <TextInput field="customer.fullName" placeholder="Full Name" hideErrors required />
           }
           
-          <EmailInput field="customer.email" type="email" placeholder="Email" hideErrors />
+          <EmailInput field="customer.email" type="email" placeholder="Email" hideErrors required />
 
           <InputGroup.Append>
             <SubmitButton title={buttonText || 'Sign Up'} />

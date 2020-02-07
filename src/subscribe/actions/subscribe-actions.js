@@ -1,10 +1,8 @@
 import { ClaretyApi } from 'clarety-utils';
-import { setStatus, setPanelSettings, updateAppSettings, setRecaptcha } from 'shared/actions';
-import { getSetting } from 'shared/selectors';
-import { getCmsConfirmContent } from 'shared/utils';
+import { setStatus, updateAppSettings, setRecaptcha } from 'shared/actions';
 import { setErrors, clearErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
-import { getSubscribePostData, getCmsConfirmContentFields } from 'subscribe/selectors';
+import { getSubscribePostData } from 'subscribe/selectors';
 import { types } from './types';
 
 export const subscribe = () => {
@@ -12,12 +10,14 @@ export const subscribe = () => {
     dispatch(setStatus('busy'));
     dispatch(clearErrors());
 
-    const recaptcha = await executeRecaptcha();
-    dispatch(setRecaptcha(recaptcha));
-    if (!recaptcha) return false;
-
     const state = getState();
     const { settings } = state;
+
+    if (settings.reCaptchaKey) {
+      const recaptcha = await executeRecaptcha();
+      dispatch(setRecaptcha(recaptcha));
+      if (!recaptcha) return false;
+    }
 
     const postData = getSubscribePostData(state);
     dispatch(subscribeRequest(postData));
@@ -37,14 +37,7 @@ export const subscribe = () => {
         // Redirect.
         window.location.href = settings.confirmPageUrl;
       } else {
-        // Show CMS confirm content.
-        const elementId = getSetting(state, 'widgetElementId');
-        const fields = getCmsConfirmContentFields(state);
-        const confirmContent = getCmsConfirmContent(elementId, fields);
-        dispatch(setPanelSettings('CmsConfirmPanel', { confirmContent }));
-
         dispatch(updateAppSettings({ isShowingConfirmation: true }));
-
         return true;
       }
     }

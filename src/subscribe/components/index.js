@@ -1,3 +1,4 @@
+export * from './panels/ConfirmPanel';
 export * from './panels/CustomerPanel';
 export * from './panels/CustomerConnect';
 
