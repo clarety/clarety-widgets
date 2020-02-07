@@ -21,6 +21,7 @@ export class _SubscribeRoot extends React.Component {
       storeCode: this.props.storeCode,
       caseTypeUid: this.props.caseTypeUid,
       confirmPageUrl: this.props.confirmPageUrl,
+      reCaptchaKey: this.props.reCaptchaKey,
     });
 
     setPanelSettings('CustomerPanel', {
@@ -49,7 +50,7 @@ export class _SubscribeRoot extends React.Component {
     return (
       <div className="clarety-subscribe-widget h-100">
         <PanelManager layout="tabs" />
-        <Recaptcha siteKey={reCaptchaKey} />
+        {reCaptchaKey && <Recaptcha siteKey={reCaptchaKey} />}
       </div>
     );
   }

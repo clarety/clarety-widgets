@@ -8,6 +8,7 @@ export * from './misc/ScrollIntoView';
 
 export * from './panels/BasePanel';
 export * from './panels/CmsConfirmPanel';
+export * from './panels/CmsConfirmConnect';
 export * from './panels/CustomerPanel';
 export * from './panels/DonationPanel';
 export * from './panels/LoginPanel';
