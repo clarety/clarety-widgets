@@ -36,7 +36,7 @@ const DonateDemo = () => (
           responseId="e9c2e351d90b11e996fd"
           emailResponseId="1234"
 
-          reCaptchaKey="1234"
+          // reCaptchaKey="1234"
 
           forceMdLayout
         />

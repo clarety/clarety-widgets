@@ -12,11 +12,10 @@ import { mapDonationSettings } from 'donate/utils';
 export class _DonateWidget extends React.Component {
   async componentWillMount() {
     const { updateAppSettings, setStore, setTrackingData, fetchSettings, handleUrlParams } = this.props;
-    const { storeCode, singleOfferId, recurringOfferId, reCaptchaKey } = this.props;
+    const { storeCode, singleOfferId, recurringOfferId } = this.props;
     const { sourceId, responseId, emailResponseId } = this.props;
 
     if (!singleOfferId && !recurringOfferId) throw new Error('[Clarety] Either a singleOfferId or recurringOfferId prop is required');
-    if (!reCaptchaKey) throw new Error('[Clarety] missing reCaptcha key');
 
     updateAppSettings({
       variant: this.props.variant,
@@ -73,7 +72,7 @@ export class _DonateWidget extends React.Component {
           </Switch>
         </ConnectedRouter>
 
-        <Recaptcha siteKey={reCaptchaKey} />
+        {reCaptchaKey && <Recaptcha siteKey={reCaptchaKey} />}
       </div>
     );
   }
