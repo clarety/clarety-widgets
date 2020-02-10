@@ -9,10 +9,4 @@ export const types = {
   setFormData:    'SET_FORM_DATA',
   updateFormData: 'UPDATE_FORM_DATA',
   resetFormData:  'RESET_FORM_DATA',
-
-  // Form Action Types
-
-  formSubmitRequest: 'FORM_SUBMIT_REQUEST',
-  formSubmitSuccess: 'FORM_SUBMIT_SUCCESS',
-  formSubmitFailure: 'FORM_SUBMIT_FAILURE',
 };
