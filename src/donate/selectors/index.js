@@ -2,23 +2,15 @@ import { statuses } from 'shared/actions';
 import { getCart, getTrackingData, getRecaptcha, getSettings, getParsedFormData } from 'shared/selectors';
 import { formatPrice } from 'form/utils';
 
-export function getIsBusy(state) {
-  return state.status !== statuses.ready;
-}
+export const getIsBusy = (state) => state.status !== statuses.ready;
 
-export function getCartItem(state) {
-  return state.cart.items[0];
-}
+export const getCartItem = (state) => state.cart.items[0];
 
-export function getCustomer(state) {
-  return getCart(state).customer;
-}
+export const getCustomer = (state) => getCart(state).customer;
 
-export function getSelectedFrequency(state) {
-  return state.panels.donationPanel.frequency;
-}
+export const getSelectedFrequency = (state) => state.panels.donationPanel.frequency;
 
-export function getSelectedAmount(state) {
+export const getSelectedAmount = (state) => {
   const { donationPanel } = state.panels;
   const { currency } = state.settings;
 
@@ -29,30 +21,27 @@ export function getSelectedAmount(state) {
 
   const amount = Number(selection.amount).toFixed(2);
   return currency.symbol + amount;
-}
+};
 
-export function getFrequencyLabel(state, offerUid) {
+export const getFrequencyLabel = (state, offerUid) => {
   for (let offer of state.settings.offers) {
     if (offer.offerUid === offerUid) return offer.label;
   }
 
   return '';
-}
+};
 
-export function getDonationPanelSelection(state) {
-  const { donationPanel } = state.panels;
-  return donationPanel.selections[donationPanel.frequency];
-}
+export const getDonationPanelSelection = (state) => state.panels.donationPanel.selections[donationPanel.frequency];
 
-export function getSelectedOffer(state) {
+export const getSelectedOffer = (state) => {
   const { settings, panels } = state;
 
   return settings.priceHandles.find(
     offer => offer.frequency === panels.donationPanel.frequency
   );
-}
+};
 
-export function getPaymentPostData(state) {
+export const getPaymentPostData = (state) => {
   const cart = getCart(state);
   const trackingData = getTrackingData(state);
   const recaptcha = getRecaptcha(state);
@@ -81,24 +70,24 @@ export function getPaymentPostData(state) {
   }
 
   return postData;
-}
+};
 
-export function getPaymentData(formData) {
+export const getPaymentData = (formData) => {
   return {
     cardNumber:  formData['payment.cardNumber'],
     expiryMonth: formData['payment.expiryMonth'],
     expiryYear:  formData['payment.expiryYear'],
     ccv:         formData['payment.ccv'],
   };
-}
+};
 
-export function getCustomerFullName(formData) {
+export const getCustomerFullName = (formData) => {
   const firstName = formData['customer.firstName'];
   const lastName  = formData['customer.lastName'];
   return `${firstName} ${lastName}`;
-}
+};
 
-export function getSuccessfulDonation(state) {
+export const getSuccessfulDonation = (state) => {
   const cart = getCart(state);
   const item = cart.items[0];
 
@@ -106,4 +95,4 @@ export function getSuccessfulDonation(state) {
   const amount = item ? formatPrice(item.price) : '0';
 
   return { frequency, amount };
-}
+};
