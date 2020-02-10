@@ -9,7 +9,6 @@ import { statuses } from 'shared/actions';
 import { Recaptcha } from 'form/components';
 import { _DonateWidgetRoot, connectDonateWidgetRoot } from 'donate/components';
 import { PageAmountPanel, PageFundraisingPanel, PageDetailsPanel, PagePaymentPanel } from 'donate/components';
-import { OverrideContext } from 'shared/utils';
 import { PageActions } from 'donate/actions';
 import { Validations } from 'donate/validations';
 import { createRootReducer } from 'donate/reducers';
@@ -17,14 +16,9 @@ import { setupDefaultResources } from 'donate/utils';
 
 export class DonatePage extends React.Component {
   static store;
-  static components;
   static history;
 
-  static init(components, actions, validations) {
-    DonatePage.components = components || {};
-    actions = actions || new PageActions;
-    validations = validations || new Validations;
-
+  static init(actions = new PageActions, validations = new Validations) {
     // Setup redux store.
     DonatePage.history = createMemoryHistory();
     const reducer = createRootReducer(DonatePage.history);
@@ -43,9 +37,7 @@ export class DonatePage extends React.Component {
   render() {
     return (
       <ReduxProvider store={DonatePage.store}>
-        <OverrideContext.Provider value={DonatePage.components}>
-          <DonatePageRoot {...this.props} history={DonatePage.history} />
-        </OverrideContext.Provider>
+        <DonatePageRoot {...this.props} history={DonatePage.history} />
       </ReduxProvider>
     );
   }
@@ -53,12 +45,7 @@ export class DonatePage extends React.Component {
 
 export class _DonatePageRoot extends _DonateWidgetRoot {
   render() {
-    const { status, variant, showFundraising, reCaptchaKey } = this.props;
-
-    const AmountPanelComponent      = this.context.AmountPanel      || PageAmountPanel;
-    const DetailsPanelComponent     = this.context.DetailsPanel     || PageDetailsPanel;
-    const FundraisingPanelComponent = this.context.FundraisingPanel || PageFundraisingPanel;
-    const PaymentPanelComponent     = this.context.PaymentPanel     || PagePaymentPanel;
+    const { status, showFundraising, reCaptchaKey } = this.props;
 
     // Show a loading indicator while we init.
     if (status === statuses.initializing) {
@@ -72,10 +59,10 @@ export class _DonatePageRoot extends _DonateWidgetRoot {
     return (
       <div className="clarety-donate-page">
         <BlockUi tag="div" blocking={status !== statuses.ready} loader={<span></span>}>
-          <AmountPanelComponent  variant={variant} />
-          <DetailsPanelComponent variant={variant} />
-          {showFundraising && <FundraisingPanelComponent variant={variant} />}
-          <PaymentPanelComponent variant={variant} />
+          <PageAmountPanel />
+          <PageDetailsPanel />
+          {showFundraising && <PageFundraisingPanel />}
+          <PagePaymentPanel />
         </BlockUi>
 
         {reCaptchaKey && <Recaptcha siteKey={reCaptchaKey} />}
