@@ -2,9 +2,8 @@ import React from 'react';
 import { Card, Form, Row, Col } from 'react-bootstrap';
 import { TextAreaInput, CheckboxInput } from 'form/components';
 import { BasePanel } from 'donate/components';
-import { connectFundraisingPanel } from 'donate/utils';
 
-export class _PageFundraisingPanel extends BasePanel {
+export class PageFundraisingPanel extends BasePanel {
   fields = [
     'fundraising.message',
     'fundraising.isAnonymous',
@@ -79,5 +78,3 @@ export class _PageFundraisingPanel extends BasePanel {
     );
   }
 }
-
-export const PageFundraisingPanel = connectFundraisingPanel(_PageFundraisingPanel);

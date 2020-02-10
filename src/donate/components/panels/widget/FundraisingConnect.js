@@ -1,9 +1,8 @@
-import { connect } from 'react-redux';
 import { getSetting } from 'shared/selectors';
 import { getIsBusy } from 'donate/selectors';
 
-export function connectFundraisingPanel(ViewComponent) {
-  const mapStateToProps = state => {
+export class FundraisingConnect {
+  static mapStateToProps = (state) => {
     return {
       isBusy: getIsBusy(state),
       errors: state.errors,
@@ -11,9 +10,6 @@ export function connectFundraisingPanel(ViewComponent) {
       variant: getSetting(state, 'variant'),
     };
   };
-  
-  const actions = {
-  };
-  
-  return connect(mapStateToProps, actions)(ViewComponent);
+
+  static actions = {};
 }

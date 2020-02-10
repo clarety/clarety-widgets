@@ -1,3 +1,2 @@
-export * from './connect-utils';
-export * from './donate-utils';
+export * from './setup-utils';
 export * from './stripe-utils';
