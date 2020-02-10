@@ -5,7 +5,8 @@ import thunkMiddleware from 'redux-thunk';
 import { routerMiddleware, ConnectedRouter } from 'connected-react-router';
 import { connect, Provider as ReduxProvider } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
-import { statuses, setStore, setTrackingData, fetchSettings, updateAppSettings } from 'shared/actions';
+import { statuses, setStore, setTrackingData, fetchSettings, updateAppSettings, setPanels } from 'shared/actions';
+import { Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { handleUrlParams, Actions } from 'donate/actions';
 import { Validations } from 'donate/validations';
@@ -31,6 +32,11 @@ export class DonateWidget extends React.Component {
 
     // Setup resources.
     setupDefaultResources();
+  }
+
+  static setPanels(panels) {
+    Resources.setPanels(panels);
+    DonateWidget.store.dispatch(setPanels(panels));
   }
 
   render() {

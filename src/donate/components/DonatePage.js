@@ -5,7 +5,8 @@ import thunkMiddleware from 'redux-thunk';
 import { routerMiddleware } from 'connected-react-router';
 import { Provider as ReduxProvider } from 'react-redux';
 import BlockUi from 'react-block-ui';
-import { statuses } from 'shared/actions';
+import { statuses, setPanels } from 'shared/actions';
+import { Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { _DonateWidgetRoot, connectDonateWidgetRoot } from 'donate/components';
 import { PageAmountPanel, PageFundraisingPanel, PageDetailsPanel, PagePaymentPanel } from 'donate/components';
@@ -32,6 +33,11 @@ export class DonatePage extends React.Component {
 
     // Setup resources.
     setupDefaultResources();
+  }
+
+  static setPanels(panels) {
+    Resources.setPanels(panels);
+    DonatePage.store.dispatch(setPanels(panels));
   }
 
   render() {
