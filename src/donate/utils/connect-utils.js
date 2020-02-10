@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { clearItems } from 'shared/actions';
 import { formatPrice } from 'form/utils';
-import { submitDetailsPanel, submitPaymentPanel } from 'donate/actions';
+import { submitCustomerPanel, submitPaymentPanel } from 'donate/actions';
 import { getSetting } from 'shared/selectors';
 import { getIsBusy, getSelectedFrequency, getSelectedAmount, getFrequencyLabel } from 'donate/selectors';
 import { selectAmount, submitDonationPanel } from 'donate/actions';
@@ -30,7 +30,7 @@ export function connectDonationPanel(ViewComponent) {
   return connect(mapStateToProps, actions)(ViewComponent);
 }
 
-export function connectDetailsPanel(ViewComponent) {
+export function connectCustomerPanel(ViewComponent) {
   const mapStateToProps = state => {
     return {
       isBusy: getIsBusy(state),
@@ -41,7 +41,7 @@ export function connectDetailsPanel(ViewComponent) {
   };
   
   const actions = {
-    onSubmit: submitDetailsPanel,
+    onSubmit: submitCustomerPanel,
   };
   
   return connect(mapStateToProps, actions)(ViewComponent);

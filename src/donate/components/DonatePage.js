@@ -9,7 +9,7 @@ import { statuses, setPanels } from 'shared/actions';
 import { Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { _DonateWidgetRoot, connectDonateWidgetRoot } from 'donate/components';
-import { PageDonationPanel, PageFundraisingPanel, PageDetailsPanel, PagePaymentPanel } from 'donate/components';
+import { PageDonationPanel, PageFundraisingPanel, PageCustomerPanel, PagePaymentPanel } from 'donate/components';
 import { PageActions } from 'donate/actions';
 import { Validations } from 'donate/validations';
 import { createRootReducer } from 'donate/reducers';
@@ -66,7 +66,7 @@ export class _DonatePageRoot extends _DonateWidgetRoot {
       <div className="clarety-donate-page">
         <BlockUi tag="div" blocking={status !== statuses.ready} loader={<span></span>}>
           <PageDonationPanel />
-          <PageDetailsPanel />
+          <PageCustomerPanel />
           {showFundraising && <PageFundraisingPanel />}
           <PagePaymentPanel />
         </BlockUi>

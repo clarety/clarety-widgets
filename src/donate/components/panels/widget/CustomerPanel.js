@@ -4,10 +4,10 @@ import BlockUi from 'react-block-ui';
 import { scrollIntoView } from 'shared/utils';
 import { TextInput, StateInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
 import { BasePanel, StepIndicator } from 'donate/components';
-import { connectDetailsPanel } from 'donate/utils';
+import { connectCustomerPanel } from 'donate/utils';
 import 'react-block-ui/style.css';
 
-export class _DetailsPanel extends BasePanel {
+export class _CustomerPanel extends BasePanel {
   componentDidMount() {
     scrollIntoView(this);
   }
@@ -117,4 +117,4 @@ export class _DetailsPanel extends BasePanel {
   }
 }
 
-export const DetailsPanel = connectDetailsPanel(_DetailsPanel);
+export const CustomerPanel = connectCustomerPanel(_CustomerPanel);

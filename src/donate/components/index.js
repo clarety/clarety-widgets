@@ -9,12 +9,12 @@ export * from './misc/StepIndicator';
 export * from './panels/BasePanel';
 
 export * from './panels/widget/DonationPanel';
-export * from './panels/widget/DetailsPanel';
+export * from './panels/widget/CustomerPanel';
 export * from './panels/widget/PaymentPanel';
 export * from './panels/widget/SuccessPanel';
 
 export * from './panels/page/PageDonationPanel';
-export * from './panels/page/PageDetailsPanel';
+export * from './panels/page/PageCustomerPanel';
 export * from './panels/page/PageFundraisingPanel';
 export * from './panels/page/PagePaymentPanel';
 

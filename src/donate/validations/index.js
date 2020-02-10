@@ -15,7 +15,7 @@ export class Validations {
     return errors.length === 0;
   }
 
-  validateDetailsPanel(errors, getState) {
+  validateCustomerPanel(errors, getState) {
     const { formData } = getState();
 
     this.requireField(errors, formData, 'customer.firstName');

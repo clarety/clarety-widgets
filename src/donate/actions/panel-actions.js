@@ -13,9 +13,9 @@ export const submitDonationPanel = () => {
   };
 };
 
-export const submitDetailsPanel = () => {
+export const submitCustomerPanel = () => {
   return (dispatch, getState, { actions, validations }) => {
-    actions.panelActions.submitDetailsPanel(dispatch, getState, { actions, validations });
+    actions.panelActions.submitCustomerPanel(dispatch, getState, { actions, validations });
   };
 };
 
@@ -44,14 +44,14 @@ export class PanelActions {
     dispatch(setStatus(statuses.ready));
   }
 
-  async submitDetailsPanel(dispatch, getState, { actions, validations }) {
+  async submitCustomerPanel(dispatch, getState, { actions, validations }) {
     const { status } = getState();
 
     if (status !== statuses.ready) return;
     dispatch(setStatus(statuses.busy));
 
     const errors = [];
-    const isValid = validations.validateDetailsPanel(errors, getState);
+    const isValid = validations.validateCustomerPanel(errors, getState);
     dispatch(setErrors(errors));
 
     if (isValid) {
@@ -153,7 +153,7 @@ export class PagePanelActions extends PanelActions {
     // Validate.
     const errors = [];
     const isAmountValid  = validations.validateDonationPanel(errors, getState);
-    const isDetailsValid = validations.validateDetailsPanel(errors, getState);
+    const isDetailsValid = validations.validateCustomerPanel(errors, getState);
     const isPaymentValid = validations.validatePaymentPanel(errors, getState);
     dispatch(setErrors(errors));
 

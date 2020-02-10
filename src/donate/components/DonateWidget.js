@@ -10,7 +10,7 @@ import { Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { handleUrlParams, Actions } from 'donate/actions';
 import { Validations } from 'donate/validations';
-import { DonationPanel, DetailsPanel, PaymentPanel, SuccessPanel } from 'donate/components';
+import { DonationPanel, CustomerPanel, PaymentPanel, SuccessPanel } from 'donate/components';
 import { createRootReducer } from 'donate/reducers';
 import { mapDonationSettings, setupDefaultResources } from 'donate/utils';
 
@@ -93,7 +93,7 @@ export class _DonateWidgetRoot extends React.Component {
         <ConnectedRouter history={this.props.history}>
           <Switch>
             <Route exact path="/" render={props => <DonationPanel {...props} />}/>
-            <Route path="/details" render={props => <DetailsPanel {...props} />}/>
+            <Route path="/details" render={props => <CustomerPanel {...props} />}/>
             <Route path="/payment" render={props => <PaymentPanel {...props} />}/>
             <Route path="/success" render={props => <SuccessPanel {...props} />}/>
           </Switch>
