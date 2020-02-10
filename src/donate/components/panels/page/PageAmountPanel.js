@@ -1,7 +1,6 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import { _AmountPanel, FrequencySelect } from 'donate/components';
-import { OverrideContext } from 'shared/utils';
 import { connectAmountPanel } from 'donate/utils';
 
 export class _PageAmountPanel extends _AmountPanel {
@@ -32,7 +31,5 @@ export class _PageAmountPanel extends _AmountPanel {
     );
   }
 }
-
-_PageAmountPanel.contextType = OverrideContext;
 
 export const PageAmountPanel = connectAmountPanel(_PageAmountPanel);

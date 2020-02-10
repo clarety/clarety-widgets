@@ -12,7 +12,7 @@ import { handleUrlParams, Actions } from 'donate/actions';
 import { Validations } from 'donate/validations';
 import { AmountPanel, DetailsPanel, PaymentPanel, SuccessPanel } from 'donate/components';
 import { createRootReducer } from 'donate/reducers';
-import { mapDonationSettings } from 'donate/utils';
+import { mapDonationSettings, setupDefaultResources } from 'donate/utils';
 
 export class DonateWidget extends React.Component {
   static store;
@@ -34,6 +34,9 @@ export class DonateWidget extends React.Component {
     const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
     DonateWidget.store = createStore(reducer, composeDevTools(middleware));
+
+    // Setup resources.
+    setupDefaultResources();
   }
 
   render() {

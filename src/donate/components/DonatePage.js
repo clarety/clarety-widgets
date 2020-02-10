@@ -13,6 +13,7 @@ import { OverrideContext } from 'shared/utils';
 import { PageActions } from 'donate/actions';
 import { Validations } from 'donate/validations';
 import { createRootReducer } from 'donate/reducers';
+import { setupDefaultResources } from 'donate/utils';
 
 export class DonatePage extends React.Component {
   static store;
@@ -34,6 +35,9 @@ export class DonatePage extends React.Component {
     const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
     DonatePage.store = createStore(reducer, composeDevTools(middleware));
+
+    // Setup resources.
+    setupDefaultResources();
   }
 
   render() {
