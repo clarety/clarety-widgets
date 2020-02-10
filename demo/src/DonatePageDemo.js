@@ -3,7 +3,7 @@ import { DonatePage, renderWidget } from '../../src/';
 import { PageDonationPanel, DonationConnect } from '../../src/donate/components';
 import { PageCustomerPanel, CustomerConnect } from '../../src/donate/components';
 // import { PageFundraisingPanel, FundraisingConnect } from '../../src/donate/components';
-// import { PagePaymentPanel, PaymentConnect } from '../../src/donate/components';
+import { PagePaymentPanel, PaymentConnect } from '../../src/donate/components';
 import '../../src/donate/style.scss';
 
 window.renderDonatePage = (props) => {
@@ -25,11 +25,11 @@ window.renderDonatePage = (props) => {
     //   connect: FundraisingConnect,
     //   settings: {},
     // },
-    // {
-    //   component: PagePaymentPanel,
-    //   connect: PaymentConnect,
-    //   settings: {},
-    // },
+    {
+      component: PagePaymentPanel,
+      connect: PaymentConnect,
+      settings: {},
+    },
   ]);
 
   renderWidget(props.elementId, <DonatePage {...props} />);

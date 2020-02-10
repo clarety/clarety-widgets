@@ -1,10 +1,9 @@
 import React from 'react';
 import { Card, Form, Row, Col } from 'react-bootstrap';
 import { CardNumberInput, ExpiryInput, CcvInput, SubmitButton } from 'form/components';
-import { _PaymentPanel } from 'donate/components';
-import { connectPaymentPanel } from 'donate/utils';
+import { PaymentPanel } from 'donate/components';
 
-export class _PagePaymentPanel extends _PaymentPanel {
+export class PagePaymentPanel extends PaymentPanel {
   fields = [
     'payment.cardNumber',
     'payment.expiry',
@@ -71,5 +70,3 @@ export class _PagePaymentPanel extends _PaymentPanel {
     );
   }
 }
-
-export const PagePaymentPanel = connectPaymentPanel(_PagePaymentPanel);

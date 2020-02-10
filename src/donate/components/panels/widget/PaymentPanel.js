@@ -4,10 +4,9 @@ import BlockUi from 'react-block-ui';
 import { scrollIntoView } from 'shared/utils';
 import { SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput } from 'form/components';
 import { BasePanel, StepIndicator } from 'donate/components';
-import { connectPaymentPanel } from 'donate/utils';
 import 'react-block-ui/style.css';
 
-export class _PaymentPanel extends BasePanel {
+export class PaymentPanel extends BasePanel {
   componentDidMount() {
     scrollIntoView(this);
   }
@@ -93,5 +92,3 @@ export class _PaymentPanel extends BasePanel {
     );
   }
 }
-
-export const PaymentPanel = connectPaymentPanel(_PaymentPanel);
