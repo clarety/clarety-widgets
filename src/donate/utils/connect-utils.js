@@ -4,16 +4,16 @@ import { formatPrice } from 'form/utils';
 import { submitDetailsPanel, submitPaymentPanel } from 'donate/actions';
 import { getSetting } from 'shared/selectors';
 import { getIsBusy, getSelectedFrequency, getSelectedAmount, getFrequencyLabel } from 'donate/selectors';
-import { selectAmount, submitAmountPanel } from 'donate/actions';
+import { selectAmount, submitDonationPanel } from 'donate/actions';
 
-export function connectAmountPanel(ViewComponent) {
+export function connectDonationPanel(ViewComponent) {
   const mapStateToProps = state => {
-    const { amountPanel } = state.panels;
+    const { donationPanel } = state.panels;
   
     return {
       offers: state.settings.priceHandles,
-      frequency: amountPanel.frequency,
-      selections: amountPanel.selections,
+      frequency: donationPanel.frequency,
+      selections: donationPanel.selections,
       selectedAmount: getSelectedAmount(state),
       errors: state.errors,
       forceMd: getSetting(state, 'forceMdLayout'),
@@ -23,7 +23,7 @@ export function connectAmountPanel(ViewComponent) {
   
   const actions = {
     selectAmount: selectAmount,
-    submitAmountPanel: submitAmountPanel,
+    submitDonationPanel: submitDonationPanel,
     clearItems: clearItems,
   };
   

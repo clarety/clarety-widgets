@@ -2,7 +2,7 @@ export * from './types';
 
 export * from './api-actions';
 export * from './cart-actions';
-export * from './amount-actions';
+export * from './donation-actions';
 export * from './panel-actions';
 export * from './payment-actions';
 

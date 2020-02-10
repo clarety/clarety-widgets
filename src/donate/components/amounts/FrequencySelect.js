@@ -28,7 +28,7 @@ const mapStateToProps = state => {
   const priceHandles = getSetting(state, 'priceHandles');
 
   return {
-    value: state.panels.amountPanel.frequency,
+    value: state.panels.donationPanel.frequency,
     options: priceHandles.map(offer => ({
       value: offer.frequency,
       label: offer.frequency === 'single' ? 'Single Gift' : 'Monthly Gift',

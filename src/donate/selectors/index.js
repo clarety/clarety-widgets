@@ -10,14 +10,14 @@ export function getCartItem(state) {
 }
 
 export function getSelectedFrequency(state) {
-  return state.panels.amountPanel.frequency;
+  return state.panels.donationPanel.frequency;
 }
 
 export function getSelectedAmount(state) {
-  const { amountPanel } = state.panels;
+  const { donationPanel } = state.panels;
   const { currency } = state.settings;
 
-  const selection = amountPanel.selections[amountPanel.frequency];
+  const selection = donationPanel.selections[donationPanel.frequency];
 
   if (!selection) return '';
   if (!selection.amount) return '';
@@ -34,16 +34,16 @@ export function getFrequencyLabel(state, offerUid) {
   return '';
 }
 
-export function getAmountPanelSelection(state) {
-  const { amountPanel } = state.panels;
-  return amountPanel.selections[amountPanel.frequency];
+export function getDonationPanelSelection(state) {
+  const { donationPanel } = state.panels;
+  return donationPanel.selections[donationPanel.frequency];
 }
 
 export function getSelectedOffer(state) {
   const { settings, panels } = state;
 
   return settings.priceHandles.find(
-    offer => offer.frequency === panels.amountPanel.frequency
+    offer => offer.frequency === panels.donationPanel.frequency
   );
 }
 

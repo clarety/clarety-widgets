@@ -5,11 +5,11 @@ import { parseNestedElements } from 'shared/utils';
 import { executeRecaptcha } from 'form/components';
 import { setErrors } from 'form/actions';
 import { makePaymentSuccess, makePaymentFailure } from 'donate/actions';
-import { getAmountPanelSelection, getSelectedOffer } from 'donate/selectors';
+import { getDonationPanelSelection, getSelectedOffer } from 'donate/selectors';
 
-export const submitAmountPanel = () => {
+export const submitDonationPanel = () => {
   return (dispatch, getState, { actions, validations }) => {
-    actions.panelActions.submitAmountPanel(dispatch, getState, { actions, validations });
+    actions.panelActions.submitDonationPanel(dispatch, getState, { actions, validations });
   };
 };
 
@@ -26,14 +26,14 @@ export const submitPaymentPanel = () => {
 };
 
 export class PanelActions {
-  async submitAmountPanel(dispatch, getState, { actions, validations }) {
+  async submitDonationPanel(dispatch, getState, { actions, validations }) {
     const { status } = getState();
 
     if (status !== statuses.ready) return;
     dispatch(setStatus(statuses.busy));
 
     const errors = [];
-    const isValid = validations.validateAmountPanel(errors, getState);
+    const isValid = validations.validateDonationPanel(errors, getState);
     dispatch(setErrors(errors));
 
     if (isValid) {
@@ -86,7 +86,7 @@ export class PanelActions {
 
   _addDonationToCart(dispatch, getState) {
     const state = getState();
-    const selection = getAmountPanelSelection(state);
+    const selection = getDonationPanelSelection(state);
     const offer = getSelectedOffer(state);
 
     dispatch(clearItems());
@@ -152,7 +152,7 @@ export class PagePanelActions extends PanelActions {
 
     // Validate.
     const errors = [];
-    const isAmountValid  = validations.validateAmountPanel(errors, getState);
+    const isAmountValid  = validations.validateDonationPanel(errors, getState);
     const isDetailsValid = validations.validateDetailsPanel(errors, getState);
     const isPaymentValid = validations.validatePaymentPanel(errors, getState);
     dispatch(setErrors(errors));
