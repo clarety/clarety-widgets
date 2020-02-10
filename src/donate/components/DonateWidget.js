@@ -1,8 +1,6 @@
 import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
-import { createMemoryHistory } from 'history';
 import thunkMiddleware from 'redux-thunk';
-import { routerMiddleware } from 'connected-react-router';
 import { connect, Provider as ReduxProvider } from 'react-redux';
 import { statuses, setStore, setTrackingData, fetchSettings, updateAppSettings, setPanels } from 'shared/actions';
 import { PanelManager } from 'shared/components';
@@ -10,24 +8,18 @@ import { Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { handleUrlParams, Actions } from 'donate/actions';
 import { Validations } from 'donate/validations';
-import { createRootReducer } from 'donate/reducers';
+import { rootReducer } from 'donate/reducers';
 import { mapDonationSettings, setupDefaultResources } from 'donate/utils';
 
 export class DonateWidget extends React.Component {
   static store;
-  static history;
 
   static init(actions = new Actions, validations = new Validations) {
     // Setup redux store.
-    DonateWidget.history = createMemoryHistory();
-    const reducer = createRootReducer(DonateWidget.history);
-
     const thunk = thunkMiddleware.withExtraArgument({ actions, validations });
-    const middleware = applyMiddleware(routerMiddleware(DonateWidget.history), thunk);
-
+    const middleware = applyMiddleware(thunk);
     const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-    DonateWidget.store = createStore(reducer, composeDevTools(middleware));
+    DonateWidget.store = createStore(rootReducer, composeDevTools(middleware));
 
     // Setup resources.
     setupDefaultResources();
@@ -41,7 +33,7 @@ export class DonateWidget extends React.Component {
   render() {
     return (
       <ReduxProvider store={DonateWidget.store}>
-        <DonateWidgetRoot {...this.props} history={DonateWidget.history} />
+        <DonateWidgetRoot {...this.props} />
       </ReduxProvider>
     );
   }

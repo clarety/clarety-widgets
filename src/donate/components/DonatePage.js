@@ -1,8 +1,6 @@
 import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
-import { createMemoryHistory } from 'history';
 import thunkMiddleware from 'redux-thunk';
-import { routerMiddleware } from 'connected-react-router';
 import { Provider as ReduxProvider } from 'react-redux';
 import BlockUi from 'react-block-ui';
 import { statuses, setPanels } from 'shared/actions';
@@ -12,24 +10,18 @@ import { Recaptcha } from 'form/components';
 import { _DonateWidgetRoot, connectDonateWidgetRoot } from 'donate/components';
 import { PageActions } from 'donate/actions';
 import { Validations } from 'donate/validations';
-import { createRootReducer } from 'donate/reducers';
+import { rootReducer } from 'donate/reducers';
 import { setupDefaultResources } from 'donate/utils';
 
 export class DonatePage extends React.Component {
   static store;
-  static history;
 
   static init(actions = new PageActions, validations = new Validations) {
     // Setup redux store.
-    DonatePage.history = createMemoryHistory();
-    const reducer = createRootReducer(DonatePage.history);
-
     const thunk = thunkMiddleware.withExtraArgument({ actions, validations });
-    const middleware = applyMiddleware(routerMiddleware(DonatePage.history), thunk);
-
+    const middleware = applyMiddleware(thunk);
     const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-    DonatePage.store = createStore(reducer, composeDevTools(middleware));
+    DonatePage.store = createStore(rootReducer, composeDevTools(middleware));
 
     // Setup resources.
     setupDefaultResources();
@@ -43,7 +35,7 @@ export class DonatePage extends React.Component {
   render() {
     return (
       <ReduxProvider store={DonatePage.store}>
-        <DonatePageRoot {...this.props} history={DonatePage.history} />
+        <DonatePageRoot {...this.props} />
       </ReduxProvider>
     );
   }

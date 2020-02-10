@@ -1,12 +1,9 @@
 import { combineReducers } from 'redux';
-import { connectRouter } from 'connected-react-router';
 import { statusReducer, cartReducer, settingsReducer, panelManagerReducer } from 'shared/reducers';
 import { formDataReducer, errorsReducer } from 'form/reducers';
 import { donationPanelReducer }  from 'donate/reducers';
 
-export const createRootReducer = history => combineReducers({
-  router: connectRouter(history),
-
+export const rootReducer = combineReducers({
   status: statusReducer,
   settings: settingsReducer,
   cart: cartReducer,
