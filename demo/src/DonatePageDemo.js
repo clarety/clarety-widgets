@@ -1,8 +1,9 @@
 import React from 'react';
 import { DonatePage, renderWidget } from '../../src/';
 import { PageDonationPanel, DonationConnect } from '../../src/donate/components';
-// import { CustomerPanel, CustomerConnect } from '../../src/shared/components';
-// import { PaymentPanel, PaymentConnect } from '../../src/shared/components';
+import { PageCustomerPanel, CustomerConnect } from '../../src/donate/components';
+// import { PageFundraisingPanel, FundraisingConnect } from '../../src/donate/components';
+// import { PagePaymentPanel, PaymentConnect } from '../../src/donate/components';
 import '../../src/donate/style.scss';
 
 window.renderDonatePage = (props) => {
@@ -14,19 +15,18 @@ window.renderDonatePage = (props) => {
       connect: DonationConnect,
       settings: {},
     },
+    {
+      component: PageCustomerPanel,
+      connect: CustomerConnect,
+      settings: {},
+    },
     // {
-    //   component: CustomerPanel,
-    //   connect: CustomerConnect,
-    //   settings: {},
-    // },
-    // TODO:
-    // {
-    //   component: FundraisingPanel,
+    //   component: PageFundraisingPanel,
     //   connect: FundraisingConnect,
     //   settings: {},
     // },
     // {
-    //   component: PaymentPanel,
+    //   component: PagePaymentPanel,
     //   connect: PaymentConnect,
     //   settings: {},
     // },

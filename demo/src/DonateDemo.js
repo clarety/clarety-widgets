@@ -1,8 +1,8 @@
 import React from 'react';
 import { DonateWidget, renderWidget } from '../../src/';
 import { DonationPanel, DonationConnect } from '../../src/donate/components';
-// import { CustomerPanel, CustomerConnect } from '../../src/shared/components';
-// import { PaymentPanel, PaymentConnect } from '../../src/shared/components';
+import { CustomerPanel, CustomerConnect } from '../../src/donate/components';
+// import { PaymentPanel, PaymentConnect } from '../../src/donate/components';
 import '../../src/donate/style.scss';
 
 window.renderDonateWidget = (props) => {
@@ -14,11 +14,11 @@ window.renderDonateWidget = (props) => {
       connect: DonationConnect,
       settings: {},
     },
-    // {
-    //   component: CustomerPanel,
-    //   connect: CustomerConnect,
-    //   settings: {},
-    // },
+    {
+      component: CustomerPanel,
+      connect: CustomerConnect,
+      settings: {},
+    },
     // {
     //   component: PaymentPanel,
     //   connect: PaymentConnect,

@@ -7,7 +7,7 @@ import { BasePanel, StepIndicator } from 'donate/components';
 import { connectCustomerPanel } from 'donate/utils';
 import 'react-block-ui/style.css';
 
-export class _CustomerPanel extends BasePanel {
+export class CustomerPanel extends BasePanel {
   componentDidMount() {
     scrollIntoView(this);
   }
@@ -116,5 +116,3 @@ export class _CustomerPanel extends BasePanel {
     );
   }
 }
-
-export const CustomerPanel = connectCustomerPanel(_CustomerPanel);

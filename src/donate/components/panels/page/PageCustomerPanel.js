@@ -1,10 +1,9 @@
 import React from 'react';
 import { Card, Form, Row, Col } from 'react-bootstrap';
 import { TextInput, FormElement } from 'form/components';
-import { _CustomerPanel } from 'donate/components';
-import { connectCustomerPanel } from 'donate/utils';
+import { CustomerPanel } from 'donate/components';
 
-export class _PageCustomerPanel extends _CustomerPanel {
+export class PageCustomerPanel extends CustomerPanel {
   fields = [
     'customer.firstName',
     'customer.lastName',
@@ -106,5 +105,3 @@ export class _PageCustomerPanel extends _CustomerPanel {
     );
   }
 }
-
-export const PageCustomerPanel = connectCustomerPanel(_PageCustomerPanel);
