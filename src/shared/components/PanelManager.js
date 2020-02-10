@@ -31,14 +31,14 @@ class _PanelManager extends React.Component {
     });
   }
 
-  nextPanel = currentIndex => {
+  nextPanel = (currentIndex) => {
     this.setStatus(currentIndex, 'done');
 
     const nextIndex = this.getFirstIndexWithStatus('wait');
     if (nextIndex !== -1) this.setStatus(nextIndex, 'edit');
   };
 
-  editPanel = nextIndex => {
+  editPanel = (nextIndex) => {
     const { layout, panels } = this.props;
 
     if (layout === 'stack') {
@@ -85,6 +85,7 @@ class _PanelManager extends React.Component {
           {...panel.data}
 
           nextPanel={() => this.nextPanel(index)}
+          prevPanel={() => this.editPanel(index - 1)}
           editPanel={() => this.editPanel(index)}
           resetAllPanels={this.resetAllPanels}
 

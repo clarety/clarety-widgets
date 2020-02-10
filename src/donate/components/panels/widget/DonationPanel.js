@@ -17,16 +17,18 @@ export class DonationPanel extends BasePanel {
     this.props.selectAmount(frequency, amount, isVariableAmount);
   };
 
-  onSubmit = (event) => {
+  onPressNext = async (event) => {
     event.preventDefault();
-    this.props.submitDonationPanel();
+    
+    const isValid = await this.props.submitDonationPanel();
+    if (isValid) this.props.nextPanel();
   };
 
   render() {
     if (this.props.frequency === null) return null;
 
     return (
-      <form onSubmit={this.onSubmit} data-testid="amount-panel">
+      <form onSubmit={this.onPressNext} data-testid="donation-panel">
         {this.renderContent()}
       </form>
     );

@@ -11,16 +11,22 @@ export class PaymentPanel extends BasePanel {
     scrollIntoView(this);
   }
 
-  onPrev = () => this.props.history.goBack();
-
-  onSubmit = event => {
+  onPressBack = (event) => {
     event.preventDefault();
-    this.props.onSubmit();
+
+    this.props.prevPanel();
+  };
+
+  onPressNext = async (event) => {
+    event.preventDefault();
+
+    const isValid = await this.props.onSubmit();
+    if (isValid) this.props.nextPanel();
   };
 
   render() {
     return (
-      <form onSubmit={this.onSubmit} data-testid="payment-panel">
+      <form onSubmit={this.onPressNext} data-testid="payment-panel">
         {this.renderContent()}
       </form>
     );
@@ -81,7 +87,7 @@ export class PaymentPanel extends BasePanel {
         <Card.Footer>
           <Form.Row className="justify-content-center">
             <Col xs={4} lg={forceMd ? null : 2}>
-              <BackButton title="Back" onClick={this.onPrev} block />
+              <BackButton title="Back" onClick={this.onPressBack} block />
             </Col>
             <Col xs={8} lg={forceMd ? null : 3}>
               <SubmitButton title="Donate" block testId="next-button" />

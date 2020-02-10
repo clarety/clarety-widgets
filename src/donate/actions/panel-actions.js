@@ -1,4 +1,3 @@
-import { push as pushRoute } from 'connected-react-router';
 import Cookies from 'js-cookie';
 import { statuses, setStatus, addItem, setCustomer, updateCartData, clearItems, setRecaptcha } from 'shared/actions';
 import { parseNestedElements } from 'shared/utils';
@@ -9,19 +8,19 @@ import { getDonationPanelSelection, getSelectedOffer } from 'donate/selectors';
 
 export const submitDonationPanel = () => {
   return (dispatch, getState, { actions, validations }) => {
-    actions.panelActions.submitDonationPanel(dispatch, getState, { actions, validations });
+    return actions.panelActions.submitDonationPanel(dispatch, getState, { actions, validations });
   };
 };
 
 export const submitCustomerPanel = () => {
   return (dispatch, getState, { actions, validations }) => {
-    actions.panelActions.submitCustomerPanel(dispatch, getState, { actions, validations });
+    return actions.panelActions.submitCustomerPanel(dispatch, getState, { actions, validations });
   };
 };
 
 export const submitPaymentPanel = () => {
   return (dispatch, getState, { actions, validations }) => {
-    actions.panelActions.submitPaymentPanel(dispatch, getState, { actions, validations });
+    return actions.panelActions.submitPaymentPanel(dispatch, getState, { actions, validations });
   };
 };
 
@@ -36,12 +35,11 @@ export class PanelActions {
     const isValid = validations.validateDonationPanel(errors, getState);
     dispatch(setErrors(errors));
 
-    if (isValid) {
-      this._addDonationToCart(dispatch, getState);
-      dispatch(pushRoute('/details'));
-    }
+    if (isValid) this._addDonationToCart(dispatch, getState);
 
     dispatch(setStatus(statuses.ready));
+    
+    return isValid;
   }
 
   async submitCustomerPanel(dispatch, getState, { actions, validations }) {
@@ -54,12 +52,11 @@ export class PanelActions {
     const isValid = validations.validateCustomerPanel(errors, getState);
     dispatch(setErrors(errors));
 
-    if (isValid) {
-      this._addCustomerToCart(dispatch, getState);
-      dispatch(pushRoute('/payment'));
-    }
+    if (isValid) this._addCustomerToCart(dispatch, getState);
 
     dispatch(setStatus(statuses.ready));
+
+    return isValid;
   }
 
   async submitPaymentPanel(dispatch, getState, { actions, validations }) {
@@ -78,9 +75,10 @@ export class PanelActions {
 
     if (isValid) {
       const result = await actions.paymentActions.makePayment(dispatch, getState, { actions, validations });
-      this._handlePaymentResult(result, dispatch, getState);
+      return this._handlePaymentResult(result, dispatch, getState);
     } else {
       dispatch(setStatus(statuses.ready));
+      return false;
     }
   }
 
@@ -120,6 +118,7 @@ export class PanelActions {
 
       dispatch(setErrors(result.validationErrors));
       dispatch(setStatus(statuses.ready));
+      return false;
     } else {
       dispatch(makePaymentSuccess(result));
 
@@ -134,6 +133,7 @@ export class PanelActions {
       // Redirect on success.
       Cookies.set('session-jwt', result.jwt);
       window.location.href = settings.confirmPageUrl;
+      return true;
     }
   }
 }

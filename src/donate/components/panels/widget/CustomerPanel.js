@@ -4,7 +4,6 @@ import BlockUi from 'react-block-ui';
 import { scrollIntoView } from 'shared/utils';
 import { TextInput, StateInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
 import { BasePanel, StepIndicator } from 'donate/components';
-import { connectCustomerPanel } from 'donate/utils';
 import 'react-block-ui/style.css';
 
 export class CustomerPanel extends BasePanel {
@@ -12,16 +11,22 @@ export class CustomerPanel extends BasePanel {
     scrollIntoView(this);
   }
 
-  onPrev = () => this.props.history.goBack();
-
-  onSubmit = async event => {
+  onPressBack = (event) => {
     event.preventDefault();
-    this.props.onSubmit();
+
+    this.props.prevPanel();
+  };
+
+  onPressNext = async (event) => {
+    event.preventDefault();
+
+    const isValid = await this.props.onSubmit();
+    if (isValid) this.props.nextPanel();
   };
 
   render() {
     return (
-      <form onSubmit={this.onSubmit} data-testid="details-panel">
+      <form onSubmit={this.onPressNext} data-testid="customer-panel">
         {this.renderContent()}
       </form>
     );
@@ -105,7 +110,7 @@ export class CustomerPanel extends BasePanel {
         <Card.Footer>
           <Form.Row className="justify-content-center">
             <Col xs={4} lg={forceMd ? null : 2}>
-              <BackButton title="Back" block onClick={this.onPrev} />
+              <BackButton title="Back" block onClick={this.onPressBack} />
             </Col>
             <Col xs={8} lg={forceMd ? null : 3}>
               <SubmitButton title="Next" block testId="next-button" />
