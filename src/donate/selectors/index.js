@@ -1,5 +1,5 @@
 import { statuses } from 'shared/actions';
-import { getCart, getTrackingData, getRecaptcha, getSettings, getParsedFormData } from 'shared/selectors';
+import { getCart, getTrackingData, getRecaptcha, getSetting, getParsedFormData } from 'shared/selectors';
 import { formatPrice } from 'form/utils';
 
 export const getIsBusy = (state) => state.status !== statuses.ready;
@@ -8,44 +8,44 @@ export const getCartItem = (state) => state.cart.items[0];
 
 export const getCustomer = (state) => getCart(state).customer;
 
-export const getSelectedFrequency = (state) => state.panels.donationPanel.frequency;
+export const getDonationPanel = (state) => state.panels.donationPanel;
+
+export const getPriceHandles = (state) => getSetting(state, 'priceHandles');
+
+export const getSelectedFrequency = (state) => getDonationPanel(state).frequency;
+
+export const getDonationPanelSelection = (state) => {
+  const donationPanel = getDonationPanel(state);
+  return donationPanel.selections[donationPanel.frequency];
+};
 
 export const getSelectedAmount = (state) => {
-  const { donationPanel } = state.panels;
-  const { currency } = state.settings;
+  const selection = getDonationPanelSelection(state);
+  
+  if (!selection && !selection.amount) return '';
 
-  const selection = donationPanel.selections[donationPanel.frequency];
-
-  if (!selection) return '';
-  if (!selection.amount) return '';
-
+  const currency = getSetting(state, 'currency');
   const amount = Number(selection.amount).toFixed(2);
+  
   return currency.symbol + amount;
 };
 
 export const getFrequencyLabel = (state, offerUid) => {
-  for (let offer of state.settings.offers) {
-    if (offer.offerUid === offerUid) return offer.label;
-  }
-
-  return '';
+  const priceHandles = getPriceHandles(state);
+  const offer = priceHandles.find(offer => offer.offerUid === offerUid);
+  return offer ? offer.label : '';
 };
 
-export const getDonationPanelSelection = (state) => state.panels.donationPanel.selections[donationPanel.frequency];
-
 export const getSelectedOffer = (state) => {
-  const { settings, panels } = state;
-
-  return settings.priceHandles.find(
-    offer => offer.frequency === panels.donationPanel.frequency
-  );
+  const donationPanel = getDonationPanel(state);
+  const priceHandles = getPriceHandles(state);
+  return priceHandles.find(offer => offer.frequency === donationPanel.frequency);
 };
 
 export const getPaymentPostData = (state) => {
   const cart = getCart(state);
   const trackingData = getTrackingData(state);
   const recaptcha = getRecaptcha(state);
-  const settings = getSettings(state);
   const formData = getParsedFormData(state);
 
   const postData = {
@@ -62,9 +62,9 @@ export const getPaymentPostData = (state) => {
     recaptchaResponse: recaptcha,
   };
 
-  if (settings.showFundraising) {
+  if (getSetting(state, 'showFundraising')) {
     postData.fundraising = {
-      pageUid: settings.fundraisingPageUid,
+      pageUid: getSetting(state, 'fundraisingPageUid'),
       ...formData.fundraising,
     };
   }
