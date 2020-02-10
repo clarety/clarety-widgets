@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Form, Row, Col } from 'react-bootstrap';
+import { BasePanel } from 'shared/components';
 import { TextAreaInput, CheckboxInput } from 'form/components';
-import { BasePanel } from 'donate/components';
 
 export class PageFundraisingPanel extends BasePanel {
   fields = [
@@ -16,24 +16,14 @@ export class PageFundraisingPanel extends BasePanel {
     if (this.hasError()) this.scrollIntoView();
   }
 
-  hasError() {
-    if (!this.fields || this.fields.length === 0) {
-      return false;
-    }
-
-    const { errors } = this.props;
-    for (let field of this.fields) {
-      if (errors.find(error => error.field === field)) {
-        return true;
-      }
-    }
-
-    return false;
+  renderWait() {
+    // TODO:
+    return null;
   }
 
-  render() {
+  renderEdit() {
     return (
-      <form onSubmit={this.onSubmit} data-testid="fundraising-panel">
+      <form onSubmit={this.onPressNext} data-testid="fundraising-panel">
         {this.renderContent()}
       </form>
     );
@@ -76,5 +66,10 @@ export class PageFundraisingPanel extends BasePanel {
         </Card.Body>
       </Card>
     );
+  }
+
+  renderDone() {
+    // TODO:
+    return null;
   }
 }

@@ -22,21 +22,6 @@ export class PageCustomerPanel extends CustomerPanel {
     if (this.hasError()) this.scrollIntoView();
   }
 
-  hasError() {
-    if (!this.fields || this.fields.length === 0) {
-      return false;
-    }
-
-    const { errors } = this.props;
-    for (let field of this.fields) {
-      if (errors.find(error => error.field === field)) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
   renderContent() {
     return (
       <Card>

@@ -1,11 +1,12 @@
 import React from 'react';
 import { Card, Form, Col } from 'react-bootstrap';
 import { Resources } from 'shared/utils';
+import { BasePanel } from 'shared/components';
 import { SubmitButton, ErrorMessages } from 'form/components';
-import { BasePanel, StepIndicator, FrequencySelect } from 'donate/components';
+import { StepIndicator, FrequencySelect } from 'donate/components';
 
 export class DonationPanel extends BasePanel {
-  componentWillMount() {
+  componentDidMount() {
     this.props.clearItems();
   }
 
@@ -24,9 +25,12 @@ export class DonationPanel extends BasePanel {
     if (isValid) this.props.nextPanel();
   };
 
-  render() {
-    if (this.props.frequency === null) return null;
+  renderWait() {
+    // TODO:
+    return null;
+  }
 
+  renderEdit() {
     return (
       <form onSubmit={this.onPressNext} data-testid="donation-panel">
         {this.renderContent()}
@@ -139,6 +143,11 @@ export class DonationPanel extends BasePanel {
         }
       </React.Fragment>
     );
+  }
+
+  renderDone() {
+    // TODO:
+    return null;
   }
 
   _getOffer = frequency => {

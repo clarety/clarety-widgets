@@ -1,14 +1,17 @@
 import React from 'react';
 import { Card, Col, Row, Table } from 'react-bootstrap';
-import { scrollIntoView } from 'shared/utils';
-import { BasePanel } from 'donate/components';
+import { BasePanel } from 'shared/components';
 
 export class SuccessPanel extends BasePanel {
-  componentDidMount() {
-    scrollIntoView(this);
+  onShowPanel() {
+    this.scrollIntoView();
   }
 
-  render() {
+  renderWait() {
+    return null;
+  }
+
+  renderEdit() {
     return this.renderContent();
   }
 
@@ -52,5 +55,9 @@ export class SuccessPanel extends BasePanel {
         <Card.Footer></Card.Footer>
       </Card>
     );
+  }
+
+  renderDone() {
+    return null;
   }
 }

@@ -1,14 +1,14 @@
 import React from 'react';
 import { Card, Form, Row, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
-import { scrollIntoView } from 'shared/utils';
+import { BasePanel } from 'shared/components';
 import { SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput } from 'form/components';
-import { BasePanel, StepIndicator } from 'donate/components';
+import { StepIndicator } from 'donate/components';
 import 'react-block-ui/style.css';
 
 export class PaymentPanel extends BasePanel {
-  componentDidMount() {
-    scrollIntoView(this);
+  onShowPanel() {
+    this.scrollIntoView();
   }
 
   onPressBack = (event) => {
@@ -24,7 +24,12 @@ export class PaymentPanel extends BasePanel {
     if (isValid) this.props.nextPanel();
   };
 
-  render() {
+  renderWait() {
+    // TODO:
+    return null;
+  }
+
+  renderEdit() {
     return (
       <form onSubmit={this.onPressNext} data-testid="payment-panel">
         {this.renderContent()}
@@ -96,5 +101,10 @@ export class PaymentPanel extends BasePanel {
         </Card.Footer>
       </Card>
     );
+  }
+
+  renderDone() {
+    // TODO:
+    return null;
   }
 }
