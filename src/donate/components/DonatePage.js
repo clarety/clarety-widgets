@@ -2,10 +2,16 @@ import React from 'react';
 import BlockUi from 'react-block-ui';
 import { statuses } from 'shared/actions';
 import { Recaptcha } from 'form/components';
-import { _DonateWidget, connectDonateWidget } from 'donate/components';
+import { _DonateWidgetRoot, connectDonateWidgetRoot } from 'donate/components';
 import { PageAmountPanel, PageFundraisingPanel, PageDetailsPanel, PagePaymentPanel } from 'donate/components';
 
-export class _DonatePage extends _DonateWidget {
+export class DonatePage extends React.Component {
+  render() {
+    return <DonatePageRoot {...this.props} />
+  }
+}
+
+export class _DonatePageRoot extends _DonateWidgetRoot {
   render() {
     const { status, variant, showFundraising, reCaptchaKey } = this.props;
 
@@ -38,4 +44,4 @@ export class _DonatePage extends _DonateWidget {
   }
 }
 
-export const DonatePage = connectDonateWidget(_DonatePage);
+const DonatePageRoot = connectDonateWidgetRoot(_DonatePageRoot);

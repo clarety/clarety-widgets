@@ -9,7 +9,13 @@ import { handleUrlParams } from 'donate/actions';
 import { AmountPanel, DetailsPanel, PaymentPanel, SuccessPanel } from 'donate/components';
 import { mapDonationSettings } from 'donate/utils';
 
-export class _DonateWidget extends React.Component {
+export class DonateWidget extends React.Component {
+  render() {
+    return <DonateWidgetRoot {...this.props} />
+  }
+}
+
+export class _DonateWidgetRoot extends React.Component {
   async componentWillMount() {
     const { updateAppSettings, setStore, setTrackingData, fetchSettings, handleUrlParams } = this.props;
     const { storeCode, singleOfferId, recurringOfferId } = this.props;
@@ -71,7 +77,7 @@ export class _DonateWidget extends React.Component {
   }
 }
 
-_DonateWidget.contextType = OverrideContext;
+_DonateWidgetRoot.contextType = OverrideContext;
 
 const mapStateToProps = state => {
   return {
@@ -87,5 +93,5 @@ const actions = {
   handleUrlParams: handleUrlParams,
 };
 
-export const connectDonateWidget = connect(mapStateToProps, actions);
-export const DonateWidget = connectDonateWidget(_DonateWidget);
+export const connectDonateWidgetRoot = connect(mapStateToProps, actions);
+export const DonateWidgetRoot = connectDonateWidgetRoot(_DonateWidgetRoot);
