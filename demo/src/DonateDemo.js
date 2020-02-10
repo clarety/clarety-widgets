@@ -1,19 +1,9 @@
 import React from 'react';
-import { createDonateWidget, renderWidget } from '../../src/';
-import { Actions } from '../../src/donate/actions';
-import { Validations } from '../../src/donate/validations';
+import { DonateWidget, renderWidget } from '../../src/';
 import '../../src/donate/style.scss';
 
 window.renderDonateWidget = (props) => {
-  const DonateWidget = createDonateWidget({
-    actions: new Actions(),
-    validations: new Validations(),
-    components:  {
-      // eg:
-      // AmountPanel: InstanceAmountPanel,
-    },
-  });
-
+  DonateWidget.init();
   renderWidget(props.elementId, <DonateWidget {...props} />);
 };
 

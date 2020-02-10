@@ -4,7 +4,6 @@ export { connect } from 'react-redux';
 export { renderWidget, Resources, getElementOptions, getSitePath, loadCss, withOverrides } from 'shared/utils';
 
 export { DonateWidget, DonatePage } from 'donate/components';
-export { createDonateWidget, createDonatePage } from 'donate/utils';
 export { setupDonateAxiosMock } from 'donate/mocks';
 
 export { Registration } from 'registration/components';

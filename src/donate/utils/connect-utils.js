@@ -1,63 +1,10 @@
-import React from 'react';
-import { createStore, applyMiddleware, compose } from 'redux';
-import thunkMiddleware from 'redux-thunk';
-import { routerMiddleware } from 'connected-react-router';
-import { Provider as ReduxProvider, connect } from 'react-redux';
-import { createMemoryHistory } from 'history';
+import { connect } from 'react-redux';
 import { clearItems } from 'shared/actions';
-import { OverrideContext } from 'shared/utils';
 import { formatPrice } from 'form/utils';
-import { createRootReducer } from 'donate/reducers';
 import { submitDetailsPanel, submitPaymentPanel } from 'donate/actions';
 import { getSetting } from 'shared/selectors';
 import { getIsBusy, getSelectedFrequency, getSelectedAmount, getFrequencyLabel } from 'donate/selectors';
-import { DonateWidget, DonatePage } from 'donate/components';
-import { Actions, PageActions, selectAmount, submitAmountPanel } from 'donate/actions';
-import { Validations } from 'donate/validations';
-
-function wrapDonateComponent(Component, { components, actions, validations }) {
-  components = components || {};
-  actions = actions || new Actions;
-  validations = validations || new Validations;
-
-  // Setup redux store.
-  const history = createMemoryHistory();
-  const reducer = createRootReducer(history);
-
-  const thunk = thunkMiddleware.withExtraArgument({ actions, validations });
-  const middleware = applyMiddleware(routerMiddleware(history), thunk);
-
-  const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-  const store = createStore(reducer, composeDevTools(middleware));
-
-  // Wrap donation widget in providers.
-  const DonateWrapper = props => (
-    <ReduxProvider store={store}>
-      <OverrideContext.Provider value={components}>
-        <Component {...props} history={history} />
-      </OverrideContext.Provider>
-    </ReduxProvider>
-  );
-
-  return DonateWrapper;
-}
-
-export function createDonateWidget({ components, actions, validations } = {}) {
-  components = components || {};
-  actions = actions || new Actions;
-  validations = validations || new Validations;
-
-  return wrapDonateComponent(DonateWidget, { components, actions, validations });
-}
-
-export function createDonatePage({ components, actions, validations } = {}) {
-  components = components || {};
-  actions = actions || new PageActions;
-  validations = validations || new Validations;
-
-  return wrapDonateComponent(DonatePage, { components, actions, validations });
-}
+import { selectAmount, submitAmountPanel } from 'donate/actions';
 
 export function connectAmountPanel(ViewComponent) {
   const mapStateToProps = state => {

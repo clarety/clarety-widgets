@@ -1,17 +1,49 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { ConnectedRouter } from 'connected-react-router'
+import { createStore, applyMiddleware, compose } from 'redux';
+import { createMemoryHistory } from 'history';
+import thunkMiddleware from 'redux-thunk';
+import { routerMiddleware, ConnectedRouter } from 'connected-react-router';
+import { connect, Provider as ReduxProvider } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import { statuses, setStore, setTrackingData, fetchSettings, updateAppSettings } from 'shared/actions';
 import { OverrideContext } from 'shared/utils';
 import { Recaptcha } from 'form/components';
-import { handleUrlParams } from 'donate/actions';
+import { handleUrlParams, Actions } from 'donate/actions';
+import { Validations } from 'donate/validations';
 import { AmountPanel, DetailsPanel, PaymentPanel, SuccessPanel } from 'donate/components';
+import { createRootReducer } from 'donate/reducers';
 import { mapDonationSettings } from 'donate/utils';
 
 export class DonateWidget extends React.Component {
+  static store;
+  static components;
+  static history;
+
+  static init(components, actions, validations) {
+    DonateWidget.components = components || {};
+    actions = actions || new Actions;
+    validations = validations || new Validations;
+
+    // Setup redux store.
+    DonateWidget.history = createMemoryHistory();
+    const reducer = createRootReducer(DonateWidget.history);
+
+    const thunk = thunkMiddleware.withExtraArgument({ actions, validations });
+    const middleware = applyMiddleware(routerMiddleware(DonateWidget.history), thunk);
+
+    const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+    DonateWidget.store = createStore(reducer, composeDevTools(middleware));
+  }
+
   render() {
-    return <DonateWidgetRoot {...this.props} />
+    return (
+      <ReduxProvider store={DonateWidget.store}>
+        <OverrideContext.Provider value={DonateWidget.components}>
+          <DonateWidgetRoot {...this.props} history={DonateWidget.history} />
+        </OverrideContext.Provider>
+      </ReduxProvider>
+    );
   }
 }
 

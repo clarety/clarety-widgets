@@ -1,10 +1,9 @@
 import React from 'react';
-import { createDonatePage, renderWidget } from '../../src/';
+import { DonatePage, renderWidget } from '../../src/';
 import '../../src/donate/style.scss';
 
 window.renderDonatePage = (props) => {
-  const DonatePage = createDonatePage();
-
+  DonatePage.init();
   renderWidget(props.elementId, <DonatePage {...props} />);
 };
 
