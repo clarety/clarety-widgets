@@ -3,6 +3,7 @@ import { DonateWidget, renderWidget } from '../../src/';
 import { DonationPanel, DonationConnect } from '../../src/donate/components';
 import { CustomerPanel, CustomerConnect } from '../../src/donate/components';
 import { PaymentPanel, PaymentConnect } from '../../src/donate/components';
+import { SuccessPanel, SuccessConnect } from '../../src/donate/components';
 import '../../src/donate/style.scss';
 
 window.renderDonateWidget = (props) => {
@@ -22,6 +23,11 @@ window.renderDonateWidget = (props) => {
     {
       component: PaymentPanel,
       connect: PaymentConnect,
+      settings: {},
+    },
+    {
+      component: SuccessPanel,
+      connect: SuccessConnect,
       settings: {},
     },
   ]);
