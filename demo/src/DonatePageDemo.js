@@ -1,31 +1,38 @@
 import React from 'react';
-import { createDonatePage } from '../../src/';
+import { createDonatePage, renderWidget } from '../../src/';
 import '../../src/donate/style.scss';
 
-const DonatePage = createDonatePage();
+window.renderDonatePage = (props) => {
+  const DonatePage = createDonatePage();
 
-const DonatePageDemo = () => (
-  <div className="container my-5">
-    <div className="row">
-      <div className="col">
-        <DonatePage
-          showFundraising={true}
-          fundraisingPageUid="abc-123"
+  renderWidget(props.elementId, <DonatePage {...props} />);
+};
 
-          storeCode="AU"
+export default class DonatePageDemo extends React.Component {
+  componentDidMount() {
+    window.renderDonatePage({
+      elementId: 'donate-page-demo',
+      showFundraising: true,
+      fundraisingPageUid: 'abc-123',
+      storeCode: 'AU',
+      singleOfferId: '8',
+      recurringOfferId: '17',
+      sourceId: '17',
+      responseId: 'e9c2e351d90b11e996fd',
+      emailResponseId: '1234',
+      // reCaptchaKey: '1234',
+    });
+  }
 
-          singleOfferId="8"
-          recurringOfferId="17"
-
-          sourceId="17"
-          responseId="e9c2e351d90b11e996fd"
-          emailResponseId="1234"
-
-          reCaptchaKey="1234"
-        />
+  render() {
+    return (
+      <div className="container my-5">
+        <div className="row">
+          <div className="col">
+            <div id="donate-page-demo"></div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-);
-
-export default DonatePageDemo;
+    );
+  }
+}
