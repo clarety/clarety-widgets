@@ -38,7 +38,7 @@ export class _DonatePageRoot extends _DonateWidgetRoot {
           <PaymentPanelComponent variant={variant} />
         </BlockUi>
 
-        <Recaptcha siteKey={reCaptchaKey} />
+        {reCaptchaKey && <Recaptcha siteKey={reCaptchaKey} />}
       </div>
     );
   }
