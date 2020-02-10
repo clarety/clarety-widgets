@@ -4,13 +4,15 @@ import thunkMiddleware from 'redux-thunk';
 import { routerMiddleware } from 'connected-react-router';
 import { Provider as ReduxProvider, connect } from 'react-redux';
 import { createMemoryHistory } from 'history';
+import { clearItems } from 'shared/actions';
 import { OverrideContext } from 'shared/utils';
 import { formatPrice } from 'form/utils';
 import { createRootReducer } from 'donate/reducers';
 import { submitDetailsPanel, submitPaymentPanel } from 'donate/actions';
+import { getSetting } from 'shared/selectors';
 import { getIsBusy, getSelectedFrequency, getSelectedAmount, getFrequencyLabel } from 'donate/selectors';
 import { DonateWidget, DonatePage } from 'donate/components';
-import { Actions, PageActions } from 'donate/actions';
+import { Actions, PageActions, selectAmount, submitAmountPanel } from 'donate/actions';
 import { Validations } from 'donate/validations';
 
 function wrapDonateComponent(Component, { components, actions, validations }) {
@@ -57,11 +59,37 @@ export function createDonatePage({ components, actions, validations } = {}) {
   return wrapDonateComponent(DonatePage, { components, actions, validations });
 }
 
+export function connectAmountPanel(ViewComponent) {
+  const mapStateToProps = state => {
+    const { amountPanel } = state.panels;
+  
+    return {
+      offers: state.settings.priceHandles,
+      frequency: amountPanel.frequency,
+      selections: amountPanel.selections,
+      selectedAmount: getSelectedAmount(state),
+      errors: state.errors,
+      forceMd: getSetting(state, 'forceMdLayout'),
+      variant: getSetting(state, 'variant'),
+    };
+  };
+  
+  const actions = {
+    selectAmount: selectAmount,
+    submitAmountPanel: submitAmountPanel,
+    clearItems: clearItems,
+  };
+  
+  return connect(mapStateToProps, actions)(ViewComponent);
+}
+
 export function connectDetailsPanel(ViewComponent) {
   const mapStateToProps = state => {
     return {
       isBusy: getIsBusy(state),
       errors: state.errors,
+      forceMd: getSetting(state, 'forceMdLayout'),
+      variant: getSetting(state, 'variant'),
     };
   };
   
@@ -77,6 +105,8 @@ export function connectFundraisingPanel(ViewComponent) {
     return {
       isBusy: getIsBusy(state),
       errors: state.errors,
+      forceMd: getSetting(state, 'forceMdLayout'),
+      variant: getSetting(state, 'variant'),
     };
   };
   
@@ -94,6 +124,8 @@ export function connectPaymentPanel(ViewComponent) {
       frequency: getSelectedFrequency(state),
       formData: state.formData,
       errors: state.errors,
+      forceMd: getSetting(state, 'forceMdLayout'),
+      variant: getSetting(state, 'variant'),
     };
   };
   
@@ -114,7 +146,9 @@ export function connectSuccessPanel(ViewComponent) {
       donation: {
         frequency: getFrequencyLabel(state, item.offerUid),
         amount: formatPrice(item.price),
-      }
+      },
+      forceMd: getSetting(state, 'forceMdLayout'),
+      variant: getSetting(state, 'variant'),
     };
   };
 

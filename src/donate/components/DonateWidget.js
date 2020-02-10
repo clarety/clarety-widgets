@@ -19,6 +19,7 @@ export class _DonateWidget extends React.Component {
 
     updateAppSettings({
       variant: this.props.variant,
+      forceMdLayout: !!this.props.forceMdLayout,
       confirmPageUrl: this.props.confirmPageUrl,
       showFundraising: this.props.showFundraising,
       fundraisingPageUid: this.props.fundraisingPageUid,
@@ -37,7 +38,7 @@ export class _DonateWidget extends React.Component {
   }
 
   render() {
-    const { status, forceMdLayout, variant, reCaptchaKey } = this.props;
+    const { status, reCaptchaKey } = this.props;
 
     const AmountPanelComponent  = this.context.AmountPanel  || AmountPanel;
     const DetailsPanelComponent = this.context.DetailsPanel || DetailsPanel;
@@ -57,18 +58,10 @@ export class _DonateWidget extends React.Component {
       <div className="clarety-donate-widget h-100">
         <ConnectedRouter history={this.props.history}>
           <Switch>
-            <Route exact path="/" render={props => (
-              <AmountPanelComponent {...props} forceMd={forceMdLayout} variant={variant} />
-            )}/>
-            <Route path="/details" render={props => (
-              <DetailsPanelComponent {...props} forceMd={forceMdLayout} variant={variant} />
-            )}/>
-            <Route path="/payment" render={props => (
-              <PaymentPanelComponent {...props} forceMd={forceMdLayout} variant={variant} />
-            )}/>
-            <Route path="/success" render={props => (
-              <SuccessPanelComponent {...props} forceMd={forceMdLayout} variant={variant} />
-            )}/>
+            <Route exact path="/" render={props => <AmountPanelComponent {...props} />}/>
+            <Route path="/details" render={props => <DetailsPanelComponent {...props} />}/>
+            <Route path="/payment" render={props => <PaymentPanelComponent {...props} />}/>
+            <Route path="/success" render={props => <SuccessPanelComponent {...props} />}/>
           </Switch>
         </ConnectedRouter>
 
