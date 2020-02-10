@@ -3,9 +3,8 @@ import { Card, Form, Col } from 'react-bootstrap';
 import { Resources } from 'shared/utils';
 import { SubmitButton, ErrorMessages } from 'form/components';
 import { BasePanel, StepIndicator, FrequencySelect } from 'donate/components';
-import { connectDonationPanel } from 'donate/utils';
 
-export class _DonationPanel extends BasePanel {
+export class DonationPanel extends BasePanel {
   componentWillMount() {
     this.props.clearItems();
   }
@@ -148,5 +147,3 @@ export class _DonationPanel extends BasePanel {
     return offer.amounts.find(amount => amount.variable === true);
   };
 }
-
-export const DonationPanel = connectDonationPanel(_DonationPanel);

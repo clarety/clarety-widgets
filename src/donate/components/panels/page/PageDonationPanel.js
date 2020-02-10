@@ -1,9 +1,8 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
-import { _DonationPanel, FrequencySelect } from 'donate/components';
-import { connectDonationPanel } from 'donate/utils';
+import { DonationPanel, FrequencySelect } from 'donate/components';
 
-export class _PageDonationPanel extends _DonationPanel {
+export class PageDonationPanel extends DonationPanel {
   componentDidMount() {
   }
 
@@ -31,5 +30,3 @@ export class _PageDonationPanel extends _DonationPanel {
     );
   }
 }
-
-export const PageDonationPanel = connectDonationPanel(_PageDonationPanel);

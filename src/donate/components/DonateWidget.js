@@ -2,15 +2,14 @@ import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { createMemoryHistory } from 'history';
 import thunkMiddleware from 'redux-thunk';
-import { routerMiddleware, ConnectedRouter } from 'connected-react-router';
+import { routerMiddleware } from 'connected-react-router';
 import { connect, Provider as ReduxProvider } from 'react-redux';
-import { Switch, Route } from 'react-router-dom';
 import { statuses, setStore, setTrackingData, fetchSettings, updateAppSettings, setPanels } from 'shared/actions';
+import { PanelManager } from 'shared/components';
 import { Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { handleUrlParams, Actions } from 'donate/actions';
 import { Validations } from 'donate/validations';
-import { DonationPanel, CustomerPanel, PaymentPanel, SuccessPanel } from 'donate/components';
 import { createRootReducer } from 'donate/reducers';
 import { mapDonationSettings, setupDefaultResources } from 'donate/utils';
 
@@ -90,15 +89,7 @@ export class _DonateWidgetRoot extends React.Component {
 
     return (
       <div className="clarety-donate-widget h-100">
-        <ConnectedRouter history={this.props.history}>
-          <Switch>
-            <Route exact path="/" render={props => <DonationPanel {...props} />}/>
-            <Route path="/details" render={props => <CustomerPanel {...props} />}/>
-            <Route path="/payment" render={props => <PaymentPanel {...props} />}/>
-            <Route path="/success" render={props => <SuccessPanel {...props} />}/>
-          </Switch>
-        </ConnectedRouter>
-
+        <PanelManager layout="tabs" />
         {reCaptchaKey && <Recaptcha siteKey={reCaptchaKey} />}
       </div>
     );

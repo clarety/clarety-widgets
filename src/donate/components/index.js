@@ -9,6 +9,7 @@ export * from './misc/StepIndicator';
 export * from './panels/BasePanel';
 
 export * from './panels/widget/DonationPanel';
+export * from './panels/widget/DonationConnect';
 export * from './panels/widget/CustomerPanel';
 export * from './panels/widget/PaymentPanel';
 export * from './panels/widget/SuccessPanel';

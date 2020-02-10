@@ -1,34 +1,8 @@
 import { connect } from 'react-redux';
-import { clearItems } from 'shared/actions';
 import { formatPrice } from 'form/utils';
 import { submitCustomerPanel, submitPaymentPanel } from 'donate/actions';
 import { getSetting } from 'shared/selectors';
 import { getIsBusy, getSelectedFrequency, getSelectedAmount, getFrequencyLabel } from 'donate/selectors';
-import { selectAmount, submitDonationPanel } from 'donate/actions';
-
-export function connectDonationPanel(ViewComponent) {
-  const mapStateToProps = state => {
-    const { donationPanel } = state.panels;
-  
-    return {
-      offers: state.settings.priceHandles,
-      frequency: donationPanel.frequency,
-      selections: donationPanel.selections,
-      selectedAmount: getSelectedAmount(state),
-      errors: state.errors,
-      forceMd: getSetting(state, 'forceMdLayout'),
-      variant: getSetting(state, 'variant'),
-    };
-  };
-  
-  const actions = {
-    selectAmount: selectAmount,
-    submitDonationPanel: submitDonationPanel,
-    clearItems: clearItems,
-  };
-  
-  return connect(mapStateToProps, actions)(ViewComponent);
-}
 
 export function connectCustomerPanel(ViewComponent) {
   const mapStateToProps = state => {

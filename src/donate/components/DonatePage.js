@@ -6,10 +6,10 @@ import { routerMiddleware } from 'connected-react-router';
 import { Provider as ReduxProvider } from 'react-redux';
 import BlockUi from 'react-block-ui';
 import { statuses, setPanels } from 'shared/actions';
+import { PanelManager } from 'shared/components';
 import { Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { _DonateWidgetRoot, connectDonateWidgetRoot } from 'donate/components';
-import { PageDonationPanel, PageFundraisingPanel, PageCustomerPanel, PagePaymentPanel } from 'donate/components';
 import { PageActions } from 'donate/actions';
 import { Validations } from 'donate/validations';
 import { createRootReducer } from 'donate/reducers';
@@ -51,7 +51,7 @@ export class DonatePage extends React.Component {
 
 export class _DonatePageRoot extends _DonateWidgetRoot {
   render() {
-    const { status, showFundraising, reCaptchaKey } = this.props;
+    const { status, reCaptchaKey } = this.props;
 
     // Show a loading indicator while we init.
     if (status === statuses.initializing) {
@@ -65,10 +65,7 @@ export class _DonatePageRoot extends _DonateWidgetRoot {
     return (
       <div className="clarety-donate-page">
         <BlockUi tag="div" blocking={status !== statuses.ready} loader={<span></span>}>
-          <PageDonationPanel />
-          <PageCustomerPanel />
-          {showFundraising && <PageFundraisingPanel />}
-          <PagePaymentPanel />
+          <PanelManager layout="page" />
         </BlockUi>
 
         {reCaptchaKey && <Recaptcha siteKey={reCaptchaKey} />}
