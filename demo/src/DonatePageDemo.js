@@ -1,6 +1,6 @@
 import React from 'react';
 import { DonatePage, renderWidget } from '../../src/';
-import { PageDonationPanel, DonationConnect } from '../../src/donate/components';
+import { DonationPanel, DonationConnect } from '../../src/donate/components';
 import { PageCustomerPanel, CustomerConnect } from '../../src/donate/components';
 import { PageFundraisingPanel, FundraisingConnect } from '../../src/donate/components';
 import { PagePaymentPanel, PaymentConnect } from '../../src/donate/components';
@@ -11,7 +11,7 @@ window.renderDonatePage = (props) => {
 
   DonatePage.setPanels([
     {
-      component: PageDonationPanel,
+      component: DonationPanel,
       connect: DonationConnect,
       settings: {},
     },

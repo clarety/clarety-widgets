@@ -16,7 +16,6 @@ export * from './panels/widget/PaymentConnect';
 export * from './panels/widget/SuccessPanel';
 export * from './panels/widget/SuccessConnect';
 
-export * from './panels/page/PageDonationPanel';
 export * from './panels/page/PageCustomerPanel';
 export * from './panels/page/PageFundraisingPanel';
 export * from './panels/page/PagePaymentPanel';

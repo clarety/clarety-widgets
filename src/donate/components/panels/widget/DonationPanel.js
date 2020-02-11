@@ -6,8 +6,15 @@ import { SubmitButton, ErrorMessages } from 'form/components';
 import { FrequencySelect } from 'donate/components';
 
 export class DonationPanel extends BasePanel {
-  componentDidMount() {
-    this.props.clearItems();
+  onShowPanel() {
+    const { layout, clearItems } = this.props;
+    if (layout === 'tabs') clearItems();
+  }
+
+  componentDidUpdate() {
+    if (this.props.layout === 'page' && this.hasError()) {
+      this.scrollIntoView();
+    }
   }
 
   onHoverAmount = (amountInfo) => {
@@ -57,7 +64,7 @@ export class DonationPanel extends BasePanel {
     const offer = this._getOffer(frequency);
     const variableAmount = this._getVariableAmount(offer);
 
-    let deckClassName = 'card-deck flex-column mt-3 mx-n3 text-left';
+    let deckClassName = 'card-deck flex-column mt-3 mx-n3';
     if (!forceMd) deckClassName += ' flex-lg-row';
 
     return (
@@ -81,13 +88,15 @@ export class DonationPanel extends BasePanel {
           </div>
         </PanelBody>
 
-        <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
-          <Form.Row className="justify-content-center">
-            <Col lg={forceMd ? null : 5}>
-              <SubmitButton title="Next" block testId="next-button" />
-            </Col>
-          </Form.Row>
-        </PanelFooter>
+        {layout !== 'page' &&
+          <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
+            <Form.Row className="justify-content-center">
+              <Col>
+                <SubmitButton title="Next" block testId="next-button" />
+              </Col>
+            </Form.Row>
+          </PanelFooter>
+        }
       </PanelContainer>
     );
   }
