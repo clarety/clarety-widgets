@@ -6,8 +6,27 @@ import { TextInput, StateInput, SubmitButton, BackButton, ErrorMessages, FormEle
 import 'react-block-ui/style.css';
 
 export class CustomerPanel extends BasePanel {
+  fields = [
+    'customer.firstName',
+    'customer.lastName',
+    'customer.email',
+    'customer.billing.address1',
+    'customer.billing.suburb',
+    'customer.billing.state',
+    'customer.billing.postcode',
+    'customer.billing.country'
+  ];
+
   onShowPanel() {
-    this.scrollIntoView();
+    if (this.props.layout === 'tabs') {
+      this.scrollIntoView();
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.layout === 'page' && this.hasError()) {
+      this.scrollIntoView();
+    }
   }
 
   onPressBack = (event) => {
@@ -129,16 +148,18 @@ export class CustomerPanel extends BasePanel {
           </Row>
         </PanelBody>
     
-        <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
-          <Form.Row className="justify-content-center">
-            <Col xs={4} lg={forceMd ? null : 2}>
-              <BackButton title="Back" block onClick={this.onPressBack} />
-            </Col>
-            <Col xs={8} lg={forceMd ? null : 3}>
-              <SubmitButton title="Next" block testId="next-button" />
-            </Col>
-          </Form.Row>
-        </PanelFooter>
+        {layout !== 'page' &&
+          <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
+            <Form.Row className="justify-content-center">
+              <Col xs={4}>
+                <BackButton title="Back" block onClick={this.onPressBack} />
+              </Col>
+              <Col xs={8}>
+                <SubmitButton title="Next" block testId="next-button" />
+              </Col>
+            </Form.Row>
+          </PanelFooter>
+        }
       </PanelContainer>
     );
   }

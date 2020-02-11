@@ -1,8 +1,8 @@
 import React from 'react';
 import { StackPanelContainer, StackPanelHeader, StackPanelBody } from './stack';
 import { AccordianPanelContainer, AccordianPanelHeader, AccordianPanelBody } from './accordian';
-import { PagePanelContainer, PagePanelHeader, PagePanelBody } from './page';
 import { TabsPanelContainer, TabsPanelHeader, TabsPanelBody, TabsPanelFooter } from './tabs';
+import { PagePanelContainer, PagePanelHeader, PagePanelBody, PagePanelFooter } from './page';
 
 export const PanelContainer = ({ layout, status, className, children }) => {
   switch (layout) {
@@ -38,9 +38,10 @@ export const PanelBody = ({ layout, status, isBusy, children }) => {
 };
 
 export const PanelFooter = ({ layout, status, isBusy, children }) => {
-  if (layout === 'tabs') {
-    return <TabsPanelFooter status={status} isBusy={isBusy}>{children}</TabsPanelFooter>;
-  }
+  switch (layout) {
+    case 'tabs': return <TabsPanelFooter status={status} isBusy={isBusy}>{children}</TabsPanelFooter>;
+    case 'page': return <PagePanelFooter status={status} isBusy={isBusy}>{children}</PagePanelFooter>;
 
-  throw new Error(`PanelFooter not implemented for layout ${layout}`);
+    default: throw new Error(`PanelFooter not implemented for layout ${layout}`);
+  }
 };
