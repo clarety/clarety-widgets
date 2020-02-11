@@ -6,8 +6,22 @@ import { SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, 
 import 'react-block-ui/style.css';
 
 export class PaymentPanel extends BasePanel {
+  fields = [
+    'payment.cardNumber',
+    'payment.expiry',
+    'payment.ccv',
+  ];
+
   onShowPanel() {
-    this.scrollIntoView();
+    if (this.props.layout === 'tabs') {
+      this.scrollIntoView();
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.layout === 'page' && this.hasError()) {
+      this.scrollIntoView();
+    }
   }
 
   onPressBack = (event) => {
@@ -108,9 +122,11 @@ export class PaymentPanel extends BasePanel {
   
         <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
           <Form.Row className="justify-content-center">
-            <Col xs={4} lg={forceMd ? null : 2}>
-              <BackButton title="Back" onClick={this.onPressBack} block />
-            </Col>
+            {layout !== 'page' &&
+              <Col xs={4}>
+                <BackButton title="Back" onClick={this.onPressBack} block />
+              </Col>
+            }
             <Col xs={8} lg={forceMd ? null : 3}>
               <SubmitButton title="Donate" block testId="next-button" />
             </Col>

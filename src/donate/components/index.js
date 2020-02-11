@@ -17,7 +17,6 @@ export * from './panels/widget/SuccessPanel';
 export * from './panels/widget/SuccessConnect';
 
 export * from './panels/page/PageFundraisingPanel';
-export * from './panels/page/PagePaymentPanel';
 
 export * from './DonateWidget';
 export * from './DonatePage';
