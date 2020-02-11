@@ -43,7 +43,7 @@ export class CustomerPanel extends BasePanel {
     return (
       <Card>
         <Card.Header className="text-center">
-          <StepIndicator currentStep="details" />
+          <StepIndicator />
         </Card.Header>
     
         <Card.Body>

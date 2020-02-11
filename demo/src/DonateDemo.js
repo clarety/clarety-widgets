@@ -13,22 +13,30 @@ window.renderDonateWidget = (props) => {
     {
       component: DonationPanel,
       connect: DonationConnect,
-      settings: {},
+      settings: {
+        tabName: 'Amount',
+      },
     },
     {
       component: CustomerPanel,
       connect: CustomerConnect,
-      settings: {},
+      settings: {
+        tabName: 'Details',
+      },
     },
     {
       component: PaymentPanel,
       connect: PaymentConnect,
-      settings: {},
+      settings: {
+        tabName: 'Payment',
+      },
     },
     {
       component: SuccessPanel,
       connect: SuccessConnect,
-      settings: {},
+      settings: {
+        hideTab: true,
+      },
     },
   ]);
 

@@ -1,37 +1,42 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { getSetting, getPanelManager } from 'shared/selectors';
 
-export const StepIndicator = ({ currentStep }) => {
-  const styles = _getStyles(currentStep);
+const _StepIndicator = ({ panels }) => (
+  <ol className="widget-step-indicator">
+    {panels.map(panel => (
+      <li key={panel.id} className={getClassName(panel.status)}>
+        <span>{panel.name}</span>
+      </li>
+    ))}
+  </ol>
+);
 
-  return (
-    <ol className="widget-step-indicator">
-      <li className={styles.amount}><span>Amount</span></li>
-      <li className={styles.details}><span>Details</span></li>
-      <li className={styles.payment}><span>Payment</span></li>
-    </ol>
-  );
+const mapStateToProps = (state) => {
+  const panelSettings = getSetting(state, 'panels');
+  const panelManager = getPanelManager(state);
+
+  // Remove any panels with 'hideTab' setting.
+  const panels = panelManager.filter(panel => {
+    const settings = panelSettings[panel.component];
+    return settings && !settings.hideTab;
+  });
+
+  return {
+    panels: panels.map(panel => ({
+      id: panel.id,
+      name: panelSettings[panel.component].tabName,
+      status: panel.status,
+    })),
+  };
 };
 
-const _getStyles = currentStep => {
-  switch (currentStep) {
-    case 'amount': return {
-      amount: 'current',
-      details: '',
-      payment: '',
-    };
+export const StepIndicator = connect(mapStateToProps)(_StepIndicator);
 
-    case 'details': return {
-      amount: 'visited',
-      details: 'current',
-      payment: '',
-    };
+function getClassName(status) {
+  if (status === 'wait') return '';
+  if (status === 'edit') return 'current';
+  if (status === 'done') return 'visited';
 
-    case 'payment': return {
-      amount: 'visited',
-      details: 'visited',
-      payment: 'current',
-    };
-
-    default: return null;
-  }
-};
+  return null;
+}

@@ -50,7 +50,7 @@ export class DonationPanel extends BasePanel {
     return (
       <Card className="text-center">
         <Card.Header>
-          <StepIndicator currentStep="amount" />
+          <StepIndicator />
         </Card.Header>
 
         <Card.Body>

@@ -9,6 +9,7 @@ export const getSettings = (state) => state.settings;
 export const getFormData = (state) => state.formData;
 export const getIsBusy = (state) => state.status !== statuses.ready;
 export const getErrors = (state) => state.errors;
+export const getPanelManager = (state) => state.panelManager;
 
 export const getIsLoggedIn = (state) => !!getAuth(state).jwt;
 
