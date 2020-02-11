@@ -2,7 +2,7 @@ import React from 'react';
 import { DonatePage, renderWidget } from '../../src/';
 import { DonationPanel, DonationConnect } from '../../src/donate/components';
 import { CustomerPanel, CustomerConnect } from '../../src/donate/components';
-import { PageFundraisingPanel, FundraisingConnect } from '../../src/donate/components';
+import { FundraisingPanel, FundraisingConnect } from '../../src/donate/components';
 import { PaymentPanel, PaymentConnect } from '../../src/donate/components';
 import '../../src/donate/style.scss';
 
@@ -23,9 +23,11 @@ window.renderDonatePage = (props) => {
       },
     },
     {
-      component: PageFundraisingPanel,
+      component: FundraisingPanel,
       connect: FundraisingConnect,
-      settings: {},
+      settings: {
+        title: 'Fundraising Details',
+      },
     },
     {
       component: PaymentPanel,

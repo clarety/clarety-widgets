@@ -10,13 +10,12 @@ export * from './panels/widget/CustomerPanel';
 export * from './panels/widget/CustomerConnect';
 export * from './panels/widget/DonationPanel';
 export * from './panels/widget/DonationConnect';
+export * from './panels/widget/FundraisingPanel';
 export * from './panels/widget/FundraisingConnect';
 export * from './panels/widget/PaymentPanel';
 export * from './panels/widget/PaymentConnect';
 export * from './panels/widget/SuccessPanel';
 export * from './panels/widget/SuccessConnect';
-
-export * from './panels/page/PageFundraisingPanel';
 
 export * from './DonateWidget';
 export * from './DonatePage';
