@@ -37,7 +37,7 @@ export class DonationPanel extends BasePanel {
     const { layout, index, settings } = this.props;
 
     return (
-      <PanelContainer layout={layout} status="wait">
+      <PanelContainer layout={layout} status="wait" className="donation-panel">
         <PanelHeader
           status="wait"
           layout={layout}
@@ -63,7 +63,7 @@ export class DonationPanel extends BasePanel {
     const { layout, isBusy, index, settings } = this.props;
 
     return (
-      <PanelContainer layout={layout} status="edit">
+      <PanelContainer layout={layout} status="edit" className="donation-panel">
         {!settings.hideHeader &&
           <PanelHeader
             status="edit"
@@ -178,7 +178,7 @@ export class DonationPanel extends BasePanel {
     const { layout, index, settings } = this.props;
 
     return (
-      <PanelContainer layout={layout} status="done">
+      <PanelContainer layout={layout} status="done" className="donation-panel">
         <PanelHeader
           status="done"
           layout={layout}
