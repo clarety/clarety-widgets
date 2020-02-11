@@ -48,7 +48,7 @@ export class DonationPanel extends BasePanel {
     if (!forceMd) deckClassName += ' flex-lg-row';
 
     return (
-      <Card className="text-center">
+      <Card>
         <Card.Header>
           <StepIndicator />
         </Card.Header>

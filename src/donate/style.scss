@@ -5,6 +5,10 @@
     text-align: center;
   }
 
+  .frequency-select {
+    text-align: center;
+  }
+
   .donation-summary {
     text-align: center;
     font-size: 1.1rem;
@@ -84,6 +88,7 @@
 .widget-step-indicator {
   margin: 0;
   font-size: 14px;
+  text-align: center;
 
   &::after {
     clear: both;
