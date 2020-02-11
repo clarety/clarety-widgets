@@ -3,7 +3,6 @@ import { Card, Form, Row, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import { BasePanel } from 'shared/components';
 import { TextInput, StateInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
-import { StepIndicator } from 'donate/components';
 import 'react-block-ui/style.css';
 
 export class CustomerPanel extends BasePanel {
@@ -42,10 +41,6 @@ export class CustomerPanel extends BasePanel {
 
     return (
       <Card>
-        <Card.Header className="text-center">
-          <StepIndicator />
-        </Card.Header>
-    
         <Card.Body>
           <Row className="justify-content-center">
             <Col lg={forceMd ? null : 8}>

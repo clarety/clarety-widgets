@@ -47,13 +47,18 @@ export default class DonateDemo extends React.Component {
   componentDidMount() {
     window.renderDonateWidget({
       elementId: 'donate-widget-demo',
+
       storeCode: 'AU',
       singleOfferId: '8',
       recurringOfferId: '17',
+
       sourceId: '17',
       responseId: 'e9c2e351d90b11e996fd',
       emailResponseId: '1234',
+      
       // reCaptchaKey: '1234',
+
+      showStepIndicator: true,
       forceMdLayout: true,
     });
   }

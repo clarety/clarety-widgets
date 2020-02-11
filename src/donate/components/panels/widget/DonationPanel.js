@@ -3,7 +3,7 @@ import { Card, Form, Col } from 'react-bootstrap';
 import { Resources } from 'shared/utils';
 import { BasePanel } from 'shared/components';
 import { SubmitButton, ErrorMessages } from 'form/components';
-import { StepIndicator, FrequencySelect } from 'donate/components';
+import { FrequencySelect } from 'donate/components';
 
 export class DonationPanel extends BasePanel {
   componentDidMount() {
@@ -49,10 +49,6 @@ export class DonationPanel extends BasePanel {
 
     return (
       <Card>
-        <Card.Header>
-          <StepIndicator />
-        </Card.Header>
-
         <Card.Body>
           <ErrorMessages />
 

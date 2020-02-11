@@ -3,7 +3,6 @@ import { Card, Form, Row, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import { BasePanel } from 'shared/components';
 import { SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput } from 'form/components';
-import { StepIndicator } from 'donate/components';
 import 'react-block-ui/style.css';
 
 export class PaymentPanel extends BasePanel {
@@ -41,11 +40,7 @@ export class PaymentPanel extends BasePanel {
     const { forceMd, isBusy } = this.props;
 
     return (
-      <Card>
-        <Card.Header className="text-center">
-          <StepIndicator />
-        </Card.Header>
-  
+      <Card>  
         <Card.Body>
           <Row className="justify-content-center">
             <Col lg={forceMd ? null : 8}>

@@ -10,6 +10,7 @@ import { handleUrlParams, Actions } from 'donate/actions';
 import { Validations } from 'donate/validations';
 import { rootReducer } from 'donate/reducers';
 import { mapDonationSettings, setupDefaultResources } from 'donate/utils';
+import { StepIndicator } from 'donate/components';
 
 export class DonateWidget extends React.Component {
   static store;
@@ -68,7 +69,7 @@ export class _DonateWidgetRoot extends React.Component {
   }
 
   render() {
-    const { status, reCaptchaKey } = this.props;
+    const { status, reCaptchaKey, showStepIndicator } = this.props;
 
     // Show a loading indicator while we init.
     if (status === statuses.initializing) {
@@ -81,6 +82,7 @@ export class _DonateWidgetRoot extends React.Component {
 
     return (
       <div className="clarety-donate-widget h-100">
+        {showStepIndicator && <StepIndicator />}
         <PanelManager layout="tabs" />
         {reCaptchaKey && <Recaptcha siteKey={reCaptchaKey} />}
       </div>
