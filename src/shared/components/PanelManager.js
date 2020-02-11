@@ -11,6 +11,10 @@ class _PanelManager extends React.Component {
   constructor(props) {
     super(props);
     this.setupPanelComponents(props.panels);
+
+    if (props.layout === 'page') {
+      props.panels.forEach((panel, index) => this.setStatus(index, 'edit'));
+    }
   }
 
   setupPanelComponents(panels) {

@@ -6,18 +6,22 @@ import 'react-block-ui/style.css';
 
 export const PanelContainer = ({ layout, status, className, children }) => {
   if (layout === 'stack') {
-    return (<StackPanelContainer status={status} className={className}>{children}</StackPanelContainer>);
+    return <StackPanelContainer status={status} className={className}>{children}</StackPanelContainer>;
   }
 
   if (layout === 'accordian') {
-    return (<AccordianPanelContainer status={status} className={className}>{children}</AccordianPanelContainer>);
+    return <AccordianPanelContainer status={status} className={className}>{children}</AccordianPanelContainer>;
   }
 
   if (layout === 'tabs') {
-    return (<TabsPanelContainer status={status} className={className}>{children}</TabsPanelContainer>);
+    return <TabsPanelContainer status={status} className={className}>{children}</TabsPanelContainer>;
   }
 
-  return children;
+  if (layout === 'page') {
+    return <PagePanelContainer status={status} className={className}>{children}</PagePanelContainer>;
+  }
+
+  throw new Error(`PanelContainer not implemented for layout ${layout}`);
 };
 
 export const PanelHeader = ({ layout, status, title, subtitle, number, intlId, intlValues, onPressEdit }) => {
@@ -32,6 +36,12 @@ export const PanelHeader = ({ layout, status, title, subtitle, number, intlId, i
   if (layout === 'tabs') {
     return <TabsPanelHeader status={status} title={title} subtitle={subtitle} />;
   }
+
+  if (layout === 'page') {
+    return <PagePanelHeader status={status} title={title} subtitle={subtitle} />;
+  }
+
+  throw new Error(`PanelHeader not implemented for layout ${layout}`);
 };
 
 export const PanelBody = ({ layout, status, isBusy, children }) => {
@@ -47,7 +57,11 @@ export const PanelBody = ({ layout, status, isBusy, children }) => {
     return <TabsPanelBody status={status} isBusy={isBusy}>{children}</TabsPanelBody>;
   }
 
-  return children;
+  if (layout === 'page') {
+    return <PagePanelBody status={status} isBusy={isBusy}>{children}</PagePanelBody>;
+  }
+
+  throw new Error(`PanelBody not implemented for layout ${layout}`);
 };
 
 export const PanelFooter = ({ layout, status, isBusy, children }) => {
@@ -108,6 +122,23 @@ const StackPanelBody = ({ status, isBusy, children }) => {
 };
 
 
+// Page
+
+const PagePanelContainer = ({ children }) => (
+  <div className="panel">
+    {children}
+  </div>
+);
+
+const PagePanelHeader = ({ title }) => (
+  <h2 className="panel-header">{title}</h2>
+);
+
+const PagePanelBody = ({ children }) => (
+  <div className="panel-body">{children}</div>
+);
+
+
 // Accordian
 
 const AccordianPanelContainer = ({ children }) => (
@@ -126,8 +157,6 @@ const AccordianPanelBody = ({ status, isBusy, children }) => {
   if (status === 'wait') return null;
   if (status === 'edit') return <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>{children}</BlockUi>;
   if (status === 'done') return null;
-
-  throw new Error(`[Clarety] AccordianPanelBody: Unhanlded status ${status}`);
 };
 
 export const WaitPanelHeader = ({ number, title }) => (
