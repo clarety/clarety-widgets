@@ -1,7 +1,7 @@
 import React from 'react';
-import { Card, Form, Row, Col } from 'react-bootstrap';
+import { Form, Row, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
-import { BasePanel } from 'shared/components';
+import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { TextInput, StateInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
 import 'react-block-ui/style.css';
 
@@ -24,8 +24,21 @@ export class CustomerPanel extends BasePanel {
   };
 
   renderWait() {
-    // TODO:
-    return null;
+    const { layout, index, settings } = this.props;
+
+    return (
+      <PanelContainer layout={layout} status="wait">
+        <PanelHeader
+          status="wait"
+          layout={layout}
+          number={index + 1}
+          title={settings.title}
+        />
+
+        <PanelBody layout={layout} status="wait">
+        </PanelBody>
+      </PanelContainer>
+    );
   }
 
   renderEdit() {
@@ -37,11 +50,20 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderContent() {
-    const { forceMd, isBusy } = this.props;
+    const { layout, isBusy, index, forceMd, settings } = this.props;
 
     return (
-      <Card>
-        <Card.Body>
+      <PanelContainer layout={layout} status="edit">
+        {!settings.hideHeader &&
+          <PanelHeader
+            status="edit"
+            layout={layout}
+            number={index + 1}
+            title={settings.title}
+          />
+        }
+
+        <PanelBody layout={layout} status="edit" isBusy={isBusy}>
           <Row className="justify-content-center">
             <Col lg={forceMd ? null : 8}>
 
@@ -105,9 +127,9 @@ export class CustomerPanel extends BasePanel {
 
             </Col>
           </Row>
-        </Card.Body>
+        </PanelBody>
     
-        <Card.Footer>
+        <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
           <Form.Row className="justify-content-center">
             <Col xs={4} lg={forceMd ? null : 2}>
               <BackButton title="Back" block onClick={this.onPressBack} />
@@ -116,13 +138,27 @@ export class CustomerPanel extends BasePanel {
               <SubmitButton title="Next" block testId="next-button" />
             </Col>
           </Form.Row>
-        </Card.Footer>
-      </Card>
+        </PanelFooter>
+      </PanelContainer>
     );
   }
 
   renderDone() {
-    // TODO:
-    return null;
+    const { layout, index, settings } = this.props;
+
+    return (
+      <PanelContainer layout={layout} status="done">
+        <PanelHeader
+          status="done"
+          layout={layout}
+          number={index + 1}
+          title={settings.title}
+          onPressEdit={this.onPressEdit}
+        />
+
+        <PanelBody layout={layout} status="done">
+        </PanelBody>
+      </PanelContainer>
+    );
   }
 }

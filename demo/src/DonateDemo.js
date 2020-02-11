@@ -23,6 +23,7 @@ window.renderDonateWidget = (props) => {
       connect: CustomerConnect,
       settings: {
         tabName: 'Details',
+        hideHeader: true,
       },
     },
     {
