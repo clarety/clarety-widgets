@@ -1,7 +1,7 @@
 import React from 'react';
-import { Card, Form, Col } from 'react-bootstrap';
+import { Form, Col } from 'react-bootstrap';
 import { Resources } from 'shared/utils';
-import { BasePanel } from 'shared/components';
+import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { SubmitButton, ErrorMessages } from 'form/components';
 import { FrequencySelect } from 'donate/components';
 
@@ -26,8 +26,21 @@ export class DonationPanel extends BasePanel {
   };
 
   renderWait() {
-    // TODO:
-    return null;
+    const { layout, index, settings } = this.props;
+
+    return (
+      <PanelContainer layout={layout} status="wait">
+        <PanelHeader
+          status="wait"
+          layout={layout}
+          number={index + 1}
+          title={settings.title}
+        />
+
+        <PanelBody layout={layout} status="wait">
+        </PanelBody>
+      </PanelContainer>
+    );
   }
 
   renderEdit() {
@@ -39,7 +52,7 @@ export class DonationPanel extends BasePanel {
   }
 
   renderContent() {
-    const { frequency, forceMd } = this.props;
+    const { layout, isBusy, index, frequency, forceMd, settings } = this.props;
     
     const offer = this._getOffer(frequency);
     const variableAmount = this._getVariableAmount(offer);
@@ -48,26 +61,34 @@ export class DonationPanel extends BasePanel {
     if (!forceMd) deckClassName += ' flex-lg-row';
 
     return (
-      <Card>
-        <Card.Body>
-          <ErrorMessages />
+      <PanelContainer layout={layout} status="edit">
+        {!settings.hideHeader &&
+          <PanelHeader
+            status="edit"
+            layout={layout}
+            number={index + 1}
+            title={settings.title}
+          />
+        }
 
+        <PanelBody layout={layout} status="edit" isBusy={isBusy}>
+          <ErrorMessages />
           <FrequencySelect />
 
           <div className={deckClassName} data-testid="suggested-amounts">
             {offer.amounts.map(this.renderSuggestedAmount)}
             {this.renderVariableAmount(variableAmount)}
           </div>
-        </Card.Body>
+        </PanelBody>
 
-        <Card.Footer>
+        <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
           <Form.Row className="justify-content-center">
             <Col lg={forceMd ? null : 5}>
               <SubmitButton title="Next" block testId="next-button" />
             </Col>
           </Form.Row>
-        </Card.Footer>
-      </Card>
+        </PanelFooter>
+      </PanelContainer>
     );
   }
 
@@ -142,8 +163,22 @@ export class DonationPanel extends BasePanel {
   }
 
   renderDone() {
-    // TODO:
-    return null;
+    const { layout, index, settings } = this.props;
+
+    return (
+      <PanelContainer layout={layout} status="done">
+        <PanelHeader
+          status="done"
+          layout={layout}
+          number={index + 1}
+          title={settings.title}
+          onPressEdit={this.onPressEdit}
+        />
+
+        <PanelBody layout={layout} status="done">
+        </PanelBody>
+      </PanelContainer>
+    );
   }
 
   _getOffer = frequency => {

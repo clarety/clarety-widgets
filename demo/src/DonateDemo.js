@@ -15,6 +15,7 @@ window.renderDonateWidget = (props) => {
       connect: DonationConnect,
       settings: {
         tabName: 'Amount',
+        hideHeader: true,
       },
     },
     {

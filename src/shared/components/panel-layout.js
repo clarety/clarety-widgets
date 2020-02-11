@@ -50,6 +50,14 @@ export const PanelBody = ({ layout, status, isBusy, children }) => {
   return children;
 };
 
+export const PanelFooter = ({ layout, status, isBusy, children }) => {
+  if (layout === 'tabs') {
+    return <TabsPanelFooter status={status} isBusy={isBusy}>{children}</TabsPanelFooter>;
+  }
+
+  throw new Error(`PanelFooter not implemented for layout ${layout}`);
+};
+
 
 // Stack
 
@@ -178,5 +186,17 @@ const TabsPanelBody = ({ status, isBusy, children }) => {
         {children}
       </BlockUi>
     </Card.Body>
+  );
+};
+
+const TabsPanelFooter = ({ status, isBusy, children }) => {
+  if (status !== 'edit') return null;
+
+  return (
+    <Card.Footer>
+      <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
+        {children}
+      </BlockUi>
+    </Card.Footer>
   );
 };
