@@ -101,8 +101,10 @@ export class DonationPanel extends BasePanel {
 
     const singleColPriceHandles = (
       <div className="price-handles" data-testid="suggested-amounts">
-        {offer.amounts.map(this.renderSuggestedAmount)}
-        {this.renderVariableAmount(variableAmount)}
+        {offer.amounts.map((amount, index) =>
+          this.renderSuggestedAmount(amount, index, 'SuggestedAmount')
+        )}
+        {this.renderVariableAmount(variableAmount, 'VariableAmount')}
       </div>
     );
 
@@ -118,22 +120,24 @@ export class DonationPanel extends BasePanel {
 
         <Breakpoint large up>
           <div className="price-handles-lg" data-testid="suggested-amounts-lg">
-            {offer.amounts.map(this.renderSuggestedAmountLg)}
-            {this.renderVariableAmountLg(variableAmount)}
+            {offer.amounts.map((amount, index) =>
+              this.renderSuggestedAmount(amount, index, 'SuggestedAmountLg')
+            )}
+            {this.renderVariableAmount(variableAmount, 'VariableAmountLg')}
           </div>
         </Breakpoint>
       </React.Fragment>
     );
   }
 
-  renderSuggestedAmount = (suggestedAmount, index) => {
+  renderSuggestedAmount = (suggestedAmount, index, componentName) => {
     const { selections, frequency } = this.props;
     const currentSelection = selections[frequency];
 
     // Ignore variable amount, we'll add a field below the suggested amounts.
     if (suggestedAmount.variable) return null;
 
-    const SuggestedAmount = Resources.getComponent('SuggestedAmount');
+    const SuggestedAmount = Resources.getComponent(componentName);
     const isSelected = !currentSelection.isVariableAmount && currentSelection.amount === suggestedAmount.amount;
 
     return (
@@ -148,55 +152,15 @@ export class DonationPanel extends BasePanel {
     );
   };
 
-  renderSuggestedAmountLg = (suggestedAmount, index) => {
-    const { selections, frequency } = this.props;
-    const currentSelection = selections[frequency];
-
-    // Ignore variable amount, we'll add a field below the suggested amounts.
-    if (suggestedAmount.variable) return null;
-
-    const SuggestedAmountLg = Resources.getComponent('SuggestedAmountLg');
-    const isSelected = !currentSelection.isVariableAmount && currentSelection.amount === suggestedAmount.amount;
-
-    return (
-      <SuggestedAmountLg
-        key={suggestedAmount.amount}
-        amountInfo={suggestedAmount}
-        onClick={amount => this.onSelectAmount(frequency, amount, false)}
-        onHover={this.onHoverAmount}
-        isSelected={isSelected}
-        index={index}
-      />
-    );
-  };
-
-  renderVariableAmount(variableAmount) {
+  renderVariableAmount(variableAmount, componentName) {
     if (!variableAmount) return null;
 
     const { selections, frequency } = this.props;
     const currentSelection = selections[frequency];
-    const VariableAmount = Resources.getComponent('VariableAmount');
+    const VariableAmount = Resources.getComponent(componentName);
 
     return (
       <VariableAmount
-        amountInfo={variableAmount}
-        value={currentSelection.variableAmount || ''}
-        onChange={amount => this.onSelectAmount(frequency, amount, true)}
-        onHover={this.onHoverAmount}
-        isSelected={currentSelection.isVariableAmount}
-      />
-    );
-  }
-
-  renderVariableAmountLg(variableAmount) {
-    if (!variableAmount) return null;
-
-    const { selections, frequency } = this.props;
-    const currentSelection = selections[frequency];
-    const VariableAmountLg = Resources.getComponent('VariableAmountLg');
-
-    return (
-      <VariableAmountLg
         amountInfo={variableAmount}
         value={currentSelection.variableAmount || ''}
         onChange={amount => this.onSelectAmount(frequency, amount, true)}
