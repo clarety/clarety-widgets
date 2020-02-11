@@ -39,6 +39,7 @@ window.renderDonateWidget = (props) => {
       connect: SuccessConnect,
       settings: {
         hideTab: true,
+        title: 'Donation Received',
       },
     },
   ]);
