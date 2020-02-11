@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Col } from 'react-bootstrap';
+import { Breakpoint } from 'react-socks';
 import { Resources } from 'shared/utils';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { SubmitButton, ErrorMessages } from 'form/components';
@@ -59,10 +60,7 @@ export class DonationPanel extends BasePanel {
   }
 
   renderContent() {
-    const { layout, isBusy, index, frequency, settings } = this.props;
-    
-    const offer = this._getOffer(frequency);
-    const variableAmount = this._getVariableAmount(offer);
+    const { layout, isBusy, index, settings } = this.props;
 
     return (
       <PanelContainer layout={layout} status="edit">
@@ -79,15 +77,7 @@ export class DonationPanel extends BasePanel {
           <ErrorMessages />
           <FrequencySelect />
 
-          <div className="price-handles" data-testid="suggested-amounts">
-            {offer.amounts.map(this.renderSuggestedAmount)}
-            {this.renderVariableAmount(variableAmount)}
-          </div>
-          
-          <div className="price-handles-lg" data-testid="suggested-amounts-lg">
-            {offer.amounts.map(this.renderSuggestedAmountLg)}
-            {this.renderVariableAmountLg(variableAmount)}
-          </div>
+          {this.renderPriceHandles()}
         </PanelBody>
 
         {layout !== 'page' &&
@@ -103,8 +93,41 @@ export class DonationPanel extends BasePanel {
     );
   }
 
+  renderPriceHandles() {
+    const { frequency, layout } = this.props;
+    
+    const offer = this._getOffer(frequency);
+    const variableAmount = this._getVariableAmount(offer);
+
+    const singleColPriceHandles = (
+      <div className="price-handles" data-testid="suggested-amounts">
+        {offer.amounts.map(this.renderSuggestedAmount)}
+        {this.renderVariableAmount(variableAmount)}
+      </div>
+    );
+
+    if (layout === 'tabs') {
+      return singleColPriceHandles;
+    }
+
+    return (
+      <React.Fragment>
+        <Breakpoint medium down>
+          {singleColPriceHandles}
+        </Breakpoint>
+
+        <Breakpoint large up>
+          <div className="price-handles-lg" data-testid="suggested-amounts-lg">
+            {offer.amounts.map(this.renderSuggestedAmountLg)}
+            {this.renderVariableAmountLg(variableAmount)}
+          </div>
+        </Breakpoint>
+      </React.Fragment>
+    );
+  }
+
   renderSuggestedAmount = (suggestedAmount, index) => {
-    const { selections, frequency, forceMd } = this.props;
+    const { selections, frequency } = this.props;
     const currentSelection = selections[frequency];
 
     // Ignore variable amount, we'll add a field below the suggested amounts.
@@ -120,14 +143,13 @@ export class DonationPanel extends BasePanel {
         onClick={amount => this.onSelectAmount(frequency, amount, false)}
         onHover={this.onHoverAmount}
         isSelected={isSelected}
-        forceMd={forceMd}
         index={index}
       />
     );
   };
 
   renderSuggestedAmountLg = (suggestedAmount, index) => {
-    const { selections, frequency, forceMd } = this.props;
+    const { selections, frequency } = this.props;
     const currentSelection = selections[frequency];
 
     // Ignore variable amount, we'll add a field below the suggested amounts.
@@ -143,7 +165,6 @@ export class DonationPanel extends BasePanel {
         onClick={amount => this.onSelectAmount(frequency, amount, false)}
         onHover={this.onHoverAmount}
         isSelected={isSelected}
-        forceMd={forceMd}
         index={index}
       />
     );
@@ -152,7 +173,7 @@ export class DonationPanel extends BasePanel {
   renderVariableAmount(variableAmount) {
     if (!variableAmount) return null;
 
-    const { selections, frequency, forceMd } = this.props;
+    const { selections, frequency } = this.props;
     const currentSelection = selections[frequency];
     const VariableAmount = Resources.getComponent('VariableAmount');
 
@@ -163,7 +184,6 @@ export class DonationPanel extends BasePanel {
         onChange={amount => this.onSelectAmount(frequency, amount, true)}
         onHover={this.onHoverAmount}
         isSelected={currentSelection.isVariableAmount}
-        forceMd={forceMd}
       />
     );
   }
@@ -171,7 +191,7 @@ export class DonationPanel extends BasePanel {
   renderVariableAmountLg(variableAmount) {
     if (!variableAmount) return null;
 
-    const { selections, frequency, forceMd } = this.props;
+    const { selections, frequency } = this.props;
     const currentSelection = selections[frequency];
     const VariableAmountLg = Resources.getComponent('VariableAmountLg');
 
@@ -182,7 +202,6 @@ export class DonationPanel extends BasePanel {
         onChange={amount => this.onSelectAmount(frequency, amount, true)}
         onHover={this.onHoverAmount}
         isSelected={currentSelection.isVariableAmount}
-        forceMd={forceMd}
       />
     );
   }

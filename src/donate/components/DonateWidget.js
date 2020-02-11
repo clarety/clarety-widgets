@@ -2,6 +2,7 @@ import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { connect, Provider as ReduxProvider } from 'react-redux';
+import { BreakpointProvider } from 'react-socks';
 import { statuses, setStore, setTrackingData, fetchSettings, updateAppSettings, setPanels } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources } from 'shared/utils';
@@ -34,7 +35,9 @@ export class DonateWidget extends React.Component {
   render() {
     return (
       <ReduxProvider store={DonateWidget.store}>
-        <DonateWidgetRoot {...this.props} />
+        <BreakpointProvider>
+          <DonateWidgetRoot {...this.props} />
+        </BreakpointProvider>
       </ReduxProvider>
     );
   }

@@ -13,7 +13,6 @@ export class DonationConnect {
       selections: donationPanel.selections,
       selectedAmount: getSelectedAmount(state),
       errors: state.errors,
-      forceMd: getSetting(state, 'forceMdLayout'),
       variant: getSetting(state, 'variant'),
     };
   };
