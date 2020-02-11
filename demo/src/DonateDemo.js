@@ -31,6 +31,7 @@ window.renderDonateWidget = (props) => {
       connect: PaymentConnect,
       settings: {
         tabName: 'Payment',
+        hideHeader: true,
       },
     },
     {
