@@ -108,6 +108,15 @@ export class DonationPanel extends BasePanel {
       </div>
     );
 
+    const multiColPriceHandles = (
+      <div className="price-handles-lg" data-testid="suggested-amounts-lg">
+        {offer.amounts.map((amount, index) =>
+          this.renderSuggestedAmount(amount, index, 'SuggestedAmountLg')
+        )}
+        {this.renderVariableAmount(variableAmount, 'VariableAmountLg')}
+      </div>
+    );
+
     if (layout === 'tabs') {
       return singleColPriceHandles;
     }
@@ -119,12 +128,7 @@ export class DonationPanel extends BasePanel {
         </Breakpoint>
 
         <Breakpoint large up>
-          <div className="price-handles-lg" data-testid="suggested-amounts-lg">
-            {offer.amounts.map((amount, index) =>
-              this.renderSuggestedAmount(amount, index, 'SuggestedAmountLg')
-            )}
-            {this.renderVariableAmount(variableAmount, 'VariableAmountLg')}
-          </div>
+          {multiColPriceHandles}
         </Breakpoint>
       </React.Fragment>
     );
