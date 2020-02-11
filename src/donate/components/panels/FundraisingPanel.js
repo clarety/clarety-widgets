@@ -76,7 +76,7 @@ export class FundraisingPanel extends BasePanel {
 
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
           <Row className="justify-content-center">
-            <Col lg={8}>
+            <Col>
               <Form.Row>
                 <Col>
                   <Form.Group controlId="fundraising.isAnonymous">

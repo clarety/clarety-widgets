@@ -6,7 +6,6 @@ export class SuccessConnect {
     return {
       customer : getCustomer(state),
       donation: getSuccessfulDonation(state),
-      forceMd: getSetting(state, 'forceMdLayout'),
       variant: getSetting(state, 'variant'),
     };
   };

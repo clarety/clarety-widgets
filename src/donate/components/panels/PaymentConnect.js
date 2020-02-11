@@ -10,7 +10,6 @@ export class PaymentConnect {
       frequency: getSelectedFrequency(state),
       formData: state.formData,
       errors: state.errors,
-      forceMd: getSetting(state, 'forceMdLayout'),
       variant: getSetting(state, 'variant'),
     };
   };

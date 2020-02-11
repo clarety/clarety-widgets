@@ -63,7 +63,6 @@ export default class DonateDemo extends React.Component {
       // reCaptchaKey: '1234',
 
       showStepIndicator: true,
-      forceMdLayout: true,
     });
   }
 

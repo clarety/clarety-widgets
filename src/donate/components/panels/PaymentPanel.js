@@ -64,7 +64,7 @@ export class PaymentPanel extends BasePanel {
   }
 
   renderContent() {
-    const { layout, isBusy, index, forceMd, settings } = this.props;
+    const { layout, isBusy, index, settings } = this.props;
 
     return (
       <PanelContainer layout={layout} status="edit">
@@ -79,7 +79,7 @@ export class PaymentPanel extends BasePanel {
 
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
           <Row className="justify-content-center">
-            <Col lg={forceMd ? null : 8}>
+            <Col>
 
               <ErrorMessages />
 
@@ -127,7 +127,7 @@ export class PaymentPanel extends BasePanel {
                 <BackButton title="Back" onClick={this.onPressBack} block />
               </Col>
             }
-            <Col xs={8} lg={forceMd ? null : 3}>
+            <Col xs={8}>
               <SubmitButton title="Donate" block testId="next-button" />
             </Col>
           </Form.Row>

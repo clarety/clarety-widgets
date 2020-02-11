@@ -7,7 +7,6 @@ export class CustomerConnect {
     return {
       isBusy: getIsBusy(state),
       errors: state.errors,
-      forceMd: getSetting(state, 'forceMdLayout'),
       variant: getSetting(state, 'variant'),
     };
   };

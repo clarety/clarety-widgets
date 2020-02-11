@@ -6,7 +6,6 @@ export class FundraisingConnect {
     return {
       isBusy: getIsBusy(state),
       errors: state.errors,
-      forceMd: getSetting(state, 'forceMdLayout'),
       variant: getSetting(state, 'variant'),
     };
   };

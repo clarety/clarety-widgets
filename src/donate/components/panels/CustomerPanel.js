@@ -69,7 +69,7 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderContent() {
-    const { layout, isBusy, index, forceMd, settings } = this.props;
+    const { layout, isBusy, index, settings } = this.props;
 
     return (
       <PanelContainer layout={layout} status="edit">
@@ -84,7 +84,7 @@ export class CustomerPanel extends BasePanel {
 
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
           <Row className="justify-content-center">
-            <Col lg={forceMd ? null : 8}>
+            <Col>
 
               <ErrorMessages />
 
