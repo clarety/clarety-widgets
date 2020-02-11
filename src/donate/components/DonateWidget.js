@@ -69,7 +69,7 @@ export class _DonateWidgetRoot extends React.Component {
   }
 
   render() {
-    const { status, reCaptchaKey, showStepIndicator } = this.props;
+    const { status, reCaptchaKey, showStepIndicator, layout } = this.props;
 
     // Show a loading indicator while we init.
     if (status === statuses.initializing) {
@@ -81,9 +81,9 @@ export class _DonateWidgetRoot extends React.Component {
     }
 
     return (
-      <div className="clarety-donate-widget h-100">
+      <div className={`clarety-donate-widget h-100 ${layout}`}>
         {showStepIndicator && <StepIndicator />}
-        <PanelManager layout="tabs" />
+        <PanelManager layout={layout || "tabs"} />
         {reCaptchaKey && <Recaptcha siteKey={reCaptchaKey} />}
       </div>
     );

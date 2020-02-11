@@ -1,4 +1,4 @@
-.clarety-donate-widget, .clarety-donate-page {
+.clarety-donate-widget {
   h4 {
     margin: 10px;
     font-size: 1.5rem;
@@ -22,7 +22,7 @@
   }
 }
 
-.clarety-donate-page {
+.clarety-donate-widget.page {
   .card {
     border: none;
   }

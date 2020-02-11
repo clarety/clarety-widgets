@@ -18,4 +18,3 @@ export * from './panels/SuccessPanel';
 export * from './panels/SuccessConnect';
 
 export * from './DonateWidget';
-export * from './DonatePage';

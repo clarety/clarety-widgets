@@ -44,7 +44,7 @@ window.renderDonateWidget = (props) => {
     },
   ]);
 
-  renderWidget(props.elementId, <DonateWidget {...props} />);
+  renderWidget(props.elementId, <DonateWidget layout="tabs" {...props} />);
 };
 
 export default class DonateDemo extends React.Component {

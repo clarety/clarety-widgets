@@ -1,5 +1,5 @@
 import React from 'react';
-import { DonatePage, renderWidget } from '../../src/';
+import { DonateWidget, renderWidget } from '../../src/';
 import { DonationPanel, DonationConnect } from '../../src/donate/components';
 import { CustomerPanel, CustomerConnect } from '../../src/donate/components';
 import { FundraisingPanel, FundraisingConnect } from '../../src/donate/components';
@@ -7,9 +7,9 @@ import { PaymentPanel, PaymentConnect } from '../../src/donate/components';
 import '../../src/donate/style.scss';
 
 window.renderDonatePage = (props) => {
-  DonatePage.init();
+  DonateWidget.init();
 
-  DonatePage.setPanels([
+  DonateWidget.setPanels([
     {
       component: DonationPanel,
       connect: DonationConnect,
@@ -38,22 +38,25 @@ window.renderDonatePage = (props) => {
     },
   ]);
 
-  renderWidget(props.elementId, <DonatePage {...props} />);
+  renderWidget(props.elementId, <DonateWidget layout="page" {...props} />);
 };
 
 export default class DonatePageDemo extends React.Component {
   componentDidMount() {
     window.renderDonatePage({
       elementId: 'donate-page-demo',
-      showFundraising: true,
-      fundraisingPageUid: 'abc-123',
+
       storeCode: 'AU',
       singleOfferId: '8',
       recurringOfferId: '17',
+
       sourceId: '17',
       responseId: 'e9c2e351d90b11e996fd',
       emailResponseId: '1234',
       // reCaptchaKey: '1234',
+
+      showFundraising: true,
+      fundraisingPageUid: 'abc-123',
     });
   }
 
