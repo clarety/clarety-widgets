@@ -4,7 +4,9 @@ import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from '
 
 export class SuccessPanel extends BasePanel {
   onShowPanel() {
-    this.scrollIntoView();
+    if (this.props.layout === 'tabs') {
+      this.scrollIntoView();
+    }
   }
 
   renderWait() {
