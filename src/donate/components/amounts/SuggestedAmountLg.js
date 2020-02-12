@@ -2,15 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Card } from 'react-bootstrap';
 
-const _SuggestedAmountLg = ({ amountInfo, isSelected, onClick, onHover, currency, forceMd }) => {
+const _SuggestedAmountLg = ({ amountInfo, isSelected, onClick, onHover, currency }) => {
   const label = `${currency.symbol}${amountInfo.amount}`;
-
-  let cardClassName = 'mx-1 d-none';
-  if (!forceMd) cardClassName += ' d-lg-block';
 
   return (
     <Card
-      className={cardClassName}
+      className="mx-1"
       style={{ cursor: 'pointer' }}
       bg={isSelected ? 'info' : 'light'}
       text={isSelected ? 'white' : null}

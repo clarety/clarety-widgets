@@ -1,3 +1,3 @@
-export * from './amount-panel-reducer';
+export * from './donation-panel-reducer';
 
 export * from './root-reducer';

@@ -1,10 +1,9 @@
 export { Config } from 'clarety-utils';
 export { connect } from 'react-redux';
 
-export { renderWidget, Resources, getElementOptions, getSitePath, loadCss, withOverrides } from 'shared/utils';
+export { renderWidget, Resources, getElementOptions, getSitePath, loadCss } from 'shared/utils';
 
-export { DonateWidget, DonatePage } from 'donate/components';
-export { createDonateWidget, createDonatePage } from 'donate/utils';
+export { DonateWidget } from 'donate/components';
 export { setupDonateAxiosMock } from 'donate/mocks';
 
 export { Registration } from 'registration/components';

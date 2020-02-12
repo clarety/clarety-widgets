@@ -1,57 +1,51 @@
 import { statuses } from 'shared/actions';
-import { getCart, getTrackingData, getRecaptcha, getSettings, getParsedFormData } from 'shared/selectors';
+import { getCart, getTrackingData, getRecaptcha, getSetting, getParsedFormData } from 'shared/selectors';
+import { formatPrice } from 'form/utils';
 
-export function getIsBusy(state) {
-  return state.status !== statuses.ready;
-}
+export const getIsBusy = (state) => state.status !== statuses.ready;
 
-export function getCartItem(state) {
-  return state.cart.items[0];
-}
+export const getCartItem = (state) => state.cart.items[0];
 
-export function getSelectedFrequency(state) {
-  return state.panels.amountPanel.frequency;
-}
+export const getCustomer = (state) => getCart(state).customer;
 
-export function getSelectedAmount(state) {
-  const { amountPanel } = state.panels;
-  const { currency } = state.settings;
+export const getDonationPanel = (state) => state.panels.donationPanel;
 
-  const selection = amountPanel.selections[amountPanel.frequency];
+export const getPriceHandles = (state) => getSetting(state, 'priceHandles');
 
-  if (!selection) return '';
-  if (!selection.amount) return '';
+export const getSelectedFrequency = (state) => getDonationPanel(state).frequency;
 
+export const getDonationPanelSelection = (state) => {
+  const donationPanel = getDonationPanel(state);
+  return donationPanel.selections[donationPanel.frequency];
+};
+
+export const getSelectedAmount = (state) => {
+  const selection = getDonationPanelSelection(state);
+  
+  if (!selection && !selection.amount) return '';
+
+  const currency = getSetting(state, 'currency');
   const amount = Number(selection.amount).toFixed(2);
+  
   return currency.symbol + amount;
-}
+};
 
-export function getFrequencyLabel(state, offerUid) {
-  for (let offer of state.settings.offers) {
-    if (offer.offerUid === offerUid) return offer.label;
-  }
+export const getFrequencyLabel = (state, offerUid) => {
+  const priceHandles = getPriceHandles(state);
+  const offer = priceHandles.find(offer => offer.offerUid === offerUid);
+  return offer ? offer.label : '';
+};
 
-  return '';
-}
+export const getSelectedOffer = (state) => {
+  const donationPanel = getDonationPanel(state);
+  const priceHandles = getPriceHandles(state);
+  return priceHandles.find(offer => offer.frequency === donationPanel.frequency);
+};
 
-export function getAmountPanelSelection(state) {
-  const { amountPanel } = state.panels;
-  return amountPanel.selections[amountPanel.frequency];
-}
-
-export function getSelectedOffer(state) {
-  const { settings, panels } = state;
-
-  return settings.priceHandles.find(
-    offer => offer.frequency === panels.amountPanel.frequency
-  );
-}
-
-export function getPaymentPostData(state) {
+export const getPaymentPostData = (state) => {
   const cart = getCart(state);
   const trackingData = getTrackingData(state);
   const recaptcha = getRecaptcha(state);
-  const settings = getSettings(state);
   const formData = getParsedFormData(state);
 
   const postData = {
@@ -68,27 +62,37 @@ export function getPaymentPostData(state) {
     recaptchaResponse: recaptcha,
   };
 
-  if (settings.showFundraising) {
+  if (getSetting(state, 'showFundraising')) {
     postData.fundraising = {
-      pageUid: settings.fundraisingPageUid,
+      pageUid: getSetting(state, 'fundraisingPageUid'),
       ...formData.fundraising,
     };
   }
 
   return postData;
-}
+};
 
-export function getPaymentData(formData) {
+export const getPaymentData = (formData) => {
   return {
     cardNumber:  formData['payment.cardNumber'],
     expiryMonth: formData['payment.expiryMonth'],
     expiryYear:  formData['payment.expiryYear'],
     ccv:         formData['payment.ccv'],
   };
-}
+};
 
-export function getCustomerFullName(formData) {
+export const getCustomerFullName = (formData) => {
   const firstName = formData['customer.firstName'];
   const lastName  = formData['customer.lastName'];
   return `${firstName} ${lastName}`;
-}
+};
+
+export const getSuccessfulDonation = (state) => {
+  const cart = getCart(state);
+  const item = cart.items[0];
+
+  const frequency = item ? getFrequencyLabel(state, item.offerUid) : '';
+  const amount = item ? formatPrice(item.price) : '0';
+
+  return { frequency, amount };
+};

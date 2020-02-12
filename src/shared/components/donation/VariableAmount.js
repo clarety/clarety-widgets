@@ -3,14 +3,11 @@ import { connect } from 'react-redux';
 import { Form, InputGroup } from 'react-bootstrap';
 import { cleanDecimal } from 'form/utils';
 
-const _VariableAmount = ({ value, amountInfo, isSelected, onChange, currency, forceMd }) => {
+const _VariableAmount = ({ value, amountInfo, isSelected, onChange, currency }) => {
   let input = React.createRef();
 
-  let className = 'mt-3 mb-1 mx-3';
-  if (!forceMd) className += ' d-lg-none';
-
   return (
-    <div className={className}>
+    <div className="mt-3 mb-1 mx-3 d-lg-none">
       <InputGroup>
         <InputGroup.Prepend>
           <InputGroup.Text>{currency.symbol}</InputGroup.Text>

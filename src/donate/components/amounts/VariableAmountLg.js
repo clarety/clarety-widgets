@@ -3,15 +3,12 @@ import { connect } from 'react-redux';
 import { Form, Card, InputGroup } from 'react-bootstrap';
 import { cleanDecimal } from 'form/utils';
 
-const _VariableAmountLg = ({ amountInfo, value, isSelected, onChange, onHover, currency, forceMd }) => {
+const _VariableAmountLg = ({ amountInfo, value, isSelected, onChange, onHover, currency }) => {
   let input = React.createRef();
-
-  let cardClassName = 'mx-1 d-none';
-  if (!forceMd) cardClassName += ' d-lg-block';
 
   return (
     <Card
-      className={cardClassName}
+      className="mx-1"
       style={{ cursor: 'pointer' }}
       bg={isSelected ? 'info' : 'light'}
       text={isSelected ? 'white' : null}

@@ -6,7 +6,7 @@ const initialState = {
   selections: {},
 };
 
-export const amountPanelReducer = (state = initialState, action) => {
+export const donationPanelReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.selectFrequency:
       return selectFrequency(state, action);

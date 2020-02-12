@@ -1,7 +1,13 @@
-.clarety-donate-widget, .clarety-donate-page {
+@import '~bootstrap/scss/bootstrap.scss';
+
+.clarety-donate-widget {
   h4 {
     margin: 10px;
     font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .frequency-select {
     text-align: center;
   }
 
@@ -9,15 +15,46 @@
     text-align: center;
     font-size: 1.1rem;
   }
+
+  .panel-header {
+    text-align: center;
+    margin-top: 20px;
+
+    h2 { margin: 0; }
+  }
+
+  .price-handles {
+    @extend .card-deck;
+    flex-direction: column;
+    margin: 1rem -1rem 0;
+  }
+
+  .price-handles-lg {
+    @extend .price-handles;
+    flex-direction: row;
+  }
 }
 
-.clarety-donate-page {
+.clarety-donate-widget.page {
   .card {
     border: none;
   }
+
   .card-footer {
     background: none;
     border: none;
+  }
+
+  @include media-breakpoint-up(lg) {
+    .customer-panel .card-body .col { max-width: 600px; }
+    .fundraising-panel .card-body .col { max-width: 600px; }
+    .payment-panel .card-body .col { max-width: 600px; }
+
+    .btn-submit {
+      max-width: 200px;
+      height: 50px;
+      margin: 0 auto;
+    }
   }
 }
 
@@ -83,7 +120,9 @@
 
 .widget-step-indicator {
   margin: 0;
+  padding: 0;
   font-size: 14px;
+  text-align: center;
 
   &::after {
     clear: both;

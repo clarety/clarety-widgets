@@ -1,22 +1,55 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { ConnectedRouter } from 'connected-react-router'
-import { Switch, Route } from 'react-router-dom';
-import { statuses, setStore, setTrackingData, fetchSettings, updateAppSettings } from 'shared/actions';
-import { OverrideContext } from 'shared/utils';
+import { createStore, applyMiddleware, compose } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import { connect, Provider as ReduxProvider } from 'react-redux';
+import { BreakpointProvider } from 'react-socks';
+import { statuses, setStore, setTrackingData, fetchSettings, updateAppSettings, setPanels } from 'shared/actions';
+import { PanelManager } from 'shared/components';
+import { Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
-import { handleUrlParams } from 'donate/actions';
-import { AmountPanel, DetailsPanel, PaymentPanel, SuccessPanel } from 'donate/components';
-import { mapDonationSettings } from 'donate/utils';
+import { handleUrlParams, Actions } from 'donate/actions';
+import { Validations } from 'donate/validations';
+import { rootReducer } from 'donate/reducers';
+import { mapDonationSettings, setupDefaultResources } from 'donate/utils';
+import { StepIndicator } from 'donate/components';
 
-export class _DonateWidget extends React.Component {
+export class DonateWidget extends React.Component {
+  static store;
+
+  static init(actions = new Actions, validations = new Validations) {
+    // Setup redux store.
+    const thunk = thunkMiddleware.withExtraArgument({ actions, validations });
+    const middleware = applyMiddleware(thunk);
+    const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+    DonateWidget.store = createStore(rootReducer, composeDevTools(middleware));
+
+    // Setup resources.
+    setupDefaultResources();
+  }
+
+  static setPanels(panels) {
+    Resources.setPanels(panels);
+    DonateWidget.store.dispatch(setPanels(panels));
+  }
+
+  render() {
+    return (
+      <ReduxProvider store={DonateWidget.store}>
+        <BreakpointProvider>
+          <DonateWidgetRoot {...this.props} />
+        </BreakpointProvider>
+      </ReduxProvider>
+    );
+  }
+}
+
+export class _DonateWidgetRoot extends React.Component {
   async componentWillMount() {
     const { updateAppSettings, setStore, setTrackingData, fetchSettings, handleUrlParams } = this.props;
-    const { storeCode, singleOfferId, recurringOfferId, reCaptchaKey } = this.props;
+    const { storeCode, singleOfferId, recurringOfferId } = this.props;
     const { sourceId, responseId, emailResponseId } = this.props;
 
     if (!singleOfferId && !recurringOfferId) throw new Error('[Clarety] Either a singleOfferId or recurringOfferId prop is required');
-    if (!reCaptchaKey) throw new Error('[Clarety] missing reCaptcha key');
 
     updateAppSettings({
       variant: this.props.variant,
@@ -38,12 +71,7 @@ export class _DonateWidget extends React.Component {
   }
 
   render() {
-    const { status, forceMdLayout, variant, reCaptchaKey } = this.props;
-
-    const AmountPanelComponent  = this.context.AmountPanel  || AmountPanel;
-    const DetailsPanelComponent = this.context.DetailsPanel || DetailsPanel;
-    const PaymentPanelComponent = this.context.PaymentPanel || PaymentPanel;
-    const SuccessPanelComponent = this.context.SuccessPanel || SuccessPanel;
+    const { status, reCaptchaKey, showStepIndicator, layout } = this.props;
 
     // Show a loading indicator while we init.
     if (status === statuses.initializing) {
@@ -55,31 +83,14 @@ export class _DonateWidget extends React.Component {
     }
 
     return (
-      <div className="clarety-donate-widget h-100">
-        <ConnectedRouter history={this.props.history}>
-          <Switch>
-            <Route exact path="/" render={props => (
-              <AmountPanelComponent {...props} forceMd={forceMdLayout} variant={variant} />
-            )}/>
-            <Route path="/details" render={props => (
-              <DetailsPanelComponent {...props} forceMd={forceMdLayout} variant={variant} />
-            )}/>
-            <Route path="/payment" render={props => (
-              <PaymentPanelComponent {...props} forceMd={forceMdLayout} variant={variant} />
-            )}/>
-            <Route path="/success" render={props => (
-              <SuccessPanelComponent {...props} forceMd={forceMdLayout} variant={variant} />
-            )}/>
-          </Switch>
-        </ConnectedRouter>
-
-        <Recaptcha siteKey={reCaptchaKey} />
+      <div className={`clarety-donate-widget h-100 ${layout}`}>
+        {showStepIndicator && <StepIndicator />}
+        <PanelManager layout={layout || "tabs"} />
+        {reCaptchaKey && <Recaptcha siteKey={reCaptchaKey} />}
       </div>
     );
   }
 }
-
-_DonateWidget.contextType = OverrideContext;
 
 const mapStateToProps = state => {
   return {
@@ -95,5 +106,5 @@ const actions = {
   handleUrlParams: handleUrlParams,
 };
 
-export const connectDonateWidget = connect(mapStateToProps, actions);
-export const DonateWidget = connectDonateWidget(_DonateWidget);
+export const connectDonateWidgetRoot = connect(mapStateToProps, actions);
+export const DonateWidgetRoot = connectDonateWidgetRoot(_DonateWidgetRoot);

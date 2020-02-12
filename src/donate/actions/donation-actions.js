@@ -15,8 +15,8 @@ export const selectAmount = (frequency, amount, isVariableAmount = false) => ({
 export const adjustAmount = (adjustment) => {
   return (dispatch, getState) => {
     const state = getState();
-    const { amountPanel } = state.panels;
-    const { frequency, selections } = amountPanel;
+    const { donationPanel } = state.panels;
+    const { frequency, selections } = donationPanel;
     const newAmount = Number(selections[frequency].amount) + adjustment;
     dispatch(selectAmount(frequency, newAmount.toFixed(2), true));
   };
