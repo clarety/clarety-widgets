@@ -120,18 +120,18 @@ export class PaymentPanel extends BasePanel {
           </Row>
         </PanelBody>
   
-        <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
-          <Form.Row className="justify-content-center">
-            {layout !== 'page' &&
-              <Col xs={4}>
-                <BackButton title="Back" onClick={this.onPressBack} block />
+        {layout !== 'page' &&
+          <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
+            <Form.Row className="justify-content-center">
+                <Col xs={4}>
+                  <BackButton title="Back" onClick={this.onPressBack} block />
+                </Col>
+              <Col xs={8}>
+                <SubmitButton title="Donate" block testId="next-button" />
               </Col>
-            }
-            <Col xs={8}>
-              <SubmitButton title="Donate" block testId="next-button" />
-            </Col>
-          </Form.Row>
-        </PanelFooter>
+            </Form.Row>
+          </PanelFooter>
+        }
       </PanelContainer>
     );
   }

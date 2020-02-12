@@ -1,13 +1,15 @@
 import React from 'react';
 import { DonateWidget, renderWidget } from '../../src/';
+import { PageActions } from '../../src/donate/actions';
 import { DonationPanel, DonationConnect } from '../../src/donate/components';
 import { CustomerPanel, CustomerConnect } from '../../src/donate/components';
 import { FundraisingPanel, FundraisingConnect } from '../../src/donate/components';
 import { PaymentPanel, PaymentConnect } from '../../src/donate/components';
+import { SubmitPanel, SubmitConnect } from '../../src/donate/components';
 import '../../src/donate/style.scss';
 
 window.renderDonatePage = (props) => {
-  DonateWidget.init();
+  DonateWidget.init(new PageActions());
 
   DonateWidget.setPanels([
     {
@@ -34,6 +36,13 @@ window.renderDonatePage = (props) => {
       connect: PaymentConnect,
       settings: {
         title: 'Payment Details',
+      },
+    },
+    {
+      component: SubmitPanel,
+      connect: SubmitConnect,
+      settings: {
+        buttonText: 'Donate Now!',
       },
     },
   ]);
