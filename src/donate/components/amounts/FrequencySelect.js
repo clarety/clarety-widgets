@@ -5,30 +5,32 @@ import { getSetting } from 'shared/selectors';
 import { selectFrequency } from 'donate/actions';
 
 const _FrequencySelect = ({ value, options, onChange }) => (
-  <ToggleButtonGroup
-    type="radio"
-    name="frequency"
-    value={value}
-    onChange={onChange}
-  >
-    {options.map(option => (
-      <ToggleButton
-        value={option.value}
-        key={option.value}
-        variant="outline-info"
-        data-testid={option.value}
-      >
-        {option.label}
-      </ToggleButton>
-    ))}
-  </ToggleButtonGroup>
+  <div className="frequency-select">
+    <ToggleButtonGroup
+      type="radio"
+      name="frequency"
+      value={value}
+      onChange={onChange}
+    >
+      {options.map(option => (
+        <ToggleButton
+          value={option.value}
+          key={option.value}
+          variant="outline-info"
+          data-testid={option.value}
+        >
+          {option.label}
+        </ToggleButton>
+      ))}
+    </ToggleButtonGroup>
+  </div>
 );
 
 const mapStateToProps = state => {
   const priceHandles = getSetting(state, 'priceHandles');
 
   return {
-    value: state.panels.amountPanel.frequency,
+    value: state.panels.donationPanel.frequency,
     options: priceHandles.map(offer => ({
       value: offer.frequency,
       label: offer.frequency === 'single' ? 'Single Gift' : 'Monthly Gift',

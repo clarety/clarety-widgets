@@ -1,44 +1,90 @@
 import React from 'react';
-import { Card, Form, Row, Col } from 'react-bootstrap';
+import { Form, Row, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
-import { scrollIntoView } from 'shared/utils';
+import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { TextInput, StateInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
-import { BasePanel, StepIndicator } from 'donate/components';
-import { connectDetailsPanel } from 'donate/utils';
 import 'react-block-ui/style.css';
 
-export class _DetailsPanel extends BasePanel {
-  componentDidMount() {
-    scrollIntoView(this);
+export class CustomerPanel extends BasePanel {
+  fields = [
+    'customer.firstName',
+    'customer.lastName',
+    'customer.email',
+    'customer.billing.address1',
+    'customer.billing.suburb',
+    'customer.billing.state',
+    'customer.billing.postcode',
+    'customer.billing.country'
+  ];
+
+  onShowPanel() {
+    if (this.props.layout === 'tabs') {
+      this.scrollIntoView();
+    }
   }
 
-  onPrev = () => this.props.history.goBack();
+  componentDidUpdate() {
+    if (this.props.layout === 'page' && this.hasError()) {
+      this.scrollIntoView();
+    }
+  }
 
-  onSubmit = async event => {
+  onPressBack = (event) => {
     event.preventDefault();
-    this.props.onSubmit();
+
+    this.props.prevPanel();
   };
 
-  render() {
+  onPressNext = async (event) => {
+    event.preventDefault();
+
+    const isValid = await this.props.onSubmit();
+    if (isValid) this.props.nextPanel();
+  };
+
+  renderWait() {
+    const { layout, index, settings } = this.props;
+
     return (
-      <form onSubmit={this.onSubmit} data-testid="details-panel">
+      <PanelContainer layout={layout} status="wait" className="customer-panel">
+        <PanelHeader
+          status="wait"
+          layout={layout}
+          number={index + 1}
+          title={settings.title}
+        />
+
+        <PanelBody layout={layout} status="wait">
+        </PanelBody>
+      </PanelContainer>
+    );
+  }
+
+  renderEdit() {
+    return (
+      <form onSubmit={this.onPressNext} data-testid="customer-panel">
         {this.renderContent()}
       </form>
     );
   }
 
   renderContent() {
-    const { forceMd, isBusy } = this.props;
+    const { layout, isBusy, index, settings } = this.props;
 
     return (
-      <Card>
-        <Card.Header className="text-center">
-          <StepIndicator currentStep="details" />
-        </Card.Header>
-    
-        <Card.Body>
+      <PanelContainer layout={layout} status="edit" className="customer-panel">
+        {!settings.hideHeader &&
+          <PanelHeader
+            status="edit"
+            layout={layout}
+            number={index + 1}
+            title={settings.title}
+          />
+        }
+
+        <PanelBody layout={layout} status="edit" isBusy={isBusy}>
           <Row className="justify-content-center">
-            <Col lg={forceMd ? null : 8}>
+            <Col>
 
               <ErrorMessages />
 
@@ -100,21 +146,40 @@ export class _DetailsPanel extends BasePanel {
 
             </Col>
           </Row>
-        </Card.Body>
+        </PanelBody>
     
-        <Card.Footer>
-          <Form.Row className="justify-content-center">
-            <Col xs={4} lg={forceMd ? null : 2}>
-              <BackButton title="Back" block onClick={this.onPrev} />
-            </Col>
-            <Col xs={8} lg={forceMd ? null : 3}>
-              <SubmitButton title="Next" block testId="next-button" />
-            </Col>
-          </Form.Row>
-        </Card.Footer>
-      </Card>
+        {layout !== 'page' &&
+          <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
+            <Form.Row className="justify-content-center">
+              <Col xs={4}>
+                <BackButton title="Back" block onClick={this.onPressBack} />
+              </Col>
+              <Col xs={8}>
+                <SubmitButton title="Next" block testId="next-button" />
+              </Col>
+            </Form.Row>
+          </PanelFooter>
+        }
+      </PanelContainer>
+    );
+  }
+
+  renderDone() {
+    const { layout, index, settings } = this.props;
+
+    return (
+      <PanelContainer layout={layout} status="done" className="customer-panel">
+        <PanelHeader
+          status="done"
+          layout={layout}
+          number={index + 1}
+          title={settings.title}
+          onPressEdit={this.onPressEdit}
+        />
+
+        <PanelBody layout={layout} status="done">
+        </PanelBody>
+      </PanelContainer>
     );
   }
 }
-
-export const DetailsPanel = connectDetailsPanel(_DetailsPanel);

@@ -1,11 +1,11 @@
-import { getAmountPanelSelection } from 'donate/selectors';
+import { getDonationPanelSelection } from 'donate/selectors';
 
 export class Validations {
-  validateAmountPanel(errors, getState) {
+  validateDonationPanel(errors, getState) {
     const state = getState();
 
     // Make sure an amount has been selected.
-    const selection = getAmountPanelSelection(state);
+    const selection = getDonationPanelSelection(state);
     if (!selection.amount) {
       errors.push({
         message: 'Please select a donation amount.',
@@ -15,7 +15,7 @@ export class Validations {
     return errors.length === 0;
   }
 
-  validateDetailsPanel(errors, getState) {
+  validateCustomerPanel(errors, getState) {
     const { formData } = getState();
 
     this.requireField(errors, formData, 'customer.firstName');
