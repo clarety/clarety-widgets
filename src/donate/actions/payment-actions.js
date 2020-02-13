@@ -103,9 +103,9 @@ export const makeClaretyCCPayment = () => {
     dispatch(setPayment({
       cardName: getCustomerFullName(formData),
       cardNumber: paymentData.cardNumber,
-      cardExpiryMonth: paymentData.expiryMonth,
-      cardExpiryYear: '20' + paymentData.expiryYear,
-      cardSecurityCode: paymentData.ccv,
+      cardExpiryMonth: paymentData.cardExpiryMonth,
+      cardExpiryYear: '20' + paymentData.cardExpiryYear,
+      cardSecurityCode: paymentData.cardSecurityCode,
     }));
   
     const state = getState();

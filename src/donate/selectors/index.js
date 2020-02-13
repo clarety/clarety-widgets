@@ -76,10 +76,10 @@ export const getPaymentPostData = (state) => {
 
 export const getPaymentData = (formData) => {
   return {
-    cardNumber:  formData['payment.cardNumber'],
-    expiryMonth: formData['payment.expiryMonth'],
-    expiryYear:  formData['payment.expiryYear'],
-    ccv:         formData['payment.ccv'],
+    cardNumber:       formData['payment.cardNumber'],
+    cardExpiryMonth:  formData['payment.cardExpiryMonth'],
+    cardExpiryYear:   formData['payment.cardExpiryYear'],
+    cardSecurityCode: formData['payment.cardSecurityCode'],
   };
 };
 

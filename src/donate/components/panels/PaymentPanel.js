@@ -41,8 +41,8 @@ export class PaymentPanel extends BasePanel {
     const errors = [];
 
     cardNumberField(errors, formData, 'payment.cardNumber');
-    cardExpiryField(errors, formData, 'payment.expiry', 'payment.expiryMonth', 'payment.expiryYear');
-    ccvField(errors, formData, 'payment.ccv');
+    cardExpiryField(errors, formData, 'payment.cardExpiry', 'payment.cardExpiryMonth', 'payment.cardExpiryYear');
+    ccvField(errors, formData, 'payment.cardSecurityCode');
 
     setErrors(errors);
     return errors.length === 0;
@@ -107,12 +107,12 @@ export class PaymentPanel extends BasePanel {
         
                 <Form.Row>
                   <Col>
-                    <Form.Group controlId="cardExpMonth">
+                    <Form.Group>
                       <Form.Label>Expiry</Form.Label>
                       <ExpiryInput
-                        field="payment.expiry"
-                        monthField="payment.expiryMonth"
-                        yearField="payment.expiryYear"
+                        field="payment.cardExpiry"
+                        monthField="payment.cardExpiryMonth"
+                        yearField="payment.cardExpiryYear"
                         testId="expiry-input"
                       />
                     </Form.Group>
@@ -120,7 +120,7 @@ export class PaymentPanel extends BasePanel {
                   <Col>
                     <Form.Group controlId="ccv">
                       <Form.Label>CCV</Form.Label>
-                      <CcvInput field="payment.ccv" testId="ccv-input" />
+                      <CcvInput field="payment.cardSecurityCode" testId="ccv-input" />
                     </Form.Group>
                   </Col>
                 </Form.Row>
