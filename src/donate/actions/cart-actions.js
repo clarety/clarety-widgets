@@ -1,5 +1,6 @@
-import { addItem, updateItem, clearItems } from 'shared/actions';
+import { addItem, updateItem, clearItems, setCustomer } from 'shared/actions';
 import { getCart } from 'shared/selectors';
+import { parseNestedElements } from 'shared/utils';
 import { getDonationPanelSelection, getSelectedOffer } from 'donate/selectors';
 
 export const adjustDonation = (amount) => {
@@ -30,6 +31,16 @@ export const addDonationToCart = () => {
       price: selection.amount,
       type: 'donation',
     }));
+
+    return true;
+  };
+};
+
+export const addCustomerToCart = () => {
+  return (dispatch, getState) => {
+    const state = getState();
+    const formData = parseNestedElements(state.formData);
+    dispatch(setCustomer(formData.customer));
 
     return true;
   };

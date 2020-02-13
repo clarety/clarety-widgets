@@ -2,7 +2,7 @@ import { getSetting } from 'shared/selectors';
 import { getFormData, getErrors } from 'form/selectors';
 import { setErrors } from 'form/actions';
 import { getIsBusy } from 'donate/selectors';
-import { submitCustomerPanel } from 'donate/actions';
+import { addCustomerToCart } from 'donate/actions';
 
 export class CustomerConnect {
   static mapStateToProps = (state) => {
@@ -15,7 +15,7 @@ export class CustomerConnect {
   };
 
   static actions = {
-    onSubmit: submitCustomerPanel,
+    onSubmit: addCustomerToCart,
     setErrors: setErrors,
   };
 }
