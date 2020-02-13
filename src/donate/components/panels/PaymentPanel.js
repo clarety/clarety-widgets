@@ -89,9 +89,7 @@ export class PaymentPanel extends BasePanel {
 
                 <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
 
-                  <Card.Text className="donation-summary">
-                    Donation Amount: <b>{this.props.amount}</b>
-                  </Card.Text>
+                  {this.renderCartSummary()}
           
                   <Form.Group controlId="cardNumber">
                     <Form.Label>Card Number</Form.Label>
@@ -138,6 +136,14 @@ export class PaymentPanel extends BasePanel {
           }
         </PanelContainer>
       </form>
+    );
+  }
+
+  renderCartSummary() {
+    return (
+      <Card.Text className="donation-summary">
+        Donation Amount: <b>{this.props.amount}</b>
+      </Card.Text>
     );
   }
 
