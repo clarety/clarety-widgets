@@ -5,11 +5,7 @@ export const types = {
   selectAmount:    'SELECT_AMOUNT',
   selectDefaults:  'SELECT_DEFAULTS',
 
-  // API Action Types
-
-  updateCartRequest: 'UPDATE_CART_REQUEST',
-  updateCartSuccess: 'UPDATE_CART_SUCCESS',
-  updateCartFailure: 'UPDATE_CART_FAILURE',
+  // Payment Action Types
 
   makePaymentRequest: 'MAKE_PAYMENT_REQUEST',
   makePaymentSuccess: 'MAKE_PAYMENT_SUCCESS',

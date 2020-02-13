@@ -3,7 +3,7 @@ import { ClaretyApi } from 'clarety-utils';
 import { statuses, setStatus, setRecaptcha, setPayment, updateCartData } from 'shared/actions';
 import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
-import { addDonationToCart, addCustomerToCart, stripeTokenRequest, stripeTokenSuccess, stripeTokenFailure, makePaymentRequest, makePaymentSuccess, makePaymentFailure } from 'donate/actions';
+import { types, addDonationToCart, addCustomerToCart } from 'donate/actions';
 import { createStripeToken, parseStripeError } from 'donate/utils';
 import { getPaymentData, getCustomerFullName, getPaymentPostData } from 'donate/selectors';
 
@@ -154,3 +154,37 @@ export const handlePaymentResult = (result) => {
     }
   }
 };
+
+// Make Payment
+
+const makePaymentRequest = (postData) => ({
+  type: types.makePaymentRequest,
+  postData: postData,
+});
+
+const makePaymentSuccess = (result) => ({
+  type: types.makePaymentSuccess,
+  result: result,
+});
+
+const makePaymentFailure = (result) => ({
+  type: types.makePaymentFailure,
+  result: result,
+});
+
+// Stripe Token
+
+const stripeTokenRequest = (postData) => ({
+  type: types.stripeTokenRequest,
+  postData: postData,
+});
+
+const stripeTokenSuccess = (result) => ({
+  type: types.stripeTokenSuccess,
+  result: result,
+});
+
+const stripeTokenFailure = (result) => ({
+  type: types.stripeTokenFailure,
+  result: result,
+});
