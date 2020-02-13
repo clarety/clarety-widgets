@@ -10,6 +10,22 @@ export function emailField(errors, formData, field, message) {
   validateEmail(email, field, errors, message);
 }
 
+export function cardNumberField(errors, formData, field, message) {
+  const cardNumber = formData[field];
+  validateCardNumber(cardNumber, field, errors, message);
+}
+
+export function cardExpiryField(errors, formData, field, monthField, yearField, message) {
+  const month = formData[monthField];
+  const year = formData[yearField];
+  validateCardExpiry(month, year, field, errors, message);
+}
+
+export function ccvField(errors, formData, field, message) {
+  const ccv = formData[field];
+  validateCcv(ccv, field, errors, message);
+}
+
 export function validateRequired(value, field, errors, message) {
   if (!value) {
     errors.push({
@@ -31,45 +47,45 @@ export function validateEmail(email, field, errors, message) {
   }
 }
 
-export function validatePassword(password, field, errors) {
+export function validatePassword(password, field, errors, message) {
   const numberCount = password ? password.replace(/\D/g, '').length : 0;
   if (!password || password.length < 8 || numberCount < 2) {
     errors.push({
       'field': field,
-      'message': 'Password must contain at least 8 characters including 2 numbers.',
+      'message': message || 'Password must contain at least 8 characters including 2 numbers.',
     });
   }
 }
 
-export function validateCardNumber(cardNumber, field, errors) {
+export function validateCardNumber(cardNumber, field, errors, message) {
   const { isValid } = cardValidator.number(cardNumber);
 
   if (!isValid) {
     errors.push({
       field: field,
-      message: 'Please enter a valid card number.',
+      message: message || 'Please enter a valid card number.',
     });
   }
 }
 
-export function validateCardExpiry(month, year, field, errors) {
+export function validateCardExpiry(month, year, field, errors, message) {
   const { isValid } = cardValidator.expirationDate({ month, year }, 99);
 
   if (!isValid) {
     errors.push({
       field: field,
-      message: 'Please enter a valid expiry date.',
+      message: message || 'Please enter a valid expiry date.',
     });
   }
 }
 
-export function validateCcv(ccv, field, errors) {
-  const { isValid } = cardValidator.cvv(ccv);
+export function validateCcv(ccv, field, errors, message) {
+  const isValid = ccv && (ccv.length === 3 || ccv.length === 4);
 
   if (!isValid) {
     errors.push({
       field: field,
-      message: 'Please enter a valid CCV.',
+      message: message || 'Please enter a valid CCV.',
     });
   }
 }

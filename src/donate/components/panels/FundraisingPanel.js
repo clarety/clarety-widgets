@@ -1,22 +1,11 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
-import { TextAreaInput, CheckboxInput } from 'form/components';
+import { TextAreaInput, CheckboxInput, SubmitButton, BackButton } from 'form/components';
 
 export class FundraisingPanel extends BasePanel {
-  fields = [
-    'fundraising.message',
-    'fundraising.isAnonymous',
-  ];
-
   onShowPanel() {
     if (this.props.layout === 'tabs') {
-      this.scrollIntoView();
-    }
-  }
-
-  componentDidUpdate() {
-    if (this.props.layout === 'page' && this.hasError()) {
       this.scrollIntoView();
     }
   }
@@ -30,9 +19,27 @@ export class FundraisingPanel extends BasePanel {
   onPressNext = async (event) => {
     event.preventDefault();
 
-    const isValid = await this.props.onSubmit();
-    if (isValid) this.props.nextPanel();
+    const { onSubmit, nextPanel } = this.props;
+
+    const isValid = this.validate();
+    if (!isValid) return;
+    
+    const didSubmit = await onSubmit();
+    if (!didSubmit) return;
+
+    nextPanel();
   };
+
+  validate() {
+    const { formData, setErrors } = this.props;
+
+    const errors = [];
+
+    //NOTE: no fields require validation yet.
+
+    setErrors(errors);
+    return errors.length === 0;
+  }
 
   renderWait() {
     const { layout, index, settings } = this.props;

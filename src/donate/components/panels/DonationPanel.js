@@ -12,12 +12,6 @@ export class DonationPanel extends BasePanel {
     if (layout === 'tabs') clearItems();
   }
 
-  componentDidUpdate() {
-    if (this.props.layout === 'page' && this.hasError()) {
-      this.scrollIntoView();
-    }
-  }
-
   onHoverAmount = (amountInfo) => {
     // Override in subclass.
   };
@@ -28,10 +22,34 @@ export class DonationPanel extends BasePanel {
 
   onPressNext = async (event) => {
     event.preventDefault();
+
+    const { onSubmit, nextPanel } = this.props;
+
+    const isValid = this.validate();
+    if (!isValid) return;
     
-    const isValid = await this.props.submitDonationPanel();
-    if (isValid) this.props.nextPanel();
+    const didSubmit = await onSubmit();
+    if (!didSubmit) return;
+
+    nextPanel();
   };
+
+  validate() {
+    const { selections, frequency, setErrors } = this.props;
+
+    const errors = [];
+
+    // Make sure an amount has been selected.
+    const selection = selections[frequency];
+    if (!selection.amount) {
+      errors.push({
+        message: 'Please select a donation amount',
+      });
+    }
+
+    setErrors(errors);
+    return errors.length === 0;
+  }
 
   renderWait() {
     const { layout, index, settings } = this.props;

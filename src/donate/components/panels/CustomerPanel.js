@@ -2,29 +2,13 @@ import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
+import { requiredField, emailField } from 'shared/utils';
 import { TextInput, StateInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
 import 'react-block-ui/style.css';
 
 export class CustomerPanel extends BasePanel {
-  fields = [
-    'customer.firstName',
-    'customer.lastName',
-    'customer.email',
-    'customer.billing.address1',
-    'customer.billing.suburb',
-    'customer.billing.state',
-    'customer.billing.postcode',
-    'customer.billing.country'
-  ];
-
   onShowPanel() {
     if (this.props.layout === 'tabs') {
-      this.scrollIntoView();
-    }
-  }
-
-  componentDidUpdate() {
-    if (this.props.layout === 'page' && this.hasError()) {
       this.scrollIntoView();
     }
   }
@@ -38,9 +22,36 @@ export class CustomerPanel extends BasePanel {
   onPressNext = async (event) => {
     event.preventDefault();
 
-    const isValid = await this.props.onSubmit();
-    if (isValid) this.props.nextPanel();
+    const { onSubmit, nextPanel } = this.props;
+
+    const isValid = this.validate();
+    if (!isValid) return;
+    
+    const didSubmit = await onSubmit();
+    if (!didSubmit) return;
+
+    nextPanel();
   };
+
+  validate() {
+    const { formData, setErrors } = this.props;
+
+    const errors = [];
+
+    requiredField(errors, formData, 'customer.firstName');
+    requiredField(errors, formData, 'customer.lastName');
+
+    requiredField(errors, formData, 'customer.email');
+    emailField(errors, formData, 'customer.email');
+
+    requiredField(errors, formData, 'customer.billing.address1');
+    requiredField(errors, formData, 'customer.billing.suburb');
+    requiredField(errors, formData, 'customer.billing.state');
+    requiredField(errors, formData, 'customer.billing.postcode');
+
+    setErrors(errors);
+    return errors.length === 0;
+  }
 
   renderWait() {
     const { layout, index, settings } = this.props;

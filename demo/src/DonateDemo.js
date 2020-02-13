@@ -2,6 +2,7 @@ import React from 'react';
 import { DonateWidget, renderWidget } from '../../src/';
 import { DonationPanel, DonationConnect } from '../../src/donate/components';
 import { CustomerPanel, CustomerConnect } from '../../src/donate/components';
+import { FundraisingPanel, FundraisingConnect } from '../../src/donate/components';
 import { PaymentPanel, PaymentConnect } from '../../src/donate/components';
 import { SuccessPanel, SuccessConnect } from '../../src/donate/components';
 import '../../src/donate/style.scss';
@@ -23,6 +24,14 @@ window.renderDonateWidget = (props) => {
       connect: CustomerConnect,
       settings: {
         tabName: 'Details',
+        hideHeader: true,
+      },
+    },
+    {
+      component: FundraisingPanel,
+      connect: FundraisingConnect,
+      settings: {
+        tabName: 'Fundraising',
         hideHeader: true,
       },
     },
@@ -55,6 +64,7 @@ export default class DonateDemo extends React.Component {
       storeCode: 'AU',
       singleOfferId: '8',
       recurringOfferId: '17',
+      fundraisingPageUid: 'abc-123',
 
       sourceId: '17',
       responseId: 'e9c2e351d90b11e996fd',

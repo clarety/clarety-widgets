@@ -4,6 +4,7 @@ import { DonationPanel, DonationConnect } from '../../src/donate/components';
 import { CustomerPanel, CustomerConnect } from '../../src/donate/components';
 import { FundraisingPanel, FundraisingConnect } from '../../src/donate/components';
 import { PaymentPanel, PaymentConnect } from '../../src/donate/components';
+import { SubmitPanel, SubmitConnect } from '../../src/donate/components';
 import '../../src/donate/style.scss';
 
 window.renderDonatePage = (props) => {
@@ -36,6 +37,13 @@ window.renderDonatePage = (props) => {
         title: 'Payment Details',
       },
     },
+    {
+      component: SubmitPanel,
+      connect: SubmitConnect,
+      settings: {
+        buttonText: 'Donate Now!',
+      },
+    },
   ]);
 
   renderWidget(props.elementId, <DonateWidget layout="page" {...props} />);
@@ -49,15 +57,13 @@ export default class DonatePageDemo extends React.Component {
       storeCode: 'AU',
       singleOfferId: '8',
       recurringOfferId: '17',
+      fundraisingPageUid: 'abc-123',
 
       sourceId: '17',
       responseId: 'e9c2e351d90b11e996fd',
       emailResponseId: '1234',
       
       // reCaptchaKey: '1234',
-
-      showFundraising: true,
-      fundraisingPageUid: 'abc-123',
     });
   }
 
