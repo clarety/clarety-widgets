@@ -3,7 +3,7 @@ import { ClaretyApi } from 'clarety-utils';
 import { statuses, setStatus, setRecaptcha, setPayment, updateCartData } from 'shared/actions';
 import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
-import { makePaymentRequest, stripeTokenRequest, stripeTokenSuccess, stripeTokenFailure, makePaymentSuccess, makePaymentFailure } from 'donate/actions';
+import { addDonationToCart, addCustomerToCart, stripeTokenRequest, stripeTokenSuccess, stripeTokenFailure, makePaymentRequest, makePaymentSuccess, makePaymentFailure } from 'donate/actions';
 import { createStripeToken, parseStripeError } from 'donate/utils';
 import { getPaymentData, getCustomerFullName, getPaymentPostData } from 'donate/selectors';
 
@@ -23,6 +23,37 @@ export const makePayment = () => {
       return false;
     }
 
+    let result;
+    if (settings.payment.type === 'stripe') {
+      result = await dispatch(makeStripeCCPayment());
+    } else {
+      result = await dispatch(makeClaretyCCPayment());
+    }
+
+    return dispatch(handlePaymentResult(result));
+  };
+};
+
+export const submitDonatePage = () => {
+  return async (dispatch, getState) => {
+    const { status, settings } = getState();
+
+    if (status !== statuses.ready) return;
+    dispatch(setStatus(statuses.busy));
+
+    // ReCaptcha.
+    const recaptcha = await executeRecaptcha();
+    dispatch(setRecaptcha(recaptcha));
+    if (!recaptcha) {
+      dispatch(setStatus(statuses.ready));
+      return false;
+    }
+
+    // Update cart.
+    dispatch(addDonationToCart());
+    dispatch(addCustomerToCart());
+
+    // Attempt payment.
     let result;
     if (settings.payment.type === 'stripe') {
       result = await dispatch(makeStripeCCPayment());

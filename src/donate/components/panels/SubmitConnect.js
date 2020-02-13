@@ -1,5 +1,5 @@
-import { submitPaymentPanel } from 'donate/actions';
 import { getIsBusy } from 'donate/selectors';
+import { submitDonatePage } from 'donate/actions';
 
 export class SubmitConnect {
   static mapStateToProps = (state) => {
@@ -9,6 +9,6 @@ export class SubmitConnect {
   };
 
   static actions = {
-    onSubmit: submitPaymentPanel,
+    onSubmit: submitDonatePage,
   };
 }
