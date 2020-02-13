@@ -45,17 +45,8 @@ export class PanelActions {
     dispatch(setRecaptcha(recaptcha));
     if (!recaptcha) return false;
 
-    const errors = [];
-    const isValid = validations.validatePaymentPanel(errors, getState);
-    dispatch(setErrors(errors));
-
-    if (isValid) {
-      const result = await actions.paymentActions.makePayment(dispatch, getState, { actions, validations });
-      return this._handlePaymentResult(result, dispatch, getState);
-    } else {
-      dispatch(setStatus(statuses.ready));
-      return false;
-    }
+    const result = await actions.paymentActions.makePayment(dispatch, getState, { actions, validations });
+    return this._handlePaymentResult(result, dispatch, getState);
   }
 
   _addDonationToCart(dispatch, getState) {
@@ -131,7 +122,7 @@ export class PagePanelActions extends PanelActions {
     // TODO: validate DonationPanel...
     // TODO: validate CustomerPanel...
     // TODO: validate optional FundraisingPanel...
-    const isPaymentValid = validations.validatePaymentPanel(errors, getState);
+    // TODO: validate PaymentPanel...
     dispatch(setErrors(errors));
 
     if (isAmountValid && isDetailsValid && isPaymentValid) {

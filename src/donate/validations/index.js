@@ -1,14 +1,4 @@
 export class Validations {
-  validatePaymentPanel(errors, getState) {
-    const { formData } = getState();
-
-    this.requireField(errors, formData, 'payment.cardNumber');
-    this.expiryField(errors, formData, 'payment.expiry', 'payment.expiryMonth', 'payment.expiryYear');
-    this.requireField(errors, formData, 'payment.ccv');
-
-    return errors.length === 0;
-  }
-
   // Utilities.
 
   requireField(errors, formData, field, message) {

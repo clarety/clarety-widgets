@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, Form, Row, Col } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
+import { cardNumberField, cardExpiryField, ccvField } from 'shared/utils';
 import { SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput } from 'form/components';
 import 'react-block-ui/style.css';
 
@@ -33,9 +34,29 @@ export class PaymentPanel extends BasePanel {
   onPressNext = async (event) => {
     event.preventDefault();
 
-    const isValid = await this.props.onSubmit();
-    if (isValid) this.props.nextPanel();
+    const { onSubmit, nextPanel } = this.props;
+
+    const isValid = this.validate();
+    if (!isValid) return;
+    
+    const didSubmit = await onSubmit();
+    if (!didSubmit) return;
+
+    nextPanel();
   };
+
+  validate() {
+    const { formData, setErrors } = this.props;
+
+    const errors = [];
+
+    cardNumberField(errors, formData, 'payment.cardNumber');
+    cardExpiryField(errors, formData, 'payment.expiry', 'payment.expiryMonth', 'payment.expiryYear');
+    ccvField(errors, formData, 'payment.ccv');
+
+    setErrors(errors);
+    return errors.length === 0;
+  }
 
   renderWait() {
     const { layout, index, settings } = this.props;
