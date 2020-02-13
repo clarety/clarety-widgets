@@ -7,8 +7,6 @@ import { types, addDonationToCart, addCustomerToCart } from 'donate/actions';
 import { createStripeToken, parseStripeError } from 'donate/utils';
 import { getPaymentData, getCustomerFullName, getPaymentPostData } from 'donate/selectors';
 
-export class PaymentActions {}
-
 export const makePayment = () => {
   return async (dispatch, getState) => {
     const { status, settings } = getState();
