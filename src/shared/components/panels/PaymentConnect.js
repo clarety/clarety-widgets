@@ -8,7 +8,7 @@ export class PaymentConnect {
   };
 
   static actions = {
-      onShowPanel: async () => true,
-      makePayment: async () => false,
+      onShowPanel: () => async () => true,
+      makePayment: () => async () => false,
   };
 }
