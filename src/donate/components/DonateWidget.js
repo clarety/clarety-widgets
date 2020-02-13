@@ -8,7 +8,6 @@ import { PanelManager } from 'shared/components';
 import { Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { handleUrlParams, Actions } from 'donate/actions';
-import { Validations } from 'donate/validations';
 import { rootReducer } from 'donate/reducers';
 import { mapDonationSettings, setupDefaultResources } from 'donate/utils';
 import { StepIndicator } from 'donate/components';
@@ -16,9 +15,9 @@ import { StepIndicator } from 'donate/components';
 export class DonateWidget extends React.Component {
   static store;
 
-  static init(actions = new Actions, validations = new Validations) {
+  static init(actions = new Actions) {
     // Setup redux store.
-    const thunk = thunkMiddleware.withExtraArgument({ actions, validations });
+    const thunk = thunkMiddleware.withExtraArgument({ actions });
     const middleware = applyMiddleware(thunk);
     const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
     DonateWidget.store = createStore(rootReducer, composeDevTools(middleware));

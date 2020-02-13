@@ -7,35 +7,35 @@ import { makePaymentSuccess, makePaymentFailure } from 'donate/actions';
 import { getDonationPanelSelection, getSelectedOffer } from 'donate/selectors';
 
 export const submitDonationPanel = () => {
-  return (dispatch, getState, { actions, validations }) => {
-    return actions.panelActions.submitDonationPanel(dispatch, getState, { actions, validations });
+  return (dispatch, getState, { actions }) => {
+    return actions.panelActions.submitDonationPanel(dispatch, getState, { actions });
   };
 };
 
 export const submitCustomerPanel = () => {
-  return (dispatch, getState, { actions, validations }) => {
-    return actions.panelActions.submitCustomerPanel(dispatch, getState, { actions, validations });
+  return (dispatch, getState, { actions }) => {
+    return actions.panelActions.submitCustomerPanel(dispatch, getState, { actions });
   };
 };
 
 export const submitPaymentPanel = () => {
-  return (dispatch, getState, { actions, validations }) => {
-    return actions.panelActions.submitPaymentPanel(dispatch, getState, { actions, validations });
+  return (dispatch, getState, { actions }) => {
+    return actions.panelActions.submitPaymentPanel(dispatch, getState, { actions });
   };
 };
 
 export class PanelActions {
-  async submitDonationPanel(dispatch, getState, { actions, validations }) {
+  async submitDonationPanel(dispatch, getState, { actions }) {
     this._addDonationToCart(dispatch, getState);
     return true;
   }
 
-  async submitCustomerPanel(dispatch, getState, { actions, validations }) {
+  async submitCustomerPanel(dispatch, getState, { actions }) {
     this._addCustomerToCart(dispatch, getState);
     return true;
   }
 
-  async submitPaymentPanel(dispatch, getState, { actions, validations }) {
+  async submitPaymentPanel(dispatch, getState, { actions }) {
     const { status } = getState();
 
     if (status !== statuses.ready) return;
@@ -45,7 +45,7 @@ export class PanelActions {
     dispatch(setRecaptcha(recaptcha));
     if (!recaptcha) return false;
 
-    const result = await actions.paymentActions.makePayment(dispatch, getState, { actions, validations });
+    const result = await actions.paymentActions.makePayment(dispatch, getState, { actions });
     return this._handlePaymentResult(result, dispatch, getState);
   }
 
@@ -106,7 +106,7 @@ export class PanelActions {
 }
 
 export class PagePanelActions extends PanelActions {
-  async submitPaymentPanel(dispatch, getState, { actions, validations }) {
+  async submitPaymentPanel(dispatch, getState, { actions }) {
     const { status, settings } = getState();
 
     if (status !== statuses.ready) return;
@@ -131,7 +131,7 @@ export class PagePanelActions extends PanelActions {
       this._addCustomerToCart(dispatch, getState);
 
       // Attempt payment.
-      const result = await actions.paymentActions.makePayment(dispatch, getState, { actions, validations });
+      const result = await actions.paymentActions.makePayment(dispatch, getState, { actions });
       this._handlePaymentResult(result, dispatch, getState);
     } else {
       dispatch(setStatus(statuses.ready));

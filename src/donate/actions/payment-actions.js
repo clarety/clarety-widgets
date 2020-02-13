@@ -5,17 +5,17 @@ import { createStripeToken, parseStripeError } from 'donate/utils';
 import { getPaymentData, getCustomerFullName, getPaymentPostData } from 'donate/selectors';
 
 export class PaymentActions {
-  async makePayment(dispatch, getState, { actions, validations }) {
+  async makePayment(dispatch, getState, { actions }) {
     const { settings } = getState();
 
     if (settings.payment.type === 'stripe') {
-      return await this._makeStripeCCPayment(dispatch, getState, { actions, validations });
+      return await this._makeStripeCCPayment(dispatch, getState, { actions });
     }
 
-    return await this._makeClaretyCCPayment(dispatch, getState, { actions, validations });
+    return await this._makeClaretyCCPayment(dispatch, getState, { actions });
   }
 
-  async _makeStripeCCPayment(dispatch, getState, { actions, validations }) {
+  async _makeStripeCCPayment(dispatch, getState, { actions }) {
     const { formData, settings } = getState();
   
     // Get stripe token.
@@ -45,7 +45,7 @@ export class PaymentActions {
     return results[0];
   }
   
-  async _makeClaretyCCPayment(dispatch, getState, { actions, validations }) {
+  async _makeClaretyCCPayment(dispatch, getState, { actions }) {
     const { formData } = getState();
   
     const paymentData = getPaymentData(formData);
