@@ -1,20 +1,4 @@
-import { getDonationPanelSelection } from 'donate/selectors';
-
 export class Validations {
-  validateDonationPanel(errors, getState) {
-    const state = getState();
-
-    // Make sure an amount has been selected.
-    const selection = getDonationPanelSelection(state);
-    if (!selection.amount) {
-      errors.push({
-        message: 'Please select a donation amount.',
-      });
-    }
-
-    return errors.length === 0;
-  }
-
   validateCustomerPanel(errors, getState) {
     const { formData } = getState();
 

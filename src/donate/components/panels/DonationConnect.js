@@ -1,5 +1,7 @@
 import { getSetting } from 'shared/selectors';
 import { clearItems } from 'shared/actions';
+import { getErrors } from 'form/selectors';
+import { setErrors } from 'form/actions';
 import { getSelectedAmount } from 'donate/selectors';
 import { selectAmount, submitDonationPanel } from 'donate/actions';
 
@@ -12,14 +14,15 @@ export class DonationConnect {
       frequency: donationPanel.frequency,
       selections: donationPanel.selections,
       selectedAmount: getSelectedAmount(state),
-      errors: state.errors,
+      errors: getErrors(state),
       variant: getSetting(state, 'variant'),
     };
   };
 
   static actions = {
     selectAmount: selectAmount,
-    submitDonationPanel: submitDonationPanel,
+    onSubmit: submitDonationPanel,
     clearItems: clearItems,
+    setErrors: setErrors,
   };
 }
