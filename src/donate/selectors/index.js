@@ -62,9 +62,11 @@ export const getPaymentPostData = (state) => {
     recaptchaResponse: recaptcha,
   };
 
-  if (getSetting(state, 'showFundraising')) {
+  // Optional fundraising data.
+  const fundraisingPageUid = getSetting(state, 'fundraisingPageUid');
+  if (fundraisingPageUid) {
     postData.fundraising = {
-      pageUid: getSetting(state, 'fundraisingPageUid'),
+      pageUid: fundraisingPageUid,
       ...formData.fundraising,
     };
   }

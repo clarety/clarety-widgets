@@ -53,7 +53,6 @@ export class _DonateWidgetRoot extends React.Component {
     updateAppSettings({
       variant: this.props.variant,
       confirmPageUrl: this.props.confirmPageUrl,
-      showFundraising: this.props.showFundraising,
       fundraisingPageUid: this.props.fundraisingPageUid,
     });
 

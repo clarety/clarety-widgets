@@ -64,6 +64,7 @@ export default class DonateDemo extends React.Component {
       storeCode: 'AU',
       singleOfferId: '8',
       recurringOfferId: '17',
+      fundraisingPageUid: 'abc-123',
 
       sourceId: '17',
       responseId: 'e9c2e351d90b11e996fd',
