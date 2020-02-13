@@ -117,24 +117,12 @@ export class PagePanelActions extends PanelActions {
     dispatch(setRecaptcha(recaptcha));
     if (!recaptcha) return false;
 
-    // Validate.
-    const errors = [];
-    // TODO: validate DonationPanel...
-    // TODO: validate CustomerPanel...
-    // TODO: validate optional FundraisingPanel...
-    // TODO: validate PaymentPanel...
-    dispatch(setErrors(errors));
+    // Update store.
+    this._addDonationToCart(dispatch, getState);
+    this._addCustomerToCart(dispatch, getState);
 
-    if (isAmountValid && isDetailsValid && isPaymentValid) {
-      // Update store.
-      this._addDonationToCart(dispatch, getState);
-      this._addCustomerToCart(dispatch, getState);
-
-      // Attempt payment.
-      const result = await actions.paymentActions.makePayment(dispatch, getState, { actions });
-      this._handlePaymentResult(result, dispatch, getState);
-    } else {
-      dispatch(setStatus(statuses.ready));
-    }
+    // Attempt payment.
+    const result = await actions.paymentActions.makePayment(dispatch, getState, { actions });
+    this._handlePaymentResult(result, dispatch, getState);
   }
 }

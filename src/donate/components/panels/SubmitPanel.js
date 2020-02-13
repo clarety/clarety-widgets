@@ -8,16 +8,40 @@ export class SubmitPanel extends BasePanel {
     return null;
   }
 
-  onSubmit = (event) => {
+  validate() {
+    // Validate any panels with a 'validate' function.
+    for (const panel of this.props.panelRefs) {
+      if (panel === this) continue;
+      if (!panel.validate) continue;
+
+      if (!panel.validate()) {
+        panel.scrollIntoView();
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  onPressSubmit = async (event) => {
     event.preventDefault();
-    this.props.onSubmit();
+
+    const { onSubmit, nextPanel } = this.props;
+
+    const isValid = this.validate();
+    if (!isValid) return;
+    
+    const showNext = await onSubmit();
+    if (!showNext) return;
+
+    nextPanel();
   };
 
   renderEdit() {
     const { layout, isBusy, settings } = this.props;
 
     return (
-      <form onSubmit={this.onSubmit}>
+      <form onSubmit={this.onPressSubmit}>
         <PanelContainer layout={layout} status="edit" className="submit-panel">
           <PanelBody layout={layout} status="edit" isBusy={isBusy}>
             <Row>

@@ -7,20 +7,8 @@ import { SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, 
 import 'react-block-ui/style.css';
 
 export class PaymentPanel extends BasePanel {
-  fields = [
-    'payment.cardNumber',
-    'payment.expiry',
-    'payment.ccv',
-  ];
-
   onShowPanel() {
     if (this.props.layout === 'tabs') {
-      this.scrollIntoView();
-    }
-  }
-
-  componentDidUpdate() {
-    if (this.props.layout === 'page' && this.hasError()) {
       this.scrollIntoView();
     }
   }

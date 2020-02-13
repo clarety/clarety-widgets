@@ -94,6 +94,7 @@ class _PanelManager extends React.Component {
           resetAllPanels={this.resetAllPanels}
 
           ref={ref => this.panelRefs[index] = ref}
+          panelRefs={this.panelRefs}
         />
       </ScrollIntoView>
     );

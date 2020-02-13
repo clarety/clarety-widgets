@@ -4,19 +4,8 @@ import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from '
 import { TextAreaInput, CheckboxInput, SubmitButton, BackButton } from 'form/components';
 
 export class FundraisingPanel extends BasePanel {
-  fields = [
-    'fundraising.message',
-    'fundraising.isAnonymous',
-  ];
-
   onShowPanel() {
     if (this.props.layout === 'tabs') {
-      this.scrollIntoView();
-    }
-  }
-
-  componentDidUpdate() {
-    if (this.props.layout === 'page' && this.hasError()) {
       this.scrollIntoView();
     }
   }

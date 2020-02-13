@@ -12,12 +12,6 @@ export class DonationPanel extends BasePanel {
     if (layout === 'tabs') clearItems();
   }
 
-  componentDidUpdate() {
-    if (this.props.layout === 'page' && this.hasError()) {
-      this.scrollIntoView();
-    }
-  }
-
   onHoverAmount = (amountInfo) => {
     // Override in subclass.
   };
