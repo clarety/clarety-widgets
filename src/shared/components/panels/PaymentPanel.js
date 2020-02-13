@@ -6,20 +6,20 @@ import { ErrorMessages } from 'form/components';
 import { BasePanel, TextInput, CardNumberInput, CcvInput, ExpiryInput, Button } from 'checkout/components';
 
 export class PaymentPanel extends BasePanel {
-  onPressPlaceOrder = event => {
-    event.preventDefault();
-
-    const { paymentMethod, makePayment } = this.props;
-
-    if (this.validate()) {
-      const paymentData = this.getPaymentData();
-      makePayment(paymentData, paymentMethod);
-    }
-  };
-
   onShowPanel() {
     this.props.onShowPanel();
   }
+
+  onPressNext = async (event) => {
+    event.preventDefault();
+
+    const { paymentMethod, onSubmit } = this.props;
+
+    if (this.validate()) {
+      const paymentData = this.getPaymentData();
+      onSubmit(paymentData, paymentMethod);
+    }
+  };
 
   validate() {
     const { paymentMethod } = this.props;
@@ -135,7 +135,7 @@ export class PaymentPanel extends BasePanel {
     
     return (
       <FormContext.Provider value={this.state}>
-        <Form onSubmit={this.onPressPlaceOrder}>
+        <Form onSubmit={this.onPressNext}>
           {this.renderPaymentMethodFields()}
 
           <div className="panel-actions">

@@ -16,6 +16,6 @@ export class RegistrationPaymentConnect {
   
   static actions = {
     onShowPanel: () => ({ type: 'NO_OP' }),
-    makePayment: submitRegistration,
+    onSubmit: submitRegistration,
   };
 }

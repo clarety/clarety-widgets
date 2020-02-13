@@ -12,6 +12,6 @@ export class PaymentConnect {
 
   static actions = {
       onShowPanel: fetchPaymentMethods,
-      makePayment: makePayment,
+      onSubmit: makePayment,
   };
 }

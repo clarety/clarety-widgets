@@ -3,12 +3,12 @@ export class PaymentConnect {
     return {
       isBusy: state.status === 'busy',
       errors: state.errors,
-      paymentMethod: 'na'
+      paymentMethod: { type: 'na' },
     };
   };
 
   static actions = {
       onShowPanel: () => async () => true,
-      makePayment: () => async () => false,
+      onSubmit: () => async () => false,
   };
 }

@@ -8,6 +8,20 @@ export class SubmitPanel extends BasePanel {
     return null;
   }
 
+  onPressSubmit = async (event) => {
+    event.preventDefault();
+
+    const { onSubmit, nextPanel } = this.props;
+
+    const isValid = this.validate();
+    if (!isValid) return;
+    
+    const didSubmit = await onSubmit();
+    if (!didSubmit) return;
+
+    nextPanel();
+  };
+
   validate() {
     // Validate any panels with a 'validate' function.
     for (const panel of this.props.panelRefs) {
@@ -22,20 +36,6 @@ export class SubmitPanel extends BasePanel {
 
     return true;
   }
-
-  onPressSubmit = async (event) => {
-    event.preventDefault();
-
-    const { onSubmit, nextPanel } = this.props;
-
-    const isValid = this.validate();
-    if (!isValid) return;
-    
-    const showNext = await onSubmit();
-    if (!showNext) return;
-
-    nextPanel();
-  };
 
   renderEdit() {
     const { layout, isBusy, settings } = this.props;
