@@ -1,8 +1,8 @@
-import { submitPaymentPanel } from 'donate/actions';
 import { getSetting } from 'shared/selectors';
 import { getFormData, getErrors } from 'form/selectors';
 import { setErrors } from 'form/actions';
 import { getIsBusy, getSelectedFrequency, getSelectedAmount } from 'donate/selectors';
+import { makePayment } from 'donate/actions';
 
 export class PaymentConnect {
   static mapStateToProps = (state) => {
@@ -17,7 +17,7 @@ export class PaymentConnect {
   };
 
   static actions = {
-    onSubmit: submitPaymentPanel,
+    onSubmit: makePayment,
     setErrors: setErrors,
   };
 }
