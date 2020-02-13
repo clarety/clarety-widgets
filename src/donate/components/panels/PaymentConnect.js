@@ -11,12 +11,14 @@ export class PaymentConnect {
       amount: getSelectedAmount(state),
       frequency: getSelectedFrequency(state),
       formData: getFormData(state),
+      paymentMethod: { type: 'gatewaycc' },
       errors: getErrors(state),
       variant: getSetting(state, 'variant'),
     };
   };
 
   static actions = {
+    onShowPanel: () => async () => true,
     onSubmit: makePayment,
     setErrors: setErrors,
   };

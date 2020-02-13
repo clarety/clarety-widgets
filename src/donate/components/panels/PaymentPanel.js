@@ -8,6 +8,8 @@ import 'react-block-ui/style.css';
 
 export class PaymentPanel extends BasePanel {
   onShowPanel() {
+    this.props.onShowPanel();
+
     if (this.props.layout === 'tabs') {
       this.scrollIntoView();
     }
