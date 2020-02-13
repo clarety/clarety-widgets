@@ -1,14 +1,4 @@
 export class Validations {
-  validateCustomerPanel(errors, getState) {
-    const { formData } = getState();
-
-    this.requireField(errors, formData, 'customer.firstName');
-    this.requireField(errors, formData, 'customer.lastName');
-    this.emailField(errors, formData, 'customer.email');
-
-    return errors.length === 0;
-  }
-
   validatePaymentPanel(errors, getState) {
     const { formData } = getState();
 
