@@ -1,5 +1,6 @@
-import { updateItem } from 'shared/actions';
+import { addItem, updateItem, clearItems } from 'shared/actions';
 import { getCart } from 'shared/selectors';
+import { getDonationPanelSelection, getSelectedOffer } from 'donate/selectors';
 
 export const adjustDonation = (amount) => {
   return (dispatch, getState) => {
@@ -12,5 +13,24 @@ export const adjustDonation = (amount) => {
       cartItem.price += amount;
       dispatch(updateItem(index, cartItem));
     }
+  };
+};
+
+export const addDonationToCart = () => {
+  return (dispatch, getState) => {
+    const state = getState();
+    const selection = getDonationPanelSelection(state);
+    const offer = getSelectedOffer(state);
+
+    dispatch(clearItems());
+
+    dispatch(addItem({
+      offerUid: offer.offerUid,
+      offerPaymentUid: offer.offerPaymentUid,
+      price: selection.amount,
+      type: 'donation',
+    }));
+
+    return true;
   };
 };

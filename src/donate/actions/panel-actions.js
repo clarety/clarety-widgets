@@ -1,16 +1,9 @@
 import Cookies from 'js-cookie';
-import { statuses, setStatus, addItem, setCustomer, updateCartData, clearItems, setRecaptcha } from 'shared/actions';
+import { statuses, setStatus, setCustomer, updateCartData, setRecaptcha } from 'shared/actions';
 import { parseNestedElements } from 'shared/utils';
 import { executeRecaptcha } from 'form/components';
 import { setErrors } from 'form/actions';
-import { makePaymentSuccess, makePaymentFailure } from 'donate/actions';
-import { getDonationPanelSelection, getSelectedOffer } from 'donate/selectors';
-
-export const submitDonationPanel = () => {
-  return (dispatch, getState, { actions }) => {
-    return actions.panelActions.submitDonationPanel(dispatch, getState, { actions });
-  };
-};
+import { makePaymentSuccess, makePaymentFailure, addDonationToCart } from 'donate/actions';
 
 export const submitCustomerPanel = () => {
   return (dispatch, getState, { actions }) => {
@@ -25,11 +18,6 @@ export const submitPaymentPanel = () => {
 };
 
 export class PanelActions {
-  async submitDonationPanel(dispatch, getState, { actions }) {
-    this._addDonationToCart(dispatch, getState);
-    return true;
-  }
-
   async submitCustomerPanel(dispatch, getState, { actions }) {
     this._addCustomerToCart(dispatch, getState);
     return true;
@@ -47,21 +35,6 @@ export class PanelActions {
 
     const result = await actions.paymentActions.makePayment(dispatch, getState, { actions });
     return this._handlePaymentResult(result, dispatch, getState);
-  }
-
-  _addDonationToCart(dispatch, getState) {
-    const state = getState();
-    const selection = getDonationPanelSelection(state);
-    const offer = getSelectedOffer(state);
-
-    dispatch(clearItems());
-
-    dispatch(addItem({
-      offerUid: offer.offerUid,
-      offerPaymentUid: offer.offerPaymentUid,
-      price: selection.amount,
-      type: 'donation',
-    }));
   }
 
   _addCustomerToCart(dispatch, getState) {
@@ -117,8 +90,8 @@ export class PagePanelActions extends PanelActions {
     dispatch(setRecaptcha(recaptcha));
     if (!recaptcha) return false;
 
-    // Update store.
-    this._addDonationToCart(dispatch, getState);
+    // Update cart.
+    dispatch(addDonationToCart());
     this._addCustomerToCart(dispatch, getState);
 
     // Attempt payment.
