@@ -35,11 +35,12 @@ Checkout.setPanels([
       hideLabels: true,
     },
   },
-  {
-    component: ShippingPanel,
-    connect: ShippingConnect,
-    settings: {},
-  },
+  // NOTE: shipping-options endpoint currenlty returns an empty array.
+  // {
+  //   component: ShippingPanel,
+  //   connect: ShippingConnect,
+  //   settings: {},
+  // },
   {
     component: PaymentPanel,
     connect: PaymentConnect,
@@ -51,7 +52,7 @@ Checkout.setPanels([
 
 export default class CheckoutDemo extends React.Component {
   componentWillMount() {
-    setupCheckoutAxiosMock();
+    // setupCheckoutAxiosMock();
   }
 
   render() {
