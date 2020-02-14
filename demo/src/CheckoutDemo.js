@@ -48,7 +48,7 @@ Checkout.setPanels([
     settings: {
       hideLabels: true,
       title: 'Payment Details',
-      submitButtonText: 'Place Order',
+      submitBtnText: 'Place Order',
     },
   },
 ]);

@@ -41,7 +41,7 @@ window.renderDonatePage = (props) => {
       component: SubmitPanel,
       connect: SubmitConnect,
       settings: {
-        buttonText: 'Donate Now!',
+        submitBtnText: 'Donate Now!',
       },
     },
   ]);

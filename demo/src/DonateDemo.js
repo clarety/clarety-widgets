@@ -41,6 +41,7 @@ window.renderDonateWidget = (props) => {
       settings: {
         tabName: 'Payment',
         hideHeader: true,
+        submitBtnText: 'Donate',
       },
     },
     {

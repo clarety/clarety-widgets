@@ -147,7 +147,7 @@ export class PaymentPanel extends BasePanel {
                 }
 
                 <Col xs={layout === 'tabs' ? 8 : 12}>
-                  <SubmitButton title={settings.submitButtonText || 'Pay Now'} testId="next-button" />
+                  <SubmitButton title={settings.submitBtnText || 'Pay Now'} testId="next-button" />
                 </Col>
               </Form.Row>
             </PanelFooter>

@@ -47,7 +47,7 @@ export class SubmitPanel extends BasePanel {
             <Row>
               <Col>
                 <SubmitButton
-                  title={settings.buttonText || 'Donate'}
+                  title={settings.submitBtnText || 'Donate'}
                   testId="donate-button"
                   block
                 />

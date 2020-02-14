@@ -80,7 +80,7 @@ Registration.setPanels([
     connect: PaymentConnect,
     settings: {
       title: 'Registration Summary',
-      submitButtonText: 'Submit Registration',
+      submitBtnText: 'Submit Registration',
     },
   },
 ]);
