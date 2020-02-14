@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Form, Row, Col } from 'react-bootstrap';
+import { Card, Form, Row, Col, Spinner } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { cardNumberField, cardExpiryField, ccvField } from 'shared/utils';
 import { SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput } from 'form/components';
@@ -80,7 +80,7 @@ export class PaymentPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, isBusy, index, settings } = this.props;
+    const { layout, isBusy, index, paymentMethod, settings } = this.props;
 
     return (
       <form onSubmit={this.onPressNext} data-testid="payment-panel">
@@ -97,7 +97,11 @@ export class PaymentPanel extends BasePanel {
           <PanelBody layout={layout} status="edit" isBusy={isBusy}>
             <ErrorMessages />
             {this.renderCartSummary()}
-            {this.renderPaymentFields()}
+
+            {paymentMethod
+              ? this.renderPaymentFields()
+              : this.renderLoading()
+            }
           </PanelBody>
     
           {layout !== 'page' &&
@@ -122,6 +126,14 @@ export class PaymentPanel extends BasePanel {
       <Card.Text className="donation-summary">
         Donation Amount: <b>{this.props.amount}</b>
       </Card.Text>
+    );
+  }
+
+  renderLoading() {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100px' }}>
+        <Spinner animation="border" />
+      </div>
     );
   }
 
