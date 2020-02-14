@@ -126,6 +126,15 @@ export class PaymentPanel extends BasePanel {
   }
 
   renderPaymentFields() {
+    switch (this.props.paymentMethod.type) {
+      case 'gatewaycc': return this.renderCreditCardFields();
+      case 'na':        return this.renderNoPaymentFields();
+
+      default: throw new Error(`[Clarety] unhandled render ${paymentMethod.type}`);
+    }
+  }
+
+  renderCreditCardFields() {
     return (
       <React.Fragment>
         <Form.Row>
@@ -159,6 +168,10 @@ export class PaymentPanel extends BasePanel {
         </Form.Row>
       </React.Fragment>
     );
+  }
+
+  renderNoPaymentFields() {
+    return null;
   }
 
   renderDone() {
