@@ -1,10 +1,8 @@
 import React from 'react';
 import { Card, Form, Row, Col } from 'react-bootstrap';
-import BlockUi from 'react-block-ui';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { cardNumberField, cardExpiryField, ccvField } from 'shared/utils';
 import { SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput } from 'form/components';
-import 'react-block-ui/style.css';
 
 export class PaymentPanel extends BasePanel {
   onShowPanel() {
@@ -102,36 +100,32 @@ export class PaymentPanel extends BasePanel {
 
                 <ErrorMessages />
 
-                <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
-
-                  {this.renderCartSummary()}
-          
-                  <Form.Group controlId="cardNumber">
-                    <Form.Label>Card Number</Form.Label>
-                    <CardNumberInput field="payment.cardNumber" testId="card-number-input" />
-                  </Form.Group>
-          
-                  <Form.Row>
-                    <Col>
-                      <Form.Group>
-                        <Form.Label>Expiry</Form.Label>
-                        <ExpiryInput
-                          field="payment.cardExpiry"
-                          monthField="payment.cardExpiryMonth"
-                          yearField="payment.cardExpiryYear"
-                          testId="expiry-input"
-                        />
-                      </Form.Group>
-                    </Col>
-                    <Col>
-                      <Form.Group controlId="ccv">
-                        <Form.Label>CCV</Form.Label>
-                        <CcvInput field="payment.cardSecurityCode" testId="ccv-input" />
-                      </Form.Group>
-                    </Col>
-                  </Form.Row>
-
-                </BlockUi>
+                {this.renderCartSummary()}
+        
+                <Form.Group controlId="cardNumber">
+                  <Form.Label>Card Number</Form.Label>
+                  <CardNumberInput field="payment.cardNumber" testId="card-number-input" />
+                </Form.Group>
+        
+                <Form.Row>
+                  <Col>
+                    <Form.Group>
+                      <Form.Label>Expiry</Form.Label>
+                      <ExpiryInput
+                        field="payment.cardExpiry"
+                        monthField="payment.cardExpiryMonth"
+                        yearField="payment.cardExpiryYear"
+                        testId="expiry-input"
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Form.Group controlId="ccv">
+                      <Form.Label>CCV</Form.Label>
+                      <CcvInput field="payment.cardSecurityCode" testId="ccv-input" />
+                    </Form.Group>
+                  </Col>
+                </Form.Row>
 
               </Col>
             </Row>
