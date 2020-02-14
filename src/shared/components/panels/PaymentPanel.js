@@ -1,66 +1,78 @@
 import React from 'react';
-import { Form, Col, Spinner } from 'react-bootstrap';
-import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { FormContext } from 'shared/utils';
-import { ErrorMessages } from 'form/components';
-import { BasePanel, TextInput, CardNumberInput, CcvInput, ExpiryInput, Button } from 'checkout/components';
+import { Form, Row, Col, Spinner } from 'react-bootstrap';
+import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
+import { cardNumberField, cardExpiryField, ccvField } from 'shared/utils';
+import { SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput } from 'form/components';
 
 export class PaymentPanel extends BasePanel {
   onShowPanel() {
     this.props.onShowPanel();
+
+    if (this.props.layout === 'tabs') {
+      this.scrollIntoView();
+    }
   }
+
+  onPressBack = (event) => {
+    event.preventDefault();
+
+    this.props.prevPanel();
+  };
 
   onPressNext = async (event) => {
     event.preventDefault();
 
-    const { paymentMethod, onSubmit } = this.props;
+    const { paymentMethod, onSubmit, nextPanel } = this.props;
 
-    if (this.validate()) {
-      const paymentData = this.getPaymentData();
-      onSubmit(paymentData, paymentMethod);
-    }
+    const isValid = this.validate();
+    if (!isValid) return;
+    
+    const paymentData = this.getPaymentData();
+    const didSubmit = await onSubmit(paymentData, paymentMethod);
+    if (!didSubmit) return;
+
+    nextPanel();
   };
 
   validate() {
-    const { paymentMethod } = this.props;
+    const { paymentMethod, setErrors } = this.props;
 
     const errors = [];
 
     switch (paymentMethod.type) {
-      case 'gatewaycc':
-        this.validateCreditCardFields(errors);
-        break;
+      case 'gatewaycc': this.validateCreditCardFields(errors); break;
+      case 'na':        this.validateNoPaymentFields(errors);  break;
 
-      case 'na':
-        break;
-      
-      default:
-        throw new Error(`[Clarety] unhandled payment method ${paymentMethod}`);
+      default: throw new Error(`[Clarety] unhandled validate ${paymentMethod.type}`);
     }
 
-    this.setState({ errors });
+    setErrors(errors);
     return errors.length === 0;
   }
 
   validateCreditCardFields(errors) {
-    this.validateRequired('cardName', errors);
-    this.validateCardNumber('cardNumber', errors);
-    this.validateCardExpiry('cardExpiry', 'cardExpiryMonth', 'cardExpiryYear', errors);
-    this.validateCcv('cardSecurityCode', errors);
+    const { formData } = this.props;
+
+    cardNumberField(errors, formData, 'payment.cardNumber');
+    cardExpiryField(errors, formData, 'payment.cardExpiry', 'payment.cardExpiryMonth', 'payment.cardExpiryYear');
+    ccvField(errors, formData, 'payment.cardSecurityCode');
+  }
+
+  validateNoPaymentFields(errors) {
+    // NOTE: no validation required.
   }
 
   getPaymentData() {
-    const { paymentMethod } = this.props;
-    const { formData } = this.state;
+    const { paymentMethod, formData } = this.props;
 
     if (paymentMethod.type === 'gatewaycc') {
       return {
         type:             'gatewaycc',
-        cardName:         formData.cardName,
-        cardNumber:       formData.cardNumber,
-        cardExpiryMonth:  formData.cardExpiryMonth,
-        cardExpiryYear:   '20' + formData.cardExpiryYear,
-        cardSecurityCode: formData.cardSecurityCode,
+        cardName:         formData['customer.firstName'] + ' ' + formData['customer.lastName'],
+        cardNumber:       formData['payment.cardNumber'],
+        cardExpiryMonth:  formData['payment.cardExpiryMonth'],
+        cardExpiryYear:   '20' + formData['payment.cardExpiryYear'],
+        cardSecurityCode: formData['payment.cardSecurityCode'],
       };
     }
 
@@ -68,28 +80,19 @@ export class PaymentPanel extends BasePanel {
       return { type: 'na' };
     }
 
-    throw new Error(`[Clarety] unhandled payment method ${paymentMethod}`);
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    super.componentDidUpdate(prevProps, prevState);
-
-    const { errors } = this.props;
-    if (prevProps.errors !== errors) {
-      this.setState({ errors });
-    }
+    throw new Error(`[Clarety] unhandled getPaymentData ${paymentMethod.type}`);
   }
 
   renderWait() {
-    const { layout, index } = this.props;
+    const { layout, index, settings } = this.props;
 
     return (
-      <PanelContainer layout={layout} status="wait">
+      <PanelContainer layout={layout} status="wait" className="payment-panel">
         <PanelHeader
           status="wait"
           layout={layout}
-          title="Payment Details"
           number={index + 1}
+          title={settings.title}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -99,54 +102,65 @@ export class PaymentPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, index, paymentMethod, isBusy } = this.props;
+    const { layout, index, paymentMethod, settings } = this.props;
 
     return (
-      <PanelContainer layout={layout} status="edit" className="payment-panel">
-        <PanelHeader
-          status="edit"
-          layout={layout}
-          number={index + 1}
-          title="Payment Details"
-          intlId="paymentPanel.editTitle"
-        />
-
-        <PanelBody status="edit" layout={layout} isBusy={isBusy}>
-          <ErrorMessages />
-
-          {this.renderCartSummary()}
+      <form onSubmit={this.onPressNext} data-testid="payment-panel">
+        <PanelContainer layout={layout} status="edit" className="payment-panel">
+          {!settings.hideHeader &&
+            <PanelHeader
+              status="edit"
+              layout={layout}
+              number={index + 1}
+              title={settings.title}
+            />
+          }
 
           {paymentMethod
-            ? this.renderForm()
-            : this.renderSpinner()
+            ? this.renderContent()
+            : this.renderLoading()
           }
-        </PanelBody>
-      </PanelContainer>
+          
+        </PanelContainer>
+      </form>
+    );
+  }
+
+  renderContent() {
+    const { layout, isBusy, settings } = this.props;
+
+    return (
+      <React.Fragment>
+        <PanelBody layout={layout} status="edit" isBusy={isBusy}>
+            <ErrorMessages />
+            {this.renderCartSummary()}
+            {this.renderPaymentFields()}
+          </PanelBody>
+    
+          {layout !== 'page' &&
+            <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
+              <Form.Row className="justify-content-center">
+                {layout === 'tabs' && 
+                  <Col xs={4}>
+                    <BackButton title="Back" onClick={this.onPressBack} />
+                  </Col>
+                }
+
+                <Col xs={layout === 'tabs' ? 8 : 12}>
+                  <SubmitButton title={settings.submitBtnText || 'Pay Now'} testId="next-button" />
+                </Col>
+              </Form.Row>
+            </PanelFooter>
+          }
+      </React.Fragment>
     );
   }
 
   renderCartSummary() {
-    // Override in subclass.
     return null;
   }
 
-  renderForm() {
-    const { isBusy, submitBtnTitle } = this.props;
-    
-    return (
-      <FormContext.Provider value={this.state}>
-        <Form onSubmit={this.onPressNext}>
-          {this.renderPaymentMethodFields()}
-
-          <div className="panel-actions">
-            <Button title={submitBtnTitle || 'Place Order'} type="submit" isBusy={isBusy} />
-          </div>
-        </Form>
-      </FormContext.Provider>
-    );
-  }
-
-  renderSpinner() {
+  renderLoading() {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100px' }}>
         <Spinner animation="border" />
@@ -154,58 +168,71 @@ export class PaymentPanel extends BasePanel {
     );
   }
 
-  renderPaymentMethodFields() {
-    const { paymentMethod } = this.props;
-
-    switch (paymentMethod.type) {
+  renderPaymentFields() {
+    switch (this.props.paymentMethod.type) {
       case 'gatewaycc': return this.renderCreditCardFields();
-      case 'na':        return null;
+      case 'na':        return this.renderNoPaymentFields();
 
-      default: throw new Error(`[Clarety] unhandled payment method ${paymentMethod}`);
+      default: throw new Error(`[Clarety] unhandled render ${paymentMethod.type}`);
     }
   }
 
   renderCreditCardFields() {
-    const { settings } = this.props;
-
     return (
       <React.Fragment>
         <Form.Row>
           <Col>
-            <TextInput label="Name On Card" field="cardName" required hideLabel={settings.hideLabels} />
+            <Form.Group controlId="cardNumber">
+              <Form.Label>Card Number</Form.Label>
+              <CardNumberInput field="payment.cardNumber" testId="card-number-input" />
+            </Form.Group>
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <CardNumberInput label="Card Number" field="cardNumber" required hideLabel={settings.hideLabels} />
+            <Form.Group>
+              <Form.Label>Expiry</Form.Label>
+              <ExpiryInput
+                field="payment.cardExpiry"
+                monthField="payment.cardExpiryMonth"
+                yearField="payment.cardExpiryYear"
+                testId="expiry-input"
+              />
+            </Form.Group>
           </Col>
-        </Form.Row>
 
-        <Form.Row>
           <Col>
-            <ExpiryInput label="Expiry (MM/YY)" field="cardExpiry" monthField="cardExpiryMonth" yearField="cardExpiryYear" required hideLabel={settings.hideLabels} />
-          </Col>
-          <Col>
-            <CcvInput label="CCV" field="cardSecurityCode" required hideLabel={settings.hideLabels} />
+            <Form.Group controlId="ccv">
+              <Form.Label>CCV</Form.Label>
+              <CcvInput field="payment.cardSecurityCode" testId="ccv-input" />
+            </Form.Group>
           </Col>
         </Form.Row>
       </React.Fragment>
     );
   }
 
+  renderNoPaymentFields() {
+    return null;
+  }
+
   renderDone() {
-    const { layout, index } = this.props;
-    const cardNumber = this.state.formData['cardNumber'];
+    const { layout, index, settings } = this.props;
 
     return (
-      <PanelHeader
-        status="done"
-        layout={layout}
-        number={index + 1}
-        title={cardNumber}
-        onPressEdit={this.onPressEdit}
-      />
+      <PanelContainer layout={layout} status="done" className="payment-panel">
+        <PanelHeader
+          status="done"
+          layout={layout}
+          number={index + 1}
+          title={settings.title}
+          onPressEdit={this.onPressEdit}
+        />
+
+        <PanelBody layout={layout} status="done">
+        </PanelBody>
+      </PanelContainer>
     );
   }
 }

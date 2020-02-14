@@ -1,6 +1,5 @@
 import React from 'react';
-import { LoginPanel } from '../../src/shared/components';
-import { PaymentPanel } from '../../src/donate/components';
+import { LoginPanel, PaymentPanel } from '../../src/shared/components';
 import { CheckoutCustomerPanel, AddressPanel, ShippingPanel } from '../../src/checkout/components';
 import { LoginConnect, CheckoutCustomerConnect, AddressConnect, ShippingConnect, PaymentConnect } from '../../src/checkout/components';
 import { Checkout, setupCheckoutAxiosMock } from '../../src';
