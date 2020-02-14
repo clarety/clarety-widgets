@@ -102,7 +102,7 @@ export class PaymentPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, isBusy, index, paymentMethod, settings } = this.props;
+    const { layout, index, paymentMethod, settings } = this.props;
 
     return (
       <form onSubmit={this.onPressNext} data-testid="payment-panel">
@@ -116,14 +116,25 @@ export class PaymentPanel extends BasePanel {
             />
           }
 
-          <PanelBody layout={layout} status="edit" isBusy={isBusy}>
+          {paymentMethod
+            ? this.renderContent()
+            : this.renderLoading()
+          }
+          
+        </PanelContainer>
+      </form>
+    );
+  }
+
+  renderContent() {
+    const { layout, isBusy, settings } = this.props;
+
+    return (
+      <React.Fragment>
+        <PanelBody layout={layout} status="edit" isBusy={isBusy}>
             <ErrorMessages />
             {this.renderCartSummary()}
-
-            {paymentMethod
-              ? this.renderPaymentFields()
-              : this.renderLoading()
-            }
+            {this.renderPaymentFields()}
           </PanelBody>
     
           {layout !== 'page' &&
@@ -138,8 +149,7 @@ export class PaymentPanel extends BasePanel {
               </Form.Row>
             </PanelFooter>
           }
-        </PanelContainer>
-      </form>
+      </React.Fragment>
     );
   }
 
