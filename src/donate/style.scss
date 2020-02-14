@@ -33,6 +33,11 @@
     @extend .price-handles;
     flex-direction: row;
   }
+
+  .card-footer .btn {
+    display: block;
+    width: 100%;
+  }
 }
 
 .clarety-donate-widget.page {

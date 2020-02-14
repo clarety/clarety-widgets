@@ -9,8 +9,8 @@ export class PaymentConnect {
     return {
       isBusy: getIsBusy(state),
       amount: getSelectedAmount(state),
-      formData: getFormData(state),
       paymentMethod: { type: 'gatewaycc' },
+      formData: getFormData(state),
       errors: getErrors(state),
       variant: getSetting(state, 'variant'),
     };

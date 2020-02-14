@@ -68,7 +68,7 @@ export class PaymentPanel extends BasePanel {
     if (paymentMethod.type === 'gatewaycc') {
       return {
         type:             'gatewaycc',
-        cardName:         formData['customer.firstName'] + formData['customer.lastName'],
+        cardName:         formData['customer.firstName'] + ' ' + formData['customer.lastName'],
         cardNumber:       formData['payment.cardNumber'],
         cardExpiryMonth:  formData['payment.cardExpiryMonth'],
         cardExpiryYear:   '20' + formData['payment.cardExpiryYear'],
@@ -130,10 +130,10 @@ export class PaymentPanel extends BasePanel {
             <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
               <Form.Row className="justify-content-center">
                   <Col xs={4}>
-                    <BackButton title="Back" onClick={this.onPressBack} block />
+                    <BackButton title="Back" onClick={this.onPressBack} />
                   </Col>
                 <Col xs={8}>
-                  <SubmitButton title="Donate" block testId="next-button" />
+                  <SubmitButton title={settings.submitButtonText || 'Pay Now'} testId="next-button" />
                 </Col>
               </Form.Row>
             </PanelFooter>
