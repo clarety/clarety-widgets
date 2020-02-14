@@ -95,13 +95,9 @@ export class PaymentPanel extends BasePanel {
           }
 
           <PanelBody layout={layout} status="edit" isBusy={isBusy}>
-            <Row className="justify-content-center">
-              <Col>
-                <ErrorMessages />
-                {this.renderCartSummary()}
-                {this.renderPaymentFields()}
-              </Col>
-            </Row>
+            <ErrorMessages />
+            {this.renderCartSummary()}
+            {this.renderPaymentFields()}
           </PanelBody>
     
           {layout !== 'page' &&

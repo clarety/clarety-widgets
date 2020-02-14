@@ -37,6 +37,7 @@
 
 .clarety-donate-widget.page {
   .card {
+    margin: 0 auto;
     border: none;
   }
 
@@ -46,9 +47,9 @@
   }
 
   @include media-breakpoint-up(lg) {
-    .customer-panel .card-body .col { max-width: 600px; }
-    .fundraising-panel .card-body .col { max-width: 600px; }
-    .payment-panel .card-body .col { max-width: 600px; }
+    .customer-panel { max-width: 600px; }
+    .fundraising-panel { max-width: 600px; }
+    .payment-panel { max-width: 600px; }
 
     .btn-submit {
       max-width: 200px;
