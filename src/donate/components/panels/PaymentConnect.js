@@ -1,7 +1,7 @@
 import { getSetting } from 'shared/selectors';
 import { getFormData, getErrors } from 'form/selectors';
 import { setErrors } from 'form/actions';
-import { getIsBusy, getSelectedFrequency, getSelectedAmount } from 'donate/selectors';
+import { getIsBusy, getSelectedAmount } from 'donate/selectors';
 import { makePayment } from 'donate/actions';
 
 export class PaymentConnect {
@@ -9,7 +9,6 @@ export class PaymentConnect {
     return {
       isBusy: getIsBusy(state),
       amount: getSelectedAmount(state),
-      frequency: getSelectedFrequency(state),
       formData: getFormData(state),
       paymentMethod: { type: 'gatewaycc' },
       errors: getErrors(state),
