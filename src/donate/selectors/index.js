@@ -78,7 +78,7 @@ export const getPaymentData = (formData) => {
   return {
     cardNumber:       formData['payment.cardNumber'],
     cardExpiryMonth:  formData['payment.cardExpiryMonth'],
-    cardExpiryYear:   formData['payment.cardExpiryYear'],
+    cardExpiryYear:   '20' + formData['payment.cardExpiryYear'],
     cardSecurityCode: formData['payment.cardSecurityCode'],
   };
 };

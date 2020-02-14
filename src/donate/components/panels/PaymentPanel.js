@@ -22,12 +22,13 @@ export class PaymentPanel extends BasePanel {
   onPressNext = async (event) => {
     event.preventDefault();
 
-    const { onSubmit, nextPanel } = this.props;
+    const { paymentMethod, onSubmit, nextPanel } = this.props;
 
     const isValid = this.validate();
     if (!isValid) return;
     
-    const didSubmit = await onSubmit();
+    const paymentData = this.getPaymentData();
+    const didSubmit = await onSubmit(paymentData, paymentMethod);
     if (!didSubmit) return;
 
     nextPanel();
@@ -58,7 +59,28 @@ export class PaymentPanel extends BasePanel {
   }
 
   validateNoPaymentFields(errors) {
+    // NOTE: no validation required.
+  }
 
+  getPaymentData() {
+    const { paymentMethod, formData } = this.props;
+
+    if (paymentMethod.type === 'gatewaycc') {
+      return {
+        type:             'gatewaycc',
+        cardName:         formData['customer.firstName'] + formData['customer.lastName'],
+        cardNumber:       formData['payment.cardNumber'],
+        cardExpiryMonth:  formData['payment.cardExpiryMonth'],
+        cardExpiryYear:   '20' + formData['payment.cardExpiryYear'],
+        cardSecurityCode: formData['payment.cardSecurityCode'],
+      };
+    }
+
+    if (paymentMethod.type === 'na') {
+      return { type: 'na' };
+    }
+
+    throw new Error(`[Clarety] unhandled getPaymentData ${paymentMethod.type}`);
   }
 
   renderWait() {

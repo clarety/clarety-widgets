@@ -7,7 +7,7 @@ import { types, addDonationToCart, addCustomerToCart } from 'donate/actions';
 import { createStripeToken, parseStripeError } from 'donate/utils';
 import { getPaymentData, getCustomerFullName, getPaymentPostData } from 'donate/selectors';
 
-export const makePayment = () => {
+export const makePayment = (paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     const { status, settings } = getState();
 
@@ -23,9 +23,9 @@ export const makePayment = () => {
 
     let result;
     if (settings.payment.type === 'stripe') {
-      result = await dispatch(makeStripeCCPayment());
+      result = await dispatch(makeStripeCCPayment(paymentData));
     } else {
-      result = await dispatch(makeClaretyCCPayment());
+      result = await dispatch(makeClaretyCCPayment(paymentData));
     }
 
     return dispatch(handlePaymentResult(result));
@@ -51,25 +51,26 @@ export const submitDonatePage = () => {
     dispatch(addDonationToCart());
     dispatch(addCustomerToCart());
 
+    const { formData } = getState();
+    const paymentData = getPaymentData(formData);
+
     // Attempt payment.
     let result;
     if (settings.payment.type === 'stripe') {
-      result = await dispatch(makeStripeCCPayment());
+      result = await dispatch(makeStripeCCPayment(paymentData));
     } else {
-      result = await dispatch(makeClaretyCCPayment());
+      result = await dispatch(makeClaretyCCPayment(paymentData));
     }
 
     return dispatch(handlePaymentResult(result));
   };
 };
 
-export const makeStripeCCPayment = () => {
+export const makeStripeCCPayment = (paymentData) => {
   return async (dispatch, getState) => {
-    const { formData, settings } = getState();
+    const { settings } = getState();
   
     // Get stripe token.
-  
-    const paymentData = getPaymentData(formData);
     const stripeKey = settings.payment.publicKey;
     dispatch(stripeTokenRequest(paymentData, stripeKey));
     const tokenResult = await createStripeToken(paymentData, stripeKey);
@@ -85,7 +86,6 @@ export const makeStripeCCPayment = () => {
     dispatch(setPayment({ gatewayToken: tokenResult.id }));
   
     // Attempt payment.
-  
     const state = getState();
     const postData = getPaymentPostData(state);
     dispatch(makePaymentRequest(postData));
@@ -95,16 +95,15 @@ export const makeStripeCCPayment = () => {
   };
 };
 
-export const makeClaretyCCPayment = () => {
+export const makeClaretyCCPayment = (paymentData) => {
   return async (dispatch, getState) => {
     const { formData } = getState();
   
-    const paymentData = getPaymentData(formData);
     dispatch(setPayment({
       cardName: getCustomerFullName(formData),
       cardNumber: paymentData.cardNumber,
       cardExpiryMonth: paymentData.cardExpiryMonth,
-      cardExpiryYear: '20' + paymentData.cardExpiryYear,
+      cardExpiryYear: paymentData.cardExpiryYear,
       cardSecurityCode: paymentData.cardSecurityCode,
     }));
   
