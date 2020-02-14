@@ -36,16 +36,31 @@ export class PaymentPanel extends BasePanel {
   };
 
   validate() {
-    const { formData, setErrors } = this.props;
+    const { paymentMethod, setErrors } = this.props;
 
     const errors = [];
+
+    switch (paymentMethod.type) {
+      case 'gatewaycc': this.validateCreditCardFields(errors); break;
+      case 'na':        this.validateNoPaymentFields(errors);  break;
+
+      default: throw new Error(`[Clarety] unhandled validate ${paymentMethod.type}`);
+    }
+
+    setErrors(errors);
+    return errors.length === 0;
+  }
+
+  validateCreditCardFields(errors) {
+    const { formData } = this.props;
 
     cardNumberField(errors, formData, 'payment.cardNumber');
     cardExpiryField(errors, formData, 'payment.cardExpiry', 'payment.cardExpiryMonth', 'payment.cardExpiryYear');
     ccvField(errors, formData, 'payment.cardSecurityCode');
+  }
 
-    setErrors(errors);
-    return errors.length === 0;
+  validateNoPaymentFields(errors) {
+
   }
 
   renderWait() {
