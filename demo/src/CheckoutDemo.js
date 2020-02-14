@@ -1,5 +1,6 @@
 import React from 'react';
-import { LoginPanel, PaymentPanel } from '../../src/shared/components';
+import { LoginPanel } from '../../src/shared/components';
+import { PaymentPanel } from '../../src/donate/components';
 import { CheckoutCustomerPanel, AddressPanel, ShippingPanel } from '../../src/checkout/components';
 import { LoginConnect, CheckoutCustomerConnect, AddressConnect, ShippingConnect, PaymentConnect } from '../../src/checkout/components';
 import { Checkout, setupCheckoutAxiosMock } from '../../src';
@@ -46,6 +47,8 @@ Checkout.setPanels([
     connect: PaymentConnect,
     settings: {
       hideLabels: true,
+      title: 'Payment Details',
+      submitButtonText: 'Place Order',
     },
   },
 ]);

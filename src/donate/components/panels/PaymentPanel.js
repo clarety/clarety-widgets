@@ -144,11 +144,7 @@ export class PaymentPanel extends BasePanel {
   }
 
   renderCartSummary() {
-    return (
-      <p className="donation-summary">
-        Donation Amount: <b>{this.props.amount}</b>
-      </p>
-    );
+    return null;
   }
 
   renderLoading() {
