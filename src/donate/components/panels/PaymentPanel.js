@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Form, Row, Col, Spinner } from 'react-bootstrap';
+import { Form, Row, Col, Spinner } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { cardNumberField, cardExpiryField, ccvField } from 'shared/utils';
 import { SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput } from 'form/components';
@@ -145,9 +145,9 @@ export class PaymentPanel extends BasePanel {
 
   renderCartSummary() {
     return (
-      <Card.Text className="donation-summary">
+      <p className="donation-summary">
         Donation Amount: <b>{this.props.amount}</b>
-      </Card.Text>
+      </p>
     );
   }
 
