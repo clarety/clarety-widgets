@@ -1,10 +1,12 @@
 import React from 'react';
-import { Form, Row, Col, Spinner } from 'react-bootstrap';
+import { Form, Row, Col, Spinner, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { requiredField, cardNumberField, cardExpiryField, ccvField } from 'shared/utils';
 import { TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput } from 'form/components';
 
 export class PaymentPanel extends BasePanel {
+  state = {};
+
   onShowPanel() {
     this.props.onShowPanel();
 
@@ -143,6 +145,7 @@ export class PaymentPanel extends BasePanel {
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
             <ErrorMessages />
             {this.renderCartSummary()}
+            {this.renderPaymentMethodOptions()}
             {this.renderPaymentFields()}
           </PanelBody>
     
@@ -173,6 +176,33 @@ export class PaymentPanel extends BasePanel {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100px' }}>
         <Spinner animation="border" />
+      </div>
+    );
+  }
+
+  onSelectPaymentMethod = (paymentMethod) => {
+    this.setState({ paymentMethod });
+  };
+
+  renderPaymentMethodOptions() {
+    const paymentMethods = [
+      { type: 'gatewaycc' },
+      { type: 'gatewaydd' },
+    ];
+
+    const value = this.state.paymentMethod || paymentMethods[0].type;
+
+    return (
+      <div className="payment-method-select">
+        <ToggleButtonGroup
+          type="radio"
+          name="payment-method"
+          value={value}
+          onChange={this.onSelectPaymentMethod}
+        >
+          <ToggleButton value={paymentMethods[0].type} variant="outline-info">Credit Card</ToggleButton>
+          <ToggleButton value={paymentMethods[1].type} variant="outline-info">Direct Debit</ToggleButton>
+        </ToggleButtonGroup>
       </div>
     );
   }
