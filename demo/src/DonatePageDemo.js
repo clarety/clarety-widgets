@@ -35,6 +35,7 @@ window.renderDonatePage = (props) => {
       connect: PaymentConnect,
       settings: {
         title: 'Payment Details',
+        startDays: [1, 10, 20],
       },
     },
     {

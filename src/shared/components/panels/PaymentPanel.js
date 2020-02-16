@@ -1,8 +1,8 @@
 import React from 'react';
 import { Form, Row, Col, Spinner } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
-import { cardNumberField, cardExpiryField, ccvField } from 'shared/utils';
-import { TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, SelectInput } from 'form/components';
+import { requiredField, cardNumberField, cardExpiryField, ccvField } from 'shared/utils';
+import { TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput } from 'form/components';
 
 export class PaymentPanel extends BasePanel {
   onShowPanel() {
@@ -40,8 +40,9 @@ export class PaymentPanel extends BasePanel {
     const errors = [];
 
     switch (paymentMethod.type) {
-      case 'gatewaycc': this.validateCreditCardFields(errors); break;
-      case 'na':        this.validateNoPaymentFields(errors);  break;
+      case 'gatewaycc': this.validateCreditCardFields(errors);  break;
+      case 'gatewaydd': this.validateDirectDebitFields(errors); break;
+      case 'na':        this.validateNoPaymentFields(errors);   break;
 
       default: throw new Error(`[Clarety] unhandled validate ${paymentMethod.type}`);
     }
@@ -56,6 +57,14 @@ export class PaymentPanel extends BasePanel {
     cardNumberField(errors, formData, 'payment.cardNumber');
     cardExpiryField(errors, formData, 'payment.cardExpiry', 'payment.cardExpiryMonth', 'payment.cardExpiryYear');
     ccvField(errors, formData, 'payment.cardSecurityCode');
+  }
+
+  validateDirectDebitFields(errors) {
+    const { formData } = this.props;
+
+    requiredField(errors, formData, 'payment.accountName');
+    requiredField(errors, formData, 'payment.accountNumber');
+    requiredField(errors, formData, 'payment.accountBSB');
   }
 
   validateNoPaymentFields(errors) {
@@ -81,15 +90,6 @@ export class PaymentPanel extends BasePanel {
     }
 
     throw new Error(`[Clarety] unhandled getPaymentData ${paymentMethod.type}`);
-  }
-
-  getStartDateOptions() {
-    // TODO: get from settings.
-    return [
-      { value: '1',  label: '1st of the month'  },
-      { value: '15', label: '15th of the month' },
-      { value: '30', label: '30th of the month' },
-    ];
   }
 
   renderWait() {
@@ -229,37 +229,26 @@ export class PaymentPanel extends BasePanel {
     return (
       <React.Fragment>
         <Form.Row>
-          <Col sm={6}>
+          <Col>
             <Form.Group controlId="accountName">
               <Form.Label>Account Name</Form.Label>
               <TextInput field="payment.accountName" testId="account-name-input" />
-            </Form.Group>
-          </Col>
-
-          <Col sm={6}>
-            <Form.Group controlId="accountNumber">
-              <Form.Label>Account Number</Form.Label>
-              <TextInput field="payment.accountNumber" testId="account-number-input" />
             </Form.Group>
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col sm={6}>
-            <Form.Group controlId="accountBSB">
-              <Form.Label>Account BSB</Form.Label>
-              <TextInput field="payment.accountBSB" testId="account-bsb-input" />
+            <Form.Group controlId="accountNumber">
+              <Form.Label>Account Number</Form.Label>
+              <TextInput field="payment.accountNumber" testId="account-number-input" />
             </Form.Group>
           </Col>
 
           <Col sm={6}>
-            <Form.Group controlId="startDate">
-              <Form.Label>Start Date</Form.Label>
-              <SelectInput
-                field="additional.startDate"
-                options={this.getStartDateOptions()}
-                testId="start-date-input"
-              />
+            <Form.Group controlId="accountBSB">
+              <Form.Label>Account BSB</Form.Label>
+              <TextInput field="payment.accountBSB" testId="account-bsb-input" />
             </Form.Group>
           </Col>
         </Form.Row>
