@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Row, Col, Spinner } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { cardNumberField, cardExpiryField, ccvField } from 'shared/utils';
-import { SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput } from 'form/components';
+import { TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, SelectInput } from 'form/components';
 
 export class PaymentPanel extends BasePanel {
   onShowPanel() {
@@ -81,6 +81,15 @@ export class PaymentPanel extends BasePanel {
     }
 
     throw new Error(`[Clarety] unhandled getPaymentData ${paymentMethod.type}`);
+  }
+
+  getStartDateOptions() {
+    // TODO: get from settings.
+    return [
+      { value: '1',  label: '1st of the month'  },
+      { value: '15', label: '15th of the month' },
+      { value: '30', label: '30th of the month' },
+    ];
   }
 
   renderWait() {
@@ -169,8 +178,11 @@ export class PaymentPanel extends BasePanel {
   }
 
   renderPaymentFields() {
-    switch (this.props.paymentMethod.type) {
+    const { paymentMethod } = this.props;
+
+    switch (paymentMethod.type) {
       case 'gatewaycc': return this.renderCreditCardFields();
+      case 'gatewaydd': return this.renderDirectDebitFields();
       case 'na':        return this.renderNoPaymentFields();
 
       default: throw new Error(`[Clarety] unhandled render ${paymentMethod.type}`);
@@ -206,6 +218,48 @@ export class PaymentPanel extends BasePanel {
             <Form.Group controlId="ccv">
               <Form.Label>CCV</Form.Label>
               <CcvInput field="payment.cardSecurityCode" testId="ccv-input" />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+      </React.Fragment>
+    );
+  }
+
+  renderDirectDebitFields() {
+    return (
+      <React.Fragment>
+        <Form.Row>
+          <Col sm={6}>
+            <Form.Group controlId="accountName">
+              <Form.Label>Account Name</Form.Label>
+              <TextInput field="payment.accountName" testId="account-name-input" />
+            </Form.Group>
+          </Col>
+
+          <Col sm={6}>
+            <Form.Group controlId="accountNumber">
+              <Form.Label>Account Number</Form.Label>
+              <TextInput field="payment.accountNumber" testId="account-number-input" />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col sm={6}>
+            <Form.Group controlId="accountBSB">
+              <Form.Label>Account BSB</Form.Label>
+              <TextInput field="payment.accountBSB" testId="account-bsb-input" />
+            </Form.Group>
+          </Col>
+
+          <Col sm={6}>
+            <Form.Group controlId="startDate">
+              <Form.Label>Start Date</Form.Label>
+              <SelectInput
+                field="additional.startDate"
+                options={this.getStartDateOptions()}
+                testId="start-date-input"
+              />
             </Form.Group>
           </Col>
         </Form.Row>
