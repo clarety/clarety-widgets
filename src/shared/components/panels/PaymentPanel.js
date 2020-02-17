@@ -18,11 +18,21 @@ export class PaymentPanel extends BasePanel {
 
     const { paymentMethods } = this.props;
 
-    if (paymentMethods !== prevProps.paymentMethods) {
+    if (this.didPaymentMethodsChange(prevProps.paymentMethods, paymentMethods)) {
       this.setState({
         paymentMethod: this.getFirstPaymentMethod(paymentMethods),
       });
     }
+  }
+
+  didPaymentMethodsChange(prev, current) {
+    if (prev.length !== current.length) return true;
+
+    for (let index = 0; index < prev.length; index++) {
+      if (prev[index].type !== current[index].type) return true;
+    }
+
+    return false;
   }
 
   onShowPanel() {
@@ -119,7 +129,7 @@ export class PaymentPanel extends BasePanel {
       };
     }
 
-    if (paymentMethod.type === 'na') {
+    if (paymentMethod === 'na') {
       return { type: 'na' };
     }
 
