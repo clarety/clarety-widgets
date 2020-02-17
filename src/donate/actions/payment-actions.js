@@ -9,7 +9,7 @@ import { getPaymentData, getCustomerFullName, getPaymentPostData } from 'donate/
 
 export const makePayment = (paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
-    const { status, settings } = getState();
+    const { status } = getState();
 
     if (status !== statuses.ready) return;
     dispatch(setStatus(statuses.busy));
@@ -21,20 +21,14 @@ export const makePayment = (paymentData, paymentMethod) => {
       return false;
     }
 
-    let result;
-    if (settings.payment.type === 'stripe') {
-      result = await dispatch(makeStripeCCPayment(paymentData));
-    } else {
-      result = await dispatch(makeClaretyCCPayment(paymentData));
-    }
-
+    const result = await dispatch(makeCreditCardPayment(paymentData, paymentMethod));
     return dispatch(handlePaymentResult(result));
   };
 };
 
 export const submitDonatePage = () => {
   return async (dispatch, getState) => {
-    const { status, settings } = getState();
+    const { status } = getState();
 
     if (status !== statuses.ready) return;
     dispatch(setStatus(statuses.busy));
@@ -54,19 +48,27 @@ export const submitDonatePage = () => {
     const { formData } = getState();
     const paymentData = getPaymentData(formData);
 
-    // Attempt payment.
-    let result;
-    if (settings.payment.type === 'stripe') {
-      result = await dispatch(makeStripeCCPayment(paymentData));
-    } else {
-      result = await dispatch(makeClaretyCCPayment(paymentData));
-    }
+    // TODO:
+    const paymentMethod = { type: 'gatewaycc' };
 
+    const result = await dispatch(makeCreditCardPayment(paymentData, paymentMethod));
     return dispatch(handlePaymentResult(result));
   };
 };
 
-export const makeStripeCCPayment = (paymentData) => {
+const makeCreditCardPayment = (paymentData, paymentMethod) => {
+  return async (dispatch, getState) => {
+    const { settings } = getState();
+
+    if (settings.payment.type === 'stripe') {
+      return dispatch(makeStripeCCPayment(paymentData));
+    }
+      
+    return dispatch(makeStandardCCPayment(paymentData));
+  };
+};
+
+const makeStripeCCPayment = (paymentData) => {
   return async (dispatch, getState) => {
     const { settings } = getState();
   
@@ -95,15 +97,15 @@ export const makeStripeCCPayment = (paymentData) => {
   };
 };
 
-export const makeClaretyCCPayment = (paymentData) => {
+const makeStandardCCPayment = (paymentData) => {
   return async (dispatch, getState) => {
     const { formData } = getState();
   
     dispatch(setPayment({
-      cardName: getCustomerFullName(formData),
-      cardNumber: paymentData.cardNumber,
-      cardExpiryMonth: paymentData.cardExpiryMonth,
-      cardExpiryYear: paymentData.cardExpiryYear,
+      cardName:         getCustomerFullName(formData),
+      cardNumber:       paymentData.cardNumber,
+      cardExpiryMonth:  paymentData.cardExpiryMonth,
+      cardExpiryYear:   paymentData.cardExpiryYear,
       cardSecurityCode: paymentData.cardSecurityCode,
     }));
   
@@ -116,7 +118,7 @@ export const makeClaretyCCPayment = (paymentData) => {
   };
 };
 
-export const handlePaymentResult = (result) => {
+const handlePaymentResult = (result) => {
   return async (dispatch, getState) => {
     const { settings } = getState();
 

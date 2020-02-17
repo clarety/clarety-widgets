@@ -59,11 +59,12 @@ export class PaymentPanel extends BasePanel {
   };
 
   validate() {
-    const { paymentMethod, setErrors } = this.props;
+    const { setErrors } = this.props;
+    const { paymentMethod } = this.state;
 
     const errors = [];
 
-    switch (paymentMethod.type) {
+    switch (paymentMethod) {
       case 'gatewaycc': this.validateCreditCardFields(errors);  break;
       case 'gatewaydd': this.validateDirectDebitFields(errors); break;
       case 'na':        this.validateNoPaymentFields(errors);   break;
@@ -104,9 +105,10 @@ export class PaymentPanel extends BasePanel {
   }
 
   getPaymentData() {
-    const { paymentMethod, formData } = this.props;
+    const { formData } = this.props;
+    const { paymentMethod } = this.state;
 
-    if (paymentMethod.type === 'gatewaycc') {
+    if (paymentMethod === 'gatewaycc') {
       return {
         type:             'gatewaycc',
         cardName:         formData['customer.firstName'] + ' ' + formData['customer.lastName'],
