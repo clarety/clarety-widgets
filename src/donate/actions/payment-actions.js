@@ -5,9 +5,9 @@ import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { types, addDonationToCart, addCustomerToCart } from 'donate/actions';
 import { createStripeToken, parseStripeError } from 'donate/utils';
-import { getPaymentData, getPaymentPostData } from 'donate/selectors';
+import { getPaymentPostData } from 'donate/selectors';
 
-export const makePayment = () => {
+export const makePayment = (paymentData) => {
   return async (dispatch, getState) => {
     const { status } = getState();
 
@@ -20,9 +20,6 @@ export const makePayment = () => {
       dispatch(setStatus(statuses.ready));
       return false;
     }
-
-    const state = getState();
-    const paymentData = getPaymentData(state);
 
     let result;
 
@@ -38,7 +35,7 @@ export const makePayment = () => {
   };
 };
 
-export const submitDonatePage = () => {
+export const submitDonatePage = (paymentData) => {
   return async (dispatch, getState) => {
     const { status } = getState();
 
@@ -56,9 +53,6 @@ export const submitDonatePage = () => {
     // Update cart.
     dispatch(addDonationToCart());
     dispatch(addCustomerToCart());
-
-    const state = getState();
-    const paymentData = getPaymentData(state);
 
     let result;
 

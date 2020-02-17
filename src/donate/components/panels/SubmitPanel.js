@@ -15,12 +15,21 @@ export class SubmitPanel extends BasePanel {
 
     const isValid = this.validate();
     if (!isValid) return;
+
+    const paymentPanel = this.getPaymentPanel();
+    const paymentData = paymentPanel.getPaymentData();
     
-    const didSubmit = await onSubmit();
+    const didSubmit = await onSubmit(paymentData);
     if (!didSubmit) return;
 
     nextPanel();
   };
+
+  getPaymentPanel() {
+    return this.props.panelRefs.find(
+      panel => panel.constructor.name === 'PaymentPanel'
+    );
+  }
 
   validate() {
     // Validate any panels with a 'validate' function.

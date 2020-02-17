@@ -96,39 +96,6 @@ export const getPaymentPostData = (state) => {
   return postData;
 };
 
-export const getPaymentData = (state) => {
-  const formData = getFormData(state);
-  const paymentMethod = formData['payment.type'];
-
-  if (paymentMethod === 'gatewaycc') {
-    return {
-      type:             formData['payment.type'],
-      cardNumber:       formData['payment.cardNumber'],
-      cardExpiryMonth:  formData['payment.cardExpiryMonth'],
-      cardExpiryYear:   '20' + formData['payment.cardExpiryYear'],
-      cardSecurityCode: formData['payment.cardSecurityCode'],
-    };
-  }
-
-  if (paymentMethod === 'gatewaydd') {
-    return {
-      type:          formData['payment.type'],
-      accountName:   formData['payment.accountName'],
-      accountNumber: formData['payment.accountNumber'],
-      accountBSB:    formData['payment.accountBSB'],
-      startDate:     formData['payment.startDate'],
-    };
-  }
-
-  if (paymentMethod === 'na') {
-    return {
-      type: formData['payment.type'],
-    };
-  }
-
-  throw new Error(`getPaymentData not handled for ${paymentMethod}`);
-};
-
 export const getCustomerFullName = (state) => {
   const formData = getFormData(state);
 
