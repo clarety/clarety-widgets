@@ -161,12 +161,12 @@ export const getIsLoggedIn = (state) => !!getAuth(state).jwt;
 
 export const getIsExpress = (state) => getSetting(state, 'variant') === 'express';
 
-export const getPaymentMethod = (state) => {
+export const getPaymentMethods = (state) => {
   const isCorporateTeam = getIsCorporateTeam(state);
 
   return isCorporateTeam
-    ? { type: 'na' }
-    : { type: 'gatewaycc' };
+    ? [{ type: 'na' }]
+    : [{ type: 'gatewaycc' }];
 };
 
 export const getCreateTeamPostData = (state) => {

@@ -35,23 +35,26 @@ Checkout.setPanels([
       hideLabels: true,
     },
   },
-  {
-    component: ShippingPanel,
-    connect: ShippingConnect,
-    settings: {},
-  },
+  // NOTE: shipping-options endpoint currenlty returns an empty array.
+  // {
+  //   component: ShippingPanel,
+  //   connect: ShippingConnect,
+  //   settings: {},
+  // },
   {
     component: PaymentPanel,
     connect: PaymentConnect,
     settings: {
       hideLabels: true,
+      title: 'Payment Details',
+      submitBtnText: 'Place Order',
     },
   },
 ]);
 
 export default class CheckoutDemo extends React.Component {
   componentWillMount() {
-    setupCheckoutAxiosMock();
+    // setupCheckoutAxiosMock();
   }
 
   render() {

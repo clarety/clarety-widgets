@@ -1,5 +1,5 @@
 import { statuses } from 'shared/actions';
-import { getCart, getTrackingData, getRecaptcha, getSetting, getParsedFormData } from 'shared/selectors';
+import { getCart, getTrackingData, getRecaptcha, getSetting, getFormData, getParsedFormData } from 'shared/selectors';
 import { formatPrice } from 'form/utils';
 
 export const getIsBusy = (state) => state.status !== statuses.ready;
@@ -42,6 +42,28 @@ export const getSelectedOffer = (state) => {
   return priceHandles.find(offer => offer.frequency === donationPanel.frequency);
 };
 
+export const getPaymentMethods = (state, settings) => {
+  // Default to credit card if there's no setting.
+  if (!settings.paymentMethods) {
+    return [{ type: 'gatewaycc' }];
+  }
+
+  const result = [];
+
+  if (settings.paymentMethods.includes('credit-card')) {
+    result.push({ type: 'gatewaycc' });
+  }
+
+  const frequency = getSelectedFrequency(state);
+  if (frequency === 'recurring' && settings.paymentMethods.includes('direct-debit')) {
+    result.push({ type: 'gatewaydd' });
+  }
+
+  return result;
+};
+
+export const getStartDates = (state) => getSetting(state, 'startDates');
+
 export const getPaymentPostData = (state) => {
   const cart = getCart(state);
   const trackingData = getTrackingData(state);
@@ -74,16 +96,9 @@ export const getPaymentPostData = (state) => {
   return postData;
 };
 
-export const getPaymentData = (formData) => {
-  return {
-    cardNumber:  formData['payment.cardNumber'],
-    expiryMonth: formData['payment.expiryMonth'],
-    expiryYear:  formData['payment.expiryYear'],
-    ccv:         formData['payment.ccv'],
-  };
-};
+export const getCustomerFullName = (state) => {
+  const formData = getFormData(state);
 
-export const getCustomerFullName = (formData) => {
   const firstName = formData['customer.firstName'];
   const lastName  = formData['customer.lastName'];
   return `${firstName} ${lastName}`;

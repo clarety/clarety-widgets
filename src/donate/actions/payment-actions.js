@@ -5,36 +5,11 @@ import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { types, addDonationToCart, addCustomerToCart } from 'donate/actions';
 import { createStripeToken, parseStripeError } from 'donate/utils';
-import { getPaymentData, getCustomerFullName, getPaymentPostData } from 'donate/selectors';
+import { getPaymentPostData } from 'donate/selectors';
 
-export const makePayment = () => {
+export const makePayment = (paymentData, { isPageLayout } = {}) => {
   return async (dispatch, getState) => {
-    const { status, settings } = getState();
-
-    if (status !== statuses.ready) return;
-    dispatch(setStatus(statuses.busy));
-
-    const recaptcha = await executeRecaptcha();
-    dispatch(setRecaptcha(recaptcha));
-    if (!recaptcha) {
-      dispatch(setStatus(statuses.ready));
-      return false;
-    }
-
-    let result;
-    if (settings.payment.type === 'stripe') {
-      result = await dispatch(makeStripeCCPayment());
-    } else {
-      result = await dispatch(makeClaretyCCPayment());
-    }
-
-    return dispatch(handlePaymentResult(result));
-  };
-};
-
-export const submitDonatePage = () => {
-  return async (dispatch, getState) => {
-    const { status, settings } = getState();
+    const { status } = getState();
 
     if (status !== statuses.ready) return;
     dispatch(setStatus(statuses.busy));
@@ -47,29 +22,46 @@ export const submitDonatePage = () => {
       return false;
     }
 
-    // Update cart.
-    dispatch(addDonationToCart());
-    dispatch(addCustomerToCart());
+    if (isPageLayout) {
+      // Update cart.
+      dispatch(addDonationToCart());
+      dispatch(addCustomerToCart());
+    }
 
-    // Attempt payment.
     let result;
-    if (settings.payment.type === 'stripe') {
-      result = await dispatch(makeStripeCCPayment());
-    } else {
-      result = await dispatch(makeClaretyCCPayment());
+    switch (paymentData.type) {
+      case 'gatewaycc':
+        result = await dispatch(makeCreditCardPayment(paymentData));
+        break;
+
+      case 'gatewaydd':
+        result = await dispatch(makeDirectDebitPayment(paymentData));
+        break;
+
+      default: throw new Error(`makePayment not handled for ${paymentData.type}`);
     }
 
     return dispatch(handlePaymentResult(result));
   };
 };
 
-export const makeStripeCCPayment = () => {
+const makeCreditCardPayment = (paymentData) => {
   return async (dispatch, getState) => {
-    const { formData, settings } = getState();
+    const { settings } = getState();
+
+    if (settings.payment.type === 'stripe') {
+      return dispatch(makeStripeCCPayment(paymentData));
+    }
+      
+    return dispatch(makeStandardCCPayment(paymentData));
+  };
+};
+
+const makeStripeCCPayment = (paymentData) => {
+  return async (dispatch, getState) => {
+    const { settings } = getState();
   
     // Get stripe token.
-  
-    const paymentData = getPaymentData(formData);
     const stripeKey = settings.payment.publicKey;
     dispatch(stripeTokenRequest(paymentData, stripeKey));
     const tokenResult = await createStripeToken(paymentData, stripeKey);
@@ -85,7 +77,6 @@ export const makeStripeCCPayment = () => {
     dispatch(setPayment({ gatewayToken: tokenResult.id }));
   
     // Attempt payment.
-  
     const state = getState();
     const postData = getPaymentPostData(state);
     dispatch(makePaymentRequest(postData));
@@ -95,20 +86,13 @@ export const makeStripeCCPayment = () => {
   };
 };
 
-export const makeClaretyCCPayment = () => {
+const makeStandardCCPayment = (paymentData) => {
   return async (dispatch, getState) => {
-    const { formData } = getState();
+    let state = getState();
   
-    const paymentData = getPaymentData(formData);
-    dispatch(setPayment({
-      cardName: getCustomerFullName(formData),
-      cardNumber: paymentData.cardNumber,
-      cardExpiryMonth: paymentData.expiryMonth,
-      cardExpiryYear: '20' + paymentData.expiryYear,
-      cardSecurityCode: paymentData.ccv,
-    }));
+    dispatch(setPayment(paymentData));
   
-    const state = getState();
+    state = getState();
     const postData = getPaymentPostData(state);
     dispatch(makePaymentRequest(postData));
   
@@ -117,7 +101,22 @@ export const makeClaretyCCPayment = () => {
   };
 };
 
-export const handlePaymentResult = (result) => {
+const makeDirectDebitPayment = (paymentData) => {
+  return async (dispatch, getState) => {
+    let state = getState();
+  
+    dispatch(setPayment(paymentData));
+  
+    state = getState();
+    const postData = getPaymentPostData(state);
+    dispatch(makePaymentRequest(postData));
+  
+    const results = await ClaretyApi.post('donations/', postData);
+    return results[0];
+  };
+};
+
+const handlePaymentResult = (result) => {
   return async (dispatch, getState) => {
     const { settings } = getState();
 
@@ -145,10 +144,14 @@ export const handlePaymentResult = (result) => {
         items: result.salelines,
       }));
 
-      // Redirect on success.
-      Cookies.set('session-jwt', result.jwt);
-      window.location.href = settings.confirmPageUrl;
-      return true;
+      if (settings.confirmPageUrl) {
+        // Redirect on success.
+        Cookies.set('session-jwt', result.jwt);
+        window.location.href = settings.confirmPageUrl;
+      } else {
+        dispatch(setStatus(statuses.ready));
+        return true;
+      }
     }
   }
 };

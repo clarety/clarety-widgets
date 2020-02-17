@@ -105,7 +105,7 @@ export const createRegistration = () => {
   };
 };
 
-export const submitRegistration = (paymentData, paymentMethod) => {
+export const submitRegistration = (paymentData) => {
   return async (dispatch, getState) => {
     const state = getState();
     const postData = getSubmitRegistrationPostData(state, paymentData);

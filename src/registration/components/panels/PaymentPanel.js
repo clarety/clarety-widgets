@@ -1,9 +1,9 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
-import { PaymentPanel as SharedPaymentPanel } from 'shared/components/panels/PaymentPanel';
+import { PaymentPanel as BasePaymentPanel } from 'shared/components';
 import { currency } from 'shared/utils';
 
-export class RegistrationPaymentPanel extends SharedPaymentPanel {
+export class PaymentPanel extends BasePaymentPanel {
   renderCartSummary() {
     const { cart } = this.props;
 

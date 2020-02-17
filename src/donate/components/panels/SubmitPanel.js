@@ -8,6 +8,29 @@ export class SubmitPanel extends BasePanel {
     return null;
   }
 
+  onPressSubmit = async (event) => {
+    event.preventDefault();
+
+    const { onSubmit, nextPanel } = this.props;
+
+    const isValid = this.validate();
+    if (!isValid) return;
+
+    const paymentPanel = this.getPaymentPanel();
+    const paymentData = paymentPanel.getPaymentData();
+    
+    const didSubmit = await onSubmit(paymentData, { isPageLayout: true });
+    if (!didSubmit) return;
+
+    nextPanel();
+  };
+
+  getPaymentPanel() {
+    return this.props.panelRefs.find(
+      panel => panel.constructor.name === 'PaymentPanel'
+    );
+  }
+
   validate() {
     // Validate any panels with a 'validate' function.
     for (const panel of this.props.panelRefs) {
@@ -23,20 +46,6 @@ export class SubmitPanel extends BasePanel {
     return true;
   }
 
-  onPressSubmit = async (event) => {
-    event.preventDefault();
-
-    const { onSubmit, nextPanel } = this.props;
-
-    const isValid = this.validate();
-    if (!isValid) return;
-    
-    const showNext = await onSubmit();
-    if (!showNext) return;
-
-    nextPanel();
-  };
-
   renderEdit() {
     const { layout, isBusy, settings } = this.props;
 
@@ -47,7 +56,7 @@ export class SubmitPanel extends BasePanel {
             <Row>
               <Col>
                 <SubmitButton
-                  title={settings.buttonText || 'Donate'}
+                  title={settings.submitBtnText || 'Donate'}
                   testId="donate-button"
                   block
                 />

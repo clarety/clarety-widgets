@@ -1,15 +1,16 @@
 import { getSetting } from 'shared/selectors';
 import { getFormData, getErrors } from 'form/selectors';
-import { setErrors } from 'form/actions';
-import { getIsBusy, getSelectedFrequency, getSelectedAmount } from 'donate/selectors';
+import { updateFormData, setErrors } from 'form/actions';
+import { getIsBusy, getSelectedAmount, getPaymentMethods, getStartDates } from 'donate/selectors';
 import { makePayment } from 'donate/actions';
 
 export class PaymentConnect {
-  static mapStateToProps = (state) => {
+  static mapStateToProps = (state, ownProps) => {
     return {
       isBusy: getIsBusy(state),
       amount: getSelectedAmount(state),
-      frequency: getSelectedFrequency(state),
+      paymentMethods: getPaymentMethods(state, ownProps.settings),
+      startDates: getStartDates(state),
       formData: getFormData(state),
       errors: getErrors(state),
       variant: getSetting(state, 'variant'),
@@ -17,7 +18,9 @@ export class PaymentConnect {
   };
 
   static actions = {
+    onShowPanel: () => async () => true,
     onSubmit: makePayment,
+    updateFormData: updateFormData,
     setErrors: setErrors,
   };
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { DonationPanel, LoginPanel } from '../../src/shared/components';
-import { ModePanel, EventPanel, TeamPanel, QtysPanel, OffersPanel, DetailsPanel, ValidatePanel, RegistrationPaymentPanel } from '../../src/registration/components';
-import { ModeConnect, EventConnect, RegistrationLoginConnect, TeamConnect, QtysConnect, OffersConnect, DetailsConnect, DonationConnect, ValidateConnect, RegistrationPaymentConnect } from '../../src/registration/components';
+import { ModePanel, EventPanel, TeamPanel, QtysPanel, OffersPanel, DetailsPanel, ValidatePanel, PaymentPanel } from '../../src/registration/components';
+import { ModeConnect, EventConnect, RegistrationLoginConnect, TeamConnect, QtysConnect, OffersConnect, DetailsConnect, DonationConnect, ValidateConnect, PaymentConnect } from '../../src/registration/components';
 import { Registration, setupRegistrationAxiosMock } from '../../src';
 import enTranslations from '../../src/registration/intl/en.json';
 import '../../src/registration/style.scss';
@@ -76,9 +76,12 @@ Registration.setPanels([
     settings: {},
   },
   {
-    component: RegistrationPaymentPanel,
-    connect: RegistrationPaymentConnect,
-    settings: {},
+    component: PaymentPanel,
+    connect: PaymentConnect,
+    settings: {
+      title: 'Registration Summary',
+      submitBtnText: 'Submit Registration',
+    },
   },
 ]);
 

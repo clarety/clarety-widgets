@@ -19,6 +19,12 @@ export const AccordianPanelBody = ({ status, isBusy, children }) => {
   if (status === 'done') return null;
 };
 
+export const AccordianPanelFooter = ({ status, isBusy, children }) => {
+  if (status === 'wait') return null;
+  if (status === 'edit') return <div className="panel-actions">{children}</div>;
+  if (status === 'done') return null;
+};
+
 const WaitPanelHeader = ({ number, title }) => (
   <div className="panel-header inactive">
     <span className="circle">{number}</span>
