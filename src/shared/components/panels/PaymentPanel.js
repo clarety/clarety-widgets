@@ -121,7 +121,7 @@ export class PaymentPanel extends BasePanel {
 
     if (paymentMethod === 'gatewaycc') {
       return {
-        type:             'gatewaycc',
+        type:             paymentMethod,
         cardName:         formData['customer.firstName'] + ' ' + formData['customer.lastName'],
         cardNumber:       formData['payment.cardNumber'],
         cardExpiryMonth:  formData['payment.cardExpiryMonth'],
@@ -130,11 +130,21 @@ export class PaymentPanel extends BasePanel {
       };
     }
 
-    if (paymentMethod === 'na') {
-      return { type: 'na' };
+    if (paymentMethod === 'gatewaydd') {
+      return {
+        type:          paymentMethod,
+        accountName:   formData['payment.accountName'],
+        accountNumber: formData['payment.accountNumber'],
+        accountBSB:    formData['payment.accountBSB'],
+        startDate:     formData['payment.startDate'],
+      };
     }
 
-    throw new Error(`[Clarety] unhandled getPaymentData ${paymentMethod.type}`);
+    if (paymentMethod === 'na') {
+      return { type: paymentMethod };
+    }
+
+    throw new Error(`[Clarety] unhandled getPaymentData ${paymentMethod}`);
   }
 
   renderWait() {

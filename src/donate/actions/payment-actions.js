@@ -5,9 +5,9 @@ import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { types, addDonationToCart, addCustomerToCart } from 'donate/actions';
 import { createStripeToken, parseStripeError } from 'donate/utils';
-import { getPaymentData, getCustomerFullName, getPaymentPostData } from 'donate/selectors';
+import { getPaymentData, getPaymentPostData } from 'donate/selectors';
 
-export const makePayment = (paymentData) => {
+export const makePayment = () => {
   return async (dispatch, getState) => {
     const { status } = getState();
 
@@ -21,7 +21,19 @@ export const makePayment = (paymentData) => {
       return false;
     }
 
-    const result = await dispatch(makeCreditCardPayment(paymentData));
+    const state = getState();
+    const paymentData = getPaymentData(state);
+
+    let result;
+
+    if (paymentData.type === 'gatewaycc') {
+      result = await dispatch(makeCreditCardPayment(paymentData));
+    }
+
+    if (paymentData.type === 'gatewaydd') {
+      result = await dispatch(makeDirectDebitPayment(paymentData));
+    }
+
     return dispatch(handlePaymentResult(result));
   };
 };
@@ -58,7 +70,6 @@ export const submitDonatePage = () => {
       result = await dispatch(makeDirectDebitPayment(paymentData));
     }
 
-    // const result = await dispatch(makeCreditCardPayment(paymentData));
     return dispatch(handlePaymentResult(result));
   };
 };
