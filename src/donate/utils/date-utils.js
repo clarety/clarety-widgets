@@ -1,25 +1,36 @@
 export function createStartDateOptions(startDays) {
-  const options = startDays.map(startDay => {
+  const options = [];
+
+  for (const startDay of startDays) {
     const date = getStartDate(startDay);
-    return {
+    if (!date) continue;
+
+    options.push({
       value: getValueForDate(date),
       label: getLabelForDate(date),
-    }
-  });
+    });
+  }
 
   return options.sort((a, b) => a.value.localeCompare(b.value));
 }
 
 function getStartDate(startDay) {
-  const date = new Date();
+  const now = new Date();
+  let year  = now.getFullYear();
+  let month = now.getMonth();
+  let today = now.getDate();
 
-  if (startDay < date.getDate()) {
-    date.setMonth(date.getMonth() + 1);
-  }
+  // Use next month if start day is in the past.
+  if (startDay <= today) month++;
+  
+  const date = new Date(year, month, startDay);
 
-  date.setDate(startDay);
-
-  return date;
+  // Only return date if it was valid.
+  return date.getFullYear() === year
+      && date.getMonth() === month
+      && date.getDate() === startDay
+    ? date
+    : null;
 }
 
 function getLabelForDate(date) {
