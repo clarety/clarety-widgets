@@ -14,12 +14,7 @@ export const getSelectedShippingOptionLabel = state => {
   return '';
 };
 
-export const getPaymentMethod = state => {
-  const { paymentMethods } = state.cart;
-  if (!paymentMethods) return null;
-  // TODO: handle multiple payment methods.
-  return paymentMethods[0];
-};
+export const getPaymentMethods = state => state.cart.paymentMethods;
 
 const getLoginPanel = state => {
   return state.panels.loginPanel;

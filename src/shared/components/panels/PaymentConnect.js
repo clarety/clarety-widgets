@@ -6,7 +6,7 @@ export class PaymentConnect {
   static mapStateToProps = (state, ownProps) => {
     return {
       isBusy: state.status === 'busy',
-      paymentMethod: { type: 'na' },
+      paymentMethods: [{ type: 'na' }],
       formData: getFormData(state),
       errors: getErrors(state),
       variant: getSetting(state, 'variant'),

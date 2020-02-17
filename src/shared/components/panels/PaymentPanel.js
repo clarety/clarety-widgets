@@ -5,7 +5,25 @@ import { requiredField, cardNumberField, cardExpiryField, ccvField } from 'share
 import { TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput } from 'form/components';
 
 export class PaymentPanel extends BasePanel {
-  state = {};
+  constructor(props) {
+    super(props);
+
+    const paymentMethod = props.paymentMethods
+      ? props.paymentMethods[0].type
+      : 'na';
+
+    this.state = { paymentMethod };
+  }
+
+  componentDidUpdate(prevProps) {
+    super.componentDidUpdate(prevProps);
+
+    const { paymentMethods } = this.props;
+
+    if (paymentMethods !== prevProps.paymentMethods) {
+      this.setState({ paymentMethod: paymentMethods[0].type });
+    }
+  }
 
   onShowPanel() {
     this.props.onShowPanel();
@@ -14,6 +32,10 @@ export class PaymentPanel extends BasePanel {
       this.scrollIntoView();
     }
   }
+
+  onSelectPaymentMethod = (paymentMethod) => {
+    this.setState({ paymentMethod });
+  };
 
   onPressBack = (event) => {
     event.preventDefault();
@@ -113,7 +135,7 @@ export class PaymentPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, index, paymentMethod, settings } = this.props;
+    const { layout, index, paymentMethods, settings } = this.props;
 
     return (
       <form onSubmit={this.onPressNext} data-testid="payment-panel">
@@ -127,7 +149,7 @@ export class PaymentPanel extends BasePanel {
             />
           }
 
-          {paymentMethod
+          {paymentMethods
             ? this.renderContent()
             : this.renderLoading()
           }
@@ -180,42 +202,41 @@ export class PaymentPanel extends BasePanel {
     );
   }
 
-  onSelectPaymentMethod = (paymentMethod) => {
-    this.setState({ paymentMethod });
-  };
-
   renderPaymentMethodOptions() {
-    const paymentMethods = [
-      { type: 'gatewaycc' },
-      { type: 'gatewaydd' },
-    ];
+    const { paymentMethods } = this.props;
 
-    const value = this.state.paymentMethod || paymentMethods[0].type;
+    // Don't display selector if there's only one option.
+    if (paymentMethods.length === 1) {
+      return null;
+    }
+
+    const showCC = !!paymentMethods.find(method => method.type === 'gatewaycc');
+    const showDD = !!paymentMethods.find(method => method.type === 'gatewaydd');
 
     return (
       <div className="payment-method-select">
         <ToggleButtonGroup
           type="radio"
           name="payment-method"
-          value={value}
+          value={this.state.paymentMethod}
           onChange={this.onSelectPaymentMethod}
         >
-          <ToggleButton value={paymentMethods[0].type} variant="outline-info">Credit Card</ToggleButton>
-          <ToggleButton value={paymentMethods[1].type} variant="outline-info">Direct Debit</ToggleButton>
+          {showCC && <ToggleButton value="gatewaycc" variant="outline-info">Credit Card</ToggleButton>}
+          {showDD && <ToggleButton value="gatewaydd" variant="outline-info">Direct Debit</ToggleButton>}
         </ToggleButtonGroup>
       </div>
     );
   }
 
   renderPaymentFields() {
-    const { paymentMethod } = this.props;
+    const { paymentMethod } = this.state;
 
-    switch (paymentMethod.type) {
+    switch (paymentMethod) {
       case 'gatewaycc': return this.renderCreditCardFields();
       case 'gatewaydd': return this.renderDirectDebitFields();
       case 'na':        return this.renderNoPaymentFields();
 
-      default: throw new Error(`[Clarety] unhandled render ${paymentMethod.type}`);
+      default: throw new Error(`[Clarety] unhandled render ${paymentMethod}`);
     }
   }
 

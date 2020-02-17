@@ -9,7 +9,7 @@ export class PaymentConnect {
     return {
       isBusy: getIsBusy(state),
       amount: getSelectedAmount(state),
-      paymentMethod: { type: 'gatewaydd' },
+      paymentMethods: [{ type: 'gatewaycc' }, { type: 'gatewaydd' }],
       formData: getFormData(state),
       errors: getErrors(state),
       variant: getSetting(state, 'variant'),
