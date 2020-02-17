@@ -7,7 +7,7 @@ import { types, addDonationToCart, addCustomerToCart } from 'donate/actions';
 import { createStripeToken, parseStripeError } from 'donate/utils';
 import { getPaymentData, getCustomerFullName, getPaymentPostData } from 'donate/selectors';
 
-export const makePayment = (paymentData, paymentMethod) => {
+export const makePayment = (paymentData) => {
   return async (dispatch, getState) => {
     const { status } = getState();
 
@@ -21,7 +21,7 @@ export const makePayment = (paymentData, paymentMethod) => {
       return false;
     }
 
-    const result = await dispatch(makeCreditCardPayment(paymentData, paymentMethod));
+    const result = await dispatch(makeCreditCardPayment(paymentData));
     return dispatch(handlePaymentResult(result));
   };
 };
@@ -48,15 +48,12 @@ export const submitDonatePage = () => {
     const { formData } = getState();
     const paymentData = getPaymentData(formData);
 
-    // TODO:
-    const paymentMethod = { type: 'gatewaycc' };
-
-    const result = await dispatch(makeCreditCardPayment(paymentData, paymentMethod));
+    const result = await dispatch(makeCreditCardPayment(paymentData));
     return dispatch(handlePaymentResult(result));
   };
 };
 
-const makeCreditCardPayment = (paymentData, paymentMethod) => {
+const makeCreditCardPayment = (paymentData) => {
   return async (dispatch, getState) => {
     const { settings } = getState();
 

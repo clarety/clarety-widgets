@@ -1,6 +1,6 @@
 import { getSetting } from 'shared/selectors';
 import { getFormData, getErrors } from 'form/selectors';
-import { setErrors } from 'form/actions';
+import { setErrors, updateFormData } from 'form/actions';
 import { fetchPaymentMethods, makePayment } from 'checkout/actions';
 import { getPaymentMethods } from 'checkout/selectors';
 
@@ -18,6 +18,7 @@ export class PaymentConnect {
   static actions = {
     onShowPanel: fetchPaymentMethods,
     onSubmit: makePayment,
+    updateFormData: updateFormData,
     setErrors: setErrors,
   };
 }

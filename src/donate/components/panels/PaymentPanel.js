@@ -41,7 +41,7 @@ export class PaymentPanel extends BasePaymentPanel {
               <Form.Group controlId="startDate">
                 <Form.Label>Start Date</Form.Label>
                 <SelectInput
-                  field="additional.startDate"
+                  field="payment.startDate"
                   options={this.getStartDateOptions()}
                   testId="start-date-input"
                 />

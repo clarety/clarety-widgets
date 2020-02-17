@@ -1,6 +1,6 @@
 import { getSetting } from 'shared/selectors';
 import { getFormData, getErrors } from 'form/selectors';
-import { setErrors } from 'form/actions';
+import { updateFormData, setErrors } from 'form/actions';
 
 export class PaymentConnect {
   static mapStateToProps = (state, ownProps) => {
@@ -16,6 +16,7 @@ export class PaymentConnect {
   static actions = {
     onShowPanel: () => async () => true,
     onSubmit: () => async () => true,
+    updateFormData: updateFormData,
     setErrors: setErrors,
   };
 }

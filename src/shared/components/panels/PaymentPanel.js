@@ -7,22 +7,27 @@ import { TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, Ex
 export class PaymentPanel extends BasePanel {
   constructor(props) {
     super(props);
-
-    this.state = {
-      paymentMethod: this.getFirstPaymentMethod(props.paymentMethods),
-    };
+    this.selectFirstPaymentMethod();
   }
 
   componentDidUpdate(prevProps) {
     super.componentDidUpdate(prevProps);
 
-    const { paymentMethods } = this.props;
+    const { paymentMethods, updateFormData } = this.props;
 
     if (this.didPaymentMethodsChange(prevProps.paymentMethods, paymentMethods)) {
-      this.setState({
-        paymentMethod: this.getFirstPaymentMethod(paymentMethods),
-      });
+      this.selectFirstPaymentMethod();
     }
+  }
+
+  selectFirstPaymentMethod() {
+    const { paymentMethods, updateFormData } = this.props;
+
+    const paymentMethod = paymentMethods && paymentMethods[0] && paymentMethods[0].type
+      ? paymentMethods[0].type
+      : 'na';
+
+    updateFormData('payment.type', paymentMethod);
   }
 
   didPaymentMethodsChange(prev, current) {
@@ -44,7 +49,7 @@ export class PaymentPanel extends BasePanel {
   }
 
   onSelectPaymentMethod = (paymentMethod) => {
-    this.setState({ paymentMethod });
+    this.props.updateFormData('payment.type', paymentMethod);
   };
 
   onPressBack = (event) => {
@@ -56,21 +61,21 @@ export class PaymentPanel extends BasePanel {
   onPressNext = async (event) => {
     event.preventDefault();
 
-    const { paymentMethod, onSubmit, nextPanel } = this.props;
+    const { onSubmit, nextPanel } = this.props;
 
     const isValid = this.validate();
     if (!isValid) return;
     
     const paymentData = this.getPaymentData();
-    const didSubmit = await onSubmit(paymentData, paymentMethod);
+    const didSubmit = await onSubmit(paymentData);
     if (!didSubmit) return;
 
     nextPanel();
   };
 
   validate() {
-    const { setErrors } = this.props;
-    const { paymentMethod } = this.state;
+    const { setErrors, formData } = this.props;
+    const paymentMethod = formData['payment.type'];
 
     const errors = [];
 
@@ -79,7 +84,7 @@ export class PaymentPanel extends BasePanel {
       case 'gatewaydd': this.validateDirectDebitFields(errors); break;
       case 'na':        this.validateNoPaymentFields(errors);   break;
 
-      default: throw new Error(`[Clarety] unhandled validate ${paymentMethod.type}`);
+      default: throw new Error(`[Clarety] unhandled validate ${paymentMethod}`);
     }
 
     setErrors(errors);
@@ -106,17 +111,9 @@ export class PaymentPanel extends BasePanel {
     // NOTE: no validation required.
   }
 
-  getFirstPaymentMethod(paymentMethods) {
-    if (!paymentMethods || !paymentMethods.length) {
-      return 'na';
-    }
-
-    return paymentMethods[0].type || 'na';
-  }
-
   getPaymentData() {
     const { formData } = this.props;
-    const { paymentMethod } = this.state;
+    const paymentMethod = formData['payment.type'];
 
     if (paymentMethod === 'gatewaycc') {
       return {
@@ -223,7 +220,7 @@ export class PaymentPanel extends BasePanel {
   }
 
   renderPaymentMethodOptions() {
-    const { paymentMethods } = this.props;
+    const { paymentMethods, formData } = this.props;
 
     // Don't display selector if there's only one option.
     if (paymentMethods.length === 1) {
@@ -238,7 +235,7 @@ export class PaymentPanel extends BasePanel {
         <ToggleButtonGroup
           type="radio"
           name="payment-method"
-          value={this.state.paymentMethod}
+          value={formData['payment.type']}
           onChange={this.onSelectPaymentMethod}
         >
           {showCC && <ToggleButton value="gatewaycc" variant="outline-info">Credit Card</ToggleButton>}
@@ -249,7 +246,7 @@ export class PaymentPanel extends BasePanel {
   }
 
   renderPaymentFields() {
-    const { paymentMethod } = this.state;
+    const paymentMethod = this.props.formData['payment.type'];
 
     switch (paymentMethod) {
       case 'gatewaycc': return this.renderCreditCardFields();

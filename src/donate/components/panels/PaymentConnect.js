@@ -1,6 +1,6 @@
 import { getSetting } from 'shared/selectors';
 import { getFormData, getErrors } from 'form/selectors';
-import { setErrors } from 'form/actions';
+import { updateFormData, setErrors } from 'form/actions';
 import { getIsBusy, getSelectedAmount, getPaymentMethods, getStartDates } from 'donate/selectors';
 import { makePayment } from 'donate/actions';
 
@@ -20,6 +20,7 @@ export class PaymentConnect {
   static actions = {
     onShowPanel: () => async () => true,
     onSubmit: makePayment,
+    updateFormData: updateFormData,
     setErrors: setErrors,
   };
 }
