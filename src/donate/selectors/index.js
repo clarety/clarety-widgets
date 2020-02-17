@@ -42,6 +42,26 @@ export const getSelectedOffer = (state) => {
   return priceHandles.find(offer => offer.frequency === donationPanel.frequency);
 };
 
+export const getPaymentMethods = (state, settings) => {
+  // Default to credit card if there's no setting.
+  if (!settings.paymentMethods) {
+    return [{ type: 'gatewaycc' }];
+  }
+
+  const result = [];
+
+  if (settings.paymentMethods.includes('credit-card')) {
+    result.push({ type: 'gatewaycc' });
+  }
+
+  const frequency = getSelectedFrequency(state);
+  if (frequency === 'recurring' && settings.paymentMethods.includes('direct-debit')) {
+    result.push({ type: 'gatewaydd' });
+  }
+
+  return result;
+};
+
 export const getPaymentPostData = (state) => {
   const cart = getCart(state);
   const trackingData = getTrackingData(state);

@@ -8,11 +8,9 @@ export class PaymentPanel extends BasePanel {
   constructor(props) {
     super(props);
 
-    const paymentMethod = props.paymentMethods
-      ? props.paymentMethods[0].type
-      : 'na';
-
-    this.state = { paymentMethod };
+    this.state = {
+      paymentMethod: this.getFirstPaymentMethod(props.paymentMethods),
+    };
   }
 
   componentDidUpdate(prevProps) {
@@ -21,7 +19,9 @@ export class PaymentPanel extends BasePanel {
     const { paymentMethods } = this.props;
 
     if (paymentMethods !== prevProps.paymentMethods) {
-      this.setState({ paymentMethod: paymentMethods[0].type });
+      this.setState({
+        paymentMethod: this.getFirstPaymentMethod(paymentMethods),
+      });
     }
   }
 
@@ -93,6 +93,14 @@ export class PaymentPanel extends BasePanel {
 
   validateNoPaymentFields(errors) {
     // NOTE: no validation required.
+  }
+
+  getFirstPaymentMethod(paymentMethods) {
+    if (!paymentMethods || !paymentMethods.length) {
+      return 'na';
+    }
+
+    return paymentMethods[0].type || 'na';
   }
 
   getPaymentData() {

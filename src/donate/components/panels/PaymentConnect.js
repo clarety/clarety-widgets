@@ -1,15 +1,15 @@
 import { getSetting } from 'shared/selectors';
 import { getFormData, getErrors } from 'form/selectors';
 import { setErrors } from 'form/actions';
-import { getIsBusy, getSelectedAmount } from 'donate/selectors';
+import { getIsBusy, getSelectedAmount, getPaymentMethods } from 'donate/selectors';
 import { makePayment } from 'donate/actions';
 
 export class PaymentConnect {
-  static mapStateToProps = (state) => {
+  static mapStateToProps = (state, ownProps) => {
     return {
       isBusy: getIsBusy(state),
       amount: getSelectedAmount(state),
-      paymentMethods: [{ type: 'gatewaycc' }, { type: 'gatewaydd' }],
+      paymentMethods: getPaymentMethods(state, ownProps.settings),
       formData: getFormData(state),
       errors: getErrors(state),
       variant: getSetting(state, 'variant'),
