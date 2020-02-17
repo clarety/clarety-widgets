@@ -7,35 +7,7 @@ import { types, addDonationToCart, addCustomerToCart } from 'donate/actions';
 import { createStripeToken, parseStripeError } from 'donate/utils';
 import { getPaymentPostData } from 'donate/selectors';
 
-export const makePayment = (paymentData) => {
-  return async (dispatch, getState) => {
-    const { status } = getState();
-
-    if (status !== statuses.ready) return;
-    dispatch(setStatus(statuses.busy));
-
-    const recaptcha = await executeRecaptcha();
-    dispatch(setRecaptcha(recaptcha));
-    if (!recaptcha) {
-      dispatch(setStatus(statuses.ready));
-      return false;
-    }
-
-    let result;
-
-    if (paymentData.type === 'gatewaycc') {
-      result = await dispatch(makeCreditCardPayment(paymentData));
-    }
-
-    if (paymentData.type === 'gatewaydd') {
-      result = await dispatch(makeDirectDebitPayment(paymentData));
-    }
-
-    return dispatch(handlePaymentResult(result));
-  };
-};
-
-export const submitDonatePage = (paymentData) => {
+export const makePayment = (paymentData, { isPageLayout } = {}) => {
   return async (dispatch, getState) => {
     const { status } = getState();
 
@@ -50,18 +22,23 @@ export const submitDonatePage = (paymentData) => {
       return false;
     }
 
-    // Update cart.
-    dispatch(addDonationToCart());
-    dispatch(addCustomerToCart());
-
-    let result;
-
-    if (paymentData.type === 'gatewaycc') {
-      result = await dispatch(makeCreditCardPayment(paymentData));
+    if (isPageLayout) {
+      // Update cart.
+      dispatch(addDonationToCart());
+      dispatch(addCustomerToCart());
     }
 
-    if (paymentData.type === 'gatewaydd') {
-      result = await dispatch(makeDirectDebitPayment(paymentData));
+    let result;
+    switch (paymentData.type) {
+      case 'gatewaycc':
+        result = await dispatch(makeCreditCardPayment(paymentData));
+        break;
+
+      case 'gatewaydd':
+        result = await dispatch(makeDirectDebitPayment(paymentData));
+        break;
+
+      default: throw new Error(`makePayment not handled for ${paymentData.type}`);
     }
 
     return dispatch(handlePaymentResult(result));
@@ -172,6 +149,7 @@ const handlePaymentResult = (result) => {
         Cookies.set('session-jwt', result.jwt);
         window.location.href = settings.confirmPageUrl;
       } else {
+        dispatch(setStatus(statuses.ready));
         return true;
       }
     }

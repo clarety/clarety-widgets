@@ -13,7 +13,7 @@ export class PaymentPanel extends BasePanel {
   componentDidUpdate(prevProps) {
     super.componentDidUpdate(prevProps);
 
-    const { paymentMethods, updateFormData } = this.props;
+    const { paymentMethods } = this.props;
 
     if (this.didPaymentMethodsChange(prevProps.paymentMethods, paymentMethods)) {
       this.selectFirstPaymentMethod();

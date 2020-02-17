@@ -19,7 +19,7 @@ export class SubmitPanel extends BasePanel {
     const paymentPanel = this.getPaymentPanel();
     const paymentData = paymentPanel.getPaymentData();
     
-    const didSubmit = await onSubmit(paymentData);
+    const didSubmit = await onSubmit(paymentData, { isPageLayout: true });
     if (!didSubmit) return;
 
     nextPanel();
