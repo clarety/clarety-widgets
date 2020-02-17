@@ -12,7 +12,7 @@ export class PaymentPanel extends BasePaymentPanel {
     const { formData, startDates } = this.props;
 
     if (startDates) {
-      requiredField(errors, formData, 'additional.startDate');
+      requiredField(errors, formData, 'payment.startDate');
     }
   }
 

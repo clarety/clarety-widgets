@@ -45,10 +45,20 @@ export const submitDonatePage = () => {
     dispatch(addDonationToCart());
     dispatch(addCustomerToCart());
 
-    const { formData } = getState();
-    const paymentData = getPaymentData(formData);
+    const state = getState();
+    const paymentData = getPaymentData(state);
 
-    const result = await dispatch(makeCreditCardPayment(paymentData));
+    let result;
+
+    if (paymentData.type === 'gatewaycc') {
+      result = await dispatch(makeCreditCardPayment(paymentData));
+    }
+
+    if (paymentData.type === 'gatewaydd') {
+      result = await dispatch(makeDirectDebitPayment(paymentData));
+    }
+
+    // const result = await dispatch(makeCreditCardPayment(paymentData));
     return dispatch(handlePaymentResult(result));
   };
 };
@@ -96,17 +106,26 @@ const makeStripeCCPayment = (paymentData) => {
 
 const makeStandardCCPayment = (paymentData) => {
   return async (dispatch, getState) => {
-    const { formData } = getState();
+    let state = getState();
   
-    dispatch(setPayment({
-      cardName:         getCustomerFullName(formData),
-      cardNumber:       paymentData.cardNumber,
-      cardExpiryMonth:  paymentData.cardExpiryMonth,
-      cardExpiryYear:   paymentData.cardExpiryYear,
-      cardSecurityCode: paymentData.cardSecurityCode,
-    }));
+    dispatch(setPayment(paymentData));
   
-    const state = getState();
+    state = getState();
+    const postData = getPaymentPostData(state);
+    dispatch(makePaymentRequest(postData));
+  
+    const results = await ClaretyApi.post('donations/', postData);
+    return results[0];
+  };
+};
+
+const makeDirectDebitPayment = (paymentData) => {
+  return async (dispatch, getState) => {
+    let state = getState();
+  
+    dispatch(setPayment(paymentData));
+  
+    state = getState();
     const postData = getPaymentPostData(state);
     dispatch(makePaymentRequest(postData));
   
