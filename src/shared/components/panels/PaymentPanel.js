@@ -137,7 +137,6 @@ export class PaymentPanel extends BasePanel {
         accountName:   formData['payment.accountName'],
         accountNumber: formData['payment.accountNumber'],
         accountBSB:    formData['payment.accountBSB'],
-        startDate:     formData['payment.startDate'],
       };
     }
 
@@ -331,16 +330,16 @@ export class PaymentPanel extends BasePanel {
 
         <Form.Row>
           <Col sm={6}>
-            <Form.Group controlId="accountNumber">
-              <Form.Label>Account Number</Form.Label>
-              <TextInput field="payment.accountNumber" testId="account-number-input" />
+            <Form.Group controlId="accountBSB">
+              <Form.Label>Account BSB</Form.Label>
+              <TextInput field="payment.accountBSB" testId="account-bsb-input" />
             </Form.Group>
           </Col>
 
           <Col sm={6}>
-            <Form.Group controlId="accountBSB">
-              <Form.Label>Account BSB</Form.Label>
-              <TextInput field="payment.accountBSB" testId="account-bsb-input" />
+            <Form.Group controlId="accountNumber">
+              <Form.Label>Account Number</Form.Label>
+              <TextInput field="payment.accountNumber" testId="account-number-input" />
             </Form.Group>
           </Col>
         </Form.Row>

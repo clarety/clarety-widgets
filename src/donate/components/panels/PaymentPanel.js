@@ -19,6 +19,19 @@ export class PaymentPanel extends BasePaymentPanel {
   getStartDateOptions() {
     return createStartDateOptions(this.props.startDates);
   }
+
+  getPaymentData() {
+    const paymentData = super.getPaymentData();
+
+    const { formData } = this.props;
+    const paymentMethod = formData['payment.type'];
+
+    if (paymentMethod === 'gatewaydd') {
+      paymentData.startDate = formData['payment.startDate'];
+    }
+
+    return paymentData;
+  }
   
   renderCartSummary() {
     return (
