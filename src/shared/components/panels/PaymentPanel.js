@@ -98,6 +98,7 @@ export class PaymentPanel extends BasePanel {
   validateCreditCardFields(errors) {
     const { formData } = this.props;
 
+    requiredField(errors, formData, 'payment.cardName');
     cardNumberField(errors, formData, 'payment.cardNumber');
     cardExpiryField(errors, formData, 'payment.cardExpiry', 'payment.cardExpiryMonth', 'payment.cardExpiryYear');
     ccvField(errors, formData, 'payment.cardSecurityCode');
@@ -122,7 +123,7 @@ export class PaymentPanel extends BasePanel {
     if (paymentMethod === 'gatewaycc') {
       return {
         type:             paymentMethod,
-        cardName:         formData['customer.firstName'] + ' ' + formData['customer.lastName'],
+        cardName:         formData['payment.cardName'],
         cardNumber:       formData['payment.cardNumber'],
         cardExpiryMonth:  formData['payment.cardExpiryMonth'],
         cardExpiryYear:   '20' + formData['payment.cardExpiryYear'],
@@ -274,6 +275,15 @@ export class PaymentPanel extends BasePanel {
   renderCreditCardFields() {
     return (
       <React.Fragment>
+        <Form.Row>
+          <Col>
+            <Form.Group controlId="cardName">
+              <Form.Label>Card Name</Form.Label>
+              <TextInput field="payment.cardName" testId="card-name-input" />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+
         <Form.Row>
           <Col>
             <Form.Group controlId="cardNumber">
