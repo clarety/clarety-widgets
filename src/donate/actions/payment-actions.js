@@ -173,10 +173,13 @@ const handlePaymentResult = (result) => {
         items: result.salelines,
       }));
 
-      // Redirect on success.
-      Cookies.set('session-jwt', result.jwt);
-      window.location.href = settings.confirmPageUrl;
-      return true;
+      if (settings.confirmPageUrl) {
+        // Redirect on success.
+        Cookies.set('session-jwt', result.jwt);
+        window.location.href = settings.confirmPageUrl;
+      } else {
+        return true;
+      }
     }
   }
 };
