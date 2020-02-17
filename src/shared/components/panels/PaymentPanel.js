@@ -31,6 +31,10 @@ export class PaymentPanel extends BasePanel {
   }
 
   didPaymentMethodsChange(prev, current) {
+    if (!prev && !current) return false;
+    if (!prev && current) return true;
+    if (prev && !current) return true;
+
     if (prev.length !== current.length) return true;
 
     for (let index = 0; index < prev.length; index++) {
