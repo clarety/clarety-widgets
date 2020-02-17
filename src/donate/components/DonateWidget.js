@@ -27,6 +27,10 @@ export class DonateWidget extends React.Component {
     setupDefaultResources();
   }
 
+  static appSettings(settings) {
+    DonateWidget.store.dispatch(updateAppSettings(settings));
+  }
+
   static setPanels(panels) {
     Resources.setPanels(panels);
     DonateWidget.store.dispatch(setPanels(panels));

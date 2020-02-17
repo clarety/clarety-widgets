@@ -9,15 +9,15 @@ export class PaymentPanel extends BasePaymentPanel {
   validateDirectDebitFields(errors) {
     super.validateDirectDebitFields(errors);
 
-    const { formData, settings } = this.props;
+    const { formData, startDates } = this.props;
 
-    if (settings.startDays) {
+    if (startDates) {
       requiredField(errors, formData, 'additional.startDate');
     }
   }
 
   getStartDateOptions() {
-    return createStartDateOptions(this.props.settings.startDays);
+    return createStartDateOptions(this.props.startDates);
   }
   
   renderCartSummary() {
@@ -29,13 +29,13 @@ export class PaymentPanel extends BasePaymentPanel {
   }
 
   renderDirectDebitFields() {
-    const { settings } = this.props;
+    const { startDates } = this.props;
 
     return (
       <React.Fragment>
         {super.renderDirectDebitFields()}
 
-        {settings.startDays &&
+        {startDates &&
           <Row>
             <Col>
               <Form.Group controlId="startDate">

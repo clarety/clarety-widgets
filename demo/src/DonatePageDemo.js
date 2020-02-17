@@ -10,6 +10,10 @@ import '../../src/donate/style.scss';
 window.renderDonatePage = (props) => {
   DonateWidget.init();
 
+  DonateWidget.appSettings({
+    startDates: ['2020-01-30', '2020-02-01', '2020-02-15'],
+  });
+
   DonateWidget.setPanels([
     {
       component: DonationPanel,
@@ -36,7 +40,6 @@ window.renderDonatePage = (props) => {
       settings: {
         title: 'Payment Details',
         paymentMethods: ['credit-card', 'direct-debit'],
-        startDays: [1, 15, 30],
       },
     },
     {

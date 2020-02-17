@@ -62,6 +62,8 @@ export const getPaymentMethods = (state, settings) => {
   return result;
 };
 
+export const getStartDates = (state) => getSetting(state, 'startDates');
+
 export const getPaymentPostData = (state) => {
   const cart = getCart(state);
   const trackingData = getTrackingData(state);
