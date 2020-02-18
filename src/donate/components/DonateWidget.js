@@ -1,14 +1,15 @@
 import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
-import thunkMiddleware from 'redux-thunk';
+import thunk from 'redux-thunk';
 import { connect, Provider as ReduxProvider } from 'react-redux';
 import { BreakpointProvider } from 'react-socks';
+import BlockUi from 'react-block-ui';
+import 'react-block-ui/style.css';
 import { statuses, setStore, setTrackingData, fetchSettings, updateAppSettings, setPanels } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
-import { handleUrlParams, Actions } from 'donate/actions';
-import { Validations } from 'donate/validations';
+import { handleUrlParams } from 'donate/actions';
 import { rootReducer } from 'donate/reducers';
 import { mapDonationSettings, setupDefaultResources } from 'donate/utils';
 import { StepIndicator } from 'donate/components';
@@ -16,15 +17,18 @@ import { StepIndicator } from 'donate/components';
 export class DonateWidget extends React.Component {
   static store;
 
-  static init(actions = new Actions, validations = new Validations) {
+  static init() {
     // Setup redux store.
-    const thunk = thunkMiddleware.withExtraArgument({ actions, validations });
     const middleware = applyMiddleware(thunk);
     const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
     DonateWidget.store = createStore(rootReducer, composeDevTools(middleware));
 
     // Setup resources.
     setupDefaultResources();
+  }
+
+  static appSettings(settings) {
+    DonateWidget.store.dispatch(updateAppSettings(settings));
   }
 
   static setPanels(panels) {
@@ -54,7 +58,6 @@ export class _DonateWidgetRoot extends React.Component {
     updateAppSettings({
       variant: this.props.variant,
       confirmPageUrl: this.props.confirmPageUrl,
-      showFundraising: this.props.showFundraising,
       fundraisingPageUid: this.props.fundraisingPageUid,
     });
 
@@ -84,8 +87,10 @@ export class _DonateWidgetRoot extends React.Component {
 
     return (
       <div className={`clarety-donate-widget h-100 ${layout}`}>
-        {showStepIndicator && <StepIndicator />}
-        <PanelManager layout={layout || "tabs"} />
+        <BlockUi tag="div" blocking={status === statuses.busy} loader={<span></span>}>
+          {showStepIndicator && <StepIndicator />}
+          <PanelManager layout={layout || "tabs"} />
+        </BlockUi>
         {reCaptchaKey && <Recaptcha siteKey={reCaptchaKey} />}
       </div>
     );

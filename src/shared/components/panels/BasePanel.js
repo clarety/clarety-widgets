@@ -2,8 +2,6 @@ import React from 'react';
 import { scrollIntoView } from 'shared/utils';
 
 export class BasePanel extends React.Component {
-  fields = [];
-
   reset() {
     // Override in subclass.
     // Called by panel manager.
@@ -19,18 +17,6 @@ export class BasePanel extends React.Component {
     if (prevProps.status === 'wait' && this.props.status === 'edit') {
       this.onShowPanel();
     }
-  }
-
-  hasError() {
-    const { errors } = this.props;
-
-    for (let field of this.fields) {
-      if (errors.find(error => error.field === field)) {
-        return true;
-      }
-    }
-
-    return false;
   }
 
   onPressEdit = () => {

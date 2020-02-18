@@ -1,7 +1,9 @@
 import { getSetting } from 'shared/selectors';
 import { clearItems } from 'shared/actions';
+import { getErrors } from 'form/selectors';
+import { setErrors } from 'form/actions';
 import { getSelectedAmount } from 'donate/selectors';
-import { selectAmount, submitDonationPanel } from 'donate/actions';
+import { selectAmount, addDonationToCart } from 'donate/actions';
 
 export class DonationConnect {
   static mapStateToProps = (state) => {
@@ -12,14 +14,15 @@ export class DonationConnect {
       frequency: donationPanel.frequency,
       selections: donationPanel.selections,
       selectedAmount: getSelectedAmount(state),
-      errors: state.errors,
+      errors: getErrors(state),
       variant: getSetting(state, 'variant'),
     };
   };
 
   static actions = {
     selectAmount: selectAmount,
-    submitDonationPanel: submitDonationPanel,
+    onSubmit: addDonationToCart,
     clearItems: clearItems,
+    setErrors: setErrors,
   };
 }

@@ -1,5 +1,5 @@
 import { statuses } from 'shared/actions';
-import { getCart, getTrackingData, getRecaptcha, getSetting, getParsedFormData } from 'shared/selectors';
+import { getCart, getTrackingData, getRecaptcha, getSetting, getFormData, getParsedFormData } from 'shared/selectors';
 import { formatPrice } from 'form/utils';
 
 export const getIsBusy = (state) => state.status !== statuses.ready;
@@ -42,6 +42,28 @@ export const getSelectedOffer = (state) => {
   return priceHandles.find(offer => offer.frequency === donationPanel.frequency);
 };
 
+export const getPaymentMethods = (state, settings) => {
+  // Default to credit card if there's no setting.
+  if (!settings.paymentMethods) {
+    return [{ type: 'gatewaycc' }];
+  }
+
+  const result = [];
+
+  if (settings.paymentMethods.includes('credit-card')) {
+    result.push({ type: 'gatewaycc' });
+  }
+
+  const frequency = getSelectedFrequency(state);
+  if (frequency === 'recurring' && settings.paymentMethods.includes('direct-debit')) {
+    result.push({ type: 'gatewaydd' });
+  }
+
+  return result;
+};
+
+export const getStartDates = (state) => getSetting(state, 'startDates');
+
 export const getPaymentPostData = (state) => {
   const cart = getCart(state);
   const trackingData = getTrackingData(state);
@@ -62,26 +84,31 @@ export const getPaymentPostData = (state) => {
     recaptchaResponse: recaptcha,
   };
 
-  if (getSetting(state, 'showFundraising')) {
+  // Direct debit start date.
+  if (cart.payment.type === 'gatewaydd' && getSetting(state, 'startDates')) {
+    postData.startDate = postData.payment.startDate;
+    postData.payment.startDate = undefined;
+  }
+
+  // Optional fundraising data.
+  const fundraisingPageUid = getSetting(state, 'fundraisingPageUid');
+  if (fundraisingPageUid) {
     postData.fundraising = {
-      pageUid: getSetting(state, 'fundraisingPageUid'),
+      pageUid: fundraisingPageUid,
       ...formData.fundraising,
     };
   }
 
+  // Covert payment type to 'cc' or 'dd'.
+  if (cart.payment.type === 'gatewaycc') cart.payment.type = 'cc';
+  if (cart.payment.type === 'gatewaydd') cart.payment.type = 'dd';
+
   return postData;
 };
 
-export const getPaymentData = (formData) => {
-  return {
-    cardNumber:  formData['payment.cardNumber'],
-    expiryMonth: formData['payment.expiryMonth'],
-    expiryYear:  formData['payment.expiryYear'],
-    ccv:         formData['payment.ccv'],
-  };
-};
+export const getCustomerFullName = (state) => {
+  const formData = getFormData(state);
 
-export const getCustomerFullName = (formData) => {
   const firstName = formData['customer.firstName'];
   const lastName  = formData['customer.lastName'];
   return `${firstName} ${lastName}`;

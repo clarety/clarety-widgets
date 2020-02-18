@@ -2,12 +2,18 @@ import React from 'react';
 import { DonateWidget, renderWidget } from '../../src/';
 import { DonationPanel, DonationConnect } from '../../src/donate/components';
 import { CustomerPanel, CustomerConnect } from '../../src/donate/components';
+import { FundraisingPanel, FundraisingConnect } from '../../src/donate/components';
 import { PaymentPanel, PaymentConnect } from '../../src/donate/components';
 import { SuccessPanel, SuccessConnect } from '../../src/donate/components';
 import '../../src/donate/style.scss';
 
 window.renderDonateWidget = (props) => {
   DonateWidget.init();
+
+  // TODO: this setting should come from the widgets/donate endpoint...
+  DonateWidget.appSettings({
+    startDates: ['2020-03-01', '2020-03-15', '2020-03-30'],
+  });
 
   DonateWidget.setPanels([
     {
@@ -27,11 +33,21 @@ window.renderDonateWidget = (props) => {
       },
     },
     {
+      component: FundraisingPanel,
+      connect: FundraisingConnect,
+      settings: {
+        tabName: 'Fundraising',
+        hideHeader: true,
+      },
+    },
+    {
       component: PaymentPanel,
       connect: PaymentConnect,
       settings: {
         tabName: 'Payment',
         hideHeader: true,
+        submitBtnText: 'Donate',
+        paymentMethods: ['credit-card', 'direct-debit'],
       },
     },
     {
@@ -55,6 +71,7 @@ export default class DonateDemo extends React.Component {
       storeCode: 'AU',
       singleOfferId: '8',
       recurringOfferId: '17',
+      fundraisingPageUid: 'abc-123',
 
       sourceId: '17',
       responseId: 'e9c2e351d90b11e996fd',

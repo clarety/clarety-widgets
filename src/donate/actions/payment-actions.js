@@ -1,26 +1,67 @@
+import Cookies from 'js-cookie';
 import { ClaretyApi } from 'clarety-utils';
-import { setPayment } from 'shared/actions';
-import { makePaymentRequest, stripeTokenRequest, stripeTokenSuccess, stripeTokenFailure } from 'donate/actions';
+import { statuses, setStatus, setRecaptcha, setPayment, updateCartData } from 'shared/actions';
+import { setErrors } from 'form/actions';
+import { executeRecaptcha } from 'form/components';
+import { types, addDonationToCart, addCustomerToCart } from 'donate/actions';
 import { createStripeToken, parseStripeError } from 'donate/utils';
-import { getPaymentData, getCustomerFullName, getPaymentPostData } from 'donate/selectors';
+import { getPaymentPostData } from 'donate/selectors';
 
-export class PaymentActions {
-  async makePayment(dispatch, getState, { actions, validations }) {
+export const makePayment = (paymentData, { isPageLayout } = {}) => {
+  return async (dispatch, getState) => {
+    const { status } = getState();
+
+    if (status !== statuses.ready) return;
+    dispatch(setStatus(statuses.busy));
+
+    // ReCaptcha.
+    const recaptcha = await executeRecaptcha();
+    dispatch(setRecaptcha(recaptcha));
+    if (!recaptcha) {
+      dispatch(setStatus(statuses.ready));
+      return false;
+    }
+
+    if (isPageLayout) {
+      // Update cart.
+      dispatch(addDonationToCart());
+      dispatch(addCustomerToCart());
+    }
+
+    let result;
+    switch (paymentData.type) {
+      case 'gatewaycc':
+        result = await dispatch(makeCreditCardPayment(paymentData));
+        break;
+
+      case 'gatewaydd':
+        result = await dispatch(makeDirectDebitPayment(paymentData));
+        break;
+
+      default: throw new Error(`makePayment not handled for ${paymentData.type}`);
+    }
+
+    return dispatch(handlePaymentResult(result));
+  };
+};
+
+const makeCreditCardPayment = (paymentData) => {
+  return async (dispatch, getState) => {
     const { settings } = getState();
 
     if (settings.payment.type === 'stripe') {
-      return await this._makeStripeCCPayment(dispatch, getState, { actions, validations });
+      return dispatch(makeStripeCCPayment(paymentData));
     }
+      
+    return dispatch(makeStandardCCPayment(paymentData));
+  };
+};
 
-    return await this._makeClaretyCCPayment(dispatch, getState, { actions, validations });
-  }
-
-  async _makeStripeCCPayment(dispatch, getState, { actions, validations }) {
-    const { formData, settings } = getState();
+const makeStripeCCPayment = (paymentData) => {
+  return async (dispatch, getState) => {
+    const { settings } = getState();
   
     // Get stripe token.
-  
-    const paymentData = getPaymentData(formData);
     const stripeKey = settings.payment.publicKey;
     dispatch(stripeTokenRequest(paymentData, stripeKey));
     const tokenResult = await createStripeToken(paymentData, stripeKey);
@@ -36,32 +77,115 @@ export class PaymentActions {
     dispatch(setPayment({ gatewayToken: tokenResult.id }));
   
     // Attempt payment.
-  
     const state = getState();
     const postData = getPaymentPostData(state);
     dispatch(makePaymentRequest(postData));
   
     const results = await ClaretyApi.post('donations/', postData);
     return results[0];
-  }
+  };
+};
+
+const makeStandardCCPayment = (paymentData) => {
+  return async (dispatch, getState) => {
+    let state = getState();
   
-  async _makeClaretyCCPayment(dispatch, getState, { actions, validations }) {
-    const { formData } = getState();
+    dispatch(setPayment(paymentData));
   
-    const paymentData = getPaymentData(formData);
-    dispatch(setPayment({
-      cardName: getCustomerFullName(formData),
-      cardNumber: paymentData.cardNumber,
-      cardExpiryMonth: paymentData.expiryMonth,
-      cardExpiryYear: '20' + paymentData.expiryYear,
-      cardSecurityCode: paymentData.ccv,
-    }));
-  
-    const state = getState();
+    state = getState();
     const postData = getPaymentPostData(state);
     dispatch(makePaymentRequest(postData));
   
     const results = await ClaretyApi.post('donations/', postData);
     return results[0];
+  };
+};
+
+const makeDirectDebitPayment = (paymentData) => {
+  return async (dispatch, getState) => {
+    let state = getState();
+  
+    dispatch(setPayment(paymentData));
+  
+    state = getState();
+    const postData = getPaymentPostData(state);
+    dispatch(makePaymentRequest(postData));
+  
+    const results = await ClaretyApi.post('donations/', postData);
+    return results[0];
+  };
+};
+
+const handlePaymentResult = (result) => {
+  return async (dispatch, getState) => {
+    const { settings } = getState();
+
+    if (result.validationErrors) {
+      dispatch(makePaymentFailure(result));
+
+      dispatch(updateCartData({
+        uid: result.uid,
+        jwt: result.jwt,
+        status: result.status,
+        customer: result.customer,
+      }));
+
+      dispatch(setErrors(result.validationErrors));
+      dispatch(setStatus(statuses.ready));
+      return false;
+    } else {
+      dispatch(makePaymentSuccess(result));
+
+      dispatch(updateCartData({
+        uid: result.uid,
+        jwt: result.jwt,
+        status: result.status,
+        customer: result.customer,
+        items: result.salelines,
+      }));
+
+      if (settings.confirmPageUrl) {
+        // Redirect on success.
+        Cookies.set('session-jwt', result.jwt);
+        window.location.href = settings.confirmPageUrl;
+      } else {
+        dispatch(setStatus(statuses.ready));
+        return true;
+      }
+    }
   }
-}
+};
+
+// Make Payment
+
+const makePaymentRequest = (postData) => ({
+  type: types.makePaymentRequest,
+  postData: postData,
+});
+
+const makePaymentSuccess = (result) => ({
+  type: types.makePaymentSuccess,
+  result: result,
+});
+
+const makePaymentFailure = (result) => ({
+  type: types.makePaymentFailure,
+  result: result,
+});
+
+// Stripe Token
+
+const stripeTokenRequest = (postData) => ({
+  type: types.stripeTokenRequest,
+  postData: postData,
+});
+
+const stripeTokenSuccess = (result) => ({
+  type: types.stripeTokenSuccess,
+  result: result,
+});
+
+const stripeTokenFailure = (result) => ({
+  type: types.stripeTokenFailure,
+  result: result,
+});

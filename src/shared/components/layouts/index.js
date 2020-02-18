@@ -1,6 +1,6 @@
 import React from 'react';
-import { StackPanelContainer, StackPanelHeader, StackPanelBody } from './stack';
-import { AccordianPanelContainer, AccordianPanelHeader, AccordianPanelBody } from './accordian';
+import { StackPanelContainer, StackPanelHeader, StackPanelBody, StackPanelFooter } from './stack';
+import { AccordianPanelContainer, AccordianPanelHeader, AccordianPanelBody, AccordianPanelFooter } from './accordian';
 import { TabsPanelContainer, TabsPanelHeader, TabsPanelBody, TabsPanelFooter } from './tabs';
 import { PagePanelContainer, PagePanelHeader, PagePanelBody, PagePanelFooter } from './page';
 
@@ -17,7 +17,7 @@ export const PanelContainer = ({ layout, status, className, children }) => {
 
 export const PanelHeader = ({ layout, status, title, subtitle, number, intlId, intlValues, onPressEdit }) => {
   switch (layout) {
-    case 'stack':     return <StackPanelHeader status={status} intlId={intlId} intlValues={intlValues} onPressEdit={onPressEdit} />;
+    case 'stack':     return <StackPanelHeader status={status} title={title} intlId={intlId} intlValues={intlValues} onPressEdit={onPressEdit} />;
     case 'accordian': return <AccordianPanelHeader status={status} number={number} title={title} onPressEdit={onPressEdit} />;
     case 'tabs':      return <TabsPanelHeader status={status} title={title} subtitle={subtitle} />;
     case 'page':      return <PagePanelHeader status={status} title={title} subtitle={subtitle} />;
@@ -39,8 +39,10 @@ export const PanelBody = ({ layout, status, isBusy, children }) => {
 
 export const PanelFooter = ({ layout, status, isBusy, children }) => {
   switch (layout) {
-    case 'tabs': return <TabsPanelFooter status={status} isBusy={isBusy}>{children}</TabsPanelFooter>;
-    case 'page': return <PagePanelFooter status={status} isBusy={isBusy}>{children}</PagePanelFooter>;
+    case 'stack':     return <StackPanelFooter status={status} isBusy={isBusy}>{children}</StackPanelFooter>;
+    case 'accordian': return <AccordianPanelFooter status={status} isBusy={isBusy}>{children}</AccordianPanelFooter>;
+    case 'tabs':      return <TabsPanelFooter status={status} isBusy={isBusy}>{children}</TabsPanelFooter>;
+    case 'page':      return <PagePanelFooter status={status} isBusy={isBusy}>{children}</PagePanelFooter>;
 
     default: throw new Error(`PanelFooter not implemented for layout ${layout}`);
   }

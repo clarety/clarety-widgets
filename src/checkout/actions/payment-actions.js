@@ -1,16 +1,15 @@
 import Cookies from 'js-cookie';
 import { ClaretyApi } from 'clarety-utils';
+import { getCart } from 'shared/selectors';
 import { getPath, getJwtSession } from 'shared/utils';
 import { createStripeToken, parseStripeError } from 'donate/utils';
 import { types } from 'checkout/actions';
-
-export const gateways = {
-  stripe: 'stripe',
-};
+import { getPaymentMethod } from 'checkout/selectors';
 
 export const fetchPaymentMethods = () => {
   return async (dispatch, getState) => {
-    const { cart } = getState();
+    const state = getState();
+    const cart = getCart(state);
 
     dispatch(fetchPaymentMethodsRequest());
 
@@ -26,12 +25,16 @@ export const fetchPaymentMethods = () => {
   };
 };
 
-export const makePayment = (paymentData, paymentMethod) => {
+export const makePayment = (paymentData) => {
   return async (dispatch, getState) => {
-    const { cart } = getState();
+    const state = getState();
+
+    const cart = getCart(state);
+    const paymentMethod = getPaymentMethod(state, paymentData.type);
+
     const { options } = paymentMethod;
     
-    if (options && options.gateway === gateways.stripe) {
+    if (options && options.gateway === 'stripe') {
       // Fetch stripe token.
 
       dispatch(stripeTokenRequest(paymentData, options.stripeKey));
