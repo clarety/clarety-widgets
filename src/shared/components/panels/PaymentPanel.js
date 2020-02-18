@@ -135,8 +135,8 @@ export class PaymentPanel extends BasePanel {
       return {
         type:          paymentMethod,
         accountName:   formData['payment.accountName'],
-        accountNumber: formData['payment.accountNumber'],
         accountBSB:    formData['payment.accountBSB'],
+        accountNumber: formData['payment.accountNumber'],
       };
     }
 

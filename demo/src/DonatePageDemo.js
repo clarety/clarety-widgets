@@ -10,8 +10,9 @@ import '../../src/donate/style.scss';
 window.renderDonatePage = (props) => {
   DonateWidget.init();
 
+  // TODO: this setting should come from the widgets/donate endpoint...
   DonateWidget.appSettings({
-    startDates: ['2020-01-30', '2020-02-01', '2020-02-15'],
+    startDates: ['2020-03-01', '2020-03-15', '2020-03-30'],
   });
 
   DonateWidget.setPanels([
