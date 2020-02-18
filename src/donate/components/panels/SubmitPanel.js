@@ -46,6 +46,10 @@ export class SubmitPanel extends BasePanel {
     return true;
   }
 
+  canContinue() {
+    return true;
+  }
+
   renderEdit() {
     const { layout, isBusy, settings } = this.props;
 
@@ -53,10 +57,13 @@ export class SubmitPanel extends BasePanel {
       <form onSubmit={this.onPressSubmit}>
         <PanelContainer layout={layout} status="edit" className="submit-panel">
           <PanelBody layout={layout} status="edit" isBusy={isBusy}>
+            {this.renderTermsCheckbox()}
+
             <Row>
               <Col>
                 <SubmitButton
                   title={settings.submitBtnText || 'Donate'}
+                  isDisabled={!this.canContinue()}
                   testId="donate-button"
                   block
                 />
@@ -66,6 +73,10 @@ export class SubmitPanel extends BasePanel {
         </PanelContainer>
       </form>
     );
+  }
+
+  renderTermsCheckbox() {
+    return null;
   }
 
   renderDone() {
