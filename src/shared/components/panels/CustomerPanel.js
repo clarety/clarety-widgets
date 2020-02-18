@@ -109,13 +109,13 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col sm>
             <Form.Group>
-              <TextInput field="customer.firstName" placeholder="First Name *" />
+              <TextInput field="customer.firstName" placeholder="First Name" required />
             </Form.Group>
           </Col>
 
           <Col sm>
             <Form.Group>
-              <TextInput field="customer.lastName" placeholder="Last Name *" />
+              <TextInput field="customer.lastName" placeholder="Last Name" required />
             </Form.Group>
           </Col>
         </Form.Row>
@@ -123,7 +123,7 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group>
-              <EmailInput field="customer.email" placeholder="Email *" />
+              <EmailInput field="customer.email" placeholder="Email" required />
             </Form.Group>
           </Col>
         </Form.Row>
