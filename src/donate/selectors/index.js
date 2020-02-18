@@ -86,8 +86,8 @@ export const getPaymentPostData = (state) => {
 
   // Direct debit start date.
   if (cart.payment.type === 'gatewaydd' && getSetting(state, 'startDates')) {
-    postData.startDate = cart.payment.startDate;
-    cart.payment.startDate = undefined;
+    postData.startDate = postData.payment.startDate;
+    postData.payment.startDate = undefined;
   }
 
   // Optional fundraising data.
