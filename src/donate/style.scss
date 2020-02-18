@@ -39,6 +39,10 @@
     flex-direction: row;
   }
 
+  .terms-checkbox {
+    margin-bottom: 10px;
+  }
+
   .card-footer .btn {
     display: block;
     width: 100%;
@@ -60,6 +64,7 @@
     .customer-panel { max-width: 600px; }
     .fundraising-panel { max-width: 600px; }
     .payment-panel { max-width: 600px; }
+    .submit-panel { max-width: 600px; }
 
     .btn-submit {
       max-width: 200px;
