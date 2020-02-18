@@ -84,6 +84,12 @@ export const getPaymentPostData = (state) => {
     recaptchaResponse: recaptcha,
   };
 
+  // Direct debit start date.
+  if (cart.payment.type === 'gatewaydd' && getSetting(state, 'startDates')) {
+    postData.startDate = cart.payment.startDate;
+    cart.payment.startDate = undefined;
+  }
+
   // Optional fundraising data.
   const fundraisingPageUid = getSetting(state, 'fundraisingPageUid');
   if (fundraisingPageUid) {
@@ -92,6 +98,10 @@ export const getPaymentPostData = (state) => {
       ...formData.fundraising,
     };
   }
+
+  // Covert payment type to 'cc' or 'dd'.
+  if (cart.payment.type === 'gatewaycc') cart.payment.type = 'cc';
+  if (cart.payment.type === 'gatewaydd') cart.payment.type = 'dd';
 
   return postData;
 };
