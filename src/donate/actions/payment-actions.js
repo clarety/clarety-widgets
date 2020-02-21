@@ -8,7 +8,7 @@ export class PaymentActions {
   async makePayment(dispatch, getState, { actions, validations }) {
     const { settings } = getState();
 
-    if (settings.payment.type === 'stripe') {
+    if (settings.payment && settings.payment.type === 'stripe') {
       return await this._makeStripeCCPayment(dispatch, getState, { actions, validations });
     }
 
