@@ -9,9 +9,9 @@ import { getPaymentMethod, getPaymentPostData } from 'donate/selectors';
 
 export const makePayment = (paymentData, { isPageLayout } = {}) => {
   return async (dispatch, getState) => {
-    const { status } = getState();
+    const state = getState();
 
-    if (status !== statuses.ready) return;
+    if (state.status !== statuses.ready) return;
     dispatch(setStatus(statuses.busy));
 
     // ReCaptcha.
@@ -28,7 +28,7 @@ export const makePayment = (paymentData, { isPageLayout } = {}) => {
       dispatch(addCustomerToCart());
     }
 
-    const paymentMethod = getPaymentMethod(paymentData.type);
+    const paymentMethod = getPaymentMethod(state, paymentData.type);
 
     let result;
     switch (paymentData.type) {
