@@ -94,10 +94,6 @@ export const getPaymentPostData = (state) => {
     };
   }
 
-  // Covert payment type to 'cc' or 'dd'.
-  if (cart.payment.type === 'gatewaycc') cart.payment.type = 'cc';
-  if (cart.payment.type === 'gatewaydd') cart.payment.type = 'dd';
-
   return postData;
 };
 

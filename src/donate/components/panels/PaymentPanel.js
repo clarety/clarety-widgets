@@ -45,6 +45,7 @@ export class PaymentPanel extends BasePaymentPanel {
 
   renderDirectDebitFields() {
     const directDebitMethod = this.getPaymentMethod('gatewaydd');
+    if (!directDebitMethod) return null;
 
     return (
       <React.Fragment>
