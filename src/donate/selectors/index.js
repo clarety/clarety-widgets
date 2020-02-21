@@ -42,6 +42,11 @@ export const getSelectedOffer = (state) => {
   return priceHandles.find(offer => offer.frequency === donationPanel.frequency);
 };
 
+export const getPaymentMethod = (state, type) => {
+  const paymentMethods = getSetting(state, 'paymentMethods') || [];
+  return paymentMethods.find(paymentMethod => paymentMethod.type === type);
+};
+
 export const getPaymentMethods = (state) => {
   const paymentMethods = getSetting(state, 'paymentMethods') || [];
 
