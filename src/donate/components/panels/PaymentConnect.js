@@ -1,7 +1,7 @@
 import { getSetting } from 'shared/selectors';
 import { getFormData, getErrors } from 'form/selectors';
 import { updateFormData, setErrors } from 'form/actions';
-import { getIsBusy, getSelectedAmount, getPaymentMethods, getStartDates } from 'donate/selectors';
+import { getIsBusy, getSelectedAmount, getPaymentMethods } from 'donate/selectors';
 import { makePayment } from 'donate/actions';
 
 export class PaymentConnect {
@@ -9,8 +9,7 @@ export class PaymentConnect {
     return {
       isBusy: getIsBusy(state),
       amount: getSelectedAmount(state),
-      paymentMethods: getPaymentMethods(state, ownProps.settings),
-      startDates: getStartDates(state),
+      paymentMethods: getPaymentMethods(state),
       formData: getFormData(state),
       errors: getErrors(state),
       variant: getSetting(state, 'variant'),

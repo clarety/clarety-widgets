@@ -5,13 +5,13 @@ import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { types, addDonationToCart, addCustomerToCart } from 'donate/actions';
 import { createStripeToken, parseStripeError } from 'donate/utils';
-import { getPaymentPostData } from 'donate/selectors';
+import { getPaymentMethod, getPaymentPostData } from 'donate/selectors';
 
 export const makePayment = (paymentData, { isPageLayout } = {}) => {
   return async (dispatch, getState) => {
-    const { status } = getState();
+    const state = getState();
 
-    if (status !== statuses.ready) return;
+    if (state.status !== statuses.ready) return;
     dispatch(setStatus(statuses.busy));
 
     // ReCaptcha.
@@ -28,14 +28,16 @@ export const makePayment = (paymentData, { isPageLayout } = {}) => {
       dispatch(addCustomerToCart());
     }
 
+    const paymentMethod = getPaymentMethod(state, paymentData.type);
+
     let result;
     switch (paymentData.type) {
       case 'gatewaycc':
-        result = await dispatch(makeCreditCardPayment(paymentData));
+        result = await dispatch(makeCreditCardPayment(paymentData, paymentMethod));
         break;
 
       case 'gatewaydd':
-        result = await dispatch(makeDirectDebitPayment(paymentData));
+        result = await dispatch(makeDirectDebitPayment(paymentData, paymentMethod));
         break;
 
       default: throw new Error(`makePayment not handled for ${paymentData.type}`);
@@ -45,26 +47,21 @@ export const makePayment = (paymentData, { isPageLayout } = {}) => {
   };
 };
 
-const makeCreditCardPayment = (paymentData) => {
+const makeCreditCardPayment = (paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
-    const { settings } = getState();
-
-    if (settings.payment.type === 'stripe') {
-      return dispatch(makeStripeCCPayment(paymentData));
+    if (paymentMethod.gateway === 'stripe') {
+      return dispatch(makeStripeCCPayment(paymentData, paymentMethod));
     }
       
-    return dispatch(makeStandardCCPayment(paymentData));
+    return dispatch(makeStandardCCPayment(paymentData, paymentMethod));
   };
 };
 
-const makeStripeCCPayment = (paymentData) => {
+const makeStripeCCPayment = (paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
-    const { settings } = getState();
-  
     // Get stripe token.
-    const stripeKey = settings.payment.publicKey;
-    dispatch(stripeTokenRequest(paymentData, stripeKey));
-    const tokenResult = await createStripeToken(paymentData, stripeKey);
+    dispatch(stripeTokenRequest(paymentData, paymentMethod.publicKey));
+    const tokenResult = await createStripeToken(paymentData, paymentMethod.publicKey);
   
     if (tokenResult.error) {
       dispatch(stripeTokenFailure(tokenResult));
@@ -86,7 +83,7 @@ const makeStripeCCPayment = (paymentData) => {
   };
 };
 
-const makeStandardCCPayment = (paymentData) => {
+const makeStandardCCPayment = (paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     let state = getState();
   
@@ -101,7 +98,7 @@ const makeStandardCCPayment = (paymentData) => {
   };
 };
 
-const makeDirectDebitPayment = (paymentData) => {
+const makeDirectDebitPayment = (paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     let state = getState();
   
