@@ -147,6 +147,10 @@ export class PaymentPanel extends BasePanel {
     throw new Error(`[Clarety] unhandled getPaymentData ${paymentMethod}`);
   }
 
+  getPaymentMethod(type) {
+    return this.props.paymentMethods.find(method => method.type === type);
+  }
+
   renderWait() {
     const { layout, index, settings } = this.props;
 
