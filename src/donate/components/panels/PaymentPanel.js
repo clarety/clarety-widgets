@@ -17,9 +17,9 @@ export class PaymentPanel extends BasePaymentPanel {
     }
   }
 
-  getStartDateOptions() {
-    const directDebitMethod = this.getPaymentMethod('gatewaydd');
-    return createStartDateOptions(directDebitMethod.startDates);
+  getStartDateOptions(type) {
+    const paymentMethod = this.getPaymentMethod(type);
+    return createStartDateOptions(paymentMethod.startDates);
   }
 
   getPaymentData() {
@@ -57,7 +57,7 @@ export class PaymentPanel extends BasePaymentPanel {
                 <Form.Label>Start Date</Form.Label>
                 <SelectInput
                   field="payment.startDate"
-                  options={this.getStartDateOptions()}
+                  options={this.getStartDateOptions('gatewaydd')}
                   testId="start-date-input"
                 />
               </Form.Group>
