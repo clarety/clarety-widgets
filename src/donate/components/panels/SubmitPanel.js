@@ -69,6 +69,8 @@ export class SubmitPanel extends BasePanel {
                 />
               </Col>
             </Row>
+
+            {this.renderFooter()}
           </PanelBody>
         </PanelContainer>
       </form>
@@ -76,6 +78,10 @@ export class SubmitPanel extends BasePanel {
   }
 
   renderTermsCheckbox() {
+    return null;
+  }
+
+  renderFooter() {
     return null;
   }
 
