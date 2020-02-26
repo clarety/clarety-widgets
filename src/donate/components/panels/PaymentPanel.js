@@ -34,15 +34,15 @@ export class PaymentPanel extends BasePaymentPanel {
   }
 
   getPaymentData() {
-    const paymentData = super.getPaymentData();
-
     const { formData } = this.props;
-    const paymentMethod = formData['payment.type'];
 
-    if (paymentMethod === 'gatewaydd') {
+    const paymentData = super.getPaymentData();
+    const paymentMethod = this.getPaymentMethod(formData['payment.type']);
+
+    if (paymentMethod.startDates) {
       paymentData.startDate = formData['payment.startDate'];
     }
-
+    
     return paymentData;
   }
   
