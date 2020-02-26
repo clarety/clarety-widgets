@@ -73,17 +73,12 @@ export const getPaymentPostData = (state) => {
     saleline: cart.items[0],
     customer: cart.customer,
     payment: cart.payment,
+    startDate: cart.payment.startDate,
 
     ...trackingData,
 
     recaptchaResponse: recaptcha,
   };
-
-  // Direct debit start date.
-  if (cart.payment.type === 'gatewaydd' && getSetting(state, 'startDates')) {
-    postData.startDate = postData.payment.startDate;
-    postData.payment.startDate = undefined;
-  }
 
   // Optional fundraising data.
   const fundraisingPageUid = getSetting(state, 'fundraisingPageUid');
