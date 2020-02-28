@@ -73,17 +73,16 @@ export const getPaymentPostData = (state) => {
     saleline: cart.items[0],
     customer: cart.customer,
     payment: cart.payment,
+    startDate: cart.payment.startDate,
 
     ...trackingData,
 
     recaptchaResponse: recaptcha,
   };
 
-  // Direct debit start date.
-  if (cart.payment.type === 'gatewaydd' && getSetting(state, 'startDates')) {
-    postData.startDate = postData.payment.startDate;
-    postData.payment.startDate = undefined;
-  }
+  // Donation endpoint wants 'cc' or 'dd' as payment type...
+  if (postData.payment.type === 'gatewaycc') postData.payment.type = 'cc';
+  if (postData.payment.type === 'gatewaydd') postData.payment.type = 'dd';
 
   // Optional fundraising data.
   const fundraisingPageUid = getSetting(state, 'fundraisingPageUid');
