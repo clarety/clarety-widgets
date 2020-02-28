@@ -6,13 +6,24 @@ import { SelectInput } from 'form/components';
 import { createStartDateOptions } from 'donate/utils';
 
 export class PaymentPanel extends BasePaymentPanel {
+  validateCreditCardFields(errors) {
+    super.validateCreditCardFields(errors);
+
+    const { formData } = this.props;
+    const paymentMethod = this.getPaymentMethod('gatewaycc');
+
+    if (paymentMethod.startDates) {
+      requiredField(errors, formData, 'payment.startDate');
+    }
+  }
+
   validateDirectDebitFields(errors) {
     super.validateDirectDebitFields(errors);
 
     const { formData } = this.props;
-    const directDebitMethod = this.getPaymentMethod('gatewaydd');
+    const paymentMethod = this.getPaymentMethod('gatewaydd');
 
-    if (directDebitMethod.startDates) {
+    if (paymentMethod.startDates) {
       requiredField(errors, formData, 'payment.startDate');
     }
   }
@@ -23,15 +34,15 @@ export class PaymentPanel extends BasePaymentPanel {
   }
 
   getPaymentData() {
-    const paymentData = super.getPaymentData();
-
     const { formData } = this.props;
-    const paymentMethod = formData['payment.type'];
 
-    if (paymentMethod === 'gatewaydd') {
+    const paymentData = super.getPaymentData();
+    const paymentMethod = this.getPaymentMethod(formData['payment.type']);
+
+    if (paymentMethod.startDates) {
       paymentData.startDate = formData['payment.startDate'];
     }
-
+    
     return paymentData;
   }
   
@@ -43,29 +54,41 @@ export class PaymentPanel extends BasePaymentPanel {
     );
   }
 
-  renderDirectDebitFields() {
-    const directDebitMethod = this.getPaymentMethod('gatewaydd');
-    if (!directDebitMethod) return null;
+  renderCreditCardFields() {
+    return (
+      <React.Fragment>
+        {super.renderCreditCardFields()}
+        {this.renderStartDateInput('gatewaycc')}
+      </React.Fragment>
+    );
+  }
 
+  renderDirectDebitFields() {
     return (
       <React.Fragment>
         {super.renderDirectDebitFields()}
-
-        {directDebitMethod.startDates &&
-          <Row>
-            <Col>
-              <Form.Group controlId="startDate">
-                <Form.Label>Start Date</Form.Label>
-                <SelectInput
-                  field="payment.startDate"
-                  options={this.getStartDateOptions('gatewaydd')}
-                  testId="start-date-input"
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-        }
+        {this.renderStartDateInput('gatewaydd')}
       </React.Fragment>
+    );
+  }
+
+  renderStartDateInput(methodType) {
+    const paymentMethod = this.getPaymentMethod(methodType);
+    if (!paymentMethod || !paymentMethod.startDates) return null;
+
+    return (
+      <Row>
+        <Col>
+          <Form.Group controlId="startDate">
+            <Form.Label>Start Date</Form.Label>
+            <SelectInput
+              field="payment.startDate"
+              options={this.getStartDateOptions(methodType)}
+              testId="start-date-input"
+            />
+          </Form.Group>
+        </Col>
+      </Row>
     );
   }
 }
