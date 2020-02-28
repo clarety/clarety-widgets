@@ -80,6 +80,10 @@ export const getPaymentPostData = (state) => {
     recaptchaResponse: recaptcha,
   };
 
+  // Donation endpoint wants 'cc' or 'dd' as payment type...
+  if (postData.payment.type === 'gatewaycc') postData.payment.type = 'cc';
+  if (postData.payment.type === 'gatewaydd') postData.payment.type = 'dd';
+
   // Optional fundraising data.
   const fundraisingPageUid = getSetting(state, 'fundraisingPageUid');
   if (fundraisingPageUid) {
