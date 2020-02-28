@@ -1,3 +1,9 @@
+import 'core-js/stable';
+import 'custom-event-polyfill';
+import smoothscroll from 'smoothscroll-polyfill';
+
+smoothscroll.polyfill();
+
 export { Config } from 'clarety-utils';
 export { connect } from 'react-redux';
 
