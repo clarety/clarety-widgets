@@ -26,6 +26,8 @@
     "axios-mock-adapter": "^1.16.0",
     "card-validator": "^6.2.0",
     "clarety-utils": "^1.0.0",
+    "core-js": "^3.6.4",
+    "custom-event-polyfill": "^1.0.7",
     "filepond": "^4.9.2",
     "filepond-plugin-file-validate-size": "^2.2.0",
     "filepond-plugin-file-validate-type": "^1.2.4",
