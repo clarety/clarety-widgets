@@ -5,7 +5,7 @@ import { updateFormData } from 'form/actions';
 import { getValidationError } from 'form/utils';
 import { FieldError } from 'form/components';
 
-const _PostcodeInput = ({ value, placeholder, error, onChange, required }) => {
+const _AccountNumberInput = ({ value, placeholder, error, onChange, required }) => {
   if (placeholder && !required) placeholder += ' (Optional)';
 
   return (
@@ -28,14 +28,14 @@ const mapStateToProps = (state, { field }) => {
   };
 };
 
-const cleanPostcode = value => value.replace(/[^0-9]/g, '').substring(0, 4);
+const cleanAccountNumber = value => value.replace(/[^0-9]/g, '').substring(0, 10);
 
 const mapDispatchToProps = (dispatch, { field }) => {
   return {
     onChange: event => dispatch(
-      updateFormData(field, cleanPostcode(event.target.value))
+      updateFormData(field, cleanAccountNumber(event.target.value))
     ),
   };
 };
 
-export const PostcodeInput = connect(mapStateToProps, mapDispatchToProps)(_PostcodeInput);
+export const AccountNumberInput = connect(mapStateToProps, mapDispatchToProps)(_AccountNumberInput);
