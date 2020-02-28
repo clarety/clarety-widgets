@@ -16,7 +16,7 @@ const _TextInput = ({ value, type, placeholder, testId, error, onChange, require
         value={value}
         onChange={onChange}
         data-testid={testId}
-        isInvalid={error !== null}
+        isInvalid={!!error}
       />
       {!hideErrors && <FieldError error={error} />}
     </React.Fragment>
@@ -30,9 +30,11 @@ const mapStateToProps = (state, { field }) => {
   };
 };
 
-const mapDispatchToProps = (dispatch, { field }) => {
+const mapDispatchToProps = (dispatch, { field, cleanFn }) => {
+  if (!cleanFn) cleanFn = val => val;
+
   return {
-    onChange: event => dispatch(updateFormData(field, event.target.value)),
+    onChange: event => dispatch(updateFormData(field, cleanFn(event.target.value))),
   };
 };
 

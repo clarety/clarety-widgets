@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Row, Col, Spinner, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { requiredField, cardNumberField, cardExpiryField, ccvField } from 'shared/utils';
-import { TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput } from 'form/components';
+import { TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, AccountNumberInput, BsbInput } from 'form/components';
 
 export class PaymentPanel extends BasePanel {
   constructor(props) {
@@ -336,14 +336,14 @@ export class PaymentPanel extends BasePanel {
           <Col sm={6}>
             <Form.Group controlId="accountBSB">
               <Form.Label>Account BSB</Form.Label>
-              <TextInput field="payment.accountBSB" testId="account-bsb-input" />
+              <BsbInput field="payment.accountBSB" testId="account-bsb-input" />
             </Form.Group>
           </Col>
 
           <Col sm={6}>
             <Form.Group controlId="accountNumber">
               <Form.Label>Account Number</Form.Label>
-              <TextInput field="payment.accountNumber" testId="account-number-input" />
+              <AccountNumberInput field="payment.accountNumber" testId="account-number-input" />
             </Form.Group>
           </Col>
         </Form.Row>

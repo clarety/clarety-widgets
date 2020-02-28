@@ -5,6 +5,8 @@ export * from './misc/Recaptcha';
 export * from './inputs/address/StateInput';
 export * from './inputs/address/PostcodeInput';
 
+export * from './inputs/payment/AccountNumberInput';
+export * from './inputs/payment/BsbInput';
 export * from './inputs/payment/CardNameInput';
 export * from './inputs/payment/CardNumberInput';
 export * from './inputs/payment/CcvInput';

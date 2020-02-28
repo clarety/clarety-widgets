@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { requiredField, emailField } from 'shared/utils';
-import { TextInput, StateInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
+import { TextInput, EmailInput, StateInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
   onShowPanel() {
@@ -114,7 +114,7 @@ export class CustomerPanel extends BasePanel {
       
               <Form.Group controlId="email">
                 <Form.Label>Email</Form.Label>
-                <TextInput field="customer.email" type="email" testId="email-input" />
+                <EmailInput field="customer.email" type="email" testId="email-input" />
               </Form.Group>
 
               <Form.Row>
@@ -142,7 +142,7 @@ export class CustomerPanel extends BasePanel {
                 <Col sm>
                   <Form.Group controlId="postcode">
                     <Form.Label>Postcode</Form.Label>
-                    <TextInput field="customer.billing.postcode" testId="postcode-input" />
+                    <PostcodeInput field="customer.billing.postcode" testId="postcode-input" />
                   </Form.Group>
                 </Col>
               </Form.Row>
