@@ -8,11 +8,30 @@ import { Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { rootReducer } from 'subscribe/reducers';
 
-const middleware = applyMiddleware(thunkMiddleware);
-const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(rootReducer, composeDevTools(middleware));
+export class SubscribeWidget extends React.Component {
+  static store = null;
 
-export class _SubscribeRoot extends React.Component {
+  static init() {
+    const middleware = applyMiddleware(thunkMiddleware);
+    const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+    SubscribeWidget.store = createStore(rootReducer, composeDevTools(middleware));
+  }
+
+  static setPanels(panels) {
+    Resources.setPanels(panels);
+    SubscribeWidget.store.dispatch(setPanels(panels));
+  }
+
+  render() {
+    return (
+      <Provider store={SubscribeWidget.store}>
+        <SubscribeWidgetRoot {...this.props} />
+      </Provider>
+    );
+  }
+}
+
+export class _SubscribeWidgetRoot extends React.Component {
   async componentDidMount() {
     const { updateAppSettings, setPanelSettings, setTrackingData } = this.props;
 
@@ -71,19 +90,4 @@ const actions = {
   fetchSettings: fetchSettings,
 };
 
-const SubscribeRoot = connect(mapStateToProps, actions)(_SubscribeRoot);
-
-export class SubscribeWidget extends React.Component {
-  static setPanels(panels) {
-    Resources.setPanels(panels);
-    store.dispatch(setPanels(panels));
-  }
-
-  render() {
-    return (
-      <Provider store={store}>
-        <SubscribeRoot {...this.props} />
-      </Provider>
-    );
-  }
-}
+const SubscribeWidgetRoot = connect(mapStateToProps, actions)(_SubscribeWidgetRoot);
