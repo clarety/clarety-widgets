@@ -40,12 +40,18 @@ export class _DetailsPanel extends BasePanel {
 
     const { participant } = this.props;
 
-    if (participant && participant.errors !== prevProps.participant.errors) {
-      this.setState({ errors: participant.errors });
-    }
+    if (participant) {
+      if (participant.errors !== prevProps.participant.errors) {
+        this.setState({ errors: participant.errors });
+      }
+  
+      if (participant.customer !== prevProps.participant.customer) {
+        this.prefillCustomerFormData(participant.customer);
+      }
 
-    if (participant && participant.customer !== prevProps.participant.customer) {
-      this.prefillCustomerFormData(participant.customer);
+      if (participant.offerId !== prevProps.participant.offerId) {
+        this.onFormChange('waveProductId', undefined);
+      }
     }
   }
 
