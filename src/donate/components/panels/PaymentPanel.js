@@ -9,10 +9,10 @@ export class PaymentPanel extends BasePaymentPanel {
   validateCreditCardFields(errors) {
     super.validateCreditCardFields(errors);
 
-    const { formData } = this.props;
+    const { formData, frequency } = this.props;
     const paymentMethod = this.getPaymentMethod('gatewaycc');
 
-    if (paymentMethod.startDates) {
+    if (frequency === 'recurring' && paymentMethod.startDates) {
       requiredField(errors, formData, 'payment.startDate');
     }
   }
@@ -20,10 +20,10 @@ export class PaymentPanel extends BasePaymentPanel {
   validateDirectDebitFields(errors) {
     super.validateDirectDebitFields(errors);
 
-    const { formData } = this.props;
+    const { formData, frequency } = this.props;
     const paymentMethod = this.getPaymentMethod('gatewaydd');
 
-    if (paymentMethod.startDates) {
+    if (frequency === 'recurring' && paymentMethod.startDates) {
       requiredField(errors, formData, 'payment.startDate');
     }
   }
@@ -34,12 +34,12 @@ export class PaymentPanel extends BasePaymentPanel {
   }
 
   getPaymentData() {
-    const { formData } = this.props;
+    const { formData, frequency } = this.props;
 
     const paymentData = super.getPaymentData();
     const paymentMethod = this.getPaymentMethod(formData['payment.type']);
 
-    if (paymentMethod.startDates) {
+    if (frequency === 'recurring' && paymentMethod.startDates) {
       paymentData.startDate = formData['payment.startDate'];
     }
     
@@ -61,19 +61,23 @@ export class PaymentPanel extends BasePaymentPanel {
   }
 
   renderCreditCardFields() {
+    const { frequency } = this.props;
+
     return (
       <React.Fragment>
         {super.renderCreditCardFields()}
-        {this.renderStartDateInput('gatewaycc')}
+        {frequency === 'recurring' && this.renderStartDateInput('gatewaycc')}
       </React.Fragment>
     );
   }
 
   renderDirectDebitFields() {
+    const { frequency } = this.props;
+
     return (
       <React.Fragment>
         {super.renderDirectDebitFields()}
-        {this.renderStartDateInput('gatewaydd')}
+        {frequency === 'recurring' && this.renderStartDateInput('gatewaydd')}
       </React.Fragment>
     );
   }
