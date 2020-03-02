@@ -84,14 +84,16 @@ export class CustomerPanel extends BasePanel {
 
     return (
       <PanelContainer layout={layout} status="edit" className="customer-panel">
-        <PanelHeader
-          status="edit"
-          layout={layout}
-          number={index + 1}
-          title={settings.title}
-          subtitle={settings.subtitle}
-          intlId="customerPanel.editTitle"
-        />
+        {!settings.hideHeader &&
+          <PanelHeader
+            status="edit"
+            layout={layout}
+            number={index + 1}
+            title={settings.title}
+            subtitle={settings.subtitle}
+            intlId="customerPanel.editTitle"
+          />
+        }
 
         <PanelBody status="edit" layout={layout} isBusy={isBusy}>
           <ErrorMessages />
