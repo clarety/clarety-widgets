@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelBody } from 'shared/components';
-import { SubmitButton } from 'form/components';
+import { SubmitButton, ErrorMessages } from 'form/components';
 
 export class SubmitPanel extends BasePanel {
   renderWait() {
@@ -61,6 +61,8 @@ export class SubmitPanel extends BasePanel {
 
             <Row>
               <Col>
+                <ErrorMessages />
+
                 <SubmitButton
                   title={settings.submitBtnText || 'Donate'}
                   isDisabled={!this.canContinue()}

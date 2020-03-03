@@ -95,7 +95,7 @@ export class CustomerPanel extends BasePanel {
           <Row className="justify-content-center">
             <Col>
 
-              <ErrorMessages />
+              {layout !== 'page' && <ErrorMessages />}
             
               <Form.Row>
                 <Col sm>

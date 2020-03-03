@@ -10,6 +10,7 @@ const _CcvInput = ({ value, placeholder, testId, onChange, error }) => (
     <Form.Control
       type="text"
       placeholder={placeholder || '•••'}
+      pattern="\d*"
       value={value}
       onChange={onChange}
       data-testid={testId}

@@ -92,7 +92,8 @@ export class DonationPanel extends BasePanel {
         }
 
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
-          <ErrorMessages />
+          {layout !== 'page' && <ErrorMessages />}
+          
           <FrequencySelect />
 
           {this.renderPriceHandles()}
