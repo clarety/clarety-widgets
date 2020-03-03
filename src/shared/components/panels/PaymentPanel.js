@@ -200,7 +200,7 @@ export class PaymentPanel extends BasePanel {
     return (
       <React.Fragment>
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
-            <ErrorMessages />
+            {layout !== 'page' && <ErrorMessages />}
             {this.renderCartSummary()}
             {this.renderPaymentMethodOptions()}
             {this.renderPaymentFields()}
