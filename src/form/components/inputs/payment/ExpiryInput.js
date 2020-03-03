@@ -42,6 +42,7 @@ class _ExpiryInput extends React.Component {
         <Form.Control
           type="text"
           placeholder={placeholder || 'MM / YY'}
+          pattern="\d*"
           value={value}
           onChange={onChange}
           onKeyDown={this.onKeyDown}

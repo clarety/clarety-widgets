@@ -5,7 +5,7 @@ import { updateFormData } from 'form/actions';
 import { getValidationError } from 'form/utils';
 import { FieldError } from 'form/components';
 
-const _TextInput = ({ value, type, placeholder, testId, error, onChange, required, hideErrors }) => {
+const _TextInput = ({ value, type, placeholder, pattern, testId, error, onChange, required, hideErrors }) => {
   if (placeholder && !required) placeholder += ' (Optional)';
 
   return (
@@ -13,6 +13,7 @@ const _TextInput = ({ value, type, placeholder, testId, error, onChange, require
       <Form.Control
         type={type || 'text'}
         placeholder={placeholder}
+        pattern={pattern}
         value={value}
         onChange={onChange}
         data-testid={testId}

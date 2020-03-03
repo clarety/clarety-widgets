@@ -28,6 +28,7 @@ const _VariableAmountLg = ({ amountInfo, value, isSelected, onChange, onHover, c
               ref={input}
               value={value}
               type="text"
+              pattern="\d*"
               onFocus={event => onChange(event.target.value)}
               onChange={event => onChange(cleanDecimal(event.target.value))}
               onMouseEnter={() => onHover(amountInfo)}
