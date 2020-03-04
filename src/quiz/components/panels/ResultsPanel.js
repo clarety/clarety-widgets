@@ -104,6 +104,10 @@ export class ResultsPanel extends BasePanel {
     return question.options.find(option => option.isCorrect);
   }
 
+  getMaxVoteCount(question) {
+    return question.options.reduce((maxVotes, option) => option.votes > maxVotes ? option.votes : maxVotes, 0);
+  }
+
   renderPollResults() {
     const { layout, isBusy } = this.props;
 
@@ -129,25 +133,29 @@ export class ResultsPanel extends BasePanel {
   }
 
   renderImagePollResults() {
-    const { layout, isBusy } = this.props;
+    const { layout, isBusy, questions } = this.props;
 
     return (
       <PanelContainer layout={layout} status="edit" className="results-panel">        
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
 
-          {this.props.questions.map(question =>
-            <Container key={question.id}>
-              <h4>{question.title}</h4>
+          {questions.map(question => {
+            const maxVoteCount = this.getMaxVoteCount(question);
 
-              <Row>
-                {question.options.map(option =>
-                  <Col key={option.value} xs={12} sm={6} lg={4}>
-                    <ImagePollResult question={question} option={option} />
-                  </Col>
-                )}
-              </Row>
-            </Container>
-          )}
+            return (
+              <Container key={question.id}>
+                <h4>{question.title}</h4>
+
+                <Row>
+                  {question.options.map(option =>
+                    <Col key={option.value} xs={12} sm={6} lg={4}>
+                      <ImagePollResult question={question} option={option} isLeading={option.votes === maxVoteCount} />
+                    </Col>
+                  )}
+                </Row>
+              </Container>
+            );
+          })}
 
         </PanelBody>
       </PanelContainer>
@@ -188,7 +196,7 @@ const PollResult = ({ option, question }) => {
   );
 }
 
-const ImagePollResult = ({ option, question }) => {
+const ImagePollResult = ({ option, question, isLeading }) => {
   const percentage = (option.votes / question.totalVotes * 100).toFixed(0);
 
   return (
