@@ -1,7 +1,7 @@
 import { ClaretyApi } from 'clarety-utils';
 import { setStatus, setPanelSettings, updateAppSettings, setRecaptcha } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
-import { getCmsConfirmContent } from 'shared/utils';
+import { getCmsConfirmContent, downloadFile } from 'shared/utils';
 import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { getLeadPostData, getCmsConfirmContentFields } from 'lead-gen/selectors';
@@ -42,7 +42,7 @@ export const createLead = () => {
         if (!settings.download || !settings.download.file) {
           console.log('Missing download file setting');
         } else {
-          window.open(settings.download.file);
+          downloadFile(settings.download.file);
         }
       }
       
