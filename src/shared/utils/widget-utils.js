@@ -71,25 +71,3 @@ export function currency(number) {
   const symbol = Config.get('currencySymbol') || '$';
   return `${symbol}${number.toFixed(2)}`;
 }
-
-export async function downloadFile(fileUrl) {
-  try {
-    // Fetch the file.
-    const response = await fetch(fileUrl);
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
-
-    // Setup a hidden link.
-    const a = document.createElement('a');
-    a.style.display = 'none';
-    a.href = url;
-    a.download = '';
-
-    // Add and click the hidden link.
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
-  } catch (error) {
-    console.log('failed to download file:', error);
-  }
-}
