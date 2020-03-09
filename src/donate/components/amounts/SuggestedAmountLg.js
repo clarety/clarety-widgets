@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Card } from 'react-bootstrap';
 
-const _SuggestedAmountLg = ({ amountInfo, isSelected, onClick, onMouseEnter, currency, forceMd }) => {
+const _SuggestedAmountLg = ({ amountInfo, isSelected, onClick, currency, forceMd, onMouseEnter, onMouseLeave }) => {
   const label = `${currency.symbol}${amountInfo.amount}`;
 
   let cardClassName = 'mx-1 d-none';
@@ -16,6 +16,7 @@ const _SuggestedAmountLg = ({ amountInfo, isSelected, onClick, onMouseEnter, cur
       text={isSelected ? 'white' : null}
       onClick={() => onClick(amountInfo.amount)}
       onMouseEnter={() => onMouseEnter(amountInfo)}
+      onMouseLeave={() => onMouseLeave(amountInfo)}
       data-testid={`amount-${amountInfo.amount}`}
     >
       <Card.Img src={amountInfo.image} variant="top" />
