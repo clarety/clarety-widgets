@@ -13,7 +13,7 @@ export class _AmountPanel extends BasePanel {
     this.props.clearItems();
   }
 
-  onHoverAmount = (amountInfo) => {
+  onMouseEnterAmount = (amountInfo) => {
     // Override in subclass.
   };
 
@@ -90,7 +90,7 @@ export class _AmountPanel extends BasePanel {
           key={suggestedAmount.amount}
           amountInfo={suggestedAmount}
           onClick={amount => this.onSelectAmount(frequency, amount, false)}
-          onHover={this.onHoverAmount}
+          onMouseEnter={this.onMouseEnterAmount}
           isSelected={isSelected}
           forceMd={forceMd}
           index={index}
@@ -100,7 +100,7 @@ export class _AmountPanel extends BasePanel {
             key={`${suggestedAmount.amount}-lg`}
             amountInfo={suggestedAmount}
             onClick={amount => this.onSelectAmount(frequency, amount, false)}
-            onHover={this.onHoverAmount}
+            onMouseEnter={this.onMouseEnterAmount}
             isSelected={isSelected}
             forceMd={forceMd}
             index={index}
@@ -125,7 +125,7 @@ export class _AmountPanel extends BasePanel {
           amountInfo={variableAmount}
           value={currentSelection.variableAmount || ''}
           onChange={amount => this.onSelectAmount(frequency, amount, true)}
-          onHover={this.onHoverAmount}
+          onMouseEnter={this.onMouseEnterAmount}
           isSelected={currentSelection.isVariableAmount}
           forceMd={forceMd}
         />
@@ -134,7 +134,7 @@ export class _AmountPanel extends BasePanel {
             amountInfo={variableAmount}
             value={currentSelection.variableAmount || ''}
             onChange={amount => this.onSelectAmount(frequency, amount, true)}
-            onHover={this.onHoverAmount}
+            onMouseEnter={this.onMouseEnterAmount}
             isSelected={currentSelection.isVariableAmount}
             forceMd={forceMd}
           />
