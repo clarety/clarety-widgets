@@ -158,6 +158,25 @@ export class _AmountPanel extends BasePanel {
   _getVariableAmount = offer => {
     return offer.amounts.find(amount => amount.variable === true);
   };
+
+  _getDefaultAmountInfo(frequency) {
+    const offer = this._getOffer(frequency);
+    const defaultAmount = offer.amounts.find(amountInfo => amountInfo.default);
+    return defaultAmount;
+  }
+
+  _getSelectedAmountInfo() {
+    const { selections, frequency } = this.props;
+
+    const offer = this._getOffer(frequency);
+    const selection = selections[frequency];
+
+    const amount = selection.isVariableAmount
+      ? offer.amounts.find(amount => amount.variable)
+      : offer.amounts.find(amount => amount.amount === selection.amount);
+    
+    return amount;
+  }
 }
 
 _AmountPanel.contextType = OverrideContext;
