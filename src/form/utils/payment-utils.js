@@ -59,7 +59,11 @@ export const cleanExpiry = (expiry) => {
 export const cleanCcv = (ccv) => _cleanDigits(ccv, 4);
 
 export const cleanDecimal = (number) => {
-  return number.replace(/[^0-9.]/g, '');
+  // Remove '$' prefix, allow up to 7 digits,
+  // and optionally a '.' followed by up to 2 digits.
+  const match = number.replace('$', '')
+                      .match(/^\d{1,7}(\.\d{0,2})?/);
+  return match ? match[0] : '';
 };
 
 export const formatPrice = (price) => {

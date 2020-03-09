@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form, InputGroup } from 'react-bootstrap';
 import { cleanDecimal } from 'form/utils';
 
-const _VariableAmount = ({ amountInfo, value, isSelected, onChange, onHover, currency }) => {
+const _VariableAmount = ({ amountInfo, value, isSelected, onChange, currency, onMouseEnter, onMouseLeave }) => {
   let input = React.createRef();
 
   return (
@@ -20,7 +20,8 @@ const _VariableAmount = ({ amountInfo, value, isSelected, onChange, onHover, cur
           pattern="\d*"
           onFocus={event => onChange(event.target.value)}
           onChange={event => onChange(cleanDecimal(event.target.value))}
-          onMouseEnter={() => onHover(amountInfo)}
+          onMouseEnter={() => onMouseEnter(amountInfo)}
+          onMouseLeave={() => onMouseLeave(amountInfo)}
           data-testid="variable-amount-input"
         />
       </InputGroup>
