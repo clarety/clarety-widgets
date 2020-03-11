@@ -11,7 +11,7 @@ const _CardNumberInput = ({ value, placeholder, testId, onChange, error }) => (
       type="text"
       className={'card-number ' + getCardType(value)}
       placeholder={placeholder || '•••• •••• •••• ••••'}
-      pattern="\d*"
+      type="tel"
       value={value}
       onChange={onChange}
       data-testid={testId}
