@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Navbar, Container, ProgressBar, Row, Col } from 'react-bootstrap';
 import { Resources } from 'shared/utils';
 import { Qty } from 'registration/components';
-import { getEventName, getQtys, getCartTotal, getProgress } from 'registration/selectors';
+import { getEventName, getQtys, getFormattedCartTotal, getProgress } from 'registration/selectors';
 
 class _MiniCart extends React.Component {
   render() {
@@ -44,7 +44,7 @@ const mapStateToProps = state => {
   return {
     eventName: getEventName(state),
     qtys: getQtys(state),
-    cartTotal: getCartTotal(state),
+    cartTotal: getFormattedCartTotal(state),
     progress: getProgress(state),
   };
 };

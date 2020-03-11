@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Card } from 'react-bootstrap';
 
-const _SuggestedAmount = ({ amountInfo, isSelected, onClick, onHover, currency }) => {
+const _SuggestedAmount = ({ amountInfo, isSelected, onClick, currency, onMouseEnter, onMouseLeave }) => {
   const label = `${currency.symbol}${amountInfo.amount}`;
 
   return (
@@ -12,7 +12,8 @@ const _SuggestedAmount = ({ amountInfo, isSelected, onClick, onHover, currency }
       bg={isSelected ? 'info' : 'light'}
       text={isSelected ? 'white' : null}
       onClick={() => onClick(amountInfo.amount)}
-      onMouseEnter={() => onHover(amountInfo)}
+      onMouseEnter={() => onMouseEnter(amountInfo)}
+      onMouseLeave={() => onMouseLeave(amountInfo)}
       data-testid={`amount-${amountInfo.amount}`}
     >
       <div style={{ width: '30%', background: `url(${amountInfo.image}) center center / cover`}}></div>

@@ -52,7 +52,7 @@ export class _LeadGenRoot extends React.Component {
     }
 
     return (
-      <div className="clarety-lead-gen-widget h-100">
+      <div className={`clarety-lead-gen-widget h-100 ${variant}`}>
         {variant === 'sos' && this.renderSosHeader()}
         {variant === 'download' && this.renderDownloadHeader()}
 

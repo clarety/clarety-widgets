@@ -12,7 +12,11 @@ export class DonationPanel extends BasePanel {
     if (layout === 'tabs') clearItems();
   }
 
-  onHoverAmount = (amountInfo) => {
+  onMouseEnterAmount = (amountInfo) => {
+    // Override in subclass.
+  };
+
+  onMouseLeaveAmount = (amountInfo) => {
     // Override in subclass.
   };
 
@@ -168,7 +172,8 @@ export class DonationPanel extends BasePanel {
         key={suggestedAmount.amount}
         amountInfo={suggestedAmount}
         onClick={amount => this.onSelectAmount(frequency, amount, false)}
-        onHover={this.onHoverAmount}
+        onMouseEnter={this.onMouseEnterAmount}
+        onMouseLeave={this.onMouseLeaveAmount}
         isSelected={isSelected}
         index={index}
       />
@@ -187,7 +192,8 @@ export class DonationPanel extends BasePanel {
         amountInfo={variableAmount}
         value={currentSelection.variableAmount || ''}
         onChange={amount => this.onSelectAmount(frequency, amount, true)}
-        onHover={this.onHoverAmount}
+        onMouseEnter={this.onMouseEnterAmount}
+        onMouseLeave={this.onMouseLeaveAmount}
         isSelected={currentSelection.isVariableAmount}
       />
     );
@@ -219,4 +225,23 @@ export class DonationPanel extends BasePanel {
   _getVariableAmount = offer => {
     return offer.amounts.find(amount => amount.variable === true);
   };
+
+  _getDefaultAmountInfo(frequency) {
+    const offer = this._getOffer(frequency);
+    const defaultAmount = offer.amounts.find(amountInfo => amountInfo.default);
+    return defaultAmount;
+  }
+
+  _getSelectedAmountInfo() {
+    const { selections, frequency } = this.props;
+
+    const offer = this._getOffer(frequency);
+    const selection = selections[frequency];
+
+    const amount = selection.isVariableAmount
+      ? offer.amounts.find(amount => amount.variable)
+      : offer.amounts.find(amount => amount.amount === selection.amount);
+    
+    return amount;
+  }
 }
