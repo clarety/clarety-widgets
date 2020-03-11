@@ -161,6 +161,7 @@ export class PaymentPanel extends BasePanel {
           layout={layout}
           number={index + 1}
           title={settings.title}
+          intlId="paymentPanel.waitTitle"
         />
 
         <PanelBody layout={layout} status="wait">
@@ -181,6 +182,7 @@ export class PaymentPanel extends BasePanel {
               layout={layout}
               number={index + 1}
               title={settings.title}
+              intlId="paymentPanel.editTitle"
             />
           }
 
@@ -365,6 +367,7 @@ export class PaymentPanel extends BasePanel {
           layout={layout}
           number={index + 1}
           title={settings.title}
+          intlId="paymentPanel.doneTitle"
           onPressEdit={this.onPressEdit}
         />
 

@@ -55,8 +55,14 @@ export const getQtys = (state) => {
 
 export const getCartTotal = (state) => {
   const { items } = getCart(state);
-  const total = items.reduce((total, item) => total += (item.price * item.quantity) - (item.discount || 0), 0);
+  const total = items.reduce((total, item) => {
+    return total += (item.price * item.quantity) - (item.discount || 0);
+  }, 0);
+  return total;
+};
 
+export const getFormattedCartTotal = (state) => {
+  const total = getCartTotal(state);
   const currency = getSetting(state, 'currency');
   return `${currency.code} ${currency.symbol}${total.toFixed(2)}`;
 };
@@ -162,9 +168,10 @@ export const getIsLoggedIn = (state) => !!getAuth(state).jwt;
 export const getIsExpress = (state) => getSetting(state, 'variant') === 'express';
 
 export const getPaymentMethods = (state) => {
+  const isFree = getCartTotal(state) === 0;
   const isCorporateTeam = getIsCorporateTeam(state);
 
-  return isCorporateTeam
+  return isFree || isCorporateTeam
     ? [{ type: 'na' }]
     : [{ type: 'gatewaycc' }];
 };
