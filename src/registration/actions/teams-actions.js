@@ -121,11 +121,11 @@ export const checkPromoCode = (promoCode) => {
       dispatch(checkPromoCodeSuccess(result));
       return true;
     } else {
-      dispatch(setErrors([{
+      const errors = result.errors.map(error => ({
         field: 'promoCode',
-        message: 'Invalid promo code',
-      }]));
-
+        message: error,
+      }));
+      dispatch(setErrors(errors));
       dispatch(checkPromoCodeFailure(result));
 
       return false;
