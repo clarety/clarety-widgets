@@ -46,7 +46,7 @@ class _ExpiryInput extends React.Component {
           onChange={onChange}
           onKeyDown={this.onKeyDown}
           type="tel"
-          autocomplete="cc-exp"
+          autoComplete="cc-exp"
           className="expiry-input"
           isInvalid={error !== null}
           data-testid={testId}

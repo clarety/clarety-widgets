@@ -13,7 +13,7 @@ const _CcvInput = ({ value, placeholder, testId, onChange, error }) => (
       placeholder={placeholder || '•••'}
       onChange={onChange}
       type="tel"
-      autocomplete="cc-csc"
+      autoComplete="cc-csc"
       maxLength={4}
       className="ccv-input"
       isInvalid={error !== null}
