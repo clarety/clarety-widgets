@@ -8,14 +8,14 @@ import { FieldError } from 'form/components';
 const _CardNumberInput = ({ value, placeholder, testId, onChange, error }) => (
   <React.Fragment>
     <Form.Control
-      type="text"
-      className={'card-number ' + getCardType(value)}
-      placeholder={placeholder || '•••• •••• •••• ••••'}
-      type="tel"
       value={value}
+      placeholder={placeholder || '•••• •••• •••• ••••'}
       onChange={onChange}
-      data-testid={testId}
+      type="tel"
+      autocomplete="cc-number"
+      className={'card-number ' + getCardType(value)}
       isInvalid={error !== null}
+      data-testid={testId}
     />
     <FieldError error={error} />
   </React.Fragment>
