@@ -12,7 +12,7 @@ const _CardNumberInput = ({ value, placeholder, testId, onChange, error }) => (
       placeholder={placeholder || '•••• •••• •••• ••••'}
       onChange={onChange}
       type="tel"
-      autocomplete="cc-number"
+      autoComplete="cc-number"
       className={'card-number ' + getCardType(value)}
       isInvalid={error !== null}
       data-testid={testId}
