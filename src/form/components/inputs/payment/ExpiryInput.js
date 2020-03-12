@@ -41,14 +41,15 @@ class _ExpiryInput extends React.Component {
       <React.Fragment>
         <Form.Control
           type="text"
-          placeholder={placeholder || 'MM / YY'}
-          type="tel"
           value={value}
+          placeholder={placeholder || 'MM / YY'}
           onChange={onChange}
           onKeyDown={this.onKeyDown}
-          data-testid={testId}
-          isInvalid={error !== null}
+          type="tel"
+          autoComplete="cc-exp"
           className="expiry-input"
+          isInvalid={error !== null}
+          data-testid={testId}
         />
         <FieldError error={error} />
       </React.Fragment>

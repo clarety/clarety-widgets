@@ -9,14 +9,15 @@ const _CcvInput = ({ value, placeholder, testId, onChange, error }) => (
   <React.Fragment>
     <Form.Control
       type="text"
-      placeholder={placeholder || '•••'}
-      type="tel"
       value={value}
+      placeholder={placeholder || '•••'}
       onChange={onChange}
-      data-testid={testId}
+      type="tel"
+      autoComplete="cc-csc"
       maxLength={4}
-      isInvalid={error !== null}
       className="ccv-input"
+      isInvalid={error !== null}
+      data-testid={testId}
     />
     <FieldError error={error} />
   </React.Fragment>
