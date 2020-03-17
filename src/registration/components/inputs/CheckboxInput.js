@@ -7,13 +7,14 @@ import { getValidationError } from 'form/utils';
 
 class PureCheckboxInput extends React.PureComponent {
   render() {
-    const { field, checked, onChange, label, translationId, error, required } = this.props;
+    const { field, checked, disabled, onChange, label, translationId, error, required } = this.props;
 
     return (
       <Form.Group controlId={field}>
         <FormCheck>
           <FormCheck.Input
             checked={checked}
+            disabled={disabled}
             onChange={event => onChange(field, event.target.checked)}
             isInvalid={!!error}
           />
