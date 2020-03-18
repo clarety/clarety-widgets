@@ -26,7 +26,19 @@ export class EventPanel extends BasePanel {
     }
   }
 
-  onSelectState = (state) => this.setState({ state });
+  onSelectState = (state) => {
+    this.setState({ state });
+    this.autoSelectSingleEvent(state);
+  }
+
+  autoSelectSingleEvent(state) {
+    if (!state) return;
+
+    const events = this.props.events.filter(event => event.state === state);
+    if (events.length === 1) {
+      this.setState({ event: events[0] });
+    }
+  }
 
   onClickNext = async () => {
     const { formData, fetchFullEvent, checkPromoCode, nextPanel } = this.props;
