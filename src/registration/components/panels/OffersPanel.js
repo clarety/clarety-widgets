@@ -117,6 +117,8 @@ export class OffersPanel extends BasePanel {
         />
 
         <PanelBody layout={layout} status="edit">
+          
+          {this.renderDescription()}
 
           <Form onSubmit={this.onClickNext}>
             {this.renderRows()}
@@ -131,6 +133,10 @@ export class OffersPanel extends BasePanel {
         </PanelBody>
       </PanelContainer>
     );
+  }
+
+  renderDescription() {
+    return null;
   }
 
   renderRows() {
