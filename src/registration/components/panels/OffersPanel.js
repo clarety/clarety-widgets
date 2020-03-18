@@ -21,6 +21,22 @@ export class OffersPanel extends BasePanel {
 
   onSelectPrefill = (index, prefill) => this.updateProperty('prefills', index, prefill);
 
+  onShowPanel() {
+    this.autoSelectSingleOffers();
+  }
+
+  autoSelectSingleOffers() {
+    const { participants, offers } = this.props;
+
+    for (let index = 0; index < participants.length; index++) {
+      // If we've only got one offer...
+      if (offers[index].length === 1) {
+        // ...then select it.
+        this.onSelectOffer(index, offers[index][0]);
+      }
+    }
+  }
+
   onClickNext = (event) => {
     event.preventDefault();
 
