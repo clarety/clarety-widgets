@@ -183,13 +183,13 @@ export class ResultsPanel extends BasePanel {
 }
 
 const PollResult = ({ option, question }) => {
-  const percentage = (option.votes / question.totalVotes * 100).toFixed(0) + '%';
+  const percentage = option.percentage || (option.votes / question.totalVotes * 100).toFixed(0);
 
   return (
     <div className="poll-result">
       <div className="progress">
         <div className="progress-bar" style={{ width: percentage }}></div>
-        <span className="progress-percentage">{percentage}</span>
+        <span className="progress-percentage">{percentage}%</span>
         <span className="progress-label">{option.label}</span>
       </div>
     </div>
@@ -197,7 +197,7 @@ const PollResult = ({ option, question }) => {
 }
 
 const ImagePollResult = ({ option, question, isLeading }) => {
-  const percentage = (option.votes / question.totalVotes * 100).toFixed(0);
+  const percentage = option.percentage || (option.votes / question.totalVotes * 100).toFixed(0);
 
   return (
     <div className="image-poll-result">
