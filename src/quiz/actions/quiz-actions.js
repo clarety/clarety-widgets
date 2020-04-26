@@ -118,15 +118,33 @@ export const updateVoteCounts = () => {
   return async (dispatch, getState) => {
     const state = getState();
     const formData = getFormData(state);
-    const questions = getSetting(state, 'questions');
+    const questions = [...getSetting(state, 'questions')];
 
     // Increment vote count of questions and selected options.
     questions.forEach(question => {
+      // Update total votes.
       question.totalVotes++;
 
+      // Update vote count of selected option.
       const selectedValue = formData[`answers.${question.id}`];
       const selectedOption = question.options.find(option => option.value === selectedValue);
       selectedOption.votes++;
+
+      // Calculate percentages.
+      const percentages = [];
+
+      for (let index = 0; index < question.options.length; index++) {
+        const option = question.options[index];
+
+        if (index < question.options.length - 1) {
+          option.percentage = (option.votes / question.totalVotes * 100).toFixed(0);
+          percentages.push(option.percentage);
+        } else {
+          // To ensure percentages add up to 100, use the remainder as the last percentage.
+          const sum = percentages.reduce((sum, percentage) => sum += Number(percentage), 0);
+          option.percentage = (100 - sum).toFixed(0);
+        }
+      }
     });
 
     dispatch(updateAppSettings({ questions }));
