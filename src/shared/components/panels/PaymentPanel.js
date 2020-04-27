@@ -202,27 +202,27 @@ export class PaymentPanel extends BasePanel {
     return (
       <React.Fragment>
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
-            {layout !== 'page' && <ErrorMessages />}
-            {this.renderCartSummary()}
-            {this.renderPaymentMethodOptions()}
-            {this.renderPaymentFields()}
-          </PanelBody>
-    
-          {layout !== 'page' &&
-            <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
-              <Form.Row className="justify-content-center">
-                {layout === 'tabs' && 
-                  <Col xs={4}>
-                    <BackButton title="Back" onClick={this.onPressBack} />
-                  </Col>
-                }
-
-                <Col xs={layout === 'tabs' ? 8 : 12}>
-                  <SubmitButton title={settings.submitBtnText || 'Pay Now'} testId="next-button" />
+          {layout !== 'page' && <ErrorMessages />}
+          {this.renderCartSummary()}
+          {this.renderPaymentMethodOptions()}
+          {this.renderPaymentFields()}
+        </PanelBody>
+  
+        {layout !== 'page' &&
+          <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
+            <Form.Row className="justify-content-center">
+              {layout === 'tabs' && 
+                <Col xs={4}>
+                  <BackButton title="Back" onClick={this.onPressBack} />
                 </Col>
-              </Form.Row>
-            </PanelFooter>
-          }
+              }
+
+              <Col xs={layout === 'tabs' ? 8 : 12}>
+                <SubmitButton title={settings.submitBtnText || 'Pay Now'} testId="next-button" />
+              </Col>
+            </Form.Row>
+          </PanelFooter>
+        }
       </React.Fragment>
     );
   }

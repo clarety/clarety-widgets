@@ -51,7 +51,7 @@ export class DonationPanel extends BasePanel {
 
     // Make sure an amount has been selected.
     const selection = selections[frequency];
-    if (!selection.amount) {
+    if (!Number(selection.amount)) {
       errors.push({
         message: 'Please select a donation amount',
       });

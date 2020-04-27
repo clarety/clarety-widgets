@@ -1,5 +1,5 @@
 import { getFormData } from 'form/selectors';
-import { getIsBusy } from 'donate/selectors';
+import { getIsBusy, getSelectedAmount, getSelectedFrequency } from 'donate/selectors';
 import { makePayment } from 'donate/actions';
 
 export class SubmitConnect {
@@ -7,6 +7,8 @@ export class SubmitConnect {
     return {
       isBusy: getIsBusy(state),
       formData: getFormData(state),
+      amount: getSelectedAmount(state),
+      frequency: getSelectedFrequency(state),
     };
   };
 
