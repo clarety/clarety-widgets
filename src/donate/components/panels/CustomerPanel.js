@@ -32,10 +32,14 @@ export class CustomerPanel extends BasePanel {
   };
 
   validate() {
-    const { formData, setErrors } = this.props;
-
     const errors = [];
+    this.validateFields(errors);
 
+    this.props.setErrors(errors);
+    return errors.length === 0;
+  }
+
+  validateFields(errors) {
     requiredField(errors, formData, 'customer.firstName');
     requiredField(errors, formData, 'customer.lastName');
 
@@ -46,9 +50,6 @@ export class CustomerPanel extends BasePanel {
     requiredField(errors, formData, 'customer.billing.suburb');
     requiredField(errors, formData, 'customer.billing.state');
     requiredField(errors, formData, 'customer.billing.postcode');
-
-    setErrors(errors);
-    return errors.length === 0;
   }
 
   renderWait() {

@@ -39,20 +39,23 @@ export class DonationPanel extends BasePanel {
   };
 
   validate() {
-    const { selections, frequency, setErrors } = this.props;
-
     const errors = [];
+    this.validateFields(errors);
+
+    this.props.setErrors(errors);
+    return errors.length === 0;
+  }
+
+  validateFields(errors) {
+    const { selections, frequency } = this.props;
 
     // Make sure an amount has been selected.
     const selection = selections[frequency];
-    if (!selection.amount) {
+    if (!Number(selection.amount)) {
       errors.push({
         message: 'Please select a donation amount',
       });
     }
-
-    setErrors(errors);
-    return errors.length === 0;
   }
 
   renderWait() {

@@ -1,6 +1,6 @@
 import { getSetting } from 'shared/selectors';
 import { clearItems } from 'shared/actions';
-import { getErrors } from 'form/selectors';
+import { getFormData, getErrors } from 'form/selectors';
 import { setErrors } from 'form/actions';
 import { getSelectedAmount } from 'donate/selectors';
 import { selectAmount, addDonationToCart } from 'donate/actions';
@@ -14,6 +14,7 @@ export class DonationConnect {
       frequency: donationPanel.frequency,
       selections: donationPanel.selections,
       selectedAmount: getSelectedAmount(state),
+      formData: getFormData(state),
       errors: getErrors(state),
       variant: getSetting(state, 'variant'),
     };
