@@ -40,6 +40,8 @@ export class CustomerPanel extends BasePanel {
   }
 
   validateFields(errors) {
+    const { formData } = this.props;
+
     requiredField(errors, formData, 'customer.firstName');
     requiredField(errors, formData, 'customer.lastName');
 
