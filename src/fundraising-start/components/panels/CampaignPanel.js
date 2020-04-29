@@ -59,7 +59,7 @@ export class CampaignPanel extends BasePanel {
             <Form.Row>
               <Col>
                 <Form.Group>
-                  <TextInput field="campaign.name" placeholder="Campaign Name" />
+                  <TextInput field="campaign.name" placeholder="Campaign Name" required />
                 </Form.Group>
               </Col>
             </Form.Row>
@@ -67,7 +67,7 @@ export class CampaignPanel extends BasePanel {
             <Form.Row>
               <Col>
                 <Form.Group>
-                  <TextInput field="campaign.goal" placeholder="Campaign Amount" />
+                  <TextInput field="campaign.goal" placeholder="Campaign Amount" required />
                 </Form.Group>
               </Col>
             </Form.Row>
