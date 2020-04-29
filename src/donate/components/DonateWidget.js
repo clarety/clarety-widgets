@@ -50,22 +50,29 @@ export class DonateWidget extends React.Component {
 export class _DonateWidgetRoot extends React.Component {
   async componentWillMount() {
     const { updateAppSettings, setStore, setTrackingData, fetchSettings, handleUrlParams } = this.props;
-    const { storeCode, singleOfferId, recurringOfferId } = this.props;
+    const { storeUid, singleOfferId, recurringOfferId } = this.props;
     const { sourceId, responseId, emailResponseId } = this.props;
+    const { variant, confirmPageUrl, fundraisingPageUid } = this.props;
 
     if (!singleOfferId && !recurringOfferId) throw new Error('[Clarety] Either a singleOfferId or recurringOfferId prop is required');
 
+    let givingTypeOptions = undefined;
+    if(this.props.givingTypeOptions) {
+      givingTypeOptions = this.props.givingTypeOptions.map(option => ({value:option, label:option}));
+    }
+
     updateAppSettings({
-      variant: this.props.variant,
-      confirmPageUrl: this.props.confirmPageUrl,
-      fundraisingPageUid: this.props.fundraisingPageUid,
+      variant: variant,
+      confirmPageUrl: confirmPageUrl,
+      fundraisingPageUid: fundraisingPageUid,
+      givingTypeOptions: givingTypeOptions,
     });
 
-    setStore(storeCode);
+    setStore(storeUid);
     setTrackingData({ sourceId, responseId, emailResponseId });
 
     await fetchSettings('donations/', {
-      store: storeCode,
+      storeUid: storeUid,
       offerSingle: singleOfferId,
       offerRecurring: recurringOfferId,
     }, mapDonationSettings);

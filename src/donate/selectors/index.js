@@ -12,6 +12,8 @@ export const getDonationPanel = (state) => state.panels.donationPanel;
 
 export const getPriceHandles = (state) => getSetting(state, 'priceHandles');
 
+export const getGivingTypeOptions = (state) => getSetting(state, 'givingTypeOptions');
+
 export const getSelectedFrequency = (state) => getDonationPanel(state).frequency;
 
 export const getDonationPanelSelection = (state) => {
@@ -42,6 +44,10 @@ export const getSelectedOffer = (state) => {
   return priceHandles.find(offer => offer.frequency === donationPanel.frequency);
 };
 
+export const getSalelineDescription = (state) => {
+  return getFormData(state)['saleline.givingType'];
+};
+
 export const getPaymentMethod = (state, type) => {
   const paymentMethods = getSetting(state, 'paymentMethods') || [];
   return paymentMethods.find(paymentMethod => paymentMethod.type === type);
@@ -66,7 +72,7 @@ export const getPaymentPostData = (state) => {
   const formData = getParsedFormData(state);
 
   const postData = {
-    store: cart.store,
+    storeUid: cart.store,
     uid: cart.uid,
     jwt: cart.jwt,
 

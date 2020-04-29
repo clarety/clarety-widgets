@@ -4,7 +4,8 @@ import Cookies from 'js-cookie';
 import { Config } from '../../src';
 
 Config.init({
-  instanceKey: 'clarety-baseline',
+  //instanceKey: 'clarety-baseline',
+  instanceKey: 'clarety-church',
   // instanceKey: 'tnc',
   // instanceKey: 'mdc',
   devSitePath: 'http://localhost:3000/',
@@ -17,8 +18,8 @@ Config.init({
 
 // Real cookies.
 // Cookies.set('jwtAccount', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpZCI6IjAzNDY0NjAyYzY4NmIzZjYyZjk2MzJlODMxMDY1OTNkZjE0ZGMxZmMiLCJqdGkiOiIwMzQ2NDYwMmM2ODZiM2Y2MmY5NjMyZTgzMTA2NTkzZGYxNGRjMWZjIiwiaXNzIjoiIiwiYXVkIjowLCJzdWIiOiI2NjUiLCJ1c2VyX3R5cGUiOiJjdXN0b21lciIsImV4cCI6MzE0MjU0Mjc0MCwiaWF0IjoxNTcxMjcxMjUwLCJ0b2tlbl90eXBlIjoiYmVhcmVyIiwic2NvcGUiOm51bGwsImN1c3RvbWVyX3VpZCI6ImNzdF9qMnprIn0.A6AKBL_sdIeuxzR3-73X9tBh2kcfSyAZlnIasIOwbgQb_FETFoEH601KfOsYm6Kd1MskDPy5nZNi5VCjceqALYXd3ZEmTRvsfKWB1nrhrPxDSV37soYl2E3SEc1uCls_YRMYGOtBiGulJ5ZlxDfjQOLNtqa_sqR6Q6wEcbM-JDU');
-Cookies.set('jwtSession', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzYWxlSWQiOiIxNTU1IiwiY2FydFVpZCI6ImNydF82anA3IiwiaXNzIjoiZGV2IiwiZXhwIjoxNTgyMDczNjI0LCJzdWIiOiIiLCJhdWQiOiIifQ.CpUVJolF6gipFPPHH5CTJnF6BfA7lFKuNdehFi6p96o');
-
+// Cookies.set('jwtSession', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzYWxlSWQiOiIxNTU1IiwiY2FydFVpZCI6ImNydF82anA3IiwiaXNzIjoiZGV2IiwiZXhwIjoxNTgyMDczNjI0LCJzdWIiOiIiLCJhdWQiOiIifQ.CpUVJolF6gipFPPHH5CTJnF6BfA7lFKuNdehFi6p96o');
+Cookies.set('jwtCustomer', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lclVpZCI6ImNzdF9sODB3Iiwic3RvcmVVaWQiOiJzdHJfbDlwNyIsImlzcyI6ImRldiIsImV4cCI6MTU4ODE0MTYwMiwic3ViIjoiIiwiYXVkIjoiIn0.CqMZJYQyP0Ejwv3avsXQ0FK-FZeiAAiQ0PnqngPA-Z4');
 
 const Demo = () => {
   const url = window.location.href;

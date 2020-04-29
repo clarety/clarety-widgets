@@ -12,7 +12,6 @@ window.renderDonatePage = (props) => {
 
   // TODO: this setting should come from the widgets/donate endpoint...
   DonateWidget.appSettings({
-    startDates: ['2020-03-01', '2020-03-15', '2020-03-30'],
   });
 
   DonateWidget.setPanels([
@@ -28,19 +27,18 @@ window.renderDonatePage = (props) => {
         title: 'Your Details',
       },
     },
-    {
-      component: FundraisingPanel,
-      connect: FundraisingConnect,
-      settings: {
-        title: 'Fundraising Details',
-      },
-    },
+    // {
+    //   component: FundraisingPanel,
+    //   connect: FundraisingConnect,
+    //   settings: {
+    //     title: 'Fundraising Details',
+    //   },
+    // },
     {
       component: PaymentPanel,
       connect: PaymentConnect,
       settings: {
-        title: 'Payment Details',
-        paymentMethods: ['credit-card', 'direct-debit'],
+        title: 'Payment Details'
       },
     },
     {
@@ -60,14 +58,21 @@ export default class DonatePageDemo extends React.Component {
     window.renderDonatePage({
       elementId: 'donate-page-demo',
 
-      storeCode: 'AU',
+      storeUid: 'str_l9p7',
       singleOfferId: '8',
       recurringOfferId: '17',
-      fundraisingPageUid: 'abc-123',
-
+      //fundraisingPageUid: 'abc-123',
+      //confirmPageUrl: 'https://google.com', //hidden to stop redirect
       sourceId: '17',
       responseId: 'e9c2e351d90b11e996fd',
       emailResponseId: '1234',
+      givingTypeOptions: [
+          "General Donation",
+          "Mission Work",
+          "Children\'s Ministry",
+          "Church Tithe",
+          "Other"
+      ]
       
       // reCaptchaKey: '1234',
     });
