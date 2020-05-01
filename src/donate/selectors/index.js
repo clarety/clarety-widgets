@@ -14,6 +14,8 @@ export const getPriceHandles = (state) => getSetting(state, 'priceHandles');
 
 export const getGivingTypeOptions = (state) => getSetting(state, 'givingTypeOptions');
 
+export const getCustomerHasProfile = (state) => getSetting(state, 'customerHasProfile');
+
 export const getSelectedFrequency = (state) => getDonationPanel(state).frequency;
 
 export const getDonationPanelSelection = (state) => {

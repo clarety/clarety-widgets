@@ -7,12 +7,14 @@ import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { statuses, setStore, setTrackingData, fetchSettings, updateAppSettings, setPanels } from 'shared/actions';
 import { PanelManager } from 'shared/components';
-import { Resources } from 'shared/utils';
+import { getJwtCustomer, Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { handleUrlParams } from 'donate/actions';
 import { rootReducer } from 'donate/reducers';
 import { mapDonationSettings, setupDefaultResources } from 'donate/utils';
 import { StepIndicator } from 'donate/components';
+import { fetchCustomer } from 'donate/actions/customer-actions';
+import { ClaretyApi } from "clarety-utils"
 
 export class DonateWidget extends React.Component {
   static store;
@@ -49,7 +51,7 @@ export class DonateWidget extends React.Component {
 
 export class _DonateWidgetRoot extends React.Component {
   async componentWillMount() {
-    const { updateAppSettings, setStore, setTrackingData, fetchSettings, handleUrlParams } = this.props;
+    const { updateAppSettings, setStore, setTrackingData, fetchSettings, handleUrlParams, fetchCustomer } = this.props;
     const { storeUid, singleOfferId, recurringOfferId } = this.props;
     const { sourceId, responseId, emailResponseId } = this.props;
     const { variant, confirmPageUrl, fundraisingPageUid } = this.props;
@@ -71,6 +73,12 @@ export class _DonateWidgetRoot extends React.Component {
     setStore(storeUid);
     setTrackingData({ sourceId, responseId, emailResponseId });
 
+    const jwtCustomer = getJwtCustomer();
+    if (jwtCustomer) {
+      ClaretyApi.setJwtCustomer(jwtCustomer.jwtString);
+      await fetchCustomer();
+    }
+    
     await fetchSettings('donations/', {
       storeUid: storeUid,
       offerSingle: singleOfferId,
@@ -91,7 +99,6 @@ export class _DonateWidgetRoot extends React.Component {
         </div>
       );
     }
-
     return (
       <div className={`clarety-donate-widget h-100 ${layout}`}>
         <BlockUi tag="div" blocking={status === statuses.busy} loader={<span></span>}>
@@ -106,7 +113,7 @@ export class _DonateWidgetRoot extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    status: state.status,
+    status: state.status
   };
 };
 
@@ -116,6 +123,7 @@ const actions = {
   fetchSettings: fetchSettings,
   updateAppSettings: updateAppSettings,
   handleUrlParams: handleUrlParams,
+  fetchCustomer: fetchCustomer,
 };
 
 export const connectDonateWidgetRoot = connect(mapStateToProps, actions);

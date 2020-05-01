@@ -58,7 +58,7 @@ export default class DonatePageDemo extends React.Component {
     window.renderDonatePage({
       elementId: 'donate-page-demo',
 
-      storeUid: 'str_l9p7',
+      storeUid: 'str_l207',
       singleOfferId: '8',
       recurringOfferId: '17',
       //fundraisingPageUid: 'abc-123',
@@ -67,11 +67,10 @@ export default class DonatePageDemo extends React.Component {
       responseId: 'e9c2e351d90b11e996fd',
       emailResponseId: '1234',
       givingTypeOptions: [
-          "General Donation",
-          "Mission Work",
-          "Children\'s Ministry",
-          "Church Tithe",
-          "Other"
+        "Church Tithe",
+        "General Donation",
+        "Children\'s Ministry",
+        "Other"
       ]
       
       // reCaptchaKey: '1234',

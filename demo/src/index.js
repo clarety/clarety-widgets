@@ -4,10 +4,10 @@ import Cookies from 'js-cookie';
 import { Config } from '../../src';
 
 Config.init({
-  //instanceKey: 'clarety-baseline',
-  instanceKey: 'clarety-church',
-  // instanceKey: 'tnc',
   // instanceKey: 'mdc',
+  //instanceKey: 'clarety-baseline',
+  // instanceKey: 'tnc',
+  instanceKey: 'clarety-church',
   devSitePath: 'http://localhost:3000/',
   phoneCountry: 'AU',
 });
@@ -15,11 +15,13 @@ Config.init({
 // Mock cookies.
 // Cookies.set('jwtAccount', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc2OWY1ZGNiYmZjOWRkOWI3MjYzYjdkMTVjOWVjYjViYjMxNWFjNTAiLCJqdGkiOiI3NjlmNWRjYmJmYzlkZDliNzI2M2I3ZDE1YzllY2I1YmIzMTVhYzUwIiwiaXNzIjoiIiwiYXVkIjowLCJzdWIiOiIxMDgiLCJ1c2VyX3R5cGUiOiJjdXN0b21lciIsImV4cCI6MzE0MTMyOTQ5MiwiaWF0IjoxNTcwNjY0NjI2LCJ0b2tlbl90eXBlIjoiYmVhcmVyIiwic2NvcGUiOm51bGwsImN1c3RvbWVyX3VpZCI6ImU3ZmI4ODMxLTRhODMtNDY4ZS04ZWVjLTU5MzE4NTkwOWYxOCJ9.Dv4_t4NrwHXvezCWS9p0LhQI_sOLnYk-3qyQXZF4gdo');
 // Cookies.set('jwtSession', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJjYXJ0VWlkIjoiOGMyNzU2YjItZjAxOC00YzI3LWEwMjUtYzMxZmNhN2U0ODJiIn0.WDXbbj84bUH7zGVNEEeSK1VwuEfBY8Lt6stiEr6Yhek');
+Cookies.set('jwtCustomer', '');
 
 // Real cookies.
 // Cookies.set('jwtAccount', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpZCI6IjAzNDY0NjAyYzY4NmIzZjYyZjk2MzJlODMxMDY1OTNkZjE0ZGMxZmMiLCJqdGkiOiIwMzQ2NDYwMmM2ODZiM2Y2MmY5NjMyZTgzMTA2NTkzZGYxNGRjMWZjIiwiaXNzIjoiIiwiYXVkIjowLCJzdWIiOiI2NjUiLCJ1c2VyX3R5cGUiOiJjdXN0b21lciIsImV4cCI6MzE0MjU0Mjc0MCwiaWF0IjoxNTcxMjcxMjUwLCJ0b2tlbl90eXBlIjoiYmVhcmVyIiwic2NvcGUiOm51bGwsImN1c3RvbWVyX3VpZCI6ImNzdF9qMnprIn0.A6AKBL_sdIeuxzR3-73X9tBh2kcfSyAZlnIasIOwbgQb_FETFoEH601KfOsYm6Kd1MskDPy5nZNi5VCjceqALYXd3ZEmTRvsfKWB1nrhrPxDSV37soYl2E3SEc1uCls_YRMYGOtBiGulJ5ZlxDfjQOLNtqa_sqR6Q6wEcbM-JDU');
 // Cookies.set('jwtSession', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzYWxlSWQiOiIxNTU1IiwiY2FydFVpZCI6ImNydF82anA3IiwiaXNzIjoiZGV2IiwiZXhwIjoxNTgyMDczNjI0LCJzdWIiOiIiLCJhdWQiOiIifQ.CpUVJolF6gipFPPHH5CTJnF6BfA7lFKuNdehFi6p96o');
-Cookies.set('jwtCustomer', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lclVpZCI6ImNzdF9sODB3Iiwic3RvcmVVaWQiOiJzdHJfbDlwNyIsImlzcyI6ImRldiIsImV4cCI6MTU4ODE0MTYwMiwic3ViIjoiIiwiYXVkIjoiIn0.CqMZJYQyP0Ejwv3avsXQ0FK-FZeiAAiQ0PnqngPA-Z4');
+//Cookies.set('jwtCustomer', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lclVpZCI6ImNzdF9sODB3Iiwic3RvcmVVaWQiOiJzdHJfbDlwNyIsImlzcyI6ImRldiIsImV4cCI6MTU4ODM3NjUxMSwic3ViIjoiIiwiYXVkIjoiIn0.XrUuIBhqvyvQHldqs6Z4nDWEQYxzWdbFApzYfqKmbg0');
+
 
 const Demo = () => {
   const url = window.location.href;
