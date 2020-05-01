@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Col } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { requiredField } from 'shared/utils';
-import { TextInput, SubmitButton } from 'form/components';
+import { TextInput, CurrencyInput, SubmitButton } from 'form/components';
 
 export class CampaignPanel extends BasePanel {
   onPressNext = (event) => {
@@ -14,14 +14,18 @@ export class CampaignPanel extends BasePanel {
   };
 
   validate() {
-    const { formData, setErrors } = this.props;
     const errors = [];
+    this.validateFields(errors);
+
+    this.props.setErrors(errors);
+    return errors.length === 0;
+  }
+
+  validateFields(errors) {
+    const { formData } = this.props;
 
     requiredField(errors, formData, 'campaign.name');
     requiredField(errors, formData, 'campaign.goal');
-
-    setErrors(errors);
-    return errors.length === 0;
   }
 
   renderWait() {
@@ -67,7 +71,7 @@ export class CampaignPanel extends BasePanel {
             <Form.Row>
               <Col>
                 <Form.Group>
-                  <TextInput field="campaign.goal" placeholder="Campaign Amount" required />
+                  <CurrencyInput field="campaign.goal" placeholder="Campaign Amount" required />
                 </Form.Group>
               </Col>
             </Form.Row>
