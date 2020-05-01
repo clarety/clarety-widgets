@@ -78,7 +78,7 @@ export class _DonateWidgetRoot extends React.Component {
       ClaretyApi.setJwtCustomer(jwtCustomer.jwtString);
       await fetchCustomer();
     }
-    
+
     await fetchSettings('donations/', {
       storeUid: storeUid,
       offerSingle: singleOfferId,
