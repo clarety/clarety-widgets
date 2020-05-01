@@ -137,7 +137,7 @@ export const updateVoteCounts = () => {
         const option = question.options[index];
 
         if (index < question.options.length - 1) {
-          option.percentage = (option.votes / question.totalVotes * 100).toFixed(0);
+          option.percentage = Math.floor(option.votes / question.totalVotes * 100).toFixed(0);
           percentages.push(option.percentage);
         } else {
           // To ensure percentages add up to 100, use the remainder as the last percentage.
