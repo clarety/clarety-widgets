@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { setPanelStatus, resetAllPanels } from 'shared/actions';
 import { ScrollIntoView } from 'shared/components';
-import { Resources } from 'shared/utils';
 
 class _PanelManager extends React.Component {
   components = {};
@@ -10,19 +9,20 @@ class _PanelManager extends React.Component {
 
   constructor(props) {
     super(props);
-    this.setupPanelComponents(props.panels);
+    this.setupPanelComponents(props.panels, props.resources);
 
     if (props.layout === 'page') {
       props.panels.forEach((panel, index) => this.setStatus(index, 'edit'));
     }
   }
 
-  setupPanelComponents(panels) {
+  setupPanelComponents(panels, resources) {
+
     panels.forEach(panel => {
-      let panelComponent = Resources.getComponent(panel.component);
+      let panelComponent = resources.getComponent(panel.component);
 
       if (panel.connect) {
-        const panelConnect = Resources.getConnect(panel.connect);
+        const panelConnect = resources.getConnect(panel.connect);
         panelComponent = connect(
           panelConnect.mapStateToProps,
           panelConnect.actions,
@@ -71,7 +71,7 @@ class _PanelManager extends React.Component {
   }
 
   renderPanel = (panel, index) => {
-    const { layout, settings } = this.props;
+    const { layout, settings, resources } = this.props;
     const PanelComponent = this.components[panel.component];
     const panelSettings = settings.panels[panel.component];
     
@@ -85,6 +85,7 @@ class _PanelManager extends React.Component {
           status={panel.status}
           layout={layout}
           settings={panelSettings}
+          resources={resources}
           
           {...panel.data}
 

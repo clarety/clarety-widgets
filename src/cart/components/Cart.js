@@ -3,15 +3,19 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider} from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import { ClaretyApi } from 'clarety-utils';
-import { getJwtSession, getPath } from 'shared/utils';
+import { getJwtSession } from 'shared/utils';
 import { CartHeader, CartSummary, CartFooter } from "cart/components";
 import { cartReducer } from 'cart/reducers';
 import { fetchItems } from "cart/actions";
 
-const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(cartReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
-
 export class Cart extends React.Component {
+    static store;
+
+    static init() {
+        const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+        Cart.store = createStore(cartReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
+    }
+
     componentDidMount() {
         this.refreshCart();
 
@@ -23,13 +27,13 @@ export class Cart extends React.Component {
         const jwtSession = getJwtSession();
         if (jwtSession) {
             ClaretyApi.setJwtSession(jwtSession.jwtString);
-            store.dispatch(fetchItems(jwtSession.cartUid));
+            Cart.store.dispatch(fetchItems(jwtSession.cartUid));
         }
     };
 
     render() {
         return (
-            <Provider store={store}>
+            <Provider store={Cart.store}>
                 <CartHeader />
                 <CartSummary />
                 <CartFooter />

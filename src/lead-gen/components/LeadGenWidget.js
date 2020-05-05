@@ -12,8 +12,39 @@ import { rootReducer } from 'lead-gen/reducers';
 import { settingsMap } from 'lead-gen/utils';
 import { getIsShowingConfirmation } from 'lead-gen/selectors';
 
-const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
+export class LeadGenWidget extends React.Component {
+  static store;
+  static resources;
+
+  static init() {
+    // Setup store.
+    const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+    LeadGenWidget.store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
+
+    // Setup resources.
+    LeadGenWidget.resources = new Resources();
+  }
+
+  static setPanels(panels) {
+    LeadGenWidget.resources.setPanels(panels);
+    LeadGenWidget.store.dispatch(setPanels(panels));
+  }
+
+  static setComponent(name, component) {
+    LeadGenWidget.resources.setComponent(name, component);
+  }
+
+  render() {
+    return (
+      <Provider store={LeadGenWidget.store}>
+        <LeadGenRoot
+          resources={LeadGenWidget.resources}
+          {...this.props}
+        />
+      </Provider>
+    );
+  }
+}
 
 export class _LeadGenRoot extends React.Component {
   componentWillMount() {
@@ -40,7 +71,7 @@ export class _LeadGenRoot extends React.Component {
   }
 
   render() {
-    const { status, variant, reCaptchaKey } = this.props;
+    const { status, variant, resources, reCaptchaKey } = this.props;
 
     // Show a loading indicator while we init.
     if (status === statuses.initializing) {
@@ -56,7 +87,7 @@ export class _LeadGenRoot extends React.Component {
         {variant === 'sos' && this.renderSosHeader()}
         {variant === 'download' && this.renderDownloadHeader()}
 
-        <PanelManager layout="tabs" />
+        <PanelManager layout="tabs" resources={resources} />
         <Recaptcha siteKey={reCaptchaKey} />
       </div>
     );
@@ -98,18 +129,3 @@ const actions = {
 };
 
 const LeadGenRoot = connect(mapStateToProps, actions)(_LeadGenRoot);
-
-export class LeadGenWidget extends React.Component {
-  static setPanels(panels) {
-    Resources.setPanels(panels);
-    store.dispatch(setPanels(panels));
-  }
-
-  render() {
-    return (
-      <Provider store={store}>
-        <LeadGenRoot {...this.props} />
-      </Provider>
-    );
-  }
-}

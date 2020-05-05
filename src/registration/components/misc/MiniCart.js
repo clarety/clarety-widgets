@@ -1,14 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Navbar, Container, ProgressBar, Row, Col } from 'react-bootstrap';
-import { Resources } from 'shared/utils';
 import { Qty } from 'registration/components';
 import { getEventName, getQtys, getFormattedCartTotal, getProgress } from 'registration/selectors';
 
 class _MiniCart extends React.Component {
   render() {
-    const { eventName, qtys, cartTotal, progress } = this.props;
-    const NavBarBrand = Resources.getComponent('NavBarBrand');
+    const { eventName, qtys, cartTotal, progress, resources } = this.props;
+    const NavBarBrand = resources.getComponent('NavBarBrand');
 
     return (
       <Navbar sticky="top">

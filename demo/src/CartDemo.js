@@ -1,6 +1,8 @@
 import React from 'react';
 import { Cart, setupCartAxiosMock } from '../../src';
 
+Cart.init();
+
 export default class CartDemo extends React.Component {
   componentWillMount() {
     setupCartAxiosMock();

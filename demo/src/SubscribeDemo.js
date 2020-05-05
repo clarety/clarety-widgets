@@ -3,6 +3,8 @@ import { CmsConfirmPanel } from '../../src/shared/components';
 import { CustomerPanel, CustomerConnect } from '../../src/subscribe/components';
 import { SubscribeWidget } from '../../src';
 
+SubscribeWidget.init();
+
 SubscribeWidget.setPanels([
   {
     component: CustomerPanel,

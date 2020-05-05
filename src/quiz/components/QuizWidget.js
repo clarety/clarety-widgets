@@ -11,26 +11,38 @@ import { settingsMap } from 'quiz/utils';
 
 export class QuizWidget extends React.Component {
   static store;
+  static resources;
 
   static init(props) {
+    // Setup store.
     const stateKey = `clarety-quiz-${props.quizUid}`;
     QuizWidget.store = configureStore(rootReducer, stateKey);
     QuizWidget.store.dispatch(updateAppSettings({ stateKey }));
-  }
 
-  static setPanels(panels) {
-    Resources.setPanels(panels);
-    QuizWidget.store.dispatch(setPanels(panels));
+    // Setup resources.
+    QuizWidget.resources = new Resources();
   }
 
   static setClientIds({ dev, prod }) {
     QuizWidget.store.dispatch(setClientIds({ dev, prod }));
   }
 
+  static setPanels(panels) {
+    QuizWidget.resources.setPanels(panels);
+    QuizWidget.store.dispatch(setPanels(panels));
+  }
+
+  static setComponent(name, component) {
+    QuizWidget.resources.setComponent(name, component);
+  }
+
   render() {
     return (
       <Provider store={QuizWidget.store}>
-        <QuizWidgetRoot {...this.props} />
+        <QuizWidgetRoot
+          resources={QuizWidget.resources}
+          {...this.props}
+        />
       </Provider>
     );
   }
@@ -71,7 +83,7 @@ export class _QuizWidgetRoot extends React.Component {
   }
 
   render() {
-    const { variant, reCaptchaKey } = this.props;
+    const { variant, resources, reCaptchaKey } = this.props;
 
     // Show a loading indicator while we init.
     if (this.state.isInitialising) {
@@ -84,7 +96,7 @@ export class _QuizWidgetRoot extends React.Component {
 
     return (
       <div className={`clarety-quiz-widget ${variant} h-100`}>
-        <PanelManager layout="tabs" />
+        <PanelManager layout="tabs" resources={resources} />
         <Recaptcha siteKey={reCaptchaKey} />
       </div>
     );

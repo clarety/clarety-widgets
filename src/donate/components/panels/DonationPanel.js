@@ -1,7 +1,6 @@
 import React from 'react';
 import { Form, Col } from 'react-bootstrap';
 import { Breakpoint } from 'react-socks';
-import { Resources } from 'shared/utils';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { SubmitButton, ErrorMessages } from 'form/components';
 import { FrequencySelect } from 'donate/components';
@@ -161,13 +160,13 @@ export class DonationPanel extends BasePanel {
   }
 
   renderSuggestedAmount = (suggestedAmount, index, componentName) => {
-    const { selections, frequency } = this.props;
+    const { selections, frequency, resources } = this.props;
     const currentSelection = selections[frequency];
 
     // Ignore variable amount, we'll add a field below the suggested amounts.
     if (suggestedAmount.variable) return null;
 
-    const SuggestedAmount = Resources.getComponent(componentName);
+    const SuggestedAmount = resources.getComponent(componentName);
     const isSelected = !currentSelection.isVariableAmount && currentSelection.amount === suggestedAmount.amount;
 
     return (
@@ -186,9 +185,9 @@ export class DonationPanel extends BasePanel {
   renderVariableAmount(variableAmount, componentName) {
     if (!variableAmount) return null;
 
-    const { selections, frequency } = this.props;
+    const { selections, frequency, resources } = this.props;
     const currentSelection = selections[frequency];
-    const VariableAmount = Resources.getComponent(componentName);
+    const VariableAmount = resources.getComponent(componentName);
 
     return (
       <VariableAmount

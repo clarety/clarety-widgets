@@ -5,6 +5,9 @@ import { LoginConnect, CheckoutCustomerConnect, AddressConnect, ShippingConnect,
 import { Checkout, setupCheckoutAxiosMock } from '../../src';
 import '../../src/checkout/style.scss';
 
+
+Checkout.init();
+
 Checkout.setClientIds({
   dev:  '82ee4a2479780256c9bf9b951f5d1cfb', // baseline
   prod: '',

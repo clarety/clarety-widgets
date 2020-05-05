@@ -10,8 +10,43 @@ import { Recaptcha } from 'form/components';
 import { fetchCustomer } from 'checkout/actions';
 import { rootReducer } from 'fundraising-start/reducers';
 
-const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
+export class FundraisingStart extends React.Component {
+  static store;
+  static resources;
+
+  static init() {
+    // Setup store.
+    const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+    FundraisingStart.store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
+
+    // Setup resources.
+    FundraisingStart.resources = new Resources();
+  }
+
+  static setClientIds({ dev, prod }) {
+    FundraisingStart.store.dispatch(setClientIds({ dev, prod }));
+  }
+
+  static setPanels(panels) {
+    FundraisingStart.resources.setPanels(panels);
+    FundraisingStart.store.dispatch(setPanels(panels));
+  }
+
+  static setComponent(name, component) {
+    FundraisingStart.resources.setComponent(name, component);
+  }
+
+  render() {
+    return (
+      <Provider store={FundraisingStart.store}>
+        <FundraisingStartRoot
+          resources={FundraisingStart.resources}
+          {...this.props}
+        />
+      </Provider>
+    );
+  }
+}
 
 export class _FundraisingStartRoot extends React.Component {
   state = { isInitialising: true };
@@ -58,7 +93,7 @@ export class _FundraisingStartRoot extends React.Component {
 
     return (
       <div className="clarety-fundraising-start h-100">
-        <PanelManager layout="accordian" />
+        <PanelManager layout="accordian" resources={this.props.resources} />
         <Recaptcha siteKey={this.props.reCaptchaKey} />
       </div>
     );
@@ -78,22 +113,3 @@ const actions = {
 };
 
 const FundraisingStartRoot = connect(mapStateToProps, actions)(_FundraisingStartRoot);
-
-export class FundraisingStart extends React.Component {
-  static setPanels(panels) {
-    Resources.setPanels(panels);
-    store.dispatch(setPanels(panels));
-  }
-
-  static setClientIds({ dev, prod }) {
-    store.dispatch(setClientIds({ dev, prod }));
-  }
-
-  render() {
-    return (
-      <Provider store={store}>
-        <FundraisingStartRoot {...this.props} />
-      </Provider>
-    );
-  }
-}

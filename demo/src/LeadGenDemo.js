@@ -4,6 +4,8 @@ import { CustomerConnect } from '../../src/lead-gen/components';
 import { LeadGenWidget } from '../../src/';
 import '../../src/lead-gen/style.scss';
 
+LeadGenWidget.init();
+
 LeadGenWidget.setPanels([
   {
     component: CustomerPanel,
