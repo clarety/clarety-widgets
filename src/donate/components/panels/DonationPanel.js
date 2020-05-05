@@ -1,8 +1,9 @@
 import React from 'react';
-import { Form, Col } from 'react-bootstrap';
+import { Form, Row, Col } from 'react-bootstrap';
 import { Breakpoint } from 'react-socks';
+import { requiredField } from 'shared/utils';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
-import { SubmitButton, ErrorMessages } from 'form/components';
+import { SubmitButton, ErrorMessages, SelectInput } from 'form/components';
 import { FrequencySelect } from 'donate/components';
 
 export class DonationPanel extends BasePanel {
@@ -46,7 +47,7 @@ export class DonationPanel extends BasePanel {
   }
 
   validateFields(errors) {
-    const { selections, frequency } = this.props;
+    const { selections, frequency, formData, givingTypeOptions } = this.props;
 
     // Make sure an amount has been selected.
     const selection = selections[frequency];
@@ -55,6 +56,8 @@ export class DonationPanel extends BasePanel {
         message: 'Please select a donation amount',
       });
     }
+    if(givingTypeOptions)
+      requiredField(errors, formData, 'saleline.givingType');
   }
 
   renderWait() {
@@ -103,6 +106,8 @@ export class DonationPanel extends BasePanel {
           <FrequencySelect />
 
           {this.renderPriceHandles()}
+
+          {this.renderGivingType()}
         </PanelBody>
 
         {layout !== 'page' &&
@@ -115,6 +120,28 @@ export class DonationPanel extends BasePanel {
           </PanelFooter>
         }
       </PanelContainer>
+    );
+  }
+
+  renderGivingType() {
+    const { givingTypeOptions:options, layout } = this.props;
+
+    if(!options) return (null);
+    const lg = (layout == 'page')?{span:6, offset:3}:undefined;
+    return (
+        <div className="giving-type">
+          <Row>
+            <Col lg={lg}>
+              <Form.Group controlId="givingType">
+                <Form.Label>Giving Type</Form.Label>
+                <SelectInput
+                  field="saleline.givingType"
+                  options={options}
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+        </div>
     );
   }
 
