@@ -9,23 +9,35 @@ import { Recaptcha } from 'form/components';
 import { rootReducer } from 'subscribe/reducers';
 
 export class SubscribeWidget extends React.Component {
-  static store = null;
+  static store;
+  static resources;
 
   static init() {
+    // Setup store.
     const middleware = applyMiddleware(thunkMiddleware);
     const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
     SubscribeWidget.store = createStore(rootReducer, composeDevTools(middleware));
+
+    // Setup resources.
+    SubscribeWidget.resources = new Resources();
   }
 
   static setPanels(panels) {
-    Resources.setPanels(panels);
+    SubscribeWidget.resources.setPanels(panels);
     SubscribeWidget.store.dispatch(setPanels(panels));
+  }
+
+  static setComponent(name, component) {
+    SubscribeWidget.resources.setComponent(name, component);
   }
 
   render() {
     return (
       <Provider store={SubscribeWidget.store}>
-        <SubscribeWidgetRoot {...this.props} />
+        <SubscribeWidgetRoot
+          resources={SubscribeWidget.resources}
+          {...this.props}
+        />
       </Provider>
     );
   }
@@ -55,7 +67,7 @@ export class _SubscribeWidgetRoot extends React.Component {
   }
 
   render() {
-    const { status, reCaptchaKey } = this.props;
+    const { status, resources, reCaptchaKey } = this.props;
 
     // Show a loading indicator while we init.
     if (status === 'initializing') {
@@ -68,7 +80,7 @@ export class _SubscribeWidgetRoot extends React.Component {
 
     return (
       <div className="clarety-subscribe-widget h-100">
-        <PanelManager layout="tabs" />
+        <PanelManager layout="tabs" resources={resources} />
         {reCaptchaKey && <Recaptcha siteKey={reCaptchaKey} />}
       </div>
     );

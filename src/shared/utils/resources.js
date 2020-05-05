@@ -1,24 +1,24 @@
 export class Resources {
-  static _components = {};
-  static _connects = {};
+  _components = {};
+  _connects = {};
 
-  static getComponent(name) {
+  getComponent(name) {
     return this._components[name];
   }
 
-  static setComponent(name, component) {
+  setComponent(name, component) {
     this._components[name] = component;
   }
 
-  static getConnect(name) {
+  getConnect(name) {
     return this._connects[name];
   }
 
-  static setConnect(name, connect) {
+  setConnect(name, connect) {
     this._connects[name] = connect;
   }
 
-  static setPanels(panels) {
+  setPanels(panels) {
     for (const panel of panels) {
       this.setComponent(panel.component.name, panel.component);
 

@@ -21,10 +21,46 @@ if (!Intl.PluralRules) {
   require('@formatjs/intl-pluralrules/dist/locale-data/en');
 }
 
-const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
+export class Registration extends React.Component {
+  static store;
+  static resources;
 
-Resources.setComponent('NavBarBrand', NavBarBrand);
+  static init() {
+    // Setup store.
+    const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+    Registration.store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
+
+    // Setup resourcs.
+    Registration.resources = new Resources();
+    Registration.resources.setComponent('NavBarBrand', NavBarBrand);
+  }
+
+  static setClientIds({ dev, prod }) {
+    Registration.store.dispatch(setClientIds({ dev, prod }));
+  }
+
+  static setPanels(panels) {
+    Registration.resources.setPanels(panels);
+    Registration.store.dispatch(setPanels(panels));
+  }
+
+  static setComponent(name, component) {
+    Registration.resources.setComponent(name, component);
+  }
+
+  render() {
+    return (
+      <IntlProvider locale="en" messages={this.props.translations}>
+        <ReduxProvider store={Registration.store}>
+          <RegistrationRoot
+            resources={Registration.resources}
+            {...this.props}
+          />
+        </ReduxProvider>
+      </IntlProvider>
+    );
+  }
+}
 
 class _RegistrationRoot extends React.Component {
   async componentDidMount() {
@@ -68,12 +104,15 @@ class _RegistrationRoot extends React.Component {
   }
 
   render() {
-    const { isBlocking } = this.props;
+    const { isBlocking, resources } = this.props;
 
     return (
       <BlockUi blocking={isBlocking} loader={this.getLoader()}>
-        <MiniCart />
-        <PanelManager layout="stack" />
+        <MiniCart resources={resources} />
+        <PanelManager
+          layout="stack"
+          resources={resources}
+        />
       </BlockUi>
     );
   }
@@ -110,24 +149,3 @@ const actions = {
 };
 
 const RegistrationRoot = connect(mapStateToProps, actions)(_RegistrationRoot);
-
-export class Registration extends React.Component {
-  static setPanels(panels) {
-    Resources.setPanels(panels);
-    store.dispatch(setPanels(panels));
-  }
-
-  static setClientIds({ dev, prod }) {
-    store.dispatch(setClientIds({ dev, prod }));
-  }
-
-  render() {
-    return (
-      <IntlProvider locale="en" messages={this.props.translations}>
-        <ReduxProvider store={store}>
-          <RegistrationRoot {...this.props} />
-        </ReduxProvider>
-      </IntlProvider>
-    );
-  }
-}

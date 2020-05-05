@@ -12,34 +12,47 @@ import { fetchCart, fetchCustomer } from 'checkout/actions';
 import { rootReducer } from 'checkout/reducers';
 import { CartSummary } from 'checkout/components';
 
-const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
-
 export class Checkout extends React.Component {
+  static store;
+  static resources;
+
   state = { isReady: false, isCartComplete: false };
 
-  static setPanels(panels) {
-    Resources.setPanels(panels);
-    store.dispatch(setPanels(panels));
+  static init() {
+    // Setup store.
+    const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+    Checkout.store = createStore(rootReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
+
+    // Setup resources.
+    Checkout.resources = new Resources();
   }
 
   static setClientIds({ dev, prod }) {
-    store.dispatch(setClientIds({ dev, prod }));
+    Checkout.store.dispatch(setClientIds({ dev, prod }));
+  }
+
+  static setPanels(panels) {
+    Checkout.resources.setPanels(panels);
+    Checkout.store.dispatch(setPanels(panels));
+  }
+
+  static setComponent(name, component) {
+    Checkout.resources.setComponent(name, component);
   }
 
   async componentDidMount() {
     const jwtAccount = getJwtAccount();
     if (jwtAccount) {
       ClaretyApi.setAuth(jwtAccount.jwtString);
-      store.dispatch(setAuth(jwtAccount.jwtString));
-      await store.dispatch(fetchCustomer(jwtAccount.customer_uid));
+      Checkout.store.dispatch(setAuth(jwtAccount.jwtString));
+      await Checkout.store.dispatch(fetchCustomer(jwtAccount.customer_uid));
     }
 
     const jwtSession = getJwtSession();
     if (jwtSession) {
       ClaretyApi.setJwtSession(jwtSession.jwtString);
-      await store.dispatch(fetchCart(jwtSession.cartUid));
-      const state = store.getState();
+      await Checkout.store.dispatch(fetchCart(jwtSession.cartUid));
+      const state = Checkout.store.getState();
       this.setState({ isCartComplete: getIsCartComplete(state) });
     }
 
@@ -64,16 +77,19 @@ export class Checkout extends React.Component {
     }
 
     return (
-      <Provider store={store}>
+      <Provider store={Checkout.store}>
         <Container fluid>
           <Row>
             <Col lg={6} className="col-summary order-lg-1">
-              <CartSummary />
+              <CartSummary resources={Checkout.resources} />
             </Col>
 
             <Col lg={6} className="col-checkout">
               <h1>Checkout</h1>
-              <PanelManager layout="accordian" />
+              <PanelManager
+                layout="accordian"
+                resources={Checkout.resources}
+              />
             </Col>
           </Row>
         </Container>

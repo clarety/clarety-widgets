@@ -1,4 +1,3 @@
-import { Resources } from 'shared/utils';
 import { SuggestedAmount, SuggestedAmountLg, VariableAmount, VariableAmountLg } from 'donate/components';
 
 export const mapDonationSettings = (result) => ({
@@ -8,9 +7,9 @@ export const mapDonationSettings = (result) => ({
   paymentMethods: result.paymentMethods,
 });
 
-export function setupDefaultResources() {
-  Resources.setComponent('SuggestedAmount', SuggestedAmount);
-  Resources.setComponent('SuggestedAmountLg', SuggestedAmountLg);
-  Resources.setComponent('VariableAmount', VariableAmount);
-  Resources.setComponent('VariableAmountLg', VariableAmountLg);
+export function setupDefaultResources(resources) {
+  resources.setComponent('SuggestedAmount', SuggestedAmount);
+  resources.setComponent('SuggestedAmountLg', SuggestedAmountLg);
+  resources.setComponent('VariableAmount', VariableAmount);
+  resources.setComponent('VariableAmountLg', VariableAmountLg);
 }

@@ -18,6 +18,7 @@ import { ClaretyApi } from "clarety-utils"
 
 export class DonateWidget extends React.Component {
   static store;
+  static resources;
 
   static init() {
     // Setup redux store.
@@ -26,7 +27,8 @@ export class DonateWidget extends React.Component {
     DonateWidget.store = createStore(rootReducer, composeDevTools(middleware));
 
     // Setup resources.
-    setupDefaultResources();
+    DonateWidget.resources = new Resources();
+    setupDefaultResources(DonateWidget.resources);
   }
 
   static appSettings(settings) {
@@ -34,15 +36,22 @@ export class DonateWidget extends React.Component {
   }
 
   static setPanels(panels) {
-    Resources.setPanels(panels);
+    DonateWidget.resources.setPanels(panels);
     DonateWidget.store.dispatch(setPanels(panels));
+  }
+
+  static setComponent(name, component) {
+    DonateWidget.resources.setComponent(name, component);
   }
 
   render() {
     return (
       <ReduxProvider store={DonateWidget.store}>
         <BreakpointProvider>
-          <DonateWidgetRoot {...this.props} />
+          <DonateWidgetRoot
+            resources={DonateWidget.resources}
+            {...this.props}
+          />
         </BreakpointProvider>
       </ReduxProvider>
     );
@@ -103,8 +112,13 @@ export class _DonateWidgetRoot extends React.Component {
       <div className={`clarety-donate-widget h-100 ${layout}`}>
         <BlockUi tag="div" blocking={status === statuses.busy} loader={<span></span>}>
           {showStepIndicator && <StepIndicator />}
-          <PanelManager layout={layout || "tabs"} />
+
+          <PanelManager
+            layout={layout || 'tabs'}
+            resources={this.props.resources}
+          />
         </BlockUi>
+
         {reCaptchaKey && <Recaptcha siteKey={reCaptchaKey} />}
       </div>
     );
