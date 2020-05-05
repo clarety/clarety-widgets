@@ -81,8 +81,7 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderContent() {
-    const { layout, isBusy, index, settings } = this.props;
-
+    const { layout, isBusy, index, settings, emailReadonly } = this.props;
     return (
       <PanelContainer layout={layout} status="edit" className="customer-panel">
         {!settings.hideHeader &&
@@ -117,7 +116,7 @@ export class CustomerPanel extends BasePanel {
       
               <Form.Group controlId="email">
                 <Form.Label>Email</Form.Label>
-                <EmailInput field="customer.email" type="email" testId="email-input" />
+                <EmailInput field="customer.email" type="email" testId="email-input" readOnly={emailReadonly} />
               </Form.Group>
 
               <Form.Row>
