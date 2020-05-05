@@ -26,6 +26,10 @@ export function getJwtAccount() {
   return getDecodedJwtCookie('jwtAccount');
 }
 
+export function getJwtCustomer() {
+  return getDecodedJwtCookie('jwtCustomer');
+}
+
 function getDecodedJwtCookie(cookieName) {
   let jwtString = Cookies.get(cookieName);
   if (!jwtString) {

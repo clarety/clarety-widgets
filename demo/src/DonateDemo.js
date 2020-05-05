@@ -12,7 +12,6 @@ window.renderDonateWidget = (props) => {
 
   // TODO: this setting should come from the widgets/donate endpoint...
   DonateWidget.appSettings({
-    startDates: ['2020-03-01', '2020-03-15', '2020-03-30'],
   });
 
   DonateWidget.setPanels([
@@ -68,7 +67,7 @@ export default class DonateDemo extends React.Component {
     window.renderDonateWidget({
       elementId: 'donate-widget-demo',
 
-      storeCode: 'AU',
+      storeUid: 'str_l9p7',
       singleOfferId: '8',
       recurringOfferId: '17',
       fundraisingPageUid: 'abc-123',
@@ -76,7 +75,15 @@ export default class DonateDemo extends React.Component {
       sourceId: '17',
       responseId: 'e9c2e351d90b11e996fd',
       emailResponseId: '1234',
-      
+
+      givingTypeOptions: [
+          "General Donation",
+          "Mission Work",
+          "Children\'s Ministry",
+          "Church Tithe",
+          "Other"
+      ],
+
       // reCaptchaKey: '1234',
 
       showStepIndicator: true,
