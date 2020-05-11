@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import { ClaretyApi } from 'clarety-utils';
-import { statuses, setStatus, setRecaptcha, setPayment, updateCartData } from 'shared/actions';
-import { setErrors } from 'form/actions';
+import { statuses, setStatus, setRecaptcha, setPayment, setCustomer, updateCartData } from 'shared/actions';
+import { setFormData, setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { types, addDonationToCart, addCustomerToCart } from 'donate/actions';
 import { createStripeToken, parseStripeError } from 'donate/utils';
@@ -43,6 +43,71 @@ export const makePayment = (paymentData, { isPageLayout } = {}) => {
       default: throw new Error(`makePayment not handled for ${paymentData.type}`);
     }
 
+    return dispatch(handlePaymentResult(result));
+  };
+};
+
+export const validatePayPal = (data) => {
+  return async (dispatch, getState) => {
+    const state = getState();
+
+    if (state.status !== statuses.ready) return;
+    dispatch(setStatus(statuses.busy));
+
+    // ReCaptcha.
+    const recaptcha = await executeRecaptcha();
+    dispatch(setRecaptcha(recaptcha));
+
+    if (!recaptcha) dispatch(setStatus(statuses.ready));
+
+    return !!recaptcha;
+  };
+};
+
+export const makePayPalPayment = (data, order, authorization) => {
+  return async (dispatch, getState) => {
+    // Set cart donation.
+    dispatch(addDonationToCart());
+
+    // Set cart customer.
+    // TODO: check that these exist!
+    const customerData = {
+      firstName: order.payer.name.given_name,
+      lastName: order.payer.name.surname,
+      email: order.payer.email_address,
+      billing: {
+        country: order.payer.address.country_code,
+      },
+    };
+    dispatch(setCustomer(customerData));
+
+    // Set customer form data.
+    const formData = {
+      'customer.firstName': customerData.firstName,
+      'customer.lastName': customerData.lastName,
+      'customer.email': customerData.email,
+      'customer.billing.country': customerData.billing.country,
+    };
+    dispatch(setFormData(formData));
+
+    // Set cart payment.
+    // TODO: check that these exist!
+    const paymentData = {
+      type: 'paypal',
+      orderId: order.id,
+      authorizationId: authorization.purchase_units[0].payments.authorizations[0].id,
+    };
+    dispatch(setPayment(paymentData));
+
+    // Post payment.
+    const state = getState();
+    const postData = getPaymentPostData(state);
+    dispatch(makePaymentRequest(postData));
+  
+    const results = await ClaretyApi.post('donations/', postData);
+    const result = results[0];
+
+    // Handle result.
     return dispatch(handlePaymentResult(result));
   };
 };
@@ -152,6 +217,7 @@ const handlePaymentResult = (result) => {
     }
   }
 };
+
 
 // Make Payment
 

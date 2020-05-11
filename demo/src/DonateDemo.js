@@ -10,10 +10,6 @@ import '../../src/donate/style.scss';
 window.renderDonateWidget = (props) => {
   DonateWidget.init();
 
-  // TODO: this setting should come from the widgets/donate endpoint...
-  DonateWidget.appSettings({
-  });
-
   DonateWidget.setPanels([
     {
       component: DonationPanel,
