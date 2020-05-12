@@ -5,9 +5,9 @@ import { Config } from '../../src';
 
 Config.init({
   // instanceKey: 'mdc',
-  instanceKey: 'clarety-baseline',
+  // instanceKey: 'clarety-baseline',
   // instanceKey: 'tnc',
-  // instanceKey: 'clarety-church',
+  instanceKey: 'clarety-church',
   devSitePath: 'http://localhost:3000/',
   phoneCountry: 'AU',
 });
