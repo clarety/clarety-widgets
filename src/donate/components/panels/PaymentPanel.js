@@ -61,23 +61,25 @@ export class PaymentPanel extends BasePaymentPanel {
   }
 
   renderCreditCardFields() {
-    const { frequency } = this.props;
+    const { frequency, settings } = this.props;
+    const showStartState = !settings.hideStartDate && frequency === 'recurring';
 
     return (
       <React.Fragment>
         {super.renderCreditCardFields()}
-        {frequency === 'recurring' && this.renderStartDateInput('gatewaycc')}
+        {showStartState && this.renderStartDateInput('gatewaycc')}
       </React.Fragment>
     );
   }
 
   renderDirectDebitFields() {
-    const { frequency } = this.props;
+    const { frequency, settings } = this.props;
+    const showStartState = !settings.hideStartDate && frequency === 'recurring';
 
     return (
       <React.Fragment>
         {super.renderDirectDebitFields()}
-        {frequency === 'recurring' && this.renderStartDateInput('gatewaydd')}
+        {showStartState && this.renderStartDateInput('gatewaydd')}
       </React.Fragment>
     );
   }

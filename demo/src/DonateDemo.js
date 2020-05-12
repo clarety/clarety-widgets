@@ -45,8 +45,8 @@ window.renderDonateWidget = (props) => {
       settings: {
         tabName: 'Payment',
         hideHeader: true,
+        hideStartDate: true,
         submitBtnText: 'Donate',
-        paymentMethods: ['credit-card', 'direct-debit'],
       },
     },
     {
