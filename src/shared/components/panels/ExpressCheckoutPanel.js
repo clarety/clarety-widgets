@@ -72,6 +72,8 @@ export class ExpressCheckoutPanel extends BasePanel {
               amount={this.props.amount}
               onClick={this.props.onPayPalClick}
               onSuccess={this.props.onPayPalSuccess}
+              onCancel={this.props.onPayPalCancel}
+              onError={this.props.onPayPalError}
             />
           }
         </PanelBody>

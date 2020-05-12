@@ -2,7 +2,7 @@ import { getSetting } from 'shared/selectors';
 import { getFormData, getErrors } from 'form/selectors';
 import { updateFormData, setErrors } from 'form/actions';
 import { getPaymentMethods, getDonationPanelSelection, getSelectedFrequency } from 'donate/selectors';
-import { makePayPalPayment, validatePayPal } from 'donate/actions';
+import { makePayPalPayment, validatePayPal, cancelPayPal } from 'donate/actions';
 
 export class ExpressCheckoutConnect {
   static mapStateToProps = (state, ownProps) => {
@@ -24,6 +24,8 @@ export class ExpressCheckoutConnect {
 
     onPayPalClick: validatePayPal,
     onPayPalSuccess: makePayPalPayment,
+    onPayPalCancel: cancelPayPal,
+    onPayPalError: cancelPayPal,
 
     updateFormData: updateFormData,
     setErrors: setErrors,

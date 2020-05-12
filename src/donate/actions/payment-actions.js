@@ -64,6 +64,8 @@ export const validatePayPal = (data) => {
   };
 };
 
+export const cancelPayPal = (data) => setStatus(statuses.ready);
+
 export const makePayPalPayment = (data, order, authorization) => {
   return async (dispatch, getState) => {
     // Set cart donation.
@@ -91,11 +93,9 @@ export const makePayPalPayment = (data, order, authorization) => {
     dispatch(setFormData(formData));
 
     // Set cart payment.
-    // TODO: check that these exist!
     const paymentData = {
       type: 'paypal',
-      orderId: order.id,
-      authorizationId: authorization.purchase_units[0].payments.authorizations[0].id,
+      gatewayToken: order.id,
     };
     dispatch(setPayment(paymentData));
 

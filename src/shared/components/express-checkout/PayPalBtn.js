@@ -27,7 +27,7 @@ export class PayPalBtn extends React.Component {
   getPayPalScriptUrl() {
     const { currency, paymentMethod } = this.props;
 
-    const clientId = paymentMethod.clientId || paymentMethod.publicKey; // TODO: which is it?
+    const clientId = paymentMethod.publicKey;
     const currencyCode = currency.code || 'AUD';
     const intent = 'authorize';
 
@@ -42,16 +42,13 @@ export class PayPalBtn extends React.Component {
 
   // onInit is called when the button first renders.
   onInit = (data, actions) => {
-
+    if (this.props.onInit) return this.props.onInit(data, actions);
   };
 
   onClick = (data, actions) => {
-    const { onValidate } = this.props;
+    if (!this.props.onClick) return actions.resolve();
 
-    // The onValidate callback prop is optional.
-    if (!onValidate) return actions.resolve();
-
-    return onValidate(data)
+    return this.props.onClick(data)
       ? actions.resolve()
       : actions.reject();
   };
@@ -63,12 +60,11 @@ export class PayPalBtn extends React.Component {
   };
 
   onCancel = (data) => {
-    console.log('paypal btn onCancel!');
+    if (this.props.onCancel) return this.props.onCancel(data);
   };
 
   onError = (error) => {
-    console.log('paypal btn onError!');
-    console.log('erorr', error);
+    if (this.props.onError) return this.props.onError(error);
   };
 
   render() {
