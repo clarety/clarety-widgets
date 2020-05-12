@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { Form, Button } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FrequencySelect, SuggestedAmount, SuggestedAmountLg, VariableAmount, VariableAmountLg } from 'shared/components';
-import { currency } from 'shared/utils';
+import { currency, getDefaultOfferPaymentUid } from 'shared/utils';
 import { ErrorMessages } from 'form/components';
 
 export class DonationPanel extends BasePanel {
@@ -50,11 +50,12 @@ export class DonationPanel extends BasePanel {
 
     const offer = this.getOffer(frequency);
     const selection = selections[frequency];
+    const offerPaymentUid = getDefaultOfferPaymentUid(offer);
 
     addToCart({
       type: 'donation',
       offerUid: offer.offerUid,
-      offerPaymentUid: offer.offerPaymentUid,
+      offerPaymentUid: offerPaymentUid,
       price: selection.amount,
     });
 

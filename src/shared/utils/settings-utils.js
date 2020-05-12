@@ -1,3 +1,15 @@
+export function getDefaultOfferPaymentUid(offer) {
+  if (offer.offerPaymentUid) {
+    return offer.offerPaymentUid;
+  }
+
+  if (offer.schedules && offer.schedules.length) {
+    return offer.schedules[0].offerPaymentUid;
+  }
+
+  return undefined;
+}
+
 export function getCustomerPanelSettingsFromWidgetProps(props) {
   return {
     title:             props.headingText,
