@@ -7,7 +7,8 @@ Config.init({
   // instanceKey: 'mdc',
   // instanceKey: 'clarety-baseline',
   // instanceKey: 'tnc',
-  instanceKey: 'clarety-church',
+  // instanceKey: 'clarety-church',
+  instanceKey: 'ethiopiaid',
   devSitePath: 'http://localhost:3000/',
   phoneCountry: 'AU',
 });

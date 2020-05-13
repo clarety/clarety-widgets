@@ -1,6 +1,8 @@
 import React from 'react';
 import { DonateWidget, renderWidget } from '../../src/';
 import { DonationPanel, DonationConnect } from '../../src/donate/components';
+import { ExpressCheckoutPanel } from '../../src/shared/components';
+import { ExpressCheckoutConnect } from '../../src/donate/components';
 import { CustomerPanel, CustomerConnect } from '../../src/donate/components';
 import { FundraisingPanel, FundraisingConnect } from '../../src/donate/components';
 import { PaymentPanel, PaymentConnect } from '../../src/donate/components';
@@ -18,6 +20,11 @@ window.renderDonatePage = (props) => {
     {
       component: DonationPanel,
       connect: DonationConnect,
+      settings: {},
+    },
+    {
+      component: ExpressCheckoutPanel,
+      connect: ExpressCheckoutConnect,
       settings: {},
     },
     {
@@ -58,7 +65,7 @@ export default class DonatePageDemo extends React.Component {
     window.renderDonatePage({
       elementId: 'donate-page-demo',
 
-      storeUid: 'str_l207',
+      storeUid: 'str_k1or',
       singleOfferId: '8',
       recurringOfferId: '17',
       //fundraisingPageUid: 'abc-123',

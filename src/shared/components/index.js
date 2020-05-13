@@ -4,6 +4,8 @@ export * from './donation/SuggestedAmountLg';
 export * from './donation/VariableAmount';
 export * from './donation/VariableAmountLg';
 
+export * from './express-checkout/PayPalBtn';
+
 export * from './misc/ScrollIntoView';
 
 export * from './panels/BasePanel';
@@ -13,6 +15,7 @@ export * from './panels/CustomerPanel';
 export * from './panels/CustomerConnect';
 export * from './panels/DonationPanel';
 export * from './panels/DonationConnect';
+export * from './panels/ExpressCheckoutPanel';
 export * from './panels/LoginPanel';
 export * from './panels/PaymentPanel';
 export * from './panels/PaymentConnect';

@@ -10,6 +10,7 @@ export * from './panels/CustomerPanel';
 export * from './panels/CustomerConnect';
 export * from './panels/DonationPanel';
 export * from './panels/DonationConnect';
+export * from './panels/ExpressCheckoutConnect';
 export * from './panels/FundraisingPanel';
 export * from './panels/FundraisingConnect';
 export * from './panels/PaymentPanel';
