@@ -66,7 +66,7 @@ export function scrollIntoView(component) {
   const node = ReactDOM.findDOMNode(component);
   scrollIntoViewIfNeeded(node, {
     scrollMode: 'if-needed',
-    block: 'start',
+    block: 'center',
     behavior: 'smooth',
   });
 }
