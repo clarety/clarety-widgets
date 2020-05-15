@@ -25,7 +25,9 @@ window.renderDonatePage = (props) => {
     {
       component: ExpressCheckoutPanel,
       connect: ExpressCheckoutConnect,
-      settings: {},
+      settings: {
+        title: 'Express Donation',
+      },
     },
     {
       component: CustomerPanel,

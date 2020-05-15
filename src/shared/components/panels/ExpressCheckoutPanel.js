@@ -24,15 +24,15 @@ export class ExpressCheckoutPanel extends BasePanel {
   }
 
   renderWait() {
-    const { layout, index } = this.props;
+    const { layout, index, settings } = this.props;
 
     return (
-      <PanelContainer layout={layout} status="wait" className="customer-panel">
+      <PanelContainer layout={layout} status="wait" className="express-checkout-panel">
         <PanelHeader
           status="wait"
           layout={layout}
           number={index + 1}
-          title="Express Checkout"
+          title={settings.title || 'Express Checkout'}
           intlId="ExpressCheckoutPanel.waitTitle"
         />
 
@@ -51,13 +51,13 @@ export class ExpressCheckoutPanel extends BasePanel {
     if (!paypal) return null;
 
     return (
-      <PanelContainer layout={layout} status="edit" className="customer-panel">
+      <PanelContainer layout={layout} status="edit" className="express-checkout-panel">
         {!settings.hideHeader &&
           <PanelHeader
             status="edit"
             layout={layout}
             number={index + 1}
-            title="Express Checkout"
+            title={settings.title || 'Express Checkout'}
             intlId="ExpressCheckoutPanel.editTitle"
           />
         }
@@ -65,16 +65,26 @@ export class ExpressCheckoutPanel extends BasePanel {
         <PanelBody status="edit" layout={layout} isBusy={isBusy}>
           <ErrorMessages />
 
-          {this.shouldShowPaymentMethod(paypal) &&
-            <PayPalBtn
-              paymentMethod={paypal}
-              currency={this.props.currency}
-              amount={this.props.amount}
-              onClick={this.props.onPayPalClick}
-              onSuccess={this.props.onPayPalSuccess}
-              onCancel={this.props.onPayPalCancel}
-              onError={this.props.onPayPalError}
-            />
+          <div className="express-checkout-buttons">
+            {this.shouldShowPaymentMethod(paypal) &&
+              <PayPalBtn
+                paymentMethod={paypal}
+                currency={this.props.currency}
+                amount={this.props.amount}
+                onClick={this.props.onPayPalClick}
+                onSuccess={this.props.onPayPalSuccess}
+                onCancel={this.props.onPayPalCancel}
+                onError={this.props.onPayPalError}
+              />
+            }
+          </div>
+          
+          {!settings.hideOrTitle &&
+            <div className="express-checkout-or">
+              <div className="line" />
+              <h2 className="title">{settings.orTitle || 'Or'}</h2>
+              <div className="line" />
+            </div>
           }
         </PanelBody>
       </PanelContainer>
@@ -82,15 +92,15 @@ export class ExpressCheckoutPanel extends BasePanel {
   }
 
   renderDone() {
-    const { layout, index } = this.props;
+    const { layout, index, settings } = this.props;
 
     return (
-      <PanelContainer layout={layout} status="done" className="customer-panel">
+      <PanelContainer layout={layout} status="done" className="express-checkout-panel">
         <PanelHeader
           status="done"
           layout={layout}
           number={index + 1}
-          title="Express Checkout"
+          title={settings.title || 'Express Checkout'}
           onPressEdit={this.onPressEdit}
         />
 
