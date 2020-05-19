@@ -66,6 +66,11 @@
     }
   }
 
+  .StripeElement {
+    @extend .form-control;
+    padding: 8px;
+  }
+
   .terms-checkbox {
     margin-bottom: 10px;
   }

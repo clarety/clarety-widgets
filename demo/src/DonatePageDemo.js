@@ -12,10 +12,6 @@ import '../../src/donate/style.scss';
 window.renderDonatePage = (props) => {
   DonateWidget.init();
 
-  // TODO: this setting should come from the widgets/donate endpoint...
-  DonateWidget.appSettings({
-  });
-
   DonateWidget.setPanels([
     {
       component: DonationPanel,
@@ -67,20 +63,21 @@ export default class DonatePageDemo extends React.Component {
     window.renderDonatePage({
       elementId: 'donate-page-demo',
 
-      storeUid: 'str_k1or',
-      singleOfferId: '8',
-      recurringOfferId: '17',
+      // storeUid: 'str_k1or',
+      storeUid: 'str_8qx4',
+      singleOfferId: '103',
+      recurringOfferId: '105',
       //fundraisingPageUid: 'abc-123',
-      //confirmPageUrl: 'https://google.com', //hidden to stop redirect
+      //confirmPageUrl: 'https://google.com',
       sourceId: '17',
       responseId: 'e9c2e351d90b11e996fd',
       emailResponseId: '1234',
-      givingTypeOptions: [
-        "Church Tithe",
-        "General Donation",
-        "Children\'s Ministry",
-        "Other"
-      ]
+      // givingTypeOptions: [
+      //   "Church Tithe",
+      //   "General Donation",
+      //   "Children\'s Ministry",
+      //   "Other"
+      // ]
       
       // reCaptchaKey: '1234',
     });

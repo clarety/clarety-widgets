@@ -1,45 +1,50 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
-import { PaymentPanel as BasePaymentPanel } from 'shared/components';
-import { requiredField } from 'shared/utils';
+import { _PaymentPanel as BasePaymentPanel, injectStripe } from 'shared/components';
 import { SelectInput } from 'form/components';
+import { requiredField } from 'shared/utils';
 import { createStartDateOptions } from 'donate/utils';
 
-export class PaymentPanel extends BasePaymentPanel {
+export class _PaymentPanel extends BasePaymentPanel {
+  shouldShowStartDate(paymentMethod) {
+    const { frequency, settings } = this.props;
+
+    if (frequency !== 'recurring') return false;
+    if (!paymentMethod.startDates) return false;
+    if (settings.hideStartDate)    return false;
+
+    return true;
+  }
+
   validateCreditCardFields(errors) {
     super.validateCreditCardFields(errors);
 
-    const { formData, frequency } = this.props;
     const paymentMethod = this.getPaymentMethod('gatewaycc');
-
-    if (frequency === 'recurring' && paymentMethod.startDates) {
-      requiredField(errors, formData, 'payment.startDate');
+    if (this.shouldShowStartDate(paymentMethod)) {
+      requiredField(errors, this.props.formData, 'payment.startDate');
     }
   }
 
   validateDirectDebitFields(errors) {
     super.validateDirectDebitFields(errors);
 
-    const { formData, frequency } = this.props;
     const paymentMethod = this.getPaymentMethod('gatewaydd');
-
-    if (frequency === 'recurring' && paymentMethod.startDates) {
-      requiredField(errors, formData, 'payment.startDate');
+    if (this.shouldShowStartDate(paymentMethod)) {
+      requiredField(errors, this.props.formData, 'payment.startDate');
     }
   }
 
-  getStartDateOptions(type) {
-    const paymentMethod = this.getPaymentMethod(type);
+  getStartDateOptions(paymentMethod) {
     return createStartDateOptions(paymentMethod.startDates);
   }
 
   getPaymentData() {
-    const { formData, frequency } = this.props;
+    const { formData } = this.props;
 
     const paymentData = super.getPaymentData();
     const paymentMethod = this.getPaymentMethod(formData['payment.type']);
 
-    if (frequency === 'recurring' && paymentMethod.startDates) {
+    if (this.shouldShowStartDate(paymentMethod)) {
       paymentData.startDate = formData['payment.startDate'];
     }
     
@@ -60,33 +65,35 @@ export class PaymentPanel extends BasePaymentPanel {
     );
   }
 
-  renderCreditCardFields() {
-    const { frequency, settings } = this.props;
-    const showStartState = !settings.hideStartDate && frequency === 'recurring';
-
+  renderCreditCardFields(paymentMethod) {
     return (
       <React.Fragment>
-        {super.renderCreditCardFields()}
-        {showStartState && this.renderStartDateInput('gatewaycc')}
+        {super.renderCreditCardFields(paymentMethod)}
+        {this.renderStartDateInput(paymentMethod)}
       </React.Fragment>
     );
   }
 
-  renderDirectDebitFields() {
-    const { frequency, settings } = this.props;
-    const showStartState = !settings.hideStartDate && frequency === 'recurring';
-
+  renderStripeFields(paymentMethod) {
     return (
       <React.Fragment>
-        {super.renderDirectDebitFields()}
-        {showStartState && this.renderStartDateInput('gatewaydd')}
+        {super.renderStripeFields(paymentMethod)}
+        {this.renderStartDateInput(paymentMethod)}
       </React.Fragment>
     );
   }
 
-  renderStartDateInput(methodType) {
-    const paymentMethod = this.getPaymentMethod(methodType);
-    if (!paymentMethod || !paymentMethod.startDates) return null;
+  renderDirectDebitFields(paymentMethod) {
+    return (
+      <React.Fragment>
+        {super.renderDirectDebitFields(paymentMethod)}
+        {this.renderStartDateInput(paymentMethod)}
+      </React.Fragment>
+    );
+  }
+
+  renderStartDateInput(paymentMethod) {
+    if (!this.shouldShowStartDate(paymentMethod)) return null;
 
     return (
       <Row>
@@ -95,7 +102,7 @@ export class PaymentPanel extends BasePaymentPanel {
             <Form.Label>Start Date</Form.Label>
             <SelectInput
               field="payment.startDate"
-              options={this.getStartDateOptions(methodType)}
+              options={this.getStartDateOptions(paymentMethod)}
               testId="start-date-input"
             />
           </Form.Group>
@@ -104,3 +111,5 @@ export class PaymentPanel extends BasePaymentPanel {
     );
   }
 }
+
+export const PaymentPanel = injectStripe(_PaymentPanel);
