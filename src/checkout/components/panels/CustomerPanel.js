@@ -22,9 +22,11 @@ export class CheckoutCustomerPanel extends BasePanel {
     this.validateRequired('customer.firstName', errors);
     this.validateRequired('customer.lastName', errors);
 
-    this.validateRequired('customer.dateOfBirthDay', errors);
-    this.validateRequired('customer.dateOfBirthMonth', errors);
-    this.validateRequired('customer.dateOfBirthYear', errors);
+    if (settings.showDob) {
+      this.validateRequired('customer.dateOfBirthDay', errors);
+      this.validateRequired('customer.dateOfBirthMonth', errors);
+      this.validateRequired('customer.dateOfBirthYear', errors);
+    }
 
     if (settings.showSource) this.validateRequired('sale.source', errors);
 
@@ -146,18 +148,20 @@ export class CheckoutCustomerPanel extends BasePanel {
                 </Col>
               </Form.Row>
 
-              <Form.Row>
-                <Col>
-                  <DobInput
-                    label="Date of Birth"
-                    field="customer.dateOfBirth"
-                    dayField="customer.dateOfBirthDay"
-                    monthField="customer.dateOfBirthMonth"
-                    yearField="customer.dateOfBirthYear"
-                    required
-                  />
-                </Col>
-              </Form.Row>
+              {settings.showDob &&
+                <Form.Row>
+                  <Col>
+                    <DobInput
+                      label="Date of Birth"
+                      field="customer.dateOfBirth"
+                      dayField="customer.dateOfBirthDay"
+                      monthField="customer.dateOfBirthMonth"
+                      yearField="customer.dateOfBirthYear"
+                      required
+                    />
+                  </Col>
+                </Form.Row>
+              }
 
               {settings.showSource &&
                 <Form.Row>
