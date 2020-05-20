@@ -115,11 +115,7 @@ export const makePayPalPayment = (data, order, authorization) => {
     }
 
     // Set cart payment.
-    const paymentData = {
-      type: 'paypal',
-      gatewayToken: order.id,
-    };
-    dispatch(setPayment(paymentData));
+    dispatch(setPayment({ type: 'paypal', gatewayToken: order.id }));
 
     // Post payment.
     const state = getState();
@@ -151,7 +147,7 @@ const makeStripeSinglePayment = (paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     const { stripe, elements } = paymentData;
 
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
+    const { error, paymentMethod: token } = await stripe.createPaymentMethod({
       type: 'card',
       card: elements.getElement(CardNumberElement),
       billing_details: {
@@ -162,7 +158,11 @@ const makeStripeSinglePayment = (paymentData, paymentMethod) => {
     if (error) {
       return dispatch(handleStripeError(error));
     } else {
-      dispatch(setPayment({ gatewayToken: paymentMethod.id }));
+      dispatch(setPayment({
+        type: paymentMethod.type,
+        gateway: paymentMethod.gateway,
+        gatewayToken: token.id,
+      }));
     
       // Attempt payment.
       const postData = getPaymentPostData(getState());
@@ -196,7 +196,11 @@ const makeStripeRecurringPayment = (paymentData, paymentMethod) => {
     } else {
       console.log('setupIntent', setupIntent);
 
-      dispatch(setPayment({ gatewayToken: setupIntent.payment_method }));
+      dispatch(setPayment({
+        type: paymentMethod.type,
+        gateway: paymentMethod.gateway,
+        gatewayToken: setupIntent.payment_method,
+      }));
     
       // Attempt payment.
       const postData = getPaymentPostData(getState());
@@ -244,7 +248,11 @@ const handleStripe3dSecure = (result, paymentData, paymentMethod) => {
     console.log('handleCardAction ok!');
     console.log('paymentIntent', paymentIntent);
 
-    dispatch(setPayment({ gatewayToken: undefined, gatewayAuthorised: 'passed' }));
+    dispatch(setPayment({
+      type: paymentMethod.type,
+      gateway: paymentMethod.gateway,
+      gatewayAuthorised: 'passed',
+    }));
 
     const postData = getPaymentPostData(getState());
     dispatch(makePaymentRequest(postData));
