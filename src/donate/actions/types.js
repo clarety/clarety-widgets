@@ -9,10 +9,6 @@ export const types = {
   makePaymentSuccess: 'MAKE_PAYMENT_SUCCESS',
   makePaymentFailure: 'MAKE_PAYMENT_FAILURE',
 
-  stripeTokenRequest: 'STRIPE_TOKEN_REQUEST',
-  stripeTokenSuccess: 'STRIPE_TOKEN_SUCCESS',
-  stripeTokenFailure: 'STRIPE_TOKEN_FAILURE',
-
   //Fetch Customer Types
   fetchDonationCustomerRequest: 'FETCH_DONATION_CUSTOMER_REQUEST',
   fetchDonationCustomerSuccess: 'FETCH_DONATION_CUSTOMER_SUCCESS',

@@ -262,42 +262,6 @@ const handleStripe3dSecure = (result, paymentData, paymentMethod) => {
   };
 };
 
-// const makeCreditCardPayment = (paymentData, paymentMethod) => {
-//   return async (dispatch, getState) => {
-//     if (paymentMethod.gateway === 'stripe') {
-//       return dispatch(makeStripeCCPayment(paymentData, paymentMethod));
-//     }
-      
-//     return dispatch(makeStandardCCPayment(paymentData, paymentMethod));
-//   };
-// };
-
-// const makeStripeCCPayment = (paymentData, paymentMethod) => {
-//   return async (dispatch, getState) => {
-//     // Get stripe token.
-//     dispatch(stripeTokenRequest(paymentData, paymentMethod.publicKey));
-//     const tokenResult = await createStripeToken(paymentData, paymentMethod.publicKey);
-  
-//     if (tokenResult.error) {
-//       dispatch(stripeTokenFailure(tokenResult));
-//       return {
-//         validationErrors: parseStripeError(tokenResult.error),
-//       };
-//     }
-  
-//     dispatch(stripeTokenSuccess(tokenResult));
-//     dispatch(setPayment({ gatewayToken: tokenResult.id }));
-  
-//     // Attempt payment.
-//     const state = getState();
-//     const postData = getPaymentPostData(state);
-//     dispatch(makePaymentRequest(postData));
-  
-//     const results = await ClaretyApi.post('donations/', postData);
-//     return results[0];
-//   };
-// };
-
 const makeCreditCardPayment = (paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     let state = getState();
@@ -385,20 +349,3 @@ const makePaymentFailure = (result) => ({
   type: types.makePaymentFailure,
   result: result,
 });
-
-// // Stripe Token
-
-// const stripeTokenRequest = (postData) => ({
-//   type: types.stripeTokenRequest,
-//   postData: postData,
-// });
-
-// const stripeTokenSuccess = (result) => ({
-//   type: types.stripeTokenSuccess,
-//   result: result,
-// });
-
-// const stripeTokenFailure = (result) => ({
-//   type: types.stripeTokenFailure,
-//   result: result,
-// });
