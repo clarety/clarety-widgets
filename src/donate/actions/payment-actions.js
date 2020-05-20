@@ -194,8 +194,6 @@ const makeStripeRecurringPayment = (paymentData, paymentMethod) => {
     if (error) {
       return dispatch(handleStripeError(error));
     } else {
-      console.log('setupIntent', setupIntent);
-
       dispatch(setPayment({
         type: paymentMethod.type,
         gateway: paymentMethod.gateway,
@@ -222,8 +220,6 @@ const handleStripeError = (error) => {
 const handleStripePaymentResult = (result, paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     if (!result) return;
-
-    console.log('handleStripePaymentResult', result);
     
     if (result.status === 'authorise') {
       // Handle 3D secure.
@@ -243,22 +239,26 @@ const handleStripe3dSecure = (result, paymentData, paymentMethod) => {
 
     if (error) {
       return dispatch(handleStripeError(error));
-    }
-
-    console.log('handleCardAction ok!');
-    console.log('paymentIntent', paymentIntent);
-
-    dispatch(setPayment({
-      type: paymentMethod.type,
-      gateway: paymentMethod.gateway,
-      gatewayAuthorised: 'passed',
-    }));
-
-    const postData = getPaymentPostData(getState());
-    dispatch(makePaymentRequest(postData));
+    } else {
+      dispatch(updateCartData({
+        uid: result.uid,
+        jwt: result.jwt,
+        status: result.status,
+        customer: result.customer,
+      }));
   
-    const results = await ClaretyApi.post('donations/', postData);
-    dispatch(handleStripePaymentResult(results[0], paymentData, paymentMethod));
+      dispatch(setPayment({
+        type: paymentMethod.type,
+        gateway: paymentMethod.gateway,
+        gatewayAuthorised: 'passed',
+      }));
+  
+      const postData = getPaymentPostData(getState());
+      dispatch(makePaymentRequest(postData));
+    
+      const results = await ClaretyApi.post('donations/', postData);
+      return dispatch(handleStripePaymentResult(results[0], paymentData, paymentMethod));
+    }
   };
 };
 
