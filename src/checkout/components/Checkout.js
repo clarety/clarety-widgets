@@ -8,6 +8,7 @@ import { Resources, getJwtSession, getJwtAccount } from 'shared/utils';
 import { PanelManager } from 'shared/components';
 import { setPanels, setClientIds, setAuth } from 'shared/actions';
 import { getIsCartComplete } from 'shared/selectors';
+import { Recaptcha } from 'form/components';
 import { fetchCart, fetchCustomer } from 'checkout/actions';
 import { rootReducer } from 'checkout/reducers';
 import { CartSummary } from 'checkout/components';
@@ -76,6 +77,8 @@ export class Checkout extends React.Component {
       );
     }
 
+    const { reCaptchaKey } = this.props;
+
     return (
       <Provider store={Checkout.store}>
         <Container fluid>
@@ -86,13 +89,12 @@ export class Checkout extends React.Component {
 
             <Col lg={6} className="col-checkout">
               <h1>Checkout</h1>
-              <PanelManager
-                layout="accordian"
-                resources={Checkout.resources}
-              />
+              <PanelManager layout="accordian" resources={Checkout.resources} />
             </Col>
           </Row>
         </Container>
+
+        {reCaptchaKey && <Recaptcha siteKey={reCaptchaKey} />}
       </Provider>
     );
   }

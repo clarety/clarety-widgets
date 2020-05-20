@@ -7,7 +7,11 @@ export const injectStripe = (PaymentPanelComponent) => {
     static stripePromise = null;
 
     getPaymentMethod() {
-      return this.props.paymentMethods.find(method => method.gateway === 'stripe' || method.gateway === 'stripe-sca');
+      const { paymentMethods } = this.props;
+
+      if (!paymentMethods) return null;
+
+      return paymentMethods.find(method => method.gateway === 'stripe' || method.gateway === 'stripe-sca');
     }
 
     shouldUseStripe() {
