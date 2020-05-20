@@ -258,8 +258,7 @@ const handleStripe3dSecure = (result, paymentData, paymentMethod) => {
     dispatch(makePaymentRequest(postData));
   
     const results = await ClaretyApi.post('donations/', postData);
-    const result = results[0];
-    dispatch(handleStripePaymentResult(result, paymentData, paymentMethod));
+    dispatch(handleStripePaymentResult(results[0], paymentData, paymentMethod));
   };
 };
 
