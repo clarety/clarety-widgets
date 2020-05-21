@@ -88,10 +88,10 @@ export class ShippingPanel extends BasePanel {
 
         <Form.Check.Label>
           <span className="name">{option.label}</span>
-          <span className="cost">{currency(option.cost)}</span>
+          <span className="cost">{currency(option.amount)}</span>
         </Form.Check.Label>
 
-        {option.date && <p className="date">Estimated Delivery Date: {option.date}</p>}
+        {option.expectedDelivery && <p className="date">Estimated Delivery Date: {option.expectedDelivery}</p>}
       </Form.Check>
     );
   };
