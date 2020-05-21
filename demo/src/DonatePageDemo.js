@@ -68,7 +68,7 @@ export default class DonatePageDemo extends React.Component {
       singleOfferId: '103',
       recurringOfferId: '105',
       //fundraisingPageUid: 'abc-123',
-      //confirmPageUrl: 'https://google.com',
+      confirmPageUrl: 'https://google.com',
       sourceId: '17',
       responseId: 'e9c2e351d90b11e996fd',
       emailResponseId: '1234',
