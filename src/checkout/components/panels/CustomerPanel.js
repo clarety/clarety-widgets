@@ -1,8 +1,8 @@
 import React from 'react';
 import { Form, Col } from 'react-bootstrap';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { FormContext } from 'shared/utils';
-import { BasePanel, TextInput, PhoneInput, DobInput, Button } from 'checkout/components';
+import { FormContext, customerTypeOptions } from 'shared/utils';
+import { BasePanel, TextInput, SelectInput, PhoneInput, DobInput, Button } from 'checkout/components';
 
 export class CheckoutCustomerPanel extends BasePanel {
   onPressContinue = event => {
@@ -16,8 +16,17 @@ export class CheckoutCustomerPanel extends BasePanel {
 
   validate() {
     const { settings } = this.props;
+    const { formData } = this.state;
 
     const errors = [];
+
+    if (settings.showCustomerType) {
+      this.validateRequired('customer.type', errors);
+    }
+
+    if (formData['customer.type'] === 'business') {
+      this.validateRequired('customer.businessName', errors);
+    }
 
     this.validateRequired('customer.firstName', errors);
     this.validateRequired('customer.lastName', errors);
@@ -56,6 +65,8 @@ export class CheckoutCustomerPanel extends BasePanel {
   checkForErrors() {
     let foundError = false;
 
+    if (this.hasError('customer.type'))             foundError = true;
+    if (this.hasError('customer.businessName'))     foundError = true;
     if (this.hasError('customer.firstName'))        foundError = true;
     if (this.hasError('customer.lastName'))         foundError = true;
     if (this.hasError('customer.phone1'))           foundError = true;
@@ -75,6 +86,8 @@ export class CheckoutCustomerPanel extends BasePanel {
 
     if (customer) {
       formData = {
+        'customer.type':             customer.type,
+        'customer.businessName':     customer.businessName,
         'customer.firstName':        customer.firstName,
         'customer.lastName':         customer.lastName,
         'customer.phone1':           customer.phone1,
@@ -109,6 +122,9 @@ export class CheckoutCustomerPanel extends BasePanel {
 
   renderEdit() {
     const { layout, isBusy, index, settings } = this.props;
+    const { formData } = this.state;
+
+    const showBusinessName = formData['customer.type'] === 'business';
 
     return (
       <PanelContainer layout={layout}>
@@ -122,6 +138,31 @@ export class CheckoutCustomerPanel extends BasePanel {
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
           <FormContext.Provider value={this.state}>
             <Form onSubmit={this.onPressContinue}>
+
+              {settings.showCustomerType &&
+                <Form.Row>
+                  <Col>
+                    <SelectInput
+                      field="customer.type"
+                      label="Type"
+                      options={customerTypeOptions}
+                      initialValue={customerTypeOptions[0].value}
+                      testId="customer-type-input"
+                      hideLabel
+                      required
+                    />
+                  </Col>
+                </Form.Row>
+              }
+
+              {showBusinessName &&
+                <Form.Row>
+                  <Col>
+                    <TextInput field="customer.businessName" label="Business Name" hideLabel required />
+                  </Col>
+                </Form.Row>
+              }
+
               <Form.Row>
                 <Col sm={6}>
                   <TextInput field="customer.firstName" label="First Name" hideLabel required />

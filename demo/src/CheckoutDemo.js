@@ -28,6 +28,7 @@ Checkout.setPanels([
     connect: CheckoutCustomerConnect,
     settings: {
       hideLabels: true,
+      showCustomerType: true,
     },
   },
   {

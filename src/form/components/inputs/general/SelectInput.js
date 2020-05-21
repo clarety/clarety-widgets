@@ -6,28 +6,38 @@ import { updateFormData } from 'form/actions';
 import { getValidationError } from 'form/utils';
 import { FieldError } from 'form/components';
 
-const _SelectInput = ({ value, options, placeholder, testId, error, onChange }) => (
-  <React.Fragment>
-    <Form.Control
-      as="select"
-      value={value}
-      onChange={onChange}
-      data-testid={testId}
-      isInvalid={error !== null}
-    >
-      <option value="" disabled hidden>{placeholder}</option>
-      
-      {options.map(option =>
-        <option key={option.value} value={option.value}>{option.label}</option>
-      )}
-    </Form.Control>
-    <FieldError error={error} />
-  </React.Fragment>
-);
+class _SelectInput extends React.Component {
+  constructor(props) {
+    super(props);
 
-_SelectInput.defaultProps = {
-  placeholder: 'Select',
-};
+    if (props.initialValue !== undefined) {
+      props.setInitialValue(props.initialValue);
+    }
+  }
+
+  render() {
+    const { value, options, placeholder, testId, error, onChange } = this.props;
+
+    return (
+      <React.Fragment>
+        <Form.Control
+          as="select"
+          value={value}
+          onChange={onChange}
+          data-testid={testId}
+          isInvalid={error !== null}
+        >
+          <option value="" disabled hidden>{placeholder || 'Select'}</option>
+          
+          {options.map(option =>
+            <option key={option.value} value={option.value}>{option.label}</option>
+          )}
+        </Form.Control>
+        <FieldError error={error} />
+      </React.Fragment>
+    );
+  }
+}
 
 const mapStateToProps = (state, ownProps) => {
   let { field, options } = ownProps;
@@ -51,6 +61,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, { field }) => {
   return {
     onChange: event => dispatch(updateFormData(field, event.target.value)),
+    setInitialValue: value => dispatch(updateFormData(field, value)),
   };
 };
 

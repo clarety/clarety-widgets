@@ -75,3 +75,8 @@ export function currency(number) {
   const symbol = Config.get('currencySymbol') || '$';
   return `${symbol}${number.toFixed(2)}`;
 }
+
+export const customerTypeOptions = [
+  { value: 'individual', label: 'Individual' },
+  { value: 'business',   label: 'Business'   },
+];

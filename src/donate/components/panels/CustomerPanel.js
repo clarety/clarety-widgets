@@ -1,8 +1,8 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
-import { requiredField, emailField } from 'shared/utils';
-import { TextInput, EmailInput, StateInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
+import { requiredField, emailField, customerTypeOptions } from 'shared/utils';
+import { TextInput, EmailInput, StateInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
   onShowPanel() {
@@ -40,7 +40,15 @@ export class CustomerPanel extends BasePanel {
   }
 
   validateFields(errors) {
-    const { formData } = this.props;
+    const { formData, settings } = this.props;
+
+    if (settings.showCustomerType) {
+      requiredField(errors, formData, 'customer.type');
+    }
+
+    if (formData['customer.type'] === 'business') {
+      requiredField(errors, formData, 'customer.businessName');
+    }
 
     requiredField(errors, formData, 'customer.firstName');
     requiredField(errors, formData, 'customer.lastName');
@@ -81,7 +89,10 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderContent() {
-    const { layout, isBusy, index, settings, emailReadonly } = this.props;
+    const { layout, isBusy, index, settings, formData, emailReadonly } = this.props;
+
+    const showBusinessName = formData['customer.type'] === 'business';
+
     return (
       <PanelContainer layout={layout} status="edit" className="customer-panel">
         {!settings.hideHeader &&
@@ -98,25 +109,53 @@ export class CustomerPanel extends BasePanel {
             <Col>
 
               {layout !== 'page' && <ErrorMessages />}
+
+              {settings.showCustomerType &&
+                <Form.Row>
+                  <Col>
+                    <Form.Group controlId="customerType">
+                      <Form.Label>Type</Form.Label>
+                      <SelectInput
+                        field="customer.type"
+                        options={customerTypeOptions}
+                        initialValue={customerTypeOptions[0].value}
+                        testId="customer-type-input"
+                        required
+                      />
+                    </Form.Group>
+                  </Col>
+                </Form.Row>
+              }
+
+              {showBusinessName &&
+                <Form.Row>
+                  <Col>
+                    <Form.Group controlId="businessName">
+                      <Form.Label>Business Name</Form.Label>
+                      <TextInput field="customer.businessName" testId="business-name-input" required />
+                    </Form.Group>
+                  </Col>
+                </Form.Row>
+              }
             
               <Form.Row>
                 <Col sm>
                   <Form.Group controlId="firstName">
                     <Form.Label>First Name</Form.Label>
-                    <TextInput field="customer.firstName" testId="first-name-input" />
+                    <TextInput field="customer.firstName" testId="first-name-input" required />
                   </Form.Group>
                 </Col>
                 <Col sm>
                   <Form.Group controlId="lastName">
                     <Form.Label>Last Name</Form.Label>
-                    <TextInput field="customer.lastName" testId="last-name-input" />
+                    <TextInput field="customer.lastName" testId="last-name-input" required />
                   </Form.Group>
                 </Col>
               </Form.Row>
       
               <Form.Group controlId="email">
                 <Form.Label>Email</Form.Label>
-                <EmailInput field="customer.email" type="email" testId="email-input" readOnly={emailReadonly} />
+                <EmailInput field="customer.email" type="email" testId="email-input" readOnly={emailReadonly} required />
               </Form.Group>
 
               <Form.Row>

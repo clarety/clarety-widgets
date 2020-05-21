@@ -10,6 +10,7 @@ export * from './inputs/DobInput';
 export * from './inputs/EmailInput';
 export * from './inputs/ExpiryInput';
 export * from './inputs/PhoneInput';
+export * from './inputs/SelectInput';
 export * from './inputs/StateInput';
 export * from './inputs/TextInput';
 

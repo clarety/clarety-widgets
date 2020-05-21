@@ -30,6 +30,7 @@ window.renderDonatePage = (props) => {
       connect: CustomerConnect,
       settings: {
         title: 'Your Details',
+        showCustomerType: true,
       },
     },
     // {
