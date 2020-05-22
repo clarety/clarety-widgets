@@ -31,6 +31,7 @@ window.renderDonatePage = (props) => {
       settings: {
         title: 'Your Details',
         showCustomerType: true,
+        showSource: true,
       },
     },
     // {

@@ -4,6 +4,28 @@ import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from '
 import { requiredField, emailField, customerTypeOptions } from 'shared/utils';
 import { TextInput, EmailInput, StateInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
 
+const sourceOptions = [
+  { value: '293', label: 'Propel' },
+  { value: '295', label: 'Can You See Me' },
+  { value: '209', label: 'Book' },
+  { value: '9',   label: 'Event' },
+  { value: '7',   label: 'Church' },
+  { value: '5',   label: 'Google Search' },
+  { value: '1',   label: 'Friend' },
+  { value: '267', label: 'Walk for Freedom' },
+  { value: '17',  label: 'Instagram' },
+  { value: '19',  label: 'Twitter' },
+  { value: '2',   label: 'Facebook' },
+  { value: '3',   label: 'YouTube' },
+  { value: '163', label: 'TBN' },
+];
+
+const sourceQuestions = {
+  '7':   { question: 'What is the name of your church?', isRequired: true },
+  '209': { question: 'What is the name of the book?',    isRequired: false },
+  '9':   { question: 'What was the name of the event?',  isRequired: true },
+};
+
 export class CustomerPanel extends BasePanel {
   onShowPanel() {
     if (this.props.layout === 'tabs') {
@@ -89,9 +111,7 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderContent() {
-    const { layout, isBusy, index, settings, formData, emailReadonly } = this.props;
-
-    const showBusinessName = formData['customer.type'] === 'business';
+    const { layout, isBusy, index, settings } = this.props;
 
     return (
       <PanelContainer layout={layout} status="edit" className="customer-panel">
@@ -110,86 +130,10 @@ export class CustomerPanel extends BasePanel {
 
               {layout !== 'page' && <ErrorMessages />}
 
-              {settings.showCustomerType &&
-                <Form.Row>
-                  <Col>
-                    <Form.Group controlId="customerType">
-                      <Form.Label>Type</Form.Label>
-                      <SelectInput
-                        field="customer.type"
-                        options={customerTypeOptions}
-                        initialValue={customerTypeOptions[0].value}
-                        testId="customer-type-input"
-                        required
-                      />
-                    </Form.Group>
-                  </Col>
-                </Form.Row>
-              }
-
-              {showBusinessName &&
-                <Form.Row>
-                  <Col>
-                    <Form.Group controlId="businessName">
-                      <Form.Label>Business Name</Form.Label>
-                      <TextInput field="customer.businessName" testId="business-name-input" required />
-                    </Form.Group>
-                  </Col>
-                </Form.Row>
-              }
-            
-              <Form.Row>
-                <Col sm>
-                  <Form.Group controlId="firstName">
-                    <Form.Label>First Name</Form.Label>
-                    <TextInput field="customer.firstName" testId="first-name-input" required />
-                  </Form.Group>
-                </Col>
-                <Col sm>
-                  <Form.Group controlId="lastName">
-                    <Form.Label>Last Name</Form.Label>
-                    <TextInput field="customer.lastName" testId="last-name-input" required />
-                  </Form.Group>
-                </Col>
-              </Form.Row>
-      
-              <Form.Group controlId="email">
-                <Form.Label>Email</Form.Label>
-                <EmailInput field="customer.email" type="email" testId="email-input" readOnly={emailReadonly} required />
-              </Form.Group>
-
-              <Form.Row>
-                <Col sm>
-                  <Form.Group controlId="street">
-                    <Form.Label>Street</Form.Label>
-                    <TextInput field="customer.billing.address1" type="street" testId="street-input" />
-                  </Form.Group>
-                </Col>
-                <Col sm>
-                  <Form.Group controlId="suburb">
-                    <Form.Label>Suburb</Form.Label>
-                    <TextInput field="customer.billing.suburb" testId="suburb-input" />
-                  </Form.Group>
-                </Col>
-              </Form.Row>
-
-              <Form.Row>
-                <Col sm>
-                  <Form.Group controlId="state">
-                    <Form.Label>State</Form.Label>
-                    <StateInput field="customer.billing.state" testId="state-input" />
-                  </Form.Group>
-                </Col>
-                <Col sm>
-                  <Form.Group controlId="postcode">
-                    <Form.Label>Postcode</Form.Label>
-                    <PostcodeInput field="customer.billing.postcode" testId="postcode-input" />
-                  </Form.Group>
-                </Col>
-              </Form.Row>
-
-              <FormElement field="customer.billing.country" value="AU" />
-
+              {this.renderTypeFields()}
+              {this.renderBasicFields()}
+              {this.renderAddressFields()}
+              {this.renderSourceFields()}
             </Col>
           </Row>
         </PanelBody>
@@ -208,6 +152,157 @@ export class CustomerPanel extends BasePanel {
         }
       </PanelContainer>
     );
+  }
+
+  renderTypeFields() {
+    const { settings, formData } = this.props;
+    const showBusinessName = formData['customer.type'] === 'business';
+
+    return (
+      <React.Fragment>
+        {settings.showCustomerType &&
+          <Form.Row>
+            <Col>
+              <Form.Group controlId="customerType">
+                <Form.Label>Type</Form.Label>
+                <SelectInput
+                  field="customer.type"
+                  options={customerTypeOptions}
+                  initialValue={customerTypeOptions[0].value}
+                  testId="customer-type-input"
+                  required
+                />
+              </Form.Group>
+            </Col>
+          </Form.Row>
+        }
+
+        {showBusinessName &&
+          <Form.Row>
+            <Col>
+              <Form.Group controlId="businessName">
+                <Form.Label>Business Name</Form.Label>
+                <TextInput field="customer.businessName" testId="business-name-input" required />
+              </Form.Group>
+            </Col>
+          </Form.Row>
+        }
+      </React.Fragment>
+    );
+  }
+
+  renderBasicFields() {
+    const { emailReadonly } = this.props;
+
+    return (
+      <React.Fragment>
+        <Form.Row>
+          <Col sm>
+            <Form.Group controlId="firstName">
+              <Form.Label>First Name</Form.Label>
+              <TextInput field="customer.firstName" testId="first-name-input" required />
+            </Form.Group>
+          </Col>
+          <Col sm>
+            <Form.Group controlId="lastName">
+              <Form.Label>Last Name</Form.Label>
+              <TextInput field="customer.lastName" testId="last-name-input" required />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+
+        <Form.Group controlId="email">
+          <Form.Label>Email</Form.Label>
+          <EmailInput field="customer.email" type="email" testId="email-input" readOnly={emailReadonly} required />
+        </Form.Group>
+      </React.Fragment>
+    );
+  }
+
+  renderAddressFields() {
+    return (
+      <React.Fragment>
+        <Form.Row>
+          <Col sm>
+            <Form.Group controlId="street">
+              <Form.Label>Street</Form.Label>
+              <TextInput field="customer.billing.address1" type="street" testId="street-input" />
+            </Form.Group>
+          </Col>
+          <Col sm>
+            <Form.Group controlId="suburb">
+              <Form.Label>Suburb</Form.Label>
+              <TextInput field="customer.billing.suburb" testId="suburb-input" />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col sm>
+            <Form.Group controlId="state">
+              <Form.Label>State</Form.Label>
+              <StateInput field="customer.billing.state" testId="state-input" />
+            </Form.Group>
+          </Col>
+          <Col sm>
+            <Form.Group controlId="postcode">
+              <Form.Label>Postcode</Form.Label>
+              <PostcodeInput field="customer.billing.postcode" testId="postcode-input" />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+
+        <FormElement field="customer.billing.country" value="AU" />
+      </React.Fragment>
+    );
+  }
+
+  renderSourceFields() {
+    if (!this.props.settings.showSource) return null;
+
+    const sourceQuestion = this.getSourceQuestion();
+
+    return (
+      <React.Fragment>
+        <Form.Row>
+          <Col>
+            <Form.Group controlId="customerSource">
+              <Form.Label>How did you hear about us?</Form.Label>
+              <SelectInput
+                field="customer.sourceId"
+                options={sourceOptions}
+                testId="customer-source-input"
+                required
+              />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+
+        {sourceQuestion &&
+          <Form.Row>
+            <Col>
+              <Form.Group controlId="customerSourceAdditional">
+                <Form.Label>{sourceQuestion.question}</Form.Label>
+                <TextInput
+                  field="customer.sourceAdditional"
+                  required={sourceQuestion.isRequired}
+                  testId="source-additional-input"
+                />
+              </Form.Group>
+            </Col>
+          </Form.Row>
+        }
+      </React.Fragment>
+    );
+  }
+
+  getSourceQuestion() {
+    if (!sourceQuestions) return null;
+
+    const source = this.props.formData['customer.source'];
+    if (!source) return null;
+
+    return sourceQuestions[source];
   }
 
   renderDone() {
