@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Cookies from 'js-cookie';
 import jwtDecode from 'jwt-decode';
-import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed';
 import { Config } from 'clarety-utils';
 
 export const FormContext = React.createContext();
@@ -62,13 +61,18 @@ export function getCmsConfirmContent(elementId, fields) {
   return confirmContent;
 }
 
-export function scrollIntoView(component) {
+export function scrollIntoView(component, offset = 100) {
   const node = ReactDOM.findDOMNode(component);
-  scrollIntoViewIfNeeded(node, {
-    scrollMode: 'if-needed',
-    block: 'center',
-    behavior: 'smooth',
-  });
+  const rect = node.getBoundingClientRect();
+
+  const shouldScroll = rect.top < offset || rect.bottom > window.innerHeight;
+
+  if (shouldScroll) {
+    window.scrollTo({
+      top: rect.top + window.pageYOffset - offset,
+      behavior: 'smooth',
+    });
+  }
 }
 
 export function currency(number) {
