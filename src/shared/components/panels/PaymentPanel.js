@@ -230,6 +230,7 @@ export class _PaymentPanel extends BasePanel {
           {this.renderCartSummary()}
           {this.renderPaymentMethodOptions()}
           {this.renderPaymentFields()}
+          {this.renderTermsCheckbox()}
         </PanelBody>
   
         {layout !== 'page' &&
@@ -252,6 +253,10 @@ export class _PaymentPanel extends BasePanel {
   }
 
   renderCartSummary() {
+    return null;
+  }
+
+  renderTermsCheckbox() {
     return null;
   }
 
