@@ -32,6 +32,7 @@ window.renderDonatePage = (props) => {
         title: 'Your Details',
         showCustomerType: true,
         showSource: true,
+        showCountry: true,
       },
     },
     // {
@@ -71,7 +72,7 @@ export default class DonatePageDemo extends React.Component {
       recurringOfferId: '105',
       //fundraisingPageUid: 'abc-123',
       //confirmPageUrl: 'https://google.com',
-      sourceId: '17',
+      // sourceId: '17',
       responseId: 'e9c2e351d90b11e996fd',
       emailResponseId: '1234',
       // givingTypeOptions: [

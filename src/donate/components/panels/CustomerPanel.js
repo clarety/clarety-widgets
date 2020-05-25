@@ -53,6 +53,11 @@ export class CustomerPanel extends BasePanel {
     nextPanel();
   };
 
+  shouldShowSourceFields() {
+    const { tracking, settings } = this.props;
+    return !tracking.sourceId && settings.showSource;
+  }
+
   validate() {
     const errors = [];
     this.validateFields(errors);
@@ -82,6 +87,16 @@ export class CustomerPanel extends BasePanel {
     requiredField(errors, formData, 'customer.billing.suburb');
     requiredField(errors, formData, 'customer.billing.state');
     requiredField(errors, formData, 'customer.billing.postcode');
+    requiredField(errors, formData, 'customer.billing.country');
+
+    if (this.shouldShowSourceFields()) {
+      requiredField(errors, formData, 'sale.sourceId');
+
+      const question = this.getSourceQuestion();
+      if (question && question.isRequired) {
+        requiredField(errors, formData, 'sale.sourceAdditional');
+      }
+    }
   }
 
   renderWait() {
@@ -222,6 +237,8 @@ export class CustomerPanel extends BasePanel {
   renderAddressFields() {
     return (
       <React.Fragment>
+        {this.renderCountryField()}
+
         <Form.Row>
           <Col sm>
             <Form.Group controlId="street">
@@ -252,13 +269,42 @@ export class CustomerPanel extends BasePanel {
           </Col>
         </Form.Row>
 
-        <FormElement field="customer.billing.country" value="AU" />
+        
       </React.Fragment>
     );
   }
 
+  renderCountryField() {
+    const { settings, defaultCountry } = this.props;
+
+    if (!settings.showCountry) {
+      return (
+        <FormElement
+          field="customer.billing.country"
+          value={defaultCountry}
+        />
+      );
+    }
+
+    return (
+      <Form.Row>
+        <Col>
+          <Form.Group controlId="country">
+            <Form.Label>Country</Form.Label>
+            <TextInput
+              field="customer.billing.country"
+              initialValue={defaultCountry}
+              type="country"
+              testId="country-input"
+            />
+          </Form.Group>
+        </Col>
+      </Form.Row>
+    );
+  }
+
   renderSourceFields() {
-    if (!this.props.settings.showSource) return null;
+    if (!this.shouldShowSourceFields()) return null;
 
     const sourceQuestion = this.getSourceQuestion();
 
@@ -269,9 +315,9 @@ export class CustomerPanel extends BasePanel {
             <Form.Group controlId="customerSource">
               <Form.Label>How did you hear about us?</Form.Label>
               <SelectInput
-                field="customer.sourceId"
+                field="sale.sourceId"
                 options={sourceOptions}
-                testId="customer-source-input"
+                testId="source-id-input"
                 required
               />
             </Form.Group>
@@ -284,7 +330,7 @@ export class CustomerPanel extends BasePanel {
               <Form.Group controlId="customerSourceAdditional">
                 <Form.Label>{sourceQuestion.question}</Form.Label>
                 <TextInput
-                  field="customer.sourceAdditional"
+                  field="sale.sourceAdditional"
                   required={sourceQuestion.isRequired}
                   testId="source-additional-input"
                 />
@@ -299,7 +345,7 @@ export class CustomerPanel extends BasePanel {
   getSourceQuestion() {
     if (!sourceQuestions) return null;
 
-    const source = this.props.formData['customer.source'];
+    const source = this.props.formData['sale.sourceId'];
     if (!source) return null;
 
     return sourceQuestions[source];

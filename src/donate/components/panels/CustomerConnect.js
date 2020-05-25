@@ -1,4 +1,4 @@
-import { getSetting } from 'shared/selectors';
+import { getSetting, getTrackingData } from 'shared/selectors';
 import { getFormData, getErrors } from 'form/selectors';
 import { setErrors } from 'form/actions';
 import { getIsBusy, getCustomerHasProfile } from 'donate/selectors';
@@ -12,6 +12,8 @@ export class CustomerConnect {
       formData: getFormData(state),
       errors: getErrors(state),
       variant: getSetting(state, 'variant'),
+      tracking: getTrackingData(state),
+      defaultCountry: getSetting(state, 'defaultCountry') || 'AU',
     };
   };
 
