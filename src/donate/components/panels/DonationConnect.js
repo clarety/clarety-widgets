@@ -3,7 +3,7 @@ import { clearItems } from 'shared/actions';
 import { getFormData, getErrors } from 'form/selectors';
 import { setErrors } from 'form/actions';
 import { getSelectedAmount, getGivingTypeOptions } from 'donate/selectors';
-import { selectAmount, addDonationToCart } from 'donate/actions';
+import { selectAmount, selectSchedule, addDonationToCart } from 'donate/actions';
 
 export class DonationConnect {
   static mapStateToProps = (state) => {
@@ -23,6 +23,7 @@ export class DonationConnect {
 
   static actions = {
     selectAmount: selectAmount,
+    selectSchedule: selectSchedule,
     onSubmit: addDonationToCart,
     clearItems: clearItems,
     setErrors: setErrors,
