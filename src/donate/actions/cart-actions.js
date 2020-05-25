@@ -1,7 +1,7 @@
 import { addItem, updateItem, clearItems, setCustomer } from 'shared/actions';
 import { getCart } from 'shared/selectors';
-import { parseNestedElements, getDefaultOfferPaymentUid } from 'shared/utils';
-import { getDonationPanelSelection, getSalelineDescription, getSelectedOffer } from 'donate/selectors';
+import { parseNestedElements } from 'shared/utils';
+import { getDonationPanelSelection, getSalelineDescription } from 'donate/selectors';
 
 export const adjustDonation = (amount) => {
   return (dispatch, getState) => {
@@ -21,18 +21,16 @@ export const addDonationToCart = () => {
   return (dispatch, getState) => {
     const state = getState();
     const selection = getDonationPanelSelection(state);
-    const offer = getSelectedOffer(state);
-    const offerPaymentUid = getDefaultOfferPaymentUid(offer);
     const description = getSalelineDescription(state);
 
     dispatch(clearItems());
 
     dispatch(addItem({
-      type: 'donation',
-      offerUid: offer.offerUid,
-      offerPaymentUid: offerPaymentUid,
-      price: selection.amount,
-      description: description,
+      type:            'donation',
+      offerUid:        selection.offerUid,
+      offerPaymentUid: selection.offerPaymentUid,
+      price:           selection.amount,
+      description:     description,
     }));
 
     return true;

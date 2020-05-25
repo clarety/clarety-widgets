@@ -81,7 +81,6 @@ export const getPaymentPostData = (state) => {
     saleline:  cart.items[0],
     customer:  cart.customer,
     payment:   cart.payment,
-    startDate: cart.payment.startDate,
 
     fundraising: fundraisingData,
     recaptchaResponse: recaptcha,

@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { Form, Button } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FrequencySelect, SuggestedAmount, SuggestedAmountLg, VariableAmount, VariableAmountLg } from 'shared/components';
-import { currency, getDefaultOfferPaymentUid } from 'shared/utils';
+import { currency } from 'shared/utils';
 import { ErrorMessages } from 'form/components';
 
 export class DonationPanel extends BasePanel {
@@ -17,22 +17,29 @@ export class DonationPanel extends BasePanel {
   };
 
   onSelectAmount = (frequency, amount, isVariableAmount = false) => {
-    this.setState(prevState => {
-      const prevVariableAmount = prevState.selections[frequency].variableAmount;
+    this.setState(prevState => ({
+      selections: {
+        ...prevState.selections,
+        [frequency]: {
+          ...prevState.selections[frequency],
+          amount,
+          isVariableAmount,
+          variableAmount: isVariableAmount ? amount : '',
+        },
+      },
+    }));
+  };
 
-      const selection = {
-        amount,
-        isVariableAmount,
-        variableAmount: isVariableAmount ? amount : prevVariableAmount,
-      };
-
-      return {
-        selections: {
-          ...prevState.selections,
-          [frequency]: selection,
-        },  
-      };
-    });
+  onSelectSchedule = (offerPaymentUid) => {
+    this.setState(prevState => ({
+      selections: {
+        ...prevState.selections,
+        recurring: {
+          ...prevState.selections.recurring,
+          offerPaymentUid,
+        },
+      },  
+    }));
   };
 
   onClickNone = (event) => {
@@ -48,15 +55,13 @@ export class DonationPanel extends BasePanel {
     const { addToCart, nextPanel } = this.props;
     const { frequency, selections } = this.state;
 
-    const offer = this.getOffer(frequency);
     const selection = selections[frequency];
-    const offerPaymentUid = getDefaultOfferPaymentUid(offer);
 
     addToCart({
-      type: 'donation',
-      offerUid: offer.offerUid,
-      offerPaymentUid: offerPaymentUid,
-      price: selection.amount,
+      type:            'donation',
+      offerUid:        selection.offerUid,
+      offerPaymentUid: selection.offerPaymentUid,
+      price:           selection.amount,
     });
 
     nextPanel();
@@ -83,10 +88,12 @@ export class DonationPanel extends BasePanel {
     const defaultSelections = {};
 
     for (let offer of priceHandles) {
-      const defaultAmount = offer.amounts.find(amount => amount.default);
+      const defaultAmount = offer.amounts.find(amount => amount.default) || 0;
 
       defaultSelections[offer.frequency] = {
-        amount: defaultAmount ? defaultAmount.amount : 0,
+        offerUid:         offer.offerUid,
+        offerPaymentUid:  offer.offerPaymentUid,
+        amount:           defaultAmount,
         isVariableAmount: false,
       };
     }
@@ -252,11 +259,11 @@ export class DonationPanel extends BasePanel {
 
   getOffer(frequency) {
     return this.props.priceHandles.find(offer => offer.frequency === frequency);
-  };
+  }
 
   getVariableAmount(offer) {
     return offer.amounts.find(amount => amount.variable === true);
-  };
+  }
 
   getSelectedAmount() {
     const { frequency, selections } = this.state;

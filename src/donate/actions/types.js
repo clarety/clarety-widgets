@@ -2,6 +2,7 @@ export const types = {
   // Amount Action Types
   selectFrequency: 'SELECT_FREQUENCY',
   selectAmount:    'SELECT_AMOUNT',
+  selectSchedule:  'SELECT_SCHEDULE',
   selectDefaults:  'SELECT_DEFAULTS',
 
   // Payment Action Types
