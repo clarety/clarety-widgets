@@ -41,10 +41,9 @@ export class _PaymentPanel extends BasePaymentPanel {
   }
 
   getPaymentData() {
-    const { formData } = this.props;
+    const { formData, frequency } = this.props;
 
     const paymentData = super.getPaymentData();
-    const paymentMethod = this.getPaymentMethod(formData['payment.type']);
 
     if (frequency === 'recurring') {
       paymentData.startDate = formData['additionalData.startDate'];

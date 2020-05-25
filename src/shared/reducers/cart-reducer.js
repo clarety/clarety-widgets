@@ -123,11 +123,13 @@ export const cartReducer = (state = initialState, action) => {
     case types.setTrackingData:
       return {
         ...state,
+        
         tracking: {
-          sourceId: action.sourceId,
-          sourceUid: action.sourceUid,
-          sendResponseUid: action.responseId,
-          emailResponseUid: action.emailResponseId,
+          sourceId:         action.sourceId         || state.tracking.sourceId,
+          sourceUid:        action.sourceUid        || state.tracking.sourceUid,
+          sourceAdditional: action.sourceAdditional || state.tracking.sourceAdditional,
+          sendResponseUid:  action.responseId       || state.tracking.responseId,
+          emailResponseUid: action.emailResponseId  || state.tracking.emailResponseId,
         },
       };
 
