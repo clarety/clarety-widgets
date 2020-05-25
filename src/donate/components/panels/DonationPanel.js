@@ -24,6 +24,10 @@ export class DonationPanel extends BasePanel {
     this.props.selectAmount(frequency, amount, isVariableAmount);
   };
 
+  onSelectSchedule = (offerPaymentUid) => {
+    this.props.selectSchedule(offerPaymentUid);
+  };
+
   onPressNext = async (event) => {
     event.preventDefault();
 

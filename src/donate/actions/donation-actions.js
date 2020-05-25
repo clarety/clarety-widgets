@@ -12,6 +12,11 @@ export const selectAmount = (frequency, amount, isVariableAmount = false) => ({
   isVariableAmount: isVariableAmount,
 });
 
+export const selectSchedule = (offerPaymentUid) => ({
+  type: types.selectSchedule,
+  offerPaymentUid: offerPaymentUid,
+});
+
 export const adjustAmount = (adjustment) => {
   return (dispatch, getState) => {
     const state = getState();

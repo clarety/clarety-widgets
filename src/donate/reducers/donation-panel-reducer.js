@@ -1,5 +1,6 @@
 import { types as sharedActionTypes } from 'shared/actions';
 import { types } from 'donate/actions';
+import { getDefaultOfferPaymentUid } from 'shared/utils';
 
 const initialState = {
   frequency: null,
@@ -10,6 +11,9 @@ export const donationPanelReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.selectFrequency:
       return selectFrequency(state, action);
+
+    case types.selectSchedule:
+      return selectSchedule(state, action);
 
     case types.selectAmount:
       return selectAmount(state, action);
@@ -33,20 +37,32 @@ const selectFrequency = (state, action) => {
   };
 };
 
+const selectSchedule = (state, action) => {
+  return {
+    ...state,
+    selections: {
+      ...state.selections,
+      recurring: {
+        ...state.selections.recurring,
+        offerPaymentUid: action.offerPaymentUid,
+      },
+    }
+  };
+};
+
 const selectAmount = (state, action) => {
   const { frequency, amount, isVariableAmount } = action;
-
-  const selection = {
-    amount,
-    isVariableAmount,
-    variableAmount: isVariableAmount ? amount : '',
-  };
 
   return {
     ...state,
     selections: {
       ...state.selections,
-      [frequency]: selection,
+      [frequency]: {
+        ...state.selections[frequency],
+        amount,
+        isVariableAmount,
+        variableAmount: isVariableAmount ? amount : '',
+      },
     }
   };
 };
@@ -56,10 +72,13 @@ const selectDefaults = (state, offers) => {
   const defaultSelections = {};
 
   for (let offer of offers) {
-    const defaultAmount = offer.amounts.find(amount => amount.default);
+    const defaultAmount = offer.amounts.find(amount => amount.default) || 0;
+    const defaultPaymentUid = getDefaultOfferPaymentUid(offer);
 
     defaultSelections[offer.frequency] = {
-      amount: defaultAmount ? defaultAmount.amount : 0,
+      offerUid: offer.offerUid,
+      offerPaymentUid: defaultPaymentUid,
+      amount: defaultAmount,
       isVariableAmount: false,
     };
   }
