@@ -69,39 +69,36 @@ export const getPaymentMethods = (state) => {
 
 export const getPaymentPostData = (state) => {
   const cart = getCart(state);
+  const formData = getParsedFormData(state);
+  const fundraisingData = getFundraisingData(state);
   const trackingData = getTrackingData(state);
   const recaptcha = getRecaptcha(state);
-  const formData = getParsedFormData(state);
 
   const postData = {
-    storeUid: cart.store,
-    uid: cart.uid,
-    jwt: cart.jwt,
+    storeUid:  cart.store,
+    uid:       cart.uid,
+    jwt:       cart.jwt,
+    saleline:  cart.items[0],
+    customer:  cart.customer,
+    payment:   cart.payment,
 
-    saleline: cart.items[0],
-    customer: cart.customer,
-    payment: cart.payment,
-    startDate: cart.payment.startDate,
-
-    ...trackingData,
-
+    fundraising: fundraisingData,
     recaptchaResponse: recaptcha,
+
+    ...formData.additionalData,
+    ...trackingData,
   };
 
-  // Donation endpoint wants 'cc' or 'dd' as payment type...
-  if (postData.payment.type === 'gatewaycc') postData.payment.type = 'cc';
-  if (postData.payment.type === 'gatewaydd') postData.payment.type = 'dd';
-
-  // Optional fundraising data.
-  const fundraisingPageUid = getSetting(state, 'fundraisingPageUid');
-  if (fundraisingPageUid) {
-    postData.fundraising = {
-      pageUid: fundraisingPageUid,
-      ...formData.fundraising,
-    };
-  }
-
   return postData;
+};
+
+const getFundraisingData = (state) => {
+  const pageUid = getSetting(state, 'fundraisingPageUid');
+  if (!pageUid) return undefined;
+
+  const formData = getParsedFormData(state);
+
+  return { pageUid, ...formData.fundraising };
 };
 
 export const getCustomerFullName = (state) => {

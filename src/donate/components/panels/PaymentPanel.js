@@ -13,7 +13,7 @@ export class PaymentPanel extends BasePaymentPanel {
     const paymentMethod = this.getPaymentMethod('gatewaycc');
 
     if (frequency === 'recurring' && paymentMethod.startDates) {
-      requiredField(errors, formData, 'payment.startDate');
+      requiredField(errors, formData, 'additionalData.startDate');
     }
   }
 
@@ -24,7 +24,7 @@ export class PaymentPanel extends BasePaymentPanel {
     const paymentMethod = this.getPaymentMethod('gatewaydd');
 
     if (frequency === 'recurring' && paymentMethod.startDates) {
-      requiredField(errors, formData, 'payment.startDate');
+      requiredField(errors, formData, 'additionalData.startDate');
     }
   }
 
@@ -40,7 +40,7 @@ export class PaymentPanel extends BasePaymentPanel {
     const paymentMethod = this.getPaymentMethod(formData['payment.type']);
 
     if (frequency === 'recurring' && paymentMethod.startDates) {
-      paymentData.startDate = formData['payment.startDate'];
+      paymentData.startDate = formData['additionalData.startDate'];
     }
     
     return paymentData;
@@ -94,7 +94,7 @@ export class PaymentPanel extends BasePaymentPanel {
           <Form.Group controlId="startDate">
             <Form.Label>Start Date</Form.Label>
             <SelectInput
-              field="payment.startDate"
+              field="additionalData.startDate"
               options={this.getStartDateOptions(methodType)}
               testId="start-date-input"
             />
