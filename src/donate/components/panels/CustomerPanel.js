@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { requiredField, emailField, customerTypeOptions } from 'shared/utils';
-import { TextInput, EmailInput, StateInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
+import { TextInput, EmailInput, StateInput, CountryInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
   onShowPanel() {
@@ -115,9 +115,7 @@ export class CustomerPanel extends BasePanel {
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
           <Row className="justify-content-center">
             <Col>
-
               {layout !== 'page' && <ErrorMessages />}
-
               {this.renderTypeFields()}
               {this.renderBasicFields()}
               {this.renderAddressFields()}
@@ -208,8 +206,7 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderAddressFields() {
-    const isUK = this.props.formData['customer.billing.country'] === 'UK';
-    const isUS = this.props.formData['customer.billing.country'] === 'US';
+    const country = this.props.formData['customer.billing.country'];
 
     return (
       <React.Fragment>
@@ -233,13 +230,13 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col sm>
             <Form.Group controlId="state">
-              <Form.Label>{isUK ? 'Region' : 'State'}</Form.Label>
-              <StateInput field="customer.billing.state" testId="state-input" />
+              <Form.Label>{country === 'UK' ? 'Region' : 'State'}</Form.Label>
+              <StateInput field="customer.billing.state" country={country} testId="state-input" />
             </Form.Group>
           </Col>
           <Col sm>
             <Form.Group controlId="postcode">
-              <Form.Label>{isUS ? 'Zip Code' : 'Postcode'}</Form.Label>
+              <Form.Label>{country === 'US' ? 'Zip Code' : 'Postcode'}</Form.Label>
               <PostcodeInput field="customer.billing.postcode" testId="postcode-input" />
             </Form.Group>
           </Col>
@@ -265,7 +262,7 @@ export class CustomerPanel extends BasePanel {
         <Col>
           <Form.Group controlId="country">
             <Form.Label>Country</Form.Label>
-            <TextInput
+            <CountryInput
               field="customer.billing.country"
               initialValue={defaultCountry}
               testId="country-input"

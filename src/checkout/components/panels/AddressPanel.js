@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Col } from 'react-bootstrap';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext } from 'shared/utils';
-import { BasePanel, TextInput, PureCheckboxInput, StateInput, FormElement, Button } from 'checkout/components';
+import { BasePanel, TextInput, PureCheckboxInput, StateInput, CountryInput, FormElement, Button } from 'checkout/components';
 
 export class AddressPanel extends BasePanel {
   onPressContinue = async event => {
@@ -165,8 +165,7 @@ export class AddressPanel extends BasePanel {
   renderAddressFields(title, fieldPrefix) {
     const { settings } = this.props;
 
-    const isUK = this.state.formData[`${fieldPrefix}.country`] === 'UK';
-    const isUS = this.state.formData[`${fieldPrefix}.country`] === 'US';
+    const country = this.state.formData[`${fieldPrefix}.country`];
 
     return (
       <React.Fragment>
@@ -194,11 +193,11 @@ export class AddressPanel extends BasePanel {
 
         <Form.Row>
           <Col>
-            <TextInput field={`${fieldPrefix}.state`} label={isUK ? 'Region' : 'State'} required hideLabel={settings.hideLabels} />
+            <StateInput field={`${fieldPrefix}.state`} label={country === 'UK' ? 'Region' : 'State'} country={country} required hideLabel={settings.hideLabels} />
           </Col>
 
           <Col>
-            <TextInput field={`${fieldPrefix}.postcode`} label={isUS ? 'Zip Code' : 'Postcode'} type="number" required hideLabel={settings.hideLabels} />
+            <TextInput field={`${fieldPrefix}.postcode`} label={country === 'US' ? 'Zip Code' : 'Postcode'} type="number" required hideLabel={settings.hideLabels} />
           </Col>
         </Form.Row>
       </React.Fragment>
@@ -217,7 +216,7 @@ export class AddressPanel extends BasePanel {
     return (
       <Form.Row>
         <Col>
-          <TextInput field={`${fieldPrefix}.country`} label="Country" initialValue={defaultCountry} required hideLabel={settings.hideLabels} />
+          <CountryInput field={`${fieldPrefix}.country`} label="Country" initialValue={defaultCountry} required hideLabel={settings.hideLabels} />
         </Col>
       </Form.Row>
     );

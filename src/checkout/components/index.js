@@ -6,6 +6,7 @@ export * from './inputs/Button';
 export * from './inputs/CardNumberInput';
 export * from './inputs/CcvInput';
 export * from './inputs/CheckboxInput';
+export * from './inputs/CountryInput';
 export * from './inputs/DobInput';
 export * from './inputs/EmailInput';
 export * from './inputs/ExpiryInput';

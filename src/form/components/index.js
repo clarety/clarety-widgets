@@ -2,6 +2,7 @@ export * from './misc/ErrorMessages';
 export * from './misc/FieldError';
 export * from './misc/Recaptcha';
 
+export * from './inputs/address/CountryInput';
 export * from './inputs/address/StateInput';
 export * from './inputs/address/PostcodeInput';
 
