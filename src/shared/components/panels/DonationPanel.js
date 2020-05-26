@@ -84,6 +84,8 @@ export class DonationPanel extends BasePanel {
   selectDefaultAmounts() {
     const { priceHandles } = this.props;
 
+    if (!priceHandles || !priceHandles.length) return;
+
     const defaultFrequency = priceHandles[0].frequency;
     const defaultSelections = {};
 
