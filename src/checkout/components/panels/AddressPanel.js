@@ -13,7 +13,7 @@ export class AddressPanel extends BasePanel {
 
     if (this.validate()) {
       const formData = { ...this.state.formData };
-      formData['sale.shippingOption'] = undefined;
+      formData['sale.shippingUid'] = undefined;
       
       if (this.state.billingIsSameAsShipping) {
         formData['customer.billing.address1'] = formData['customer.delivery.address1'];

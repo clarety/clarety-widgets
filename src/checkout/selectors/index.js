@@ -1,17 +1,16 @@
 export const hasSelectedShippingOption = (state) => {
-  return !!state.formData['sale.shippingOption'];
+  return !!state.formData['sale.shippingUid'];
 };
 
 export const getSelectedShippingOptionLabel = (state) => {
-  const { shippingOptions, sale } = state.cart;
+  const { shippingOptions } = state.cart;
+  if (!shippingOptions) return '';
 
-  if (shippingOptions && sale) {
-    const option = shippingOptions.find(option => option.uid === sale.shippingOption);
+  const shippingUid = state.formData['sale.shippingUid'];
+  const option = shippingOptions.find(option => option.shippingUid === shippingUid);
+  if (!option) return '';
 
-    if (option) return option.label;
-  }
-
-  return '';
+  return option.label;
 };
 
 export const getPaymentMethods = (state) => state.cart.paymentMethods;

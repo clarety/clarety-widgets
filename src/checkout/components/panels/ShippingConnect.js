@@ -8,7 +8,7 @@ export class ShippingConnect {
     return {
       isBusy: state.status === statuses.busy,
       canContinue: hasSelectedShippingOption(state),
-      selectedOptionUid: state.formData['sale.shippingOption'],
+      selectedOptionUid: state.formData['sale.shippingUid'],
       shippingOptions: state.cart.shippingOptions,
       selectedOptionName: getSelectedShippingOptionLabel(state),
     };
