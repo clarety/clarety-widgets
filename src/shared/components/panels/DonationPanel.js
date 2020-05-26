@@ -88,12 +88,12 @@ export class DonationPanel extends BasePanel {
     const defaultSelections = {};
 
     for (let offer of priceHandles) {
-      const defaultAmount = offer.amounts.find(amount => amount.default) || 0;
+      const defaultAmount = offer.amounts.find(amount => amount.default);
 
       defaultSelections[offer.frequency] = {
         offerUid:         offer.offerUid,
         offerPaymentUid:  offer.offerPaymentUid,
-        amount:           defaultAmount,
+        amount:           defaultAmount ? defaultAmount.amount : 0,
         isVariableAmount: false,
       };
     }
