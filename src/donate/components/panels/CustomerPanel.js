@@ -208,6 +208,9 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderAddressFields() {
+    const isUK = this.props.formData['customer.billing.country'] === 'UK';
+    const isUS = this.props.formData['customer.billing.country'] === 'US';
+
     return (
       <React.Fragment>
         {this.renderCountryField()}
@@ -230,19 +233,17 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col sm>
             <Form.Group controlId="state">
-              <Form.Label>State</Form.Label>
+              <Form.Label>{isUK ? 'Region' : 'State'}</Form.Label>
               <StateInput field="customer.billing.state" testId="state-input" />
             </Form.Group>
           </Col>
           <Col sm>
             <Form.Group controlId="postcode">
-              <Form.Label>Postcode</Form.Label>
+              <Form.Label>{isUS ? 'Zip Code' : 'Postcode'}</Form.Label>
               <PostcodeInput field="customer.billing.postcode" testId="postcode-input" />
             </Form.Group>
           </Col>
         </Form.Row>
-
-        
       </React.Fragment>
     );
   }
@@ -267,7 +268,6 @@ export class CustomerPanel extends BasePanel {
             <TextInput
               field="customer.billing.country"
               initialValue={defaultCountry}
-              type="country"
               testId="country-input"
             />
           </Form.Group>

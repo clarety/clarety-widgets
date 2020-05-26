@@ -6,7 +6,7 @@ import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import { ClaretyApi } from 'clarety-utils';
 import { Resources, getJwtSession, getJwtAccount } from 'shared/utils';
 import { PanelManager } from 'shared/components';
-import { setPanels, setClientIds, setAuth } from 'shared/actions';
+import { setPanels, setClientIds, setAuth, updateAppSettings } from 'shared/actions';
 import { getIsCartComplete } from 'shared/selectors';
 import { Recaptcha } from 'form/components';
 import { fetchCart, fetchCustomer } from 'checkout/actions';
@@ -42,6 +42,10 @@ export class Checkout extends React.Component {
   }
 
   async componentDidMount() {
+    Checkout.store.dispatch(updateAppSettings({
+      defaultCountry: this.props.defaultCountry,
+    }));
+
     const jwtAccount = getJwtAccount();
     if (jwtAccount) {
       ClaretyApi.setAuth(jwtAccount.jwtString);

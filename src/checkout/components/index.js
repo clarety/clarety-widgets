@@ -9,6 +9,7 @@ export * from './inputs/CheckboxInput';
 export * from './inputs/DobInput';
 export * from './inputs/EmailInput';
 export * from './inputs/ExpiryInput';
+export * from './inputs/FormElement';
 export * from './inputs/PhoneInput';
 export * from './inputs/SelectInput';
 export * from './inputs/StateInput';

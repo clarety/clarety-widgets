@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Col } from 'react-bootstrap';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext } from 'shared/utils';
-import { BasePanel, TextInput, PureCheckboxInput, StateInput, Button } from 'checkout/components';
+import { BasePanel, TextInput, PureCheckboxInput, StateInput, FormElement, Button } from 'checkout/components';
 
 export class AddressPanel extends BasePanel {
   onPressContinue = async event => {
@@ -137,7 +137,7 @@ export class AddressPanel extends BasePanel {
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
           <FormContext.Provider value={this.state}>
             <Form onSubmit={this.onPressContinue}>
-              {this.renderAddressForm('Shipping Address', 'customer.delivery')}
+              {this.renderAddressFields('Shipping Address', 'customer.delivery')}
 
               <Form.Row>
                 <Col>
@@ -150,7 +150,7 @@ export class AddressPanel extends BasePanel {
                 </Col>
               </Form.Row>
 
-              {!billingIsSameAsShipping && this.renderAddressForm('Billing Address', 'customer.billing')}
+              {!billingIsSameAsShipping && this.renderAddressFields('Billing Address', 'customer.billing')}
               
               <div className="panel-actions">
                 <Button title="Continue" type="submit" isBusy={isBusy} />
@@ -162,22 +162,18 @@ export class AddressPanel extends BasePanel {
     );
   }
 
-  renderAddressForm(title, fieldPrefix) {
+  renderAddressFields(title, fieldPrefix) {
     const { settings } = this.props;
 
-    switch (settings.addressType) {
-      case 'international': return this.renderInternationalAddressForm(title, fieldPrefix);
-      case 'australia':     return this.renderAustralianAddressForm(title, fieldPrefix);
-      default:              return this.renderAustralianAddressForm(title, fieldPrefix);
-    }
-  }
-
-  renderInternationalAddressForm(title, fieldPrefix) {
-    const { settings } = this.props;
+    const isUK = this.state.formData[`${fieldPrefix}.country`] === 'UK';
+    const isUS = this.state.formData[`${fieldPrefix}.country`] === 'US';
 
     return (
       <React.Fragment>
         <h5>{title}</h5>
+
+        {this.renderCountryField(fieldPrefix)}
+
         <Form.Row>
           <Col>
             <TextInput field={`${fieldPrefix}.address1`} label="Address 1" required hideLabel={settings.hideLabels} />
@@ -198,49 +194,32 @@ export class AddressPanel extends BasePanel {
 
         <Form.Row>
           <Col>
-            <TextInput field={`${fieldPrefix}.state`} label="City" required hideLabel={settings.hideLabels} />
+            <TextInput field={`${fieldPrefix}.state`} label={isUK ? 'Region' : 'State'} required hideLabel={settings.hideLabels} />
           </Col>
+
           <Col>
-            <TextInput field={`${fieldPrefix}.postcode`} label="Postcode" type="number" required hideLabel={settings.hideLabels} />
+            <TextInput field={`${fieldPrefix}.postcode`} label={isUS ? 'Zip Code' : 'Postcode'} type="number" required hideLabel={settings.hideLabels} />
           </Col>
         </Form.Row>
       </React.Fragment>
     );
   }
 
-  renderAustralianAddressForm(title, fieldPrefix) {
-    const { settings } = this.props;
+  renderCountryField(fieldPrefix) {
+    const { settings, defaultCountry } = this.props;
+
+    if (!settings.showCountry) {
+      return (
+        <FormElement field={`${fieldPrefix}.country`} value={defaultCountry} />
+      );
+    }
 
     return (
-      <React.Fragment>
-        <h5>{title}</h5>
-        <Form.Row>
-          <Col>
-            <TextInput field={`${fieldPrefix}.address1`} label="Address" required hideLabel={settings.hideLabels} />
-          </Col>
-        </Form.Row>
-
-        <Form.Row>
-          <Col>
-            <TextInput field={`${fieldPrefix}.address2`} label="Address 2" hideLabel={settings.hideLabels} />
-          </Col>
-        </Form.Row>
-
-        <Form.Row>
-          <Col>
-            <TextInput field={`${fieldPrefix}.suburb`} label="Suburb" required hideLabel={settings.hideLabels} />
-          </Col>
-        </Form.Row>
-
-        <Form.Row>
-          <Col>
-            <StateInput field={`${fieldPrefix}.state`} label="State" required hideLabel={settings.hideLabels} />
-          </Col>
-          <Col>
-            <TextInput field={`${fieldPrefix}.postcode`} label="Postcode" type="number" required hideLabel={settings.hideLabels} />
-          </Col>
-        </Form.Row>
-      </React.Fragment>
+      <Form.Row>
+        <Col>
+          <TextInput field={`${fieldPrefix}.country`} label="Country" initialValue={defaultCountry} required hideLabel={settings.hideLabels} />
+        </Col>
+      </Form.Row>
     );
   }
 

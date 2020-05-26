@@ -1,4 +1,5 @@
 import { statuses, invalidatePanel } from 'shared/actions';
+import { getSetting } from 'shared/selectors';
 import { setFormData } from 'form/actions';
 import { createOrUpdateCustomer } from 'checkout/actions';
 
@@ -8,6 +9,7 @@ export class AddressConnect {
       isBusy: state.status === statuses.busy,
       customer: state.cart.customer,
       errors: state.errors,
+      defaultCountry: getSetting(state, 'defaultCountry') || 'AU',
     };
   };
   

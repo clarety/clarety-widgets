@@ -12,8 +12,6 @@ export class CheckoutCustomerConnect {
       variant: getSetting(state, 'variant'),
       tracking: getTrackingData(state),
 
-      defaultCountry: getSetting(state, 'defaultCountry') || 'AU',
-
       sourceOptions: getSourceOptions(state),
       sourceQuestions: getSourceQuestions(state),
     };

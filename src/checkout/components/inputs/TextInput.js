@@ -5,6 +5,14 @@ import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
 
 class PureTextInput extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    if (props.initialValue !== undefined) {
+      props.onChange(props.field, props.initialValue);
+    }
+  }
+
   render() {
     let { field, label, placeholder, type, value, onChange, error, required, hideLabel } = this.props;
     if (!required && hideLabel) label += ' (Optional)';

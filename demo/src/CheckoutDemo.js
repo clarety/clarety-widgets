@@ -5,7 +5,6 @@ import { LoginConnect, CheckoutCustomerConnect, AddressConnect, ShippingConnect,
 import { Checkout, setupCheckoutAxiosMock } from '../../src';
 import '../../src/checkout/style.scss';
 
-
 Checkout.init();
 
 Checkout.setClientIds({
@@ -18,9 +17,9 @@ Checkout.setPanels([
     component: LoginPanel,
     connect: LoginConnect,
     settings: {
+      hideLabels: true,
       allowGuest: true,
       createAccount: false,
-      hideLabels: true,
     },
   },
   {
@@ -36,8 +35,8 @@ Checkout.setPanels([
     component: AddressPanel,
     connect: AddressConnect,
     settings: {
-      addressType: 'international',
       hideLabels: true,
+      showCountry: true,
     },
   },
   // NOTE: shipping-options endpoint currenlty returns an empty array.
@@ -65,7 +64,7 @@ export default class CheckoutDemo extends React.Component {
   render() {
     return (
       <div className="checkout">
-        <Checkout />
+        <Checkout defaultCountry="US" />
       </div>
     );
   }
