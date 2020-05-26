@@ -5,7 +5,7 @@ import { FormContext, customerTypeOptions } from 'shared/utils';
 import { BasePanel, TextInput, SelectInput, PhoneInput, DobInput, Button } from 'checkout/components';
 
 export class CheckoutCustomerPanel extends BasePanel {
-  onPressContinue = event => {
+  onPressNext = event => {
     event.preventDefault();
 
     if (this.validate()) {
@@ -37,7 +37,14 @@ export class CheckoutCustomerPanel extends BasePanel {
       this.validateRequired('customer.dateOfBirthYear', errors);
     }
 
-    if (settings.showSource) this.validateRequired('sale.source', errors);
+    if (this.shouldShowSourceFields()) {
+      this.validateRequired('sale.sourceId', errors);
+
+      const question = this.getSourceQuestion();
+      if (question && question.isRequired) {
+        this.validateRequired('sale.sourceAdditional', errors);
+      }
+    }
 
     this.setState({ errors });
     return errors.length === 0;
@@ -137,7 +144,7 @@ export class CheckoutCustomerPanel extends BasePanel {
         
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
           <FormContext.Provider value={this.state}>
-            <Form onSubmit={this.onPressContinue}>
+            <Form onSubmit={this.onPressNext}>
 
               {settings.showCustomerType &&
                 <Form.Row>
@@ -204,13 +211,7 @@ export class CheckoutCustomerPanel extends BasePanel {
                 </Form.Row>
               }
 
-              {settings.showSource &&
-                <Form.Row>
-                  <Col>
-                    <TextInput field="sale.source" label="How did you hear about us?" hideLabel required />
-                  </Col>
-                </Form.Row>
-              }
+              {this.renderSourceFields()}
 
               <div className="panel-actions">
                 <Button title="Continue" type="submit" />
@@ -220,6 +221,63 @@ export class CheckoutCustomerPanel extends BasePanel {
         </PanelBody>
       </PanelContainer>
     );
+  }
+
+  renderSourceFields() {
+    if (!this.shouldShowSourceFields()) return null;
+
+    const sourceQuestion = this.getSourceQuestion();
+
+    return (
+      <React.Fragment>
+        <Form.Row>
+          <Col>
+            <SelectInput
+              field="sale.sourceId"
+              placeholder="How did you hear about us?"
+              options={this.props.sourceOptions}
+              testId="source-id-input"
+              hideLabel
+              required
+            />
+          </Col>
+        </Form.Row>
+
+        {sourceQuestion &&
+          <Form.Row>
+            <Col>
+              <TextInput
+                field="sale.sourceAdditional"
+                label={sourceQuestion.question}
+                required={sourceQuestion.isRequired}
+                testId="source-additional-input"
+                hideLabel
+              />
+            </Col>
+          </Form.Row>
+        }
+      </React.Fragment>
+    );
+  }
+
+  shouldShowSourceFields() {
+    const { tracking, sourceOptions, settings } = this.props;
+
+    if (tracking.sourceId) return false;
+    if (!sourceOptions) return false;
+
+    return settings.showSource;
+  }
+
+  getSourceQuestion() {
+    const { sourceQuestions } = this.props;
+
+    if (!sourceQuestions) return null;
+
+    const source = this.state.formData['sale.sourceId'];
+    if (!source) return null;
+
+    return sourceQuestions[source];
   }
 
   renderDone() {

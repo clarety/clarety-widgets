@@ -4,28 +4,6 @@ import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from '
 import { requiredField, emailField, customerTypeOptions } from 'shared/utils';
 import { TextInput, EmailInput, StateInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
 
-const sourceOptions = [
-  { value: '293', label: 'Propel' },
-  { value: '295', label: 'Can You See Me' },
-  { value: '209', label: 'Book' },
-  { value: '9',   label: 'Event' },
-  { value: '7',   label: 'Church' },
-  { value: '5',   label: 'Google Search' },
-  { value: '1',   label: 'Friend' },
-  { value: '267', label: 'Walk for Freedom' },
-  { value: '17',  label: 'Instagram' },
-  { value: '19',  label: 'Twitter' },
-  { value: '2',   label: 'Facebook' },
-  { value: '3',   label: 'YouTube' },
-  { value: '163', label: 'TBN' },
-];
-
-const sourceQuestions = {
-  '7':   { question: 'What is the name of your church?', isRequired: true },
-  '209': { question: 'What is the name of the book?',    isRequired: false },
-  '9':   { question: 'What was the name of the event?',  isRequired: true },
-};
-
 export class CustomerPanel extends BasePanel {
   onShowPanel() {
     if (this.props.layout === 'tabs') {
@@ -52,11 +30,6 @@ export class CustomerPanel extends BasePanel {
 
     nextPanel();
   };
-
-  shouldShowSourceFields() {
-    const { tracking, settings } = this.props;
-    return !tracking.sourceId && settings.showSource;
-  }
 
   validate() {
     const errors = [];
@@ -316,7 +289,7 @@ export class CustomerPanel extends BasePanel {
               <Form.Label>How did you hear about us?</Form.Label>
               <SelectInput
                 field="sale.sourceId"
-                options={sourceOptions}
+                options={this.props.sourceOptions}
                 testId="source-id-input"
                 required
               />
@@ -342,7 +315,18 @@ export class CustomerPanel extends BasePanel {
     );
   }
 
+  shouldShowSourceFields() {
+    const { tracking, sourceOptions, settings } = this.props;
+
+    if (tracking.sourceId) return false;
+    if (!sourceOptions) return false;
+
+    return settings.showSource;
+  }
+
   getSourceQuestion() {
+    const { sourceQuestions } = this.props;
+
     if (!sourceQuestions) return null;
 
     const source = this.props.formData['sale.sourceId'];

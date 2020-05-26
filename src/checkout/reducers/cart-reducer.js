@@ -10,6 +10,13 @@ const initialState = {
   shippingOptions: null,
   paymentMethods: null,
   summary: null,
+
+  tracking: {
+    sourceId: null,
+    sourceUid: null,
+    sendResponseUid: null,
+    emailResponseUid: null,
+  },
 };
 
 export const cartReducer = (state = initialState, action) => {
