@@ -4,6 +4,7 @@ import { types } from 'checkout/actions';
 const initialState = {
   cartUid: null,
   status: null,
+  currency: null,
   sale: null,
   items: null,
   customer: null,
@@ -33,6 +34,7 @@ export const cartReducer = (state = initialState, action) => {
         ...state,
         cartUid: action.result.cartUid,
         status: action.result.status,
+        currency: action.result.currency,
         customer: customer,
         sale: action.result.sale,
         items: action.result.items,

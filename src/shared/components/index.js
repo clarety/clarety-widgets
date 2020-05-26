@@ -6,6 +6,7 @@ export * from './donation/VariableAmountLg';
 
 export * from './express-checkout/PayPalBtn';
 
+export * from './misc/Currency';
 export * from './misc/inject-stripe';
 export * from './misc/ScrollIntoView';
 

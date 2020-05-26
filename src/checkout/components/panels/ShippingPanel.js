@@ -1,8 +1,7 @@
 import React from 'react';
 import { Form, Spinner } from 'react-bootstrap';
-import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
+import { PanelContainer, PanelHeader, PanelBody, Currency } from 'shared/components';
 import { BasePanel, Button } from 'checkout/components';
-import { currency } from 'shared/utils';
 
 export class ShippingPanel extends BasePanel {
   onPressNext = async () => {
@@ -88,7 +87,7 @@ export class ShippingPanel extends BasePanel {
 
         <Form.Check.Label>
           <span className="name">{option.label}</span>
-          <span className="cost">{currency(option.amount)}</span>
+          <span className="cost"><Currency>{option.amount}</Currency></span>
         </Form.Check.Label>
 
         {option.expectedDelivery && <p className="date">Estimated Delivery Date: {option.expectedDelivery}</p>}

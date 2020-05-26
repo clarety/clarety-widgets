@@ -43,6 +43,18 @@ export const getTrackingData = (state) => getCart(state).tracking;
 
 export const getRecaptcha = (state) => getCart(state).recaptcha;
 
+export const getCurrency = (state) => {
+  if (state.cart && state.cart.currency) {
+    return state.cart.currency;
+  }
+
+  if (state.settings && state.settings.currency) {
+    return state.settings.currency;
+  }
+
+  return { symbol: '$', code: undefined };
+};
+
 export const getSourceOptions = (state) => {
   // TODO:::::: where do these come from??
 
