@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 import { ClaretyApi } from 'clarety-utils';
-import { statuses, setStatus, setRecaptcha, setPayment, updateCartData, prepareStripePayment } from 'shared/actions';
+import { statuses, setStatus, setRecaptcha, setPayment, updateCartData, prepareStripePayment, isStripe } from 'shared/actions';
 import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { types, addDonationToCart, addCustomerToCart } from 'donate/actions';
@@ -37,10 +37,8 @@ export const makePayment = (paymentData, { isPageLayout } = {}) => {
 
 const attemptPayment = (paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
-    const isStripe = paymentMethod.gateway === 'stripe' || paymentMethod.gateway === 'stripe-sca';
-
     if (paymentData.type === 'gatewaycc') {
-      return isStripe
+      return isStripe(paymentMethod)
         ? dispatch(attemptStripePayment(paymentData, paymentMethod))
         : dispatch(attemptCreditCardPayment(paymentData, paymentMethod));
     }
@@ -154,9 +152,7 @@ const handlePaymentResult = (result, paymentData, paymentMethod) => {
 
 const handlePaymentAuthorise = (result, paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
-    const isStripe = paymentMethod.gateway === 'stripe' || paymentMethod.gateway === 'stripe-sca';
-
-    if (isStripe) {
+    if (isStripe(paymentMethod)) {
       return handleStripe3dSecure(result, paymentData, paymentMethod);
     }
 

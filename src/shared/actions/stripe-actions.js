@@ -1,5 +1,9 @@
 import { CardNumberElement } from '@stripe/react-stripe-js';
 
+export function isStripe(paymentMethod) {
+  return paymentMethod.gateway === 'stripe' || paymentMethod.gateway === 'stripe-sca';
+}
+
 export const prepareStripePayment = (paymentData, paymentMethod, frequency) => {
   return async (dispatch, getState) => {
     const result = frequency === 'recurring'
