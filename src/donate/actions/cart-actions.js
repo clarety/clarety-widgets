@@ -1,4 +1,4 @@
-import { addItem, updateItem, clearItems, setCustomer } from 'shared/actions';
+import { addItem, updateItem, clearItems, setCustomer, setTrackingData } from 'shared/actions';
 import { getCart, getParsedFormData } from 'shared/selectors';
 import { getDonationPanelSelection, getSalelineDescription } from 'donate/selectors';
 

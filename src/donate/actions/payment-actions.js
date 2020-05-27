@@ -1,7 +1,6 @@
 import Cookies from 'js-cookie';
-import { CardNumberElement } from '@stripe/react-stripe-js';
 import { ClaretyApi } from 'clarety-utils';
-import { statuses, setStatus, setRecaptcha, setPayment, updateCartData } from 'shared/actions';
+import { statuses, setStatus, setRecaptcha, setPayment, updateCartData, prepareStripePayment } from 'shared/actions';
 import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { types, addDonationToCart, addCustomerToCart } from 'donate/actions';
@@ -28,10 +27,9 @@ export const makePayment = (paymentData, { isPageLayout } = {}) => {
       dispatch(addCustomerToCart());
     }
 
-    const paymentType = paymentData.type;
-    const paymentMethod = getPaymentMethod(state, paymentType);
+    const paymentMethod = getPaymentMethod(state, paymentData.type);
 
-    if (paymentType === 'gatewaycc') {
+    if (paymentData.type === 'gatewaycc') {
       if (paymentMethod.gateway === 'stripe' || paymentMethod.gateway === 'stripe-sca') {
         const result = await dispatch(makeStripePayment(paymentData, paymentMethod));
         return dispatch(handleStripePaymentResult(result, paymentData, paymentMethod));
@@ -41,12 +39,12 @@ export const makePayment = (paymentData, { isPageLayout } = {}) => {
       }
     }
 
-    if (paymentType === 'gatewaydd') {
+    if (paymentData.type === 'gatewaydd') {
       const result = await dispatch(makeDirectDebitPayment(paymentData, paymentMethod));
       return dispatch(handlePaymentResult(result));
     }
 
-    throw new Error(`makePayment not handled for paymentType: ${paymentType}`);
+    throw new Error(`makePayment not handled for paymentType: ${paymentData.type}`);
   };
 };
 
@@ -55,72 +53,15 @@ const makeStripePayment = (paymentData, paymentMethod) => {
     const state = getState();
     const frequency = getSelectedFrequency(state);
 
-    if (frequency === 'single') {
-      return dispatch(makeStripeSinglePayment(paymentData, paymentMethod));
+    const result = await dispatch(prepareStripePayment(paymentData, paymentMethod, frequency));
+
+    if (result.errors) {
+      dispatch(setErrors(result.errors));
+      dispatch(setStatus(statuses.ready));
+      return false;
     } else {
-      return dispatch(makeStripeRecurringPayment(paymentData, paymentMethod));
-    }
-  };
-};
-
-const makeStripeSinglePayment = (paymentData, paymentMethod) => {
-  return async (dispatch, getState) => {
-    const { stripe, elements } = paymentData;
-
-    const { error, paymentMethod: token } = await stripe.createPaymentMethod({
-      type: 'card',
-      card: elements.getElement(CardNumberElement),
-      billing_details: {
-        name: paymentData.cardName
-      },
-    });
-
-    if (error) {
-      return dispatch(handleStripeError(error));
-    } else {
-      dispatch(setPayment({
-        type: paymentMethod.type,
-        gateway: paymentMethod.gateway,
-        gatewayToken: token.id,
-      }));
+      dispatch(setPayment(result.payment));
     
-      // Attempt payment.
-      const postData = getPaymentPostData(getState());
-      dispatch(makePaymentRequest(postData));
-    
-      const results = await ClaretyApi.post('donations/', postData);
-      return results[0];
-    }
-  };
-};
-
-const makeStripeRecurringPayment = (paymentData, paymentMethod) => {
-  return async (dispatch, getState) => {
-    const { stripe, elements } = paymentData;
-
-    const clientSecret = paymentMethod.setupIntentSecret;
-
-    const data = {
-      payment_method: {
-        card: elements.getElement(CardNumberElement),
-        billing_details: {
-          name: paymentData.cardName,
-        },
-      },
-    };
-
-    const { error, setupIntent } = await stripe.confirmCardSetup(clientSecret, data);
-
-    if (error) {
-      return dispatch(handleStripeError(error));
-    } else {
-      dispatch(setPayment({
-        type: paymentMethod.type,
-        gateway: paymentMethod.gateway,
-        gatewayToken: setupIntent.payment_method,
-      }));
-    
-      // Attempt payment.
       const postData = getPaymentPostData(getState());
       dispatch(makePaymentRequest(postData));
     
