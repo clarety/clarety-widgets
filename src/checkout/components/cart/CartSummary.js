@@ -54,7 +54,7 @@ const TotalLine = ({ label, value }) => {
     <Row as="dl">
       <dt className="col">{label}</dt>
       <dd className="col text-right">
-        <Currency>{value}</Currency>
+        <Currency amount={value} />
       </dd>
     </Row>
   );

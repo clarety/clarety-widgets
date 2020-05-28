@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { getCurrency } from 'shared/selectors';
 
-export const _Currency = ({ currency, children }) => (
+export const _Currency = ({ currency, amount }) => (
   <React.Fragment>
-    {currency.code} {currency.symbol}{children}
+    {currency.code} {currency.symbol}{(amount || 0).toFixed(2)}
   </React.Fragment>
 );
 

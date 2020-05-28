@@ -14,7 +14,7 @@ export const CartItem = ({ item }) => (
       <Row as="dl">
         <dt className="col">Amount</dt>
         <dd className="col text-right">
-          <Currency>{item.total}</Currency>
+          <Currency amount={item.total} />
         </dd>
       </Row>
 
