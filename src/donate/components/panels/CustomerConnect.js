@@ -15,7 +15,7 @@ export class CustomerConnect {
       tracking: getTrackingData(state),
 
       emailReadonly: getCustomerHasProfile(state),
-      defaultCountry: getSetting(state, 'defaultCountry') || 'AU',
+      defaultCountry: getSetting(state, 'defaultCountry'),
 
       sourceOptions: getSourceOptions(state),
     };

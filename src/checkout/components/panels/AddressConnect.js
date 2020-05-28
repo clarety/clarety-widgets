@@ -9,7 +9,7 @@ export class AddressConnect {
       isBusy: state.status === statuses.busy,
       customer: state.cart.customer,
       errors: state.errors,
-      defaultCountry: getSetting(state, 'defaultCountry') || 'AU',
+      defaultCountry: getSetting(state, 'defaultCountry'),
     };
   };
   
