@@ -137,7 +137,7 @@ export class DonationPanel extends BasePanel {
           <Row>
             <Col lg={lg}>
               <Form.Group controlId="givingType">
-                <Form.Label>Giving Type</Form.Label>
+                <Form.Label>Give To</Form.Label>
                 <SelectInput
                   field="saleline.givingType"
                   options={options}
