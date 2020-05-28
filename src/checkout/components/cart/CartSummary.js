@@ -20,6 +20,8 @@ class _CartSummary extends React.Component {
         <hr />
         
         {cart.summary && <CartTotals summary={cart.summary} />}
+
+        <a href="shop?showCart=true" className="btn btn-link btn-edit-cart">Edit Cart</a>
       </div>
     );
   }
