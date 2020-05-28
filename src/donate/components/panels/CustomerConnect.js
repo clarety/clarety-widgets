@@ -1,4 +1,4 @@
-import { getSetting, getTrackingData, getSourceOptions, getSourceQuestions } from 'shared/selectors';
+import { getSetting, getTrackingData, getSourceOptions } from 'shared/selectors';
 import { getFormData, getErrors } from 'form/selectors';
 import { setErrors } from 'form/actions';
 import { getIsBusy, getCustomerHasProfile } from 'donate/selectors';
@@ -18,7 +18,6 @@ export class CustomerConnect {
       defaultCountry: getSetting(state, 'defaultCountry') || 'AU',
 
       sourceOptions: getSourceOptions(state),
-      sourceQuestions: getSourceQuestions(state),
     };
   };
 

@@ -56,31 +56,21 @@ export const getCurrency = (state) => {
 };
 
 export const getSourceOptions = (state) => {
-  // TODO:::::: where do these come from??
+  // TODO: get from explain...
 
   return [
-    { value: '293', label: 'Propel' },
-    { value: '295', label: 'Can You See Me' },
-    { value: '209', label: 'Book' },
-    { value: '9',   label: 'Event' },
-    { value: '7',   label: 'Church' },
-    { value: '5',   label: 'Google Search' },
-    { value: '1',   label: 'Friend' },
-    { value: '267', label: 'Walk for Freedom' },
-    { value: '17',  label: 'Instagram' },
-    { value: '19',  label: 'Twitter' },
-    { value: '2',   label: 'Facebook' },
-    { value: '3',   label: 'YouTube' },
-    { value: '163', label: 'TBN' },
+    { value: '209', label: 'Book',   additionalDescription: 'What is the name of the book?',    additionalRequired: false },
+    { value: '9',   label: 'Event',  additionalDescription: 'What was the name of the event?',  additionalRequired: true  },
+    { value: '7',   label: 'Church', additionalDescription: 'What is the name of your church?', additionalRequired: true  },
+    { value: '293', label: 'Propel',           },
+    { value: '295', label: 'Can You See Me',   },
+    { value: '5',   label: 'Google Search',    },
+    { value: '1',   label: 'Friend',           },
+    { value: '267', label: 'Walk for Freedom', },
+    { value: '17',  label: 'Instagram',        },
+    { value: '19',  label: 'Twitter',          },
+    { value: '2',   label: 'Facebook',         },
+    { value: '3',   label: 'YouTube',          },
+    { value: '163', label: 'TBN',              },
   ];
-};
-
-export const getSourceQuestions = (state) => {
-  // TODO:::::: where do these come from??
-
-  return {
-    '7':   { question: 'What is the name of your church?', isRequired: true },
-    '209': { question: 'What is the name of the book?',    isRequired: false },
-    '9':   { question: 'What was the name of the event?',  isRequired: true },
-  };
 };

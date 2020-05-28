@@ -65,8 +65,8 @@ export class CustomerPanel extends BasePanel {
     if (this.shouldShowSourceFields()) {
       requiredField(errors, formData, 'sale.sourceId');
 
-      const question = this.getSourceQuestion();
-      if (question && question.isRequired) {
+      const sourceOption = this.getSelectedSourceOption();
+      if (sourceOption && sourceOption.additionalRequired) {
         requiredField(errors, formData, 'sale.sourceAdditional');
       }
     }
@@ -276,7 +276,7 @@ export class CustomerPanel extends BasePanel {
   renderSourceFields() {
     if (!this.shouldShowSourceFields()) return null;
 
-    const sourceQuestion = this.getSourceQuestion();
+    const sourceOption = this.getSelectedSourceOption();
 
     return (
       <React.Fragment>
@@ -294,14 +294,14 @@ export class CustomerPanel extends BasePanel {
           </Col>
         </Form.Row>
 
-        {sourceQuestion &&
+        {sourceOption &&
           <Form.Row>
             <Col>
               <Form.Group controlId="customerSourceAdditional">
-                <Form.Label>{sourceQuestion.question}</Form.Label>
+                <Form.Label>{sourceOption.additionalDescription}</Form.Label>
                 <TextInput
                   field="sale.sourceAdditional"
-                  required={sourceQuestion.isRequired}
+                  required={sourceOption.additionalRequired}
                   testId="source-additional-input"
                 />
               </Form.Group>
@@ -321,15 +321,9 @@ export class CustomerPanel extends BasePanel {
     return settings.showSource;
   }
 
-  getSourceQuestion() {
-    const { sourceQuestions } = this.props;
-
-    if (!sourceQuestions) return null;
-
-    const source = this.props.formData['sale.sourceId'];
-    if (!source) return null;
-
-    return sourceQuestions[source];
+  getSelectedSourceOption() {
+    const sourceValue = this.props.formData['sale.sourceId'];
+    return this.props.sourceOptions.find(option => option.value === sourceValue);
   }
 
   renderDone() {

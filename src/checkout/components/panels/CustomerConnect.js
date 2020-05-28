@@ -1,6 +1,6 @@
 import { statuses } from 'shared/actions';
 import { setFormData } from 'form/actions';
-import { getSetting, getTrackingData, getSourceOptions, getSourceQuestions } from 'shared/selectors';
+import { getSetting, getTrackingData, getSourceOptions } from 'shared/selectors';
 
 export class CheckoutCustomerConnect {
   static mapStateToProps = (state) => {
@@ -13,7 +13,6 @@ export class CheckoutCustomerConnect {
       tracking: getTrackingData(state),
 
       sourceOptions: getSourceOptions(state),
-      sourceQuestions: getSourceQuestions(state),
     };
   };
   
