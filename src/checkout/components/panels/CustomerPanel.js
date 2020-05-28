@@ -226,7 +226,7 @@ export class CheckoutCustomerPanel extends BasePanel {
   renderSourceFields() {
     if (!this.shouldShowSourceFields()) return null;
 
-    const sourceOption = this.getSourceOption();
+    const sourceOption = this.getSelectedSourceOption();
 
     return (
       <React.Fragment>
@@ -270,7 +270,7 @@ export class CheckoutCustomerPanel extends BasePanel {
   }
 
   getSelectedSourceOption() {
-    const sourceValue = this.props.formData['sale.sourceId'];
+    const sourceValue = this.state.formData['sale.sourceId'];
     return this.props.sourceOptions.find(option => option.value === sourceValue);
   }
 
