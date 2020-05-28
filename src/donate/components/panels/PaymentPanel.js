@@ -48,7 +48,6 @@ export class PaymentPanel extends BasePaymentPanel {
   
   renderCartSummary() {
     const { frequency, amount } = this.props;
-
     const label = frequency === 'recurring'
       ? 'Monthly Donation Amount:'
       : 'Donation Amount:';

@@ -40,6 +40,22 @@ export const getFrequencyLabel = (state, offerUid) => {
   return offer ? offer.label : '';
 };
 
+export const getSchedules = (state) => {
+  const offer = getSelectedOffer(state);
+  return offer.schedules;
+}
+
+export const getScheduleLabel = (state) => {
+  const selection = getDonationPanelSelection(state);
+  const schedules = getSchedules(state);
+  const offerPaymentUid = selection.offerPaymentUid;
+  if(schedules && offerPaymentUid){
+    const result = schedules.find(schedule => schedule.offerPaymentUid === offerPaymentUid);
+    return result?result.label:'';
+  }
+  return '';
+};
+
 export const getSelectedOffer = (state) => {
   const donationPanel = getDonationPanel(state);
   const priceHandles = getPriceHandles(state);

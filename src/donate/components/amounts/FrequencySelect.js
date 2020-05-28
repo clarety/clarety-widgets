@@ -16,7 +16,7 @@ const _FrequencySelect = ({ value, options, onChange }) => (
         <ToggleButton
           value={option.value}
           key={option.value}
-          variant="outline-info"
+          variant="outline-secondary"
           data-testid={option.value}
         >
           {option.label}
@@ -26,14 +26,16 @@ const _FrequencySelect = ({ value, options, onChange }) => (
   </div>
 );
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
   const priceHandles = getSetting(state, 'priceHandles');
 
   return {
     value: state.panels.donationPanel.frequency,
     options: priceHandles.map(offer => ({
       value: offer.frequency,
-      label: offer.frequency === 'single' ? 'Single Gift' : 'Monthly Gift',
+      label: offer.frequency === 'single'
+        ? ownProps.singleLabel || 'Single Gift'
+        : ownProps.recurringLabel || 'Monthly Gift',
     })),
   }
 };
