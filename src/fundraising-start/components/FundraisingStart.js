@@ -62,6 +62,10 @@ export class _FundraisingStartRoot extends React.Component {
       pageType: this.props.pageType,
       confirmPageUrl: this.props.confirmPageUrl,
       variant: this.props.variant,
+      currency: {
+        code: this.props.currencyCode,
+        symbol: this.props.currencySymbol,
+      }
     });
 
     setTrackingData({
