@@ -128,14 +128,13 @@ export class DonationPanel extends BasePanel {
   }
 
   renderGivingType() {
-    const { givingTypeOptions:options, layout } = this.props;
+    const { givingTypeOptions:options } = this.props;
 
     if(!options) return (null);
-    const lg = (layout == 'page')?{span:6, offset:3}:undefined;
     return (
         <div className="giving-type">
           <Row>
-            <Col lg={lg}>
+            <Col>
               <Form.Group controlId="givingType">
                 <Form.Label>Give To</Form.Label>
                 <SelectInput
