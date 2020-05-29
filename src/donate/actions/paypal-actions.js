@@ -30,47 +30,45 @@ export const makePayPalPayment = (data, order, authorization) => {
     dispatch(addDonationToCart());
 
     const { payer } = order;
+    const { address } = order.purchase_units[0].shipping;
 
-    if (payer) {
-      // Set cart customer.
-      const customerData = {
-        email: payer.email_address,
-        billing: {},
-      };
+    // Set cart customer.
+    const customerData = {
+      firstName: payer.name.given_name,
+      lastName: payer.name.surname,
+      email: payer.email_address,
+      billing: {
+        address1: address.address_line_1,
+        address2: address.address_line_2,
+        suburb:   address.admin_area_2,
+        state:    address.admin_area_1,
+        postcode: address.postal_code,
+        country:  address.country_code,
+      },
+    };
 
-      if (payer.name) {
-        customerData.firstName = payer.name.given_name;
-        customerData.lastName  = payer.name.surname;
-      }
+    dispatch(setCustomer(customerData));
 
-      if (payer.address) {
-        customerData.billing.address1 = payer.address.address_line_1;
-        customerData.billing.address2 = payer.address.address_line_2;
-        customerData.billing.suburb   = payer.address.admin_area_2;
-        customerData.billing.state    = payer.address.admin_area_1;
-        customerData.billing.postcode = payer.address.postal_code;
-        customerData.billing.country  = payer.address.country_code;
-      }
-
-      dispatch(setCustomer(customerData));
-
-      // Set customer form data.
-      const formData = {
-        'customer.email':            customerData.email,
-        'customer.firstName':        customerData.firstName,
-        'customer.lastName':         customerData.lastName,
-        'customer.billing.address1': customerData.billing.address1,
-        'customer.billing.address2': customerData.billing.address2,
-        'customer.billing.suburb':   customerData.billing.suburb,
-        'customer.billing.state':    customerData.billing.state,
-        'customer.billing.postcode': customerData.billing.postcode,
-        'customer.billing.country':  customerData.billing.country,
-      };
-      dispatch(setFormData(formData));
-    }
+    // Set customer form data.
+    const formData = {
+      'customer.email':            customerData.email,
+      'customer.firstName':        customerData.firstName,
+      'customer.lastName':         customerData.lastName,
+      'customer.billing.address1': customerData.billing.address1,
+      'customer.billing.address2': customerData.billing.address2,
+      'customer.billing.suburb':   customerData.billing.suburb,
+      'customer.billing.state':    customerData.billing.state,
+      'customer.billing.postcode': customerData.billing.postcode,
+      'customer.billing.country':  customerData.billing.country,
+    };
+    dispatch(setFormData(formData));
 
     // Set cart payment.
-    dispatch(setPayment({ type: 'paypal', gatewayToken: order.id }));
+    const paymentData = {
+      type: 'paypal',
+      gatewayToken: order.id,
+    };
+    dispatch(setPayment(paymentData));
 
     // Post payment.
     const state = getState();
