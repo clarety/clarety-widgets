@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import { Form, InputGroup } from 'react-bootstrap';
 import { cleanDecimal } from 'form/utils';
 
-const _VariableAmount = ({ amountInfo, value, isSelected, onChange, currency, onMouseEnter, onMouseLeave }) => {
+const _VariableAmount = ({ amountInfo, value, placeholder, isSelected, onChange, currency, onMouseEnter, onMouseLeave }) => {
   let input = React.createRef();
-
   return (
     <div className="mt-3 mb-1 mx-3">
       <InputGroup>
@@ -13,7 +12,7 @@ const _VariableAmount = ({ amountInfo, value, isSelected, onChange, currency, on
           <InputGroup.Text>{currency.symbol}</InputGroup.Text>
         </InputGroup.Prepend>
         <Form.Control
-          placeholder="Other Amount"
+          placeholder={placeholder || 'Other Amount'}
           ref={input}
           value={value}
           type="tel"
