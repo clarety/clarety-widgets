@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form, Card, InputGroup } from 'react-bootstrap';
 import { cleanDecimal } from 'form/utils';
 
-const _VariableAmountLg = ({ amountInfo, value, isSelected, onChange, currency, onMouseEnter, onMouseLeave }) => {
+const _VariableAmountLg = ({ amountInfo, value, placeholder, isSelected, onChange, currency, onMouseEnter, onMouseLeave }) => {
   let input = React.createRef();
 
   return (
@@ -24,7 +24,7 @@ const _VariableAmountLg = ({ amountInfo, value, isSelected, onChange, currency, 
               <InputGroup.Text>{currency.symbol}</InputGroup.Text>
             </InputGroup.Prepend>
             <Form.Control
-              placeholder="Other Amount"
+              placeholder={placeholder || 'Other Amount'}
               ref={input}
               value={value}
               type="tel"
