@@ -1,32 +1,37 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Form, Card, InputGroup } from 'react-bootstrap';
+import { Form, InputGroup } from 'react-bootstrap';
 import { cleanDecimal } from 'form/utils';
 
 const _VariableAmountLg = ({ amountInfo, value, placeholder, isSelected, onChange, currency, onMouseEnter, onMouseLeave }) => {
   let input = React.createRef();
 
   return (
-    <Card
-      className="mx-1"
-      style={{ cursor: 'pointer' }}
-      bg={isSelected ? 'info' : 'light'}
-      text={isSelected ? 'white' : null}
+    <div
+      className={`variable-amount variable-amount--lg ${isSelected ? 'variable-amount--selected' : ''}`}
       onClick={() => input.current.focus()}
     >
-      <Card.Img src={amountInfo.image} variant="top" />
-      <Card.Body>
-        <Card.Title className="mb-2">{amountInfo.title}</Card.Title>
-        <Card.Text>{amountInfo.description}</Card.Text>
-        <div>
+      <div
+        className="suggested-amount__image"
+        style={{ background: `url(${amountInfo.image}) center center / cover` }}
+      />
+      <div className="suggested-amount__body">
+        <div className="suggested-amount__title">
+          {amountInfo.title}
+        </div>
+        <div className="suggested-amount__text">
+          {amountInfo.description}
+        </div>
+        <div className="suggested-amount__input">
           <InputGroup>
             <InputGroup.Prepend>
-              <InputGroup.Text>{currency.symbol}</InputGroup.Text>
+              <InputGroup.Text>{currency.code} {currency.symbol}</InputGroup.Text>
             </InputGroup.Prepend>
+            
             <Form.Control
+              value={value}
               placeholder={placeholder || 'Other Amount'}
               ref={input}
-              value={value}
               type="tel"
               onFocus={event => onChange(event.target.value)}
               onChange={event => onChange(cleanDecimal(event.target.value))}
@@ -36,15 +41,13 @@ const _VariableAmountLg = ({ amountInfo, value, placeholder, isSelected, onChang
             />
           </InputGroup>
         </div>
-      </Card.Body>
-    </Card>
+      </div>
+    </div>
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    currency: state.settings.currency,
-  }
-};
+const mapStateToProps = (state, ownProps) => ({
+  currency: state.settings.currency,
+});
 
 export const VariableAmountLg = connect(mapStateToProps)(_VariableAmountLg);
