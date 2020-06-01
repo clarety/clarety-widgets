@@ -87,7 +87,7 @@ const handlePaymentResult = (result, paymentData, paymentMethod) => {
       case 'error':     return dispatch(handlePaymentError(result, paymentData, paymentMethod));
       case 'authorise': return dispatch(handlePaymentAuthorise(result, paymentData, paymentMethod));
       case 'complete':  return dispatch(handlePaymentComplete(result, paymentData, paymentMethod));
-      default: throw new Error('handlePaymentResult not implemented for payment method', paymentMethod);
+      default: throw new Error('handlePaymentResult not implemented for status: ' + result.status);
     }    
   }
 };
@@ -104,7 +104,7 @@ const handlePaymentAuthorise = (result, paymentData, paymentMethod) => {
       return dispatch(handleStripeAuthorise(result, paymentData, paymentMethod));
     }
 
-    throw new Error('handlePaymentAuthorise not implemented for payment method', paymentMethod);
+    throw new Error('handlePaymentAuthorise not implemented for payment method: ' + JSON.stringify(paymentMethod));
   };
 };
 

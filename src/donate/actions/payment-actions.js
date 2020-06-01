@@ -29,9 +29,10 @@ export const makePayment = (paymentData, { isPageLayout } = {}) => {
     }
 
     const paymentMethod = getPaymentMethod(state, paymentData.type);
+    const frequency = getSelectedFrequency(state);
 
     // Prepare payment.
-    const prepared = await dispatch(preparePayment(paymentData, paymentMethod));
+    const prepared = await dispatch(preparePayment(paymentData, paymentMethod, frequency));
     if (!prepared) return false;
 
     // Attempt payment.
@@ -43,12 +44,10 @@ export const makePayment = (paymentData, { isPageLayout } = {}) => {
   };
 };
 
-const preparePayment = (paymentData, paymentMethod) => {
+const preparePayment = (paymentData, paymentMethod, frequency) => {
   return async (dispatch, getState) => {
     // Stripe payment.
     if (isStripe(paymentMethod)) {
-      const state = getState();
-      const frequency = getSelectedFrequency(state);
       const result = await dispatch(prepareStripePayment(paymentData, paymentMethod, frequency));
 
       if (result.validationErrors) {
@@ -91,7 +90,7 @@ const handlePaymentResult = (result, paymentData, paymentMethod) => {
       case 'error':     return dispatch(handlePaymentError(result, paymentData, paymentMethod));
       case 'authorise': return dispatch(handlePaymentAuthorise(result, paymentData, paymentMethod));
       case 'complete':  return dispatch(handlePaymentComplete(result, paymentData, paymentMethod));
-      default: throw new Error('handlePaymentResult not implemented for payment method', paymentMethod);
+      default: throw new Error('handlePaymentResult not implemented for status:  ' + result.status);
     }    
   }
 };
@@ -111,7 +110,7 @@ const handlePaymentAuthorise = (result, paymentData, paymentMethod) => {
       return dispatch(handleStripeAuthorise(result, paymentData, paymentMethod));
     }
 
-    throw new Error('handlePaymentAuthorise not implemented for payment method', paymentMethod);
+    throw new Error('handlePaymentAuthorise not implemented for payment method: ' +  JSON.stringify(paymentMethod));
   };
 };
 
