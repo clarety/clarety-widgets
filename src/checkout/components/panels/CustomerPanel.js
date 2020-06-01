@@ -272,7 +272,7 @@ export class CheckoutCustomerPanel extends BasePanel {
 
   getSelectedSourceOption() {
     const sourceValue = this.state.formData['sale.sourceId'];
-    return this.props.sourceOptions.find(option => option.value === sourceValue);
+    return this.props.sourceOptions.find(option => option.value == sourceValue);
   }
 
   renderDone() {

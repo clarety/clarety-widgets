@@ -18,6 +18,13 @@ export const getSetting = (state, setting) => getSettings(state)[setting];
 export const getIsResumed = (state) => getSetting(state, 'isResumed');
 export const getVariant = (state) => getSetting(state, 'variant');
 
+export const getElement = (state, property) => {
+  const elements = getSetting(state, 'elements');
+  if (!elements) return null;
+
+  return elements.find(element => element.property === property);
+};
+
 export const getIsCartComplete = (state) => getCart(state).status === 'Complete';
 
 export const getOrganisation = (state) => getCart(state).organisation;
@@ -56,21 +63,6 @@ export const getCurrency = (state) => {
 };
 
 export const getSourceOptions = (state) => {
-  // TODO: get from explain...
-
-  return [
-    { value: '209', label: 'Book',   additionalDescription: 'What is the name of the book?',    additionalRequired: false },
-    { value: '9',   label: 'Event',  additionalDescription: 'What was the name of the event?',  additionalRequired: true  },
-    { value: '7',   label: 'Church', additionalDescription: 'What is the name of your church?', additionalRequired: true  },
-    { value: '293', label: 'Propel',           },
-    { value: '295', label: 'Can You See Me',   },
-    { value: '5',   label: 'Google Search',    },
-    { value: '1',   label: 'Friend',           },
-    { value: '267', label: 'Walk for Freedom', },
-    { value: '17',  label: 'Instagram',        },
-    { value: '19',  label: 'Twitter',          },
-    { value: '2',   label: 'Facebook',         },
-    { value: '3',   label: 'YouTube',          },
-    { value: '163', label: 'TBN',              },
-  ];
+  const element = getElement(state, 'sourceId');
+  return element ? element.options : undefined;
 };
