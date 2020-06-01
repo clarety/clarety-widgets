@@ -25,7 +25,29 @@ export const prepareStripePayment = (paymentData, paymentMethod, frequency) => {
   };
 };
 
-export const createStripeSingleToken = async (paymentData, paymentMethod) => {
+export const authoriseStripePayment = (paymentResult, paymentData, paymentMethod) => {
+  return async (dispatch, getState) => {
+    const { stripe } = paymentData;
+    const clientSecret = paymentResult.authoriseSecret;
+
+    const result = await stripe.handleCardAction(clientSecret);
+
+    if (result.error) {
+      const validationErrors = [{ message: result.error.message }];
+      return { validationErrors };
+    }
+
+    const payment = {
+      type: paymentMethod.type,
+      gateway: paymentMethod.gateway,
+      gatewayAuthorised: 'passed',
+    };
+
+    return { payment };
+  };
+};
+
+const createStripeSingleToken = async (paymentData, paymentMethod) => {
   const { stripe, elements } = paymentData;
 
   const data = {
@@ -44,7 +66,7 @@ export const createStripeSingleToken = async (paymentData, paymentMethod) => {
   };
 };
 
-export const createStripeRecurringToken = async (paymentData, paymentMethod) => {
+const createStripeRecurringToken = async (paymentData, paymentMethod) => {
   const { stripe, elements } = paymentData;
 
   const clientSecret = paymentMethod.setupIntentSecret;

@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 import { ClaretyApi } from 'clarety-utils';
-import { statuses, setStatus, setRecaptcha, setPayment, updateCartData, prepareStripePayment, isStripe } from 'shared/actions';
+import { statuses, setStatus, setRecaptcha, setPayment, updateCartData, isStripe, prepareStripePayment, authoriseStripePayment } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
 import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
@@ -108,7 +108,7 @@ const handlePaymentError = (result, paymentData, paymentMethod) => {
 const handlePaymentAuthorise = (result, paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     if (isStripe(paymentMethod)) {
-      return dispatch(handleStripe3dSecure(result, paymentData, paymentMethod));
+      return dispatch(handleStripeAuthorise(result, paymentData, paymentMethod));
     }
 
     throw new Error('handlePaymentAuthorise not implemented for payment method', paymentMethod);
@@ -135,23 +135,17 @@ const handlePaymentComplete = (result, paymentData, paymentMethod) => {
   }
 };
 
-const handleStripe3dSecure = (result, paymentData, paymentMethod) => {
+const handleStripeAuthorise = (paymentResult, paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
-    const { stripe } = paymentData;
-    const clientSecret = result.authoriseSecret;
-    const { error, paymentIntent } = await stripe.handleCardAction(clientSecret);
+    const result = await dispatch(authoriseStripePayment(paymentResult, paymentData, paymentMethod));
 
-    if (error) {
-      dispatch(setErrors([{ message: error.message }]));
+    if (result.validationErrors) {
+      dispatch(setErrors(result.validationErrors));
       dispatch(setStatus(statuses.ready));
       return false;
     } else {
       // Prepare payment.
-      dispatch(setPayment({
-        type: paymentMethod.type,
-        gateway: paymentMethod.gateway,
-        gatewayAuthorised: 'passed',
-      }));
+      dispatch(setPayment(result.payment));
 
       // Attempt payment.
       const result = await dispatch(attemptPayment(paymentData, paymentMethod));
