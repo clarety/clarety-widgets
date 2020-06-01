@@ -1,9 +1,11 @@
+import { getCart } from 'shared/selectors';
+
 export const hasSelectedShippingOption = (state) => {
   return !!state.formData['sale.shippingUid'];
 };
 
 export const getSelectedShippingOptionLabel = (state) => {
-  const { shippingOptions } = state.cart;
+  const { shippingOptions } = getCart(state);
   if (!shippingOptions) return '';
 
   const shippingUid = state.formData['sale.shippingUid'];
@@ -13,7 +15,9 @@ export const getSelectedShippingOptionLabel = (state) => {
   return option.label;
 };
 
-export const getPaymentMethods = (state) => state.cart.paymentMethods;
+export const getPaymentMethods = (state) => getCart(state).paymentMethods;
+
+export const getPaymentPostData = (state) => getCart(state).payment;
 
 export const getPaymentMethod = (state, type) => {
   const methods = getPaymentMethods(state);

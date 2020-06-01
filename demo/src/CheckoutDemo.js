@@ -39,12 +39,11 @@ Checkout.setPanels([
       showCountry: true,
     },
   },
-  // NOTE: shipping-options endpoint currenlty returns an empty array.
-  // {
-  //   component: ShippingPanel,
-  //   connect: ShippingConnect,
-  //   settings: {},
-  // },
+  {
+    component: ShippingPanel,
+    connect: ShippingConnect,
+    settings: {},
+  },
   {
     component: PaymentPanel,
     connect: PaymentConnect,

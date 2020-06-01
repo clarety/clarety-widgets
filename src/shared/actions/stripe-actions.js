@@ -11,8 +11,8 @@ export const prepareStripePayment = (paymentData, paymentMethod, frequency) => {
       : await createStripeSingleToken(paymentData, paymentMethod);
 
     if (result.error) {
-      const errors = [{ message: result.error.message }];
-      return { errors };
+      const validationErrors = [{ message: result.error.message }];
+      return { validationErrors };
     }
 
     const payment = {
@@ -40,7 +40,7 @@ export const createStripeSingleToken = async (paymentData, paymentMethod) => {
 
   return {
     error: result.error,
-    token: result.paymentMethod.id,
+    token: result.paymentMethod ? result.paymentMethod.id : undefined,
   };
 };
 

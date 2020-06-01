@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 import { ClaretyApi } from 'clarety-utils';
 import { statuses, setStatus, setRecaptcha, setPayment, updateCartData, prepareStripePayment, isStripe } from 'shared/actions';
+import { getSetting } from 'shared/selectors';
 import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { types, addDonationToCart, addCustomerToCart } from 'donate/actions';
@@ -10,7 +11,7 @@ export const makePayment = (paymentData, { isPageLayout } = {}) => {
   return async (dispatch, getState) => {
     const state = getState();
 
-    if (state.status !== statuses.ready) return;
+    if (state.status !== statuses.ready) return false;
     dispatch(setStatus(statuses.busy));
 
     // ReCaptcha.
@@ -21,81 +22,54 @@ export const makePayment = (paymentData, { isPageLayout } = {}) => {
       return false;
     }
 
+    // Update cart in page layout.
     if (isPageLayout) {
-      // Update cart.
       dispatch(addDonationToCart());
       dispatch(addCustomerToCart());
     }
 
     const paymentMethod = getPaymentMethod(state, paymentData.type);
-    const attempt = await dispatch(attemptPayment(paymentData, paymentMethod));
-    const result = await dispatch(handlePaymentResult(attempt, paymentData, paymentMethod));
 
-    return result;
+    // Prepare payment.
+    const prepared = await dispatch(preparePayment(paymentData, paymentMethod));
+    if (!prepared) return false;
+
+    // Attempt payment.
+    const result = await dispatch(attemptPayment(paymentData, paymentMethod));
+    if (!result) return false;
+
+    // Handle result.
+    return await dispatch(handlePaymentResult(result, paymentData, paymentMethod));
+  };
+};
+
+const preparePayment = (paymentData, paymentMethod) => {
+  return async (dispatch, getState) => {
+    // Stripe payment.
+    if (isStripe(paymentMethod)) {
+      const state = getState();
+      const frequency = getSelectedFrequency(state);
+      const result = await dispatch(prepareStripePayment(paymentData, paymentMethod, frequency));
+
+      if (result.validationErrors) {
+        dispatch(setErrors(result.validationErrors));
+        dispatch(setStatus(statuses.ready));
+        return false;
+      } else {
+        dispatch(setPayment(result.payment));
+        return true;
+      }
+    }
+    
+    // Standard payment.
+    dispatch(setPayment(paymentData));
+    return true;
   };
 };
 
 const attemptPayment = (paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
-    if (paymentData.type === 'gatewaycc') {
-      return isStripe(paymentMethod)
-        ? dispatch(attemptStripePayment(paymentData, paymentMethod))
-        : dispatch(attemptCreditCardPayment(paymentData, paymentMethod));
-    }
-
-    if (paymentData.type === 'gatewaydd') {
-      return dispatch(attemptDirectDebitPayment(paymentData, paymentMethod));
-    }
-
-    throw new Error('attemptPayment not implemented for payment method', paymentMethod);
-  };
-};
-
-const attemptStripePayment = (paymentData, paymentMethod) => {
-  return async (dispatch, getState) => {
     const state = getState();
-    const frequency = getSelectedFrequency(state);
-
-    const result = await dispatch(prepareStripePayment(paymentData, paymentMethod, frequency));
-
-    if (result.errors) {
-      dispatch(setErrors(result.errors));
-      dispatch(setStatus(statuses.ready));
-      return false;
-    } else {
-      dispatch(setPayment(result.payment));
-    
-      const postData = getPaymentPostData(getState());
-      dispatch(makePaymentRequest(postData));
-    
-      const results = await ClaretyApi.post('donations/', postData);
-      return results[0];
-    }
-  };
-};
-
-const attemptCreditCardPayment = (paymentData, paymentMethod) => {
-  return async (dispatch, getState) => {
-    let state = getState();
-  
-    dispatch(setPayment(paymentData));
-  
-    state = getState();
-    const postData = getPaymentPostData(state);
-    dispatch(makePaymentRequest(postData));
-  
-    const results = await ClaretyApi.post('donations/', postData);
-    return results[0];
-  };
-};
-
-const attemptDirectDebitPayment = (paymentData, paymentMethod) => {
-  return async (dispatch, getState) => {
-    let state = getState();
-  
-    dispatch(setPayment(paymentData));
-  
-    state = getState();
     const postData = getPaymentPostData(state);
     dispatch(makePaymentRequest(postData));
   
@@ -106,58 +80,59 @@ const attemptDirectDebitPayment = (paymentData, paymentMethod) => {
 
 const handlePaymentResult = (result, paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
-    if (!result) return;
+    dispatch(updateCartData({
+      uid: result.uid,
+      jwt: result.jwt,
+      status: result.status,
+      customer: result.customer,
+    }));
 
-    if (result.status === 'authorise') {
-      return dispatch(handlePaymentAuthorise(result, paymentData, paymentMethod));
-    }
-
-    const { settings } = getState();
-
-    if (result.validationErrors) {
-      dispatch(makePaymentFailure(result));
-
-      dispatch(updateCartData({
-        uid: result.uid,
-        jwt: result.jwt,
-        status: result.status,
-        customer: result.customer,
-      }));
-
-      dispatch(setErrors(result.validationErrors));
-      dispatch(setStatus(statuses.ready));
-      return false;
-    } else {
-      dispatch(makePaymentSuccess(result));
-
-      dispatch(updateCartData({
-        uid: result.uid,
-        jwt: result.jwt,
-        status: result.status,
-        customer: result.customer,
-        items: result.salelines,
-      }));
-
-      if (settings.confirmPageUrl) {
-        // Redirect on success.
-        Cookies.set('session-jwt', result.jwt);
-        window.location.href = settings.confirmPageUrl;
-      } else {
-        dispatch(setStatus(statuses.ready));
-        return true;
-      }
-    }
+    switch (result.status) {
+      case 'error':     return dispatch(handlePaymentError(result, paymentData, paymentMethod));
+      case 'authorise': return dispatch(handlePaymentAuthorise(result, paymentData, paymentMethod));
+      case 'complete':  return dispatch(handlePaymentComplete(result, paymentData, paymentMethod));
+      default: throw new Error('handlePaymentResult not implemented for payment method', paymentMethod);
+    }    
   }
+};
+
+const handlePaymentError = (result, paymentData, paymentMethod) => {
+  return async (dispatch, getState) => {
+    dispatch(makePaymentFailure(result));
+    dispatch(setErrors(result.validationErrors));
+    dispatch(setStatus(statuses.ready));
+    return false;
+  };
 };
 
 const handlePaymentAuthorise = (result, paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     if (isStripe(paymentMethod)) {
-      return handleStripe3dSecure(result, paymentData, paymentMethod);
+      return dispatch(handleStripe3dSecure(result, paymentData, paymentMethod));
     }
 
     throw new Error('handlePaymentAuthorise not implemented for payment method', paymentMethod);
   };
+};
+
+const handlePaymentComplete = (result, paymentData, paymentMethod) => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const confirmPageUrl = getSetting(state, 'confirmPageUrl');
+    
+    dispatch(makePaymentSuccess(result));
+    dispatch(updateCartData({ items: result.salelines }));
+
+    if (confirmPageUrl) {
+      // Redirect on success.
+      Cookies.set('session-jwt', result.jwt);
+      window.location.href = settings.confirmPageUrl;
+      return false;
+    } else {
+      dispatch(setStatus(statuses.ready));
+      return true;
+    }
+  }
 };
 
 const handleStripe3dSecure = (result, paymentData, paymentMethod) => {
@@ -171,24 +146,19 @@ const handleStripe3dSecure = (result, paymentData, paymentMethod) => {
       dispatch(setStatus(statuses.ready));
       return false;
     } else {
-      dispatch(updateCartData({
-        uid: result.uid,
-        jwt: result.jwt,
-        status: result.status,
-        customer: result.customer,
-      }));
-  
+      // Prepare payment.
       dispatch(setPayment({
         type: paymentMethod.type,
         gateway: paymentMethod.gateway,
         gatewayAuthorised: 'passed',
       }));
-  
-      const postData = getPaymentPostData(getState());
-      dispatch(makePaymentRequest(postData));
-    
-      const results = await ClaretyApi.post('donations/', postData);
-      return dispatch(handlePaymentResult(results[0], paymentData, paymentMethod));
+
+      // Attempt payment.
+      const result = await dispatch(attemptPayment(paymentData, paymentMethod));
+      if (!result) return false;
+
+      // Handle result.
+      return await dispatch(handlePaymentResult(result, paymentData, paymentMethod));
     }
   };
 };

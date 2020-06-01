@@ -56,14 +56,6 @@ export const cartReducer = (state = initialState, action) => {
         customer: action.customer,
       };
 
-    // Logout
-
-    case sharedTypes.logoutSuccess:
-      return {
-        ...state,
-        customer: null,
-      };
-
     // Shipping Options
 
     case types.fetchShippingOptionsSuccess:
@@ -78,6 +70,22 @@ export const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         paymentMethods: action.results,
+      };
+
+    // Payment
+
+    case sharedTypes.setPayment:
+      return {
+        ...state,
+        payment: action.payment,
+      };
+
+    // Logout
+
+    case sharedTypes.logoutSuccess:
+      return {
+        ...state,
+        customer: null,
       };
 
     default:
