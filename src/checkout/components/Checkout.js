@@ -61,7 +61,7 @@ export class Checkout extends React.Component {
       this.setState({ isCartComplete: getIsCartComplete(state) });
     }
 
-    await Checkout.store.dispatch(fetchSettings('checkout/', { storeUid: this.props.storeUid }));
+    await Checkout.store.dispatch(fetchSettings('checkout/', { cartUid: jwtSession.cartUid }));
 
     this.setState({ isReady: true });
   }
