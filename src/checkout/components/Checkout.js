@@ -6,7 +6,7 @@ import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import { ClaretyApi } from 'clarety-utils';
 import { Resources, getJwtSession, getJwtAccount } from 'shared/utils';
 import { PanelManager } from 'shared/components';
-import { setPanels, setClientIds, setAuth, updateAppSettings } from 'shared/actions';
+import { setPanels, setClientIds, setAuth, fetchSettings, updateAppSettings } from 'shared/actions';
 import { getIsCartComplete } from 'shared/selectors';
 import { Recaptcha } from 'form/components';
 import { fetchCart, fetchCustomer } from 'checkout/actions';
@@ -60,6 +60,8 @@ export class Checkout extends React.Component {
       const state = Checkout.store.getState();
       this.setState({ isCartComplete: getIsCartComplete(state) });
     }
+
+    await Checkout.store.dispatch(fetchSettings('checkout/', { storeUid: this.props.storeUid }));
 
     this.setState({ isReady: true });
   }

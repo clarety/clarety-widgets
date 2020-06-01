@@ -1,4 +1,4 @@
-import { getCart } from 'shared/selectors';
+import { getSetting, getCart } from 'shared/selectors';
 
 export const hasSelectedShippingOption = (state) => {
   return !!state.formData['sale.shippingUid'];
@@ -15,11 +15,24 @@ export const getSelectedShippingOptionLabel = (state) => {
   return option.label;
 };
 
-export const getPaymentMethods = (state) => getCart(state).paymentMethods;
+export const getPaymentMethods = (state) => {
+  const availableMethods = getSetting(state, 'paymentMethods');
+  const allowedMethods = getCart(state).paymentMethods;
 
-export const getPaymentPostData = (state) => getCart(state).payment;
+  // Return all methods if we don't know which are allowed yet.
+  if (!allowedMethods || !allowedMethods.length) {
+    return availableMethods;
+  }
+
+  // Filter out any methods that aren't allowed.
+  return availableMethods.filter(availableMethod => {
+    return !!allowedMethods.find(allowedMethod => allowedMethod.type === availableMethod.type);
+  });
+};
 
 export const getPaymentMethod = (state, type) => {
-  const methods = getPaymentMethods(state);
-  return methods.find(method => method.type === type);
+  const paymentMethods = getSetting(state, 'paymentMethods');
+  return paymentMethods.find(method => method.type === type);
 };
+
+export const getPaymentPostData = (state) => getCart(state).payment;
