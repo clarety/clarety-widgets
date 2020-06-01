@@ -121,14 +121,14 @@ const handlePaymentComplete = (result, paymentData, paymentMethod) => {
 
 const handleStripeAuthorise = (paymentResult, paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
-    const result = await dispatch(authoriseStripePayment(paymentResult, paymentData, paymentMethod));
+    const authResult = await dispatch(authoriseStripePayment(paymentResult, paymentData, paymentMethod));
 
-    if (result.validationErrors) {
-      dispatch(makePaymentFailure(result));
+    if (authResult.validationErrors) {
+      dispatch(makePaymentFailure(authResult));
       return false;
     } else {
       // Prepare payment.
-      dispatch(setPayment(result.payment));
+      dispatch(setPayment(authResult.payment));
 
       // Attempt payment.
       const result = await dispatch(attemptPayment(paymentData, paymentMethod));
