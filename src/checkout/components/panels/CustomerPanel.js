@@ -227,6 +227,7 @@ export class CheckoutCustomerPanel extends BasePanel {
     if (!this.shouldShowSourceFields()) return null;
 
     const sourceOption = this.getSelectedSourceOption();
+    const showQuestion = sourceOption && sourceOption.additionalDescription;
 
     return (
       <React.Fragment>
@@ -243,7 +244,7 @@ export class CheckoutCustomerPanel extends BasePanel {
           </Col>
         </Form.Row>
 
-        {sourceOption &&
+        {showQuestion &&
           <Form.Row>
             <Col>
               <TextInput

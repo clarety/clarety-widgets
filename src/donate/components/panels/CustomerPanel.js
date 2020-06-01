@@ -277,6 +277,7 @@ export class CustomerPanel extends BasePanel {
     if (!this.shouldShowSourceFields()) return null;
 
     const sourceOption = this.getSelectedSourceOption();
+    const showQuestion = sourceOption && sourceOption.additionalDescription;
 
     return (
       <React.Fragment>
@@ -294,7 +295,7 @@ export class CustomerPanel extends BasePanel {
           </Col>
         </Form.Row>
 
-        {sourceOption &&
+        {showQuestion &&
           <Form.Row>
             <Col>
               <Form.Group controlId="customerSourceAdditional">
