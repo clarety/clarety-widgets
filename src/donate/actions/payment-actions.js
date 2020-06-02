@@ -125,7 +125,7 @@ const handlePaymentComplete = (result, paymentData, paymentMethod) => {
     if (confirmPageUrl) {
       // Redirect on success.
       Cookies.set('session-jwt', result.jwt);
-      window.location.href = settings.confirmPageUrl;
+      window.location.href = confirmPageUrl;
       return false;
     } else {
       dispatch(setStatus(statuses.ready));
