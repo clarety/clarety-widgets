@@ -283,8 +283,8 @@ export class _PaymentPanel extends BasePanel {
           value={this.props.formData['payment.type']}
           onChange={this.onSelectPaymentType}
         >
-          {showCC && <ToggleButton value="gatewaycc" variant="outline-info">Credit Card</ToggleButton>}
-          {showDD && <ToggleButton value="gatewaydd" variant="outline-info">Direct Debit</ToggleButton>}
+          {showCC && <ToggleButton value="gatewaycc" variant="outline-secondary">Credit Card</ToggleButton>}
+          {showDD && <ToggleButton value="gatewaydd" variant="outline-secondary">Direct Debit</ToggleButton>}
         </ToggleButtonGroup>
       </div>
     );
