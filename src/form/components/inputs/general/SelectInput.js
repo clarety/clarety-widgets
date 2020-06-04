@@ -16,7 +16,7 @@ class _SelectInput extends React.Component {
   }
 
   render() {
-    const { value, options, placeholder, testId, error, onChange } = this.props;
+    const { value, options, placeholder, testId, error, hideErrors, onChange } = this.props;
 
     return (
       <React.Fragment>
@@ -33,7 +33,7 @@ class _SelectInput extends React.Component {
             <option key={option.value} value={option.value}>{option.label}</option>
           )}
         </Form.Control>
-        <FieldError error={error} />
+        {!hideErrors && <FieldError error={error} />}
       </React.Fragment>
     );
   }
