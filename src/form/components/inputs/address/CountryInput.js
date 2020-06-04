@@ -1,9 +1,9 @@
 import React from 'react';
 import { countryOptions } from 'shared/utils';
-import { SimpleSelectInput } from 'registration/components';
+import { SelectInput } from 'form/components';
 
 export const CountryInput = (props) => (
-  <SimpleSelectInput
+  <SelectInput
     {...props}
     options={countryOptions}
   />

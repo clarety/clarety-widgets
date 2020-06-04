@@ -1,3 +1,5 @@
+@import '~bootstrap/scss/bootstrap.scss';
+
 $white:      #FFFFFF;
 $light-grey: #CCCCCC;
 $mid-grey:   #999999;
@@ -68,6 +70,11 @@ $xl: 1200px;
     dl {
       margin-left: 64px;
     }
+  }
+
+  .btn-edit-cart {
+    display: block;
+    margin: 20px auto 0;
   }
 
   .panel {
@@ -147,6 +154,11 @@ $xl: 1200px;
       color: $mid-grey;
       font-size: 13px;
     }
+  }
+
+  .StripeElement {
+    @extend .form-control;
+    padding: 8px;
   }
 
   // Hide number 'spinner' input controls.

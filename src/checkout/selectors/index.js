@@ -1,22 +1,38 @@
+import { getSetting, getCart } from 'shared/selectors';
+
 export const hasSelectedShippingOption = (state) => {
-  return !!state.formData['sale.shippingOption'];
+  return !!state.formData['sale.shippingUid'];
 };
 
 export const getSelectedShippingOptionLabel = (state) => {
-  const { shippingOptions, sale } = state.cart;
+  const { shippingOptions } = getCart(state);
+  if (!shippingOptions) return '';
 
-  if (shippingOptions && sale) {
-    const option = shippingOptions.find(option => option.uid === sale.shippingOption);
+  const shippingUid = state.formData['sale.shippingUid'];
+  const option = shippingOptions.find(option => option.shippingUid === shippingUid);
+  if (!option) return '';
 
-    if (option) return option.label;
+  return option.label;
+};
+
+export const getPaymentMethods = (state) => {
+  const availableMethods = getSetting(state, 'paymentMethods');
+  const allowedMethods = getCart(state).paymentMethods;
+
+  // Return all methods if we don't know which are allowed yet.
+  if (!allowedMethods || !allowedMethods.length) {
+    return availableMethods;
   }
 
-  return '';
+  // Filter out any methods that aren't allowed.
+  return availableMethods.filter(availableMethod => {
+    return !!allowedMethods.find(allowedMethod => allowedMethod.type === availableMethod.type);
+  });
 };
-
-export const getPaymentMethods = (state) => state.cart.paymentMethods;
 
 export const getPaymentMethod = (state, type) => {
-  const methods = getPaymentMethods(state);
-  return methods.find(method => method.type === type);
+  const paymentMethods = getSetting(state, 'paymentMethods');
+  return paymentMethods.find(method => method.type === type);
 };
+
+export const getPaymentPostData = (state) => getCart(state).payment;

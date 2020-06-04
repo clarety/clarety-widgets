@@ -4,12 +4,20 @@ import { types } from 'checkout/actions';
 const initialState = {
   cartUid: null,
   status: null,
+  currency: null,
   sale: null,
   items: null,
   customer: null,
   shippingOptions: null,
   paymentMethods: null,
   summary: null,
+
+  tracking: {
+    sourceId: null,
+    sourceUid: null,
+    sendResponseUid: null,
+    emailResponseUid: null,
+  },
 };
 
 export const cartReducer = (state = initialState, action) => {
@@ -26,6 +34,7 @@ export const cartReducer = (state = initialState, action) => {
         ...state,
         cartUid: action.result.cartUid,
         status: action.result.status,
+        currency: action.result.currency,
         customer: customer,
         sale: action.result.sale,
         items: action.result.items,
@@ -47,14 +56,6 @@ export const cartReducer = (state = initialState, action) => {
         customer: action.customer,
       };
 
-    // Logout
-
-    case sharedTypes.logoutSuccess:
-      return {
-        ...state,
-        customer: null,
-      };
-
     // Shipping Options
 
     case types.fetchShippingOptionsSuccess:
@@ -69,6 +70,22 @@ export const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         paymentMethods: action.results,
+      };
+
+    // Payment
+
+    case sharedTypes.setPayment:
+      return {
+        ...state,
+        payment: action.payment,
+      };
+
+    // Logout
+
+    case sharedTypes.logoutSuccess:
+      return {
+        ...state,
+        customer: null,
       };
 
     default:

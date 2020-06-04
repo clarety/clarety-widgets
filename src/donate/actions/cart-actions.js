@@ -1,6 +1,5 @@
-import { addItem, updateItem, clearItems, setCustomer } from 'shared/actions';
-import { getCart } from 'shared/selectors';
-import { parseNestedElements } from 'shared/utils';
+import { addItem, updateItem, clearItems, setCustomer, setTrackingData } from 'shared/actions';
+import { getCart, getParsedFormData } from 'shared/selectors';
 import { getDonationPanelSelection, getSalelineDescription } from 'donate/selectors';
 
 export const adjustDonation = (amount) => {
@@ -40,8 +39,17 @@ export const addDonationToCart = () => {
 export const addCustomerToCart = () => {
   return (dispatch, getState) => {
     const state = getState();
-    const formData = parseNestedElements(state.formData);
+    const formData = getParsedFormData(state);
+
     dispatch(setCustomer(formData.customer));
+
+    // Set sale source.
+    if (formData.sale && formData.sale.sourceId) {
+      dispatch(setTrackingData({
+        sourceId:         formData.sale.sourceId,
+        sourceAdditional: formData.sale.sourceAdditional,
+      }));
+    }
 
     return true;
   };

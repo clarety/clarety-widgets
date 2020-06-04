@@ -3,12 +3,17 @@ import { connect } from 'react-redux';
 import { Alert } from 'react-bootstrap';
 
 const _ErrorMessages = ({ errors }) => {
-  if (!errors || errors.length === 0) return null;
+  if (!errors || !errors.length) return null;
 
   return (
     <Alert variant="danger" className="error-messages">
-      <ul className="ml-3 mb-0 list-unstyled">
-        {errors.map((error, idx) => <li key={idx}>{error.message}</li>)}
+      <ul className="list-unstyled">
+        {errors.map((error, index) =>
+          <li
+            key={index}
+            dangerouslySetInnerHTML={{ __html: error.message }}
+          />
+        )}
       </ul>
     </Alert>
   );

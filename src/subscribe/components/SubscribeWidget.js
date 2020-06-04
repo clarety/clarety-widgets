@@ -58,6 +58,7 @@ export class _SubscribeWidgetRoot extends React.Component {
     setPanelSettings('CustomerPanel', {
       nameOption: this.props.nameOption,
       buttonText: this.props.buttonText,
+      showCountry: this.props.showCountry,
     });
 
     const { sourceUid, responseId, emailResponseId } = this.props;

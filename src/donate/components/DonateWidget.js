@@ -60,27 +60,31 @@ export class DonateWidget extends React.Component {
 
 export class _DonateWidgetRoot extends React.Component {
   async componentWillMount() {
-    const { updateAppSettings, setStore, setTrackingData, fetchSettings, handleUrlParams, fetchCustomer } = this.props;
     const { storeUid, singleOfferId, recurringOfferId } = this.props;
-    const { sourceId, responseId, emailResponseId } = this.props;
-    const { variant, confirmPageUrl, fundraisingPageUid } = this.props;
+    const { updateAppSettings, setStore, setTrackingData, fetchSettings, handleUrlParams, fetchCustomer } = this.props;
 
     if (!singleOfferId && !recurringOfferId) throw new Error('[Clarety] Either a singleOfferId or recurringOfferId prop is required');
 
-    let givingTypeOptions = undefined;
-    if(this.props.givingTypeOptions) {
-      givingTypeOptions = this.props.givingTypeOptions.map(option => ({value:option, label:option}));
-    }
+    const givingTypeOptions = this.props.givingTypeOptions
+      ? this.props.givingTypeOptions.map(option => ({ value: option, label: option }))
+      : undefined;
 
     updateAppSettings({
-      variant: variant,
-      confirmPageUrl: confirmPageUrl,
-      fundraisingPageUid: fundraisingPageUid,
-      givingTypeOptions: givingTypeOptions,
+      variant:            this.props.variant,
+      confirmPageUrl:     this.props.confirmPageUrl,
+      defaultCountry:     this.props.defaultCountry,
+      fundraisingPageUid: this.props.fundraisingPageUid,
+      givingTypeOptions:  givingTypeOptions,
     });
 
     setStore(storeUid);
-    setTrackingData({ sourceId, responseId, emailResponseId });
+
+    setTrackingData({
+      sourceId:         this.props.sourceId,
+      sourceAdditional: this.props.sourceAdditional,
+      responseId:       this.props.responseId,
+      emailResponseId:  this.props.emailResponseId,
+    });
 
     const jwtCustomer = getJwtCustomer();
     if (jwtCustomer) {

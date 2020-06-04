@@ -1,20 +1,13 @@
 import React from 'react';
 import { getStateOptions } from 'shared/utils';
-import { SelectInput } from 'form/components';
+import { SelectInput, TextInput } from 'form/components';
 
-export const StateInput = ({ field, placeholder, country, required }) => {
-  if (placeholder && required) placeholder += ' *';
+export const StateInput = ({ country, ...props }) => {
+  const stateOptions = getStateOptions(country);
 
-  return (
-    <SelectInput
-      field={field}
-      options={getStateOptions(country)}
-      placeholder={placeholder}
-      required={required}
-    />
-  );
-};
-
-StateInput.defaultProps = {
-  country: 'AU',
+  if (stateOptions) {
+    return <SelectInput options={stateOptions} {...props} />;
+  } else {
+    return <TextInput {...props} />;
+  }
 };

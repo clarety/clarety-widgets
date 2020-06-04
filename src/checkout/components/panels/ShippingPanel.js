@@ -1,18 +1,17 @@
 import React from 'react';
 import { Form, Spinner } from 'react-bootstrap';
-import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
+import { PanelContainer, PanelHeader, PanelBody, Currency } from 'shared/components';
 import { BasePanel, Button } from 'checkout/components';
-import { currency } from 'shared/utils';
 
 export class ShippingPanel extends BasePanel {
-  onPressContinue = async () => {
+  onPressNext = async () => {
     const { canContinue, nextPanel } = this.props;
-    if (!canContinue) return;
-    nextPanel();
+
+    if (canContinue) nextPanel();
   };
 
-  onSelectOption = uid => {
-    this.props.setFormData({ 'sale.shippingOption': uid });
+  onSelectOption = (uid) => {
+    this.props.setFormData({ 'sale.shippingUid': uid });
     this.props.updateSale(uid);
   };
 
@@ -67,7 +66,7 @@ export class ShippingPanel extends BasePanel {
         <div className="panel-actions">
           <Button
             title="Continue"
-            onClick={this.onPressContinue}
+            onClick={this.onPressNext}
             isBusy={isBusy}
             disabled={!canContinue}
           />
@@ -76,22 +75,22 @@ export class ShippingPanel extends BasePanel {
     );
   }
 
-  renderShippingOption = (option, index) => {
+  renderShippingOption = (option) => {
     return (
-      <Form.Check type="radio" id={option.uid} key={option.uid} className="shipping-option">
+      <Form.Check type="radio" id={option.shippingUid} key={option.shippingUid} className="shipping-option">
         <Form.Check.Input
           type="radio"
           name="shippingOption"
-          checked={this.props.selectedOptionUid === option.uid}
-          onChange={() => this.onSelectOption(option.uid)}
+          checked={this.props.selectedOptionUid === option.shippingUid}
+          onChange={() => this.onSelectOption(option.shippingUid)}
         />
 
         <Form.Check.Label>
           <span className="name">{option.label}</span>
-          <span className="cost">{currency(option.cost)}</span>
+          <span className="cost"><Currency amount={option.amount} /></span>
         </Form.Check.Label>
 
-        {option.date && <p className="date">Estimated Delivery Date: {option.date}</p>}
+        {option.expectedDelivery && <p className="date">Estimated Delivery Date: {option.expectedDelivery}</p>}
       </Form.Check>
     );
   };

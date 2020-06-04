@@ -32,6 +32,7 @@ const SubscribeDemo = () => (
                   caseTypeUid="ctp_q6oq"
                   nameOption="firstandlast"
                   buttonText="Sign Up Now!"
+                  showCountry={true}
                   reCaptchaKey="6LdBAbkUAAAAAKmGXpndv5B8JP7T9oOEoVmztVp9"
                 />
               </div>

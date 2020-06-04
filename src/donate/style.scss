@@ -7,7 +7,7 @@
     text-align: center;
   }
 
-  .giving-type{
+  .giving-type {
     padding-top: 15px;
   }
 
@@ -64,6 +64,11 @@
       background: black;
       flex-grow: 1;
     }
+  }
+
+  .StripeElement {
+    @extend .form-control;
+    padding: 8px;
   }
 
   .terms-checkbox {

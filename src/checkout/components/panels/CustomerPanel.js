@@ -1,11 +1,11 @@
 import React from 'react';
 import { Form, Col } from 'react-bootstrap';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { FormContext } from 'shared/utils';
-import { BasePanel, TextInput, PhoneInput, DobInput, Button } from 'checkout/components';
+import { FormContext, customerTypeOptions } from 'shared/utils';
+import { BasePanel, TextInput, SelectInput, PhoneInput, DobInput, Button } from 'checkout/components';
 
 export class CheckoutCustomerPanel extends BasePanel {
-  onPressContinue = event => {
+  onPressNext = event => {
     event.preventDefault();
 
     if (this.validate()) {
@@ -16,17 +16,35 @@ export class CheckoutCustomerPanel extends BasePanel {
 
   validate() {
     const { settings } = this.props;
+    const { formData } = this.state;
 
     const errors = [];
+
+    if (settings.showCustomerType) {
+      this.validateRequired('customer.type', errors);
+    }
+
+    if (formData['customer.type'] === 'business') {
+      this.validateRequired('customer.businessName', errors);
+    }
 
     this.validateRequired('customer.firstName', errors);
     this.validateRequired('customer.lastName', errors);
 
-    this.validateRequired('customer.dateOfBirthDay', errors);
-    this.validateRequired('customer.dateOfBirthMonth', errors);
-    this.validateRequired('customer.dateOfBirthYear', errors);
+    if (settings.showDob) {
+      this.validateRequired('customer.dateOfBirthDay', errors);
+      this.validateRequired('customer.dateOfBirthMonth', errors);
+      this.validateRequired('customer.dateOfBirthYear', errors);
+    }
 
-    if (settings.showSource) this.validateRequired('sale.source', errors);
+    if (this.shouldShowSourceFields()) {
+      this.validateRequired('sale.sourceId', errors);
+
+      const sourceOption = this.getSelectedSourceOption();
+      if (sourceOption && sourceOption.additionalRequired) {
+        this.validateRequired('sale.sourceAdditional', errors);
+      }
+    }
 
     this.setState({ errors });
     return errors.length === 0;
@@ -54,6 +72,8 @@ export class CheckoutCustomerPanel extends BasePanel {
   checkForErrors() {
     let foundError = false;
 
+    if (this.hasError('customer.type'))             foundError = true;
+    if (this.hasError('customer.businessName'))     foundError = true;
     if (this.hasError('customer.firstName'))        foundError = true;
     if (this.hasError('customer.lastName'))         foundError = true;
     if (this.hasError('customer.phone1'))           foundError = true;
@@ -73,6 +93,8 @@ export class CheckoutCustomerPanel extends BasePanel {
 
     if (customer) {
       formData = {
+        'customer.type':             customer.type,
+        'customer.businessName':     customer.businessName,
         'customer.firstName':        customer.firstName,
         'customer.lastName':         customer.lastName,
         'customer.phone1':           customer.phone1,
@@ -107,6 +129,9 @@ export class CheckoutCustomerPanel extends BasePanel {
 
   renderEdit() {
     const { layout, isBusy, index, settings } = this.props;
+    const { formData } = this.state;
+
+    const showBusinessName = formData['customer.type'] === 'business';
 
     return (
       <PanelContainer layout={layout}>
@@ -119,7 +144,32 @@ export class CheckoutCustomerPanel extends BasePanel {
         
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
           <FormContext.Provider value={this.state}>
-            <Form onSubmit={this.onPressContinue}>
+            <Form onSubmit={this.onPressNext}>
+
+              {settings.showCustomerType &&
+                <Form.Row>
+                  <Col>
+                    <SelectInput
+                      field="customer.type"
+                      label="Type"
+                      options={customerTypeOptions}
+                      initialValue={customerTypeOptions[0].value}
+                      testId="customer-type-input"
+                      hideLabel
+                      required
+                    />
+                  </Col>
+                </Form.Row>
+              }
+
+              {showBusinessName &&
+                <Form.Row>
+                  <Col>
+                    <TextInput field="customer.businessName" label="Business Name" hideLabel required />
+                  </Col>
+                </Form.Row>
+              }
+
               <Form.Row>
                 <Col sm={6}>
                   <TextInput field="customer.firstName" label="First Name" hideLabel required />
@@ -146,26 +196,22 @@ export class CheckoutCustomerPanel extends BasePanel {
                 </Col>
               </Form.Row>
 
-              <Form.Row>
-                <Col>
-                  <DobInput
-                    label="Date of Birth"
-                    field="customer.dateOfBirth"
-                    dayField="customer.dateOfBirthDay"
-                    monthField="customer.dateOfBirthMonth"
-                    yearField="customer.dateOfBirthYear"
-                    required
-                  />
-                </Col>
-              </Form.Row>
-
-              {settings.showSource &&
+              {settings.showDob &&
                 <Form.Row>
                   <Col>
-                    <TextInput field="sale.source" label="How did you hear about us?" hideLabel required />
+                    <DobInput
+                      label="Date of Birth"
+                      field="customer.dateOfBirth"
+                      dayField="customer.dateOfBirthDay"
+                      monthField="customer.dateOfBirthMonth"
+                      yearField="customer.dateOfBirthYear"
+                      required
+                    />
                   </Col>
                 </Form.Row>
               }
+
+              {this.renderSourceFields()}
 
               <div className="panel-actions">
                 <Button title="Continue" type="submit" />
@@ -175,6 +221,58 @@ export class CheckoutCustomerPanel extends BasePanel {
         </PanelBody>
       </PanelContainer>
     );
+  }
+
+  renderSourceFields() {
+    if (!this.shouldShowSourceFields()) return null;
+
+    const sourceOption = this.getSelectedSourceOption();
+    const showQuestion = sourceOption && sourceOption.additionalDescription;
+
+    return (
+      <React.Fragment>
+        <Form.Row>
+          <Col>
+            <SelectInput
+              field="sale.sourceId"
+              placeholder="How did you hear about us?"
+              options={this.props.sourceOptions}
+              testId="source-id-input"
+              hideLabel
+              required
+            />
+          </Col>
+        </Form.Row>
+
+        {showQuestion &&
+          <Form.Row>
+            <Col>
+              <TextInput
+                field="sale.sourceAdditional"
+                label={sourceOption.additionalDescription}
+                required={sourceOption.additionalRequired}
+                testId="source-additional-input"
+                hideLabel
+              />
+            </Col>
+          </Form.Row>
+        }
+      </React.Fragment>
+    );
+  }
+
+  shouldShowSourceFields() {
+    const { tracking, sourceOptions, settings } = this.props;
+
+    if (tracking.sourceId) return false;
+    if (!sourceOptions) return false;
+
+    return settings.showSource;
+  }
+
+  getSelectedSourceOption() {
+    const sourceValue = this.state.formData['sale.sourceId'];
+    return this.props.sourceOptions.find(option => option.value == sourceValue);
   }
 
   renderDone() {

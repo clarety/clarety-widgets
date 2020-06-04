@@ -1,5 +1,6 @@
 import { ClaretyApi } from 'clarety-utils';
 import { setStatus } from 'shared/actions';
+import { setErrors } from 'form/actions';
 import { getSettings } from 'shared/selectors';
 import { getCampaignPostData } from 'fundraising-start/selectors';
 import { types } from './types';

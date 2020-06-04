@@ -6,7 +6,7 @@ import { ClaretyApi } from 'clarety-utils';
 import { setStatus, setAuth, setPanels, setClientIds, updateAppSettings, setTrackingData } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources, getJwtAccount } from 'shared/utils';
-import { Recaptcha } from 'form/components';
+import { Recaptcha, ErrorMessages } from 'form/components';
 import { fetchCustomer } from 'checkout/actions';
 import { rootReducer } from 'fundraising-start/reducers';
 
@@ -62,6 +62,10 @@ export class _FundraisingStartRoot extends React.Component {
       pageType: this.props.pageType,
       confirmPageUrl: this.props.confirmPageUrl,
       variant: this.props.variant,
+      currency: {
+        code: this.props.currencyCode,
+        symbol: this.props.currencySymbol,
+      }
     });
 
     setTrackingData({
@@ -93,6 +97,7 @@ export class _FundraisingStartRoot extends React.Component {
 
     return (
       <div className="clarety-fundraising-start h-100">
+        <ErrorMessages />
         <PanelManager layout="accordian" resources={this.props.resources} />
         <Recaptcha siteKey={this.props.reCaptchaKey} />
       </div>

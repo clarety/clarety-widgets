@@ -1,10 +1,10 @@
 import Cookies from 'js-cookie';
 import { ClaretyApi } from 'clarety-utils';
+import { setPayment, isStripe, prepareStripePayment, authoriseStripePayment } from 'shared/actions';
 import { getCart } from 'shared/selectors';
 import { getPath, getJwtSession } from 'shared/utils';
-import { createStripeToken, parseStripeError } from 'donate/utils';
 import { types } from 'checkout/actions';
-import { getPaymentMethod } from 'checkout/selectors';
+import { getPaymentMethod, getPaymentPostData } from 'checkout/selectors';
 
 export const fetchPaymentMethods = () => {
   return async (dispatch, getState) => {
@@ -29,48 +29,113 @@ export const makePayment = (paymentData) => {
   return async (dispatch, getState) => {
     const state = getState();
 
-    const cart = getCart(state);
     const paymentMethod = getPaymentMethod(state, paymentData.type);
 
-    const { options } = paymentMethod;
-    
-    if (options && options.gateway === 'stripe') {
-      // Fetch stripe token.
+    // Prepare payment.
+    const prepared = await dispatch(preparePayment(paymentData, paymentMethod));
+    if (!prepared) return false;
 
-      dispatch(stripeTokenRequest(paymentData, options.stripeKey));
+    // Attempt payment.
+    const result = await dispatch(attemptPayment(paymentData, paymentMethod));
+    if (!result) return false;
 
-      const stripeToken = await createStripeToken(paymentData, options.stripeKey);
+    // Handle result.
+    return await dispatch(handlePaymentResult(result, paymentData, paymentMethod));
+  };
+};
 
-      if (stripeToken.error) {
-        const errors = parseStripeError(stripeToken.error);
-        dispatch(stripeTokenFailure(errors));
-        return;
+const preparePayment = (paymentData, paymentMethod) => {
+  return async (dispatch, getState) => {
+    // Stripe payment.
+    if (isStripe(paymentMethod)) {
+      const result = await dispatch(prepareStripePayment(paymentData, paymentMethod));
+
+      if (result.validationErrors) {
+        dispatch(makePaymentFailure(result));
+        return false;
+      } else {
+        dispatch(setPayment(result.payment));
+        return true;
       }
+    }
+    
+    // Standard payment.
+    dispatch(setPayment(paymentData));
+    return true;
+  };
+};
 
-      dispatch(stripeTokenSuccess(stripeToken));
+const attemptPayment = (paymentData, paymentMethod) => {
+  return async (dispatch, getState) => {
+    const state = getState();
 
-      // Overwrite payment data with token.
-      paymentData = { gatewayToken: stripeToken.id };
-    } else {
-      // Carts API has different expiry field names.
-      paymentData.expiryMonth = paymentData.cardExpiryMonth;
-      paymentData.cardExpiryMonth = undefined;
-      paymentData.expiryYear = paymentData.cardExpiryYear;
-      paymentData.cardExpiryYear = undefined;
+    const cart = getCart(state);
+    const postData = getPaymentPostData(state);
+
+    dispatch(makePaymentRequest(postData));
+    const results = await ClaretyApi.post(`carts/${cart.cartUid}/payments/`, postData);
+    return results[0];
+  };
+};
+
+const handlePaymentResult = (result, paymentData, paymentMethod) => {
+  return async (dispatch, getState) => {
+    // TODO: temp api fix.
+    if (result.status === 'Complete') result.status = 'complete';
+
+    switch (result.status) {
+      case 'error':     return dispatch(handlePaymentError(result, paymentData, paymentMethod));
+      case 'authorise': return dispatch(handlePaymentAuthorise(result, paymentData, paymentMethod));
+      case 'complete':  return dispatch(handlePaymentComplete(result, paymentData, paymentMethod));
+      default: throw new Error('handlePaymentResult not implemented for status: ' + result.status);
+    }    
+  }
+};
+
+const handlePaymentError = (result, paymentData, paymentMethod) => {
+  return async (dispatch, getState) => {
+    dispatch(makePaymentFailure(result));
+  };
+};
+
+const handlePaymentAuthorise = (result, paymentData, paymentMethod) => {
+  return async (dispatch, getState) => {
+    if (isStripe(paymentMethod)) {
+      return dispatch(handleStripeAuthorise(result, paymentData, paymentMethod));
     }
 
-    dispatch(makePaymentRequest(paymentData));
+    throw new Error('handlePaymentAuthorise not implemented for payment method: ' + JSON.stringify(paymentMethod));
+  };
+};
 
-    const results = await ClaretyApi.post(`carts/${cart.cartUid}/payments/`, paymentData);
-    const result = results[0];
+const handlePaymentComplete = (result, paymentData, paymentMethod) => {
+  return async (dispatch, getState) => {
+    dispatch(makePaymentSuccess(result));
 
-    if (result.status === 'error' || result.status === 'failed') {
-      dispatch(makePaymentFailure(result));
+    // Redirect on success.
+    const jwtSession = getJwtSession();
+    Cookies.set('jwtConfirm', jwtSession.jwtString);
+    window.location.href = getPath('shop-app-confirm');
+  }
+};
+
+const handleStripeAuthorise = (paymentResult, paymentData, paymentMethod) => {
+  return async (dispatch, getState) => {
+    const authResult = await dispatch(authoriseStripePayment(paymentResult, paymentData, paymentMethod));
+
+    if (authResult.validationErrors) {
+      dispatch(makePaymentFailure(authResult));
+      return false;
     } else {
-      // Redirect on success.
-      const jwtSession = getJwtSession();
-      Cookies.set('jwtConfirm', jwtSession.jwtString);
-      window.location.href = getPath('shop-app-confirm');
+      // Prepare payment.
+      dispatch(setPayment(authResult.payment));
+
+      // Attempt payment.
+      const result = await dispatch(attemptPayment(paymentData, paymentMethod));
+      if (!result) return false;
+
+      // Handle result.
+      return await dispatch(handlePaymentResult(result, paymentData, paymentMethod));
     }
   };
 };
@@ -82,7 +147,7 @@ const fetchPaymentMethodsRequest = () => ({
   type: types.fetchPaymentMethodsRequest,
 });
 
-const fetchPaymentMethodsSuccess = results => ({
+const fetchPaymentMethodsSuccess = (results) => ({
   type: types.fetchPaymentMethodsSuccess,
   results: results,
 });
@@ -93,30 +158,17 @@ const fetchPaymentMethodsFailure = () => ({
 
 // Make Payment
 
-const makePaymentRequest = paymentData => ({
+const makePaymentRequest = (paymentData) => ({
   type: types.makePaymentRequest,
   paymentData: paymentData,
 });
 
-const makePaymentFailure = result => ({
-  type: types.makePaymentFailure,
+const makePaymentSuccess = (result) => ({
+  type: types.makePaymentSuccess,
   result: result,
 });
 
-// Stripe Token
-
-const stripeTokenRequest = (paymentData, stripeKey) => ({
-  type: types.stripeTokenRequest,
-  paymentData: paymentData,
-  stripeKey: stripeKey,
-});
-
-const stripeTokenSuccess = token => ({
-  type: types.stripeTokenSuccess,
-  token: token,
-});
-
-const stripeTokenFailure = errors => ({
-  type: types.stripeTokenFailure,
-  errors: errors,
+const makePaymentFailure = (result) => ({
+  type: types.makePaymentFailure,
+  result: result,
 });

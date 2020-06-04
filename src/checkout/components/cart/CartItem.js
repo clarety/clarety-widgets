@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
-import { currency } from 'shared/utils';
+import { Currency } from 'shared/components';
 
 export const CartItem = ({ item }) => (
   <Row className="cart-item">
@@ -13,7 +13,9 @@ export const CartItem = ({ item }) => (
 
       <Row as="dl">
         <dt className="col">Amount</dt>
-        <dd className="col text-right">{currency(item.total)}</dd>
+        <dd className="col text-right">
+          <Currency amount={item.total} />
+        </dd>
       </Row>
 
       {item.variantDetails && item.variantDetails.map((detail, index) => 

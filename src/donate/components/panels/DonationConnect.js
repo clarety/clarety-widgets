@@ -1,4 +1,4 @@
-import { getSetting } from 'shared/selectors';
+import { getSetting, getTracking } from 'shared/selectors';
 import { clearItems } from 'shared/actions';
 import { getFormData, getErrors } from 'form/selectors';
 import { setErrors } from 'form/actions';

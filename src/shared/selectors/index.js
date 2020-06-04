@@ -18,6 +18,13 @@ export const getSetting = (state, setting) => getSettings(state)[setting];
 export const getIsResumed = (state) => getSetting(state, 'isResumed');
 export const getVariant = (state) => getSetting(state, 'variant');
 
+export const getElement = (state, property) => {
+  const elements = getSetting(state, 'elements');
+  if (!elements) return null;
+
+  return elements.find(element => element.property === property);
+};
+
 export const getIsCartComplete = (state) => getCart(state).status === 'Complete';
 
 export const getOrganisation = (state) => getCart(state).organisation;
@@ -42,3 +49,20 @@ export const getPromoCode = (state) => getCart(state).promoCode;
 export const getTrackingData = (state) => getCart(state).tracking;
 
 export const getRecaptcha = (state) => getCart(state).recaptcha;
+
+export const getCurrency = (state) => {
+  if (state.cart && state.cart.currency) {
+    return state.cart.currency;
+  }
+
+  if (state.settings && state.settings.currency) {
+    return state.settings.currency;
+  }
+
+  return { symbol: '$', code: undefined };
+};
+
+export const getSourceOptions = (state) => {
+  const element = getElement(state, 'sourceId');
+  return element ? element.options : undefined;
+};

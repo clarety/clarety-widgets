@@ -79,10 +79,13 @@ export const setPromoCode = (promoCode) => ({
   promoCode: promoCode,
 });
 
-export const setTrackingData = ({ sourceId, sourceUid, responseId, emailResponseId }) => ({
+export const setTrackingData = ({ sourceId, sourceAdditional, sourceUid, responseId, emailResponseId }) => ({
   type: types.setTrackingData,
+
   sourceId: sourceId,
   sourceUid: sourceUid,
+  sourceAdditional: sourceAdditional,
+  
   responseId: responseId,
   emailResponseId: emailResponseId,
 });

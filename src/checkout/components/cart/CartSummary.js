@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Row } from 'react-bootstrap';
+import { Currency } from 'shared/components';
 import { CartItem, PromoCodeForm } from 'checkout/components';
-import { currency } from 'shared/utils';
 
 class _CartSummary extends React.Component {
   render() {
@@ -20,6 +20,8 @@ class _CartSummary extends React.Component {
         <hr />
         
         {cart.summary && <CartTotals summary={cart.summary} />}
+
+        <a href="shop?showCart=true" className="btn btn-link btn-edit-cart">Edit Cart</a>
       </div>
     );
   }
@@ -53,7 +55,9 @@ const TotalLine = ({ label, value }) => {
   return (
     <Row as="dl">
       <dt className="col">{label}</dt>
-      <dd className="col text-right">{currency(value)}</dd>
+      <dd className="col text-right">
+        <Currency amount={value} />
+      </dd>
     </Row>
   );
 };

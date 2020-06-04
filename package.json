@@ -24,6 +24,8 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.19",
     "@fortawesome/free-solid-svg-icons": "^5.9.0",
     "@fortawesome/react-fontawesome": "^0.1.4",
+    "@stripe/react-stripe-js": "^1.1.2",
+    "@stripe/stripe-js": "^1.5.0",
     "axios": "^0.19.0",
     "axios-mock-adapter": "^1.16.0",
     "card-validator": "^6.2.0",

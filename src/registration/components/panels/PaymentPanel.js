@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
-import { PaymentPanel as BasePaymentPanel } from 'shared/components';
+import { _PaymentPanel as BasePaymentPanel } from 'shared/components';
 import { currency } from 'shared/utils';
 
 export class PaymentPanel extends BasePaymentPanel {
