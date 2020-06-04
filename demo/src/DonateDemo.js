@@ -63,26 +63,33 @@ export default class DonateDemo extends React.Component {
     window.renderDonateWidget({
       elementId: 'donate-widget-demo',
 
-      storeUid: 'str_l9p7',
-      singleOfferId: '8',
-      recurringOfferId: '17',
+      // storeUid: 'str_l9p7',
+      // singleOfferId: '8',
+      // recurringOfferId: '17',
+      storeUid: 'str_8qx4',
+      singleOfferId: '103',
+      recurringOfferId: '105',
       fundraisingPageUid: 'abc-123',
 
       sourceId: '17',
       responseId: 'e9c2e351d90b11e996fd',
       emailResponseId: '1234',
 
-      givingTypeOptions: [
-          "General Donation",
-          "Mission Work",
-          "Children\'s Ministry",
-          "Church Tithe",
-          "Other"
-      ],
+      // givingTypeOptions: [
+      //     "General Donation",
+      //     "Mission Work",
+      //     "Children\'s Ministry",
+      //     "Church Tithe",
+      //     "Other"
+      // ],
 
       // reCaptchaKey: '1234',
 
       showStepIndicator: true,
+
+      // addressFinderKey: 'ADDRESSFINDER_DEMO_KEY',
+      addressFinderKey: 'B6QWYX7U93GELTMCD48J',
+      defaultCountry: 'NZ',
     });
   }
 

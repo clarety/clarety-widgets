@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Col } from 'react-bootstrap';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { FormContext } from 'shared/utils';
+import { FormContext, getStateLabel, getPostcodeLabel } from 'shared/utils';
 import { BasePanel, TextInput, PureCheckboxInput, StateInput, CountryInput, FormElement, Button } from 'checkout/components';
 
 export class AddressPanel extends BasePanel {
@@ -193,11 +193,11 @@ export class AddressPanel extends BasePanel {
 
         <Form.Row>
           <Col>
-            <StateInput field={`${fieldPrefix}.state`} label={country === 'UK' ? 'Region' : 'State'} country={country} required hideLabel={settings.hideLabels} />
+            <StateInput field={`${fieldPrefix}.state`} label={getStateLabel(country)} country={country} required hideLabel={settings.hideLabels} />
           </Col>
 
           <Col>
-            <TextInput field={`${fieldPrefix}.postcode`} label={country === 'US' ? 'Zip Code' : 'Postcode'} type="number" required hideLabel={settings.hideLabels} />
+            <TextInput field={`${fieldPrefix}.postcode`} label={getPostcodeLabel(country)} type="number" required hideLabel={settings.hideLabels} />
           </Col>
         </Form.Row>
       </React.Fragment>

@@ -75,6 +75,7 @@ export class _DonateWidgetRoot extends React.Component {
       defaultCountry:     this.props.defaultCountry,
       fundraisingPageUid: this.props.fundraisingPageUid,
       givingTypeOptions:  givingTypeOptions,
+      addressFinderKey:   this.props.addressFinderKey,
     });
 
     setStore(storeUid);
