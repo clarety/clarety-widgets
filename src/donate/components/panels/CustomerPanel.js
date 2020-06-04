@@ -71,7 +71,7 @@ export class CustomerPanel extends BasePanel {
   onPressDisableAddressFinder = () => this.setState({
     disableAddressFinder: true,
   });
-  
+
   onPressBack = (event) => {
     event.preventDefault();
 
@@ -119,7 +119,11 @@ export class CustomerPanel extends BasePanel {
     emailField(errors, formData, 'customer.email');
 
     requiredField(errors, formData, 'customer.billing.address1');
-    requiredField(errors, formData, 'customer.billing.suburb');
+
+    if (formData['customer.billing.country'] !== 'NZ') {
+      requiredField(errors, formData, 'customer.billing.suburb');
+    }
+
     requiredField(errors, formData, 'customer.billing.state');
     requiredField(errors, formData, 'customer.billing.postcode');
     requiredField(errors, formData, 'customer.billing.country');
