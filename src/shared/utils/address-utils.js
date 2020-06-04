@@ -1,3 +1,11 @@
+export function loadAddressFinder(onLoadCallback) {
+  const script = document.createElement('script');
+  script.src = 'https://api.addressfinder.io/assets/v3/widget.js';
+  script.async = true;
+  script.onload = onLoadCallback;
+  document.body.appendChild(script);
+}
+
 export function getStateOptions(country) {
   switch (country) {
     case 'AU': return auStateOptions;
@@ -6,6 +14,21 @@ export function getStateOptions(country) {
     default:   return undefined;
   }
 };
+
+export function getStateLabel(country) {
+  switch (country) {
+    case 'UK': return 'Region';
+    case 'NZ': return 'City';
+    default:   return 'State';
+  }
+}
+
+export function getPostcodeLabel(country) {
+  switch (country) {
+    case 'US': return 'Zip Code';
+    default:   return 'Postcode';
+  }
+}
 
 export const auStateOptions = [
   { value: 'NSW', label: 'NSW' },

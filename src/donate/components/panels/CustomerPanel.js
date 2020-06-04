@@ -1,16 +1,77 @@
 import React from 'react';
-import { Form, Row, Col } from 'react-bootstrap';
+import { Form, Row, Col, Button } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
-import { requiredField, emailField, customerTypeOptions } from 'shared/utils';
+import { requiredField, emailField, customerTypeOptions, loadAddressFinder, getStateLabel, getPostcodeLabel } from 'shared/utils';
 import { TextInput, EmailInput, StateInput, CountryInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
+  addressFinder = null;
+
+  state = {};
+
   onShowPanel() {
     if (this.props.layout === 'tabs') {
       this.scrollIntoView();
     }
+
+    if (this.shouldUseAddressFinder()) {
+      loadAddressFinder(this.onAddressFinderLoaded);
+    }
   }
 
+  shouldUseAddressFinder() {
+    return this.props.addressFinderKey && this.props.defaultCountry;
+  }
+
+  componentWillUnmount() {
+    if (this.addressFinder) {
+      this.addressFinder.destroy();
+      this.addressFinder = null;
+    }
+  }
+
+  onAddressFinderLoaded = () => {
+    this.addressFinder = new AddressFinder.Widget(
+      document.getElementById('address-finder-input'),
+      this.props.addressFinderKey,
+      this.props.defaultCountry,
+    );
+
+    this.addressFinder.on('result:select', this.onAddressFinderSelect);
+  }
+
+  onAddressFinderSelect = (fullAddress, metaData) => {
+    const { defaultCountry, setFormData } = this.props;
+
+    if (defaultCountry === 'NZ') {
+      const selected = new AddressFinder.NZSelectedAddress(fullAddress, metaData);
+
+      setFormData({
+        'customer.billing.address1': selected.address_line_1(),
+        'customer.billing.address2': selected.address_line_2(),
+        'customer.billing.suburb':   selected.suburb(),
+        'customer.billing.state':    selected.city(),
+        'customer.billing.postcode': selected.postcode(),
+        'customer.billing.country':  'NZ',
+      });
+    }
+
+    if (defaultCountry === 'AU') {
+      setFormData({
+        'customer.billing.address1': metaData.address_line_1,
+        'customer.billing.address2': metaData.address_line_2,
+        'customer.billing.suburb':   metaData.locality_name,
+        'customer.billing.state':    metaData.state_territory,
+        'customer.billing.postcode': metaData.postcode,
+        'customer.billing.country':  'AU',
+      });
+    }
+  };
+
+  onPressDisableAddressFinder = () => this.setState({
+    disableAddressFinder: true,
+  });
+  
   onPressBack = (event) => {
     event.preventDefault();
 
@@ -28,6 +89,7 @@ export class CustomerPanel extends BasePanel {
     const didSubmit = await onSubmit();
     if (!didSubmit) return;
 
+    this.onPressDisableAddressFinder();
     nextPanel();
   };
 
@@ -206,7 +268,27 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderAddressFields() {
+    const { disableAddressFinder } = this.state;
     const country = this.props.formData['customer.billing.country'];
+
+    if (this.shouldUseAddressFinder() && !disableAddressFinder) {
+      return (
+        <React.Fragment>
+          <Form.Row>
+            <Col>
+              <Form.Group>
+                <Form.Label htmlFor="address-finder-input">Address</Form.Label>
+                <Form.Control id="address-finder-input" />
+
+                <Button variant="link" onClick={this.onPressDisableAddressFinder}>
+                  Can't find your address?
+                </Button>
+              </Form.Group>
+            </Col>
+          </Form.Row>
+        </React.Fragment>
+      );
+    }
 
     return (
       <React.Fragment>
@@ -230,13 +312,13 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col sm>
             <Form.Group controlId="state">
-              <Form.Label>{country === 'UK' ? 'Region' : 'State'}</Form.Label>
+              <Form.Label>{getStateLabel(country)}</Form.Label>
               <StateInput field="customer.billing.state" country={country} testId="state-input" />
             </Form.Group>
           </Col>
           <Col sm>
             <Form.Group controlId="postcode">
-              <Form.Label>{country === 'US' ? 'Zip Code' : 'Postcode'}</Form.Label>
+              <Form.Label>{getPostcodeLabel(country)}</Form.Label>
               <PostcodeInput field="customer.billing.postcode" testId="postcode-input" />
             </Form.Group>
           </Col>
