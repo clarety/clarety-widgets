@@ -86,8 +86,8 @@ export default class DonatePageDemo extends React.Component {
 
       // addressFinderKey: 'ADDRESSFINDER_DEMO_KEY',
       addressFinderKey: 'B6QWYX7U93GELTMCD48J',
-      // deafultCountry: 'AU',
-      deafultCountry: 'NZ',
+      // defaultCountry: 'AU',
+      defaultCountry: 'NZ',
     });
   }
 
