@@ -73,6 +73,8 @@ export default class DonatePageDemo extends React.Component {
       //fundraisingPageUid: 'abc-123',
       //confirmPageUrl: 'https://google.com',
       // sourceId: '17',
+
+      defaultFrequency: 'recurring', //single|recurring
       responseId: 'e9c2e351d90b11e996fd',
       emailResponseId: '1234',
       // givingTypeOptions: [

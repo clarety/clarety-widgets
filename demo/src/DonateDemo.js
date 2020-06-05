@@ -75,6 +75,8 @@ export default class DonateDemo extends React.Component {
       responseId: 'e9c2e351d90b11e996fd',
       emailResponseId: '1234',
 
+      defaultFrequency: 'recurring', //single|recurring
+
       // givingTypeOptions: [
       //     "General Donation",
       //     "Mission Work",
