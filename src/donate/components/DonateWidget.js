@@ -9,7 +9,7 @@ import { statuses, setStore, setTrackingData, fetchSettings, updateAppSettings, 
 import { PanelManager } from 'shared/components';
 import { getJwtCustomer, Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
-import { handleUrlParams } from 'donate/actions';
+import { handleUrlParams, selectFrequency } from 'donate/actions';
 import { rootReducer } from 'donate/reducers';
 import { mapDonationSettings, setupDefaultResources } from 'donate/utils';
 import { StepIndicator } from 'donate/components';
@@ -61,7 +61,7 @@ export class DonateWidget extends React.Component {
 export class _DonateWidgetRoot extends React.Component {
   async componentWillMount() {
     const { storeUid, singleOfferId, recurringOfferId } = this.props;
-    const { updateAppSettings, setStore, setTrackingData, fetchSettings, handleUrlParams, fetchCustomer } = this.props;
+    const { updateAppSettings, setStore, setTrackingData, fetchSettings, handleUrlParams, fetchCustomer, selectFrequency } = this.props;
 
     if (!singleOfferId && !recurringOfferId) throw new Error('[Clarety] Either a singleOfferId or recurringOfferId prop is required');
 
@@ -98,6 +98,10 @@ export class _DonateWidgetRoot extends React.Component {
       offerSingle: singleOfferId,
       offerRecurring: recurringOfferId,
     }, mapDonationSettings);
+
+    //select default frequency
+    if(recurringOfferId &&
+      this.props.defaultFrequency === 'recurring') selectFrequency('recurring');
 
     handleUrlParams();
   }
@@ -143,6 +147,7 @@ const actions = {
   updateAppSettings: updateAppSettings,
   handleUrlParams: handleUrlParams,
   fetchCustomer: fetchCustomer,
+  selectFrequency: selectFrequency,
 };
 
 export const connectDonateWidgetRoot = connect(mapStateToProps, actions);
