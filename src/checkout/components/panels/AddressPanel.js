@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Col } from 'react-bootstrap';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext, getStateLabel, getPostcodeLabel } from 'shared/utils';
-import { BasePanel, TextInput, PureCheckboxInput, StateInput, CountryInput, FormElement, Button } from 'checkout/components';
+import { BasePanel, TextInput, PureCheckboxInput, StateInput, CountryInput, PostcodeInput, FormElement, Button } from 'checkout/components';
 
 export class AddressPanel extends BasePanel {
   onPressContinue = async event => {
@@ -197,7 +197,7 @@ export class AddressPanel extends BasePanel {
           </Col>
 
           <Col>
-            <TextInput field={`${fieldPrefix}.postcode`} label={getPostcodeLabel(country)} type="number" required hideLabel={settings.hideLabels} />
+            <PostcodeInput field={`${fieldPrefix}.postcode`} label={getPostcodeLabel(country)} country={country} required hideLabel={settings.hideLabels} />
           </Col>
         </Form.Row>
       </React.Fragment>

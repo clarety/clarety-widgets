@@ -323,7 +323,7 @@ export class CustomerPanel extends BasePanel {
           <Col sm>
             <Form.Group controlId="postcode">
               <Form.Label>{getPostcodeLabel(country)}</Form.Label>
-              <PostcodeInput field="customer.billing.postcode" testId="postcode-input" />
+              <PostcodeInput field="customer.billing.postcode" country={country} testId="postcode-input" />
             </Form.Group>
           </Col>
         </Form.Row>
