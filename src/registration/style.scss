@@ -1,5 +1,7 @@
 @import '~bootstrap/scss/bootstrap.scss';
 
+.clarety-widgets-modal { @extend .registrations; }
+
 .registrations {
   // bootstrap overrides
 
@@ -67,13 +69,13 @@
     margin-top: 2rem;
   }
 
-  .modal-dialog {
+  .busy-overlay-modal {
     max-width: 400px;
     margin-top: -60px;
-  }
-
-  .modal-body {
-    padding: 1.5rem;
+  
+    .modal-body {
+      padding: 1.5rem;
+    }
   }
 
   .form-group {
@@ -82,6 +84,40 @@
 
   .invalid-feedback {
     display: block;
+  }
+
+
+  .merch-items {
+
+  }
+
+  .merch-item {
+    border: 1px solid #999;
+    border-radius: 5px;
+    padding: 10px;
+  }
+
+  .merch-qty {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    padding: 0.75rem 1.25rem;
+
+    &:last-child { border-bottom-width: 0; }
+
+    .input-group-qty {
+      width: 100px;
+  
+      input {
+        padding: 0;
+      }
+  
+      button {
+        width: 30px;
+        padding: 0;
+      }
+    }
   }
 
 

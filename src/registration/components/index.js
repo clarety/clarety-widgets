@@ -19,6 +19,8 @@ export * from './panels/DonationConnect';
 export * from './panels/EventPanel';
 export * from './panels/EventConnect';
 export * from './panels/LoginConnect';
+export * from './panels/MerchPanel';
+export * from './panels/MerchConnect';
 export * from './panels/ModePanel';
 export * from './panels/ModeConnect';
 export * from './panels/OffersPanel';

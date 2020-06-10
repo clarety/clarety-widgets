@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { Spinner, Modal } from 'react-bootstrap';
 
 export const BusyOverlay = ({ messageId }) => (
-  <Modal.Dialog>
+  <Modal.Dialog className="busy-overlay-modal">
     <Modal.Body>
       <FormattedMessage id={messageId} tagName="h5" />
       <Spinner animation="border" className="mt-3" />
