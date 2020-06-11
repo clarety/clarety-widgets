@@ -193,10 +193,10 @@ export class CustomerPanel extends BasePanel {
         {layout !== 'page' &&
           <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
             <Form.Row className="justify-content-center">
-              <Col xs={4}>
+              <Col xs={6}>
                 <BackButton title="Back" block onClick={this.onPressBack} />
               </Col>
-              <Col xs={8}>
+              <Col xs={6}>
                 <SubmitButton title="Next" block testId="next-button" />
               </Col>
             </Form.Row>

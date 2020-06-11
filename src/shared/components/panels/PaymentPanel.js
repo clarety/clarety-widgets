@@ -237,12 +237,12 @@ export class _PaymentPanel extends BasePanel {
           <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
             <Form.Row className="justify-content-center">
               {layout === 'tabs' && 
-                <Col xs={4}>
+                <Col xs={6}>
                   <BackButton title="Back" onClick={this.onPressBack} />
                 </Col>
               }
 
-              <Col xs={layout === 'tabs' ? 8 : 12}>
+              <Col xs={layout === 'tabs' ? 6 : 12}>
                 <SubmitButton title={settings.submitBtnText || 'Pay Now'} testId="next-button" />
               </Col>
             </Form.Row>
