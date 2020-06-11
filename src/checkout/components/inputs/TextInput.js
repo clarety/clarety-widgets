@@ -13,6 +13,12 @@ class PureTextInput extends React.PureComponent {
     }
   }
 
+  onChange = (event) => {
+    const { field, cleanFn } = this.props;
+    const cleanValue = cleanFn ? cleanFn(event.target.value) : event.target.value;
+    this.props.onChange(field, cleanValue);
+  };
+
   render() {
     let { field, label, placeholder, type, value, onChange, error, required, hideLabel } = this.props;
     if (!required && hideLabel) label += ' (Optional)';
@@ -26,7 +32,7 @@ class PureTextInput extends React.PureComponent {
 
         <Form.Control
           value={value}
-          onChange={event => onChange(field, event.target.value)}
+          onChange={this.onChange}
           placeholder={hideLabel ? label : placeholder}
           type={type || 'text'}
           isInvalid={!!error}

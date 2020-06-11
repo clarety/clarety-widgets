@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput } from 'form/components';
+import { TextInput } from 'checkout/components';
 
 export const PostcodeInput = ({ country, ...props }) => {
   if (country === 'AU') {
