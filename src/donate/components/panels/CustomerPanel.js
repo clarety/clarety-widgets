@@ -410,7 +410,7 @@ export class CustomerPanel extends BasePanel {
 
   getSelectedSourceOption() {
     const sourceValue = this.props.formData['sale.sourceId'];
-    return this.props.sourceOptions.find(option => option.value === sourceValue);
+    return this.props.sourceOptions.find(option => option.value == sourceValue);
   }
 
   renderDone() {
