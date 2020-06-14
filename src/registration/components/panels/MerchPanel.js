@@ -6,11 +6,6 @@ import { Button } from 'form/components';
 import { QtyInput } from 'registration/components';
 
 
-
-
-
-
-
 const merchandise = [
   {
     "offerId": "52",
@@ -95,15 +90,10 @@ const merchandise = [
 ];
 
 
-
-
 export class MerchPanel extends BasePanel {
   state = {
     selectedMerchItem: null,
-
-    qtys: {
-
-    }
+    qtys: {},
   };
 
   onClickNext = async () => {
@@ -120,11 +110,16 @@ export class MerchPanel extends BasePanel {
     this.setState({ selectedMerchItem: merchItem });
   };
 
-  onChangeQty = (merchItem, product, value) => {
-    console.log('onChangeQty');
-    console.log('merchItem', merchItem);
-    console.log('product', product);
-    console.log('value', value);
+  onChangeQty = (offerId, productId, value) => {
+    this.setState(prevState => {
+      const qty = productId
+        ? { ...prevState.qtys[offerId], [productId]: value }
+        : value;
+
+      return {
+        qtys: { ...prevState.qtys, [offerId]: qty }
+      };
+    });
   }
 
   onCloseQtysModal = () => {
@@ -154,6 +149,7 @@ export class MerchPanel extends BasePanel {
   
   renderEdit() {
     const { layout, index, isBusy, settings } = this.props;
+    const { selectedMerchItem, qtys } = this.state;
 
     return (
       <PanelContainer layout={layout} status="edit" className="event-panel">
@@ -170,11 +166,14 @@ export class MerchPanel extends BasePanel {
 
           <Row className="merch-items">
             {merchandise.map(item =>
-              <MerchItem
-                key={item.offerId}
-                merchItem={item}
-                onShowQtys={this.onSelectMerchItem}
-              />
+              <Col key={item.offerId}>
+                <MerchItem
+                  merchItem={item}
+                  onShowQtys={this.onSelectMerchItem}
+                  onChangeQty={this.onChangeQty}
+                  qty={this.state.qtys[item.offerId]}
+                />
+              </Col>
             )}
           </Row>
 
@@ -187,7 +186,8 @@ export class MerchPanel extends BasePanel {
         </PanelBody>
 
         <MerchQtysModal
-          merchItem={this.state.selectedMerchItem}
+          merchItem={selectedMerchItem}
+          qtys={selectedMerchItem ? qtys[selectedMerchItem.offerId] : null}
           onClickClose={this.onCloseQtysModal}
           onChangeQty={this.onChangeQty}
         />
@@ -227,19 +227,24 @@ export class MerchPanel extends BasePanel {
 
 
 
-const MerchItem = ({ merchItem, onShowQtys }) => {
+const MerchItem = ({ merchItem, qty, onShowQtys, onChangeQty }) => {
+  const hasSizes = merchItem.products && merchItem.products.length;
+
   return (
-    <Col>
-      <div className="merch-item" onClick={() => onShowQtys(merchItem)}>
-        {merchItem.name}
-      </div>
-    </Col>
+    <div className="merch-item">
+      <div>{merchItem.name}</div>
+
+      {hasSizes
+        ? <Button onClick={() => onShowQtys(merchItem)}>Select Sizes</Button>
+        : <QtyInput value={qty} onChange={value => onChangeQty(merchItem.offerId, undefined, value)} />
+      }
+    </div>
   );
 };
 
 
 
-const MerchQtysModal = ({ merchItem, onClickClose, onChangeQty }) => {
+const MerchQtysModal = ({ merchItem, qtys, onClickClose, onChangeQty }) => {
   if (!merchItem) return null;
 
   return (
@@ -252,7 +257,11 @@ const MerchQtysModal = ({ merchItem, onClickClose, onChangeQty }) => {
         {merchItem && merchItem.products.map(product => (
           <div key={product.productId} className="merch-qty">
             <span>{product.name}</span>
-            <QtyInput value={0} onChange={value => onChangeQty(merchItem, product, value)} />
+
+            <QtyInput
+              value={qtys ? qtys[product.productId] : 0}
+              onChange={value => onChangeQty(merchItem.offerId, product.productId, value)}
+            />
           </div>
         ))}
       </div>
