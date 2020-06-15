@@ -11,7 +11,9 @@ import { getValidationError } from 'form/utils';
 class PurePhoneInput extends React.PureComponent {
   render() {
     const { field, label, value, onChange, translationId, error, required } = this.props;
-    const country = Config.get('phoneCountry');
+    
+    let country = this.props.country || Config.get('phoneCountry');
+    if (country === 'UK') country = 'GB';
 
     const className = error ? 'form-control is-invalid' : 'form-control';
 

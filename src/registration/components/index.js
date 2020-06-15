@@ -5,6 +5,7 @@ export * from './inputs/CountryInput';
 export * from './inputs/DobInput';
 export * from './inputs/EmailInput';
 export * from './inputs/PhoneInput';
+export * from './inputs/PostcodeInput';
 export * from './inputs/QtyInput';
 export * from './inputs/RadioGroupInput';
 export * from './inputs/SelectInput';

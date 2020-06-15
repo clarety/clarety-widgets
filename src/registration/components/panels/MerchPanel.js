@@ -2,10 +2,10 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Row, Col, Form } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { FormContext } from 'shared/utils';
+import { FormContext, getStateLabel, getPostcodeLabel } from 'shared/utils';
 import { Button } from 'form/components';
 import { MerchItem, MerchQtysModal } from 'registration/components';
-import { TextInput, PhoneInput, StateInput, CountryInput } from 'registration/components';
+import { TextInput, PhoneInput, StateInput, PostcodeInput, CountryInput } from 'registration/components';
 
 
 const merchandise = [
@@ -273,6 +273,12 @@ export class MerchPanel extends BasePanel {
 
           <Form.Row>
             <Col>
+              <PhoneInput field="delivery.phone" label="Mobile" country={country} required />
+            </Col>
+          </Form.Row>
+
+          <Form.Row>
+            <Col>
               <TextInput field="delivery.address1" label="Address 1" required />
             </Col>
           </Form.Row>
@@ -294,7 +300,7 @@ export class MerchPanel extends BasePanel {
               <StateInput field="delivery.state" label={getStateLabel(country)} country={country} required />
             </Col>
             <Col>
-              <TextInput field="delivery.postcode" label={getPostcodeLabel(country)} required />
+              <PostcodeInput field="delivery.postcode" label={getPostcodeLabel(country)} required />
             </Col>
           </Form.Row>
         </div>
