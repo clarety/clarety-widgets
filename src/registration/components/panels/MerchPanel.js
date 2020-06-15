@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Row, Col, Form } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { FormContext, getStateLabel, getPostcodeLabel } from 'shared/utils';
+import { FormContext, getStateLabel, getPostcodeLabel, requiredField, phoneNumberField } from 'shared/utils';
 import { Button } from 'form/components';
 import { MerchItem, MerchQtysModal } from 'registration/components';
 import { TextInput, PhoneInput, StateInput, PostcodeInput, CountryInput } from 'registration/components';
@@ -129,9 +129,14 @@ export class MerchPanel extends BasePanel {
   }
 
   onClickNext = async () => {
-    // TODO: validate...
+    event.preventDefault();
 
-    this.props.nextPanel();
+    if (this.validate()) {
+      // TODO: setMerch action...
+      // this.props.setMerch();
+
+      this.props.nextPanel();
+    }
   };
 
   onClickEdit = () => {
@@ -143,7 +148,7 @@ export class MerchPanel extends BasePanel {
       formData: { ...prevState.formData, [field]: value },
       errors: prevState.errors.filter(error => error.field !== field),
     }));
-  }
+  };
 
   onSelectMerchItem = (merchItem) => {
     this.setState({ selectedItem: merchItem });
@@ -181,6 +186,26 @@ export class MerchPanel extends BasePanel {
     }
 
     return false;
+  }
+
+  validate() {
+    const errors = [];
+    this.validateFields(errors);
+    this.setState({ errors });
+    return errors.length === 0;
+  }
+
+  validateFields(errors) {
+    const { formData } = this.state;
+
+    if (this.hasAddedMerch()) {
+      phoneNumberField(errors, formData, 'delivery.phone');
+      requiredField(errors, formData, 'delivery.address1');
+      requiredField(errors, formData, 'delivery.suburb');
+      requiredField(errors, formData, 'delivery.state');
+      requiredField(errors, formData, 'delivery.postcode');
+      requiredField(errors, formData, 'delivery.country');
+    }
   }
 
   reset() {
