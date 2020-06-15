@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import { _PaymentPanel as BasePaymentPanel, injectStripe } from 'shared/components';
 import { SelectInput } from 'form/components';
+import { Currency } from 'shared/components';
 import { requiredField } from 'shared/utils';
 import { createStartDateOptions } from 'donate/utils';
 
@@ -60,7 +61,7 @@ export class _PaymentPanel extends BasePaymentPanel {
 
     return (
       <p className="donation-summary">
-        {label} <b>{amount}</b>
+        {label} <b><Currency amount={amount} /></b>
       </p>
     );
   }

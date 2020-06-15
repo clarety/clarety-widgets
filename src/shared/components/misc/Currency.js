@@ -1,17 +1,25 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getCurrency } from 'shared/selectors';
+import { getSetting, getCurrency } from 'shared/selectors';
 
-export const _Currency = ({ currency, amount }) => (
+const _CurrencySymbol = ({ currency, hideCurrencyCode }) => (
   <React.Fragment>
-    {currency.code} {currency.symbol}{(Number(amount) || 0).toFixed(2)}
+    {!hideCurrencyCode && currency.code} {currency.symbol}
+  </React.Fragment>
+);
+
+const _Currency = ({ amount }) => (
+  <React.Fragment>
+    <CurrencySymbol />{(Number(amount) || 0).toFixed(2)}
   </React.Fragment>
 );
 
 const mapStateToProps = (state, ownProps) => {
   return {
     currency: getCurrency(state),
+    hideCurrencyCode: getSetting(state, 'hideCurrencyCode'),
   };
 };
 
+export const CurrencySymbol = connect(mapStateToProps)(_CurrencySymbol);
 export const Currency = connect(mapStateToProps)(_Currency);

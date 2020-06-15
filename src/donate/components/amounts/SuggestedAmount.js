@@ -1,7 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { Currency } from 'shared/components';
 
-const _SuggestedAmount = ({ amountInfo, isSelected, onClick, currency, onMouseEnter, onMouseLeave }) => (
+export const SuggestedAmount = ({ amountInfo, isSelected, onClick, onMouseEnter, onMouseLeave }) => (
   <div
     className={`suggested-amount ${isSelected ? 'suggested-amount--selected' : ''}`}
     onClick={() => onClick(amountInfo.amount)}
@@ -15,15 +15,8 @@ const _SuggestedAmount = ({ amountInfo, isSelected, onClick, currency, onMouseEn
     />
 
     <div className="suggested-amount__body">
-      <div className="suggested-amount__title">{currency.code} {currency.symbol}{amountInfo.amount}</div>
+      <div className="suggested-amount__title"><Currency amount={amountInfo.amount} /></div>
       <div className="suggested-amount__text">{amountInfo.description}</div>
     </div>
   </div>
 );
-
-const mapStateToProps = (state, ownProps) => ({
-  currency: state.settings.currency,
-});
-
-export const connectSuggestedAmount = connect(mapStateToProps);
-export const SuggestedAmount = connectSuggestedAmount(_SuggestedAmount);

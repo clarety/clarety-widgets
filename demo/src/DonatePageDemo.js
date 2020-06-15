@@ -90,6 +90,8 @@ export default class DonatePageDemo extends React.Component {
       addressFinderKey: 'B6QWYX7U93GELTMCD48J',
       // defaultCountry: 'AU',
       defaultCountry: 'NZ',
+
+      // hideCurrencyCode: true,
     });
   }
 
