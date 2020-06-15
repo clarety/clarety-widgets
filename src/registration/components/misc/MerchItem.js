@@ -1,43 +1,41 @@
 import React from 'react';
-import { Row, Col, Modal } from 'react-bootstrap';
+import { Image } from 'react-bootstrap';
 import { Button } from 'form/components';
 import { QtyInput } from 'registration/components';
+import { Currency } from 'shared/components';
 
 export const MerchItem = ({ merchItem, qtys, onShowQtys, onChangeQty }) => {
-  const hasProducts = !!(merchItem.products && merchItem.products.length);
+  const hasSizes = !!(merchItem.products && merchItem.products.length);
 
-  if (hasProducts) {
-    return <MultiMerchItem merchItem={merchItem} qtys={qtys} onShowQtys={onShowQtys} />;
-  } else {
-    return <BasicMerchItem merchItem={merchItem} qty={qtys} onChangeQty={onChangeQty} />;
-  }
+  return (
+    <div className="merch-item">
+      <Image src={merchItem.image} fluid className="merch-item__image" />
+      <h3 className="merch-item__name">{merchItem.name}</h3>
+      <h4 className="merch-item__price"><Currency amount={merchItem.sell} /></h4>
+      <div className="merch-item__description">{merchItem.shortDescription}</div>
+
+      {hasSizes
+        ? <MerchItemSizes merchItem={merchItem} qtys={qtys} onShowQtys={onShowQtys} />
+        : <QtyInput value={qtys} onChange={value => onChangeQty(merchItem.offerId, undefined, value)} />
+      }
+    </div>
+  );
 };
 
-const BasicMerchItem = ({ merchItem, qty, onChangeQty }) => (
-  <div className="merch-item">
-    <div>{merchItem.name}</div>
+const MerchItemSizes = ({ merchItem, qtys, onShowQtys }) => (
+  <div className="merch-item-sizes">
+    {merchItem.products.map(product => {
+      const qty = qtys && qtys[product.productId];
+      if (!qty) return null;
 
-    <QtyInput
-      value={qty}
-      onChange={value => onChangeQty(merchItem.offerId, undefined, value)}
-    />
-  </div>
-);
+      return (
+        <div className="merch-item-size">
+          <div className="merch-item-size__name">{product.name}</div>
+          <div className="merch-item-size__qty">{qty}</div>
+        </div>
+      );
+    })}
 
-const MultiMerchItem = ({ merchItem, qtys, onShowQtys }) => (
-  <div className="merch-item">
-    <div>{merchItem.name}</div>
-
-    <div>
-      {merchItem.products.map(product => {
-        const qty = qtys && qtys[product.productId];
-
-        return qty
-          ? <div key={product.productId}>{product.name} &times; {qty}</div>
-          : null;
-      })}
-
-      <Button onClick={() => onShowQtys(merchItem)}>Select Sizes</Button>
-    </div>
+    <Button onClick={() => onShowQtys(merchItem)}>Select Sizes</Button>
   </div>
 );

@@ -4,7 +4,7 @@ import { getCurrency } from 'shared/selectors';
 
 export const _Currency = ({ currency, amount }) => (
   <React.Fragment>
-    {currency.code} {currency.symbol}{(amount || 0).toFixed(2)}
+    {currency.code} {currency.symbol}{(Number(amount) || 0).toFixed(2)}
   </React.Fragment>
 );
 

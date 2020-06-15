@@ -58,7 +58,7 @@ const merchandise = [
   {
     "offerId": "53",
     "name": "2018 Event t-shirt",
-    "shortDescription": "Imperdiet cursus rhoncus sagittis nisl aliquam, convallis phasellus velit donec per risus, hac at ligula libero.",
+    "shortDescription": "Curae varius ultricies vulputate nostra commodo maecenas condimentum, neque orci gravida eros integer pulvinar sem vehicula, netus quam bibendum montes lobortis lorem. Imperdiet cursus rhoncus sagittis nisl aliquam, convallis phasellus velit donec per risus, hac at ligula libero.",
     "image": "https://placeimg.com/640/480/any",
     "sell": "29.99",
     "soldOut": false,
@@ -80,6 +80,28 @@ const merchandise = [
 
   {
     "offerId": "54",
+    "name": "2018 Event Hat",
+    "shortDescription": "Placerat amet bibendum ad elit condimentum nibh porttitor tempor dictumst per, luctus nunc lacinia torquent quis ultricies proin eros ante auctor hendrerit, class cum cubilia tortor sed magnis aenean purus blandit.",
+    "image": "https://placeimg.com/640/480/any",
+    "sell": "15.00",
+    "soldOut": false,
+    "products": [],
+  },
+
+
+  {
+    "offerId": "55",
+    "name": "2018 Event Hat",
+    "shortDescription": "Placerat amet bibendum ad elit condimentum nibh porttitor tempor dictumst per, luctus nunc lacinia torquent quis ultricies proin eros ante auctor hendrerit, class cum cubilia tortor sed magnis aenean purus blandit.",
+    "image": "https://placeimg.com/640/480/any",
+    "sell": "15.00",
+    "soldOut": false,
+    "products": [],
+  },
+
+
+  {
+    "offerId": "56",
     "name": "2018 Event Hat",
     "shortDescription": "Placerat amet bibendum ad elit condimentum nibh porttitor tempor dictumst per, luctus nunc lacinia torquent quis ultricies proin eros ante auctor hendrerit, class cum cubilia tortor sed magnis aenean purus blandit.",
     "image": "https://placeimg.com/640/480/any",
@@ -133,7 +155,7 @@ export class MerchPanel extends BasePanel {
     const { layout, index } = this.props;
 
     return (
-      <PanelContainer layout={layout} status="wait">
+      <PanelContainer layout={layout} status="wait" className="merch-panel">
         <PanelHeader
           status="wait"
           layout={layout}
@@ -152,12 +174,12 @@ export class MerchPanel extends BasePanel {
     const { selectedItem, qtys } = this.state;
 
     return (
-      <PanelContainer layout={layout} status="edit" className="event-panel">
+      <PanelContainer layout={layout} status="edit" className="merch-panel">
         <PanelHeader
           status="edit"
           layout={layout}
           number={index + 1}
-          title="Merchandise"
+          title="Check Out Our Official Merchandise"
         />
 
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
@@ -166,12 +188,13 @@ export class MerchPanel extends BasePanel {
 
           <Row className="merch-items">
             {merchandise.map(item =>
-              <Col key={item.offerId}>
+              <Col key={item.offerId} xs={12} md={6} xl={4}>
                 <MerchItem
+                  key={item.offerId}
                   merchItem={item}
+                  qtys={qtys[item.offerId]}
                   onShowQtys={this.onSelectMerchItem}
                   onChangeQty={this.onChangeQty}
-                  qtys={qtys[item.offerId]}
                 />
               </Col>
             )}
@@ -199,7 +222,7 @@ export class MerchPanel extends BasePanel {
     const { layout, index } = this.props;
 
     return (
-      <PanelContainer layout={layout} status="done">
+      <PanelContainer layout={layout} status="done" className="merch-panel">
         <PanelHeader
           status="done"
           layout={layout}
@@ -211,7 +234,7 @@ export class MerchPanel extends BasePanel {
         <PanelBody layout={layout} status="done">
 
           {/* TODO: what content goes here?? */}
-          <p>Check out our merchandise</p>
+          <p>Check out our offical merchandise</p>
 
           <Button onClick={this.onClickEdit}>
             <FormattedMessage id="btn.edit" />
