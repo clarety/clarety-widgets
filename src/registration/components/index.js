@@ -36,7 +36,9 @@ export * from './panels/TeamConnect';
 export * from './panels/ValidatePanel';
 export * from './panels/ValidateConnect';
 
-export * from './misc/NavBarBrand';
 export * from './misc/BusyOverlay';
+export * from './misc/MerchItem';
+export * from './misc/MerchQtysModal';
 export * from './misc/MiniCart';
+export * from './misc/NavBarBrand';
 export * from './misc/Qty';
