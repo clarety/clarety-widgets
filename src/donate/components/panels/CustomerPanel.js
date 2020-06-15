@@ -193,10 +193,10 @@ export class CustomerPanel extends BasePanel {
         {layout !== 'page' &&
           <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
             <Form.Row className="justify-content-center">
-              <Col xs={4}>
+              <Col xs={6}>
                 <BackButton title="Back" block onClick={this.onPressBack} />
               </Col>
-              <Col xs={8}>
+              <Col xs={6}>
                 <SubmitButton title="Next" block testId="next-button" />
               </Col>
             </Form.Row>
@@ -323,7 +323,7 @@ export class CustomerPanel extends BasePanel {
           <Col sm>
             <Form.Group controlId="postcode">
               <Form.Label>{getPostcodeLabel(country)}</Form.Label>
-              <PostcodeInput field="customer.billing.postcode" testId="postcode-input" />
+              <PostcodeInput field="customer.billing.postcode" country={country} testId="postcode-input" />
             </Form.Group>
           </Col>
         </Form.Row>
@@ -410,7 +410,7 @@ export class CustomerPanel extends BasePanel {
 
   getSelectedSourceOption() {
     const sourceValue = this.props.formData['sale.sourceId'];
-    return this.props.sourceOptions.find(option => option.value === sourceValue);
+    return this.props.sourceOptions.find(option => option.value == sourceValue);
   }
 
   renderDone() {
