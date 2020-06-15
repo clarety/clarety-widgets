@@ -1,9 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Form, InputGroup } from 'react-bootstrap';
+import { CurrencySymbol } from 'shared/components';
 import { cleanDecimal } from 'form/utils';
 
-const _VariableAmountLg = ({ amountInfo, value, placeholder, isSelected, onChange, currency, onMouseEnter, onMouseLeave }) => {
+export const VariableAmountLg = ({ amountInfo, value, placeholder, isSelected, onChange, onMouseEnter, onMouseLeave }) => {
   let input = React.createRef();
 
   return (
@@ -25,7 +25,7 @@ const _VariableAmountLg = ({ amountInfo, value, placeholder, isSelected, onChang
         <div className="suggested-amount__input">
           <InputGroup>
             <InputGroup.Prepend>
-              <InputGroup.Text>{currency.code} {currency.symbol}</InputGroup.Text>
+              <InputGroup.Text><CurrencySymbol /></InputGroup.Text>
             </InputGroup.Prepend>
             
             <Form.Control
@@ -45,9 +45,3 @@ const _VariableAmountLg = ({ amountInfo, value, placeholder, isSelected, onChang
     </div>
   );
 };
-
-const mapStateToProps = (state, ownProps) => ({
-  currency: state.settings.currency,
-});
-
-export const VariableAmountLg = connect(mapStateToProps)(_VariableAmountLg);

@@ -1,13 +1,13 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Form, InputGroup } from 'react-bootstrap';
+import { CurrencySymbol } from 'shared/components';
 import { cleanDecimal } from 'form/utils';
 
-const _VariableAmount = ({ amountInfo, value, placeholder, isSelected, onChange, currency, onMouseEnter, onMouseLeave }) => (
+export const VariableAmount = ({ amountInfo, value, placeholder, isSelected, onChange, onMouseEnter, onMouseLeave }) => (
   <div className={`variable-amount ${isSelected ? 'variable-amount--selected' : ''}`}>
     <InputGroup>
       <InputGroup.Prepend>
-        <InputGroup.Text>{currency.code} {currency.symbol}</InputGroup.Text>
+        <InputGroup.Text><CurrencySymbol /></InputGroup.Text>
       </InputGroup.Prepend>
 
       <Form.Control
@@ -23,10 +23,3 @@ const _VariableAmount = ({ amountInfo, value, placeholder, isSelected, onChange,
     </InputGroup>
   </div>
 );
-
-const mapStateToProps = (state, ownProps) => ({
-  currency: state.settings.currency,
-});
-
-export const connectVariableAmount = connect(mapStateToProps);
-export const VariableAmount = connectVariableAmount(_VariableAmount);
