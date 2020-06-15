@@ -29,7 +29,7 @@ const MerchItemSizes = ({ merchItem, qtys, onShowQtys }) => (
       if (!qty) return null;
 
       return (
-        <div className="merch-item-size">
+        <div className="merch-item-size" key={product.productId}>
           <div className="merch-item-size__name">{product.name}</div>
           <div className="merch-item-size__qty">{qty}</div>
         </div>

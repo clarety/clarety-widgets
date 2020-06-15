@@ -1,9 +1,11 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Form } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
+import { FormContext } from 'shared/utils';
 import { Button } from 'form/components';
 import { MerchItem, MerchQtysModal } from 'registration/components';
+import { TextInput, PhoneInput, StateInput, CountryInput } from 'registration/components';
 
 
 const merchandise = [
@@ -113,10 +115,18 @@ const merchandise = [
 
 
 export class MerchPanel extends BasePanel {
-  state = {
-    selectedItem: null,
-    qtys: {},
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      formData: {},
+      errors: [],
+      onChange: this.onFormChange,
+
+      selectedItem: null,
+      qtys: {},
+    };
+  }
 
   onClickNext = async () => {
     // TODO: validate...
@@ -127,6 +137,13 @@ export class MerchPanel extends BasePanel {
   onClickEdit = () => {
     this.props.editPanel();
   };
+
+  onFormChange = (field, value) => {
+    this.setState(prevState => ({
+      formData: { ...prevState.formData, [field]: value },
+      errors: prevState.errors.filter(error => error.field !== field),
+    }));
+  }
 
   onSelectMerchItem = (merchItem) => {
     this.setState({ selectedItem: merchItem });
@@ -147,6 +164,24 @@ export class MerchPanel extends BasePanel {
   onCloseQtysModal = () => {
     this.setState({ selectedItem: null });
   };
+
+  hasAddedMerch() {
+    for (const [offerId, offerQty] of Object.entries(this.state.qtys)) {
+      if (typeof offerQty === 'number' && offerQty > 0) {
+        return true;
+      }
+
+      if (typeof offerQty === 'object') {
+        for (const [productId, productQty] of Object.entries(offerQty)) {
+          if (typeof productQty === 'number' && productQty > 0) {
+            return true;
+          }
+        }
+      }
+    }
+
+    return false;
+  }
 
   reset() {
   }
@@ -200,6 +235,8 @@ export class MerchPanel extends BasePanel {
             )}
           </Row>
 
+          {this.renderAddressFields()}
+
           <div className="panel-actions">
             <Button onClick={this.onClickNext} isBusy={isBusy}>
               <FormattedMessage id="btn.next" />
@@ -215,6 +252,53 @@ export class MerchPanel extends BasePanel {
           onChangeQty={this.onChangeQty}
         />
       </PanelContainer>
+    );
+  }
+
+  renderAddressFields() {
+    if (!this.hasAddedMerch()) return null;
+
+    const country = this.state.formData['delivery.country'];
+
+    return (
+      <FormContext.Provider value={this.state}>
+        <div className="delivery-address">
+          <h2>Delivery Details</h2>
+
+          <Form.Row>
+            <Col>
+              <CountryInput field="delivery.country" label="Country" required />
+            </Col>
+          </Form.Row>
+
+          <Form.Row>
+            <Col>
+              <TextInput field="delivery.address1" label="Address 1" required />
+            </Col>
+          </Form.Row>
+
+          <Form.Row>
+            <Col>
+              <TextInput field="delivery.address2" label="Address 2" />
+            </Col>
+          </Form.Row>
+
+          <Form.Row>
+            <Col>
+              <TextInput field="delivery.suburb" label="Suburb" required />
+            </Col>
+          </Form.Row>
+
+          <Form.Row>
+            <Col>
+              <StateInput field="delivery.state" label={getStateLabel(country)} country={country} required />
+            </Col>
+            <Col>
+              <TextInput field="delivery.postcode" label={getPostcodeLabel(country)} required />
+            </Col>
+          </Form.Row>
+        </div>
+      </FormContext.Provider>
     );
   }
 
