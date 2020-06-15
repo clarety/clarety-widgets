@@ -76,6 +76,7 @@ export class _DonateWidgetRoot extends React.Component {
       fundraisingPageUid: this.props.fundraisingPageUid,
       givingTypeOptions:  givingTypeOptions,
       addressFinderKey:   this.props.addressFinderKey,
+      hideCurrencyCode:   this.props.hideCurrencyCode,
     });
 
     setStore(storeUid);
