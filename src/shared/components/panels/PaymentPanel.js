@@ -3,7 +3,7 @@ import { Form, Row, Col, Spinner, ToggleButtonGroup, ToggleButton } from 'react-
 import { CardNumberElement, CardExpiryElement, CardCvcElement } from '@stripe/react-stripe-js';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, injectStripe } from 'shared/components';
 import { requiredField, cardNumberField, cardExpiryField, ccvField } from 'shared/utils';
-import { TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, AccountNumberInput, BsbInput } from 'form/components';
+import { TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, AccountNumberInput, BsbInput, NZAccountNumberInput } from 'form/components';
 
 export class _PaymentPanel extends BasePanel {
   constructor(props) {
@@ -156,12 +156,23 @@ export class _PaymentPanel extends BasePanel {
     }
 
     if (paymentType === 'gatewaydd') {
-      return {
-        type:          paymentType,
-        accountName:   formData['payment.accountName'],
-        accountBSB:    formData['payment.accountBSB'],
-        accountNumber: formData['payment.accountNumber'],
-      };
+      if (paymentMethod.gateway === 'bnz') {
+        return {
+          type:              paymentType,
+          accountName:       formData['payment.accountName'],
+          accountBankCode:   formData['payment.accountBankCode'],
+          accountBSB:        formData['payment.accountBSB'],
+          accountNumber:     formData['payment.accountNumber'],
+          accountSuffixCode: formData['payment.accountSuffixCode'],
+        };
+      } else {
+        return {
+          type:          paymentType,
+          accountName:   formData['payment.accountName'],
+          accountBSB:    formData['payment.accountBSB'],
+          accountNumber: formData['payment.accountNumber'],
+        };
+      }
     }
 
     if (paymentType === 'na') {
@@ -303,7 +314,11 @@ export class _PaymentPanel extends BasePanel {
     }
 
     if (paymentType === 'gatewaydd') {
-      return this.renderDirectDebitFields(paymentMethod);
+      if (paymentMethod.gateway === 'bnz') {
+        return this.renderNZDirectDebitFields(paymentMethod);
+      } else {
+        return this.renderDirectDebitFields(paymentMethod);
+      }
     }
 
     if (paymentType === 'na') {
@@ -382,6 +397,36 @@ export class _PaymentPanel extends BasePanel {
             <Form.Group controlId="accountNumber">
               <Form.Label>Account Number</Form.Label>
               <AccountNumberInput field="payment.accountNumber" testId="account-number-input" />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+      </React.Fragment>
+    );
+  }
+
+  renderNZDirectDebitFields(paymentMethod) {
+    return (
+      <React.Fragment>
+        <Form.Row>
+          <Col>
+            <Form.Group controlId="accountName">
+              <Form.Label>Account Name</Form.Label>
+              <TextInput field="payment.accountName" testId="account-name-input" />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col>
+            <Form.Group controlId="accountNumber">
+              <Form.Label>Account Number</Form.Label>
+
+              <NZAccountNumberInput
+                bankCodeField="payment.accountBankCode"
+                branchCodeField="payment.accountBSB"
+                accountNumberField="payment.accountNumber"
+                suffixCodeField="payment.accountSuffixCode"
+              />
             </Form.Group>
           </Col>
         </Form.Row>

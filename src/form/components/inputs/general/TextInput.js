@@ -5,7 +5,7 @@ import { updateFormData } from 'form/actions';
 import { getValidationError } from 'form/utils';
 import { FieldError } from 'form/components';
 
-const _TextInput = ({ value, type, placeholder, testId, error, onChange, required, hideErrors }) => {
+const _TextInput = ({ value, type, placeholder, testId, error, onChange, required, hideErrors, ...props }) => {
   if (placeholder && !required) placeholder += ' (Optional)';
 
   return (
@@ -17,6 +17,7 @@ const _TextInput = ({ value, type, placeholder, testId, error, onChange, require
         onChange={onChange}
         data-testid={testId}
         isInvalid={!!error}
+        {...props}
       />
       {!hideErrors && <FieldError error={error} />}
     </React.Fragment>
