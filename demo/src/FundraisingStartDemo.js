@@ -34,7 +34,10 @@ const FundraisingStartDemo = () => (
     <div className="row">
       <div className="col">
         <FundraisingStart
-          seriesId="1"
+          storeUid="str_8qx4"
+          currencyCode="AUD"
+          currencySymbol="$"
+          seriesId="10"
           pageType="1"
           confirmPageUrl="http://dev-clarety-baseline.claretycontrol.com/sites/site-com-au/content/donate-confirm/gjf19l/donate-confirm"
           reCaptchaKey="..."

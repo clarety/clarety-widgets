@@ -8,6 +8,7 @@ export const getCampaignPostData = (state) => {
   return {
     campaignName: campaign.name,
     goal: campaign.goal,
+    storeUid: settings.storeUid,
     seriesId: settings.seriesId,
     pageType: settings.pageType,
     ...trackingData,
