@@ -2,7 +2,7 @@ import { ClaretyApi } from 'clarety-utils';
 import { addItem, updateItem, removeItem } from 'shared/actions';
 import { getCart } from 'shared/selectors';
 import { setErrors, clearErrors } from 'form/actions';
-import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getMakePaymentPostData, getIsLoggedIn, getIsExpress } from 'registration/selectors';
+import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getMakePaymentPostData, getIsLoggedIn, getIsExpress, getMerchOffer } from 'registration/selectors';
 import { types } from 'registration/actions';
 
 export const setWaveInCart = (participantIndex, waveProductId) => {
@@ -73,6 +73,42 @@ export const removeAddOnsFromCart = (participantIndex) => {
         dispatch(updateItem(item));
       }
     }
+  };
+};
+
+export const addMerchToCart = (merch) => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    
+    for (const [offerId, offerQty] of Object.entries(merch)) {
+      const offer = getMerchOffer(state, offerId);
+
+      // Offer with no products.
+      if (typeof offerQty === 'number' && offerQty > 0) {
+        dispatch(addItem({
+          type:     'merchandise',
+          offerId:  offerId,
+          price:    offer.sell,
+          quantity: offerQty,
+        }));
+      }
+
+      // Offer with products.
+      if (typeof offerQty === 'object') {
+        for (const [productId, productQty] of Object.entries(offerQty)) {
+          if (typeof productQty === 'number' && productQty > 0) {
+            dispatch(addItem({
+              type:      'merchandise',
+              offerId:   offerId,
+              productId: productId,
+              price:     offer.sell,
+              quantity:  productQty,
+            }));
+          }
+        }
+      }
+    }
+
   };
 };
 

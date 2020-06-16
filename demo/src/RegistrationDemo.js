@@ -16,16 +16,11 @@ Registration.setClientIds({
 });
 
 Registration.setPanels([
-  {
-    component: MerchPanel,
-    connect: MerchConnect,
-    settings: {},
-  },
-  {
-    component: ModePanel,
-    connect: ModeConnect,
-    settings: {},
-  },
+  // {
+  //   component: ModePanel,
+  //   connect: ModeConnect,
+  //   settings: {},
+  // },
   {
     component: EventPanel,
     connect: EventConnect,
@@ -33,6 +28,11 @@ Registration.setPanels([
       showStateButtons: true,
       showPromoCode: true,
     },
+  },
+  {
+    component: MerchPanel,
+    connect: MerchConnect,
+    settings: {},
   },
   {
     component: DonationPanel,

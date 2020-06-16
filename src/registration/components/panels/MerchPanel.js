@@ -7,113 +7,6 @@ import { Button } from 'form/components';
 import { MerchItem, MerchQtysModal } from 'registration/components';
 import { TextInput, PhoneInput, StateInput, PostcodeInput, CountryInput } from 'registration/components';
 
-
-const merchandise = [
-  {
-    "offerId": "52",
-    "name": "A really great t-shirt",
-    "shortDescription": "Imperdiet cursus rhoncus sagittis nisl aliquam, convallis phasellus velit donec per risus, hac at ligula libero.",
-    "image": "https://placeimg.com/640/480/any",
-    "sell": "29.99",
-    "soldOut": false,
-    "products": [
-      {
-        "productId": "1",
-        "name": "XX Small"
-      },
-      {
-        "productId": "2",
-        "name": "X Small"
-      },
-      {
-        "productId": "3",
-        "name": "Small"
-      },
-      {
-        "productId": "4",
-        "name": "Medium"
-      },
-      {
-        "productId": "5",
-        "name": "X Medium"
-      },
-      {
-        "productId": "6",
-        "name": "XX Medium"
-      },
-      {
-        "productId": "7",
-        "name": "Large"
-      },
-      {
-        "productId": "8",
-        "name": "X Large"
-      },
-      {
-        "productId": "9",
-        "name": "XX Large"
-      },
-    ]
-  },
-
-
-  {
-    "offerId": "53",
-    "name": "2018 Event t-shirt",
-    "shortDescription": "Curae varius ultricies vulputate nostra commodo maecenas condimentum, neque orci gravida eros integer pulvinar sem vehicula, netus quam bibendum montes lobortis lorem. Imperdiet cursus rhoncus sagittis nisl aliquam, convallis phasellus velit donec per risus, hac at ligula libero.",
-    "image": "https://placeimg.com/640/480/any",
-    "sell": "29.99",
-    "soldOut": false,
-    "products": [
-      {
-        "productId": "5",
-        "name": "Small"
-      },
-      {
-        "productId": "7",
-        "name": "Medium"
-      },
-      {
-        "productId": "9",
-        "name": "Large"
-      }
-    ]
-  },
-
-  {
-    "offerId": "54",
-    "name": "2018 Event Hat",
-    "shortDescription": "Placerat amet bibendum ad elit condimentum nibh porttitor tempor dictumst per, luctus nunc lacinia torquent quis ultricies proin eros ante auctor hendrerit, class cum cubilia tortor sed magnis aenean purus blandit.",
-    "image": "https://placeimg.com/640/480/any",
-    "sell": "15.00",
-    "soldOut": false,
-    "products": [],
-  },
-
-
-  {
-    "offerId": "55",
-    "name": "2018 Event Hat",
-    "shortDescription": "Placerat amet bibendum ad elit condimentum nibh porttitor tempor dictumst per, luctus nunc lacinia torquent quis ultricies proin eros ante auctor hendrerit, class cum cubilia tortor sed magnis aenean purus blandit.",
-    "image": "https://placeimg.com/640/480/any",
-    "sell": "15.00",
-    "soldOut": false,
-    "products": [],
-  },
-
-
-  {
-    "offerId": "56",
-    "name": "2018 Event Hat",
-    "shortDescription": "Placerat amet bibendum ad elit condimentum nibh porttitor tempor dictumst per, luctus nunc lacinia torquent quis ultricies proin eros ante auctor hendrerit, class cum cubilia tortor sed magnis aenean purus blandit.",
-    "image": "https://placeimg.com/640/480/any",
-    "sell": "15.00",
-    "soldOut": false,
-    "products": [],
-  }
-];
-
-
 export class MerchPanel extends BasePanel {
   constructor(props) {
     super(props);
@@ -128,18 +21,29 @@ export class MerchPanel extends BasePanel {
     };
   }
 
+  reset() {
+    this.setState({
+      formData: {},
+      errors: [],
+      qtys: {},
+    });
+  }
+
   onClickNext = async () => {
     event.preventDefault();
 
     if (this.validate()) {
-      // TODO: setMerch action...
-      // this.props.setMerch();
+      if (this.hasAddedMerch()) {
+        this.props.addMerchToCart(this.state.qtys);
+      }
 
       this.props.nextPanel();
     }
   };
 
-  onClickEdit = () => {
+  onClickEdit = (event) => {
+    event.preventDefault();
+    this.props.removeItemsWithType('merchandise');
     this.props.editPanel();
   };
 
@@ -208,9 +112,6 @@ export class MerchPanel extends BasePanel {
     }
   }
 
-  reset() {
-  }
-
   renderWait() {
     const { layout, index } = this.props;
 
@@ -230,7 +131,7 @@ export class MerchPanel extends BasePanel {
   }
   
   renderEdit() {
-    const { layout, index, isBusy, settings } = this.props;
+    const { layout, index, isBusy, settings, merchandise } = this.props;
     const { selectedItem, qtys } = this.state;
 
     return (

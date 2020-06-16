@@ -39,7 +39,17 @@ export const getProgress = (state) => {
 
 export const getRegistrationTypes = (state) => {
   const event = getEvent(state);
-  return event ? event.registrationTypes: null;
+  return event ? event.registrationTypes : null;
+};
+
+export const getEventMerchandise = (state) => {
+  const event = getEvent(state);
+  return event ? event.merchandise : [];
+};
+
+export const getMerchOffer = (state, offerId) => {
+  const merch = getEventMerchandise(state);
+  return merch.find(offer => offer.offerId === offerId);
 };
 
 export const getQtys = (state) => {
