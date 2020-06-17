@@ -174,8 +174,6 @@ export class MerchPanel extends BasePanel {
 
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
 
-          <p>Hello merch panel!</p>
-
           <Row className="merch-items">
             {merchandise.map(item =>
               <Col key={item.offerId} xs={12} md={6} xl={4}>
