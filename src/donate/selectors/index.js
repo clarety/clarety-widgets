@@ -26,7 +26,7 @@ export const getDonationPanelSelection = (state) => {
 export const getSelectedAmount = (state) => {
   const selection = getDonationPanelSelection(state);
   
-  if (!selection && !selection.amount) return '';
+  if (!selection || !selection.amount) return '';
 
   const currency = getSetting(state, 'currency');
   const amount = Number(selection.amount).toFixed(2);
