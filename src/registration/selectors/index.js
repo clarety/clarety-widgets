@@ -175,8 +175,6 @@ export const getChannel = (state) => {
 
 export const getIsLoggedIn = (state) => !!getAuth(state).jwt;
 
-export const getIsExpress = (state) => getSetting(state, 'variant') === 'express';
-
 export const getPaymentMethods = (state) => {
   const isFree = getCartTotal(state) === 0;
   const isCorporateTeam = getIsCorporateTeam(state);

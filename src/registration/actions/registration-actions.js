@@ -1,25 +1,19 @@
-import { ClaretyApi } from 'clarety-utils';
 import { setErrors, clearErrors } from 'form/actions';
-import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getIsLoggedIn, getIsExpress } from 'registration/selectors';
+import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getIsLoggedIn } from 'registration/selectors';
 import { types, updateAuthCustomer } from 'registration/actions';
+import { RegistrationApi } from 'registration/utils';
 
 export const createRegistration = () => {
   return async (dispatch, getState) => {
     const state = getState();
-    const isLoggedIn = getIsLoggedIn(state);
-    const isExpress = getIsExpress(state);
+
     const postData = getCreateRegistrationPostData(state);
+    const forceExpress = !getIsLoggedIn(state);
 
     dispatch(clearErrors());
     dispatch(registrationCreateRequest(postData));
-
-    const endpoint = isLoggedIn && !isExpress
-      ? 'registration-sale/'
-      : 'registration-sale-express/';
-
-    const { storeId } = state.settings;
-    let results = await ClaretyApi.post(endpoint, postData, { storeId });
-    let result = results[0];
+    
+    const result = await RegistrationApi.createRegistration(postData, { forceExpress });
 
     if (result.status !== 'error') {
       // If we have merch, update the delivery address of logged-in customer.
@@ -42,9 +36,7 @@ export const submitRegistration = (paymentData) => {
 
     dispatch(registrationSubmitRequest(postData));
 
-    const { storeId } = state.settings;
-    const results = await ClaretyApi.post('registration-payment/', postData, { storeId });
-    const result = results[0];
+    const result = await RegistrationApi.submitRegistration(postData);
 
     if (result.status !== 'error') {
       // Redirect on success.
