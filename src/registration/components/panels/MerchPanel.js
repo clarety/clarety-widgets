@@ -21,6 +21,14 @@ export class MerchPanel extends BasePanel {
     };
   }
 
+  componentDidUpdate(prevProps) {
+    super.componentDidUpdate(prevProps);
+
+    if (this.props.customer !== prevProps.customer) {
+      this.prefillCustomerFormData(this.props.customer);
+    }
+  }
+
   reset() {
     this.setState({
       errors: [],
@@ -77,6 +85,23 @@ export class MerchPanel extends BasePanel {
   onCloseQtysModal = () => {
     this.setState({ selectedItem: null });
   };
+
+  prefillCustomerFormData(customer) {
+    const formData = {
+      'customer.mobile': customer.mobile,
+    };
+
+    if (customer.delivery) {
+      formData['customer.delivery.address1'] = customer.delivery.address1;
+      formData['customer.delivery.address2'] = customer.delivery.address2;
+      formData['customer.delivery.suburb']   = customer.delivery.suburb;
+      formData['customer.delivery.state']    = customer.delivery.state;
+      formData['customer.delivery.postcode'] = customer.delivery.postcode;
+      formData['customer.delivery.country']  = customer.delivery.country;
+    }
+
+    this.setState({ formData });
+  }
 
   hasAddedMerch() {
     for (const [offerId, offerQty] of Object.entries(this.state.qtys)) {
