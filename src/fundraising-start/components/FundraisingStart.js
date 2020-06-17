@@ -55,6 +55,9 @@ export class _FundraisingStartRoot extends React.Component {
     if (!this.props.reCaptchaKey) throw new Error('[Clarety] missing reCaptcha key');
 
     const { updateAppSettings, setTrackingData, setStatus, setAuth, fetchCustomer } = this.props;
+    const { currencyCode, currencySymbol } = this.props;
+
+    const currency = currencySymbol ? { code: currencyCode, symbol: currencySymbol } : undefined;
 
     updateAppSettings({
       widgetElementId: this.props.elementId,
@@ -63,10 +66,7 @@ export class _FundraisingStartRoot extends React.Component {
       pageType: this.props.pageType,
       confirmPageUrl: this.props.confirmPageUrl,
       variant: this.props.variant,
-      currency: {
-        code: this.props.currencyCode,
-        symbol: this.props.currencySymbol,
-      }
+      currency: currency,
     });
 
     setTrackingData({
