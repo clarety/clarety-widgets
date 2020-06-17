@@ -12,6 +12,7 @@ export * from './inputs/payment/CardNameInput';
 export * from './inputs/payment/CardNumberInput';
 export * from './inputs/payment/CcvInput';
 export * from './inputs/payment/ExpiryInput';
+export * from './inputs/payment/NZAccountNumberInput';
 
 export * from './inputs/general/BackButton';
 export * from './inputs/general/Button';
