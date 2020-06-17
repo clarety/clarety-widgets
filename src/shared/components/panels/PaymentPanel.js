@@ -432,7 +432,7 @@ export class _PaymentPanel extends BasePanel {
 
         <Form.Row>
           <Col>
-            <Form.Group controlId="accountNumber">
+            <Form.Group>
               <Form.Label>Account Number</Form.Label>
 
               <NZAccountNumberInput

@@ -1,11 +1,13 @@
 import React from 'react';
-import { TextInput } from 'form/components';
+import { connect } from 'react-redux';
+import { TextInput, FieldError } from 'form/components';
+import { getValidationError } from 'form/utils';
 
 const BACKSPACE_KEY =  8;
 const TAB_KEY       =  9;
 const SHIFT_KEY     = 16;
 
-export class NZAccountNumberInput extends React.Component {
+export class _NZAccountNumberInput extends React.Component {
   onKeyUp = (event) => {
     const input = event.target;
 
@@ -18,7 +20,7 @@ export class NZAccountNumberInput extends React.Component {
     if (input.value.length === input.maxLength) {
       if (input.nextSibling) input.nextSibling.focus();
     }
-  }
+  };
 
   onKeyDown = (event) => {
     const input = event.target;
@@ -37,51 +39,74 @@ export class NZAccountNumberInput extends React.Component {
 
   render() {
     return (
-      <div className="nz-dd-input">
-        <TextInput
-          field={this.props.bankCodeField}
-          className="nz-dd-input__bank-code"
-          placeholder="00"
-          maxLength={2}
-          type="tel"
-          required
-          onKeyUp={this.onKeyUp}
-          onKeyDown={this.onKeyDown}
-        />
+      <React.Fragment>
+        <div className="nz-dd-input">
+          <TextInput
+            field={this.props.bankCodeField}
+            className="nz-dd-input__bank-code"
+            placeholder="00"
+            maxLength={2}
+            type="tel"
+            required
+            onKeyUp={this.onKeyUp}
+            onKeyDown={this.onKeyDown}
+            hideErrors
+          />
 
-        <TextInput
-          field={this.props.branchCodeField}
-          className="nz-dd-input__branch-code"
-          placeholder="0000"
-          maxLength={4}
-          type="tel"
-          required
-          onKeyUp={this.onKeyUp}
-          onKeyDown={this.onKeyDown}
-        />
+          <TextInput
+            field={this.props.branchCodeField}
+            className="nz-dd-input__branch-code"
+            placeholder="0000"
+            maxLength={4}
+            type="tel"
+            required
+            onKeyUp={this.onKeyUp}
+            onKeyDown={this.onKeyDown}
+            hideErrors
+          />
 
-        <TextInput
-          field={this.props.accountNumberField}
-          className="nz-dd-input__account-number"
-          placeholder="0000000"
-          maxLength={7}
-          type="tel"
-          required
-          onKeyUp={this.onKeyUp}
-          onKeyDown={this.onKeyDown}
-        />
+          <TextInput
+            field={this.props.accountNumberField}
+            className="nz-dd-input__account-number"
+            placeholder="0000000"
+            maxLength={7}
+            type="tel"
+            required
+            onKeyUp={this.onKeyUp}
+            onKeyDown={this.onKeyDown}
+            hideErrors
+          />
 
-        <TextInput
-          field={this.props.suffixCodeField}
-          className="nz-dd-input__suffix-code"
-          placeholder="000"
-          maxLength={3}
-          type="tel"
-          required
-          onKeyUp={this.onKeyUp}
-          onKeyDown={this.onKeyDown}
-        />
-      </div>
+          <TextInput
+            field={this.props.suffixCodeField}
+            className="nz-dd-input__suffix-code"
+            placeholder="000"
+            maxLength={3}
+            type="tel"
+            required
+            onKeyUp={this.onKeyUp}
+            onKeyDown={this.onKeyDown}
+            hideErrors
+          />
+        </div>
+
+        <FieldError error={this.props.error} />
+      </React.Fragment>
     );
   }
 }
+
+const mapStateToProps = (state, ownProps) => {
+  const bankCodeError      = getValidationError(ownProps.bankCodeField, state.errors);
+  const branchCodeError    = getValidationError(ownProps.branchCodeField, state.errors);
+  const accountNumberError = getValidationError(ownProps.accountNumberField, state.errors);
+  const suffixCodeError    = getValidationError(ownProps.suffixCodeField, state.errors);
+
+  const error = (bankCodeError || branchCodeError || accountNumberError || suffixCodeError)
+    ? { message: 'Please enter a valid account number.' }
+    : undefined;
+
+  return { error };
+};
+
+export const NZAccountNumberInput = connect(mapStateToProps)(_NZAccountNumberInput);
