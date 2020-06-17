@@ -211,6 +211,7 @@ export const getCreateRegistrationPostData = (state) => {
   const fundraising = getFundraisingPostData(state);
   const organisation = getOrganisation(state);
   const trackingData = getTrackingData(state);
+  const merchandise = getMerchandisePostData(state);
 
   return {
     eventId: event.eventId,
@@ -221,6 +222,7 @@ export const getCreateRegistrationPostData = (state) => {
       getParticipantPostData(state, participant, index)
     ),
     fundraising: fundraising,
+    merchandise: merchandise,
     ...trackingData,
   };
 };
@@ -287,6 +289,18 @@ const getDonationAmount = (state) => {
   const item = cart.items.find(item => item.type === 'donation');
   
   return item ? item.price : 0;
+};
+
+const getMerchandisePostData = (state) => {
+  const cart = getCart(state);
+  const merchItems = cart.items.filter(item => item.type === 'merchandise');
+
+  return merchItems.map(item => ({
+    appRef:    item.appRef,
+    quantity:  item.quantity,
+    offerId:   item.offerId,
+    productId: item.productId,
+  }));
 };
 
 export const getSubmitRegistrationPostData = (state, paymentData) => {

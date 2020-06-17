@@ -16,11 +16,11 @@ Registration.setClientIds({
 });
 
 Registration.setPanels([
-  // {
-  //   component: ModePanel,
-  //   connect: ModeConnect,
-  //   settings: {},
-  // },
+  {
+    component: ModePanel,
+    connect: ModeConnect,
+    settings: {},
+  },
   {
     component: EventPanel,
     connect: EventConnect,
@@ -28,11 +28,6 @@ Registration.setPanels([
       showStateButtons: true,
       showPromoCode: true,
     },
-  },
-  {
-    component: MerchPanel,
-    connect: MerchConnect,
-    settings: {},
   },
   {
     component: DonationPanel,
@@ -79,6 +74,11 @@ Registration.setPanels([
     },
   },
   {
+    component: MerchPanel,
+    connect: MerchConnect,
+    settings: {},
+  },
+  {
     component: ValidatePanel,
     connect: ValidateConnect,
     settings: {},
@@ -104,7 +104,7 @@ export default class RegistrationDemo extends React.Component {
         <Registration
           translations={enTranslations}
 
-          storeId="0"
+          storeId="1"
           storeCode="AU"
 
           // mdc

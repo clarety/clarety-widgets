@@ -440,7 +440,7 @@ export class _DetailsPanel extends BasePanel {
         {settings.showDeliveryAddress && settings.showBillingAddress &&
           <Form.Row>
             <Col>
-              <CheckboxInput field="autofill.billing" label="Billing Address is same as Delivery Address" />
+              <CheckboxInput field="autofill.billing" label="Billing Address is same as Delivery Address" required />
             </Col>
           </Form.Row>
         }

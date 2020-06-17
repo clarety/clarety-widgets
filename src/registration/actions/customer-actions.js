@@ -1,5 +1,6 @@
-import { ClaretyApi, Config } from 'clarety-utils';
+import { ClaretyApi } from 'clarety-utils';
 import { setStatus, setCustomer, login, emailStatuses } from 'shared/actions';
+import { getCart } from 'shared/selectors';
 import { parseNestedElements } from 'shared/utils';
 import { types } from 'registration/actions';
 
@@ -106,6 +107,30 @@ export const fetchAuthCustomer = () => {
   };
 };
 
+export const updateAuthCustomer = () => {
+  return async (dispatch, getState) => {
+    const state = getState();
+
+    dispatch(updateAuthCustomerRequest());
+    dispatch(setStatus('busy'));
+
+    const cart = getCart(state);
+    let results = await ClaretyApi.post('registration-customer/', cart.customer);
+    const result = results[0];
+
+    dispatch(setStatus('ready'));
+
+    if (result.status === 'error') {
+      dispatch(updateAuthCustomerFailure(result.validationErrors));
+      return false;
+    } else {
+      dispatch(updateAuthCustomerSuccess(result));
+      dispatch(setCustomer(result));
+      return true;
+    }
+  };
+};
+
 // Has Account
 
 const hasAccountRequest = (email) => ({
@@ -172,4 +197,21 @@ const fetchAuthCustomerSuccess = (result) => ({
 const fetchAuthCustomerFailure = (result) => ({
   type: types.fetchAuthCustomerFailure,
   result: result,
+});
+
+// Update Auth Customer
+
+const updateAuthCustomerRequest = (customer) => ({
+  type: types.updateAuthCustomerRequest,
+  customer: customer,
+});
+
+const updateAuthCustomerSuccess = (customer) => ({
+  type: types.updateAuthCustomerSuccess,
+  customer: customer,
+});
+
+const updateAuthCustomerFailure = (errors) => ({
+  type: types.updateAuthCustomerFailure,
+  errors: errors,
 });

@@ -3,7 +3,7 @@ import { addItem, updateItem, removeItem } from 'shared/actions';
 import { getCart } from 'shared/selectors';
 import { setErrors, clearErrors } from 'form/actions';
 import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getMakePaymentPostData, getIsLoggedIn, getIsExpress, getMerchOffer } from 'registration/selectors';
-import { types } from 'registration/actions';
+import { types, updateAuthCustomer } from 'registration/actions';
 
 export const setWaveInCart = (participantIndex, waveProductId) => {
   return async (dispatch, getState) => {
@@ -134,6 +134,9 @@ export const createRegistration = () => {
       dispatch(registrationCreateSuccess(result));
       return true;
     } else {
+      // If we have merch, update the delivery address of logged-in customer.
+      if (postData.merchandise.length) dispatch(updateAuthCustomer());
+      
       dispatch(registrationCreateFailure(result));
       dispatch(setErrors(result.validationErrors));
       return false;

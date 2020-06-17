@@ -59,6 +59,10 @@ export const types = {
   fetchAuthCustomerSuccess: 'FETCH_AUTH_CUSTOMER_SUCCESS',
   fetchAuthCustomerFailure: 'FETCH_AUTH_CUSTOMER_FAILURE',
 
+  updateAuthCustomerRequest: 'UPDATE_AUTH_CUSTOMER_REQUEST',
+  updateAuthCustomerSuccess: 'UPDATE_AUTH_CUSTOMER_SUCCESS',
+  updateAuthCustomerFailure: 'UPDATE_AUTH_CUSTOMER_FAILURE',
+
   // Team Action Types
 
   searchTeamsRequest: 'SEARCH_TEAMS_REQUEST',
