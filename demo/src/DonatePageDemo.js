@@ -68,13 +68,13 @@ export default class DonatePageDemo extends React.Component {
 
       // storeUid: 'str_k1or',
       storeUid: 'str_8qx4',
-      singleOfferId: '103',
-      recurringOfferId: '105',
+      singleOfferId: '8',
+      recurringOfferId: '17',
       //fundraisingPageUid: 'abc-123',
       //confirmPageUrl: 'https://google.com',
       // sourceId: '17',
 
-      defaultFrequency: 'recurring', //single|recurring
+      // defaultFrequency: 'recurring', //single|recurring
       responseId: 'e9c2e351d90b11e996fd',
       emailResponseId: '1234',
       // givingTypeOptions: [

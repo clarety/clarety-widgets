@@ -71,6 +71,29 @@
     padding: 8px;
   }
 
+  .nz-dd-input {
+    display: flex;
+
+    &__bank-code {
+      flex-basis: 18%;
+      margin-right: 5px;
+    }
+  
+    &__branch-code {
+      flex-basis: 24%;
+      margin-right: 5px;
+    }
+  
+    &__account-number {
+      flex-basis: 36%;
+      margin-right: 5px;
+    }
+  
+    &__suffix-code {
+      flex-basis: 22%;
+    }
+  }  
+
   .terms-checkbox {
     margin-bottom: 10px;
   }

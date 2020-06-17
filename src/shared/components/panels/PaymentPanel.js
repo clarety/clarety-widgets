@@ -3,7 +3,7 @@ import { Form, Row, Col, Spinner, ToggleButtonGroup, ToggleButton } from 'react-
 import { CardNumberElement, CardExpiryElement, CardCvcElement } from '@stripe/react-stripe-js';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, injectStripe } from 'shared/components';
 import { requiredField, cardNumberField, cardExpiryField, ccvField } from 'shared/utils';
-import { TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, AccountNumberInput, BsbInput } from 'form/components';
+import { TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, AccountNumberInput, BsbInput, NZAccountNumberInput } from 'form/components';
 
 export class _PaymentPanel extends BasePanel {
   constructor(props) {
@@ -92,7 +92,11 @@ export class _PaymentPanel extends BasePanel {
         this.validateCreditCardFields(errors);
       }
     } else if (paymentType === 'gatewaydd') {
-      this.validateDirectDebitFields(errors);
+      if (paymentMethod.gateway === 'nz') {
+        this.validateNZDirectDebitFields(errors);
+      } else {
+        this.validateDirectDebitFields(errors);
+      }
     } else if (paymentType === 'na') {
       this.validateNoPaymentFields(errors);
     } else {
@@ -123,6 +127,16 @@ export class _PaymentPanel extends BasePanel {
     requiredField(errors, formData, 'payment.accountName');
     requiredField(errors, formData, 'payment.accountNumber');
     requiredField(errors, formData, 'payment.accountBSB');
+  }
+
+  validateNZDirectDebitFields(errors) {
+    const { formData } = this.props;
+
+    requiredField(errors, formData, 'payment.accountName');
+    requiredField(errors, formData, 'payment.bankCode');
+    requiredField(errors, formData, 'payment.branchCode');
+    requiredField(errors, formData, 'payment.accountNumber');
+    requiredField(errors, formData, 'payment.suffixCode');
   }
 
   validateNoPaymentFields(errors) {
@@ -156,12 +170,23 @@ export class _PaymentPanel extends BasePanel {
     }
 
     if (paymentType === 'gatewaydd') {
-      return {
-        type:          paymentType,
-        accountName:   formData['payment.accountName'],
-        accountBSB:    formData['payment.accountBSB'],
-        accountNumber: formData['payment.accountNumber'],
-      };
+      if (paymentMethod.gateway === 'nz') {
+        return {
+          type:          paymentType,
+          accountName:   formData['payment.accountName'],
+          bankCode:      formData['payment.bankCode'],
+          branchCode:    formData['payment.branchCode'],
+          accountNumber: formData['payment.accountNumber'],
+          suffixCode:    formData['payment.suffixCode'],
+        };
+      } else {
+        return {
+          type:          paymentType,
+          accountName:   formData['payment.accountName'],
+          accountBSB:    formData['payment.accountBSB'],
+          accountNumber: formData['payment.accountNumber'],
+        };
+      }
     }
 
     if (paymentType === 'na') {
@@ -303,7 +328,11 @@ export class _PaymentPanel extends BasePanel {
     }
 
     if (paymentType === 'gatewaydd') {
-      return this.renderDirectDebitFields(paymentMethod);
+      if (paymentMethod.gateway === 'nz') {
+        return this.renderNZDirectDebitFields(paymentMethod);
+      } else {
+        return this.renderDirectDebitFields(paymentMethod);
+      }
     }
 
     if (paymentType === 'na') {
@@ -382,6 +411,36 @@ export class _PaymentPanel extends BasePanel {
             <Form.Group controlId="accountNumber">
               <Form.Label>Account Number</Form.Label>
               <AccountNumberInput field="payment.accountNumber" testId="account-number-input" />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+      </React.Fragment>
+    );
+  }
+
+  renderNZDirectDebitFields(paymentMethod) {
+    return (
+      <React.Fragment>
+        <Form.Row>
+          <Col>
+            <Form.Group controlId="accountName">
+              <Form.Label>Account Name</Form.Label>
+              <TextInput field="payment.accountName" testId="account-name-input" />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col>
+            <Form.Group>
+              <Form.Label>Account Number</Form.Label>
+
+              <NZAccountNumberInput
+                bankCodeField="payment.bankCode"
+                branchCodeField="payment.branchCode"
+                accountNumberField="payment.accountNumber"
+                suffixCodeField="payment.suffixCode"
+              />
             </Form.Group>
           </Col>
         </Form.Row>
