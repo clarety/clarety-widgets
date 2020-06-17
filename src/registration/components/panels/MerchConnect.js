@@ -1,4 +1,4 @@
-import { removeItemsWithType } from 'shared/actions';
+import { removeItemsWithType, updateCustomer } from 'shared/actions';
 import { addMerchToCart } from 'registration/actions';
 import { getEventMerchandise } from 'registration/selectors';
 
@@ -9,5 +9,5 @@ export class MerchConnect {
     };
   };
 
-  static actions = { addMerchToCart, removeItemsWithType };
+  static actions = { addMerchToCart, updateCustomer, removeItemsWithType };
 }

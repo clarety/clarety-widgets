@@ -21,13 +21,15 @@ export const types = {
   removeItemsWithPanel:  'REMOVE_ITEMS_WITH_PANEL',
   removeItemsWithType:   'REMOVE_ITEMS_WITH_TYPE',
 
+  setCustomer:           'SET_CUSTOMER',
+  updateCustomer:        'UPDATE_CUSTOMER',
+
   setPayment:            'SET_PAYMENT',
   clearPayment:          'CLEAR_PAYMENT',
 
   updateCartData:        'UPDATE_CART_DATA',
 
   setStore:              'SET_STORE',
-  setCustomer:           'SET_CUSTOMER',
   setOrganisation:       'SET_ORGANISATION',
   setPromoCode:          'SET_PROMO_CODE',
   setTrackingData:       'SET_TRACKING_DATA',

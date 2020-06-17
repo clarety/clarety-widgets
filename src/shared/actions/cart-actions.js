@@ -60,6 +60,11 @@ export const setCustomer = (customer) => ({
   customer: customer,
 });
 
+export const updateCustomer = (customer) => ({
+  type: types.updateCustomer,
+  customer: customer,
+});
+
 export const setOrganisation = (organisation) => ({
   type: types.setOrganisation,
   organisation: organisation,

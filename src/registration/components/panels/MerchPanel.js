@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Row, Col, Form } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { FormContext, getStateLabel, getPostcodeLabel, requiredField, phoneNumberField } from 'shared/utils';
+import { FormContext, getStateLabel, getPostcodeLabel, requiredField, phoneNumberField, parseNestedElements } from 'shared/utils';
 import { Button } from 'form/components';
 import { MerchItem, MerchQtysModal } from 'registration/components';
 import { TextInput, PhoneInput, StateInput, PostcodeInput, CountryInput } from 'registration/components';
@@ -23,21 +23,25 @@ export class MerchPanel extends BasePanel {
 
   reset() {
     this.setState({
-      formData: {},
       errors: [],
       qtys: {},
     });
   }
 
-  onClickNext = async () => {
+  onClickNext = async (event) => {
     event.preventDefault();
+
+    const { addMerchToCart, updateCustomer, nextPanel } = this.props;
 
     if (this.validate()) {
       if (this.hasAddedMerch()) {
-        this.props.addMerchToCart(this.state.qtys);
+        addMerchToCart(this.state.qtys);
+
+        const { customer } = parseNestedElements(this.state.formData);
+        updateCustomer(customer);
       }
 
-      this.props.nextPanel();
+      nextPanel();
     }
   };
 
@@ -103,12 +107,12 @@ export class MerchPanel extends BasePanel {
     const { formData } = this.state;
 
     if (this.hasAddedMerch()) {
-      phoneNumberField(errors, formData, 'delivery.phone');
-      requiredField(errors, formData, 'delivery.address1');
-      requiredField(errors, formData, 'delivery.suburb');
-      requiredField(errors, formData, 'delivery.state');
-      requiredField(errors, formData, 'delivery.postcode');
-      requiredField(errors, formData, 'delivery.country');
+      phoneNumberField(errors, formData, 'customer.mobile');
+      requiredField(errors, formData, 'customer.delivery.address1');
+      requiredField(errors, formData, 'customer.delivery.suburb');
+      requiredField(errors, formData, 'customer.delivery.state');
+      requiredField(errors, formData, 'customer.delivery.postcode');
+      requiredField(errors, formData, 'customer.delivery.country');
     }
   }
 
@@ -184,7 +188,7 @@ export class MerchPanel extends BasePanel {
   renderAddressFields() {
     if (!this.hasAddedMerch()) return null;
 
-    const country = this.state.formData['delivery.country'];
+    const country = this.state.formData['customer.delivery.country'];
 
     return (
       <FormContext.Provider value={this.state}>
@@ -193,19 +197,19 @@ export class MerchPanel extends BasePanel {
 
           <Form.Row>
             <Col>
-              <CountryInput field="delivery.country" label="Country" required />
+              <CountryInput field="customer.delivery.country" label="Country" required />
             </Col>
           </Form.Row>
 
           <Form.Row>
             <Col>
-              <PhoneInput field="delivery.phone" label="Mobile" country={country} required />
+              <PhoneInput field="customer.mobile" label="Mobile" country={country} required />
             </Col>
           </Form.Row>
 
           <Form.Row>
             <Col>
-              <TextInput field="delivery.address1" label="Address 1" required />
+              <TextInput field="customer.delivery.address1" label="Address 1" required />
             </Col>
           </Form.Row>
 
@@ -217,16 +221,16 @@ export class MerchPanel extends BasePanel {
 
           <Form.Row>
             <Col>
-              <TextInput field="delivery.suburb" label="Suburb" required />
+              <TextInput field="customer.delivery.suburb" label="Suburb" required />
             </Col>
           </Form.Row>
 
           <Form.Row>
             <Col>
-              <StateInput field="delivery.state" label={getStateLabel(country)} country={country} required />
+              <StateInput field="customer.delivery.state" label={getStateLabel(country)} country={country} required />
             </Col>
             <Col>
-              <PostcodeInput field="delivery.postcode" label={getPostcodeLabel(country)} required />
+              <PostcodeInput field="customer.delivery.postcode" label={getPostcodeLabel(country)} required />
             </Col>
           </Form.Row>
         </div>
