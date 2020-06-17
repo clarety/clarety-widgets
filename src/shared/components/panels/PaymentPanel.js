@@ -92,7 +92,11 @@ export class _PaymentPanel extends BasePanel {
         this.validateCreditCardFields(errors);
       }
     } else if (paymentType === 'gatewaydd') {
-      this.validateDirectDebitFields(errors);
+      if (paymentMethod.gateway === 'nz') {
+        this.validateNZDirectDebitFields(errors);
+      } else {
+        this.validateDirectDebitFields(errors);
+      }
     } else if (paymentType === 'na') {
       this.validateNoPaymentFields(errors);
     } else {
@@ -123,6 +127,16 @@ export class _PaymentPanel extends BasePanel {
     requiredField(errors, formData, 'payment.accountName');
     requiredField(errors, formData, 'payment.accountNumber');
     requiredField(errors, formData, 'payment.accountBSB');
+  }
+
+  validateNZDirectDebitFields(errors) {
+    const { formData } = this.props;
+
+    requiredField(errors, formData, 'payment.accountName');
+    requiredField(errors, formData, 'payment.bankCode');
+    requiredField(errors, formData, 'payment.branchCode');
+    requiredField(errors, formData, 'payment.accountNumber');
+    requiredField(errors, formData, 'payment.suffixCode');
   }
 
   validateNoPaymentFields(errors) {
@@ -156,14 +170,14 @@ export class _PaymentPanel extends BasePanel {
     }
 
     if (paymentType === 'gatewaydd') {
-      if (paymentMethod.gateway === 'bnz') {
+      if (paymentMethod.gateway === 'nz') {
         return {
-          type:              paymentType,
-          accountName:       formData['payment.accountName'],
-          accountBankCode:   formData['payment.accountBankCode'],
-          accountBSB:        formData['payment.accountBSB'],
-          accountNumber:     formData['payment.accountNumber'],
-          accountSuffixCode: formData['payment.accountSuffixCode'],
+          type:          paymentType,
+          accountName:   formData['payment.accountName'],
+          bankCode:      formData['payment.bankCode'],
+          branchCode:    formData['payment.branchCode'],
+          accountNumber: formData['payment.accountNumber'],
+          suffixCode:    formData['payment.suffixCode'],
         };
       } else {
         return {
@@ -314,7 +328,7 @@ export class _PaymentPanel extends BasePanel {
     }
 
     if (paymentType === 'gatewaydd') {
-      if (paymentMethod.gateway === 'bnz') {
+      if (paymentMethod.gateway === 'nz') {
         return this.renderNZDirectDebitFields(paymentMethod);
       } else {
         return this.renderDirectDebitFields(paymentMethod);
@@ -422,10 +436,10 @@ export class _PaymentPanel extends BasePanel {
               <Form.Label>Account Number</Form.Label>
 
               <NZAccountNumberInput
-                bankCodeField="payment.accountBankCode"
-                branchCodeField="payment.accountBSB"
+                bankCodeField="payment.bankCode"
+                branchCodeField="payment.branchCode"
                 accountNumberField="payment.accountNumber"
-                suffixCodeField="payment.accountSuffixCode"
+                suffixCodeField="payment.suffixCode"
               />
             </Form.Group>
           </Col>
