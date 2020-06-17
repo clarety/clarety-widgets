@@ -125,7 +125,6 @@ export const updateAuthCustomer = () => {
       return false;
     } else {
       dispatch(updateAuthCustomerSuccess(result));
-      dispatch(setCustomer(result));
       return true;
     }
   };

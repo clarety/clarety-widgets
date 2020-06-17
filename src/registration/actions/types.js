@@ -34,11 +34,8 @@ export const types = {
   registrationCreateSuccess: 'REGISTRATION_CREATE_SUCCESS',
   registrationCreateFailure: 'REGISTRATION_CREATE_FAILURE',
 
-  registrationFetchRequest:  'REGISTRATION_FETCH_REQUEST',
-  registrationFetchSuccess:  'REGISTRATION_FETCH_SUCCESS',
-
   registrationSubmitRequest: 'REGISTRATION_SUBMIT_REQUEST',
-  // NOTE: there's no registrationSubmitSuccess action, we just redirect.
+  registrationSubmitSuccess: 'REGISTRATION_SUBMIT_SUCCESS',
   registrationSubmitFailure: 'REGISTRATION_SUBMIT_FAILURE',
 
   // Customer Action Types
