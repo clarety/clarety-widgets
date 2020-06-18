@@ -161,8 +161,10 @@ export class OffersPanel extends BasePanel {
     return participants.map((participant, index) =>
       <Row key={index} className="row-participant">
         <Col xs={12} xl={3}>
-          <span className="circle">{index + 1}</span>
-          <FormattedMessage id={`offersPanel.${participant.type}.title`} tagName="h4" />
+          <div className="participant-type">
+            <span className="circle">{index + 1}</span>
+            <FormattedMessage id={`offersPanel.${participant.type}.title`} tagName="h4" />
+          </div>
         </Col>
 
         {settings.showOffers &&
