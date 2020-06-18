@@ -17,20 +17,8 @@ export class _PaymentPanel extends BasePaymentPanel {
     return true;
   }
 
-  validateCreditCardFields(errors) {
-    super.validateCreditCardFields(errors);
-
-    const paymentMethod = this.getPaymentMethod('gatewaycc');
-
-    if (this.shouldShowStartDate(paymentMethod)) {
-      requiredField(errors, this.props.formData, 'additionalData.startDate');
-    }
-  }
-
-  validateDirectDebitFields(errors) {
-    super.validateDirectDebitFields(errors);
-
-    const paymentMethod = this.getPaymentMethod('gatewaydd');
+  validateFields(paymentMethod, errors) {
+    super.validateFields(paymentMethod, errors);
 
     if (this.shouldShowStartDate(paymentMethod)) {
       requiredField(errors, this.props.formData, 'additionalData.startDate');
@@ -66,28 +54,10 @@ export class _PaymentPanel extends BasePaymentPanel {
     );
   }
 
-  renderCreditCardFields(paymentMethod) {
+  renderPaymentFields(paymentMethod) {
     return (
       <React.Fragment>
-        {super.renderCreditCardFields(paymentMethod)}
-        {this.renderStartDateInput(paymentMethod)}
-      </React.Fragment>
-    );
-  }
-
-  renderStripeFields(paymentMethod) {
-    return (
-      <React.Fragment>
-        {super.renderStripeFields(paymentMethod)}
-        {this.renderStartDateInput(paymentMethod)}
-      </React.Fragment>
-    );
-  }
-
-  renderDirectDebitFields(paymentMethod) {
-    return (
-      <React.Fragment>
-        {super.renderDirectDebitFields(paymentMethod)}
+        {super.renderPaymentFields(paymentMethod)}
         {this.renderStartDateInput(paymentMethod)}
       </React.Fragment>
     );

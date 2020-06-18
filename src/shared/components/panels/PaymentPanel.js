@@ -80,31 +80,37 @@ export class _PaymentPanel extends BasePanel {
 
   validate() {
     const { setErrors, formData } = this.props;
-    const paymentType = formData['payment.type'];
-    const paymentMethod = this.getPaymentMethod(paymentType);
+    const paymentMethod = this.getPaymentMethod(formData['payment.type']);
 
-    const errors = [];
-
-    if (paymentType === 'gatewaycc') {
-      if (paymentMethod.gateway === 'stripe' || paymentMethod.gateway === 'stripe-sca') {
-        this.validateStripeFields(errors);
-      } else {
-        this.validateCreditCardFields(errors);
-      }
-    } else if (paymentType === 'gatewaydd') {
-      if (paymentMethod.gateway === 'nz') {
-        this.validateNZDirectDebitFields(errors);
-      } else {
-        this.validateDirectDebitFields(errors);
-      }
-    } else if (paymentType === 'na') {
-      this.validateNoPaymentFields(errors);
-    } else {
-      throw new Error(`[Clarety] unhandled 'validate' for paymentType: ${paymentType}`);
-    }
+    const errors = [];    
+    this.validateFields(paymentMethod, errors);
 
     setErrors(errors);
     return errors.length === 0;
+  }
+
+  validateFields(paymentMethod, errors) {
+    if (paymentMethod.type === 'gatewaycc') {
+      if (paymentMethod.gateway === 'stripe' || paymentMethod.gateway === 'stripe-sca') {
+        return this.validateStripeFields(errors);
+      } else {
+        return this.validateCreditCardFields(errors);
+      }
+    }
+    
+    if (paymentMethod.type === 'gatewaydd') {
+      if (paymentMethod.gateway === 'nz') {
+        return this.validateNZDirectDebitFields(errors);
+      } else {
+        return this.validateDirectDebitFields(errors);
+      }
+    }
+    
+    if (paymentMethod.type === 'na') {
+      return this.validateNoPaymentFields(errors);
+    }
+
+    throw new Error(`[Clarety] unhandled 'validate' for paymentMethod.type: ${paymentMethod.type}`);
   }
 
   validateStripeFields(errors) {
@@ -246,7 +252,8 @@ export class _PaymentPanel extends BasePanel {
   }
 
   renderContent() {
-    const { layout, isBusy, settings } = this.props;
+    const { layout, isBusy, settings, formData } = this.props;
+    const paymentMethod = this.getPaymentMethod(formData['payment.type']);
 
     return (
       <React.Fragment>
@@ -254,7 +261,7 @@ export class _PaymentPanel extends BasePanel {
           {layout !== 'page' && <ErrorMessages />}
           {this.renderCartSummary()}
           {this.renderPaymentMethodOptions()}
-          {this.renderPaymentFields()}
+          {this.renderPaymentFields(paymentMethod)}
           {this.renderTermsCheckbox()}
         </PanelBody>
   
@@ -315,11 +322,8 @@ export class _PaymentPanel extends BasePanel {
     );
   }
 
-  renderPaymentFields() {
-    const paymentType = this.props.formData['payment.type'];
-    const paymentMethod = this.getPaymentMethod(paymentType);
-
-    if (paymentType === 'gatewaycc') {
+  renderPaymentFields(paymentMethod) {
+    if (paymentMethod.type === 'gatewaycc') {
       if (paymentMethod.gateway === 'stripe' || paymentMethod.gateway === 'stripe-sca') {
         return this.renderStripeFields(paymentMethod);
       } else {
@@ -327,7 +331,7 @@ export class _PaymentPanel extends BasePanel {
       }
     }
 
-    if (paymentType === 'gatewaydd') {
+    if (paymentMethod.type === 'gatewaydd') {
       if (paymentMethod.gateway === 'nz') {
         return this.renderNZDirectDebitFields(paymentMethod);
       } else {
@@ -335,11 +339,11 @@ export class _PaymentPanel extends BasePanel {
       }
     }
 
-    if (paymentType === 'na') {
+    if (paymentMethod.type === 'na') {
       return this.renderNoPaymentFields(paymentMethod);
     }
 
-    throw new Error(`[Clarety] unhandled 'renderPaymentFields' for paymentType: ${paymentType}`);
+    throw new Error(`[Clarety] unhandled 'renderPaymentFields' for paymentMethod.type: ${paymentMethod.type}`);
   }
 
   renderCreditCardFields(paymentMethod) {
