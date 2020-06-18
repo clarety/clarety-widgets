@@ -2,7 +2,7 @@ import { ClaretyApi } from 'clarety-utils';
 import { statuses, setStatus, setRecaptcha, setPayment, setCustomer } from 'shared/actions';
 import { setFormData } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
-import { addDonationToCart } from 'donate/actions';
+import { addDonationToCart, makePaymentRequest, handlePaymentResult } from 'donate/actions';
 import { getPaymentPostData } from 'donate/selectors';
 
 export const validatePayPal = (data) => {
