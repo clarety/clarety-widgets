@@ -77,7 +77,7 @@ const attemptPayment = (paymentData, paymentMethod) => {
   };
 };
 
-const handlePaymentResult = (result, paymentData, paymentMethod) => {
+export const handlePaymentResult = (result, paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     dispatch(updateCartData({
       uid: result.uid,
@@ -159,17 +159,17 @@ const handleStripeAuthorise = (paymentResult, paymentData, paymentMethod) => {
 
 // Make Payment
 
-const makePaymentRequest = (postData) => ({
+export const makePaymentRequest = (postData) => ({
   type: types.makePaymentRequest,
   postData: postData,
 });
 
-const makePaymentSuccess = (result) => ({
+export const makePaymentSuccess = (result) => ({
   type: types.makePaymentSuccess,
   result: result,
 });
 
-const makePaymentFailure = (result) => ({
+export const makePaymentFailure = (result) => ({
   type: types.makePaymentFailure,
   result: result,
 });
