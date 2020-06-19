@@ -1,3 +1,4 @@
+import { getCart } from 'shared/selectors';
 import { setErrors, clearErrors } from 'form/actions';
 import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getIsLoggedIn } from 'registration/selectors';
 import { types, updateAuthCustomer } from 'registration/actions';
@@ -16,10 +17,14 @@ export const createRegistration = () => {
     const result = await RegistrationApi.createRegistration(postData, { forceExpress });
 
     if (result.status !== 'error') {
-      // If we have merch, update the delivery address of logged-in customer.
-      if (postData.merchandise.length) dispatch(updateAuthCustomer());
-
       dispatch(registrationCreateSuccess(result));
+
+      if (postData.merchandise.length) {
+        // If we have merch, update the delivery address of logged-in customer, then fetch the shipping options.
+        await dispatch(updateAuthCustomer());
+        await dispatch(fetchShippingOptions());
+      }
+      
       return true;
     } else {
       dispatch(registrationCreateFailure(result));
@@ -27,6 +32,45 @@ export const createRegistration = () => {
       return false;
     }
   };
+};
+
+export const fetchShippingOptions = () => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const cart = getCart(state);
+
+    dispatch(fetchShippingOptionsRequest(cart.id));
+
+    const result = await RegistrationApi.fetchSale(cart.id);
+
+    if (result.status !== 'error') {
+      dispatch(fetchShippingOptionsSuccess(result));
+      return true;
+    } else {
+      dispatch(fetchShippingOptionsFailure(result.validationErrors));
+      return false;
+    }
+  };
+};
+
+export const updateShipping = (shippingKey) => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const cart = getCart(state);
+
+    dispatch(updateShippingRequest(cart.id, shippingKey));
+
+    const result = await RegistrationApi.updateShipping(cart.id, shippingKey);
+
+    if (result.status !== 'error') {
+      dispatch(updateShippingSuccess(result));
+      return true;
+    } else {
+      dispatch(updateShippingFailure(result));
+      dispatch(setErrors(result.validationErrors));
+      return false;
+    }
+  }
 };
 
 export const submitRegistration = (paymentData) => {
@@ -52,29 +96,64 @@ export const submitRegistration = (paymentData) => {
 
 // Create
 
-const registrationCreateRequest = postData => ({
+const registrationCreateRequest = (postData) => ({
   type: types.registrationCreateRequest,
   postData: postData,
 });
 
-const registrationCreateSuccess = result => ({
+const registrationCreateSuccess = (result) => ({
   type: types.registrationCreateSuccess,
-  result,
+  result: result,
 });
 
-const registrationCreateFailure = result => ({
+const registrationCreateFailure = (result) => ({
   type: types.registrationCreateFailure,
-  result,
+  result: result,
+});
+
+// Fetch Shipping Options
+
+const fetchShippingOptionsRequest = (saleId) => ({
+  type: types.fetchShippingOptionsRequest,
+  saleId: saleId,
+});
+
+const fetchShippingOptionsSuccess = (result) => ({
+  type: types.fetchShippingOptionsSuccess,
+  result: result,
+});
+
+const fetchShippingOptionsFailure = (errors) => ({
+  type: types.fetchShippingOptionsFailure,
+  errors: errors,
+});
+
+// Update Shipping
+
+const updateShippingRequest = (saleId, shippingKey) => ({
+  type: types.updateShippingRequest,
+  saleId: saleId,
+  shippingKey: shippingKey,
+});
+
+const updateShippingSuccess = (result) => ({
+  type: types.updateShippingSuccess,
+  result: result,
+});
+
+const updateShippingFailure = (result) => ({
+  type: types.updateShippingFailure,
+  result: result,
 });
 
 // Submit
 
-const registrationSubmitRequest = postData => ({
+const registrationSubmitRequest = (postData) => ({
   type: types.registrationSubmitRequest,
   postData: postData,
 });
 
-const registrationSubmitFailure = result => ({
+const registrationSubmitFailure = (result) => ({
   type: types.registrationSubmitFailure,
-  result,
+  result: result,
 });

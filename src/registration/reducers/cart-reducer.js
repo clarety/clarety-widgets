@@ -3,11 +3,12 @@ import { types } from 'registration/actions';
 
 export const cartReducer = (state, action) => {
   switch (action.type) {
-    case types.registrationCreateRequest: return registrationCreateRequest(state, action);
-    case types.registrationCreateSuccess: return registrationCreateSuccess(state, action);
-    case types.registrationCreateFailure: return registrationCreateFailure(state, action);
-    case types.registrationFetchSuccess:  return registrationFetchSuccess(state, action);
-    default:                              return sharedCartReducer(state, action);
+    case types.registrationCreateRequest:   return registrationCreateRequest(state, action);
+    case types.registrationCreateSuccess:   return registrationCreateSuccess(state, action);
+    case types.registrationCreateFailure:   return registrationCreateFailure(state, action);
+    case types.fetchShippingOptionsSuccess: return fetchShipping(state, action);
+    case types.updateShippingSuccess:       return updateShipping(state, action);
+    default:                                return sharedCartReducer(state, action);
   }
 };
 
@@ -30,6 +31,8 @@ function registrationCreateSuccess(state, action) {
     jwt: action.result.jwt,
     status: action.result.sale.status,
     items: resolveCartItems(state.items, action.result.sale.salelines),
+    shippingOptions: action.result.sale.shippingOptions,
+    shippingKey: action.result.sale.shippingKey,
     summary: {
       ...state.summary,
       total: action.result.sale.total,
@@ -44,15 +47,22 @@ function registrationCreateFailure(state, action) {
   };
 }
 
-function registrationFetchSuccess(state, action) {
+function fetchShipping(state, action) {
   return {
     ...state,
-    id: action.result.id,
-    status: action.result.status,
-    items: action.result.salelines,
+    shippingOptions: action.result.shippingOptions,
+    shippingKey: action.result.shippingKey,
+  };
+}
+
+function updateShipping(state, actions) {
+  return {
+    ...state,
+    shipping: actions.result.sale.shipping,
+    shippingKey: actions.result.sale.shippingKey,
     summary: {
       ...state.summary,
-      total: action.result.total,
+      total: actions.result.sale.total,
     }
   };
 }

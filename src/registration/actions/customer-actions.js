@@ -107,11 +107,8 @@ export const updateAuthCustomer = () => {
     const cart = getCart(state);
 
     dispatch(updateAuthCustomerRequest());
-    dispatch(setStatus('busy'));
 
     const result = await RegistrationApi.updateCustomer(cart.customer);
-
-    dispatch(setStatus('ready'));
 
     if (result.status === 'error') {
       dispatch(updateAuthCustomerFailure(result.validationErrors));

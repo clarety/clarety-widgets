@@ -1,4 +1,4 @@
-import { ClaretyApi, Config } from 'clarety-utils';
+import { ClaretyApi } from 'clarety-utils';
 
 export class RegistrationApi {
   static storeId = null;
@@ -20,9 +20,8 @@ export class RegistrationApi {
   }
 
   static async fetchEvent(eventId) {
-    const endpoint = Config.get('fullEventEndpoint') || 'registration-full/';
     const params = { eventId, storeId: this.storeId, seriesId: this.seriesId };
-    const results = await ClaretyApi.get(endpoint, params);
+    const results = await ClaretyApi.get('registration-full/', params);
     return results[0];
   }
 
@@ -90,6 +89,17 @@ export class RegistrationApi {
       : 'registration-sale/';
 
     const results = await ClaretyApi.post(endpoint, data, { storeId: this.storeId });
+    return results[0];
+  }
+
+  static async fetchSale(saleId) {
+    const results = await ClaretyApi.get(`sale/${saleId}`, { storeId: this.storeId });
+    return results[0];
+  }
+
+  static async updateShipping(saleId, shippingKey) {
+    const data = { saleId, key: shippingKey };
+    const results = await ClaretyApi.post('registration-shipping/', data, { storeId: this.storeId });
     return results[0];
   }
 

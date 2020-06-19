@@ -1,7 +1,7 @@
 import { getSetting } from 'shared/selectors';
 import { getFormData, getErrors } from 'form/selectors';
 import { setErrors, updateFormData } from 'form/actions';
-import { submitRegistration } from 'registration/actions';
+import { submitRegistration, updateShipping } from 'registration/actions';
 import { getCart, getPaymentMethods } from 'registration/selectors';
 
 export class PaymentConnect {
@@ -21,6 +21,7 @@ export class PaymentConnect {
   static actions = {
     onShowPanel: () => async () => true,
     onSubmit: submitRegistration,
+    updateShipping: updateShipping,
     updateFormData: updateFormData,
     setErrors: setErrors,
   };

@@ -28,11 +28,19 @@ export const types = {
   setParticipantAdditionalData: 'SET_PARTICIPANT_ADDITIONAL_DATA',
   setParticipantErrors:         'SET_PARTICIPANT_ERRORS',
 
-  // Cart Action Types
+  // Registration Action Types
 
   registrationCreateRequest: 'REGISTRATION_CREATE_REQUEST',
   registrationCreateSuccess: 'REGISTRATION_CREATE_SUCCESS',
   registrationCreateFailure: 'REGISTRATION_CREATE_FAILURE',
+
+  fetchShippingOptionsRequest: 'FETCH_SHIPPING_OPTIONS_REQUEST',
+  fetchShippingOptionsSuccess: 'FETCH_SHIPPING_OPTIONS_SUCCESS',
+  fetchShippingOptionsFailure: 'FETCH_SHIPPING_OPTIONS_FAILURE',
+
+  updateShippingRequest: 'UPDATE_SHIPPING_REQUEST',
+  updateShippingSuccess: 'UPDATE_SHIPPING_SUCCESS',
+  updateShippingFailure: 'UPDATE_SHIPPING_FAILURE',
 
   registrationSubmitRequest: 'REGISTRATION_SUBMIT_REQUEST',
   registrationSubmitSuccess: 'REGISTRATION_SUBMIT_SUCCESS',
