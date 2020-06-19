@@ -6,8 +6,10 @@ export const cartReducer = (state, action) => {
     case types.registrationCreateRequest:   return registrationCreateRequest(state, action);
     case types.registrationCreateSuccess:   return registrationCreateSuccess(state, action);
     case types.registrationCreateFailure:   return registrationCreateFailure(state, action);
-    case types.fetchShippingOptionsSuccess: return fetchShipping(state, action);
-    case types.updateShippingSuccess:       return updateShipping(state, action);
+
+    case types.fetchShippingOptionsSuccess: return updateShipping(state, action.result);
+    case types.updateShippingSuccess:       return updateShipping(state, action.result.sale);
+
     default:                                return sharedCartReducer(state, action);
   }
 };
@@ -35,6 +37,7 @@ function registrationCreateSuccess(state, action) {
     shippingKey: action.result.sale.shippingKey,
     summary: {
       ...state.summary,
+      shipping: action.result.sale.shipping,
       total: action.result.sale.total,
     }
   };
@@ -47,22 +50,17 @@ function registrationCreateFailure(state, action) {
   };
 }
 
-function fetchShipping(state, action) {
+function updateShipping(state, sale) {
   return {
     ...state,
-    shippingOptions: action.result.shippingOptions,
-    shippingKey: action.result.shippingKey,
-  };
-}
 
-function updateShipping(state, actions) {
-  return {
-    ...state,
-    shipping: actions.result.sale.shipping,
-    shippingKey: actions.result.sale.shippingKey,
+    shippingOptions: sale.shippingOptions,
+    shippingKey:     sale.shippingKey,
+
     summary: {
       ...state.summary,
-      total: actions.result.sale.total,
+      shipping: sale.shipping,
+      total:    sale.total,
     }
   };
 }

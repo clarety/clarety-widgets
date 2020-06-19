@@ -85,6 +85,7 @@ const CartTotals = ({ summary }) => (
   <div className="cart-totals">
     <TotalLine label="Subtotal" value={summary.subTotal} />
     <TotalLine label="Discount Code" value={summary.discount} />
+    <TotalLine label="Shipping" value={summary.shipping} />
     <hr />
     <TotalLine label="Total" value={summary.total} />
   </div>
