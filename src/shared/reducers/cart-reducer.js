@@ -96,6 +96,15 @@ export const cartReducer = (state = initialState, action) => {
         customer: action.customer,
       };
 
+    case types.updateCustomer:
+      return {
+        ...state,
+        customer: {
+          ...state.customer,
+          ...action.customer,
+        },
+      };
+
     case types.setOrganisation:
       return {
         ...state,

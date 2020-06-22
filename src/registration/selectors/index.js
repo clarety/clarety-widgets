@@ -39,7 +39,17 @@ export const getProgress = (state) => {
 
 export const getRegistrationTypes = (state) => {
   const event = getEvent(state);
-  return event ? event.registrationTypes: null;
+  return event ? event.registrationTypes : null;
+};
+
+export const getEventMerchandise = (state) => {
+  const event = getEvent(state);
+  return event ? event.merchandise : [];
+};
+
+export const getMerchOffer = (state, offerId) => {
+  const merch = getEventMerchandise(state);
+  return merch.find(offer => offer.offerId === offerId);
 };
 
 export const getQtys = (state) => {
@@ -165,8 +175,6 @@ export const getChannel = (state) => {
 
 export const getIsLoggedIn = (state) => !!getAuth(state).jwt;
 
-export const getIsExpress = (state) => getSetting(state, 'variant') === 'express';
-
 export const getPaymentMethods = (state) => {
   const isFree = getCartTotal(state) === 0;
   const isCorporateTeam = getIsCorporateTeam(state);
@@ -201,6 +209,7 @@ export const getCreateRegistrationPostData = (state) => {
   const fundraising = getFundraisingPostData(state);
   const organisation = getOrganisation(state);
   const trackingData = getTrackingData(state);
+  const merchandise = getMerchandisePostData(state);
 
   return {
     eventId: event.eventId,
@@ -211,6 +220,7 @@ export const getCreateRegistrationPostData = (state) => {
       getParticipantPostData(state, participant, index)
     ),
     fundraising: fundraising,
+    merchandise: merchandise,
     ...trackingData,
   };
 };
@@ -277,6 +287,18 @@ const getDonationAmount = (state) => {
   const item = cart.items.find(item => item.type === 'donation');
   
   return item ? item.price : 0;
+};
+
+const getMerchandisePostData = (state) => {
+  const cart = getCart(state);
+  const merchItems = cart.items.filter(item => item.type === 'merchandise');
+
+  return merchItems.map(item => ({
+    appRef:    item.appRef,
+    quantity:  item.quantity,
+    offerId:   item.offerId,
+    productId: item.productId,
+  }));
 };
 
 export const getSubmitRegistrationPostData = (state, paymentData) => {

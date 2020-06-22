@@ -5,6 +5,7 @@ import { connect, Provider as ReduxProvider } from 'react-redux';
 import { BreakpointProvider } from 'react-socks';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
+import { ClaretyApi } from 'clarety-utils';
 import { statuses, setStore, setTrackingData, fetchSettings, updateAppSettings, setPanels } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { getJwtCustomer, Resources } from 'shared/utils';
@@ -14,7 +15,6 @@ import { rootReducer } from 'donate/reducers';
 import { mapDonationSettings, setupDefaultResources } from 'donate/utils';
 import { StepIndicator } from 'donate/components';
 import { fetchCustomer } from 'donate/actions/customer-actions';
-import { ClaretyApi } from "clarety-utils"
 
 export class DonateWidget extends React.Component {
   static store;

@@ -24,13 +24,23 @@ export const statusReducer = (state = initialState, action) => {
       return statuses.ready;
 
     case types.registrationCreateRequest:
+    case types.updateAuthCustomerRequest:
+    case types.fetchShippingOptionsRequest:
       return statuses.validating;
 
     case types.registrationCreateSuccess:
     case types.registrationCreateFailure:
       return statuses.ready;
 
-    case types.registrationFetchSuccess:
+    case types.fetchShippingOptionsSuccess:
+    case types.fetchShippingOptionsFailure:
+      return statuses.ready;
+
+    case types.updateShippingRequest:
+      return statuses.initializing;
+
+    case types.updateShippingSuccess:
+    case types.updateShippingFailure:
       return statuses.ready;
 
     case types.registrationSubmitRequest:

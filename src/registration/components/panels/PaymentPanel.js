@@ -1,22 +1,70 @@
 import React from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Form } from 'react-bootstrap';
 import { _PaymentPanel as BasePaymentPanel } from 'shared/components';
-import { currency } from 'shared/utils';
+import { Currency } from 'shared/components';
+import { formatDate } from 'shared/utils';
 
 export class PaymentPanel extends BasePaymentPanel {
   renderCartSummary() {
     const { cart } = this.props;
 
     return (
-      <div className="my-5 text-left">
-        {cart.items.map((item, index) =>
-          <CartItem key={index} item={item} />
-        )}
+      <React.Fragment>
+        <div className="cart-summary">
+          {cart.items.map((item, index) =>
+            <CartItem key={index} item={item} />
+          )}
+          
+          <CartTotals summary={cart.summary} />
+        </div>
 
-        <CartTotals summary={cart.summary} />
+        {this.renderShippingOptions()}
+      </React.Fragment>
+    );
+  }
+
+  renderShippingOptions() {
+    const { cart } = this.props;
+    if (!cart.shippingOptions || !cart.shippingOptions.length) return null;
+
+    return (
+      <div className="shipping-options">
+        <h3>Shipping Options</h3>
+        
+        {cart.shippingOptions.map(this.renderShippingOption)}
       </div>
     );
   }
+
+  renderShippingOption = (option) => {
+    const { cart, updateShipping } = this.props;
+
+    return (
+      <Form.Check type="radio" id={option.key} key={option.key} className="shipping-option">
+        <Form.Check.Input
+          type="radio"
+          name="shippingOption"
+          checked={cart.shippingKey === option.key}
+          onChange={() => updateShipping(option.key)}
+        />
+
+        <Form.Check.Label>
+          <span className="shipping-option__name">
+            {option.description}
+          </span>
+          <span className="shipping-option__cost">
+            <Currency amount={option.amount} />
+          </span>
+        </Form.Check.Label>
+
+        {option.expectedDelivery &&
+          <p className="shipping-option__date">
+            Estimated Delivery: {formatDate(option.expectedDelivery)}
+          </p>
+        }
+      </Form.Check>
+    );
+  };
 }
 
 const CartItem = ({ item }) => (
@@ -27,7 +75,9 @@ const CartItem = ({ item }) => (
         <p className="discount-description">{item.discountDescription}</p>
       }
     </Col>
-    <Col as="dd" xs={4} md={3} className="text-right">{currency(item.total)}</Col>
+    <Col as="dd" xs={4} md={3} className="text-right">
+      <Currency amount={item.total} />
+    </Col>
   </Row>
 );
 
@@ -35,6 +85,7 @@ const CartTotals = ({ summary }) => (
   <div className="cart-totals">
     <TotalLine label="Subtotal" value={summary.subTotal} />
     <TotalLine label="Discount Code" value={summary.discount} />
+    <TotalLine label="Shipping" value={summary.shipping} />
     <hr />
     <TotalLine label="Total" value={summary.total} />
   </div>
@@ -48,7 +99,9 @@ const TotalLine = ({ label, value }) => {
   return (
     <Row as="dl">
       <Col as="dt">{label}</Col>
-      <Col as="dd" xs={4} md={3} className="text-right">{currency(value)}</Col>
+      <Col as="dd" xs={4} md={3} className="text-right">
+        <Currency amount={value} />
+      </Col>
     </Row>
   );
 };

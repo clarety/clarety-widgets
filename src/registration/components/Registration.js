@@ -14,6 +14,7 @@ import { NavBarBrand } from 'registration/components/misc/NavBarBrand';
 import { MiniCart, BusyOverlay } from 'registration/components';
 import { fetchEvents, fetchAuthCustomer } from 'registration/actions';
 import { rootReducer } from 'registration/reducers';
+import { RegistrationApi } from 'registration/utils';
 
 // Polyfil plural rules.
 if (!Intl.PluralRules) {
@@ -73,6 +74,13 @@ class _RegistrationRoot extends React.Component {
       prevSeriesId: this.props.prevSeriesId,
       variant: this.props.variant,
       ...this.props.settings,
+    });
+
+    // Init API.
+    RegistrationApi.init({
+      storeId: this.props.storeId,
+      seriesId: this.props.seriesId,
+      isExpress: this.props.variant === 'express',
     });
 
     // Auth.

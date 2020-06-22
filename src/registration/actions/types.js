@@ -28,17 +28,22 @@ export const types = {
   setParticipantAdditionalData: 'SET_PARTICIPANT_ADDITIONAL_DATA',
   setParticipantErrors:         'SET_PARTICIPANT_ERRORS',
 
-  // Cart Action Types
+  // Registration Action Types
 
   registrationCreateRequest: 'REGISTRATION_CREATE_REQUEST',
   registrationCreateSuccess: 'REGISTRATION_CREATE_SUCCESS',
   registrationCreateFailure: 'REGISTRATION_CREATE_FAILURE',
 
-  registrationFetchRequest:  'REGISTRATION_FETCH_REQUEST',
-  registrationFetchSuccess:  'REGISTRATION_FETCH_SUCCESS',
+  fetchShippingOptionsRequest: 'FETCH_SHIPPING_OPTIONS_REQUEST',
+  fetchShippingOptionsSuccess: 'FETCH_SHIPPING_OPTIONS_SUCCESS',
+  fetchShippingOptionsFailure: 'FETCH_SHIPPING_OPTIONS_FAILURE',
+
+  updateShippingRequest: 'UPDATE_SHIPPING_REQUEST',
+  updateShippingSuccess: 'UPDATE_SHIPPING_SUCCESS',
+  updateShippingFailure: 'UPDATE_SHIPPING_FAILURE',
 
   registrationSubmitRequest: 'REGISTRATION_SUBMIT_REQUEST',
-  // NOTE: there's no registrationSubmitSuccess action, we just redirect.
+  registrationSubmitSuccess: 'REGISTRATION_SUBMIT_SUCCESS',
   registrationSubmitFailure: 'REGISTRATION_SUBMIT_FAILURE',
 
   // Customer Action Types
@@ -58,6 +63,10 @@ export const types = {
   fetchAuthCustomerRequest: 'FETCH_AUTH_CUSTOMER_REQUEST',
   fetchAuthCustomerSuccess: 'FETCH_AUTH_CUSTOMER_SUCCESS',
   fetchAuthCustomerFailure: 'FETCH_AUTH_CUSTOMER_FAILURE',
+
+  updateAuthCustomerRequest: 'UPDATE_AUTH_CUSTOMER_REQUEST',
+  updateAuthCustomerSuccess: 'UPDATE_AUTH_CUSTOMER_SUCCESS',
+  updateAuthCustomerFailure: 'UPDATE_AUTH_CUSTOMER_FAILURE',
 
   // Team Action Types
 

@@ -1,18 +1,14 @@
-import { ClaretyApi, Config } from 'clarety-utils';
 import { types } from 'registration/actions';
+import { RegistrationApi } from 'registration/utils';
 
 export const fetchEvents = () => {
   return async (dispatch, getState) => {
-    const state = getState();
-
     dispatch(fetchEventsRequest());
 
-    const { storeId, seriesId } = state.settings;
-    const results = await ClaretyApi.get('registration-series-events/', { storeId, seriesId });
-    const result = results[0];
+    const events = await RegistrationApi.fetchEvents();
 
-    if (result) {
-      dispatch(fetchEventsSuccess(result));
+    if (events) {
+      dispatch(fetchEventsSuccess(events));
       return true;
     } else {
       dispatch(fetchEventsFailure());
@@ -21,18 +17,14 @@ export const fetchEvents = () => {
   };
 };
 
-export const fetchFullEvent = eventId => {
+export const fetchFullEvent = (eventId) => {
   return async (dispatch, getState) => {
-    const state = getState();
-
     dispatch(fetchFullEventRequest(eventId));
 
-    const endpoint = Config.get('fullEventEndpoint') || 'registration-full/';
-    const { storeId, seriesId } = state.settings;
-    const results = await ClaretyApi.get(endpoint, { storeId, seriesId, eventId });
+    const event = await RegistrationApi.fetchEvent(eventId);
 
-    if (results) {
-      dispatch(fetchFullEventSuccess(results[0]));
+    if (event) {
+      dispatch(fetchFullEventSuccess(event));
       return true;
     } else {
       dispatch(fetchFullEventFailure());

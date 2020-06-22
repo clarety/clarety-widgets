@@ -1,6 +1,7 @@
 import React from 'react';
 import { DonationPanel, LoginPanel } from '../../src/shared/components';
 import { ModePanel, EventPanel, TeamPanel, QtysPanel, OffersPanel, DetailsPanel, ValidatePanel, PaymentPanel } from '../../src/registration/components';
+import { MerchPanel, MerchConnect } from '../../src/registration/components';
 import { ModeConnect, EventConnect, RegistrationLoginConnect, TeamConnect, QtysConnect, OffersConnect, DetailsConnect, DonationConnect, ValidateConnect, PaymentConnect } from '../../src/registration/components';
 import { Registration, setupRegistrationAxiosMock } from '../../src';
 import enTranslations from '../../src/registration/intl/en.json';
@@ -73,6 +74,11 @@ Registration.setPanels([
     },
   },
   {
+    component: MerchPanel,
+    connect: MerchConnect,
+    settings: {},
+  },
+  {
     component: ValidatePanel,
     connect: ValidateConnect,
     settings: {},
@@ -98,7 +104,7 @@ export default class RegistrationDemo extends React.Component {
         <Registration
           translations={enTranslations}
 
-          storeId="0"
+          storeId="1"
           storeCode="AU"
 
           // mdc

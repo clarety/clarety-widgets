@@ -1,13 +1,13 @@
 import uuid from 'uuid/v4';
 import { types } from 'shared/actions';
 
-export const addItem = ({ offerId, offerUid, offerPaymentUid, offerProductId, type, quantity, price, panel, options, description }) => ({
+export const addItem = ({ offerId, offerUid, offerPaymentUid, productId, type, quantity, price, panel, options, description }) => ({
   type: types.addItem,
   item: {
     offerId: offerId,
     offerUid: offerUid,
     offerPaymentUid: offerPaymentUid,
-    offerProductId: offerProductId,
+    productId: productId,
     quantity: quantity || 1,
     price: Number(price),
     description: description,
@@ -57,6 +57,11 @@ export const setStore = (store) => ({
 
 export const setCustomer = (customer) => ({
   type: types.setCustomer,
+  customer: customer,
+});
+
+export const updateCustomer = (customer) => ({
+  type: types.updateCustomer,
   customer: customer,
 });
 

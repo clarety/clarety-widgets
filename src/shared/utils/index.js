@@ -1,6 +1,7 @@
 export * from './resources';
 
 export * from './address-utils';
+export * from './date-utils';
 export * from './element-utils';
 export * from './instance-utils';
 export * from './settings-utils';

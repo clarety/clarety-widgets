@@ -1,4 +1,5 @@
 import { getElementOptions } from 'shared/utils';
+export * from './RegistrationApi';
 
 export const currentYear = new Date().getFullYear();
 

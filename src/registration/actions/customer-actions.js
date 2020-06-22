@@ -1,14 +1,14 @@
-import { ClaretyApi, Config } from 'clarety-utils';
 import { setStatus, setCustomer, login, emailStatuses } from 'shared/actions';
+import { getCart } from 'shared/selectors';
 import { parseNestedElements } from 'shared/utils';
 import { types } from 'registration/actions';
+import { RegistrationApi } from 'registration/utils';
 
 export const hasAccount = (email) => {
   return async dispatch => {
     dispatch(hasAccountRequest(email));
 
-    const results = await ClaretyApi.get('customer-search/', { email });
-    const result = results[0];
+    const result = await RegistrationApi.hasAccount(email);
 
     if (result.status === 'error') {
       dispatch(hasAccountFailure(result));
@@ -23,11 +23,9 @@ export const hasAccount = (email) => {
 export const resetPassword = (email) => {
   return async dispatch => {
     dispatch(resetPasswordRequest(email));
-
     dispatch(setStatus('busy-reset-password'));
 
-    const results = await ClaretyApi.post('customer-search/', { email, sendPassword: true });
-    const result = results[0];
+    const result = await RegistrationApi.resetPassword(email);
 
     dispatch(setStatus('ready'));
 
@@ -63,11 +61,9 @@ export const createAccount = () => {
     const { customer } = parseNestedElements(formData);
     
     dispatch(createAccountRequest(customer));
-
     dispatch(setStatus('busy'));
 
-    let results = await ClaretyApi.post('customer-new/', customer);
-    const result = results[0];
+    const result = await RegistrationApi.createAccount(customer);
 
     dispatch(setStatus('ready'));
 
@@ -90,8 +86,7 @@ export const fetchAuthCustomer = () => {
     dispatch(setStatus('busy'));
 
     const { prevSeriesId } = state.settings;
-    let results = await ClaretyApi.get('registration-customer/', { previousSeriesId: prevSeriesId });
-    const result = results[0];
+    const result = await RegistrationApi.fetchCustomer(prevSeriesId);
 
     dispatch(setStatus('ready'));
 
@@ -101,6 +96,25 @@ export const fetchAuthCustomer = () => {
     } else {
       dispatch(fetchAuthCustomerSuccess(result));
       dispatch(setCustomer(result));
+      return true;
+    }
+  };
+};
+
+export const updateAuthCustomer = () => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const cart = getCart(state);
+
+    dispatch(updateAuthCustomerRequest());
+
+    const result = await RegistrationApi.updateCustomer(cart.customer);
+
+    if (result.status === 'error') {
+      dispatch(updateAuthCustomerFailure(result.validationErrors));
+      return false;
+    } else {
+      dispatch(updateAuthCustomerSuccess(result));
       return true;
     }
   };
@@ -172,4 +186,21 @@ const fetchAuthCustomerSuccess = (result) => ({
 const fetchAuthCustomerFailure = (result) => ({
   type: types.fetchAuthCustomerFailure,
   result: result,
+});
+
+// Update Auth Customer
+
+const updateAuthCustomerRequest = (customer) => ({
+  type: types.updateAuthCustomerRequest,
+  customer: customer,
+});
+
+const updateAuthCustomerSuccess = (customer) => ({
+  type: types.updateAuthCustomerSuccess,
+  customer: customer,
+});
+
+const updateAuthCustomerFailure = (errors) => ({
+  type: types.updateAuthCustomerFailure,
+  errors: errors,
 });

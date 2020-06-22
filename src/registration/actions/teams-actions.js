@@ -1,20 +1,31 @@
-import { ClaretyApi } from 'clarety-utils';
 import { setOrganisation, removePanels, setPromoCode, updateAppSettings } from 'shared/actions';
 import { setErrors, clearErrors } from 'form/actions';
 import { getCreateTeamPostData } from 'registration/selectors';
 import { parseTeamErrors } from 'registration/utils';
 import { types } from 'registration/actions';
+import { RegistrationApi } from 'registration/utils';
 
 export const searchTeams = (query) => {
   return async (dispatch, getState) => {
-    const state = getState();
-
     dispatch(searchTeamsRequest(query));
-
-    const { storeId, seriesId } = state.settings;
-    const results = await ClaretyApi.get('registration-teams/', { query, seriesId, storeId });
-    
+    const results = await RegistrationApi.searchTeams(query);
     dispatch(searchTeamsSuccess(results));
+  };
+};
+
+export const fetchTeam = (teamId) => {
+  return async (dispatch, getState) => {
+    dispatch(fetchTeamRequest(teamId));
+
+    const team = await RegistrationApi.fetchTeam(teamId);
+
+    if (team) {
+      dispatch(fetchTeamSuccess(team));
+      return team;
+    } else {
+      dispatch(fetchTeamFailure());
+      return null;
+    }
   };
 };
 
@@ -25,10 +36,8 @@ export const createTeam = () => {
 
     dispatch(clearErrors());
     dispatch(createTeamRequest(postData));
-    
-    const { storeId } = state.settings;
-    const results = await ClaretyApi.post('registration-teams/', postData, { storeId });
-    const result = results[0];
+
+    const result = await RegistrationApi.createTeam(postData);
 
     if (!result.errors) {
       const team = await dispatch(fetchTeam(result.teamId));
@@ -44,32 +53,11 @@ export const createTeam = () => {
   };
 };
 
-export const fetchTeam = (teamId) => {
-  return async (dispatch, getState) => {
-    const state = getState();
-
-    dispatch(fetchTeamRequest(teamId));
-
-    const { storeId, seriesId } = state.settings;
-    const results = await ClaretyApi.get('registration-teams/', { seriesId, storeId, teamId });
-    const result = results[0];
-
-    if (result) {
-      dispatch(fetchTeamSuccess(result));
-      return result;
-
-    } else {
-      dispatch(fetchTeamFailure(result));
-      return null;
-    }
-  };
-};
-
 export const checkTeamPassword = (team, password) => {
   return async (dispatch, getState) => {
     const state = getState();
 
-    const { storeId, seriesId } = state.settings;
+    const { seriesId } = state.settings;
 
     const postData = {
       teamId: team.teamId,
@@ -79,9 +67,8 @@ export const checkTeamPassword = (team, password) => {
 
     dispatch(clearErrors());
     dispatch(checkTeamPasswordRequest(postData));
-    
-    const results = await ClaretyApi.post('registration-teams/', postData, { storeId });
-    const result = results[0];
+
+    const result = await RegistrationApi.checkTeamPassword(postData);
 
     if (!result.errors) {
       dispatch(checkTeamPasswordSuccess(result));
@@ -101,8 +88,7 @@ export const checkPromoCode = (promoCode) => {
     dispatch(setOrganisation(null));
     dispatch(checkPromoCodeRequest(promoCode));
 
-    const results = await ClaretyApi.get('registration-promocode/', { promoCode });
-    const result = results[0];
+    const result = await RegistrationApi.checkPromoCode(promoCode);
 
     if (result.corporateTeam) {
       result.team.isCorporateTeam = true;

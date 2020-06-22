@@ -10,6 +10,11 @@ export function emailField(errors, formData, field, message) {
   validateEmail(email, field, errors, message);
 }
 
+export function phoneNumberField(errors, formData, field, message) {
+  const phoneNumber = formData[field];
+  validatePhoneNumber(phoneNumber, field, errors, message);
+}
+
 export function cardNumberField(errors, formData, field, message) {
   const cardNumber = formData[field];
   validateCardNumber(cardNumber, field, errors, message);
@@ -43,6 +48,15 @@ export function validateEmail(email, field, errors, message) {
     errors.push({
       field: field,
       message: message || 'Please enter a valid email.',
+    });
+  }
+}
+
+export function validatePhoneNumber(phoneNumber, field, errors, message) {
+  if (!phoneNumber || phoneNumber.length < 10 || phoneNumber.length > 14) {
+    errors.push({
+      field: field,
+      message: message || 'Please enter a valid phone number.',
     });
   }
 }

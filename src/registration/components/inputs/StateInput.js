@@ -1,10 +1,13 @@
 import React from 'react';
 import { getStateOptions } from 'shared/utils';
-import { SimpleSelectInput } from 'registration/components';
+import { TextInput, SimpleSelectInput } from 'registration/components';
 
-export const StateInput = (props) => (
-  <SimpleSelectInput
-    {...props}
-    options={getStateOptions(props.country || 'AU')}
-  />
-);
+export const StateInput = ({ country, ...props }) => {
+  const stateOptions = getStateOptions(country);
+
+  if (stateOptions) {
+    return <SimpleSelectInput options={stateOptions} {...props} />;
+  } else {
+    return <TextInput {...props} />;
+  }
+};
