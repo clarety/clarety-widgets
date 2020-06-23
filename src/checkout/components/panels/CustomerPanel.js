@@ -1,8 +1,8 @@
 import React from 'react';
-import { Form, Col } from 'react-bootstrap';
+import { Form, Row, Col } from 'react-bootstrap';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext, customerTypeOptions } from 'shared/utils';
-import { BasePanel, TextInput, SelectInput, PhoneInput, DobInput, Button } from 'checkout/components';
+import { BasePanel, TextInput, SelectInput, PhoneInput, DobInput, CheckboxInput, Button } from 'checkout/components';
 
 export class CheckoutCustomerPanel extends BasePanel {
   onPressNext = event => {
@@ -213,6 +213,8 @@ export class CheckoutCustomerPanel extends BasePanel {
 
               {this.renderSourceFields()}
 
+              {this.renderOptInFields()}
+
               <div className="panel-actions">
                 <Button title="Continue" type="submit" />
               </div>
@@ -258,6 +260,23 @@ export class CheckoutCustomerPanel extends BasePanel {
           </Form.Row>
         }
       </React.Fragment>
+    );
+  }
+
+  renderOptInFields() {
+    const { settings } = this.props;
+    if (!settings.showOptIn) return null;
+
+    return (
+      <Row className="optin-checkbox">
+        <Col>
+          <CheckboxInput
+            field="customer.optIn"
+            label={settings.optInText || 'Sign up to receive our newsletter.'}
+            initialValue={settings.preTickOptIn}
+          />
+        </Col>
+      </Row>
     );
   }
 
