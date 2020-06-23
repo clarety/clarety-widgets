@@ -1,40 +1,48 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Navbar, Container, ProgressBar, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, ProgressBar } from 'react-bootstrap';
+import { Breakpoint } from 'react-socks';
 import { Qty } from 'registration/components';
 import { getEventName, getQtys, getFormattedCartTotal, getProgress } from 'registration/selectors';
 
 class _MiniCart extends React.Component {
   render() {
     const { eventName, qtys, cartTotal, progress, resources } = this.props;
-    const NavBarBrand = resources.getComponent('NavBarBrand');
+    const MiniCartBrand = resources.getComponent('MiniCartBrand');
 
     return (
-      <Navbar sticky="top">
+      <div className="mini-cart">
         <Container>
-          <Row noGutters>
-            <Col>
-              <NavBarBrand />
-            </Col>
+          <Breakpoint small down>
+            <Row noGutters>
+              <Col>
+                <MiniCartBrand />
+              </Col>
+            </Row>
+          </Breakpoint>
 
-            <Col className="d-none d-sm-flex align-items-center justify-content-center">
-              {eventName}
-            </Col>
-
-            <Col className="d-none d-sm-flex align-items-center justify-content-center">
-              {Object.keys(qtys).map(key =>
-                <Qty key={key} type={key} qty={qtys[key]} />
-              )}
-            </Col>
-
-            <Col className="d-none d-sm-flex align-items-center justify-content-center">
-              {cartTotal}
-            </Col>
-          </Row>
+          <Breakpoint medium up>
+            <Row noGutters>
+              <Col>
+                <MiniCartBrand />
+              </Col>
+              <Col>
+                {eventName}
+              </Col>
+              <Col>
+                {Object.keys(qtys).map(key =>
+                  <Qty key={key} type={key} qty={qtys[key]} />
+                )}
+              </Col>
+              <Col>
+                {cartTotal}
+              </Col>
+            </Row>
+          </Breakpoint>
         </Container>
 
         <ProgressBar now={progress} />
-      </Navbar>
+      </div>
     );
   }
 }

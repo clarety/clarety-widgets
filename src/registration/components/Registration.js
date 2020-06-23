@@ -3,6 +3,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider as ReduxProvider, connect } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import { IntlProvider } from 'react-intl';
+import { BreakpointProvider } from 'react-socks';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { ClaretyApi } from 'clarety-utils';
@@ -53,10 +54,12 @@ export class Registration extends React.Component {
     return (
       <IntlProvider locale="en" messages={this.props.translations}>
         <ReduxProvider store={Registration.store}>
-          <RegistrationRoot
-            resources={Registration.resources}
-            {...this.props}
-          />
+          <BreakpointProvider>
+            <RegistrationRoot
+              resources={Registration.resources}
+              {...this.props}
+            />
+          </BreakpointProvider>
         </ReduxProvider>
       </IntlProvider>
     );
