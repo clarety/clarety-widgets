@@ -1,8 +1,8 @@
 import React from 'react';
-import { Form, Col } from 'react-bootstrap';
+import { Form, Row, Col } from 'react-bootstrap';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext, customerTypeOptions } from 'shared/utils';
-import { BasePanel, TextInput, SelectInput, PhoneInput, DobInput, Button } from 'checkout/components';
+import { BasePanel, TextInput, SelectInput, PhoneInput, DobInput, CheckboxInput, Button } from 'checkout/components';
 
 export class CheckoutCustomerPanel extends BasePanel {
   onPressNext = event => {
