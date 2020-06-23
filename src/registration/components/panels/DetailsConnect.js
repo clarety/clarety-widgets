@@ -10,16 +10,20 @@ export class DetailsConnect {
 
     // We can't map state until we have a participant.
     if (!participant) return {};
-
-    const variant = getVariant(state);
+    
     const event = getEvent(state);
+    const offer = getParticipantOffer(state, ownProps.participantIndex);
+    const eventDate = new Date(offer.ageCalculationDate || event.startDate);
+
     const extendFields = getExtendFields(state);
     const waveOptions = getWaveOptions(state, ownProps.participantIndex);
     const addOns = getAddOns(state, ownProps.participantIndex);
+
+    const variant = getVariant(state);
+    const storeId = getSetting(state, 'storeId');    
+
     const isPrefilled = getIsPrefilled(state, ownProps.participantIndex);
     const isCorporateTeam = getIsCorporateTeam(state, ownProps.participantIndex);
-    const offer = getParticipantOffer(state, ownProps.participantIndex);
-    const eventDate = new Date(offer.ageCalculationDate || event.startDate);
 
     return {
       participant: participant,
@@ -35,8 +39,8 @@ export class DetailsConnect {
       maxAge: offer.maxAgeUnder,
 
       appSettings: state.settings,
-      defaultCountry: getSetting(state, 'defaultCountry'),
       variant: variant,
+      storeId: storeId,
 
       isPrefilled: isPrefilled,
       isCorporateTeam: isCorporateTeam,

@@ -2,8 +2,8 @@ import React from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Button, Form, Row, Col, Alert } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { FormContext, parseNestedElements } from 'shared/utils';
-import { TextInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput, StateInput, CountryInput } from 'registration/components';
+import { FormContext, parseNestedElements, getStateLabel, getPostcodeLabel } from 'shared/utils';
+import { TextInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput, StateInput, PostcodeInput, CountryInput } from 'registration/components';
 import { getGenderOptions, scrollIntoView } from 'registration/utils';
 
 export class _DetailsPanel extends BasePanel {
@@ -112,34 +112,27 @@ export class _DetailsPanel extends BasePanel {
     formData['customer.email']            = customer.email;
     formData['customer.mobile']           = customer.mobile;
     formData['customer.gender']           = customer.gender;
+
     formData['customer.dateOfBirthDay']   = customer.dateOfBirthDay;
     formData['customer.dateOfBirthMonth'] = customer.dateOfBirthMonth;
     formData['customer.dateOfBirthYear']  = customer.dateOfBirthYear;
 
-    if (settings.showBillingAddress) {
-      if (customer.billing) {
-        formData['customer.billing.address1'] = customer.billing.address1;
-        formData['customer.billing.address2'] = customer.billing.address2;
-        formData['customer.billing.suburb']   = customer.billing.suburb;
-        formData['customer.billing.state']    = customer.billing.state;
-        formData['customer.billing.postcode'] = customer.billing.postcode;
-        formData['customer.billing.country']  = customer.billing.country;
-      } else {
-        formData['customer.billing.country']  = 'AU';
-      }
+    if (settings.showBillingAddress && customer.billing) {
+      formData['customer.billing.address1'] = customer.billing.address1;
+      formData['customer.billing.address2'] = customer.billing.address2;
+      formData['customer.billing.suburb']   = customer.billing.suburb;
+      formData['customer.billing.state']    = customer.billing.state;
+      formData['customer.billing.postcode'] = customer.billing.postcode;
+      formData['customer.billing.country']  = customer.billing.country;
     }
 
-    if (settings.showDeliveryAddress) {
-      if (customer.delivery) {
-        formData['customer.delivery.address1'] = customer.delivery.address1;
-        formData['customer.delivery.address2'] = customer.delivery.address2;
-        formData['customer.delivery.suburb']   = customer.delivery.suburb;
-        formData['customer.delivery.state']    = customer.delivery.state;
-        formData['customer.delivery.postcode'] = customer.delivery.postcode;
-        formData['customer.delivery.country']  = customer.delivery.country;
-      } else {
-        formData['customer.delivery.country']  = 'AU';
-      }
+    if (settings.showDeliveryAddress && customer.delivery) {
+      formData['customer.delivery.address1'] = customer.delivery.address1;
+      formData['customer.delivery.address2'] = customer.delivery.address2;
+      formData['customer.delivery.suburb']   = customer.delivery.suburb;
+      formData['customer.delivery.state']    = customer.delivery.state;
+      formData['customer.delivery.postcode'] = customer.delivery.postcode;
+      formData['customer.delivery.country']  = customer.delivery.country;
     }    
 
     this.setState(prevState => ({
@@ -458,8 +451,8 @@ export class _DetailsPanel extends BasePanel {
   }
 
   renderAddressFields(title, type) {
-    const { defaultCountry } = this.props;
-    const showAusStates = this.state.formData[`customer.${type}.country`] === 'AU';
+    const { event } = this.props;
+    const country = this.state.formData[`customer.${type}.country`];
 
     return (
       <React.Fragment>
@@ -485,19 +478,16 @@ export class _DetailsPanel extends BasePanel {
 
         <Form.Row>
           <Col>
-            {showAusStates
-              ? <StateInput field={`customer.${type}.state`} label="State" country="AU" required />
-              : <TextInput field={`customer.${type}.state`} label="State" required />
-            }
+            <StateInput field={`customer.${type}.state`} label={getStateLabel(country)} country={country} required />
           </Col>
           <Col>
-            <TextInput field={`customer.${type}.postcode`} label="Postcode" type="number" required />
+            <PostcodeInput field={`customer.${type}.postcode`} label={getPostcodeLabel(country)} country={country} required />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <CountryInput field={`customer.${type}.country`} label="Country" initialValue={defaultCountry} required />
+            <CountryInput field={`customer.${type}.country`} label="Country" initialValue={event.country} required />
           </Col>
         </Form.Row>
       </React.Fragment>
