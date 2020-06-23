@@ -200,7 +200,7 @@ export class _DetailsPanel extends BasePanel {
   }
 
   validateFields(errors) {
-    const { eventDate, minAge, maxAge, settings, waveOptions } = this.props;
+    const { eventDate, minAge, maxAge, waveOptions } = this.props;
     const { formData } = this.state;
 
     this.validateRequired('customer.firstName', formData, errors);
@@ -221,16 +221,23 @@ export class _DetailsPanel extends BasePanel {
       errors: errors,
     });
 
+    this.validateAddressFields(errors);
+
+    if (waveOptions.length > 1)  {
+      this.validateRequired('waveProductId', formData, errors);
+    }
+  }
+
+  validateAddressFields(errors) {
+    const { settings } = this.props;
+    const { formData } = this.state;
+
     if (settings.showBillingAddress) {
       this.validateRequired('customer.billing.address1', formData, errors);
       this.validateRequired('customer.billing.suburb', formData, errors);
       this.validateRequired('customer.billing.state', formData, errors);
       this.validateRequired('customer.billing.postcode', formData, errors);
       this.validateRequired('customer.billing.country', formData, errors);
-    }
-
-    if (waveOptions.length > 1)  {
-      this.validateRequired('waveProductId', formData, errors);
     }
   }
 
@@ -364,7 +371,7 @@ export class _DetailsPanel extends BasePanel {
         {showAutofill &&
           <Form.Row>
             <Col>
-              <CheckboxInput field="autofill.email" label="Use email from first participant?" />
+              <CheckboxInput field="autofill.email" label="Use email from first participant?" required />
             </Col>
           </Form.Row>
         }
@@ -398,7 +405,7 @@ export class _DetailsPanel extends BasePanel {
         {showAutofill &&
           <Form.Row>
             <Col>
-              <CheckboxInput field="autofill.mobile" label="Use mobile from first participant?" />
+              <CheckboxInput field="autofill.mobile" label="Use mobile from first participant?" required />
             </Col>
           </Form.Row>
         }
@@ -414,7 +421,7 @@ export class _DetailsPanel extends BasePanel {
         {showAddressAutofill &&
           <Form.Row>
             <Col>
-              <CheckboxInput field="autofill.address" label="Use address from first participant?" />
+              <CheckboxInput field="autofill.address" label="Use address from first participant?" required />
             </Col>
           </Form.Row>
         }
@@ -451,6 +458,7 @@ export class _DetailsPanel extends BasePanel {
   }
 
   renderAddressFields(title, type) {
+    const { defaultCountry } = this.props;
     const showAusStates = this.state.formData[`customer.${type}.country`] === 'AU';
 
     return (
@@ -489,7 +497,7 @@ export class _DetailsPanel extends BasePanel {
 
         <Form.Row>
           <Col>
-            <CountryInput field={`customer.${type}.country`} label="Country" required />
+            <CountryInput field={`customer.${type}.country`} label="Country" initialValue={defaultCountry} required />
           </Col>
         </Form.Row>
       </React.Fragment>

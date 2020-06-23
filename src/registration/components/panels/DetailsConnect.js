@@ -1,5 +1,5 @@
 import { addItem } from 'shared/actions';
-import { getVariant } from 'shared/selectors';
+import { getVariant, getSetting } from 'shared/selectors';
 import { setDetails, setAdditionalData, setErrors, resetDetails, setWaveInCart, addAddOnToCart, removeAddOnsFromCart } from 'registration/actions';
 import { getEvent, getExtendFields, getParticipant, getWaveOptions, getAddOns, getParticipantOffer, getIsPrefilled, getIsCorporateTeam } from 'registration/selectors';
 
@@ -22,19 +22,25 @@ export class DetailsConnect {
     const eventDate = new Date(offer.ageCalculationDate || event.startDate);
 
     return {
-      variant: variant,
-      appSettings: state.settings,
-      event: event,
       participant: participant,
       firstParticipant: firstParticipant,
+
       extendFields: extendFields,
       waveOptions: waveOptions,
       addOns: addOns,
-      isPrefilled: isPrefilled,
-      isCorporateTeam: isCorporateTeam,
+
+      event: event,
       eventDate: eventDate,
       minAge: offer.minAgeOver,
       maxAge: offer.maxAgeUnder,
+
+      appSettings: state.settings,
+      defaultCountry: getSetting(state, 'defaultCountry'),
+      variant: variant,
+
+      isPrefilled: isPrefilled,
+      isCorporateTeam: isCorporateTeam,
+
       registrationErrors: state.cart.errors,
     };
   };

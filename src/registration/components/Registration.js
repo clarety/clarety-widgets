@@ -72,6 +72,7 @@ class _RegistrationRoot extends React.Component {
       storeId: this.props.storeId,
       seriesId: this.props.seriesId,
       prevSeriesId: this.props.prevSeriesId,
+      defaultCountry: this.props.defaultCountry,
       variant: this.props.variant,
       ...this.props.settings,
     });
