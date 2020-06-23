@@ -3,6 +3,7 @@ import { types } from 'cart/actions';
 const initialState = {
   isBusy: false,
   cart: {},
+  settings: {},
   errors: [],
 };
 
