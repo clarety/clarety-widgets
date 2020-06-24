@@ -24,11 +24,10 @@ export function iterate(from, to, callback) {
 export function scrollIntoView(elementRef) {
   // TODO: querySelector isn't very react-y...
   // Can we get a ref from the MiniCart component or something?
-  const navbarElement = document.querySelector('.navbar');
+  const navbarElement = document.querySelector('.mini-cart-brand');
   const navbarHeight = navbarElement ? navbarElement.offsetHeight : 0;
-
-  var scrollTarget = elementRef.offsetTop - navbarHeight;
-  window.scroll({ top: scrollTarget, behavior: 'smooth' });
+  const scrollTarget = elementRef.offsetTop - navbarHeight;
+  window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
 };
 
 export const getExtendField = (columnKey, settings) => {

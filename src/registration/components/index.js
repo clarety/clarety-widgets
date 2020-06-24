@@ -41,5 +41,5 @@ export * from './misc/BusyOverlay';
 export * from './misc/MerchItem';
 export * from './misc/MerchQtysModal';
 export * from './misc/MiniCart';
-export * from './misc/NavBarBrand';
+export * from './misc/MiniCartBrand';
 export * from './misc/Qty';
