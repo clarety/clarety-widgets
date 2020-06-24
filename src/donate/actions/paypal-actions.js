@@ -1,7 +1,6 @@
 import { ClaretyApi } from 'clarety-utils';
-import { statuses, setStatus, setRecaptcha, setPayment, setCustomer } from 'shared/actions';
+import { statuses, setStatus, setPayment, setCustomer } from 'shared/actions';
 import { setFormData } from 'form/actions';
-import { executeRecaptcha } from 'form/components';
 import { addDonationToCart, makePaymentRequest, handlePaymentResult } from 'donate/actions';
 import { getPaymentPostData } from 'donate/selectors';
 
@@ -9,20 +8,18 @@ export const validatePayPal = (data) => {
   return async (dispatch, getState) => {
     const state = getState();
 
-    if (state.status !== statuses.ready) return;
+    if (state.status !== statuses.ready) return false;
     dispatch(setStatus(statuses.busy));
 
-    // ReCaptcha.
-    const recaptcha = await executeRecaptcha();
-    dispatch(setRecaptcha(recaptcha));
-
-    if (!recaptcha) dispatch(setStatus(statuses.ready));
-
-    return !!recaptcha;
+    return true;
   };
 };
 
-export const cancelPayPal = (data) => setStatus(statuses.ready);
+export const cancelPayPal = (data) => {
+  return async (dispatch, getState) => {
+    dispatch(setStatus(statuses.ready));
+  }
+};
 
 export const makePayPalPayment = (data, order, authorization) => {
   return async (dispatch, getState) => {

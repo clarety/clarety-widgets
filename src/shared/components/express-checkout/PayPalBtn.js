@@ -45,10 +45,10 @@ export class PayPalBtn extends React.Component {
     if (this.props.onInit) return this.props.onInit(data, actions);
   };
 
-  onClick = (data, actions) => {
+  onClick = async (data, actions) => {
     if (!this.props.onClick) return actions.resolve();
 
-    return this.props.onClick(data)
+    return await this.props.onClick(data)
       ? actions.resolve()
       : actions.reject();
   };
