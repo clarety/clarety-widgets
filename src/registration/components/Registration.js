@@ -11,8 +11,7 @@ import { statuses, setPanels, setClientIds, setAuth, setTrackingData, fetchSetti
 import { PanelManager } from 'shared/components';
 import { Resources, getJwtAccount } from 'shared/utils';
 import { mapDonationSettings } from 'donate/utils';
-import { NavBarBrand } from 'registration/components/misc/NavBarBrand';
-import { MiniCart, BusyOverlay } from 'registration/components';
+import { MiniCart, MiniCartBrand, BusyOverlay } from 'registration/components';
 import { fetchEvents, fetchAuthCustomer } from 'registration/actions';
 import { rootReducer } from 'registration/reducers';
 import { RegistrationApi } from 'registration/utils';
@@ -34,7 +33,7 @@ export class Registration extends React.Component {
 
     // Setup resourcs.
     Registration.resources = new Resources();
-    Registration.resources.setComponent('NavBarBrand', NavBarBrand);
+    Registration.resources.setComponent('MiniCartBrand', MiniCartBrand);
   }
 
   static setClientIds({ dev, prod }) {

@@ -1,9 +1,8 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Navbar } from 'react-bootstrap';
 
-export const NavBarBrand = () => (
-  <Navbar.Brand>
+export const MiniCartBrand = () => (
+  <div className="mini-cart-brand">
     <FormattedMessage id="app.title" />
-  </Navbar.Brand>
+  </div>
 );
