@@ -6,6 +6,14 @@ import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
 
 class PureSimpleSelectInput extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    if (props.initialValue) {
+      props.onChange(props.field, props.initialValue);
+    }
+  }
+
   render () {
     const { field, value, onChange, label, placeholder, translationId, error, required } = this.props;
 

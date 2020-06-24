@@ -1,5 +1,5 @@
 import { addItem } from 'shared/actions';
-import { getVariant } from 'shared/selectors';
+import { getVariant, getSetting } from 'shared/selectors';
 import { setDetails, setAdditionalData, setErrors, resetDetails, setWaveInCart, addAddOnToCart, removeAddOnsFromCart } from 'registration/actions';
 import { getEvent, getExtendFields, getParticipant, getWaveOptions, getAddOns, getParticipantOffer, getIsPrefilled, getIsCorporateTeam } from 'registration/selectors';
 
@@ -10,31 +10,41 @@ export class DetailsConnect {
 
     // We can't map state until we have a participant.
     if (!participant) return {};
-
-    const variant = getVariant(state);
+    
     const event = getEvent(state);
-    const extendFields = getExtendFields(state);
-    const waveOptions = getWaveOptions(state, ownProps.participantIndex);
-    const addOns = getAddOns(state, ownProps.participantIndex);
-    const isPrefilled = getIsPrefilled(state, ownProps.participantIndex);
-    const isCorporateTeam = getIsCorporateTeam(state, ownProps.participantIndex);
     const offer = getParticipantOffer(state, ownProps.participantIndex);
     const eventDate = new Date(offer.ageCalculationDate || event.startDate);
 
+    const extendFields = getExtendFields(state);
+    const waveOptions = getWaveOptions(state, ownProps.participantIndex);
+    const addOns = getAddOns(state, ownProps.participantIndex);
+
+    const variant = getVariant(state);
+    const storeId = getSetting(state, 'storeId');    
+
+    const isPrefilled = getIsPrefilled(state, ownProps.participantIndex);
+    const isCorporateTeam = getIsCorporateTeam(state, ownProps.participantIndex);
+
     return {
-      variant: variant,
-      appSettings: state.settings,
-      event: event,
       participant: participant,
       firstParticipant: firstParticipant,
+
       extendFields: extendFields,
       waveOptions: waveOptions,
       addOns: addOns,
-      isPrefilled: isPrefilled,
-      isCorporateTeam: isCorporateTeam,
+
+      event: event,
       eventDate: eventDate,
       minAge: offer.minAgeOver,
       maxAge: offer.maxAgeUnder,
+
+      appSettings: state.settings,
+      variant: variant,
+      storeId: storeId,
+
+      isPrefilled: isPrefilled,
+      isCorporateTeam: isCorporateTeam,
+
       registrationErrors: state.cart.errors,
     };
   };

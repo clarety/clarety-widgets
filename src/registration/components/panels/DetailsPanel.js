@@ -2,8 +2,8 @@ import React from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Button, Form, Row, Col, Alert } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { FormContext, parseNestedElements } from 'shared/utils';
-import { TextInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput, StateInput, CountryInput } from 'registration/components';
+import { FormContext, parseNestedElements, getStateLabel, getPostcodeLabel } from 'shared/utils';
+import { TextInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput, StateInput, PostcodeInput, CountryInput } from 'registration/components';
 import { getGenderOptions, scrollIntoView } from 'registration/utils';
 
 export class _DetailsPanel extends BasePanel {
@@ -112,34 +112,27 @@ export class _DetailsPanel extends BasePanel {
     formData['customer.email']            = customer.email;
     formData['customer.mobile']           = customer.mobile;
     formData['customer.gender']           = customer.gender;
+
     formData['customer.dateOfBirthDay']   = customer.dateOfBirthDay;
     formData['customer.dateOfBirthMonth'] = customer.dateOfBirthMonth;
     formData['customer.dateOfBirthYear']  = customer.dateOfBirthYear;
 
-    if (settings.showBillingAddress) {
-      if (customer.billing) {
-        formData['customer.billing.address1'] = customer.billing.address1;
-        formData['customer.billing.address2'] = customer.billing.address2;
-        formData['customer.billing.suburb']   = customer.billing.suburb;
-        formData['customer.billing.state']    = customer.billing.state;
-        formData['customer.billing.postcode'] = customer.billing.postcode;
-        formData['customer.billing.country']  = customer.billing.country;
-      } else {
-        formData['customer.billing.country']  = 'AU';
-      }
+    if (settings.showBillingAddress && customer.billing) {
+      formData['customer.billing.address1'] = customer.billing.address1;
+      formData['customer.billing.address2'] = customer.billing.address2;
+      formData['customer.billing.suburb']   = customer.billing.suburb;
+      formData['customer.billing.state']    = customer.billing.state;
+      formData['customer.billing.postcode'] = customer.billing.postcode;
+      formData['customer.billing.country']  = customer.billing.country;
     }
 
-    if (settings.showDeliveryAddress) {
-      if (customer.delivery) {
-        formData['customer.delivery.address1'] = customer.delivery.address1;
-        formData['customer.delivery.address2'] = customer.delivery.address2;
-        formData['customer.delivery.suburb']   = customer.delivery.suburb;
-        formData['customer.delivery.state']    = customer.delivery.state;
-        formData['customer.delivery.postcode'] = customer.delivery.postcode;
-        formData['customer.delivery.country']  = customer.delivery.country;
-      } else {
-        formData['customer.delivery.country']  = 'AU';
-      }
+    if (settings.showDeliveryAddress && customer.delivery) {
+      formData['customer.delivery.address1'] = customer.delivery.address1;
+      formData['customer.delivery.address2'] = customer.delivery.address2;
+      formData['customer.delivery.suburb']   = customer.delivery.suburb;
+      formData['customer.delivery.state']    = customer.delivery.state;
+      formData['customer.delivery.postcode'] = customer.delivery.postcode;
+      formData['customer.delivery.country']  = customer.delivery.country;
     }    
 
     this.setState(prevState => ({
@@ -200,7 +193,7 @@ export class _DetailsPanel extends BasePanel {
   }
 
   validateFields(errors) {
-    const { eventDate, minAge, maxAge, settings, waveOptions } = this.props;
+    const { eventDate, minAge, maxAge, waveOptions } = this.props;
     const { formData } = this.state;
 
     this.validateRequired('customer.firstName', formData, errors);
@@ -221,16 +214,23 @@ export class _DetailsPanel extends BasePanel {
       errors: errors,
     });
 
+    this.validateAddressFields(errors);
+
+    if (waveOptions.length > 1)  {
+      this.validateRequired('waveProductId', formData, errors);
+    }
+  }
+
+  validateAddressFields(errors) {
+    const { settings } = this.props;
+    const { formData } = this.state;
+
     if (settings.showBillingAddress) {
       this.validateRequired('customer.billing.address1', formData, errors);
       this.validateRequired('customer.billing.suburb', formData, errors);
       this.validateRequired('customer.billing.state', formData, errors);
       this.validateRequired('customer.billing.postcode', formData, errors);
       this.validateRequired('customer.billing.country', formData, errors);
-    }
-
-    if (waveOptions.length > 1)  {
-      this.validateRequired('waveProductId', formData, errors);
     }
   }
 
@@ -364,7 +364,7 @@ export class _DetailsPanel extends BasePanel {
         {showAutofill &&
           <Form.Row>
             <Col>
-              <CheckboxInput field="autofill.email" label="Use email from first participant?" />
+              <CheckboxInput field="autofill.email" label="Use email from first participant?" required />
             </Col>
           </Form.Row>
         }
@@ -398,7 +398,7 @@ export class _DetailsPanel extends BasePanel {
         {showAutofill &&
           <Form.Row>
             <Col>
-              <CheckboxInput field="autofill.mobile" label="Use mobile from first participant?" />
+              <CheckboxInput field="autofill.mobile" label="Use mobile from first participant?" required />
             </Col>
           </Form.Row>
         }
@@ -414,7 +414,7 @@ export class _DetailsPanel extends BasePanel {
         {showAddressAutofill &&
           <Form.Row>
             <Col>
-              <CheckboxInput field="autofill.address" label="Use address from first participant?" />
+              <CheckboxInput field="autofill.address" label="Use address from first participant?" required />
             </Col>
           </Form.Row>
         }
@@ -451,7 +451,8 @@ export class _DetailsPanel extends BasePanel {
   }
 
   renderAddressFields(title, type) {
-    const showAusStates = this.state.formData[`customer.${type}.country`] === 'AU';
+    const { event } = this.props;
+    const country = this.state.formData[`customer.${type}.country`];
 
     return (
       <React.Fragment>
@@ -477,19 +478,16 @@ export class _DetailsPanel extends BasePanel {
 
         <Form.Row>
           <Col>
-            {showAusStates
-              ? <StateInput field={`customer.${type}.state`} label="State" country="AU" required />
-              : <TextInput field={`customer.${type}.state`} label="State" required />
-            }
+            <StateInput field={`customer.${type}.state`} label={getStateLabel(country)} country={country} required />
           </Col>
           <Col>
-            <TextInput field={`customer.${type}.postcode`} label="Postcode" type="number" required />
+            <PostcodeInput field={`customer.${type}.postcode`} label={getPostcodeLabel(country)} country={country} required />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <CountryInput field={`customer.${type}.country`} label="Country" required />
+            <CountryInput field={`customer.${type}.country`} label="Country" initialValue={event.country} required />
           </Col>
         </Form.Row>
       </React.Fragment>
