@@ -184,6 +184,10 @@ export const getPaymentMethods = (state) => {
     : [{ type: 'gatewaycc' }];
 };
 
+export const getPaymentMethod = (state, type) => {
+  return getPaymentMethods(state).find(method => method.type === type);
+};
+
 export const getCreateTeamPostData = (state) => {
   const event = getEvent(state);
   const customer = getCustomer(state);
@@ -301,10 +305,12 @@ const getMerchandisePostData = (state) => {
   }));
 };
 
-export const getSubmitRegistrationPostData = (state, paymentData) => {
+export const getSubmitRegistrationPostData = (state) => {
+  const cart = getCart(state);
+
   return {
     uid: state.cart.uid,
     jwt: state.cart.jwt,
-    ...paymentData,
+    ...cart.payment,
   };
 };

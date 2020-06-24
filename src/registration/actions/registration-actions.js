@@ -1,6 +1,7 @@
+import { setPayment, isStripe, prepareStripePayment, authoriseStripePayment } from 'shared/actions';
 import { getCart } from 'shared/selectors';
 import { setErrors, clearErrors } from 'form/actions';
-import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getIsLoggedIn } from 'registration/selectors';
+import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getIsLoggedIn, getPaymentMethod } from 'registration/selectors';
 import { types, updateAuthCustomer } from 'registration/actions';
 import { RegistrationApi } from 'registration/utils';
 
@@ -76,23 +77,116 @@ export const updateShipping = (shippingKey) => {
 export const submitRegistration = (paymentData) => {
   return async (dispatch, getState) => {
     const state = getState();
-    const postData = getSubmitRegistrationPostData(state, paymentData);
+
+    const paymentMethod = getPaymentMethod(state, paymentData.type);
+
+    // Prepare payment.
+    const prepared = await dispatch(preparePayment(paymentData, paymentMethod));
+    if (!prepared) return false;
+
+    // Attempt payment.
+    const result = await dispatch(attemptPayment(paymentData, paymentMethod));
+    if (!result) return false;
+
+    // Handle result.
+    return await dispatch(handlePaymentResult(result, paymentData, paymentMethod));
+  };
+};
+
+const preparePayment = (paymentData, paymentMethod) => {
+  return async (dispatch, getState) => {
+    // Stripe payment.
+    if (isStripe(paymentMethod)) {
+      const result = await dispatch(prepareStripePayment(paymentData, paymentMethod));
+
+      if (result.validationErrors) {
+        dispatch(setErrors(result.validationErrors));
+        return false;
+      } else {
+        dispatch(setPayment(result.payment));
+        return true;
+      }
+    }
+    
+    // Standard payment.
+    dispatch(setPayment(paymentData));
+    return true;
+  };
+};
+
+const attemptPayment = (paymentData, paymentMethod) => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const postData = getSubmitRegistrationPostData(state);
 
     dispatch(registrationSubmitRequest(postData));
 
     const result = await RegistrationApi.submitRegistration(postData);
-
-    if (result.status !== 'error') {
-      // Redirect on success.
-      window.location.href = result.redirect;
-    } else {
-      dispatch(registrationSubmitFailure(result));
-      dispatch(setErrors(result.validationErrors));
-      return false;
-    }
+    return result;
   };
 };
 
+const handlePaymentResult = (result, paymentData, paymentMethod) => {
+  return async (dispatch, getState) => {
+    // TODO: temp api fix.
+    if (result.status === 'Complete') result.status = 'complete';
+    if (result.status === 'ok') result.status = 'complete';
+
+    switch (result.status) {
+      case 'error':     return dispatch(handlePaymentError(result, paymentData, paymentMethod));
+      case 'authorise': return dispatch(handlePaymentAuthorise(result, paymentData, paymentMethod));
+      case 'complete':  return dispatch(handlePaymentComplete(result, paymentData, paymentMethod));
+      default: throw new Error('handlePaymentResult not implemented for status: ' + result.status);
+    }    
+  }
+};
+
+const handlePaymentError = (result, paymentData, paymentMethod) => {
+  return async (dispatch, getState) => {
+    dispatch(registrationSubmitFailure(result));
+    dispatch(setErrors(result.validationErrors));
+  };
+};
+
+const handlePaymentAuthorise = (result, paymentData, paymentMethod) => {
+  return async (dispatch, getState) => {
+    if (isStripe(paymentMethod)) {
+      return dispatch(handleStripeAuthorise(result, paymentData, paymentMethod));
+    }
+
+    throw new Error('handlePaymentAuthorise not implemented for payment method: ' + JSON.stringify(paymentMethod));
+  };
+};
+
+const handlePaymentComplete = (result, paymentData, paymentMethod) => {
+  return async (dispatch, getState) => {
+    dispatch(registrationSubmitSuccess(result));
+
+    // Redirect on success.
+    window.location.href = result.redirect;
+  }
+};
+
+const handleStripeAuthorise = (paymentResult, paymentData, paymentMethod) => {
+  return async (dispatch, getState) => {
+    const authResult = await dispatch(authoriseStripePayment(paymentResult, paymentData, paymentMethod));
+
+    if (authResult.validationErrors) {
+      dispatch(setErrors(result.validationErrors));
+      return false;
+    } else {
+      // Prepare payment.
+      dispatch(setPayment(authResult.payment));
+
+      // Attempt payment.
+      const result = await dispatch(attemptPayment(paymentData, paymentMethod));
+      if (!result) return false;
+
+      // Handle result.
+      return await dispatch(handlePaymentResult(result, paymentData, paymentMethod));
+    }
+  };
+};
 
 // Create
 
@@ -151,6 +245,11 @@ const updateShippingFailure = (result) => ({
 const registrationSubmitRequest = (postData) => ({
   type: types.registrationSubmitRequest,
   postData: postData,
+});
+
+const registrationSubmitSuccess = (result) => ({
+  type: types.registrationSubmitSuccess,
+  result: result,
 });
 
 const registrationSubmitFailure = (result) => ({

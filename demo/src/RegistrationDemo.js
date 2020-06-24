@@ -10,8 +10,9 @@ import '../../src/registration/style.scss';
 Registration.init();
 
 Registration.setClientIds({
-  dev:  '82ee4a2479780256c9bf9b951f5d1cfb', // baseline
-  // dev:  '60efcad7dc9df95cb418032c39565a79',    // mdc
+  // dev:  '82ee4a2479780256c9bf9b951f5d1cfb', // baseline
+  // dev:  '60efcad7dc9df95cb418032c39565a79', // mdc
+  dev:  'ab0c9407ba7f0581ebc49fa787049e80', // a21
   prod: '',
 });
 
@@ -105,17 +106,24 @@ export default class RegistrationDemo extends React.Component {
           translations={enTranslations}
 
           storeId="1"
-          storeCode="AU"
+
+          // a21
+          storeCode="US"
+          seriesId="26"
+          prevSeriesId="25"
+          donationSingleOfferId="151"
 
           // mdc
+          // storeCode="AU"
           // seriesId="9"
           // prevSeriesId="8"
           // donationSingleOfferId="55"
 
           // baseline
-          seriesId="3"
-          prevSeriesId="2"
-          donationSingleOfferId="8"
+          // storeCode="AU"
+          // seriesId="3"
+          // prevSeriesId="2"
+          // donationSingleOfferId="8"
           
           sourceId="17"
           responseId="e9c2e351d90b11e996fd"
