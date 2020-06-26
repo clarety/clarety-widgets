@@ -130,7 +130,7 @@ const handlePaymentResult = (result, paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     // TODO: temp api fix.
     if (result.status === 'Complete') result.status = 'complete';
-    if (result.status === 'ok') result.status = 'complete';
+    if (result.status === 'ok')       result.status = 'complete';
 
     switch (result.status) {
       case 'error':     return dispatch(handlePaymentError(result, paymentData, paymentMethod));
