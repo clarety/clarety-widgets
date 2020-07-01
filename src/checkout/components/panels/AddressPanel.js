@@ -141,6 +141,7 @@ export class AddressPanel extends BasePanel {
   }
   renderEditSameAsInput() {
     const { shippingRequired } = this.props;
+    const { billingIsSameAsShipping } = this.state;
     if(!shippingRequired) return null;
     return (
         <Form.Row>
