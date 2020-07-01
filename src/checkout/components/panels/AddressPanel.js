@@ -4,11 +4,6 @@ import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext, getStateLabel, getPostcodeLabel } from 'shared/utils';
 import { BasePanel, TextInput, PureCheckboxInput, StateInput, CountryInput, PostcodeInput, FormElement, Button } from 'checkout/components';
 
-/**
- * todo rename tile if no shipping required
- * move render delivery address to a function and check do check if show
- * update validation
- */
 export class AddressPanel extends BasePanel {
   onPressContinue = async event => {
     event.preventDefault();
