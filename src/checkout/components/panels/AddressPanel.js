@@ -4,6 +4,11 @@ import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext, getStateLabel, getPostcodeLabel } from 'shared/utils';
 import { BasePanel, TextInput, PureCheckboxInput, StateInput, CountryInput, PostcodeInput, FormElement, Button } from 'checkout/components';
 
+/**
+ * todo rename tile if no shipping required
+ * move render delivery address to a function and check do check if show
+ * update validation
+ */
 export class AddressPanel extends BasePanel {
   onPressContinue = async event => {
     event.preventDefault();
@@ -34,12 +39,15 @@ export class AddressPanel extends BasePanel {
   };
 
   validate() {
+    const { shippingRequired } = this.props;
     const errors = [];
 
-    this.validateRequired('customer.delivery.address1', errors);
-    this.validateRequired('customer.delivery.suburb', errors);
-    this.validateRequired('customer.delivery.state', errors);
-    this.validateRequired('customer.delivery.postcode', errors);
+    if(shippingRequired) {
+      this.validateRequired('customer.delivery.address1', errors);
+      this.validateRequired('customer.delivery.suburb', errors);
+      this.validateRequired('customer.delivery.state', errors);
+      this.validateRequired('customer.delivery.postcode', errors);
+    }
 
     if (!this.state.billingIsSameAsShipping) {
       this.validateRequired('customer.billing.address1', errors);
@@ -104,7 +112,8 @@ export class AddressPanel extends BasePanel {
   }
 
   renderWait() {
-    const { layout, index } = this.props;
+    const { layout, index, shippingRequired } = this.props;
+    const title = shippingRequired?'Shipping Details':'Billing Details';
 
     return (
       <PanelContainer layout={layout} status="wait">
@@ -112,7 +121,7 @@ export class AddressPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title="Shipping Details"
+          title={title}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -121,25 +130,20 @@ export class AddressPanel extends BasePanel {
     );
   }
 
-  renderEdit() {
-    const { layout, isBusy, index } = this.props;
-    const { billingIsSameAsShipping } = this.state;
-
+  renderEditDeliveryFields() {
+    const { shippingRequired } = this.props;
+    if(!shippingRequired) return null;
     return (
-      <PanelContainer layout={layout}>
-        <PanelHeader
-          status="edit"
-          layout={layout}
-          number={index + 1}
-          title="Shipping Details"
-        />
-        
-        <PanelBody layout={layout} status="edit" isBusy={isBusy}>
-          <FormContext.Provider value={this.state}>
-            <Form onSubmit={this.onPressContinue}>
-              {this.renderAddressFields('Shipping Address', 'customer.delivery')}
-
-              <Form.Row>
+        <div>
+          {this.renderAddressFields('Shipping Address', 'customer.delivery')}
+        </div>
+    );
+  }
+  renderEditSameAsInput() {
+    const { shippingRequired } = this.props;
+    if(!shippingRequired) return null;
+    return (
+        <Form.Row>
                 <Col>
                   <PureCheckboxInput
                     field="billingIsSameAsShipping"
@@ -149,6 +153,29 @@ export class AddressPanel extends BasePanel {
                   />
                 </Col>
               </Form.Row>
+    );
+  }
+
+  renderEdit() {
+    const { layout, isBusy, index, shippingRequired } = this.props;
+    const { billingIsSameAsShipping } = this.state;
+    const title = shippingRequired?'Shipping Details':'Billing Details';
+
+    return (
+      <PanelContainer layout={layout}>
+        <PanelHeader
+          status="edit"
+          layout={layout}
+          number={index + 1}
+          title={title}
+        />
+        
+        <PanelBody layout={layout} status="edit" isBusy={isBusy}>
+          <FormContext.Provider value={this.state}>
+            <Form onSubmit={this.onPressContinue}>
+              {this.renderEditDeliveryFields()}
+
+              {this.renderEditSameAsInput()}
 
               {!billingIsSameAsShipping && this.renderAddressFields('Billing Address', 'customer.billing')}
               
@@ -224,10 +251,10 @@ export class AddressPanel extends BasePanel {
 
   renderDone() {
     const { formData } = this.state;
-    const { layout, index } = this.props;
-    const address = formData['customer.delivery.address1'];
-    const suburb = formData['customer.delivery.suburb'];
-
+    const { layout, index, shippingRequired } = this.props;
+    const addressKey = shippingRequired?'delivery':'billing';
+    const address = formData['customer.'+addressKey+'.address1'];
+    const suburb = formData['customer.'+addressKey+'.suburb'];
     const title = `${address}, ${suburb}`;
 
     return (
