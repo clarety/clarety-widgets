@@ -8,7 +8,8 @@ import '../../src/checkout/style.scss';
 Checkout.init();
 
 Checkout.setClientIds({
-  dev:  '82ee4a2479780256c9bf9b951f5d1cfb', // baseline
+  //dev:  '82ee4a2479780256c9bf9b951f5d1cfb', // baseline
+  dev: 'ab0c9407ba7f0581ebc49fa787049e80', //a21
   prod: '',
 });
 
