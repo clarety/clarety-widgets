@@ -27,6 +27,8 @@ export const getElement = (state, property) => {
 
 export const getIsCartComplete = (state) => getCart(state).status === 'Complete';
 
+export const getCartShippingRequired = (state) => getCart(state).shippingRequired;
+
 export const getOrganisation = (state) => getCart(state).organisation;
 
 export const getClientId = (state) => {

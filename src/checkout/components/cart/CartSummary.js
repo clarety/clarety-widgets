@@ -29,7 +29,7 @@ class _CartSummary extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    cart: state.cart,
+    cart: state.cart
   };
 };
 

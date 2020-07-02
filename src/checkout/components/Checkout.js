@@ -6,8 +6,8 @@ import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import { ClaretyApi } from 'clarety-utils';
 import { Resources, getJwtSession, getJwtAccount } from 'shared/utils';
 import { PanelManager } from 'shared/components';
-import { setPanels, setClientIds, setAuth, fetchSettings, updateAppSettings } from 'shared/actions';
-import { getIsCartComplete } from 'shared/selectors';
+import { setPanels, setClientIds, setAuth, fetchSettings, updateAppSettings, removePanels } from 'shared/actions';
+import { getIsCartComplete, getCartShippingRequired } from 'shared/selectors';
 import { Recaptcha } from 'form/components';
 import { fetchCart, fetchCustomer } from 'checkout/actions';
 import { rootReducer } from 'checkout/reducers';
@@ -59,6 +59,11 @@ export class Checkout extends React.Component {
       await Checkout.store.dispatch(fetchCart(jwtSession.cartUid));
       const state = Checkout.store.getState();
       this.setState({ isCartComplete: getIsCartComplete(state) });
+
+      //removes shipping options panel if shipping isn't required.
+      if(!getCartShippingRequired(state)){
+        Checkout.store.dispatch(removePanels({ withComponent: 'ShippingPanel' }));
+      }
     }
 
     await Checkout.store.dispatch(fetchSettings('checkout/', { cartUid: jwtSession.cartUid }));
