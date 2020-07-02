@@ -37,7 +37,7 @@ const actions = {};
 
 export const CartSummary = connect(mapStateToProps, actions)(_CartSummary);
 
-const CartTotals = ({ summary, shippingRequired }) => (
+const CartTotals = ({ summary }) => (
   <div className="cart-totals">
     <TotalLine label="Subtotal" value={summary.subTotal} />
     <TotalLine label="Shipping" value={summary.shipping} />

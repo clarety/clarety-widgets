@@ -21,6 +21,7 @@ Checkout.setPanels([
       hideLabels: true,
       allowGuest: true,
       createAccount: false,
+      useSelfServiceLogout: true,
     },
   },
   {

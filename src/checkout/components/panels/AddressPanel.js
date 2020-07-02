@@ -108,7 +108,7 @@ export class AddressPanel extends BasePanel {
 
   renderWait() {
     const { layout, index, shippingRequired } = this.props;
-    const title = shippingRequired?'Shipping Details':'Billing Details';
+    const title = shippingRequired ? 'Shipping Details' : 'Billing Details';
 
     return (
       <PanelContainer layout={layout} status="wait">
@@ -125,37 +125,9 @@ export class AddressPanel extends BasePanel {
     );
   }
 
-  renderEditDeliveryFields() {
-    const { shippingRequired } = this.props;
-    if(!shippingRequired) return null;
-    return (
-        <div>
-          {this.renderAddressFields('Shipping Address', 'customer.delivery')}
-        </div>
-    );
-  }
-  renderEditSameAsInput() {
-    const { shippingRequired } = this.props;
-    const { billingIsSameAsShipping } = this.state;
-    if(!shippingRequired) return null;
-    return (
-        <Form.Row>
-                <Col>
-                  <PureCheckboxInput
-                    field="billingIsSameAsShipping"
-                    label="Billing Address is the same as Shipping Address"
-                    checked={billingIsSameAsShipping || false}
-                    onChange={this.onChangeBillingIsSameAsShipping}
-                  />
-                </Col>
-              </Form.Row>
-    );
-  }
-
   renderEdit() {
     const { layout, isBusy, index, shippingRequired } = this.props;
-    const { billingIsSameAsShipping } = this.state;
-    const title = shippingRequired?'Shipping Details':'Billing Details';
+    const title = shippingRequired ? 'Shipping Details' : 'Billing Details';
 
     return (
       <PanelContainer layout={layout}>
@@ -169,12 +141,8 @@ export class AddressPanel extends BasePanel {
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
           <FormContext.Provider value={this.state}>
             <Form onSubmit={this.onPressContinue}>
-              {this.renderEditDeliveryFields()}
+              {this.renderFields()}
 
-              {this.renderEditSameAsInput()}
-
-              {!billingIsSameAsShipping && this.renderAddressFields('Billing Address', 'customer.billing')}
-              
               <div className="panel-actions">
                 <Button title="Continue" type="submit" isBusy={isBusy} />
               </div>
@@ -182,6 +150,39 @@ export class AddressPanel extends BasePanel {
           </FormContext.Provider>
         </PanelBody>
       </PanelContainer>
+    );
+  }
+
+  renderFields() {
+    const { billingIsSameAsShipping } = this.state;
+
+    if (this.props.shippingRequired) {
+      return (
+        <React.Fragment>
+          {this.renderAddressFields('Shipping Address', 'customer.delivery')}
+          {this.renderBillingIsSameAsShippingCheckbox()}
+          {!billingIsSameAsShipping && this.renderAddressFields('Billing Address', 'customer.billing')}
+        </React.Fragment>
+      );
+    } else {
+      return this.renderAddressFields('Billing Address', 'customer.billing');
+    }
+  }
+
+  renderBillingIsSameAsShippingCheckbox() {
+    const { billingIsSameAsShipping } = this.state;
+
+    return (
+      <Form.Row>
+        <Col>
+          <PureCheckboxInput
+            field="billingIsSameAsShipping"
+            label="Billing Address is the same as Shipping Address"
+            checked={billingIsSameAsShipping || false}
+            onChange={this.onChangeBillingIsSameAsShipping}
+          />
+        </Col>
+      </Form.Row>
     );
   }
 
