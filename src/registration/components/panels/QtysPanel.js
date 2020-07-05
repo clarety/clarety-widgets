@@ -95,7 +95,7 @@ export class QtysPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          intlId="qtysPanel.editTitle"
+          title={<FormattedMessage id="qtysPanel.editTitle" />}
         />
 
         <PanelBody layout={layout} status="edit">
@@ -185,7 +185,7 @@ export class QtysPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          intlId="qtysPanel.doneTitle"
+          title={<FormattedMessage id="qtysPanel.doneTitle" />}
           onPressEdit={this.onPressEdit}
         />
         

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Row, Col, Form } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
+import { Row, Col, Form } from 'react-bootstrap';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext } from 'shared/utils';
 import { BasePanel, TextInput, EmailInput, DobInput, Button } from 'checkout/components';
@@ -223,7 +223,7 @@ export class LoginPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title="Contact Details"
+          title={<FormattedMessage id="loginPanel.waitTitle" defaultMessage="Contact Details" />}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -241,8 +241,7 @@ export class LoginPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title="Contact Details"
-          intlId="loginPanel.editTitle"
+          title={<FormattedMessage id="loginPanel.editTitle" defaultMessage="Contact Details" />}
         />
 
         <PanelBody layout={layout} status="edit" isBusy={isBusy || isBusyResetPassword}>
@@ -435,9 +434,8 @@ export class LoginPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title={email}
-          onPressEdit={this.onPressEdit}
-          intlId="loginPanel.doneTitle"
+          title={<FormattedMessage id="loginPanel.doneTitle" defaultMessage={email} />}
+          onPressEdit={this.onPressEdit}          
         />
 
         <PanelBody layout={layout} status="done">

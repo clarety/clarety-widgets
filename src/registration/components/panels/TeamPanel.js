@@ -89,7 +89,7 @@ export class TeamPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          intlId="teamPanel.corporateTeamTitle"
+          title={<FormattedMessage id="teamPanel.corporateTeamTitle" />}
         />
 
         <PanelBody layout={layout} status="edit">
@@ -117,7 +117,7 @@ export class TeamPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          intlId="teamPanel.editTitle"
+          title={<FormattedMessage id="teamPanel.editTitle" />}
         />
 
         <PanelBody layout={layout} status="edit">
@@ -280,7 +280,7 @@ export class TeamPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          intlId="teamPanel.doneTitle"
+          title={<FormattedMessage id="teamPanel.doneTitle" />}
           onPressEdit={this.onPressEdit}
         />
 

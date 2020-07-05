@@ -91,7 +91,7 @@ export class EventPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          intlId="eventPanel.editTitle"
+          title={<FormattedMessage id="eventPanel.editTitle" />}
         />
 
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
@@ -182,7 +182,7 @@ export class EventPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          intlId="eventPanel.doneTitle"
+          title={<FormattedMessage id="eventPanel.doneTitle" />}
           onPressEdit={this.onPressEdit}
         />
 

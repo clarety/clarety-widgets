@@ -41,8 +41,7 @@ export class ValidatePanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title="An Error Occured"
-          intlId="reviewPanel.errorTitle"
+          title={<FormattedMessage id="reviewPanel.errorTitle" defaultMessage="An Error Occured" />}
         />
 
         <PanelBody layout={layout} status="edit">

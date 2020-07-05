@@ -52,7 +52,7 @@ export class ReviewPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          intlId="reviewPanel.errorTitle"
+          title={<FormattedMessage id="reviewPanel.errorTitle" />}
         />
 
         <PanelBody layout={layout} status="edit">
@@ -79,7 +79,7 @@ export class ReviewPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          intlId="reviewPanel.reviewTitle"
+          title={<FormattedMessage id="reviewPanel.reviewTitle" />}
         />
 
         <PanelBody layout={layout} status="edit">

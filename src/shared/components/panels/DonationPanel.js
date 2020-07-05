@@ -140,7 +140,7 @@ export class DonationPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          intlId="donationPanel.editTitle"
+          title={<FormattedMessage id="donationPanel.editTitle" />}
         />
 
         <PanelBody layout={layout} status="edit">
@@ -192,7 +192,7 @@ export class DonationPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          intlId="donationPanel.doneTitle"
+          title={<FormattedMessage id="donationPanel.doneTitle" />}
           onPressEdit={this.onPressEdit}
         />
 

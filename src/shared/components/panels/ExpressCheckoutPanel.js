@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PayPalBtn } from 'shared/components';
 import { ErrorMessages } from 'form/components';
 
@@ -32,8 +33,7 @@ export class ExpressCheckoutPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title={settings.title || 'Express Checkout'}
-          intlId="ExpressCheckoutPanel.waitTitle"
+          title={settings.title || <FormattedMessage id="ExpressCheckoutPanel.waitTitle" defaultMessage="Express Checkout" />}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -57,8 +57,7 @@ export class ExpressCheckoutPanel extends BasePanel {
             status="edit"
             layout={layout}
             number={index + 1}
-            title={settings.title || 'Express Checkout'}
-            intlId="ExpressCheckoutPanel.editTitle"
+            title={settings.title || <FormattedMessage id="ExpressCheckoutPanel.editTitle" defaultMessage="Express Checkout" />}
           />
         }
 
@@ -100,7 +99,7 @@ export class ExpressCheckoutPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title={settings.title || 'Express Checkout'}
+          title={settings.title || <FormattedMessage id="ExpressCheckoutPanel.doneTitle" defaultMessage="Express Checkout" />}
           onPressEdit={this.onPressEdit}
         />
 

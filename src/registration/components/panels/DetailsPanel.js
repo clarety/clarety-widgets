@@ -287,6 +287,11 @@ export class _DetailsPanel extends BasePanel {
     const { layout, index, registrationErrors } = this.props;
     const firstName = this.state.formData['customer.firstName'];
 
+    const titleValues = {
+      b: text => <span className="text-highlight">{text}</span>,
+      firstName: firstName,
+    };
+
     return (
       <PanelContainer layout={layout} status="edit">
         <div ref={ref => this.ref = ref}>
@@ -294,11 +299,7 @@ export class _DetailsPanel extends BasePanel {
             status="edit"
             layout={layout}
             number={index + 1}
-            intlId="detailsPanel.editTitle"
-            intlValues={{
-              b: text => <span className="text-highlight">{text}</span>,
-              firstName: firstName,
-            }}
+            title={<FormattedMessage id="detailsPanel.editTitle" values={titleValues} />}
           />
 
           <Form onSubmit={this.onClickNext}>
@@ -566,7 +567,7 @@ export class _DetailsPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          intlId="detailsPanel.doneTitle"
+          title={<FormattedMessage id="detailsPanel.doneTitle" />}
           onPressEdit={this.onPressEdit}
         />
 

@@ -41,7 +41,7 @@ export class ModePanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          intlId="modePanel.editTitle"
+          title={<FormattedMessage id="modePanel.editTitle" />}
         />
 
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
@@ -67,7 +67,7 @@ export class ModePanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          intlId="modePanel.doneTitle"
+          title={<FormattedMessage id="modePanel.doneTitle" />}
           onPressEdit={this.onPressEdit}
         />
 

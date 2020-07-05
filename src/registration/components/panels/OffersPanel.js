@@ -129,7 +129,7 @@ export class OffersPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          intlId="offersPanel.editTitle"
+          title={<FormattedMessage id="offersPanel.editTitle" />}
         />
 
         <PanelBody layout={layout} status="edit">
@@ -256,7 +256,7 @@ export class OffersPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          intlId="offersPanel.doneTitle"
+          title={<FormattedMessage id="offersPanel.doneTitle" />}
           onPressEdit={this.onPressEdit}
         />
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Form, Row, Col, Spinner, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import { CardNumberElement, CardExpiryElement, CardCvcElement } from '@stripe/react-stripe-js';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, injectStripe } from 'shared/components';
@@ -215,8 +216,7 @@ export class _PaymentPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title={settings.title}
-          intlId="paymentPanel.waitTitle"
+          title={settings.title || <FormattedMessage id="paymentPanel.waitTitle" />}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -236,8 +236,7 @@ export class _PaymentPanel extends BasePanel {
               status="edit"
               layout={layout}
               number={index + 1}
-              title={settings.title}
-              intlId="paymentPanel.editTitle"
+              title={settings.title || <FormattedMessage id="paymentPanel.editTitle" />}
             />
           }
 
@@ -510,8 +509,7 @@ export class _PaymentPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title={settings.title}
-          intlId="paymentPanel.doneTitle"
+          title={settings.title || <FormattedMessage id="paymentPanel.doneTitle" />}
           onPressEdit={this.onPressEdit}
         />
 
