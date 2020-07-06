@@ -188,14 +188,13 @@ export class QtysPanel extends BasePanel {
           title={<FormattedMessage id="qtysPanel.doneTitle" />}
           onPressEdit={this.onPressEdit}
         />
-        
         <PanelBody layout={layout} status="done">
 
-          <p>
+          <div className="qtys">
             {Object.keys(qtys).map(key =>
               <Qty key={key} type={key} qty={qtys[key]} />
             )}
-          </p>
+          </div>
           
           <Button onClick={this.onClickEdit}>
             <FormattedMessage id="btn.edit" />

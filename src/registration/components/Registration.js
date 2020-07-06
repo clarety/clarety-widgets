@@ -117,8 +117,10 @@ class _RegistrationRoot extends React.Component {
                 "billing": "Billing Address is same as Delivery Address",
               },
 
-              "adult": "Adult",
-              "child": "Child",
+              "adult":        "Adult",
+              "adult_plural": "Adults",
+              "child":        "Child",
+              "child_plural": "Children",
 
               "promoCode": "If applicable, enter the promo code provided",
               "waveProductId": "Wave",
