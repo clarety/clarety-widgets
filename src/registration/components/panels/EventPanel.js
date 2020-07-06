@@ -1,7 +1,7 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Form, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import Select from 'react-select';
+import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { Button, TextInput } from 'form/components';
 
@@ -91,9 +91,8 @@ export class EventPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title={<FormattedMessage id="eventPanel.editTitle" />}
+          title={t('eventPanel.editTitle', 'Which Location Are You Registering For?')}
         />
-
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
 
           {settings.showStateButtons && this.renderStateButtons()}
@@ -106,7 +105,7 @@ export class EventPanel extends BasePanel {
               disabled={!this.state.event}
               isBusy={isBusy}
             >
-              <FormattedMessage id="btn.next" />
+              {t('btn.next', 'Next')}
             </Button>
           </div>
 
@@ -165,7 +164,7 @@ export class EventPanel extends BasePanel {
       <div className="promo-code">
         <Form.Group controlId="promoCode">
           <Form.Label>
-            <FormattedMessage id="label.promoCode" />
+            {t('label.promoCode', 'If applicable, enter the promo code provided')}
           </Form.Label>
           <TextInput field="promoCode" placeholder="Promo code" />
         </Form.Group>
@@ -182,7 +181,7 @@ export class EventPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title={<FormattedMessage id="eventPanel.doneTitle" />}
+          title={t('eventPanel.doneTitle', 'Location')}
           onPressEdit={this.onPressEdit}
         />
 
@@ -191,7 +190,7 @@ export class EventPanel extends BasePanel {
           <p>{selectedEvent.name}</p>
 
           <Button onClick={this.onClickEdit}>
-            <FormattedMessage id="btn.edit" />
+            {t('btn.edit', 'Edit')}
           </Button>
           
         </PanelBody>

@@ -117,6 +117,7 @@ class _RegistrationRoot extends React.Component {
                 "billing": "Billing Address is same as Delivery Address",
               },
 
+              "promoCode": "If applicable, enter the promo code provided",
               "waveProductId": "Wave",
             },
 
@@ -138,6 +139,11 @@ class _RegistrationRoot extends React.Component {
             "modePanel": {
               "editTitle": "Registrations",
               "doneTitle": "Registrations",
+            },
+
+            "eventPanel": {
+              "editTitle": "Which Location Are You Registering For?",
+              "doneTitle": "Location",
             },
 
             "detailsPanel": {
