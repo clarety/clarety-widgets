@@ -379,7 +379,11 @@ export class _DetailsPanel extends BasePanel {
         {showAutofill &&
           <Form.Row>
             <Col>
-              <CheckboxInput field="autofill.email" label="Use email from first participant?" required />
+              <CheckboxInput
+                field="autofill.email"
+                label={<FormattedMessage id="label.autofill.email" defaultMessage="Use email from first participant?" />}
+                required
+              />
             </Col>
           </Form.Row>
         }
@@ -413,7 +417,11 @@ export class _DetailsPanel extends BasePanel {
         {showAutofill &&
           <Form.Row>
             <Col>
-              <CheckboxInput field="autofill.mobile" label="Use mobile from first participant?" required />
+              <CheckboxInput
+                field="autofill.mobile"
+                label={<FormattedMessage id="label.autofill.mobile" defaultMessage="Use mobile from first participant?" />}
+                required
+              />
             </Col>
           </Form.Row>
         }
@@ -429,7 +437,11 @@ export class _DetailsPanel extends BasePanel {
         {showAddressAutofill &&
           <Form.Row>
             <Col>
-              <CheckboxInput field="autofill.address" label="Use address from first participant?" required />
+              <CheckboxInput
+                field="autofill.address"
+                label={<FormattedMessage id="label.autofill.address" defaultMessage="Use address from first participant?" />}
+                required
+              />
             </Col>
           </Form.Row>
         }
@@ -455,7 +467,11 @@ export class _DetailsPanel extends BasePanel {
         {settings.showDeliveryAddress && settings.showBillingAddress &&
           <Form.Row>
             <Col>
-              <CheckboxInput field="autofill.billing" label="Billing Address is same as Delivery Address" required />
+              <CheckboxInput
+                field="autofill.billing"
+                label={<FormattedMessage id="label.autofill.billing" defaultMessage="Billing Address is same as Delivery Address" />}
+                required
+              />
             </Col>
           </Form.Row>
         }
@@ -572,11 +588,11 @@ export class _DetailsPanel extends BasePanel {
       case 'select':      return <SimpleSelectInput field={`extendForm.${field.columnKey}`} options={this.translateOptions(field.options)} required={field.required} />;
       case 'text':        return this.renderTextField(field);
       case 'phonenumber': return <PhoneInput field={`extendForm.${field.columnKey}`} required={field.required} />;
-      case 'checkbox':    return <CheckboxInput field={`extendForm.${field.columnKey}`} required={field.required} />;
+      case 'checkbox':    return this.renderCheckboxField(field);
 
       // TODO:
-      case 'radio':       return null;
-      case 'title':       return null;
+      // case 'radio':       return ...;
+      // case 'title':       return ...;
       
       default: throw new Error(`Extend field type not supported: ${field.type}`);
     }
@@ -586,8 +602,33 @@ export class _DetailsPanel extends BasePanel {
     return (
       <TextInput
         field={`extendForm.${field.columnKey}`}
-        label={<FormattedMessage id={`label.extendForm.${field.columnKey}`} defaultMessage={field.label} />}
+        label={this.getExtendFieldLabel(field)}
         required={field.required}
+      />
+    );
+  }
+
+  renderCheckboxField(field) {
+    const explanation = this.props.intl.formatMessage({
+      id: `explanation.extendForm.${field.columnKey}`,
+      defaultMessage: field.explanation,
+    });
+
+    return (
+      <CheckboxInput
+        field={`extendForm.${field.columnKey}`}
+        label={this.getExtendFieldLabel(field)}
+        explanation={explanation}
+        required={field.required}
+      />
+    );
+  }
+
+  getExtendFieldLabel(field) {
+    return (
+      <FormattedMessage
+        id={`label.extendForm.${field.columnKey}`}
+        defaultMessage={field.label}
       />
     );
   }
