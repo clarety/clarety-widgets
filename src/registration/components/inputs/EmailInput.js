@@ -6,7 +6,7 @@ import { getValidationError } from 'form/utils';
 
 class PureEmailInput extends React.PureComponent {
   render() {
-    const { field, value, onChange, error, disabled, required } = this.props;
+    const { field, value, label, onChange, error, disabled, required } = this.props;
 
     return (
       <Form.Group controlId={field}>

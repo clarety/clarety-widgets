@@ -1,12 +1,12 @@
 import React from 'react';
-import { FormattedMessage, injectIntl } from 'react-intl';
 import { Button, Form, Row, Col, Alert } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext, parseNestedElements, getStateLabel, getPostcodeLabel } from 'shared/utils';
 import { TextInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput, StateInput, PostcodeInput, CountryInput } from 'registration/components';
 import { getGenderOptions, scrollIntoView } from 'registration/utils';
 
-export class _DetailsPanel extends BasePanel {
+export class DetailsPanel extends BasePanel {
   ref = React.createRef();
 
   constructor(props) {
@@ -287,10 +287,11 @@ export class _DetailsPanel extends BasePanel {
     const { layout, index, registrationErrors } = this.props;
     const firstName = this.state.formData['customer.firstName'];
 
-    const titleValues = {
-      b: text => <span className="text-highlight">{text}</span>,
-      firstName: firstName,
-    };
+    const title = (
+      <span>{t('detailsPanel.editTitle', 'Registration Details For')}
+        <span className="text-highlight"> {firstName}</span>
+      </span>
+    );
 
     return (
       <PanelContainer layout={layout} status="edit">
@@ -299,7 +300,7 @@ export class _DetailsPanel extends BasePanel {
             status="edit"
             layout={layout}
             number={index + 1}
-            title={<FormattedMessage id="detailsPanel.editTitle" values={titleValues} />}
+            title={title}
           />
 
           <Form onSubmit={this.onClickNext}>
@@ -307,15 +308,11 @@ export class _DetailsPanel extends BasePanel {
             <PanelBody layout={layout} status="edit">
               <Row className="mt-5">
                 <Col lg={6}>
-                  <FormattedMessage id="detailsPanel.customerFormTitle">
-                    {txt => <h4 className="mb-4">{txt}</h4>}
-                  </FormattedMessage>
+                  <h4 className="mb-4">{t('detailsPanel.customerFormTitle', 'Personal Details')}</h4>
                   {this.renderCustomerForm()}
                 </Col>
                 <Col lg={6}>
-                  <FormattedMessage id="detailsPanel.extendFormTitle">
-                    {txt => <h4 className="mb-4">{txt}</h4>}
-                  </FormattedMessage>
+                  <h4 className="mb-4">{t('detailsPanel.extendFormTitle', 'Event Details')}</h4>
                   {this.renderExtendForm()}
                 </Col>
               </Row>
@@ -331,9 +328,7 @@ export class _DetailsPanel extends BasePanel {
               </Alert>
             }
 
-            <Button type="submit">
-              <FormattedMessage id="btn.next" />
-            </Button>
+            <Button type="submit">{t('btn.next', 'Next')}</Button>
           </Form>
         </div>
       </PanelContainer>
@@ -359,7 +354,7 @@ export class _DetailsPanel extends BasePanel {
           <Col md={6}>
             <TextInput
               field="customer.firstName"
-              label={<FormattedMessage id="label.customer.firstName" defaultMessage="First Name" />}
+              label={t('label.customer.firstName', 'First Name')}
               disabled={isPrefilled}
               required
             />
@@ -367,7 +362,7 @@ export class _DetailsPanel extends BasePanel {
           <Col md={6}>
             <TextInput
               field="customer.lastName"
-              label={<FormattedMessage id="label.customer.lastName" defaultMessage="Last Name" />}
+              label={t('label.customer.lastName', 'Last Name')}
               disabled={isPrefilled}
               required
             />
@@ -379,7 +374,7 @@ export class _DetailsPanel extends BasePanel {
             <Col>
               <CheckboxInput
                 field="autofill.email"
-                label={<FormattedMessage id="label.autofill.email" defaultMessage="Use email from first participant?" />}
+                label={t('label.autofill.email', 'Use email from first participant?')}
                 required
               />
             </Col>
@@ -391,7 +386,7 @@ export class _DetailsPanel extends BasePanel {
             <Col>
               <EmailInput
                 field="customer.email"
-                label={<FormattedMessage id="label.customer.email" defaultMessage="Email" />}
+                label={t('label.customer.email', 'Email')}
                 disabled={isPrefilled}
                 required
               />
@@ -403,7 +398,7 @@ export class _DetailsPanel extends BasePanel {
           <Col>
             <SimpleSelectInput
               field="customer.gender"
-              label={<FormattedMessage id="label.customer.gender" defaultMessage="Gender" />}
+              label={t('label.customer.gender', 'Gender')}
               options={genderOptions}
               required
             />
@@ -417,7 +412,7 @@ export class _DetailsPanel extends BasePanel {
               dayField="customer.dateOfBirthDay"
               monthField="customer.dateOfBirthMonth"
               yearField="customer.dateOfBirthYear"
-              label={<FormattedMessage id="label.customer.dateOfBirth" defaultMessage="Date of Birth" />}
+              label={t('label.customer.dateOfBirth', 'Date of Birth')}
               required
             />
           </Col>
@@ -428,7 +423,7 @@ export class _DetailsPanel extends BasePanel {
             <Col>
               <CheckboxInput
                 field="autofill.mobile"
-                label={<FormattedMessage id="label.autofill.mobile" defaultMessage="Use mobile from first participant?" />}
+                label={t('label.autofill.mobile', 'Use mobile from first participant?')}
                 required
               />
             </Col>
@@ -440,7 +435,7 @@ export class _DetailsPanel extends BasePanel {
             <Col>
               <PhoneInput
                 field="customer.mobile"
-                label={<FormattedMessage id="label.customer.mobile" defaultMessage="Mobile" />}
+                label={t('label.customer.mobile', 'Mobile')}
                 required
               />
             </Col>
@@ -452,7 +447,7 @@ export class _DetailsPanel extends BasePanel {
             <Col>
               <CheckboxInput
                 field="autofill.address"
-                label={<FormattedMessage id="label.autofill.address" defaultMessage="Use address from first participant?" />}
+                label={t('label.autofill.address', 'Use address from first participant?')}
                 required
               />
             </Col>
@@ -482,7 +477,7 @@ export class _DetailsPanel extends BasePanel {
             <Col>
               <CheckboxInput
                 field="autofill.billing"
-                label={<FormattedMessage id="label.autofill.billing" defaultMessage="Billing Address is same as Delivery Address" />}
+                label={t('label.autofill.billing', 'Billing Address is same as Delivery Address')}
                 required
               />
             </Col>
@@ -506,7 +501,7 @@ export class _DetailsPanel extends BasePanel {
           <Col>
             <TextInput
               field={`customer.${type}.address1`}
-              label={<FormattedMessage id={`label.customer.${type}.address1`} defaultMessage="Address 1" />}
+              label={t(`label.customer.${type}.address1`, 'Address 1')}
               required
             />
           </Col>
@@ -516,7 +511,7 @@ export class _DetailsPanel extends BasePanel {
           <Col>
             <TextInput
               field={`customer.${type}.address2`}
-              label={<FormattedMessage id={`label.customer.${type}.address2`} defaultMessage="Address 2" />}
+              label={t(`label.customer.${type}.address2`, 'Address 2')}
             />
           </Col>
         </Form.Row>
@@ -525,7 +520,7 @@ export class _DetailsPanel extends BasePanel {
           <Col>
             <TextInput
               field={`customer.${type}.suburb`}
-              label={<FormattedMessage id={`label.customer.${type}.suburb`} defaultMessage="Suburb" />}
+              label={t(`label.customer.${type}.suburb`, 'Suburb')}
               required
             />
           </Col>
@@ -554,7 +549,7 @@ export class _DetailsPanel extends BasePanel {
           <Col>
             <CountryInput
               field={`customer.${type}.country`}
-              label={<FormattedMessage id={`label.customer.${type}.country`} defaultMessage="Country" />}
+              label={t(`label.customer.${type}.country`, 'Country')}
               initialValue={event.country}
               required
             />
@@ -582,7 +577,7 @@ export class _DetailsPanel extends BasePanel {
     return (
       <SimpleSelectInput
         field="waveProductId"
-        label={<FormattedMessage id="label.waveProductId" defaultMessage="Wave" />}
+        label={t('label.waveProductId', 'Wave')}
         options={waveOptions}
         placeholder="Select Wave"
         required={true}
@@ -595,7 +590,7 @@ export class _DetailsPanel extends BasePanel {
       <CheckboxInput
         key={addOn.offerId}
         field={`addOns.${addOn.offerId}`}
-        label={addOn.name}
+        label={t(`label.addOn.${offerId}`, addOn.name)}
       />
     );
   }
@@ -649,16 +644,11 @@ export class _DetailsPanel extends BasePanel {
   }
 
   renderCheckboxField(field) {
-    const explanation = this.props.intl.formatMessage({
-      id: `explanation.extendForm.${field.columnKey}`,
-      defaultMessage: field.explanation,
-    });
-
     return (
       <CheckboxInput
         field={`extendForm.${field.columnKey}`}
         label={this.getExtendFieldLabel(field)}
-        explanation={explanation}
+        explanation={t(`explanation.extendForm.${field.columnKey}`, field.explanation)}
         required={field.required}
       />
     );
@@ -675,12 +665,7 @@ export class _DetailsPanel extends BasePanel {
   }
 
   getExtendFieldLabel(field) {
-    return (
-      <FormattedMessage
-        id={`label.extendForm.${field.columnKey}`}
-        defaultMessage={field.label}
-      />
-    );
+    return t(`label.extendForm.${field.columnKey}`, field.label);
   }
 
   renderDone() {
@@ -693,16 +678,13 @@ export class _DetailsPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title={<FormattedMessage id="detailsPanel.doneTitle" />}
+          title={t('detailsPanel.doneTitle', 'Registration Details')}
           onPressEdit={this.onPressEdit}
         />
 
         <PanelBody layout={layout} status="done">
           <p>{firstName} {lastName}</p>
-
-          <Button onClick={this.onClickEdit}>
-            <FormattedMessage id="btn.edit" />
-          </Button>
+          <Button onClick={this.onClickEdit}>{t('btn.edit', 'Edit')}</Button>
         </PanelBody>
       </PanelContainer>
     );
@@ -738,70 +720,71 @@ export class _DetailsPanel extends BasePanel {
   }
 
   validateRequired(field, formData, errors, message) {
-    const { intl } = this.props;
     if (!formData[field]) {
-      message = message || intl.formatMessage({ id: 'validation.required' });
-      errors.push({ field: field, message: message });
+      errors.push({
+        field: field,
+        message: message || t('validation.required', 'This is a required field'),
+      });
     }
   }
 
   validateEmail(field, formData, errors) {
-    const { intl } = this.props;
     // NOTE: giant ugly regex from: https://emailregex.com/
     const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const isValid = regex.test(formData[field]);
     if (!isValid) {
-      const message = intl.formatMessage({ id: 'validation.email' });
-      errors.push({ field: field, message: message });
+      errors.push({
+        field: field,
+        message: t('validation.email', 'Please enter a valid email'),
+      });
     }
   }
 
   validatePhone(field, formData, errors) {
-    const { intl } = this.props;
     const phone = formData[field];
     if (!phone || phone.length < 10 || phone.length > 14) {
-      const message = intl.formatMessage({ id: 'validation.phone' });
-      errors.push({ field: field, message: message });
+      errors.push({
+        field: field,
+        message: t('validation.phone', 'Please enter a valid phone number'),
+      });
     }
   }
 
   validateUniqueEmergencyNumber(emergencyPhoneField, customerPhoneField, formData, errors, message) {
-    const { intl } = this.props;
-
     if (formData[emergencyPhoneField] === formData[customerPhoneField]) {
-      message = message || intl.formatMessage({ id: 'validation.phone.unique' });
-      errors.push({ field: emergencyPhoneField, message: message });
+      errors.push({
+        field: emergencyPhoneField,
+        message: message || t('validation.phone-unique', 'Emergency phone number needs to be different to your mobile number'),
+      });
     }
   }
 
   validateDob({ field, dob, eventDate, minAge, maxAge, errors }) {
-    const { intl, participant } = this.props;
-    const message = intl.formatMessage({ id: `validation.age.${participant.type}` });
-
     if (minAge && eventDate) {
       const turnsMinAge = new Date(dob.getFullYear() + minAge, dob.getMonth(), dob.getDate());
       if (turnsMinAge > eventDate) {
-        errors.push({ 'field': field, 'message': message });
+        errors.push({
+          field: field,
+          message: t('validation.age-too-young', 'Participant must be older than {{age}} on the day of the walk to attend', { age: minAge }),
+        });
       }
     }
 
     if (maxAge && eventDate) {
       const turnsMaxAge = new Date(dob.getFullYear() + maxAge, dob.getMonth(), dob.getDate());
       if (turnsMaxAge < eventDate) {
-        errors.push({ 'field': field, 'message': message });
+        errors.push({
+          field: field,
+          message: t('validation.age-too-old', 'Participant must be younger than {{age}} on the day of the walk to attend', { age: maxAge }),
+        });
       }
     }
   }
 
   translateOptions(options) {
-    const { intl } = this.props;
-
     return options.map(option => ({
       value: option.value,
-      label: intl.formatMessage({ id: `option.${option.label}`, defaultMessage: option.label }),
+      label: t(`option.${option.label}`, option.label),
     }));
   }
 }
-
-export const DetailsPanel = injectIntl(_DetailsPanel, { forwardRef: true });
-DetailsPanel.name = 'DetailsPanel';

@@ -79,12 +79,73 @@ class _RegistrationRoot extends React.Component {
           translation: {
             "btn": {
               "edit": "Edit",
+              "next": "Next",
+            },
+
+            "label": {
+              "customer": {
+                "firstName":   "First Name",
+                "lastName":    "Last Name",
+                "email":       "Email",
+                "mobile":      "Mobile",
+                "gender":      "Gender",
+                "dateOfBirth": "Date of Birth",
+
+                "billing": {
+                  "address1": "Address 1",
+                  "address2": "Address 2",
+                  "suburb":   "Suburb",
+                  "state":    "State",
+                  "postcode": "Postcode",
+                  "country":  "Country",
+                },
+
+                "delivery": {
+                  "address1": "Address 1",
+                  "address2": "Address 2",
+                  "suburb":   "Suburb",
+                  "state":    "State",
+                  "postcode": "Postcode",
+                  "country":  "Country",
+                },
+              },
+
+              "autofill": {
+                "email":   "Use email from first participant?",
+                "mobile":  "Use mobile from first participant?",
+                "address": "Use address from first participant?",
+                "billing": "Billing Address is same as Delivery Address",
+              },
+
+              "waveProductId": "Wave",
+            },
+
+            "validation": {
+              "required":      "This is a required field",
+              "email":         "Please enter a valid email",
+              "phone":         "Please enter a valid phone number",
+              "phone-unique":  "Emergency phone number needs to be different to your mobile number",
+              "age-too-young": "Participant must be older than {{age}} on the day of the walk to attend",
+              "age-too-old":   "Participant must be younger than {{age}} on the day of the walk to attend",
+            },
+
+            "option": {
+              "Male":              "Male",
+              "Female":            "Female",
+              "Prefer to not say": "Prefer to not say",
             },
 
             "modePanel": {
               "editTitle": "Registrations",
               "doneTitle": "Registrations",
-            }
+            },
+
+            "detailsPanel": {
+              "editTitle":         "Registration Details For",
+              "doneTitle":         "Registration Details",
+              "customerFormTitle": "Personal Details",
+              "extendFormTitle":   "Event Details",
+            },
           }
         },
 
