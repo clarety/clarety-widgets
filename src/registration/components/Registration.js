@@ -2,6 +2,7 @@ import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider as ReduxProvider, connect } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
+import i18next from 'i18next';
 import { IntlProvider, FormattedMessage } from 'react-intl';
 import { BreakpointProvider } from 'react-socks';
 import BlockUi from 'react-block-ui';
@@ -69,6 +70,39 @@ class _RegistrationRoot extends React.Component {
   async componentDidMount() {
     const { updateAppSettings, fetchEvents, setTrackingData, fetchSettings } = this.props;
 
+    // Init translations.
+    await i18next.init({
+      lng: 'en',
+      debug: true,
+      resources: {
+        en: {
+          translation: {
+            "btn": {
+              "edit": "Edit",
+            },
+
+            "modePanel": {
+              "editTitle": "Registrations",
+              "doneTitle": "Registrations",
+            }
+          }
+        },
+
+        fr: {
+          translation: {
+            "btn": {
+              "edit": "Le Edit",
+            },
+
+            "modePanel": {
+              "editTitle": "Le Registrations",
+              "doneTitle": "Le Registrations",
+            }
+          }
+        },
+      }
+    });
+
     // Settings.
     updateAppSettings({
       storeId: this.props.storeId,
@@ -113,11 +147,16 @@ class _RegistrationRoot extends React.Component {
     }
   }
 
+  changeLanguage = (lng) => {
+    i18next.changeLanguage(lng);
+    this.forceUpdate();
+  };
+
   render() {
     const { isBlocking, resources } = this.props;
 
     return (
-      <BlockUi blocking={isBlocking} loader={this.getBusyOverlay()}>
+      <BlockUi blocking={isBlocking} loader={this.getBusyOverlay()} key={i18next.language}>
         <MiniCart resources={resources} />
         <PanelManager
           layout="stack"

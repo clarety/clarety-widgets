@@ -80,6 +80,10 @@ export function currency(number) {
   return `${symbol}${number.toFixed(2)}`;
 }
 
+export function capitalize(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 export const customerTypeOptions = [
   { value: 'individual', label: 'Individual' },
   { value: 'business',   label: 'Business'   },

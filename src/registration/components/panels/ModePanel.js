@@ -1,7 +1,8 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Button } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
+import { capitalize } from 'shared/utils';
 
 export class ModePanel extends BasePanel {
   onSelectMode = (mode) => {
@@ -41,11 +42,10 @@ export class ModePanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title={<FormattedMessage id="modePanel.editTitle" />}
+          title={t('modePanel.editTitle', 'Registrations')}
         />
 
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
-
           <p>Are you registering as an individual or a group?</p>
 
           <div className="panel-actions">
@@ -67,24 +67,15 @@ export class ModePanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title={<FormattedMessage id="modePanel.doneTitle" />}
+          title={t('modePanel.doneTitle', 'Registrations')}
           onPressEdit={this.onPressEdit}
         />
 
         <PanelBody layout={layout} status="done">
-
           <p>{capitalize(selectedMode)} Registration</p>
-
-          <Button onClick={this.onClickEdit}>
-            <FormattedMessage id="btn.edit" />
-          </Button>
-
+          <Button onClick={this.onClickEdit}>{t('btn.edit', 'Edit')}</Button>
         </PanelBody>
       </PanelContainer>
     );
   }
-}
-
-function capitalize(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
 }
