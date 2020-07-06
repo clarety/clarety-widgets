@@ -1,8 +1,7 @@
 import React from 'react';
-import { Form } from 'react-bootstrap';
-import { FormattedMessage } from 'react-intl';
 import ReactPhoneNumberInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
+import { Form } from 'react-bootstrap';
 import { Config } from 'clarety-utils';
 import { FormContext } from 'shared/utils';
 import { FieldError } from 'form/components';
@@ -10,7 +9,7 @@ import { getValidationError } from 'form/utils';
 
 class PurePhoneInput extends React.PureComponent {
   render() {
-    const { field, label, value, onChange, translationId, error, required } = this.props;
+    const { field, label, value, onChange, error, required } = this.props;
     
     let country = this.props.country || Config.get('phoneCountry');
     if (country === 'UK') country = 'GB';
@@ -20,8 +19,7 @@ class PurePhoneInput extends React.PureComponent {
     return (
       <Form.Group controlId={field}>
         <Form.Label>
-          {label || <FormattedMessage id={translationId || `label.${field}`} />}
-          {!required && <span className="optional"> (Optional)</span>}
+          {label}{!required && <span className="optional"> (Optional)</span>}
         </Form.Label>
         <ReactPhoneNumberInput
           value={value}

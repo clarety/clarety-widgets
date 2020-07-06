@@ -435,7 +435,11 @@ export class _DetailsPanel extends BasePanel {
         {showMobile &&
           <Form.Row>
             <Col>
-              <PhoneInput field="customer.mobile" required />
+              <PhoneInput
+                field="customer.mobile"
+                label={<FormattedMessage id="label.customer.mobile" defaultMessage="Mobile" />}
+                required
+              />
             </Col>
           </Form.Row>
         }
@@ -593,7 +597,7 @@ export class _DetailsPanel extends BasePanel {
     switch (field.type) {
       case 'select':      return <SimpleSelectInput field={`extendForm.${field.columnKey}`} options={this.translateOptions(field.options)} required={field.required} />;
       case 'text':        return this.renderTextField(field);
-      case 'phonenumber': return <PhoneInput field={`extendForm.${field.columnKey}`} required={field.required} />;
+      case 'phonenumber': return this.renderPhoneField(field);
       case 'checkbox':    return this.renderCheckboxField(field);
 
       // TODO:
@@ -607,6 +611,16 @@ export class _DetailsPanel extends BasePanel {
   renderTextField(field) {
     return (
       <TextInput
+        field={`extendForm.${field.columnKey}`}
+        label={this.getExtendFieldLabel(field)}
+        required={field.required}
+      />
+    );
+  }
+
+  renderPhoneField(field) {
+    return (
+      <PhoneInput
         field={`extendForm.${field.columnKey}`}
         label={this.getExtendFieldLabel(field)}
         required={field.required}

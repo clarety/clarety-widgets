@@ -226,7 +226,12 @@ export class MerchPanel extends BasePanel {
 
           <Form.Row>
             <Col>
-              <PhoneInput field="customer.mobile" label="Mobile" country={country} required />
+              <PhoneInput
+                field="customer.mobile"
+                label={<FormattedMessage id="label.customer.mobile" defaultMessage="Mobile" />}
+                country={country}
+                required
+              />
             </Col>
           </Form.Row>
 
