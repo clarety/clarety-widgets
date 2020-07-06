@@ -2,7 +2,7 @@ import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider as ReduxProvider, connect } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
-import { IntlProvider } from 'react-intl';
+import { IntlProvider, FormattedMessage } from 'react-intl';
 import { BreakpointProvider } from 'react-socks';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
@@ -117,7 +117,7 @@ class _RegistrationRoot extends React.Component {
     const { isBlocking, resources } = this.props;
 
     return (
-      <BlockUi blocking={isBlocking} loader={this.getLoader()}>
+      <BlockUi blocking={isBlocking} loader={this.getBusyOverlay()}>
         <MiniCart resources={resources} />
         <PanelManager
           layout="stack"
@@ -127,12 +127,26 @@ class _RegistrationRoot extends React.Component {
     );
   }
 
-  getLoader() {
+  getBusyOverlay() {
     const { isInitializing, isValidating, isSubmitting } = this.props;
 
-    if (isInitializing) return <BusyOverlay messageId="busy.init" />;
-    if (isValidating)   return <BusyOverlay messageId="busy.validate" />;
-    if (isSubmitting)   return <BusyOverlay messageId="busy.submit" />;
+    if (isInitializing) return (
+      <BusyOverlay
+        message={<FormattedMessage id="busy.init" defaultMessage="Just A Moment" />}
+      />
+    );
+
+    if (isValidating) return (
+      <BusyOverlay
+        message={<FormattedMessage id="busy.validate" defaultMessage="Checking Your Registration Details" />}
+      />
+    );
+
+    if (isSubmitting) return (
+      <BusyOverlay
+        message={<FormattedMessage id="busy.submit" defaultMessage="Submitting Your Registration" />}
+      />
+    );
 
     return <span />;
   }
