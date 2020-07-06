@@ -409,6 +409,7 @@ export class _DetailsPanel extends BasePanel {
               dayField="customer.dateOfBirthDay"
               monthField="customer.dateOfBirthMonth"
               yearField="customer.dateOfBirthYear"
+              label={<FormattedMessage id="label.customer.dateOfBirth" defaultMessage="Date of Birth" />}
               required
             />
           </Col>
@@ -748,7 +749,7 @@ export class _DetailsPanel extends BasePanel {
 
     return options.map(option => ({
       value: option.value,
-      label: intl.formatMessage({ id: `option.${option.label}` }),
+      label: intl.formatMessage({ id: `option.${option.label}`, defaultMessage: option.label }),
     }));
   }
 }

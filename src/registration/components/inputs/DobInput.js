@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Col } from 'react-bootstrap';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { injectIntl } from 'react-intl';
 import { FormContext } from 'shared/utils';
 import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
@@ -8,13 +8,12 @@ import { currentYear, iterate } from 'registration/utils';
 
 class _PureDobInput extends React.PureComponent {
   render() {
-    const { error, dayError, monthError, yearError, required } = this.props;
+    const { label, error, dayError, monthError, yearError, required } = this.props;
 
     return (
       <Form.Group>
         <Form.Label>
-          <FormattedMessage id="label.customer.dateOfBirth" />
-          {!required && <span className="optional"> (Optional)</span>}
+          {label || 'Date of Birth'}{!required && <span className="optional"> (Optional)</span>}
         </Form.Label>
 
         <Form.Row>
@@ -46,7 +45,7 @@ class _PureDobInput extends React.PureComponent {
     return (
       <Form.Control as="select" value={day} onChange={onChangeDay} isInvalid={isInvalid}>
         <option value="" disabled hidden>
-          {intl.formatMessage({ id: 'date.day' })}
+          {intl.formatMessage({ id: 'date.day', defaultMessage: 'Day' })}
         </option>
 
         {iterate(1, 31, value => 
@@ -65,7 +64,7 @@ class _PureDobInput extends React.PureComponent {
     return (
       <Form.Control as="select" value={month} onChange={onChangeMonth} isInvalid={isInvalid}>
         <option value="" disabled hidden>
-          {intl.formatMessage({ id: 'date.month' })}
+          {intl.formatMessage({ id: 'date.month', defaultMessage: 'Month' })}
         </option>
         
         {iterate(1, 12, value => 
@@ -89,7 +88,7 @@ class _PureDobInput extends React.PureComponent {
     return (
       <Form.Control as="select" value={year} onChange={onChangeYear} isInvalid={isInvalid}>
         <option value="" disabled hidden>
-          {intl.formatMessage({ id: 'date.year' })}
+          {intl.formatMessage({ id: 'date.year', defaultMessage: 'Year' })}
         </option>
 
         {iterate(startYear, endYear, value => 
