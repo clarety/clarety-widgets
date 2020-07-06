@@ -1,6 +1,6 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Row, Col, Form } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext, getStateLabel, getPostcodeLabel, requiredField, phoneNumberField, parseNestedElements } from 'shared/utils';
 import { Button } from 'form/components';
@@ -160,7 +160,7 @@ export class MerchPanel extends BasePanel {
   }
   
   renderEdit() {
-    const { layout, index, isBusy, settings, merchandise } = this.props;
+    const { layout, index, isBusy, merchandise } = this.props;
     const { selectedItem, qtys } = this.state;
 
     return (
@@ -192,7 +192,7 @@ export class MerchPanel extends BasePanel {
 
           <div className="panel-actions">
             <Button onClick={this.onClickNext} isBusy={isBusy}>
-              <FormattedMessage id="btn.next" />
+              {t('btn.next', 'Next')}
             </Button>
           </div>
 
@@ -222,7 +222,7 @@ export class MerchPanel extends BasePanel {
             <Col>
               <CountryInput
                 field="customer.delivery.country"
-                label={<FormattedMessage id="label.customer.delivery.country" defaultMessage="Country" />}
+                label={t('label.customer.delivery.country', 'Country')}
                 required
               />
             </Col>
@@ -232,7 +232,7 @@ export class MerchPanel extends BasePanel {
             <Col>
               <PhoneInput
                 field="customer.mobile"
-                label={<FormattedMessage id="label.customer.mobile" defaultMessage="Mobile" />}
+                label={t('label.customer.mobile', 'Mobile')}
                 country={country}
                 required
               />
@@ -243,7 +243,7 @@ export class MerchPanel extends BasePanel {
             <Col>
               <TextInput
                 field="customer.delivery.address1"
-                label={<FormattedMessage id="label.customer.delivery.address1" defaultMessage="Address 1" />}
+                label={t('label.customer.delivery.address1', 'Address 1')}
                 required
               />
             </Col>
@@ -253,7 +253,7 @@ export class MerchPanel extends BasePanel {
             <Col>
               <TextInput
                 field="customer.delivery.address2"
-                label={<FormattedMessage id="label.customer.delivery.address2" defaultMessage="Address 2" />}
+                label={t('label.customer.delivery.address2', 'Address 2')}
               />
             </Col>
           </Form.Row>
@@ -262,7 +262,7 @@ export class MerchPanel extends BasePanel {
             <Col>
               <TextInput
                 field="customer.delivery.suburb"
-                label={<FormattedMessage id="label.customer.delivery.suburb" defaultMessage="Suburb" />}
+                label={t('label.customer.delivery.suburb', 'Suburb')}
                 required
               />
             </Col>
@@ -308,7 +308,7 @@ export class MerchPanel extends BasePanel {
           <p>Check out our offical merchandise</p>
 
           <Button onClick={this.onClickEdit}>
-            <FormattedMessage id="btn.edit" />
+            {t('btn.edit', 'Edit')}
           </Button>
           
         </PanelBody>
