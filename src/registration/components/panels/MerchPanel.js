@@ -232,19 +232,30 @@ export class MerchPanel extends BasePanel {
 
           <Form.Row>
             <Col>
-              <TextInput field="customer.delivery.address1" label="Address 1" required />
+              <TextInput
+                field="customer.delivery.address1"
+                label={<FormattedMessage id="label.customer.delivery.address1" defaultMessage="Address 1" />}
+                required
+              />
             </Col>
           </Form.Row>
 
           <Form.Row>
             <Col>
-              <TextInput field="delivery.address2" label="Address 2" />
+              <TextInput
+                field="customer.delivery.address2"
+                label={<FormattedMessage id="label.customer.delivery.address2" defaultMessage="Address 2" />}
+              />
             </Col>
           </Form.Row>
 
           <Form.Row>
             <Col>
-              <TextInput field="customer.delivery.suburb" label="Suburb" required />
+              <TextInput
+                field="customer.delivery.suburb"
+                label={<FormattedMessage id="label.customer.delivery.suburb" defaultMessage="Suburb" />}
+                required
+              />
             </Col>
           </Form.Row>
 

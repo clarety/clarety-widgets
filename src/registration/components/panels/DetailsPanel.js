@@ -358,8 +358,22 @@ export class _DetailsPanel extends BasePanel {
       <FormContext.Provider value={this.state}>
 
         <Form.Row>
-          <Col md={6}><TextInput field="customer.firstName" disabled={isPrefilled} required /></Col>
-          <Col md={6}><TextInput field="customer.lastName" disabled={isPrefilled} required /></Col>
+          <Col md={6}>
+            <TextInput
+              field="customer.firstName"
+              label={<FormattedMessage id="label.customer.firstName" defaultMessage="First Name" />}
+              disabled={isPrefilled}
+              required
+            />
+          </Col>
+          <Col md={6}>
+            <TextInput
+              field="customer.lastName"
+              label={<FormattedMessage id="label.customer.lastName" defaultMessage="Last Name" />}
+              disabled={isPrefilled}
+              required
+            />
+          </Col>
         </Form.Row>
 
         {showAutofill &&
@@ -461,19 +475,30 @@ export class _DetailsPanel extends BasePanel {
 
         <Form.Row>
           <Col>
-            <TextInput field={`customer.${type}.address1`} label="Address 1" required />
+            <TextInput
+              field={`customer.${type}.address1`}
+              label={<FormattedMessage id={`label.customer.${type}.address1`} defaultMessage="Address 1" />}
+              required
+            />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <TextInput field={`customer.${type}.address2`} label="Address 2" />
+            <TextInput
+              field={`customer.${type}.address2`}
+              label={<FormattedMessage id={`label.customer.${type}.address2`} defaultMessage="Address 2" />}
+            />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <TextInput field={`customer.${type}.suburb`} label="Suburb" required />
+            <TextInput
+              field={`customer.${type}.suburb`}
+              label={<FormattedMessage id={`label.customer.${type}.suburb`} defaultMessage="Suburb" />}
+              required
+            />
           </Col>
         </Form.Row>
 
@@ -545,7 +570,7 @@ export class _DetailsPanel extends BasePanel {
   renderExtendField = (field) => {
     switch (field.type) {
       case 'select':      return <SimpleSelectInput field={`extendForm.${field.columnKey}`} options={this.translateOptions(field.options)} required={field.required} />;
-      case 'text':        return <TextInput field={`extendForm.${field.columnKey}`} required={field.required} />;
+      case 'text':        return this.renderTextField(field);
       case 'phonenumber': return <PhoneInput field={`extendForm.${field.columnKey}`} required={field.required} />;
       case 'checkbox':    return <CheckboxInput field={`extendForm.${field.columnKey}`} required={field.required} />;
 
@@ -556,6 +581,16 @@ export class _DetailsPanel extends BasePanel {
       default: throw new Error(`Extend field type not supported: ${field.type}`);
     }
   };
+
+  renderTextField(field) {
+    return (
+      <TextInput
+        field={`extendForm.${field.columnKey}`}
+        label={<FormattedMessage id={`label.extendForm.${field.columnKey}`} defaultMessage={field.label} />}
+        required={field.required}
+      />
+    );
+  }
 
   renderDone() {
     const { layout, index } = this.props;
