@@ -1,6 +1,6 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Button } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { ErrorMessages } from 'form/components';
 
@@ -41,17 +41,16 @@ export class ValidatePanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title={<FormattedMessage id="reviewPanel.errorTitle" defaultMessage="An Error Occured" />}
+          title={t('reviewPanel.errorTitle', 'We Found Some Problems With Your Registration')}
         />
-
         <PanelBody layout={layout} status="edit">
 
-          <FormattedMessage id="reviewPanel.errorSubtitle" tagName="p" />
+          <p>{t('reviewPanel.errorSubtitle', 'Please correct the issues and try again')}</p>
 
           <ErrorMessages showAll />
 
           <Button onClick={this.onClickRetry}>
-            <FormattedMessage id="btn.retry" />
+            {t('btn.retry', 'Try Again')}
           </Button>
 
         </PanelBody>

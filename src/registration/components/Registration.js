@@ -204,7 +204,7 @@ class _RegistrationRoot extends React.Component {
 
             "reviewPanel": {
               "errorTitle":    "We Found Some Problems With Your Registration",
-              "errorSubtitle": "Please correct the issues and try again.",
+              "errorSubtitle": "Please correct the issues and try again",
               "reviewTitle":   "Please Review Your Registration",
             },
           }
