@@ -151,6 +151,16 @@ class _RegistrationRoot extends React.Component {
               "doneTitle": "Location",
             },
 
+            "qtysPanel": {
+              "editTitle":      "Participant Selection",
+              "doneTitle":      "Registration",
+              "message":        "",
+              "adult-title":    "Adults",
+              "adult-subtitle": "Ages 17+",
+              "child-title":    "Children",
+              "child-subtitle": "Ages 13 - 17",              
+            },
+
             "offersPanel": {
               "editTitle":     "Participant Selection",
               "doneTitle":     "Participants",
