@@ -391,7 +391,12 @@ export class _DetailsPanel extends BasePanel {
         {showEmail &&
           <Form.Row>
             <Col>
-              <EmailInput field="customer.email" disabled={isPrefilled} required />
+              <EmailInput
+                field="customer.email"
+                label={<FormattedMessage id="label.customer.email" defaultMessage="Email" />}
+                disabled={isPrefilled}
+                required
+              />
             </Col>
           </Form.Row>
         }

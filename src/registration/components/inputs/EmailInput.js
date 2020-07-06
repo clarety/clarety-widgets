@@ -1,19 +1,17 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
-import { FormattedMessage } from 'react-intl';
 import { FormContext } from 'shared/utils';
 import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
 
 class PureEmailInput extends React.PureComponent {
   render() {
-    const { field, value, onChange, translationId, error, disabled, required } = this.props;
+    const { field, value, onChange, error, disabled, required } = this.props;
 
     return (
       <Form.Group controlId={field}>
         <Form.Label>
-          <FormattedMessage id={translationId || `label.${field}`} />
-          {!required && <span className="optional"> (Optional)</span>}
+          {label}{!required && <span className="optional"> (Optional)</span>}
         </Form.Label>
         <Form.Control
           value={value}
