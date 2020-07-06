@@ -403,7 +403,12 @@ export class _DetailsPanel extends BasePanel {
 
         <Form.Row>
           <Col>
-            <SimpleSelectInput field="customer.gender" options={genderOptions} required />
+            <SimpleSelectInput
+              field="customer.gender"
+              label={<FormattedMessage id="label.customer.gender" defaultMessage="Gender" />}
+              options={genderOptions}
+              required
+            />
           </Col>
         </Form.Row>
 
@@ -564,6 +569,7 @@ export class _DetailsPanel extends BasePanel {
     return (
       <SimpleSelectInput
         field="waveProductId"
+        label={<FormattedMessage id="label.waveProductId" defaultMessage="Wave" />}
         options={waveOptions}
         placeholder="Select Wave"
         required={true}
@@ -595,10 +601,10 @@ export class _DetailsPanel extends BasePanel {
 
   renderExtendField = (field) => {
     switch (field.type) {
-      case 'select':      return <SimpleSelectInput field={`extendForm.${field.columnKey}`} options={this.translateOptions(field.options)} required={field.required} />;
       case 'text':        return this.renderTextField(field);
-      case 'phonenumber': return this.renderPhoneField(field);
+      case 'select':      return this.renderSelectField(field);
       case 'checkbox':    return this.renderCheckboxField(field);
+      case 'phonenumber': return this.renderPhoneField(field);
 
       // TODO:
       // case 'radio':       return ...;
@@ -618,11 +624,12 @@ export class _DetailsPanel extends BasePanel {
     );
   }
 
-  renderPhoneField(field) {
+  renderSelectField(field) {
     return (
-      <PhoneInput
+      <SimpleSelectInput
         field={`extendForm.${field.columnKey}`}
         label={this.getExtendFieldLabel(field)}
+        options={this.translateOptions(field.options)}
         required={field.required}
       />
     );
@@ -639,6 +646,16 @@ export class _DetailsPanel extends BasePanel {
         field={`extendForm.${field.columnKey}`}
         label={this.getExtendFieldLabel(field)}
         explanation={explanation}
+        required={field.required}
+      />
+    );
+  }
+
+  renderPhoneField(field) {
+    return (
+      <PhoneInput
+        field={`extendForm.${field.columnKey}`}
+        label={this.getExtendFieldLabel(field)}
         required={field.required}
       />
     );

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
-import { FormattedMessage } from 'react-intl';
 import Select from 'react-select';
 import { FormContext } from 'shared/utils';
 import { FieldError } from 'form/components';
@@ -27,15 +26,14 @@ class PureSelectInput extends React.PureComponent {
   };
 
   render () {
-    const { field, options, translationId, error, required } = this.props;
+    const { field, label, options, error, required } = this.props;
 
     const className = error ? 'react-select-invalid' : undefined;
 
     return (
       <Form.Group controlId={field}>
         <Form.Label>
-          <FormattedMessage id={translationId || `label.${field}`} />
-          {!required && <span className="optional"> (Optional)</span>}
+          {label}{!required && <span className="optional"> (Optional)</span>}
         </Form.Label>
         <Select
           value={this.state.value}

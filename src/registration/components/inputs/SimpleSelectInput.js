@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
-import { FormattedMessage } from 'react-intl';
 import { FormContext } from 'shared/utils';
 import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
@@ -15,15 +14,14 @@ class PureSimpleSelectInput extends React.PureComponent {
   }
 
   render () {
-    const { field, value, onChange, label, placeholder, translationId, error, required } = this.props;
+    const { field, value, onChange, label, placeholder, error, required } = this.props;
 
     const options = this.props.options.filter(option => option.label.trim());
 
     return (
       <Form.Group controlId={field}>
         <Form.Label>
-          {label || <FormattedMessage id={translationId || `label.${field}`} />}
-          {!required && <span className="optional"> (Optional)</span>}
+          {label}{!required && <span className="optional"> (Optional)</span>}
         </Form.Label>
 
         <Form.Control
