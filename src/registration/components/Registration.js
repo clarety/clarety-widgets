@@ -81,7 +81,15 @@ class _RegistrationRoot extends React.Component {
               "edit":   "Edit",
               "next":   "Next",
               "retry":  "Try Again",
+              "cancel": "Cancel",
+
+              // TODO: this should be an override somehow
               "submit": "Submit Registration",
+
+              // TODO: move into team panel?
+              "noTeam":      "No Thanks",
+              "createTeam":  "Create Team",
+              "searchTeams": "Search Teams",
             },
 
             "label": {
@@ -109,6 +117,14 @@ class _RegistrationRoot extends React.Component {
                   "state":    "State",
                   "postcode": "Postcode",
                   "country":  "Country",
+                },
+
+                "team": {
+                  "search":           "Team Search",
+                  "name":             "Team Name",
+                  "type":             "Team Type",
+                  "password":         "Team Password",
+                  "passwordRequired": "Should team members enter a password in order to join?",
                 },
               },
 
@@ -174,6 +190,16 @@ class _RegistrationRoot extends React.Component {
               "doneTitle":         "Registration Details",
               "customerFormTitle": "Personal Details",
               "extendFormTitle":   "Event Details",
+            },
+
+            "teamPanel": {
+              "editTitle":          "Do you want to participate with a team?",
+              "doneTitle":          "Your Team",
+              "corporateTeamTitle": "Your Team",
+              "message-1":          "Combine your efforts and participate as a team! Either create a new team or join one that’s already been created.",
+              "message-2":          "If you are registering with an existing team, please contact your team leader for the team name and password (if applicable) before proceeding with the team registration process.",
+              "createTeamTitle":    "Create New Team",
+              "noTeam":             "No Team",
             },
 
             "reviewPanel": {

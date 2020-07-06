@@ -1,6 +1,6 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Form } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { Button, TextInput, SelectInput, CheckboxInput } from 'form/components';
 import { TeamSearchInput } from 'registration/components';
@@ -89,7 +89,7 @@ export class TeamPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title={<FormattedMessage id="teamPanel.corporateTeamTitle" />}
+          title={t('teamPanel.corporateTeamTitle', 'Your Team')}
         />
 
         <PanelBody layout={layout} status="edit">
@@ -98,7 +98,7 @@ export class TeamPanel extends BasePanel {
 
           <div className="panel-actions">
             <Button onClick={this.onClickNext}>
-              <FormattedMessage id="btn.next" />
+              {t('btn.next', 'Next')}
             </Button>
           </div>
 
@@ -117,7 +117,7 @@ export class TeamPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title={<FormattedMessage id="teamPanel.editTitle" />}
+          title={t('teamPanel.editTitle', 'Do you want to participate with a team?')}
         />
 
         <PanelBody layout={layout} status="edit">
@@ -134,25 +134,25 @@ export class TeamPanel extends BasePanel {
 
     return (
       <Form className="panel-body panel-body-team">
-        <FormattedMessage id="teamPanel.message.1" tagName="p" />
-        <FormattedMessage id="teamPanel.message.2" tagName="p" />
+        <p>{t('teamPanel.message-1', 'Combine your efforts and participate as a team! Either create a new team or join one that’s already been created.')}</p>
+        <p>{t('teamPanel.message-2', 'If you are registering with an existing team, please contact your team leader for the team name and password (if applicable) before proceeding with the team registration process.')}</p>
 
         <div className="panel-actions">
 
           <div className="d-md-inline mb-3">
             <Button onClick={this.onClickNo} variant="secondary">
-              <FormattedMessage id="btn.noTeam" />
+              {t('btn.noTeam', 'No Thanks')}
             </Button>
           </div>
 
           {settings.allowCreate &&
             <Button onClick={this.onClickCreate}>
-              <FormattedMessage id="btn.createTeam" />
+              {t('btn.createTeam', 'Create Team')}
             </Button>
           }
 
           <Button onClick={this.onClickSearch}>
-            <FormattedMessage id="btn.searchTeams" />
+            {t('btn.searchTeams', 'Search Teams')}
           </Button>
 
         </div>
@@ -170,29 +170,23 @@ export class TeamPanel extends BasePanel {
     return (
       <Form className="panel-body panel-body-team">
         <Form.Group controlId="team.search">
-          <Form.Label>
-            <FormattedMessage id="label.team.search" />
-          </Form.Label>
-          <FormattedMessage id="label.team.name">
-            {text => <TeamSearchInput placeholder={text} />}
-          </FormattedMessage>
+          <Form.Label>{t('label.team.search', 'Team Search')}</Form.Label>
+          <TeamSearchInput placeholder={t('label.team.name', 'Team Name')} />
         </Form.Group>
 
         {showPassword &&
           <Form.Group controlId="team.passwordCheck">
-            <Form.Label>
-              <FormattedMessage id="label.team.password" />
-            </Form.Label>
+            <Form.Label>{t('label.team.password', 'Team Password')}</Form.Label>
             <TextInput field="team.passwordCheck" type="password" />
           </Form.Group>
         }
 
         <Button onClick={this.onClickCancel} disabled={isBusyPassword} variant="secondary">
-          <FormattedMessage id="btn.cancel" />
+          {t('btn.cancel', 'Cancel')}
         </Button>
 
         <Button onClick={this.onClickNext} disabled={!canContinue} isBusy={isBusyPassword}>
-          <FormattedMessage id="btn.next" />
+          {t('btn.next', 'Next')}
         </Button>
       </Form>
     );
@@ -216,19 +210,15 @@ export class TeamPanel extends BasePanel {
 
     return (
       <Form className="panel-body panel-body-team" onSubmit={this.onSubmitCreateForm}>
-        <FormattedMessage id="teamPanel.createTeamTitle" tagName="h4" />
+        <h4>{t('teamPanel.createTeamTitle', 'Create New Team')}</h4>
 
         <Form.Group controlId="team.name">
-          <Form.Label>
-            <FormattedMessage id="label.team.name" />
-          </Form.Label>
+          <Form.Label>{t('label.team.name', 'Team Name')}</Form.Label>
           <TextInput field="team.name" />
         </Form.Group>
 
         <Form.Group controlId="team.type">
-          <Form.Label>
-            <FormattedMessage id="label.team.type" />
-          </Form.Label>
+          <Form.Label>{t('label.team.type', 'Team Type')}</Form.Label>
           <SelectInput field="team.type" options={teamTypeOptions} />
         </Form.Group>
 
@@ -236,26 +226,24 @@ export class TeamPanel extends BasePanel {
           <Form.Group controlId="team.passwordRequired">
             <CheckboxInput
               field="team.passwordRequired"
-              label={<FormattedMessage id="label.team.passwordRequired" />}
+              label={t('label.team.passwordRequired', 'Should team members enter a password in order to join?')}
             />
           </Form.Group>
         }
 
         {showPasswordInput &&
           <Form.Group controlId="team.password">
-            <Form.Label>
-              <FormattedMessage id="label.team.password" />
-            </Form.Label>
+            <Form.Label>{t('label.team.password', 'Team Password')}</Form.Label>
             <TextInput field="team.password" type="password" />
           </Form.Group>
         }        
 
         <Button onClick={this.onClickCancel} variant="secondary">
-          <FormattedMessage id="btn.cancel" />
+          {t('btn.cancel', 'Cancel')}
         </Button>
 
         <Button type="submit" disabled={!this.canContinueCreate()} isBusy={isBusyCreate}>
-          <FormattedMessage id="btn.createTeam" />
+          {t('btn.createTeam', 'Create Team')}
         </Button>
       </Form>
     );
@@ -280,7 +268,7 @@ export class TeamPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title={<FormattedMessage id="teamPanel.doneTitle" />}
+          title={t('teamPanel.doneTitle', 'Your Team')}
           onPressEdit={this.onPressEdit}
         />
 
@@ -288,11 +276,11 @@ export class TeamPanel extends BasePanel {
 
           {selectedTeam !== null
             ? <p>{selectedTeam.name}</p>
-            : <FormattedMessage id="teamPanel.noTeam" tagName="p" />
+            : <p>{t('teamPanel.noTeam', 'No Team')}</p>
           }
 
           <Button onClick={this.onClickEdit}>
-            <FormattedMessage id="btn.edit" />
+            {t('btn.edit', 'Edit')}
           </Button>
 
         </PanelBody>
