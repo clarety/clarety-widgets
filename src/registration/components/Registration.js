@@ -78,8 +78,10 @@ class _RegistrationRoot extends React.Component {
         en: {
           translation: {
             "btn": {
-              "edit": "Edit",
-              "next": "Next",
+              "edit":   "Edit",
+              "next":   "Next",
+              "retry":  "Try Again",
+              "submit": "Submit Registration",
             },
 
             "label": {
@@ -172,6 +174,12 @@ class _RegistrationRoot extends React.Component {
               "doneTitle":         "Registration Details",
               "customerFormTitle": "Personal Details",
               "extendFormTitle":   "Event Details",
+            },
+
+            "reviewPanel": {
+              "errorTitle":    "We Found Some Problems With Your Registration",
+              "errorSubtitle": "Please correct the issues and try again.",
+              "reviewTitle":   "Please Review Your Registration",
             },
           }
         },
