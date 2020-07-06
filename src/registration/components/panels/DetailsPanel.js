@@ -344,9 +344,7 @@ export class _DetailsPanel extends BasePanel {
     const { isPrefilled, appSettings, settings, participantIndex } = this.props;
     const { formData } = this.state;
 
-    const genderOptions = this.translateOptions(
-      getGenderOptions(appSettings)
-    );
+    const genderOptions = this.translateOptions(getGenderOptions(appSettings));
 
     const showAutofill = participantIndex !== 0 && !isPrefilled;
     const showAddressAutofill = showAutofill && (settings.showDeliveryAddress || settings.showBillingAddress);
@@ -535,16 +533,31 @@ export class _DetailsPanel extends BasePanel {
 
         <Form.Row>
           <Col>
-            <StateInput field={`customer.${type}.state`} label={getStateLabel(country)} country={country} required />
+            <StateInput
+              field={`customer.${type}.state`}
+              label={getStateLabel(country)}
+              country={country}
+              required
+            />
           </Col>
           <Col>
-            <PostcodeInput field={`customer.${type}.postcode`} label={getPostcodeLabel(country)} country={country} required />
+            <PostcodeInput
+              field={`customer.${type}.postcode`}
+              label={getPostcodeLabel(country)}
+              country={country}
+              required
+            />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <CountryInput field={`customer.${type}.country`} label="Country" initialValue={event.country} required />
+            <CountryInput
+              field={`customer.${type}.country`}
+              label={<FormattedMessage id={`label.customer.${type}.country`} defaultMessage="Country" />}
+              initialValue={event.country}
+              required
+            />
           </Col>
         </Form.Row>
       </React.Fragment>

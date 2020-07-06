@@ -220,7 +220,11 @@ export class MerchPanel extends BasePanel {
 
           <Form.Row>
             <Col>
-              <CountryInput field="customer.delivery.country" label="Country" required />
+              <CountryInput
+                field="customer.delivery.country"
+                label={<FormattedMessage id="label.customer.delivery.country" defaultMessage="Country" />}
+                required
+              />
             </Col>
           </Form.Row>
 
@@ -266,10 +270,19 @@ export class MerchPanel extends BasePanel {
 
           <Form.Row>
             <Col>
-              <StateInput field="customer.delivery.state" label={getStateLabel(country)} country={country} required />
+              <StateInput
+                field="customer.delivery.state"
+                label={getStateLabel(country)}
+                country={country}
+                required
+              />
             </Col>
             <Col>
-              <PostcodeInput field="customer.delivery.postcode" label={getPostcodeLabel(country)} required />
+              <PostcodeInput
+                field="customer.delivery.postcode"
+                label={getPostcodeLabel(country)}
+                required
+              />
             </Col>
           </Form.Row>
         </div>
@@ -291,8 +304,7 @@ export class MerchPanel extends BasePanel {
         />
 
         <PanelBody layout={layout} status="done">
-
-          {/* TODO: what content goes here?? */}
+          
           <p>Check out our offical merchandise</p>
 
           <Button onClick={this.onClickEdit}>
