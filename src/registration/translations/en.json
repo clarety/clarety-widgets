@@ -65,6 +65,13 @@
       "select":   "Select",
       "optional": "Optional",
 
+      "subtotal":  "Subtotal",
+      "promoCode": "Promo Code",
+      "shipping":  "Shipping",
+      "total":     "Total",
+
+      "estimatedDelivery": "Estimated Delivery",
+
       "yourself": "Yourself",
       "other":    "Other",
   
@@ -74,7 +81,6 @@
       "child_plural": "Children",
   
       "selectEvent":     "Select event",
-      "promoCode":       "Promo code",
       "promoCodePrompt": "If applicable, enter the promo code provided",
       "wave":            "Wave"
     },
@@ -218,7 +224,8 @@
       "// TODO: these need to be overrides somehow...": "",
       "waitTitle": "Registration Summary",
       "editTitle": "Registration Summary",
-      "doneTitle": "Registration Summary"
+      "doneTitle": "Registration Summary",
+      "shippingTitle": "Shipping Options"
     }
   }
 }
