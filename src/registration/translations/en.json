@@ -1,10 +1,13 @@
 {
   "btn": {
-    "edit":   "Edit",
-    "next":   "Next",
+    "edit":   "Modify",
+    "next":   "Continue",
+    "reset":  "Start Over",
     "retry":  "Try Again",
     "cancel": "Cancel",
     "none":   "None",
+    "yes":    "Yes",
+    "no":     "No",
 
     "// TODO: this should be an override somehow": "",
     "submit": "Submit Registration",
@@ -22,7 +25,8 @@
       "email":       "Email",
       "mobile":      "Mobile",
       "gender":      "Gender",
-      "dateOfBirth": "Date of Birth",
+      "dateOfBirth": "Date Of Birth",
+
 
       "billing": {
         "address1": "Address 1",
@@ -40,15 +44,15 @@
         "state":    "State",
         "postcode": "Postcode",
         "country":  "Country"
-      },
-
-      "team": {
-        "search":           "Team Search",
-        "name":             "Team Name",
-        "type":             "Team Type",
-        "password":         "Team Password",
-        "passwordRequired": "Should team members enter a password in order to join?"
       }
+    },
+
+    "team": {
+      "search":           "Team Search",
+      "name":             "Team Name",
+      "type":             "Team Type",
+      "password":         "Team Password",
+      "passwordRequired": "Should team members enter a password in order to join?"
     },
 
     "autofill": {
@@ -57,6 +61,8 @@
       "address": "Use address from first participant?",
       "billing": "Billing Address is same as Delivery Address"
     },
+
+    "optional": "Optional",
 
     "adult":        "Adult",
     "adult_plural": "Adults",
@@ -102,9 +108,18 @@
   },
 
   "option": {
+    "": "",
+
+    "Yes": "Yes",
+    "No":  "No",
+
     "Male":              "Male",
     "Female":            "Female",
     "Prefer to not say": "Prefer to not say"
+  },
+
+  "app": {
+    "title": "Registration"
   },
 
   "modePanel": {
