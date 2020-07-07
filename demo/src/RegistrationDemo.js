@@ -9,8 +9,9 @@ import '../../src/registration/style.scss';
 Registration.init();
 
 Registration.setClientIds({
-  dev:  '82ee4a2479780256c9bf9b951f5d1cfb', // baseline
-  // dev:  '60efcad7dc9df95cb418032c39565a79',    // mdc
+  // dev:  '82ee4a2479780256c9bf9b951f5d1cfb', // baseline
+  // dev:  '60efcad7dc9df95cb418032c39565a79', // mdc
+  dev: 'ab0c9407ba7f0581ebc49fa787049e80', // a21
   prod: '',
 });
 

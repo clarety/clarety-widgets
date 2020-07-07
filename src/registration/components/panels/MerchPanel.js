@@ -222,7 +222,7 @@ export class MerchPanel extends BasePanel {
             <Col>
               <CountryInput
                 field="customer.delivery.country"
-                label={t('label.customer.delivery.country', 'Country')}
+                label={t('label.customer.address.country', 'Country')}
                 required
               />
             </Col>
@@ -243,7 +243,7 @@ export class MerchPanel extends BasePanel {
             <Col>
               <TextInput
                 field="customer.delivery.address1"
-                label={t('label.customer.delivery.address1', 'Address 1')}
+                label={t('label.customer.address.address1', 'Address 1')}
                 required
               />
             </Col>
@@ -253,7 +253,7 @@ export class MerchPanel extends BasePanel {
             <Col>
               <TextInput
                 field="customer.delivery.address2"
-                label={t('label.customer.delivery.address2', 'Address 2')}
+                label={t('label.customer.address.address2', 'Address 2')}
               />
             </Col>
           </Form.Row>
@@ -262,7 +262,7 @@ export class MerchPanel extends BasePanel {
             <Col>
               <TextInput
                 field="customer.delivery.suburb"
-                label={t('label.customer.delivery.suburb', 'Suburb')}
+                label={t('label.customer.address.suburb', 'Suburb')}
                 required
               />
             </Col>

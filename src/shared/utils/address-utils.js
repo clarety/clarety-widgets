@@ -21,14 +21,14 @@ export function getStateLabel(country) {
   switch (country) {
     case 'UK': return 'Region';
     case 'NZ': return 'City';
-    default:   return t('label.customer.billing.state', 'State');
+    default:   return t('label.customer.address.state', 'State');
   }
 }
 
 export function getPostcodeLabel(country) {
   switch (country) {
     case 'US': return 'Zip Code';
-    default:   return t('label.customer.billing.postcode', 'Postcode');
+    default:   return t('label.customer.address.postcode', 'Postcode');
   }
 }
 

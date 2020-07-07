@@ -501,7 +501,7 @@ export class DetailsPanel extends BasePanel {
           <Col>
             <TextInput
               field={`customer.${type}.address1`}
-              label={t(`label.customer.${type}.address1`, 'Address 1')}
+              label={t('label.customer.address.address1', 'Address 1')}
               required
             />
           </Col>
@@ -511,7 +511,7 @@ export class DetailsPanel extends BasePanel {
           <Col>
             <TextInput
               field={`customer.${type}.address2`}
-              label={t(`label.customer.${type}.address2`, 'Address 2')}
+              label={t('label.customer.address.address2', 'Address 2')}
             />
           </Col>
         </Form.Row>
@@ -520,7 +520,7 @@ export class DetailsPanel extends BasePanel {
           <Col>
             <TextInput
               field={`customer.${type}.suburb`}
-              label={t(`label.customer.${type}.suburb`, 'Suburb')}
+              label={t('label.customer.address.suburb', 'Suburb')}
               required
             />
           </Col>
@@ -549,7 +549,7 @@ export class DetailsPanel extends BasePanel {
           <Col>
             <CountryInput
               field={`customer.${type}.country`}
-              label={t(`label.customer.${type}.country`, 'Country')}
+              label={t('label.customer.address.country', 'Country')}
               initialValue={event.country}
               required
             />
