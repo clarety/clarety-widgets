@@ -1,3 +1,5 @@
+import { t } from 'shared/translations';
+
 export function loadAddressFinder(onLoadCallback) {
   const script = document.createElement('script');
   script.src = 'https://api.addressfinder.io/assets/v3/widget.js';
@@ -19,14 +21,14 @@ export function getStateLabel(country) {
   switch (country) {
     case 'UK': return 'Region';
     case 'NZ': return 'City';
-    default:   return 'State';
+    default:   return t('label.customer.billing.state', 'State');
   }
 }
 
 export function getPostcodeLabel(country) {
   switch (country) {
     case 'US': return 'Zip Code';
-    default:   return 'Postcode';
+    default:   return t('label.customer.billing.postcode', 'Postcode');
   }
 }
 
