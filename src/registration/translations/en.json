@@ -193,6 +193,14 @@
       "doneTitle": "Your Donation",
       "message":   ""
     },
+
+    "merchPanel": {
+      "waitTitle":    "Merchandise",
+      "editTitle":    "Check Out Our Official Merchandise",
+      "doneTitle":    "Merchandise",
+      "addressTitle": "Delivery Details",
+      "doneMessage":  "Check out our offical merchandise"
+    },
   
     "expressCheckoutPanel": {
       "waitTitle": "Express Checkout",

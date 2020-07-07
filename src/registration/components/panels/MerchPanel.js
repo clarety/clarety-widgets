@@ -150,7 +150,7 @@ export class MerchPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title="Merchandise"
+          title={t('merchPanel.waitTitle', 'Merchandise')}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -169,9 +169,8 @@ export class MerchPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title="Check Out Our Official Merchandise"
+          title={t('merchPanel.editTitle', 'Check Out Our Official Merchandise')}
         />
-
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
 
           <Row className="merch-items">
@@ -216,7 +215,7 @@ export class MerchPanel extends BasePanel {
     return (
       <FormContext.Provider value={this.state}>
         <div className="delivery-address">
-          <h2>Delivery Details</h2>
+          <h2>{t('merchPanel.addressTitle', 'Delivery Details')}</h2>
 
           <Form.Row>
             <Col>
@@ -299,13 +298,12 @@ export class MerchPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title="Merchandise"
+          title={t('merchPanel.doneTitle', 'Merchandise')}
           onPressEdit={this.onPressEdit}
         />
-
         <PanelBody layout={layout} status="done">
           
-          <p>Check out our offical merchandise</p>
+          <p>{t('merchPanel.doneMessage', 'Check out our offical merchandise')}</p>
 
           <Button onClick={this.onClickEdit}>
             {t('btn.edit', 'Edit')}

@@ -193,7 +193,6 @@ export class DonationPanel extends BasePanel {
           title={t('donationPanel.doneTitle', 'Your Donation')}
           onPressEdit={this.onPressEdit}
         />
-
         <PanelBody layout={layout} status="done">
 
           <p>{selectedAmount}</p>
