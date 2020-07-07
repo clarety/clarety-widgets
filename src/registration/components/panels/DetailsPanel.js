@@ -615,8 +615,8 @@ export class DetailsPanel extends BasePanel {
       case 'phonenumber': return this.renderPhoneField(field);
 
       // TODO:
-      // case 'radio':       return ...;
-      // case 'title':       return ...;
+      // case 'radio':    return ...;
+      // case 'title':    return ...;
       
       default: throw new Error(`Extend field type not supported: ${field.type}`);
     }
@@ -664,7 +664,7 @@ export class DetailsPanel extends BasePanel {
     );
   }
 
-  getExtendFieldLabel(field) {
+  getExtendFieldLabel = (field) => {
     return t(`label.extendForm.${field.columnKey}`, field.label);
   }
 
@@ -681,10 +681,11 @@ export class DetailsPanel extends BasePanel {
           title={t('detailsPanel.doneTitle', 'Registration Details')}
           onPressEdit={this.onPressEdit}
         />
-
         <PanelBody layout={layout} status="done">
+
           <p>{firstName} {lastName}</p>
           <Button onClick={this.onClickEdit}>{t('btn.edit', 'Edit')}</Button>
+
         </PanelBody>
       </PanelContainer>
     );
@@ -765,7 +766,7 @@ export class DetailsPanel extends BasePanel {
       if (turnsMinAge > eventDate) {
         errors.push({
           field: field,
-          message: t('validation.age-too-young', 'Participant must be older than {{age}} on the day of the walk to attend', { age: minAge }),
+          message: t('validation.age-too-young', 'You must be older than {{age}} on the day of the event', { age: minAge }),
         });
       }
     }
@@ -775,7 +776,7 @@ export class DetailsPanel extends BasePanel {
       if (turnsMaxAge < eventDate) {
         errors.push({
           field: field,
-          message: t('validation.age-too-old', 'Participant must be younger than {{age}} on the day of the walk to attend', { age: maxAge }),
+          message: t('validation.age-too-old', 'You must be younger than {{age}} on the day of the event', { age: maxAge }),
         });
       }
     }

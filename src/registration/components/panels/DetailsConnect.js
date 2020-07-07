@@ -20,7 +20,7 @@ export class DetailsConnect {
     const addOns = getAddOns(state, ownProps.participantIndex);
 
     const variant = getVariant(state);
-    const storeId = getSetting(state, 'storeId');    
+    const storeId = getSetting(state, 'storeId');
 
     const isPrefilled = getIsPrefilled(state, ownProps.participantIndex);
     const isCorporateTeam = getIsCorporateTeam(state, ownProps.participantIndex);

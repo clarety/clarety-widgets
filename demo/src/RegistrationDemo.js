@@ -4,7 +4,6 @@ import { ModePanel, EventPanel, TeamPanel, QtysPanel, OffersPanel, DetailsPanel,
 import { MerchPanel, MerchConnect } from '../../src/registration/components';
 import { ModeConnect, EventConnect, RegistrationLoginConnect, TeamConnect, QtysConnect, OffersConnect, DetailsConnect, DonationConnect, ValidateConnect, PaymentConnect } from '../../src/registration/components';
 import { Registration, setupRegistrationAxiosMock } from '../../src';
-import enTranslations from '../../src/registration/intl/en.json';
 import '../../src/registration/style.scss';
 
 Registration.init();
@@ -102,10 +101,13 @@ export default class RegistrationDemo extends React.Component {
     return (
       <div className="registrations">
         <Registration
-          translations={enTranslations}
-
           storeId="1"
           storeCode="AU"
+
+          // a21
+          seriesId="26"
+          prevSeriesId="25"
+          donationSingleOfferId="151"
 
           // mdc
           // seriesId="9"
@@ -113,9 +115,9 @@ export default class RegistrationDemo extends React.Component {
           // donationSingleOfferId="55"
 
           // baseline
-          seriesId="3"
-          prevSeriesId="2"
-          donationSingleOfferId="8"
+          // seriesId="3"
+          // prevSeriesId="2"
+          // donationSingleOfferId="8"
           
           sourceId="17"
           responseId="e9c2e351d90b11e996fd"

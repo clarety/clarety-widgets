@@ -113,7 +113,7 @@ export class QtysPanel extends BasePanel {
       <React.Fragment>
         <Form>
           {this.renderBtnInputs()}
-          <p>{t('qtysPanel.message')}</p>
+          <p>{t('qtysPanel.message', '')}</p>
         </Form>
       </React.Fragment>
     );
@@ -124,7 +124,7 @@ export class QtysPanel extends BasePanel {
       <React.Fragment>
         <Form>
           {this.renderQtyInputs()}
-          <p>{t('qtysPanel.message')}</p>
+          <p>{t('qtysPanel.message', '')}</p>
         </Form>
 
         <div className="panel-actions">
