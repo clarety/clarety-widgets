@@ -82,6 +82,7 @@ class _RegistrationRoot extends React.Component {
               "next":   "Next",
               "retry":  "Try Again",
               "cancel": "Cancel",
+              "none":   "None",
 
               // TODO: this should be an override somehow
               "submit": "Submit Registration",
@@ -200,6 +201,12 @@ class _RegistrationRoot extends React.Component {
               "message-2":          "If you are registering with an existing team, please contact your team leader for the team name and password (if applicable) before proceeding with the team registration process.",
               "createTeamTitle":    "Create New Team",
               "noTeam":             "No Team",
+            },
+
+            "donationPanel": {
+              "editTitle": "Make A Donation",
+              "doneTitle": "Your Donation",
+              "message":   "",
             },
 
             "reviewPanel": {
