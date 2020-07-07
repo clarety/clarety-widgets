@@ -140,15 +140,15 @@ class _RegistrationRoot extends React.Component {
     const { isInitializing, isValidating, isSubmitting } = this.props;
 
     if (isInitializing) return (
-      <BusyOverlay message={t('busy.init', 'Just A Moment')} />
+      <BusyOverlay message={t('app.busy.init', 'Just A Moment')} />
     );
 
     if (isValidating) return (
-      <BusyOverlay message={t('busy.validate', 'Checking Your Registration Details')} />
+      <BusyOverlay message={t('app.busy.validate', 'Checking Your Registration Details')} />
     );
 
     if (isSubmitting) return (
-      <BusyOverlay message={t('busy.submit', 'Submitting Your Registration')} />
+      <BusyOverlay message={t('app.busy.submit', 'Submitting Your Registration')} />
     );
 
     return <span />;

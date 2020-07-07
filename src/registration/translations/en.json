@@ -27,7 +27,6 @@
       "gender":      "Gender",
       "dateOfBirth": "Date Of Birth",
 
-
       "billing": {
         "address1": "Address 1",
         "address2": "Address 2",
@@ -73,12 +72,6 @@
     "waveProductId": "Wave"
   },
 
-  "busy": {
-    "init":     "Just A Moment",
-    "validate": "Checking Your Registration Details",
-    "submit":   "Submitting Your Registration"
-  },
-
   "date": {
     "day":     "Day",
     "month":   "Month",
@@ -115,11 +108,19 @@
 
     "Male":              "Male",
     "Female":            "Female",
-    "Prefer to not say": "Prefer to not say"
+    "Prefer to not say": "Prefer to not say",
+
+    "Other": "Other"
   },
 
   "app": {
-    "title": "Registration"
+    "title": "Registration",
+
+    "busy": {
+      "init":     "Just A Moment",
+      "validate": "Checking Your Registration Details",
+      "submit":   "Submitting Your Registration"
+    }
   },
 
   "modePanel": {
