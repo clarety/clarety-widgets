@@ -3,11 +3,11 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider as ReduxProvider, connect } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import i18next from 'i18next';
-import { IntlProvider, FormattedMessage } from 'react-intl';
 import { BreakpointProvider } from 'react-socks';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { ClaretyApi } from 'clarety-utils';
+import { t } from 'shared/translations';
 import { statuses, setPanels, setClientIds, setAuth, setTrackingData, fetchSettings, updateAppSettings } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources, getJwtAccount } from 'shared/utils';
@@ -16,12 +16,6 @@ import { MiniCart, MiniCartBrand, BusyOverlay } from 'registration/components';
 import { fetchEvents, fetchAuthCustomer } from 'registration/actions';
 import { rootReducer } from 'registration/reducers';
 import { RegistrationApi } from 'registration/utils';
-
-// Polyfil plural rules.
-if (!Intl.PluralRules) {
-  require('@formatjs/intl-pluralrules/polyfill');
-  require('@formatjs/intl-pluralrules/dist/locale-data/en');
-}
 
 export class Registration extends React.Component {
   static store;
@@ -52,16 +46,14 @@ export class Registration extends React.Component {
 
   render() {
     return (
-      <IntlProvider locale="en" messages={this.props.translations}>
-        <ReduxProvider store={Registration.store}>
-          <BreakpointProvider>
-            <RegistrationRoot
-              resources={Registration.resources}
-              {...this.props}
-            />
-          </BreakpointProvider>
-        </ReduxProvider>
-      </IntlProvider>
+      <ReduxProvider store={Registration.store}>
+        <BreakpointProvider>
+          <RegistrationRoot
+            resources={Registration.resources}
+            {...this.props}
+          />
+        </BreakpointProvider>
+      </ReduxProvider>
     );
   }
 }
@@ -129,25 +121,6 @@ class _RegistrationRoot extends React.Component {
                 },
               },
 
-              "date": {
-                "day":     "Day",
-                "month":   "Month",
-                "year":    "Year",
-
-                "month1":  "January",
-                "month2":  "February",
-                "month3":  "March",
-                "month4":  "April",
-                "month5":  "May",
-                "month6":  "June",
-                "month7":  "July",
-                "month8":  "August",
-                "month9":  "September",
-                "month10": "October",
-                "month11": "November",
-                "month12": "December",
-              },              
-
               "autofill": {
                 "email":   "Use email from first participant?",
                 "mobile":  "Use mobile from first participant?",
@@ -162,6 +135,31 @@ class _RegistrationRoot extends React.Component {
 
               "promoCode": "If applicable, enter the promo code provided",
               "waveProductId": "Wave",
+            },
+
+            "busy": {
+              "init":     "Just A Moment",
+              "validate": "Checking Your Registration Details",
+              "submit":   "Submitting Your Registration",
+            },
+
+            "date": {
+              "day":     "Day",
+              "month":   "Month",
+              "year":    "Year",
+
+              "month1":  "January",
+              "month2":  "February",
+              "month3":  "March",
+              "month4":  "April",
+              "month5":  "May",
+              "month6":  "June",
+              "month7":  "July",
+              "month8":  "August",
+              "month9":  "September",
+              "month10": "October",
+              "month11": "November",
+              "month12": "December",
             },
 
             "validation": {
@@ -337,21 +335,15 @@ class _RegistrationRoot extends React.Component {
     const { isInitializing, isValidating, isSubmitting } = this.props;
 
     if (isInitializing) return (
-      <BusyOverlay
-        message={<FormattedMessage id="busy.init" defaultMessage="Just A Moment" />}
-      />
+      <BusyOverlay message={t('busy.init', 'Just A Moment')} />
     );
 
     if (isValidating) return (
-      <BusyOverlay
-        message={<FormattedMessage id="busy.validate" defaultMessage="Checking Your Registration Details" />}
-      />
+      <BusyOverlay message={t('busy.validate', 'Checking Your Registration Details')} />
     );
 
     if (isSubmitting) return (
-      <BusyOverlay
-        message={<FormattedMessage id="busy.submit" defaultMessage="Submitting Your Registration" />}
-      />
+      <BusyOverlay message={t('busy.submit', 'Submitting Your Registration')} />
     );
 
     return <span />;
