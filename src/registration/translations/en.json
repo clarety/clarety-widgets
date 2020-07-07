@@ -62,7 +62,11 @@
         "billing": "Billing Address is same as Delivery Address"
       },
   
+      "select":   "Select",
       "optional": "Optional",
+
+      "yourself": "Yourself",
+      "other":    "Other",
   
       "adult":        "Adult",
       "adult_plural": "Adults",

@@ -131,7 +131,6 @@ export class OffersPanel extends BasePanel {
           number={index + 1}
           title={t('offersPanel.editTitle', 'Participant Selection')}
         />
-
         <PanelBody layout={layout} status="edit">
           
           {this.renderDescription()}
@@ -203,7 +202,8 @@ export class OffersPanel extends BasePanel {
             {t('offersPanel.prefillPrompt', 'Who is this registration for?')}
           </Form.Label>
           <Form.Control as="select" onChange={onChange} value={selectedOption}>
-            <option hidden>Select</option>
+            <option hidden>{t('label.select', 'Select')}</option>
+
             {options.map(option =>
               <option key={option.value} value={option.value}>{option.label}</option>
             )}
@@ -285,7 +285,7 @@ export class OffersPanel extends BasePanel {
     const options = [];
 
     if (participants[index].type !== 'child') {
-      this.maybeAddOption(options, index, 'yourself', 'Yourself');
+      this.maybeAddOption(options, index, 'yourself', t('label.yourself', 'Yourself'));
     }
 
     const offer = offers[index][0];
@@ -305,7 +305,7 @@ export class OffersPanel extends BasePanel {
       }
     });
 
-    options.push({ value: 'other', label: 'Other' });
+    options.push({ value: 'other', label: t('label.other', 'Other') });
 
     return options;
   }
