@@ -63,7 +63,7 @@ class _RegistrationRoot extends React.Component {
     const { updateAppSettings, fetchEvents, setTrackingData, fetchSettings } = this.props;
 
     // Init translations.
-    await i18next.init({
+    i18next.init({
       lng: 'en',
       debug: true,
       resources: {
@@ -268,6 +268,8 @@ class _RegistrationRoot extends React.Component {
       }
     });
 
+    i18next.on('languageChanged', lng => this.forceUpdate());
+
     // Settings.
     updateAppSettings({
       storeId: this.props.storeId,
@@ -314,7 +316,6 @@ class _RegistrationRoot extends React.Component {
 
   changeLanguage = (lng) => {
     i18next.changeLanguage(lng);
-    this.forceUpdate();
   };
 
   render() {
