@@ -3,9 +3,10 @@
     "btn": {
       "edit":   "Modify",
       "next":   "Continue",
+      "back":   "Back",
+      "cancel": "Cancel",
       "reset":  "Start Over",
       "retry":  "Try Again",
-      "cancel": "Cancel",
       "none":   "None",
 
       "yes":    "Yes",
@@ -13,6 +14,8 @@
 
       "login":  "Login",
       "logout": "Logout",
+
+      "pay":    "Pay Now",
 
       "guestCheckout": "Guest Checkout",
       "createAccount": "Create Account",
@@ -38,12 +41,12 @@
         "password":    "Password",
   
         "address": {
-          "address1": "Address 1",
-          "address2": "Address 2",
-          "suburb":   "Suburb",
-          "state":    "State",
-          "postcode": "Postcode",
-          "country":  "Country"
+          "address1":  "Address 1",
+          "address2":  "Address 2",
+          "suburb":    "Suburb",
+          "state":     "State",
+          "postcode":  "Postcode",
+          "country":   "Country"
         }
       },
   
@@ -61,6 +64,20 @@
         "address": "Use address from first participant?",
         "billing": "Billing Address is same as Delivery Address"
       },
+
+      "payment": {
+        "creditCard":    "Credit Card",
+        "directDebit":   "Direct Debit",
+
+        "cardName":      "Card Name",
+        "cardNumber":    "Card Number",
+        "cardExpiry":    "Expiry",
+        "cardCcv":       "CCV",
+
+        "accountName":   "Account Name",
+        "accountBSB":    "Account BSB",
+        "accountNumber": "Account Number"
+      },    
   
       "select":   "Select",
       "optional": "Optional",

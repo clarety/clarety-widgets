@@ -269,12 +269,12 @@ export class _PaymentPanel extends BasePanel {
             <Form.Row className="justify-content-center">
               {layout === 'tabs' && 
                 <Col xs={6}>
-                  <BackButton title="Back" onClick={this.onPressBack} />
+                  <BackButton title={t('btn.back', 'Back')} onClick={this.onPressBack} />
                 </Col>
               }
 
               <Col xs={layout === 'tabs' ? 6 : 12}>
-                <SubmitButton title={settings.submitBtnText || 'Pay Now'} testId="next-button" />
+                <SubmitButton title={settings.submitBtnText || t('btn.pay', 'Pay Now')} testId="next-button" />
               </Col>
             </Form.Row>
           </PanelFooter>
@@ -314,8 +314,8 @@ export class _PaymentPanel extends BasePanel {
           value={this.props.formData['payment.type']}
           onChange={this.onSelectPaymentType}
         >
-          {showCC && <ToggleButton value="gatewaycc" variant="outline-secondary">Credit Card</ToggleButton>}
-          {showDD && <ToggleButton value="gatewaydd" variant="outline-secondary">Direct Debit</ToggleButton>}
+          {showCC && <ToggleButton value="gatewaycc" variant="outline-secondary">{t('label.payment.creditCard', 'Credit Card')}</ToggleButton>}
+          {showDD && <ToggleButton value="gatewaydd" variant="outline-secondary">{t('label.payment.directDebit', 'Direct Debit')}</ToggleButton>}
         </ToggleButtonGroup>
       </div>
     );
@@ -351,7 +351,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="cardName">
-              <Form.Label>Card Name</Form.Label>
+              <Form.Label>{t('label.payment.cardName', 'Card Name')}</Form.Label>
               <TextInput field="payment.cardName" testId="card-name-input" />
             </Form.Group>
           </Col>
@@ -360,7 +360,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="cardNumber">
-              <Form.Label>Card Number</Form.Label>
+              <Form.Label>{t('label.payment.cardNumber', 'Card Number')}</Form.Label>
               <CardNumberInput field="payment.cardNumber" testId="card-number-input" />
             </Form.Group>
           </Col>
@@ -369,7 +369,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group>
-              <Form.Label>Expiry</Form.Label>
+              <Form.Label>{t('label.payment.cardExpiry', 'Expiry')}</Form.Label>
               <ExpiryInput
                 field="payment.cardExpiry"
                 monthField="payment.cardExpiryMonth"
@@ -381,7 +381,7 @@ export class _PaymentPanel extends BasePanel {
 
           <Col>
             <Form.Group controlId="ccv">
-              <Form.Label>CCV</Form.Label>
+              <Form.Label>{t('label.payment.cardCcv', 'CCV')}</Form.Label>
               <CcvInput field="payment.cardSecurityCode" testId="ccv-input" />
             </Form.Group>
           </Col>
@@ -396,7 +396,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="accountName">
-              <Form.Label>Account Name</Form.Label>
+              <Form.Label>{t('label.payment.accountName', 'Account Name')}</Form.Label>
               <TextInput field="payment.accountName" testId="account-name-input" />
             </Form.Group>
           </Col>
@@ -405,14 +405,14 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col sm={6}>
             <Form.Group controlId="accountBSB">
-              <Form.Label>Account BSB</Form.Label>
+              <Form.Label>{t('label.payment.accountBSB', 'Account BSB')}</Form.Label>
               <BsbInput field="payment.accountBSB" testId="account-bsb-input" />
             </Form.Group>
           </Col>
 
           <Col sm={6}>
             <Form.Group controlId="accountNumber">
-              <Form.Label>Account Number</Form.Label>
+              <Form.Label>{t('label.payment.accountNumber', 'Account Number')}</Form.Label>
               <AccountNumberInput field="payment.accountNumber" testId="account-number-input" />
             </Form.Group>
           </Col>
@@ -427,7 +427,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="accountName">
-              <Form.Label>Account Name</Form.Label>
+              <Form.Label>{t('label.payment.accountName', 'Account Name')}</Form.Label>
               <TextInput field="payment.accountName" testId="account-name-input" />
             </Form.Group>
           </Col>
@@ -436,7 +436,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group>
-              <Form.Label>Account Number</Form.Label>
+              <Form.Label>{t('label.payment.accountNumber', 'Account Number')}</Form.Label>
 
               <NZAccountNumberInput
                 bankCodeField="payment.bankCode"
@@ -461,7 +461,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="cardName">
-              <Form.Label>Card Name</Form.Label>
+              <Form.Label>{t('label.payment.cardName', 'Card Name')}</Form.Label>
               <TextInput field="payment.cardName" testId="card-name-input" />
             </Form.Group>
           </Col>
@@ -470,7 +470,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="cardNumber">
-              <Form.Label>Card Number</Form.Label>
+              <Form.Label>{t('label.payment.cardNumber', 'Card Number')}</Form.Label>
               <CardNumberElement options={{ style }} />
             </Form.Group>
           </Col>
@@ -479,14 +479,14 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group>
-              <Form.Label>Expiry</Form.Label>
+              <Form.Label>{t('label.payment.cardExpiry', 'Expiry')}</Form.Label>
               <CardExpiryElement options={{ style }} />
             </Form.Group>
           </Col>
 
           <Col>
             <Form.Group controlId="ccv">
-              <Form.Label>CCV</Form.Label>
+              <Form.Label>{t('label.payment.cardCcv', 'CCV')}</Form.Label>
               <CardCvcElement options={{ style }} />
             </Form.Group>
           </Col>
