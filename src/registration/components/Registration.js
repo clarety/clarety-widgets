@@ -226,6 +226,13 @@ class _RegistrationRoot extends React.Component {
               "errorSubtitle": "Please correct the issues and try again",
               "reviewTitle":   "Please Review Your Registration",
             },
+
+            "paymentPanel": {
+              // TODO: these need to be overrides somehow...
+              "waitTitle": "Registration Summary",
+              "editTitle": "Registration Summary",
+              "doneTitle": "Registration Summary",
+            },
           }
         },
 

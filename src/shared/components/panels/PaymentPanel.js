@@ -1,7 +1,7 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Form, Row, Col, Spinner, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import { CardNumberElement, CardExpiryElement, CardCvcElement } from '@stripe/react-stripe-js';
+import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, injectStripe } from 'shared/components';
 import { requiredField, cardNumberField, cardExpiryField, ccvField } from 'shared/utils';
 import { TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, AccountNumberInput, BsbInput, NZAccountNumberInput } from 'form/components';
@@ -216,7 +216,7 @@ export class _PaymentPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title={settings.title || <FormattedMessage id="paymentPanel.waitTitle" />}
+          title={settings.title || t('paymentPanel.waitTitle', 'Payment Details')}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -236,7 +236,7 @@ export class _PaymentPanel extends BasePanel {
               status="edit"
               layout={layout}
               number={index + 1}
-              title={settings.title || <FormattedMessage id="paymentPanel.editTitle" />}
+              title={settings.title || t('paymentPanel.editTitle', 'Payment Details')}
             />
           }
 
@@ -509,7 +509,7 @@ export class _PaymentPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title={settings.title || <FormattedMessage id="paymentPanel.doneTitle" />}
+          title={settings.title || t('paymentPanel.doneTitle', 'Payment Details')}
           onPressEdit={this.onPressEdit}
         />
 
