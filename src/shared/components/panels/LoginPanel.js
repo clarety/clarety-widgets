@@ -1,6 +1,6 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Row, Col, Form } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext } from 'shared/utils';
 import { BasePanel, TextInput, EmailInput, DobInput, Button } from 'checkout/components';
@@ -223,7 +223,7 @@ export class LoginPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title={<FormattedMessage id="loginPanel.waitTitle" defaultMessage="Contact Details" />}
+          title={t('loginPanel.waitTitle', 'Account Details')}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -241,7 +241,7 @@ export class LoginPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title={<FormattedMessage id="loginPanel.editTitle" defaultMessage="Contact Details" />}
+          title={t('loginPanel.editTitle', 'Account Details')}
         />
 
         <PanelBody layout={layout} status="edit" isBusy={isBusy || isBusyResetPassword}>
@@ -426,7 +426,9 @@ export class LoginPanel extends BasePanel {
   renderDone() {
     const { formData } = this.state;
     const { layout, index, isLoggedIn, customer } = this.props;
-    let email = isLoggedIn ? customer.email : formData['email'];
+
+    const email = isLoggedIn ? customer.email : formData['email'];
+    const title = layout === 'stack' ? t('loginPanel.doneTitle', 'You are logged in as') : email;
 
     return (
       <PanelContainer layout={layout} status="done">
@@ -434,8 +436,8 @@ export class LoginPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title={<FormattedMessage id="loginPanel.doneTitle" defaultMessage={email} />}
-          onPressEdit={this.onPressEdit}          
+          title={title}
+          onPressEdit={this.onPressEdit}
         />
 
         <PanelBody layout={layout} status="done">
@@ -443,7 +445,7 @@ export class LoginPanel extends BasePanel {
 
           <Button
             onClick={this.onClickEdit}
-            title={<FormattedMessage id="btn.edit" />}
+            title={t('btn.edit', 'Edit')}
           />
         </PanelBody>
       </PanelContainer>

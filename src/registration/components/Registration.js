@@ -170,6 +170,12 @@ class _RegistrationRoot extends React.Component {
               "doneTitle": "Location",
             },
 
+            "loginPanel": {
+              "waitTitle": "Account Details",
+              "editTitle": "Account Details",
+              "doneTitle": "You are logged in as",
+            },
+
             "qtysPanel": {
               "editTitle":      "Participant Selection",
               "doneTitle":      "Registration",
