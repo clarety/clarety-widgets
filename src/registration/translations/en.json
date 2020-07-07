@@ -76,7 +76,7 @@
       "selectEvent":     "Select event",
       "promoCode":       "Promo code",
       "promoCodePrompt": "If applicable, enter the promo code provided",
-      "waveProductId":   "Wave"
+      "wave":            "Wave"
     },
   
     "date": {

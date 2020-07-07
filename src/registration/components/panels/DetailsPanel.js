@@ -577,9 +577,9 @@ export class DetailsPanel extends BasePanel {
     return (
       <SimpleSelectInput
         field="waveProductId"
-        label={t('label.waveProductId', 'Wave')}
+        label={t('label.wave', 'Wave')}
         options={waveOptions}
-        placeholder="Select Wave"
+        placeholder={t('label.select', 'Select')}
         required={true}
       />
     );
@@ -613,10 +613,6 @@ export class DetailsPanel extends BasePanel {
       case 'select':      return this.renderSelectField(field);
       case 'checkbox':    return this.renderCheckboxField(field);
       case 'phonenumber': return this.renderPhoneField(field);
-
-      // TODO:
-      // case 'radio':    return ...;
-      // case 'title':    return ...;
       
       default: throw new Error(`Extend field type not supported: ${field.type}`);
     }
@@ -626,7 +622,7 @@ export class DetailsPanel extends BasePanel {
     return (
       <TextInput
         field={`extendForm.${field.columnKey}`}
-        label={this.getExtendFieldLabel(field)}
+        label={t(`label.extendForm.${field.columnKey}`, field.label)}
         required={field.required}
       />
     );
@@ -636,7 +632,7 @@ export class DetailsPanel extends BasePanel {
     return (
       <SimpleSelectInput
         field={`extendForm.${field.columnKey}`}
-        label={this.getExtendFieldLabel(field)}
+        label={t(`label.extendForm.${field.columnKey}`, field.label)}
         options={this.translateOptions(field.options)}
         required={field.required}
       />
@@ -647,7 +643,7 @@ export class DetailsPanel extends BasePanel {
     return (
       <CheckboxInput
         field={`extendForm.${field.columnKey}`}
-        label={this.getExtendFieldLabel(field)}
+        label={t(`label.extendForm.${field.columnKey}`, field.label)}
         explanation={t(`explanation.extendForm.${field.columnKey}`, field.explanation)}
         required={field.required}
       />
@@ -658,14 +654,10 @@ export class DetailsPanel extends BasePanel {
     return (
       <PhoneInput
         field={`extendForm.${field.columnKey}`}
-        label={this.getExtendFieldLabel(field)}
+        label={t(`label.extendForm.${field.columnKey}`, field.label)}
         required={field.required}
       />
     );
-  }
-
-  getExtendFieldLabel = (field) => {
-    return t(`label.extendForm.${field.columnKey}`, field.label);
   }
 
   renderDone() {
@@ -694,10 +686,9 @@ export class DetailsPanel extends BasePanel {
   getExtendField(columnKey) {
     return this.props.extendFields.find(field => field.columnKey === columnKey);
   }
-  
-  getExtendFieldLabel(columnKey) {
-    const field = this.getExtendField(columnKey);
-    return field ? field.label : '';
+
+  getExtendFieldLabel(field) {
+    return t(`label.extendForm.${field.columnKey}`, field.label);
   }
 
   getExtendFieldExplanation(columnKey) {
