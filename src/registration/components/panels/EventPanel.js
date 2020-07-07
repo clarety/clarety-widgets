@@ -139,7 +139,7 @@ export class EventPanel extends BasePanel {
           options={this.getEventOptions()}
           value={this.state.event}
           onChange={event => this.setState({ event })}
-          placeholder="Select event"
+          placeholder={t('label.selectEvent', 'Select event')}
           getOptionLabel={event => event.name}
           getOptionValue={event => event.eventId}
           classNamePrefix="react-select"
@@ -164,9 +164,12 @@ export class EventPanel extends BasePanel {
       <div className="promo-code">
         <Form.Group controlId="promoCode">
           <Form.Label>
-            {t('label.promoCode', 'If applicable, enter the promo code provided')}
+            {t('label.promoCodePrompt', 'If applicable, enter the promo code provided')}
           </Form.Label>
-          <TextInput field="promoCode" placeholder="Promo code" />
+          <TextInput
+            field="promoCode"
+            placeholder={t('label.promoCode', 'Promo code')}
+          />
         </Form.Group>
       </div>
     );
@@ -184,7 +187,6 @@ export class EventPanel extends BasePanel {
           title={t('eventPanel.doneTitle', 'Location')}
           onPressEdit={this.onPressEdit}
         />
-
         <PanelBody layout={layout} status="done">
 
           <p>{selectedEvent.name}</p>

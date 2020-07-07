@@ -7,11 +7,19 @@
       "retry":  "Try Again",
       "cancel": "Cancel",
       "none":   "None",
+
       "yes":    "Yes",
       "no":     "No",
+
+      "login":  "Login",
+      "logout": "Logout",
+
+      "guestCheckout": "Guest Checkout",
+      "createAccount": "Create Account",
+      "resetPassword": "Reset My Password",
   
       "// TODO: this should be an override somehow": "",
-      "submit": "Submit Registration",
+      "submit": "Submit Registration",      
   
       "// TODO: move into team panel?": "",
       "noTeam":      "No Thanks",
@@ -27,6 +35,7 @@
         "mobile":      "Mobile",
         "gender":      "Gender",
         "dateOfBirth": "Date Of Birth",
+        "password":    "Password",
   
         "address": {
           "address1": "Address 1",
@@ -60,8 +69,10 @@
       "child":        "Child",
       "child_plural": "Children",
   
-      "promoCode": "If applicable, enter the promo code provided",
-      "waveProductId": "Wave"
+      "selectEvent":     "Select event",
+      "promoCode":       "Promo code",
+      "promoCodePrompt": "If applicable, enter the promo code provided",
+      "waveProductId":   "Wave"
     },
   
     "date": {
@@ -128,7 +139,16 @@
     "loginPanel": {
       "waitTitle": "Account Details",
       "editTitle": "Account Details",
-      "doneTitle": "You are logged in as"
+      "doneTitle": "You are logged in as",
+
+      "checkEmailPrompt":    "Please type in an email address so we can check if you already have an account",
+      "noAccountPrompt":     "There is no account associated with this email, would you like to create one or checkout as a guest?",
+      "loginPrompt":         "You already have an account, please login to continue",
+      "createAccountPrompt": "Please enter your details",
+      "loggedInPrompt":      "You are currently logged-in as",
+
+      "passwordResetSuccess": "A temporary password email has been sent to you, please check your email",
+      "passwordResetFailure": "Sorry, we could not reset your password"
     },
   
     "qtysPanel": {
