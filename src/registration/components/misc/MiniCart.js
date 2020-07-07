@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import { Container, Row, Col, ProgressBar } from 'react-bootstrap';
 import { Breakpoint } from 'react-socks';
+import { t } from 'shared/translations';
 import { Qty } from 'registration/components';
 import { getEventName, getQtys, getFormattedCartTotal, getProgress } from 'registration/selectors';
 
@@ -17,7 +17,7 @@ class _MiniCart extends React.Component {
           <Breakpoint small down>
             <Row noGutters>
               <Col>
-                <MiniCartBrand title={<FormattedMessage id="app.title" defaultMessage="Registration" />} />
+                <MiniCartBrand title={t('app.title', 'Registration')} />
               </Col>
             </Row>
           </Breakpoint>
@@ -25,7 +25,7 @@ class _MiniCart extends React.Component {
           <Breakpoint medium up>
             <Row noGutters>
               <Col>
-                <MiniCartBrand title={<FormattedMessage id="app.title" defaultMessage="Registration" />} />
+                <MiniCartBrand title={t('app.title', 'Registration')} />
               </Col>
               <Col>
                 {eventName}
