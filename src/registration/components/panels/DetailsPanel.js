@@ -288,7 +288,7 @@ export class DetailsPanel extends BasePanel {
     const firstName = this.state.formData['customer.firstName'];
 
     const title = (
-      <span>{t('detailsPanel.editTitle', 'Registration Details For')}
+      <span>{t('detailsPanel.editTitle', 'Registration Details for')}
         <span className="text-highlight"> {firstName}</span>
       </span>
     );
@@ -664,13 +664,15 @@ export class DetailsPanel extends BasePanel {
     const { layout, index } = this.props;
     const { firstName, lastName } = this.props.participant.customer;
 
+    const title = <span>{t('detailsPanel.doneTitle', 'Registration Details for')} {firstName}</span>;
+
     return (
       <PanelContainer layout={layout} status="done">
         <PanelHeader
           status="done"
           layout={layout}
           number={index + 1}
-          title={t('detailsPanel.doneTitle', 'Registration Details')}
+          title={title}
           onPressEdit={this.onPressEdit}
         />
         <PanelBody layout={layout} status="done">
@@ -687,7 +689,8 @@ export class DetailsPanel extends BasePanel {
     return this.props.extendFields.find(field => field.columnKey === columnKey);
   }
 
-  getExtendFieldLabel(field) {
+  getExtendFieldLabel(columnKey) {
+    const field = this.getExtendField(columnKey);
     return t(`label.extendForm.${field.columnKey}`, field.label);
   }
 

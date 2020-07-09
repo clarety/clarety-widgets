@@ -4,6 +4,7 @@ import { ModePanel, EventPanel, TeamPanel, QtysPanel, OffersPanel, DetailsPanel,
 import { MerchPanel, MerchConnect } from '../../src/registration/components';
 import { ModeConnect, EventConnect, RegistrationLoginConnect, TeamConnect, QtysConnect, OffersConnect, DetailsConnect, DonationConnect, ValidateConnect, PaymentConnect } from '../../src/registration/components';
 import { Registration, setupRegistrationAxiosMock } from '../../src';
+import enTranslation from '../../src/registration/translations/en';
 import '../../src/registration/style.scss';
 
 Registration.init();
@@ -13,6 +14,10 @@ Registration.setClientIds({
   // dev:  '60efcad7dc9df95cb418032c39565a79', // mdc
   dev: 'ab0c9407ba7f0581ebc49fa787049e80', // a21
   prod: '',
+});
+
+Registration.setLanguages({
+  en: enTranslation,
 });
 
 Registration.setPanels([

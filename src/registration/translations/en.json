@@ -196,8 +196,8 @@
     },
   
     "detailsPanel": {
-      "editTitle":         "Registration Details For",
-      "doneTitle":         "Registration Details",
+      "editTitle":         "Registration Details for",
+      "doneTitle":         "Registration Details for",
       "customerFormTitle": "Personal Details",
       "extendFormTitle":   "Event Details"
     },

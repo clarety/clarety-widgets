@@ -16,11 +16,11 @@ import { MiniCart, MiniCartBrand, BusyOverlay } from 'registration/components';
 import { fetchEvents, fetchAuthCustomer } from 'registration/actions';
 import { rootReducer } from 'registration/reducers';
 import { RegistrationApi } from 'registration/utils';
-import enTranslation from 'registration/translations/en';
 
 export class Registration extends React.Component {
   static store;
   static resources;
+  static languages;
 
   static init() {
     // Setup store.
@@ -41,6 +41,10 @@ export class Registration extends React.Component {
     Registration.store.dispatch(setPanels(panels));
   }
 
+  static setLanguages(languages) {
+    Registration.languages = languages;
+  }
+
   static setComponent(name, component) {
     Registration.resources.setComponent(name, component);
   }
@@ -51,6 +55,7 @@ export class Registration extends React.Component {
         <BreakpointProvider>
           <RegistrationRoot
             resources={Registration.resources}
+            languages={Registration.languages}
             {...this.props}
           />
         </BreakpointProvider>
@@ -65,13 +70,9 @@ class _RegistrationRoot extends React.Component {
 
     // Init translations.
     i18next.init({
-      lng: 'en',
-      debug: true,
-      resources: {
-        en: enTranslation,
-      }
+      lng: this.props.defaultLanguage || 'en',
+      resources: this.props.languages,
     });
-
     i18next.on('languageChanged', lng => this.forceUpdate());
 
     // Settings.
