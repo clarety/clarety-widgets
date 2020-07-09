@@ -16,16 +16,15 @@
       "logout": "Logout",
 
       "pay":    "Pay Now",
-  
-      "// TODO: this should be an override somehow": "",
       "submit": "Submit Registration",
 
-      "// TODO: move into login panel?": "",
+      "individual": "Individual",
+      "group":      "Group",
+
       "guestCheckout": "Guest Checkout",
       "createAccount": "Create Account",
       "resetPassword": "Reset My Password",
   
-      "// TODO: move into team panel?": "",
       "noTeam":      "No Thanks",
       "createTeam":  "Create Team",
       "searchTeams": "Search Teams"
@@ -156,7 +155,8 @@
   
     "modePanel": {
       "editTitle": "Registrations",
-      "doneTitle": "Registrations"
+      "doneTitle": "Registrations",
+      "prompt": "Are you registering as an individual or a group?"
     },
   
     "eventPanel": {
@@ -239,7 +239,6 @@
     },
   
     "paymentPanel": {
-      "// TODO: these need to be overrides somehow...": "",
       "waitTitle": "Registration Summary",
       "editTitle": "Registration Summary",
       "doneTitle": "Registration Summary",
