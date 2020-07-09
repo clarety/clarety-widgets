@@ -16,13 +16,14 @@
       "logout": "Logout",
 
       "pay":    "Pay Now",
+  
+      "// TODO: this should be an override somehow": "",
+      "submit": "Submit Registration",
 
+      "// TODO: move into login panel?": "",
       "guestCheckout": "Guest Checkout",
       "createAccount": "Create Account",
       "resetPassword": "Reset My Password",
-  
-      "// TODO: this should be an override somehow": "",
-      "submit": "Submit Registration",      
   
       "// TODO: move into team panel?": "",
       "noTeam":      "No Thanks",
