@@ -144,19 +144,20 @@
     },
   
     "app": {
-      "title": "Registration",
-  
-      "busy": {
-        "init":     "Just A Moment",
-        "validate": "Checking Your Registration Details",
-        "submit":   "Submitting Your Registration"
-      }
+      "title":    "Registration",
+      "language": "English"
+    },
+
+    "busy": {
+      "init":     "Just A Moment",
+      "validate": "Checking Your Registration Details",
+      "submit":   "Submitting Your Registration"
     },
   
     "modePanel": {
       "editTitle": "Registrations",
       "doneTitle": "Registrations",
-      "prompt": "Are you registering as an individual or a group?"
+      "prompt":    "Are you registering as an individual or a group?"
     },
   
     "eventPanel": {
@@ -239,9 +240,9 @@
     },
   
     "paymentPanel": {
-      "waitTitle": "Registration Summary",
-      "editTitle": "Registration Summary",
-      "doneTitle": "Registration Summary",
+      "waitTitle":     "Registration Summary",
+      "editTitle":     "Registration Summary",
+      "doneTitle":     "Registration Summary",
       "shippingTitle": "Shipping Options"
     }
   }
