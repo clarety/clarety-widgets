@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Col } from 'react-bootstrap';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { FormContext, getStateLabel, getPostcodeLabel } from 'shared/utils';
+import { FormContext, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
 import { BasePanel, TextInput, PureCheckboxInput, StateInput, CountryInput, PostcodeInput, FormElement, Button } from 'checkout/components';
 
 export class AddressPanel extends BasePanel {
@@ -220,7 +220,7 @@ export class AddressPanel extends BasePanel {
 
         <Form.Row>
           <Col>
-            <TextInput field={`${fieldPrefix}.suburb`} label="Suburb" required hideLabel={settings.hideLabels} />
+            <TextInput field={`${fieldPrefix}.suburb`} label={getSuburbLabel(country)} required hideLabel={settings.hideLabels} />
           </Col>
         </Form.Row>
 

@@ -15,6 +15,13 @@ export function getStateOptions(country) {
   }
 };
 
+export function getSuburbLabel(country) {
+  switch (country) {
+    case 'AU': return 'Suburb';
+    default:   return 'Suburb / City';
+  }
+}
+
 export function getStateLabel(country) {
   switch (country) {
     case 'UK': return 'Region';

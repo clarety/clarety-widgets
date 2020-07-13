@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Row, Col, Form } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { FormContext, getStateLabel, getPostcodeLabel, requiredField, phoneNumberField, parseNestedElements } from 'shared/utils';
+import { FormContext, getSuburbLabel, getStateLabel, getPostcodeLabel, requiredField, phoneNumberField, parseNestedElements } from 'shared/utils';
 import { Button } from 'form/components';
 import { MerchItem, MerchQtysModal } from 'registration/components';
 import { TextInput, PhoneInput, StateInput, PostcodeInput, CountryInput } from 'registration/components';
@@ -244,7 +244,7 @@ export class MerchPanel extends BasePanel {
 
           <Form.Row>
             <Col>
-              <TextInput field="customer.delivery.suburb" label="Suburb" required />
+              <TextInput field="customer.delivery.suburb" label={getSuburbLabel(country)} required />
             </Col>
           </Form.Row>
 
