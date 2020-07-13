@@ -77,11 +77,15 @@ class _RegistrationRoot extends React.Component {
     i18next.on('languageChanged', lng => this.forceUpdate());
 
     // Settings.
+    const { currencySymbol, currencyCode } = this.props;
+    const currency = currencySymbol ? { code: currencyCode, symbol: currencySymbol } : undefined;
+
     updateAppSettings({
       storeId: this.props.storeId,
       seriesId: this.props.seriesId,
       prevSeriesId: this.props.prevSeriesId,
       variant: this.props.variant,
+      currency: currency,
       ...this.props.settings,
     });
 
