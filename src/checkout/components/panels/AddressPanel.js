@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Col } from 'react-bootstrap';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { FormContext, getStateLabel, getPostcodeLabel } from 'shared/utils';
+import { FormContext, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
 import { BasePanel, TextInput, PureCheckboxInput, StateInput, CountryInput, PostcodeInput, FormElement, Button } from 'checkout/components';
 
 export class AddressPanel extends BasePanel {
@@ -199,19 +199,28 @@ export class AddressPanel extends BasePanel {
 
         <Form.Row>
           <Col>
-            <TextInput field={`${fieldPrefix}.address1`} label="Address 1" required hideLabel={settings.hideLabels} />
+            <TextInput
+              field={`${fieldPrefix}.address1`}
+              label={settings.address1Label || "Address 1"}
+              hideLabel={settings.hideLabels}
+              required
+            />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <TextInput field={`${fieldPrefix}.address2`} label="Address 2" hideLabel={settings.hideLabels} />
+            <TextInput
+              field={`${fieldPrefix}.address2`}
+              label={settings.address2Label || "Address 2"}
+              hideLabel={settings.hideLabels}
+            />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <TextInput field={`${fieldPrefix}.suburb`} label="Suburb" required hideLabel={settings.hideLabels} />
+            <TextInput field={`${fieldPrefix}.suburb`} label={getSuburbLabel(country)} required hideLabel={settings.hideLabels} />
           </Col>
         </Form.Row>
 

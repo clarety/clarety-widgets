@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Row, Col, Button } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
-import { requiredField, emailField, customerTypeOptions, loadAddressFinder, getStateLabel, getPostcodeLabel } from 'shared/utils';
+import { requiredField, emailField, customerTypeOptions, loadAddressFinder, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
 import { TextInput, EmailInput, StateInput, CountryInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
@@ -307,7 +307,7 @@ export class CustomerPanel extends BasePanel {
           </Col>
           <Col sm>
             <Form.Group controlId="suburb">
-              <Form.Label>Suburb</Form.Label>
+              <Form.Label>{getSuburbLabel(country)}</Form.Label>
               <TextInput field="customer.billing.suburb" testId="suburb-input" />
             </Form.Group>
           </Col>

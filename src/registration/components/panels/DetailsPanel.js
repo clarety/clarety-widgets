@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Button, Form, Row, Col, Alert } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { FormContext, parseNestedElements, getStateLabel, getPostcodeLabel } from 'shared/utils';
+import { FormContext, parseNestedElements, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
 import { TextInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput, StateInput, PostcodeInput, CountryInput } from 'registration/components';
 import { getGenderOptions, scrollIntoView } from 'registration/utils';
 
@@ -472,7 +472,7 @@ export class _DetailsPanel extends BasePanel {
 
         <Form.Row>
           <Col>
-            <TextInput field={`customer.${type}.suburb`} label="Suburb" required />
+            <TextInput field={`customer.${type}.suburb`} label={getSuburbLabel(country)} required />
           </Col>
         </Form.Row>
 
