@@ -30,7 +30,6 @@ class PureSelectInput extends React.PureComponent {
           as="select"
           value={value}
           onChange={event => onChange(field, event.target.value)}
-          required={required}
           isInvalid={!!error}
         >
           <option value="" disabled hidden>{placeholder || 'Select'}</option>

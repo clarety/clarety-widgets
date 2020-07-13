@@ -51,7 +51,7 @@ class _PromoCodeForm extends React.Component {
           <Form onSubmit={this.onPressApplyDiscount} className="promo-code-form">
             <Form.Row>
               <Col>
-                <TextInput field="promoCode" label="Discount Code" hideLabel />
+                <TextInput field="promoCode" label="Discount Code" hideLabel required />
               </Col>
               <Col xs="auto">
                 <Button

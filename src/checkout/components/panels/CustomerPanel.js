@@ -46,6 +46,16 @@ export class CheckoutCustomerPanel extends BasePanel {
       }
     }
 
+    if (settings.requirePhone) {
+      if (settings.showHomeAndWorkPhone) {
+        if (!formData['customer.phone1'] && !formData['customer.phone2'] && !formData['customer.mobile']) {
+          this.validateRequired('customer.phone1', errors, 'Please provide a phone number');
+        }
+      } else {
+        this.validateRequired('customer.mobile', errors);
+      }
+    }
+
     this.setState({ errors });
     return errors.length === 0;
   }
@@ -179,18 +189,20 @@ export class CheckoutCustomerPanel extends BasePanel {
                 </Col>
               </Form.Row>
 
-              <Form.Row>
-                <Col sm={6}>
-                  <PhoneInput field="customer.phone1" label="Home Phone" hideLabel />
-                </Col>
-                <Col sm={6}>
-                  <PhoneInput field="customer.phone2" label="Work Phone" hideLabel />
-                </Col>
-              </Form.Row>
+              {settings.showHomeAndWorkPhone &&
+                <Form.Row>
+                  <Col sm={6}>
+                    <PhoneInput field="customer.phone1" label="Home Phone" hideLabel required={settings.requirePhone} />
+                  </Col>
+                  <Col sm={6}>
+                    <PhoneInput field="customer.phone2" label="Work Phone" hideLabel required={settings.requirePhone} />
+                  </Col>
+                </Form.Row>
+              }
 
               <Form.Row>
                 <Col sm={6}>
-                  <PhoneInput field="customer.mobile" label="Mobile Phone" hideLabel />
+                  <PhoneInput field="customer.mobile" label="Mobile Phone" hideLabel required={settings.requirePhone} />
                 </Col>
                 <Col sm={6}>
                 </Col>

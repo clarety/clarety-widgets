@@ -68,35 +68,35 @@ export class BasePanel extends React.Component {
     return !!this.props.errors.find(error => error.field === field);
   }
 
-  validateRequired(field, errors) {
+  validateRequired(field, errors, message) {
     const value = this.state.formData[field];
-    validateRequired(value, field, errors);
+    validateRequired(value, field, errors, message);
   }
 
-  validateEmail(field, errors) {
+  validateEmail(field, errors, message) {
     const value = this.state.formData[field];
-    validateEmail(value, field, errors);
+    validateEmail(value, field, errors, message);
   }
 
-  validatePassword(field, errors) {
+  validatePassword(field, errors, message) {
     const value = this.state.formData[field];
-    validatePassword(value, field, errors);
+    validatePassword(value, field, errors, message);
   }
 
-  validateCardNumber(field, errors) {
+  validateCardNumber(field, errors, message) {
     const value = this.state.formData[field];
-    validateCardNumber(value, field, errors);
+    validateCardNumber(value, field, errors, message);
   }
 
-  validateCardExpiry(field, monthField, yearField, errors) {
+  validateCardExpiry(field, monthField, yearField, errors, message) {
     const monthValue = this.state.formData[monthField];
     const yearValue = this.state.formData[yearField];
-    validateCardExpiry(monthValue, yearValue, field, errors);
+    validateCardExpiry(monthValue, yearValue, field, errors, message);
   }
 
-  validateCcv(field, errors) {
+  validateCcv(field, errors, message) {
     const value = this.state.formData[field];
-    validateCcv(value, field, errors);
+    validateCcv(value, field, errors, message);
   }
 
   validateDob({ field, dayField, monthField, yearField, comparisonDate, minAge, maxAge, errors }) {
