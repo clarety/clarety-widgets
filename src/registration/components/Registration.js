@@ -12,7 +12,7 @@ import { statuses, setPanels, setClientIds, setAuth, setTrackingData, fetchSetti
 import { PanelManager } from 'shared/components';
 import { Resources, getJwtAccount } from 'shared/utils';
 import { mapDonationSettings } from 'donate/utils';
-import { MiniCart, MiniCartBrand, BusyOverlay } from 'registration/components';
+import { MiniCart, MiniCartBrand, BusyOverlay, LanguageSelect } from 'registration/components';
 import { fetchEvents, fetchAuthCustomer } from 'registration/actions';
 import { rootReducer } from 'registration/reducers';
 import { RegistrationApi } from 'registration/utils';
@@ -120,8 +120,8 @@ class _RegistrationRoot extends React.Component {
     }
   }
 
-  changeLanguage = (lng) => {
-    i18next.changeLanguage(lng);
+  changeLanguage = (languageCode) => {
+    i18next.changeLanguage(languageCode);
   };
 
   render() {
@@ -130,10 +130,18 @@ class _RegistrationRoot extends React.Component {
     return (
       <BlockUi blocking={isBlocking} loader={this.getBusyOverlay()} key={i18next.language}>
         <MiniCart resources={resources} />
+
         <PanelManager
           layout="stack"
           resources={resources}
         />
+
+        {this.props.showLanguageSelect &&
+          <LanguageSelect
+            languages={this.props.languages}
+            onChange={this.changeLanguage}
+          />
+        }
       </BlockUi>
     );
   }
@@ -159,10 +167,10 @@ class _RegistrationRoot extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    isBlocking: state.status !== statuses.ready,
+    isBlocking:     state.status !== statuses.ready,
     isInitializing: state.status === statuses.initializing,
-    isValidating: state.status === statuses.validating,
-    isSubmitting: state.status === statuses.submitting,
+    isValidating:   state.status === statuses.validating,
+    isSubmitting:   state.status === statuses.submitting,
   };
 };
 

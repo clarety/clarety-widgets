@@ -128,6 +128,8 @@ export default class RegistrationDemo extends React.Component {
           sourceId="17"
           responseId="e9c2e351d90b11e996fd"
           emailResponseId="1234"
+
+          showLanguageSelect={true}
         />
       </div>
     );

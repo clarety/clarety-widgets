@@ -12,6 +12,13 @@
     z-index: 1020;
   }
 
+  .language-select {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    width: 200px;
+  }
+
   .stack-panel {
     padding: 60px 0;
     border-bottom: 1px solid $gray-300;
