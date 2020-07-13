@@ -199,13 +199,22 @@ export class AddressPanel extends BasePanel {
 
         <Form.Row>
           <Col>
-            <TextInput field={`${fieldPrefix}.address1`} label="Address 1" required hideLabel={settings.hideLabels} />
+            <TextInput
+              field={`${fieldPrefix}.address1`}
+              label={settings.address1Label || "Address 1"}
+              hideLabel={settings.hideLabels}
+              required
+            />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <TextInput field={`${fieldPrefix}.address2`} label="Address 2" hideLabel={settings.hideLabels} />
+            <TextInput
+              field={`${fieldPrefix}.address2`}
+              label={settings.address2Label || "Address 2"}
+              hideLabel={settings.hideLabels}
+            />
           </Col>
         </Form.Row>
 
