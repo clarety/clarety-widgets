@@ -74,7 +74,10 @@ export const getCartTotal = (state) => {
 export const getFormattedCartTotal = (state) => {
   const total = getCartTotal(state);
   const currency = getSetting(state, 'currency');
-  return `${currency.code} ${currency.symbol}${total.toFixed(2)}`;
+
+  return currency
+    ? `${currency.code} ${currency.symbol}${total.toFixed(2)}`
+    : '$' + total.toFixed(2);
 };
 
 export const getCustomer = (state) => getCart(state).customer;

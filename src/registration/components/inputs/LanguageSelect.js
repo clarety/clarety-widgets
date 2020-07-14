@@ -1,19 +1,30 @@
 import React from 'react';
-import { Form } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import Select from 'react-select';
+import { t } from 'shared/translations';
+import { getLanguages } from 'shared/selectors';
+import { changeLanguage } from 'shared/actions';
 
-export const LanguageSelect = ({ languages, onChange }) => (
-  <Form.Control
-    as="select"
-    onChange={event => onChange(event.target.value)}
+const _LanguageSelect = ({ languages, changeLanguage }) => (
+  <Select
+    value=""
+    placeholder={t('label.changeLanguage', 'Change Language')}
+    onChange={([code, language]) => changeLanguage(code)}
+    options={Object.entries(languages)}
+    getOptionValue={([code, language]) => code}
+    getOptionLabel={([code, language]) => getLanguageName(language)}
     className="language-select"
-  >
-    <option>Select Language</option>
-
-    {languages && Object.entries(languages).map(([code, language]) =>
-      <option key={code} value={code}>{getLanguageName(language)}</option>
-    )}
-  </Form.Control>
+    classNamePrefix="react-select"
+  />
 );
+
+const mapStateToProps = (state, ownProps) => ({
+  languages: getLanguages(state),
+});
+
+const actions = { changeLanguage };
+
+export const LanguageSelect = connect(mapStateToProps, actions)(_LanguageSelect);
 
 function getLanguageName(language) {
   return language

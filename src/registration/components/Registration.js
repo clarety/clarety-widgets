@@ -8,11 +8,11 @@ import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { ClaretyApi } from 'clarety-utils';
 import { t } from 'shared/translations';
-import { statuses, setPanels, setClientIds, setAuth, setTrackingData, fetchSettings, updateAppSettings } from 'shared/actions';
+import { statuses, setPanels, setLanguages, changeLanguage, setClientIds, setAuth, setTrackingData, fetchSettings, updateAppSettings } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources, getJwtAccount } from 'shared/utils';
 import { mapDonationSettings } from 'donate/utils';
-import { MiniCart, MiniCartBrand, BusyOverlay, LanguageSelect } from 'registration/components';
+import { MiniCart, MiniCartBrand, BusyOverlay } from 'registration/components';
 import { fetchEvents, fetchAuthCustomer } from 'registration/actions';
 import { rootReducer } from 'registration/reducers';
 import { RegistrationApi } from 'registration/utils';
@@ -43,6 +43,7 @@ export class Registration extends React.Component {
 
   static setLanguages(languages) {
     Registration.languages = languages;
+    Registration.store.dispatch(setLanguages(languages));
   }
 
   static setComponent(name, component) {
@@ -69,12 +70,18 @@ class _RegistrationRoot extends React.Component {
     const { updateAppSettings, fetchEvents, setTrackingData, fetchSettings } = this.props;
 
     // Init translations.
+    const defaultLanguage = this.props.defaultLanguage || 'en';
+
     i18next.init({
-      lng: this.props.defaultLanguage || 'en',
+      lng: defaultLanguage,
       resources: this.props.languages,
       returnNull: false,
     });
-    i18next.on('languageChanged', lng => this.forceUpdate());
+
+    i18next.on('languageChanged', () => this.forceUpdate());
+
+    this.props.changeLanguage(defaultLanguage);
+
 
     // Settings.
     const { currencySymbol, currencyCode } = this.props;
@@ -124,10 +131,6 @@ class _RegistrationRoot extends React.Component {
     }
   }
 
-  changeLanguage = (languageCode) => {
-    i18next.changeLanguage(languageCode);
-  };
-
   render() {
     const { isBlocking, resources } = this.props;
 
@@ -139,13 +142,6 @@ class _RegistrationRoot extends React.Component {
           layout="stack"
           resources={resources}
         />
-
-        {this.props.showLanguageSelect &&
-          <LanguageSelect
-            languages={this.props.languages}
-            onChange={this.changeLanguage}
-          />
-        }
       </BlockUi>
     );
   }
@@ -180,6 +176,7 @@ const mapStateToProps = state => {
 
 const actions = {
   updateAppSettings: updateAppSettings,
+  changeLanguage: changeLanguage,
 
   setAuth: setAuth,
   fetchAuthCustomer: fetchAuthCustomer,

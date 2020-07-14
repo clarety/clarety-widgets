@@ -99,7 +99,7 @@ Registration.setPanels([
 ]);
 
 export default class RegistrationDemo extends React.Component {
-  componentWillMount() {
+  componentDidMount() {
     // setupRegistrationAxiosMock();
   }
 

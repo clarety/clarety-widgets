@@ -97,7 +97,8 @@
       "child":        "Child",
       "child_plural": "Children",
   
-      "selectEvent":     "Select event",
+      "selectEvent":     "Select Event",
+      "changeLanguage":  "Change Language",
       "promoCodePrompt": "If applicable, enter the promo code provided",
       "wave":            "Wave"
     },
