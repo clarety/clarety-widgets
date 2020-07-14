@@ -118,10 +118,10 @@ class _RegistrationRoot extends React.Component {
     setTrackingData({ sourceId, sourceUid, responseId, emailResponseId });
 
     // Donations.
-    const { storeCode, donationSingleOfferId, donationRecurringOfferId } = this.props;
+    const { storeUid, donationSingleOfferId, donationRecurringOfferId } = this.props;
     if (donationSingleOfferId || donationRecurringOfferId) {
       await fetchSettings('donations/', {
-        store: storeCode,
+        storeUid: storeUid,
         offerSingle: donationSingleOfferId,
         offerRecurring: donationRecurringOfferId,
       }, mapDonationSettings);
