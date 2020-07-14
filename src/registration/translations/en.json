@@ -1,0 +1,250 @@
+{
+  "translation": {
+    "btn": {
+      "edit":   "Modify",
+      "next":   "Continue",
+      "back":   "Back",
+      "cancel": "Cancel",
+      "reset":  "Start Over",
+      "retry":  "Try Again",
+      "none":   "None",
+
+      "yes":    "Yes",
+      "no":     "No",
+
+      "login":  "Login",
+      "logout": "Logout",
+
+      "pay":    "Pay Now",
+      "submit": "Submit Registration",
+
+      "individual": "Individual",
+      "group":      "Group",
+
+      "guestCheckout": "Guest Checkout",
+      "createAccount": "Create Account",
+      "resetPassword": "Reset My Password",
+  
+      "noTeam":      "No Thanks",
+      "createTeam":  "Create Team",
+      "searchTeams": "Search Teams"
+    },
+  
+    "label": {
+      "customer": {
+        "firstName":   "First Name",
+        "lastName":    "Last Name",
+        "email":       "Email",
+        "mobile":      "Mobile",
+        "gender":      "Gender",
+        "dateOfBirth": "Date Of Birth",
+        "password":    "Password",
+  
+        "address": {
+          "address1":  "Address 1",
+          "address2":  "Address 2",
+          "suburb":    "Suburb",
+          "state":     "State",
+          "postcode":  "Postcode",
+          "country":   "Country"
+        }
+      },
+  
+      "team": {
+        "search":           "Team Search",
+        "name":             "Team Name",
+        "type":             "Team Type",
+        "password":         "Team Password",
+        "passwordRequired": "Should team members enter a password in order to join?"
+      },
+  
+      "autofill": {
+        "email":   "Use email from first participant?",
+        "mobile":  "Use mobile from first participant?",
+        "address": "Use address from first participant?",
+        "billing": "Billing Address is same as Delivery Address"
+      },
+
+      "payment": {
+        "creditCard":    "Credit Card",
+        "directDebit":   "Direct Debit",
+
+        "cardName":      "Card Name",
+        "cardNumber":    "Card Number",
+        "cardExpiry":    "Expiry",
+        "cardCcv":       "CCV",
+
+        "accountName":   "Account Name",
+        "accountBSB":    "Account BSB",
+        "accountNumber": "Account Number"
+      },    
+  
+      "select":   "Select",
+      "optional": "Optional",
+
+      "subtotal":  "Subtotal",
+      "promoCode": "Promo Code",
+      "shipping":  "Shipping",
+      "total":     "Total",
+
+      "estimatedDelivery": "Estimated Delivery",
+
+      "yourself": "Yourself",
+      "other":    "Other",
+  
+      "adult":        "Adult",
+      "adult_plural": "Adults",
+      "child":        "Child",
+      "child_plural": "Children",
+  
+      "selectEvent":     "Select Event",
+      "changeLanguage":  "Change Language",
+      "promoCodePrompt": "If applicable, enter the promo code provided",
+      "wave":            "Wave"
+    },
+  
+    "date": {
+      "day":     "Day",
+      "month":   "Month",
+      "year":    "Year",
+  
+      "month1":  "January",
+      "month2":  "February",
+      "month3":  "March",
+      "month4":  "April",
+      "month5":  "May",
+      "month6":  "June",
+      "month7":  "July",
+      "month8":  "August",
+      "month9":  "September",
+      "month10": "October",
+      "month11": "November",
+      "month12": "December"
+    },
+  
+    "validation": {
+      "required":      "This is a required field",
+      "email":         "Please enter a valid email",
+      "phone":         "Please enter a valid phone number",
+      "phone-unique":  "Emergency phone number needs to be different to your mobile number",
+      "age-too-young": "You must be older than {{age}} on the day of the event",
+      "age-too-old":   "You must be younger than {{age}} on the day of the event"
+    },
+  
+    "option": {
+      "": "",
+  
+      "Yes": "Yes",
+      "No":  "No",
+  
+      "Male":              "Male",
+      "Female":            "Female",
+      "Prefer to not say": "Prefer to not say",
+  
+      "Other": "Other"
+    },
+  
+    "app": {
+      "title":    "Registration",
+      "language": "English"
+    },
+
+    "busy": {
+      "init":     "Just A Moment",
+      "validate": "Checking Your Registration Details",
+      "submit":   "Submitting Your Registration"
+    },
+  
+    "modePanel": {
+      "editTitle": "Registrations",
+      "doneTitle": "Registrations",
+      "prompt":    "Are you registering as an individual or a group?"
+    },
+  
+    "eventPanel": {
+      "editTitle": "Which Location Are You Registering For?",
+      "doneTitle": "Location"
+    },
+  
+    "loginPanel": {
+      "waitTitle": "Account Details",
+      "editTitle": "Account Details",
+      "doneTitle": "You are logged in as",
+
+      "checkEmailPrompt":    "Please type in an email address so we can check if you already have an account",
+      "noAccountPrompt":     "There is no account associated with this email, would you like to create one or checkout as a guest?",
+      "loginPrompt":         "You already have an account, please login to continue",
+      "createAccountPrompt": "Please enter your details",
+      "loggedInPrompt":      "You are currently logged-in as",
+
+      "passwordResetSuccess": "A temporary password email has been sent to you, please check your email",
+      "passwordResetFailure": "Sorry, we could not reset your password"
+    },
+  
+    "qtysPanel": {
+      "editTitle":      "Participant Selection",
+      "doneTitle":      "Registration",
+      "message":        "",
+      "adult-title":    "Adults",
+      "adult-subtitle": "Ages 17+",
+      "child-title":    "Children",
+      "child-subtitle": "Ages 13 - 17"
+    },
+  
+    "offersPanel": {
+      "editTitle":     "Participant Selection",
+      "doneTitle":     "Participants",
+      "prefillPrompt": "Who is this registration for?"
+    },
+  
+    "detailsPanel": {
+      "editTitle":         "Registration Details for",
+      "doneTitle":         "Registration Details for",
+      "customerFormTitle": "Personal Details",
+      "extendFormTitle":   "Event Details"
+    },
+  
+    "teamPanel": {
+      "editTitle":          "Do you want to participate with a team?",
+      "doneTitle":          "Your Team",
+      "corporateTeamTitle": "Your Team",
+      "message-1":          "Combine your efforts and participate as a team! Either create a new team or join one that’s already been created.",
+      "message-2":          "If you are registering with an existing team, please contact your team leader for the team name and password (if applicable) before proceeding with the team registration process.",
+      "createTeamTitle":    "Create New Team",
+      "noTeam":             "No Team"
+    },
+  
+    "donationPanel": {
+      "editTitle": "Make A Donation",
+      "doneTitle": "Your Donation",
+      "message":   ""
+    },
+
+    "merchPanel": {
+      "waitTitle":    "Merchandise",
+      "editTitle":    "Check Out Our Official Merchandise",
+      "doneTitle":    "Merchandise",
+      "addressTitle": "Delivery Details",
+      "doneMessage":  "Check out our offical merchandise"
+    },
+  
+    "expressCheckoutPanel": {
+      "waitTitle": "Express Checkout",
+      "editTitle": "Express Checkout",
+      "doneTitle": "Express Checkout"
+    },
+  
+    "reviewPanel": {
+      "errorTitle":    "We Found Some Problems With Your Registration",
+      "errorSubtitle": "Please correct the issues and try again",
+      "reviewTitle":   "Please Review Your Registration"
+    },
+  
+    "paymentPanel": {
+      "waitTitle":     "Registration Summary",
+      "editTitle":     "Registration Summary",
+      "doneTitle":     "Registration Summary",
+      "shippingTitle": "Shipping Options"
+    }
+  }
+}

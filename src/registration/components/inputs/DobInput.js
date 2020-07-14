@@ -1,20 +1,19 @@
 import React from 'react';
 import { Form, Col } from 'react-bootstrap';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { t } from 'shared/translations';
 import { FormContext } from 'shared/utils';
 import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
 import { currentYear, iterate } from 'registration/utils';
 
-class _PureDobInput extends React.PureComponent {
+class PureDobInput extends React.PureComponent {
   render() {
-    const { error, dayError, monthError, yearError, required } = this.props;
+    const { label, error, dayError, monthError, yearError, required } = this.props;
 
     return (
       <Form.Group>
         <Form.Label>
-          <FormattedMessage id="label.customer.dateOfBirth" />
-          {!required && <span className="optional"> (Optional)</span>}
+          {label || 'Date of Birth'}{!required && <span className="optional"> (Optional)</span>}
         </Form.Label>
 
         <Form.Row>
@@ -38,7 +37,7 @@ class _PureDobInput extends React.PureComponent {
   }
 
   renderDayInput() {
-    const { day, dayField, onChange, intl, dayError, error } = this.props;
+    const { day, dayField, onChange, dayError, error } = this.props;
 
     const onChangeDay = event => onChange(dayField, event.target.value);
     const isInvalid = !!dayError || !!error;
@@ -46,7 +45,7 @@ class _PureDobInput extends React.PureComponent {
     return (
       <Form.Control as="select" value={day} onChange={onChangeDay} isInvalid={isInvalid}>
         <option value="" disabled hidden>
-          {intl.formatMessage({ id: 'date.day' })}
+          {t('date.day', 'Day')}
         </option>
 
         {iterate(1, 31, value => 
@@ -57,7 +56,7 @@ class _PureDobInput extends React.PureComponent {
   }
 
   renderMonthInput() {
-    const { month, monthField, onChange, intl, monthError, error } = this.props;
+    const { month, monthField, onChange, monthError, error } = this.props;
 
     const onChangeMonth = event => onChange(monthField, event.target.value);
     const isInvalid = !!monthError || !!error;
@@ -65,20 +64,27 @@ class _PureDobInput extends React.PureComponent {
     return (
       <Form.Control as="select" value={month} onChange={onChangeMonth} isInvalid={isInvalid}>
         <option value="" disabled hidden>
-          {intl.formatMessage({ id: 'date.month' })}
+          {t('date.month', 'Month')}
         </option>
         
-        {iterate(1, 12, value => 
-          <option key={value} value={value}>
-            {intl.formatMessage({ id: `date.month${value}` })}
-          </option>
-        )}
+        <option value="1">{t('date.month1', 'January')}</option>
+        <option value="2">{t('date.month2', 'February')}</option>
+        <option value="3">{t('date.month3', 'March')}</option>
+        <option value="4">{t('date.month4', 'April')}</option>
+        <option value="5">{t('date.month5', 'May')}</option>
+        <option value="6">{t('date.month6', 'June')}</option>
+        <option value="7">{t('date.month7', 'July')}</option>
+        <option value="8">{t('date.month8', 'August')}</option>
+        <option value="9">{t('date.month9', 'September')}</option>
+        <option value="10">{t('date.month10', 'October')}</option>
+        <option value="11">{t('date.month11', 'November')}</option>
+        <option value="12">{t('date.month12', 'December')}</option>
       </Form.Control>
     );
   }
 
   renderYearInput() {
-    const { year, yearField, onChange, intl, maxYear, yearError, error } = this.props;
+    const { year, yearField, onChange, maxYear, yearError, error } = this.props;
 
     const startYear = maxYear || currentYear;
     const endYear = 1900;
@@ -89,7 +95,7 @@ class _PureDobInput extends React.PureComponent {
     return (
       <Form.Control as="select" value={year} onChange={onChangeYear} isInvalid={isInvalid}>
         <option value="" disabled hidden>
-          {intl.formatMessage({ id: 'date.year' })}
+          {t('date.year', 'Year')}
         </option>
 
         {iterate(startYear, endYear, value => 
@@ -99,8 +105,6 @@ class _PureDobInput extends React.PureComponent {
     );
   }
 }
-
-const PureDobInput = injectIntl(_PureDobInput);
 
 export class DobInput extends React.Component {
   render() {

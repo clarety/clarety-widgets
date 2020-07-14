@@ -15,9 +15,9 @@ export const PanelContainer = ({ layout, status, className, children }) => {
   }  
 };
 
-export const PanelHeader = ({ layout, status, title, subtitle, number, intlId, intlValues, onPressEdit }) => {
+export const PanelHeader = ({ layout, status, title, subtitle, number, onPressEdit }) => {
   switch (layout) {
-    case 'stack':     return <StackPanelHeader status={status} title={title} intlId={intlId} intlValues={intlValues} onPressEdit={onPressEdit} />;
+    case 'stack':     return <StackPanelHeader status={status} title={title} onPressEdit={onPressEdit} />;
     case 'accordian': return <AccordianPanelHeader status={status} number={number} title={title} onPressEdit={onPressEdit} />;
     case 'tabs':      return <TabsPanelHeader status={status} title={title} subtitle={subtitle} />;
     case 'page':      return <PagePanelHeader status={status} title={title} subtitle={subtitle} />;

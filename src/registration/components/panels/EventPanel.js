@@ -1,9 +1,10 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Form, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import Select from 'react-select';
+import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { Button, TextInput } from 'form/components';
+import { LanguageSelect } from 'registration/components';
 
 export class EventPanel extends BasePanel {
   state = {
@@ -91,9 +92,8 @@ export class EventPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          intlId="eventPanel.editTitle"
+          title={t('eventPanel.editTitle', 'Which Location Are You Registering For?')}
         />
-
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
 
           {settings.showStateButtons && this.renderStateButtons()}
@@ -106,9 +106,13 @@ export class EventPanel extends BasePanel {
               disabled={!this.state.event}
               isBusy={isBusy}
             >
-              <FormattedMessage id="btn.next" />
+              {t('btn.next', 'Next')}
             </Button>
           </div>
+
+          {settings.showLanguageSelect &&
+            <LanguageSelect />
+          }
 
         </PanelBody>
       </PanelContainer>
@@ -140,7 +144,7 @@ export class EventPanel extends BasePanel {
           options={this.getEventOptions()}
           value={this.state.event}
           onChange={event => this.setState({ event })}
-          placeholder="Select event"
+          placeholder={t('label.selectEvent', 'Select event')}
           getOptionLabel={event => event.name}
           getOptionValue={event => event.eventId}
           classNamePrefix="react-select"
@@ -165,9 +169,12 @@ export class EventPanel extends BasePanel {
       <div className="promo-code">
         <Form.Group controlId="promoCode">
           <Form.Label>
-            <FormattedMessage id="label.promoCode" />
+            {t('label.promoCodePrompt', 'If applicable, enter the promo code provided')}
           </Form.Label>
-          <TextInput field="promoCode" placeholder="Promo code" />
+          <TextInput
+            field="promoCode"
+            placeholder={t('label.promoCode', 'Promo code')}
+          />
         </Form.Group>
       </div>
     );
@@ -182,16 +189,15 @@ export class EventPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          intlId="eventPanel.doneTitle"
+          title={t('eventPanel.doneTitle', 'Location')}
           onPressEdit={this.onPressEdit}
         />
-
         <PanelBody layout={layout} status="done">
 
           <p>{selectedEvent.name}</p>
 
           <Button onClick={this.onClickEdit}>
-            <FormattedMessage id="btn.edit" />
+            {t('btn.edit', 'Edit')}
           </Button>
           
         </PanelBody>

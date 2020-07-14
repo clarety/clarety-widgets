@@ -1,12 +1,12 @@
 import React from 'react';
-import { FormattedMessage, injectIntl } from 'react-intl';
 import { Button, Form, Row, Col, Alert } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext, parseNestedElements, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
 import { TextInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput, StateInput, PostcodeInput, CountryInput } from 'registration/components';
 import { getGenderOptions, scrollIntoView } from 'registration/utils';
 
-export class _DetailsPanel extends BasePanel {
+export class DetailsPanel extends BasePanel {
   ref = React.createRef();
 
   constructor(props) {
@@ -287,6 +287,12 @@ export class _DetailsPanel extends BasePanel {
     const { layout, index, registrationErrors } = this.props;
     const firstName = this.state.formData['customer.firstName'];
 
+    const title = (
+      <span>{t('detailsPanel.editTitle', 'Registration Details for')}
+        <span className="text-highlight"> {firstName}</span>
+      </span>
+    );
+
     return (
       <PanelContainer layout={layout} status="edit">
         <div ref={ref => this.ref = ref}>
@@ -294,11 +300,7 @@ export class _DetailsPanel extends BasePanel {
             status="edit"
             layout={layout}
             number={index + 1}
-            intlId="detailsPanel.editTitle"
-            intlValues={{
-              b: text => <span className="text-highlight">{text}</span>,
-              firstName: firstName,
-            }}
+            title={title}
           />
 
           <Form onSubmit={this.onClickNext}>
@@ -306,15 +308,11 @@ export class _DetailsPanel extends BasePanel {
             <PanelBody layout={layout} status="edit">
               <Row className="mt-5">
                 <Col lg={6}>
-                  <FormattedMessage id="detailsPanel.customerFormTitle">
-                    {txt => <h4 className="mb-4">{txt}</h4>}
-                  </FormattedMessage>
+                  <h4 className="mb-4">{t('detailsPanel.customerFormTitle', 'Personal Details')}</h4>
                   {this.renderCustomerForm()}
                 </Col>
                 <Col lg={6}>
-                  <FormattedMessage id="detailsPanel.extendFormTitle">
-                    {txt => <h4 className="mb-4">{txt}</h4>}
-                  </FormattedMessage>
+                  <h4 className="mb-4">{t('detailsPanel.extendFormTitle', 'Event Details')}</h4>
                   {this.renderExtendForm()}
                 </Col>
               </Row>
@@ -330,9 +328,7 @@ export class _DetailsPanel extends BasePanel {
               </Alert>
             }
 
-            <Button type="submit">
-              <FormattedMessage id="btn.next" />
-            </Button>
+            <Button type="submit">{t('btn.next', 'Next')}</Button>
           </Form>
         </div>
       </PanelContainer>
@@ -343,9 +339,7 @@ export class _DetailsPanel extends BasePanel {
     const { isPrefilled, appSettings, settings, participantIndex } = this.props;
     const { formData } = this.state;
 
-    const genderOptions = this.translateOptions(
-      getGenderOptions(appSettings)
-    );
+    const genderOptions = this.translateOptions(getGenderOptions(appSettings));
 
     const showAutofill = participantIndex !== 0 && !isPrefilled;
     const showAddressAutofill = showAutofill && (settings.showDeliveryAddress || settings.showBillingAddress);
@@ -357,14 +351,32 @@ export class _DetailsPanel extends BasePanel {
       <FormContext.Provider value={this.state}>
 
         <Form.Row>
-          <Col md={6}><TextInput field="customer.firstName" disabled={isPrefilled} required /></Col>
-          <Col md={6}><TextInput field="customer.lastName" disabled={isPrefilled} required /></Col>
+          <Col md={6}>
+            <TextInput
+              field="customer.firstName"
+              label={t('label.customer.firstName', 'First Name')}
+              disabled={isPrefilled}
+              required
+            />
+          </Col>
+          <Col md={6}>
+            <TextInput
+              field="customer.lastName"
+              label={t('label.customer.lastName', 'Last Name')}
+              disabled={isPrefilled}
+              required
+            />
+          </Col>
         </Form.Row>
 
         {showAutofill &&
           <Form.Row>
             <Col>
-              <CheckboxInput field="autofill.email" label="Use email from first participant?" required />
+              <CheckboxInput
+                field="autofill.email"
+                label={t('label.autofill.email', 'Use email from first participant?')}
+                required
+              />
             </Col>
           </Form.Row>
         }
@@ -372,14 +384,24 @@ export class _DetailsPanel extends BasePanel {
         {showEmail &&
           <Form.Row>
             <Col>
-              <EmailInput field="customer.email" disabled={isPrefilled} required />
+              <EmailInput
+                field="customer.email"
+                label={t('label.customer.email', 'Email')}
+                disabled={isPrefilled}
+                required
+              />
             </Col>
           </Form.Row>
         }
 
         <Form.Row>
           <Col>
-            <SimpleSelectInput field="customer.gender" options={genderOptions} required />
+            <SimpleSelectInput
+              field="customer.gender"
+              label={t('label.customer.gender', 'Gender')}
+              options={genderOptions}
+              required
+            />
           </Col>
         </Form.Row>
 
@@ -390,6 +412,7 @@ export class _DetailsPanel extends BasePanel {
               dayField="customer.dateOfBirthDay"
               monthField="customer.dateOfBirthMonth"
               yearField="customer.dateOfBirthYear"
+              label={t('label.customer.dateOfBirth', 'Date of Birth')}
               required
             />
           </Col>
@@ -398,7 +421,11 @@ export class _DetailsPanel extends BasePanel {
         {showAutofill &&
           <Form.Row>
             <Col>
-              <CheckboxInput field="autofill.mobile" label="Use mobile from first participant?" required />
+              <CheckboxInput
+                field="autofill.mobile"
+                label={t('label.autofill.mobile', 'Use mobile from first participant?')}
+                required
+              />
             </Col>
           </Form.Row>
         }
@@ -406,7 +433,11 @@ export class _DetailsPanel extends BasePanel {
         {showMobile &&
           <Form.Row>
             <Col>
-              <PhoneInput field="customer.mobile" required />
+              <PhoneInput
+                field="customer.mobile"
+                label={t('label.customer.mobile', 'Mobile')}
+                required
+              />
             </Col>
           </Form.Row>
         }
@@ -414,7 +445,11 @@ export class _DetailsPanel extends BasePanel {
         {showAddressAutofill &&
           <Form.Row>
             <Col>
-              <CheckboxInput field="autofill.address" label="Use address from first participant?" required />
+              <CheckboxInput
+                field="autofill.address"
+                label={t('label.autofill.address', 'Use address from first participant?')}
+                required
+              />
             </Col>
           </Form.Row>
         }
@@ -440,7 +475,11 @@ export class _DetailsPanel extends BasePanel {
         {settings.showDeliveryAddress && settings.showBillingAddress &&
           <Form.Row>
             <Col>
-              <CheckboxInput field="autofill.billing" label="Billing Address is same as Delivery Address" required />
+              <CheckboxInput
+                field="autofill.billing"
+                label={t('label.autofill.billing', 'Billing Address is same as Delivery Address')}
+                required
+              />
             </Col>
           </Form.Row>
         }
@@ -460,34 +499,60 @@ export class _DetailsPanel extends BasePanel {
 
         <Form.Row>
           <Col>
-            <TextInput field={`customer.${type}.address1`} label="Address 1" required />
+            <TextInput
+              field={`customer.${type}.address1`}
+              label={t('label.customer.address.address1', 'Address 1')}
+              required
+            />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <TextInput field={`customer.${type}.address2`} label="Address 2" />
+            <TextInput
+              field={`customer.${type}.address2`}
+              label={t('label.customer.address.address2', 'Address 2')}
+            />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <TextInput field={`customer.${type}.suburb`} label={getSuburbLabel(country)} required />
+            <TextInput
+              field={`customer.${type}.suburb`}
+              label={getSuburbLabel(country)}
+              required
+            />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <StateInput field={`customer.${type}.state`} label={getStateLabel(country)} country={country} required />
+            <StateInput
+              field={`customer.${type}.state`}
+              label={getStateLabel(country)}
+              country={country}
+              required
+            />
           </Col>
           <Col>
-            <PostcodeInput field={`customer.${type}.postcode`} label={getPostcodeLabel(country)} country={country} required />
+            <PostcodeInput
+              field={`customer.${type}.postcode`}
+              label={getPostcodeLabel(country)}
+              country={country}
+              required
+            />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <CountryInput field={`customer.${type}.country`} label="Country" initialValue={event.country} required />
+            <CountryInput
+              field={`customer.${type}.country`}
+              label={t('label.customer.address.country', 'Country')}
+              initialValue={event.country}
+              required
+            />
           </Col>
         </Form.Row>
       </React.Fragment>
@@ -512,8 +577,9 @@ export class _DetailsPanel extends BasePanel {
     return (
       <SimpleSelectInput
         field="waveProductId"
+        label={t('label.wave', 'Wave')}
         options={waveOptions}
-        placeholder="Select Wave"
+        placeholder={t('label.select', 'Select')}
         required={true}
       />
     );
@@ -524,7 +590,7 @@ export class _DetailsPanel extends BasePanel {
       <CheckboxInput
         key={addOn.offerId}
         field={`addOns.${addOn.offerId}`}
-        label={addOn.name}
+        label={t(`label.addOn.${offerId}`, addOn.name)}
       />
     );
   }
@@ -543,22 +609,62 @@ export class _DetailsPanel extends BasePanel {
 
   renderExtendField = (field) => {
     switch (field.type) {
-      case 'select':      return <SimpleSelectInput field={`extendForm.${field.columnKey}`} options={this.translateOptions(field.options)} required={field.required} />;
-      case 'text':        return <TextInput field={`extendForm.${field.columnKey}`} required={field.required} />;
-      case 'phonenumber': return <PhoneInput field={`extendForm.${field.columnKey}`} required={field.required} />;
-      case 'checkbox':    return <CheckboxInput field={`extendForm.${field.columnKey}`} required={field.required} />;
-
-      // TODO:
-      case 'radio':       return null;
-      case 'title':       return null;
+      case 'text':        return this.renderTextField(field);
+      case 'select':      return this.renderSelectField(field);
+      case 'checkbox':    return this.renderCheckboxField(field);
+      case 'phonenumber': return this.renderPhoneField(field);
       
       default: throw new Error(`Extend field type not supported: ${field.type}`);
     }
   };
 
+  renderTextField(field) {
+    return (
+      <TextInput
+        field={`extendForm.${field.columnKey}`}
+        label={t(`label.extendForm.${field.columnKey}`, field.label)}
+        required={field.required}
+      />
+    );
+  }
+
+  renderSelectField(field) {
+    return (
+      <SimpleSelectInput
+        field={`extendForm.${field.columnKey}`}
+        label={t(`label.extendForm.${field.columnKey}`, field.label)}
+        options={this.translateOptions(field.options)}
+        required={field.required}
+      />
+    );
+  }
+
+  renderCheckboxField(field) {
+    return (
+      <CheckboxInput
+        field={`extendForm.${field.columnKey}`}
+        label={t(`label.extendForm.${field.columnKey}`, field.label)}
+        explanation={t(`explanation.extendForm.${field.columnKey}`, field.explanation)}
+        required={field.required}
+      />
+    );
+  }
+
+  renderPhoneField(field) {
+    return (
+      <PhoneInput
+        field={`extendForm.${field.columnKey}`}
+        label={t(`label.extendForm.${field.columnKey}`, field.label)}
+        required={field.required}
+      />
+    );
+  }
+
   renderDone() {
     const { layout, index } = this.props;
     const { firstName, lastName } = this.props.participant.customer;
+
+    const title = <span>{t('detailsPanel.doneTitle', 'Registration Details for')} {firstName}</span>;
 
     return (
       <PanelContainer layout={layout} status="done">
@@ -566,16 +672,14 @@ export class _DetailsPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          intlId="detailsPanel.doneTitle"
+          title={title}
           onPressEdit={this.onPressEdit}
         />
-
         <PanelBody layout={layout} status="done">
-          <p>{firstName} {lastName}</p>
 
-          <Button onClick={this.onClickEdit}>
-            <FormattedMessage id="btn.edit" />
-          </Button>
+          <p>{firstName} {lastName}</p>
+          <Button onClick={this.onClickEdit}>{t('btn.edit', 'Edit')}</Button>
+
         </PanelBody>
       </PanelContainer>
     );
@@ -584,10 +688,10 @@ export class _DetailsPanel extends BasePanel {
   getExtendField(columnKey) {
     return this.props.extendFields.find(field => field.columnKey === columnKey);
   }
-  
+
   getExtendFieldLabel(columnKey) {
     const field = this.getExtendField(columnKey);
-    return field ? field.label : '';
+    return t(`label.extendForm.${field.columnKey}`, field.label);
   }
 
   getExtendFieldExplanation(columnKey) {
@@ -611,70 +715,71 @@ export class _DetailsPanel extends BasePanel {
   }
 
   validateRequired(field, formData, errors, message) {
-    const { intl } = this.props;
     if (!formData[field]) {
-      message = message || intl.formatMessage({ id: 'validation.required' });
-      errors.push({ field: field, message: message });
+      errors.push({
+        field: field,
+        message: message || t('validation.required', 'This is a required field'),
+      });
     }
   }
 
   validateEmail(field, formData, errors) {
-    const { intl } = this.props;
     // NOTE: giant ugly regex from: https://emailregex.com/
     const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const isValid = regex.test(formData[field]);
     if (!isValid) {
-      const message = intl.formatMessage({ id: 'validation.email' });
-      errors.push({ field: field, message: message });
+      errors.push({
+        field: field,
+        message: t('validation.email', 'Please enter a valid email'),
+      });
     }
   }
 
   validatePhone(field, formData, errors) {
-    const { intl } = this.props;
     const phone = formData[field];
     if (!phone || phone.length < 10 || phone.length > 14) {
-      const message = intl.formatMessage({ id: 'validation.phone' });
-      errors.push({ field: field, message: message });
+      errors.push({
+        field: field,
+        message: t('validation.phone', 'Please enter a valid phone number'),
+      });
     }
   }
 
   validateUniqueEmergencyNumber(emergencyPhoneField, customerPhoneField, formData, errors, message) {
-    const { intl } = this.props;
-
     if (formData[emergencyPhoneField] === formData[customerPhoneField]) {
-      message = message || intl.formatMessage({ id: 'validation.phone.unique' });
-      errors.push({ field: emergencyPhoneField, message: message });
+      errors.push({
+        field: emergencyPhoneField,
+        message: message || t('validation.phone-unique', 'Emergency phone number needs to be different to your mobile number'),
+      });
     }
   }
 
   validateDob({ field, dob, eventDate, minAge, maxAge, errors }) {
-    const { intl, participant } = this.props;
-    const message = intl.formatMessage({ id: `validation.age.${participant.type}` });
-
     if (minAge && eventDate) {
       const turnsMinAge = new Date(dob.getFullYear() + minAge, dob.getMonth(), dob.getDate());
       if (turnsMinAge > eventDate) {
-        errors.push({ 'field': field, 'message': message });
+        errors.push({
+          field: field,
+          message: t('validation.age-too-young', 'You must be older than {{age}} on the day of the event', { age: minAge }),
+        });
       }
     }
 
     if (maxAge && eventDate) {
       const turnsMaxAge = new Date(dob.getFullYear() + maxAge, dob.getMonth(), dob.getDate());
       if (turnsMaxAge < eventDate) {
-        errors.push({ 'field': field, 'message': message });
+        errors.push({
+          field: field,
+          message: t('validation.age-too-old', 'You must be younger than {{age}} on the day of the event', { age: maxAge }),
+        });
       }
     }
   }
 
   translateOptions(options) {
-    const { intl } = this.props;
-
     return options.map(option => ({
       value: option.value,
-      label: intl.formatMessage({ id: `option.${option.label}` }),
+      label: t(`option.${option.label}`, option.label),
     }));
   }
 }
-
-export const DetailsPanel = injectIntl(_DetailsPanel, { forwardRef: true });
-DetailsPanel.name = 'DetailsPanel';

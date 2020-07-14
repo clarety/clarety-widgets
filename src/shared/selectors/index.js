@@ -10,6 +10,7 @@ export const getFormData = (state) => state.formData;
 export const getIsBusy = (state) => state.status !== statuses.ready;
 export const getErrors = (state) => state.errors;
 export const getPanelManager = (state) => state.panelManager;
+export const getTranslations = (state) => state.translations;
 
 export const getIsLoggedIn = (state) => !!getAuth(state).jwt;
 
@@ -68,3 +69,5 @@ export const getSourceOptions = (state) => {
   const element = getElement(state, 'sourceId');
   return element ? element.options : undefined;
 };
+
+export const getLanguages = (state) => getTranslations(state).languages;

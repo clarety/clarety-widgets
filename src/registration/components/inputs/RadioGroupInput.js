@@ -1,19 +1,17 @@
 import React from 'react';
 import { Form, FormCheck } from 'react-bootstrap';
-import { FormattedMessage } from 'react-intl';
 import { FormContext } from 'shared/utils';
 import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
 
 class PureRadioGroupInput extends React.PureComponent {
   render() {
-    const { field, value, options, onChange, label, translationId, error, required } = this.props;
+    const { field, value, options, onChange, label, error, required } = this.props;
 
     return (
       <Form.Group>
         <Form.Label>
-          {label || <FormattedMessage id={translationId || `label.${field}`} />}
-          {!required && <span className="optional"> (Optional)</span>}
+          {label}{!required && <span className="optional"> (Optional)</span>}
         </Form.Label>
 
         {options.map(option =>

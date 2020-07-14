@@ -2,6 +2,7 @@ import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { connect, Provider as ReduxProvider } from 'react-redux';
+import i18next from 'i18next';
 import { BreakpointProvider } from 'react-socks';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
@@ -68,6 +69,8 @@ export class _DonateWidgetRoot extends React.Component {
     const givingTypeOptions = this.props.givingTypeOptions
       ? this.props.givingTypeOptions.map(option => ({ value: option, label: option }))
       : undefined;
+
+    i18next.init();
 
     updateAppSettings({
       variant:            this.props.variant,

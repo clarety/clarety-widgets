@@ -24,7 +24,7 @@ export function iterate(from, to, callback) {
 export function scrollIntoView(elementRef) {
   // TODO: querySelector isn't very react-y...
   // Can we get a ref from the MiniCart component or something?
-  const navbarElement = document.querySelector('.mini-cart-brand');
+  const navbarElement = document.querySelector('.mini-cart');
   const navbarHeight = navbarElement ? navbarElement.offsetHeight : 0;
   const scrollTarget = elementRef.offsetTop - navbarHeight;
   window.scrollTo({ top: scrollTarget, behavior: 'smooth' });

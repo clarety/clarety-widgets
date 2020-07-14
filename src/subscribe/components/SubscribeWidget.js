@@ -2,6 +2,7 @@ import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider, connect } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
+import i18next from 'i18next';
 import { PanelManager } from 'shared/components';
 import { setPanels, fetchSettings, updateAppSettings, setTrackingData, setPanelSettings } from 'shared/actions';
 import { Resources } from 'shared/utils';
@@ -46,6 +47,8 @@ export class SubscribeWidget extends React.Component {
 export class _SubscribeWidgetRoot extends React.Component {
   async componentDidMount() {
     const { updateAppSettings, setPanelSettings, setTrackingData } = this.props;
+
+    i18next.init();
 
     updateAppSettings({
       widgetElementId: this.props.elementId,

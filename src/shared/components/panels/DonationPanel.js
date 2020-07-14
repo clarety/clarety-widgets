@@ -1,6 +1,6 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Form, Button } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FrequencySelect, SuggestedAmount, SuggestedAmountLg, VariableAmount, VariableAmountLg } from 'shared/components';
 import { currency } from 'shared/utils';
@@ -140,13 +140,11 @@ export class DonationPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          intlId="donationPanel.editTitle"
+          title={t('donationPanel.editTitle', 'Make A Donation')}
         />
-
         <PanelBody layout={layout} status="edit">
-          <FormattedMessage id="donationPanel.message">
-            {txt => txt && <p className="message-text">{txt}</p>}
-          </FormattedMessage>
+          
+          <p className="message-text">{t('donationPanel.message', '')}</p>
 
           <Form onSubmit={this.onClickNext}>
 
@@ -167,12 +165,12 @@ export class DonationPanel extends BasePanel {
             <div className="panel-actions">
               {settings.showNoneButton &&
                 <Button onClick={this.onClickNone} variant="secondary">
-                  <FormattedMessage id="btn.none" />
+                  {t('btn.none', 'None')}
                 </Button>
               }
               
               <Button type="submit"> 
-                <FormattedMessage id="btn.next" />
+                {t('btn.next', 'Next')}
               </Button>
             </div>
 
@@ -192,16 +190,15 @@ export class DonationPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          intlId="donationPanel.doneTitle"
+          title={t('donationPanel.doneTitle', 'Your Donation')}
           onPressEdit={this.onPressEdit}
         />
-
         <PanelBody layout={layout} status="done">
 
           <p>{selectedAmount}</p>
 
           <Button onClick={this.onClickEdit}>
-            <FormattedMessage id="btn.edit" />
+            {t('btn.edit', 'Edit')}
           </Button>
 
         </PanelBody>

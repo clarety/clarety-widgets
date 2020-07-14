@@ -2,6 +2,7 @@ import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider} from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
+import i18next from 'i18next';
 import { ClaretyApi } from 'clarety-utils';
 import { getJwtSession } from 'shared/utils';
 import { CartHeader, CartSummary, CartFooter } from "cart/components";
@@ -17,6 +18,8 @@ export class Cart extends React.Component {
     }
 
     componentDidMount() {
+        i18next.init();
+
         this.refreshCart();
 
         // Attach a function to the window so we can refresh the cart from outside react.

@@ -70,7 +70,6 @@ export class CustomerPanel extends BasePanel {
           layout={layout}
           number={index + 1}
           title="Personal Details"
-          intlId="customerPanel.waitTitle"
         />
 
         <PanelBody layout={layout} status="wait">
@@ -91,7 +90,6 @@ export class CustomerPanel extends BasePanel {
             number={index + 1}
             title={settings.title}
             subtitle={settings.subtitle}
-            intlId="customerPanel.editTitle"
           />
         }
 

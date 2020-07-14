@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Col, Form } from 'react-bootstrap';
-import { FormattedMessage } from 'react-intl';
+import { t } from 'shared/translations';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext } from 'shared/utils';
 import { BasePanel, TextInput, EmailInput, DobInput, Button } from 'checkout/components';
@@ -223,7 +223,7 @@ export class LoginPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title="Contact Details"
+          title={t('loginPanel.waitTitle', 'Account Details')}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -236,13 +236,12 @@ export class LoginPanel extends BasePanel {
     const { layout, isBusy, isBusyResetPassword, index } = this.props;
 
     return (
-      <PanelContainer layout={layout}  className="login-panel">
+      <PanelContainer layout={layout} className="login-panel">
         <PanelHeader
           status="edit"
           layout={layout}
           number={index + 1}
-          title="Contact Details"
-          intlId="loginPanel.editTitle"
+          title={t('loginPanel.editTitle', 'Account Details')}
         />
 
         <PanelBody layout={layout} status="edit" isBusy={isBusy || isBusyResetPassword}>
@@ -268,11 +267,16 @@ export class LoginPanel extends BasePanel {
     return (
       <FormContext.Provider value={this.state}>
         <Form onSubmit={this.onPressCheckEmail}>
-          <p>Please type in an email address so we can check if you already have an account.</p>
+          <p>{t('loginPanel.checkEmailPrompt', 'Please type in an email address so we can check if you already have an account')}</p>
 
           <Form.Row>
             <Col>
-              <EmailInput label="Email" field="email" required hideLabel={settings.hideLabels} />
+              <EmailInput
+                field="email"
+                label={t('label.customer.email', 'Email')}
+                hideLabel={settings.hideLabels}
+                required
+              />
             </Col>
           </Form.Row>
 
@@ -288,7 +292,11 @@ export class LoginPanel extends BasePanel {
   renderCheckEmailButton() {
     return (
       <div className="panel-actions">
-        <Button title="Continue" type="submit" isBusy={this.props.isBusy} />
+        <Button
+          title={t('btn.next', 'Next')}
+          type="submit"
+          isBusy={this.props.isBusy}
+        />
       </div>
     );
   }
@@ -296,10 +304,19 @@ export class LoginPanel extends BasePanel {
   renderNoAccountButtons() {
     return (
       <React.Fragment>
-        <p>There is no account associated with this email, would you like to create one or checkout as a guest?</p>
+        <p>{t('loginPanel.noAccountPrompt', 'There is no account associated with this email, would you like to create one or checkout as a guest?')}</p>
+
         <div className="panel-actions">
-          <Button title="Guest Checkout" onClick={this.onPressGuestCheckout} variant="secondary" />
-          <Button title="Create Account" onClick={this.onPressShowCreateAccountForm} />
+          <Button
+            title={t('btn.guestCheckout', 'Guest Checkout')}
+            onClick={this.onPressGuestCheckout}
+            variant="secondary"
+          />
+
+          <Button
+            title={t('btn.createAccount', 'Create Account')}
+            onClick={this.onPressShowCreateAccountForm}
+          />
         </div>
       </React.Fragment>
     );
@@ -312,30 +329,56 @@ export class LoginPanel extends BasePanel {
     return (
       <FormContext.Provider value={this.state}>
         <Form onSubmit={this.onPressLogin}>
-          <p>You already have an account, please login to continue.</p>
+          <p>{t('loginPanel.loginPrompt', 'You already have an account, please login to continue')}</p>
 
           <Form.Row>
             <Col>
-              <EmailInput label="Email" field="email" required hideLabel={settings.hideLabels} />
+              <EmailInput
+                field="email"
+                label={t('label.customer.email', 'Email')}
+                hideLabel={settings.hideLabels}
+                required
+              />
             </Col>
           </Form.Row>
 
           <Form.Row>
             <Col>
-              <TextInput label="Password" field="password" type="password" required hideLabel={settings.hideLabels} />
+              <TextInput
+                field="password"
+                label={t('label.customer.password', 'Password')}
+                type="password"
+                hideLabel={settings.hideLabels}
+                required
+              />
             </Col>
           </Form.Row>
 
           <Row>
             <Col>
-              {passwordResetStatus === 'success' && <p>A temporary password email has been sent to you. Please check your email.</p>}
-              {passwordResetStatus === 'failure' && <p>Sorry, we could not reset your password.</p>}
+              {passwordResetStatus === 'success' &&
+                <p>{t('loginPanel.passwordResetSuccess', 'A temporary password email has been sent to you, please check your email')}</p>
+              }
+
+              {passwordResetStatus === 'failure' &&
+                <p>{t('loginPanel.passwordResetFailure', 'Sorry, we could not reset your password')}</p>
+              }
             </Col>
           </Row>
 
           <div className="panel-actions">
-            <Button title="Reset My Password" variant="secondary" onClick={this.onPressResetPassword} isBusy={isBusyResetPassword} />
-            <Button title="Login" type="submit" isBusy={isBusy} />
+            <Button
+              title={t('btn.resetPassword', 'Reset My Password')}
+              variant="secondary"
+              onClick={this.onPressResetPassword}
+              isBusy={isBusyResetPassword}
+            />
+
+            <Button
+              title={t('btn.login', 'Login')}
+              type="submit"
+              isBusy={isBusy}
+            />
           </div>
         </Form>
       </FormContext.Provider>
@@ -349,24 +392,40 @@ export class LoginPanel extends BasePanel {
       <FormContext.Provider value={this.state}>
         <Form onSubmit={this.onPressCreateAccount}>
 
-          <p>Please enter your details.</p>
+          <p>{t('loginPanel.createAccountPrompt', 'Please enter your details')}</p>
 
           <Form.Row>
             <Col>
-              <EmailInput label="Email" field="email" required hideLabel={settings.hideLabels} />
+              <EmailInput
+                field="email"
+                label={t('label.customer.email', 'Email')}
+                hideLabel={settings.hideLabels}
+                required
+              />
             </Col>
           </Form.Row>
 
           <Form.Row>
             <Col>
-              <TextInput label="Password" field="password" type="password" required hideLabel={settings.hideLabels} />
+              <TextInput
+                field="password"
+                label={t('label.customer.password', 'Password')}
+                type="password"
+                hideLabel={settings.hideLabels}
+                required
+              />
             </Col>
           </Form.Row>
 
           {settings.showFirstName &&
             <Form.Row>
               <Col>
-                <TextInput label="First Name" field="firstName" required hideLabel={settings.hideLabels} />
+                <TextInput
+                  field="firstName"
+                  label={t('label.customer.firstName', 'First Name')}
+                  hideLabel={settings.hideLabels}
+                  required
+                />
               </Col>
             </Form.Row>
           }
@@ -374,7 +433,12 @@ export class LoginPanel extends BasePanel {
           {settings.showLastName &&
             <Form.Row>
               <Col>
-                <TextInput label="Last Name" field="lastName" required hideLabel={settings.hideLabels} />
+                <TextInput
+                  field="lastName"
+                  label={t('label.customer.lastName', 'Last Name')}
+                  required
+                  hideLabel={settings.hideLabels}
+                />
               </Col>
             </Form.Row>
           }
@@ -383,11 +447,11 @@ export class LoginPanel extends BasePanel {
             <Form.Row>
               <Col>
                 <DobInput
-                  label="Date Of Birth"
                   field="dateOfBirth"
                   dayField="dateOfBirthDay"
                   monthField="dateOfBirthMonth"
                   yearField="dateOfBirthYear"
+                  label={t('label.customer.dateOfBirth', 'Date Of Birth')}
                   required
                   hideLabel={settings.hideLabels}
                 />
@@ -397,9 +461,18 @@ export class LoginPanel extends BasePanel {
 
           <div className="panel-actions">
             {settings.allowGuest &&
-              <Button title="Cancel" onClick={this.onPressCancelCreateAccount} variant="secondary" />
+              <Button
+                title={t('btn.cancel', 'Cancel')}
+                onClick={this.onPressCancelCreateAccount}
+                variant="secondary"
+              />
             }
-            <Button title="Continue" type="submit" isBusy={this.props.isBusy} />
+
+            <Button
+              title={t('btn.next', 'Next')}
+              type="submit"
+              isBusy={this.props.isBusy}
+            />
           </div>
 
         </Form>
@@ -412,13 +485,17 @@ export class LoginPanel extends BasePanel {
 
     return (
       <React.Fragment>
-        <p>You're currently logged-in as {this.props.customer.email}</p>
+        <p>{t('loginPanel.loggedInPrompt', 'You are currently logged-in as')} {this.props.customer.email}</p>
         <div className="panel-actions">
           {settings.useSelfServiceLogout
-            ? <a href="selfservice/login.php?action=logout" className="btn btn-secondary">Logout</a>
-            : <Button title="Logout" onClick={this.onPressLogout} variant="secondary" />
+            ? <a href="selfservice/login.php?action=logout" className="btn btn-secondary">{t('btn.logout', 'Logout')}</a>
+            : <Button title={t('btn.logout', 'Logout')} onClick={this.onPressLogout} variant="secondary" />
           }
-          <Button title="Continue" onClick={this.onPressStayLoggedIn} />
+
+          <Button
+            title={t('btn.next', 'Next')}
+            onClick={this.onPressStayLoggedIn}
+          />
         </div>
       </React.Fragment>
     );
@@ -427,7 +504,9 @@ export class LoginPanel extends BasePanel {
   renderDone() {
     const { formData } = this.state;
     const { layout, index, isLoggedIn, customer } = this.props;
-    let email = isLoggedIn ? customer.email : formData['email'];
+
+    const email = isLoggedIn ? customer.email : formData['email'];
+    const title = layout === 'stack' ? t('loginPanel.doneTitle', 'You are logged in as') : email;
 
     return (
       <PanelContainer layout={layout} status="done">
@@ -435,9 +514,8 @@ export class LoginPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title={email}
+          title={title}
           onPressEdit={this.onPressEdit}
-          intlId="loginPanel.doneTitle"
         />
 
         <PanelBody layout={layout} status="done">
@@ -445,7 +523,7 @@ export class LoginPanel extends BasePanel {
 
           <Button
             onClick={this.onClickEdit}
-            title={<FormattedMessage id="btn.edit" />}
+            title={t('btn.edit', 'Edit')}
           />
         </PanelBody>
       </PanelContainer>

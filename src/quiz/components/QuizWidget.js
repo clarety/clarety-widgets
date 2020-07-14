@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect, Provider } from 'react-redux';
+import i18next from 'i18next';
 import { setStatus, setPanels, setClientIds, updateAppSettings, setTrackingData, fetchSettings } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources, configureStore } from 'shared/utils';
@@ -55,6 +56,8 @@ export class _QuizWidgetRoot extends React.Component {
     if (!this.props.reCaptchaKey) throw new Error('[Clarety] missing reCaptcha key');
 
     const { isResumed, updateAppSettings, setTrackingData, fetchSettings, setStatus, setupPanels } = this.props;
+
+    i18next.init();
 
     updateAppSettings({
       widgetElementId: this.props.elementId,

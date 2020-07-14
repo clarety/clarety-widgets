@@ -1,8 +1,8 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Button, Form, Row, Col } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { currency } from 'shared/utils';
+import { currency, capitalize } from 'shared/utils';
 
 export class OffersPanel extends BasePanel {
   state = {
@@ -121,7 +121,7 @@ export class OffersPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, index } = this.props;
+    const { layout, index, participants } = this.props;
 
     return (
       <PanelContainer layout={layout} status="edit" className="offers-panel">
@@ -129,19 +129,18 @@ export class OffersPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          intlId="offersPanel.editTitle"
+          title={t('offersPanel.editTitle', 'Participant Selection')}
         />
-
         <PanelBody layout={layout} status="edit">
           
           {this.renderDescription()}
 
           <Form onSubmit={this.onClickNext}>
-            {this.renderRows()}
+            {participants.map(this.renderRow)}
 
             <div className="panel-actions">
               <Button type="submit" disabled={!this.canContinue()}>
-                <FormattedMessage id="btn.next" />
+                {t('btn.next', 'Next')}
               </Button>
             </div>
           </Form>
@@ -155,15 +154,15 @@ export class OffersPanel extends BasePanel {
     return null;
   }
 
-  renderRows() {
-    const { participants, settings } = this.props;
+  renderRow = (participant, index) => {
+    const { settings } = this.props;
     
-    return participants.map((participant, index) =>
+    return (
       <Row key={index} className="row-participant">
         <Col xs={12} xl={3}>
           <div className="participant-type">
             <span className="circle">{index + 1}</span>
-            <FormattedMessage id={`offersPanel.${participant.type}.title`} tagName="h4" />
+            <h4>{t(`label.${participant.type}`, capitalize(participant.type))}</h4>
           </div>
         </Col>
 
@@ -200,10 +199,11 @@ export class OffersPanel extends BasePanel {
       <React.Fragment>
         <Form.Group controlId={`prefill-options-${index}`}>
           <Form.Label>
-            <FormattedMessage id="offersPanel.prefillPrompt" />
+            {t('offersPanel.prefillPrompt', 'Who is this registration for?')}
           </Form.Label>
           <Form.Control as="select" onChange={onChange} value={selectedOption}>
-            <option hidden>Select</option>
+            <option hidden>{t('label.select', 'Select')}</option>
+
             {options.map(option =>
               <option key={option.value} value={option.value}>{option.label}</option>
             )}
@@ -221,7 +221,7 @@ export class OffersPanel extends BasePanel {
     return (
       <Form.Group>
         <Form.Label>
-          <FormattedMessage id="label.customer.firstName" />
+          {t('label.customer.firstName', 'First Name')}
         </Form.Label>
 
         <Form.Control
@@ -256,10 +256,9 @@ export class OffersPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          intlId="offersPanel.doneTitle"
+          title={t('offersPanel.doneTitle', 'Participants')}
           onPressEdit={this.onPressEdit}
         />
-
         <PanelBody layout={layout} status="done">
 
           <p>
@@ -272,7 +271,7 @@ export class OffersPanel extends BasePanel {
           </p>
 
           <Button onClick={this.onClickEdit}>
-            <FormattedMessage id="btn.edit" />
+            {t('btn.edit', 'Edit')}
           </Button>
 
         </PanelBody>
@@ -286,7 +285,7 @@ export class OffersPanel extends BasePanel {
     const options = [];
 
     if (participants[index].type !== 'child') {
-      this.maybeAddOption(options, index, 'yourself', 'Yourself');
+      this.maybeAddOption(options, index, 'yourself', t('label.yourself', 'Yourself'));
     }
 
     const offer = offers[index][0];
@@ -306,7 +305,7 @@ export class OffersPanel extends BasePanel {
       }
     });
 
-    options.push({ value: 'other', label: 'Other' });
+    options.push({ value: 'other', label: t('label.other', 'Other') });
 
     return options;
   }

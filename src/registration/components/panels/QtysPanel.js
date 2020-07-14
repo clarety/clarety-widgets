@@ -1,6 +1,6 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Button, Form, Col } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { DetailsPanel, Qty, QtyInput } from 'registration/components';
 
@@ -95,7 +95,7 @@ export class QtysPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          intlId="qtysPanel.editTitle"
+          title={t('qtysPanel.editTitle', 'Participant Selection')}
         />
 
         <PanelBody layout={layout} status="edit">
@@ -113,7 +113,7 @@ export class QtysPanel extends BasePanel {
       <React.Fragment>
         <Form>
           {this.renderBtnInputs()}
-          <FormattedMessage id="qtysPanel.message" tagName="p" />
+          <p>{t('qtysPanel.message', '')}</p>
         </Form>
       </React.Fragment>
     );
@@ -124,12 +124,12 @@ export class QtysPanel extends BasePanel {
       <React.Fragment>
         <Form>
           {this.renderQtyInputs()}
-          <FormattedMessage id="qtysPanel.message" tagName="p" />
+          <p>{t('qtysPanel.message', '')}</p>
         </Form>
 
         <div className="panel-actions">
           <Button onClick={this.onClickNext} disabled={!this.canContinue()}>
-            <FormattedMessage id="btn.next" />
+            {t('btn.next', 'Next')}
           </Button>
         </div>
       </React.Fragment>
@@ -139,14 +139,12 @@ export class QtysPanel extends BasePanel {
   renderBtnInputs() {
     const { types } = this.props;
 
-    return Object.entries(types).map(([key, type]) =>
-      <div className="m-3" key={key}>
-        <Button key={key} onClick={() => this.onSelectType(key)}>
-          {type.name}
+    return Object.keys(types).map(type =>
+      <div className="m-3" key={type}>
+        <Button onClick={() => this.onSelectType(type)}>
+          {this.getTypeTitle(type)}
         </Button>
-        <FormattedMessage id={`qtysPanel.${key}.subtitle`}>
-          {txt => <p className="text-muted">{txt}</p>}
-        </FormattedMessage>
+        <p className="text-muted">{this.getTypeSubtitle(type)}</p>
       </div>
     );
   }
@@ -159,10 +157,8 @@ export class QtysPanel extends BasePanel {
         <Form.Row className="align-items-center">
           <Col>
             <Form.Label className="form-label-qty">
-              <FormattedMessage id={`qtysPanel.${type}.title`} tagName="h4" />
-              <FormattedMessage id={`qtysPanel.${type}.subtitle`}>
-                {txt => <span className="text-muted">{txt}</span>}
-              </FormattedMessage>
+              <h4>{this.getTypeTitle(type)}</h4>
+              <p className="text-muted">{this.getTypeSubtitle(type)}</p>
             </Form.Label>
           </Col>
           <Col md="auto">
@@ -176,6 +172,18 @@ export class QtysPanel extends BasePanel {
     );
   }
 
+  getTypeTitle(type) {
+    if (type === 'adult') return t('qtysPanel.adult-title', 'Adults');
+    if (type === 'child') return t('qtysPanel.child-title', 'Children');
+    return undefined;
+  }
+
+  getTypeSubtitle(type) {
+    if (type === 'adult') return t('qtysPanel.adult-subtitle', 'Ages 17+');
+    if (type === 'child') return t('qtysPanel.child-subtitle', 'Ages 13 - 17');
+    return undefined;
+  }
+
   renderDone() {
     const { layout, index, qtys } = this.props;
 
@@ -185,20 +193,19 @@ export class QtysPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          intlId="qtysPanel.doneTitle"
+          title={t('qtysPanel.doneTitle', 'Registration')}
           onPressEdit={this.onPressEdit}
         />
-        
         <PanelBody layout={layout} status="done">
 
-          <p>
+          <div className="qtys">
             {Object.keys(qtys).map(key =>
               <Qty key={key} type={key} qty={qtys[key]} />
             )}
-          </p>
+          </div>
           
           <Button onClick={this.onClickEdit}>
-            <FormattedMessage id="btn.edit" />
+            {t('btn.edit', 'Edit')}
           </Button>
 
         </PanelBody>

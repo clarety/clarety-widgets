@@ -1,4 +1,5 @@
 import React from 'react';
+import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PayPalBtn } from 'shared/components';
 import { ErrorMessages } from 'form/components';
 
@@ -32,8 +33,7 @@ export class ExpressCheckoutPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title={settings.title || 'Express Checkout'}
-          intlId="ExpressCheckoutPanel.waitTitle"
+          title={settings.title || t('expressCheckoutPanel.waitTitle', 'Express Checkout')}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -57,8 +57,7 @@ export class ExpressCheckoutPanel extends BasePanel {
             status="edit"
             layout={layout}
             number={index + 1}
-            title={settings.title || 'Express Checkout'}
-            intlId="ExpressCheckoutPanel.editTitle"
+            title={settings.title || t('expressCheckoutPanel.editTitle', 'Express Checkout')}
           />
         }
 
@@ -100,7 +99,7 @@ export class ExpressCheckoutPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title={settings.title || 'Express Checkout'}
+          title={settings.title || t('expressCheckoutPanel.doneTitle', 'Express Checkout')}
           onPressEdit={this.onPressEdit}
         />
 

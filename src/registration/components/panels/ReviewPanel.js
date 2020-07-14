@@ -1,6 +1,6 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Button } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { ErrorMessages } from 'form/components';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 
@@ -52,17 +52,16 @@ export class ReviewPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          intlId="reviewPanel.errorTitle"
+          title={t('reviewPanel.errorTitle', 'We Found Some Problems With Your Registration')}
         />
-
         <PanelBody layout={layout} status="edit">
 
-          <FormattedMessage id="reviewPanel.errorSubtitle" tagName="p" />
+          <p>{t('reviewPanel.errorSubtitle', 'Please correct the issues and try again')}</p>
 
           <ErrorMessages showAll />
 
           <Button onClick={this.onClickRetry}>
-            <FormattedMessage id="btn.retry" />
+            {t('btn.retry', 'Try Again')}
           </Button>
           
         </PanelBody>
@@ -79,7 +78,7 @@ export class ReviewPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          intlId="reviewPanel.reviewTitle"
+          title={t('reviewPanel.reviewTitle', 'Please Review Your Registration')}
         />
 
         <PanelBody layout={layout} status="edit">
@@ -91,7 +90,7 @@ export class ReviewPanel extends BasePanel {
           </div>
 
           <Button onClick={this.onClickNext}>
-            <FormattedMessage id="btn.submit" />
+            {t('btn.submit', 'Submit Registration')}
           </Button>
 
         </PanelBody>

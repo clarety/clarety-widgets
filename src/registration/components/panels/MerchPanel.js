@@ -1,6 +1,6 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Row, Col, Form } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext, getSuburbLabel, getStateLabel, getPostcodeLabel, requiredField, phoneNumberField, parseNestedElements } from 'shared/utils';
 import { Button } from 'form/components';
@@ -150,7 +150,7 @@ export class MerchPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title="Merchandise"
+          title={t('merchPanel.waitTitle', 'Merchandise')}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -160,7 +160,7 @@ export class MerchPanel extends BasePanel {
   }
   
   renderEdit() {
-    const { layout, index, isBusy, settings, merchandise } = this.props;
+    const { layout, index, isBusy, merchandise } = this.props;
     const { selectedItem, qtys } = this.state;
 
     return (
@@ -169,9 +169,8 @@ export class MerchPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title="Check Out Our Official Merchandise"
+          title={t('merchPanel.editTitle', 'Check Out Our Official Merchandise')}
         />
-
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
 
           <Row className="merch-items">
@@ -192,7 +191,7 @@ export class MerchPanel extends BasePanel {
 
           <div className="panel-actions">
             <Button onClick={this.onClickNext} isBusy={isBusy}>
-              <FormattedMessage id="btn.next" />
+              {t('btn.next', 'Next')}
             </Button>
           </div>
 
@@ -216,44 +215,73 @@ export class MerchPanel extends BasePanel {
     return (
       <FormContext.Provider value={this.state}>
         <div className="delivery-address">
-          <h2>Delivery Details</h2>
+          <h2>{t('merchPanel.addressTitle', 'Delivery Details')}</h2>
 
           <Form.Row>
             <Col>
-              <CountryInput field="customer.delivery.country" label="Country" required />
+              <CountryInput
+                field="customer.delivery.country"
+                label={t('label.customer.address.country', 'Country')}
+                required
+              />
             </Col>
           </Form.Row>
 
           <Form.Row>
             <Col>
-              <PhoneInput field="customer.mobile" label="Mobile" country={country} required />
+              <PhoneInput
+                field="customer.mobile"
+                label={t('label.customer.mobile', 'Mobile')}
+                country={country}
+                required
+              />
             </Col>
           </Form.Row>
 
           <Form.Row>
             <Col>
-              <TextInput field="customer.delivery.address1" label="Address 1" required />
+              <TextInput
+                field="customer.delivery.address1"
+                label={t('label.customer.address.address1', 'Address 1')}
+                required
+              />
             </Col>
           </Form.Row>
 
           <Form.Row>
             <Col>
-              <TextInput field="delivery.address2" label="Address 2" />
+              <TextInput
+                field="customer.delivery.address2"
+                label={t('label.customer.address.address2', 'Address 2')}
+              />
             </Col>
           </Form.Row>
 
           <Form.Row>
             <Col>
-              <TextInput field="customer.delivery.suburb" label={getSuburbLabel(country)} required />
+              <TextInput
+                field="customer.delivery.suburb"
+                label={getSuburbLabel(country)}
+                required
+              />
             </Col>
           </Form.Row>
 
           <Form.Row>
             <Col>
-              <StateInput field="customer.delivery.state" label={getStateLabel(country)} country={country} required />
+              <StateInput
+                field="customer.delivery.state"
+                label={getStateLabel(country)}
+                country={country}
+                required
+              />
             </Col>
             <Col>
-              <PostcodeInput field="customer.delivery.postcode" label={getPostcodeLabel(country)} required />
+              <PostcodeInput
+                field="customer.delivery.postcode"
+                label={getPostcodeLabel(country)}
+                required
+              />
             </Col>
           </Form.Row>
         </div>
@@ -270,17 +298,15 @@ export class MerchPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title="Merchandise"
+          title={t('merchPanel.doneTitle', 'Merchandise')}
           onPressEdit={this.onPressEdit}
         />
-
         <PanelBody layout={layout} status="done">
-
-          {/* TODO: what content goes here?? */}
-          <p>Check out our offical merchandise</p>
+          
+          <p>{t('merchPanel.doneMessage', 'Check out our offical merchandise')}</p>
 
           <Button onClick={this.onClickEdit}>
-            <FormattedMessage id="btn.edit" />
+            {t('btn.edit', 'Edit')}
           </Button>
           
         </PanelBody>

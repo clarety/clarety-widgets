@@ -29,7 +29,7 @@ export class PaymentPanel extends BasePaymentPanel {
 
     return (
       <div className="shipping-options">
-        <h3>Shipping Options</h3>
+        <h3>{t('paymentPanel.shippingTitle', 'Shipping Options')}</h3>
         
         {cart.shippingOptions.map(this.renderShippingOption)}
       </div>
@@ -59,7 +59,7 @@ export class PaymentPanel extends BasePaymentPanel {
 
         {option.expectedDelivery &&
           <p className="shipping-option__date">
-            Estimated Delivery: {formatDate(option.expectedDelivery)}
+            {t('label.estimatedDelivery', 'Estimated Delivery')}: {formatDate(option.expectedDelivery)}
           </p>
         }
       </Form.Check>
@@ -83,11 +83,11 @@ const CartItem = ({ item }) => (
 
 const CartTotals = ({ summary }) => (
   <div className="cart-totals">
-    <TotalLine label="Subtotal" value={summary.subTotal} />
-    <TotalLine label="Discount Code" value={summary.discount} />
-    <TotalLine label="Shipping" value={summary.shipping} />
+    <TotalLine label={t('label.subtotal', 'Subtotal')} value={summary.subTotal} />
+    <TotalLine label={t('label.promoCode', 'Promo Code')} value={summary.discount} />
+    <TotalLine label={t('label.shipping', 'Shipping')} value={summary.shipping} />
     <hr />
-    <TotalLine label="Total" value={summary.total} />
+    <TotalLine label={t('label.total', 'Total')} value={summary.total} />
   </div>
 );
 
