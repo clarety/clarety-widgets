@@ -2,6 +2,7 @@ import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { connect, Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
+import i18next from 'i18next';
 import { statuses, setPanels, updateAppSettings, setTrackingData, setPanelSettings, fetchSettings } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
 import { PanelManager } from 'shared/components';
@@ -49,8 +50,10 @@ export class LeadGenWidget extends React.Component {
 export class _LeadGenRoot extends React.Component {
   componentWillMount() {
     if (!this.props.reCaptchaKey) throw new Error('[Clarety] missing reCaptcha key');
-
+    
     const { updateAppSettings, setTrackingData, setPanelSettings, fetchSettings } = this.props;
+
+    i18next.init();
 
     updateAppSettings({
       widgetElementId: this.props.elementId,

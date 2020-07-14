@@ -2,6 +2,7 @@ import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
+import i18next from 'i18next';
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import { ClaretyApi } from 'clarety-utils';
 import { Resources, getJwtSession, getJwtAccount } from 'shared/utils';
@@ -42,6 +43,8 @@ export class Checkout extends React.Component {
   }
 
   async componentDidMount() {
+    i18next.init();
+
     Checkout.store.dispatch(updateAppSettings({
       defaultCountry: this.props.defaultCountry,
     }));

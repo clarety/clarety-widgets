@@ -2,6 +2,7 @@ import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { connect, Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
+import i18next from 'i18next';
 import { ClaretyApi } from 'clarety-utils';
 import { setStatus, setAuth, setPanels, setClientIds, updateAppSettings, setTrackingData } from 'shared/actions';
 import { PanelManager } from 'shared/components';
@@ -54,9 +55,11 @@ export class _FundraisingStartRoot extends React.Component {
   async componentDidMount() {
     if (!this.props.reCaptchaKey) throw new Error('[Clarety] missing reCaptcha key');
 
-    const { updateAppSettings, setTrackingData, setStatus, setAuth, fetchCustomer } = this.props;
-    const { currencyCode, currencySymbol } = this.props;
+    i18next.init();
 
+    const { updateAppSettings, setTrackingData, setStatus, setAuth, fetchCustomer } = this.props;
+
+    const { currencyCode, currencySymbol } = this.props;
     const currency = currencySymbol ? { code: currencyCode, symbol: currencySymbol } : undefined;
 
     updateAppSettings({

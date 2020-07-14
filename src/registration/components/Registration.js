@@ -68,20 +68,17 @@ export class Registration extends React.Component {
 class _RegistrationRoot extends React.Component {
   async componentDidMount() {
     const { updateAppSettings, fetchEvents, setTrackingData, fetchSettings } = this.props;
+    const { languages, defaultLanguage } = this.props;
 
     // Init translations.
-    const defaultLanguage = this.props.defaultLanguage || 'en';
-
     i18next.init({
       lng: defaultLanguage,
-      resources: this.props.languages,
+      resources: languages,
       returnNull: false,
     });
 
     i18next.on('languageChanged', () => this.forceUpdate());
-
     this.props.changeLanguage(defaultLanguage);
-
 
     // Settings.
     const { currencySymbol, currencyCode } = this.props;
