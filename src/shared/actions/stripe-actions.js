@@ -39,6 +39,7 @@ export const authoriseStripePayment = (paymentResult, paymentData, paymentMethod
 
     const payment = {
       type: paymentMethod.type,
+      gatewayToken: paymentResult.gatewayToken,
       gateway: paymentMethod.gateway,
       gatewayAuthorised: 'passed',
     };

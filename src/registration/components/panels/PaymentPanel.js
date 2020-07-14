@@ -1,11 +1,11 @@
 import React from 'react';
 import { Row, Col, Form } from 'react-bootstrap';
 import { t } from 'shared/translations';
-import { _PaymentPanel as BasePaymentPanel } from 'shared/components';
+import { _PaymentPanel as BasePaymentPanel, injectStripe } from 'shared/components';
 import { Currency } from 'shared/components';
 import { formatDate } from 'shared/utils';
 
-export class PaymentPanel extends BasePaymentPanel {
+export class _PaymentPanel extends BasePaymentPanel {
   renderCartSummary() {
     const { cart } = this.props;
 
@@ -67,6 +67,8 @@ export class PaymentPanel extends BasePaymentPanel {
     );
   };
 }
+
+export const PaymentPanel = injectStripe(_PaymentPanel);
 
 const CartItem = ({ item }) => (
   <Row as="dl" className="cart-item">

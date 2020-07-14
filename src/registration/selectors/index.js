@@ -179,12 +179,16 @@ export const getChannel = (state) => {
 export const getIsLoggedIn = (state) => !!getAuth(state).jwt;
 
 export const getPaymentMethods = (state) => {
-  const isFree = getCartTotal(state) === 0;
-  const isCorporateTeam = getIsCorporateTeam(state);
+  const hasCart = !!getCart(state).uid;
+  const isFree = getCartTotal(state) === 0 || getIsCorporateTeam(state);
 
-  return isFree || isCorporateTeam
-    ? [{ type: 'na' }]
-    : [{ type: 'gatewaycc' }];
+  if (hasCart && isFree) return [{ type: 'na' }];
+
+  return getSetting(state, 'paymentMethods') || [{ type: 'gatewaycc' }];
+};
+
+export const getPaymentMethod = (state, type) => {
+  return getPaymentMethods(state).find(method => method.type === type);
 };
 
 export const getCreateTeamPostData = (state) => {
@@ -304,10 +308,12 @@ const getMerchandisePostData = (state) => {
   }));
 };
 
-export const getSubmitRegistrationPostData = (state, paymentData) => {
+export const getSubmitRegistrationPostData = (state) => {
+  const cart = getCart(state);
+
   return {
     uid: state.cart.uid,
     jwt: state.cart.jwt,
-    ...paymentData,
+    ...cart.payment,
   };
 };

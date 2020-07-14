@@ -43,7 +43,7 @@ const Demo = () => {
     return <DonateDemo />;
   }
 
-  if (url.endsWith('registration')){
+  if (url.endsWith('registration')) {
     const RegistrationDemo = require('./RegistrationDemo').default;
     return <RegistrationDemo />;
   }

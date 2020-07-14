@@ -89,6 +89,7 @@ class _RegistrationRoot extends React.Component {
       seriesId: this.props.seriesId,
       prevSeriesId: this.props.prevSeriesId,
       variant: this.props.variant,
+      paymentMethods: this.props.paymentMethods,
       currency: currency,
       ...this.props.settings,
     });
