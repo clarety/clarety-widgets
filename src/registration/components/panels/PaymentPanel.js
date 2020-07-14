@@ -1,5 +1,6 @@
 import React from 'react';
 import { Row, Col, Form } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { _PaymentPanel as BasePaymentPanel } from 'shared/components';
 import { Currency } from 'shared/components';
 import { formatDate } from 'shared/utils';
