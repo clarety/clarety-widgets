@@ -14,11 +14,7 @@ const initialState = {
   elements: null,
 
   priceHandles: null,
-
-  currency: {
-    symbol: '$',
-    code: 'AUD',
-  },
+  currency: null,
 };
 
 export const settingsReducer = (state = initialState, action) => {

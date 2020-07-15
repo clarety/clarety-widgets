@@ -16,11 +16,13 @@ export const statusReducer = (state = initialState, action) => {
     case sharedTypes.fetchSettingsRequest:
     case types.fetchAuthCustomerRequest:
     case types.fetchEventsRequest:
+    case types.fetchFullEventRequest:
       return statuses.initializing;
     
     case sharedTypes.fetchSettingsSuccess:
     case types.fetchAuthCustomerSuccess:
     case types.fetchEventsSuccess:
+    case types.fetchFullEventSuccess:
       return statuses.ready;
 
     case types.registrationCreateRequest:
