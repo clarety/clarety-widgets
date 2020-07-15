@@ -590,7 +590,7 @@ export class DetailsPanel extends BasePanel {
       <CheckboxInput
         key={addOn.offerId}
         field={`addOns.${addOn.offerId}`}
-        label={t(`label.addOn.${offerId}`, addOn.name)}
+        label={t(`label.addOn.${addOn.offerId}`, addOn.name)}
       />
     );
   }
