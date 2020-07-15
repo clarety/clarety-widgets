@@ -84,7 +84,7 @@ export class EventPanel extends BasePanel {
   }
   
   renderEdit() {
-    const { layout, index, isBusy, settings } = this.props;
+    const { layout, index, settings } = this.props;
 
     return (
       <PanelContainer layout={layout} status="edit" className="event-panel">
@@ -94,7 +94,7 @@ export class EventPanel extends BasePanel {
           number={index + 1}
           title={t('eventPanel.editTitle', 'Which Location Are You Registering For?')}
         />
-        <PanelBody layout={layout} status="edit" isBusy={isBusy}>
+        <PanelBody layout={layout} status="edit">
 
           {settings.showStateButtons && this.renderStateButtons()}
           {this.renderEventSelect()}
@@ -104,7 +104,6 @@ export class EventPanel extends BasePanel {
             <Button
               onClick={this.onClickNext}
               disabled={!this.state.event}
-              isBusy={isBusy}
             >
               {t('btn.next', 'Next')}
             </Button>

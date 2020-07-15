@@ -1,16 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, InputGroup } from 'react-bootstrap';
+import { CurrencySymbol } from 'shared/components';
 import { cleanDecimal } from 'form/utils';
 
-const _VariableAmount = ({ value, amountInfo, isSelected, onChange, currency }) => {
+export const VariableAmount = ({ value, amountInfo, isSelected, onChange }) => {
   let input = React.createRef();
 
   return (
     <div className="mt-3 mb-1 mx-3 d-lg-none">
       <InputGroup>
         <InputGroup.Prepend>
-          <InputGroup.Text>{currency.symbol}</InputGroup.Text>
+          <InputGroup.Text><CurrencySymbol /></InputGroup.Text>
         </InputGroup.Prepend>
         <Form.Control
           placeholder="Enter Amount"
@@ -25,12 +26,3 @@ const _VariableAmount = ({ value, amountInfo, isSelected, onChange, currency }) 
     </div>
   );
 };
-
-const mapStateToProps = state => {
-  return {
-    currency: state.settings.currency,
-  }
-};
-
-export const connectVariableAmount = connect(mapStateToProps);
-export const VariableAmount = connectVariableAmount(_VariableAmount);
