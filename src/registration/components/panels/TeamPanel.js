@@ -217,10 +217,12 @@ export class TeamPanel extends BasePanel {
           <TextInput field="team.name" />
         </Form.Group>
 
-        <Form.Group controlId="team.type">
-          <Form.Label>{t('label.team.type', 'Team Type')}</Form.Label>
-          <SelectInput field="team.type" options={teamTypeOptions} />
-        </Form.Group>
+        {settings.showTeamType &&
+          <Form.Group controlId="team.type">
+            <Form.Label>{t('label.team.type', 'Team Type')}</Form.Label>
+            <SelectInput field="team.type" options={teamTypeOptions} />
+          </Form.Group>
+        }
 
         {showPasswordCheckbox &&
           <Form.Group controlId="team.passwordRequired">
@@ -250,10 +252,10 @@ export class TeamPanel extends BasePanel {
   }
 
   canContinueCreate() {
-    const { formData } = this.props;
+    const { formData, settings } = this.props;
 
     if (!formData['team.name']) return false;
-    if (!formData['team.type']) return false;
+    if (settings.showTeamType && !formData['team.type']) return false;
     if (formData['team.passwordRequired'] && !formData['team.password']) return false;
     
     return true;

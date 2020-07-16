@@ -1,6 +1,13 @@
 import { addItem, updateItem, removeItem } from 'shared/actions';
 import { getCart } from 'shared/selectors';
 import { getMerchOffer } from 'registration/selectors';
+import { types } from 'registration/actions/types';
+
+export const setFundraising = ({ goal, createPage }) => ({
+  type: types.setFundraising,
+  goal: goal,
+  createPage: createPage,
+});
 
 export const setWaveInCart = (participantIndex, waveProductId) => {
   return async (dispatch, getState) => {

@@ -6,31 +6,32 @@ export const injectStripe = (PaymentPanelComponent) => {
   class PaymentPanel extends React.Component {
     static stripePromise = null;
 
-    getPaymentMethod() {
-      const { paymentMethods } = this.props;
-
-      if (!paymentMethods) return null;
-
-      return paymentMethods.find(method => method.gateway === 'stripe' || method.gateway === 'stripe-sca');
+    componentDidUpdate(prevProps) {
+      if (prevProps.paymentMethods !== this.props.paymentMethods) {
+        if (this.shouldUseStripe() && !this.stripePromise) {
+          const paymentMethod = this.getPaymentMethod();
+          this.stripePromise = loadStripe(paymentMethod.publicKey);
+        }
+      }
     }
 
     shouldUseStripe() {
       return !!this.getPaymentMethod();
     }
 
-    constructor(props) {
-      super(props);
-      
-      if (this.shouldUseStripe() && !this.stripePromise) {
-        const paymentMethod = this.getPaymentMethod();
-        this.stripePromise = loadStripe(paymentMethod.publicKey);
-      }
+    getPaymentMethod() {
+      const { paymentMethods } = this.props;
+
+      if (!paymentMethods) return null;
+      return paymentMethods.find(method => method.gateway === 'stripe' || method.gateway === 'stripe-sca');
     }
 
     render() {
       const { forwardedRef, ...props } = this.props;
 
-      if (!this.shouldUseStripe()) return <PaymentPanelComponent ref={forwardedRef} {...props} />;
+      if (!this.shouldUseStripe() || !this.stripePromise) {
+        return <PaymentPanelComponent ref={forwardedRef} {...props} />;
+      }
 
       return (
         <Elements stripe={this.stripePromise}>
