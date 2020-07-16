@@ -172,8 +172,7 @@ const handleStripeAuthorise = (paymentResult, paymentData, paymentMethod) => {
     const authResult = await dispatch(authoriseStripePayment(paymentResult, paymentData, paymentMethod));
 
     if (authResult.validationErrors) {
-      dispatch(setErrors(result.validationErrors));
-      return false;
+      return dispatch(handlePaymentError(authResult, paymentData, paymentMethod));
     } else {
       // Prepare payment.
       dispatch(setPayment(authResult.payment));
