@@ -156,19 +156,23 @@ export class DetailsPanel extends BasePanel {
     }
 
     if (formData['autofill.address']) {
-      formData['customer.billing.address1'] = firstParticipant.customer.billing.address1;
-      formData['customer.billing.address2'] = firstParticipant.customer.billing.address2;
-      formData['customer.billing.suburb']   = firstParticipant.customer.billing.suburb;
-      formData['customer.billing.state']    = firstParticipant.customer.billing.state;
-      formData['customer.billing.postcode'] = firstParticipant.customer.billing.postcode;
-      formData['customer.billing.country']  = firstParticipant.customer.billing.country;
+      if (firstParticipant.customer.billing) {
+        formData['customer.billing.address1'] = firstParticipant.customer.billing.address1;
+        formData['customer.billing.address2'] = firstParticipant.customer.billing.address2;
+        formData['customer.billing.suburb']   = firstParticipant.customer.billing.suburb;
+        formData['customer.billing.state']    = firstParticipant.customer.billing.state;
+        formData['customer.billing.postcode'] = firstParticipant.customer.billing.postcode;
+        formData['customer.billing.country']  = firstParticipant.customer.billing.country;
+      }
 
-      formData['customer.delivery.address1'] = firstParticipant.customer.delivery.address1;
-      formData['customer.delivery.address2'] = firstParticipant.customer.delivery.address2;
-      formData['customer.delivery.suburb']   = firstParticipant.customer.delivery.suburb;
-      formData['customer.delivery.state']    = firstParticipant.customer.delivery.state;
-      formData['customer.delivery.postcode'] = firstParticipant.customer.delivery.postcode;
-      formData['customer.delivery.country']  = firstParticipant.customer.delivery.country;
+      if (firstParticipant.customer.delivery) {
+        formData['customer.delivery.address1'] = firstParticipant.customer.delivery.address1;
+        formData['customer.delivery.address2'] = firstParticipant.customer.delivery.address2;
+        formData['customer.delivery.suburb']   = firstParticipant.customer.delivery.suburb;
+        formData['customer.delivery.state']    = firstParticipant.customer.delivery.state;
+        formData['customer.delivery.postcode'] = firstParticipant.customer.delivery.postcode;
+        formData['customer.delivery.country']  = firstParticipant.customer.delivery.country;
+      }
     }
 
     if (formData['autofill.billing'] && !formData['autofill.address']) {
