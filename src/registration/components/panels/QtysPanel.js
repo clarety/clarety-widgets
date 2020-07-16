@@ -139,9 +139,9 @@ export class QtysPanel extends BasePanel {
   renderBtnInputs() {
     const { types } = this.props;
 
-    return Object.keys(types).map(type =>
-      <div className="m-3" key={type}>
-        <Button onClick={() => this.onSelectType(type)}>
+    return Object.entries(types).map(([key, type]) =>
+      <div className="m-3" key={key}>
+        <Button onClick={() => this.onSelectType(key)}>
           {this.getTypeTitle(type)}
         </Button>
         <p className="text-muted">{this.getTypeSubtitle(type)}</p>
@@ -152,8 +152,8 @@ export class QtysPanel extends BasePanel {
   renderQtyInputs() {
     const { types } = this.props;
 
-    return Object.keys(types).map(type =>
-      <Form.Group key={type}>
+    return Object.entries(types).map(([key, type]) =>
+      <Form.Group key={key}>
         <Form.Row className="align-items-center">
           <Col>
             <Form.Label className="form-label-qty">
@@ -163,8 +163,8 @@ export class QtysPanel extends BasePanel {
           </Col>
           <Col md="auto">
             <QtyInput
-              value={this.state.qtys[type] || 0}
-              onChange={qty => this.onChangeQty(type, qty)}
+              value={this.state.qtys[key] || 0}
+              onChange={qty => this.onChangeQty(key, qty)}
             />
           </Col>
         </Form.Row>
@@ -173,14 +173,14 @@ export class QtysPanel extends BasePanel {
   }
 
   getTypeTitle(type) {
-    if (type === 'adult') return t('qtysPanel.adult-title', 'Adults');
-    if (type === 'child') return t('qtysPanel.child-title', 'Children');
+    if (type.registrationType === 'adult') return t('qtysPanel.adult-title', 'Adults');
+    if (type.registrationType === 'child') return t('qtysPanel.child-title', 'Children');
     return undefined;
   }
 
   getTypeSubtitle(type) {
-    if (type === 'adult') return t('qtysPanel.adult-subtitle', 'Ages 17+');
-    if (type === 'child') return t('qtysPanel.child-subtitle', 'Ages 13 - 17');
+    if (type.registrationType === 'adult') return t('qtysPanel.adult-subtitle', type.description);
+    if (type.registrationType === 'child') return t('qtysPanel.child-subtitle', type.description);
     return undefined;
   }
 
