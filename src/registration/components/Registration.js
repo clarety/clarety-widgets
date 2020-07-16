@@ -49,10 +49,6 @@ export class Registration extends React.Component {
     Registration.resources.setComponent(name, component);
   }
 
-  static setFundraising({ goal, createPage }) {
-    Registration.store.dispatch(setFundraising({ goal, createPage }));
-  }
-
   render() {
     return (
       <ReduxProvider store={Registration.store}>
@@ -96,6 +92,13 @@ class _RegistrationRoot extends React.Component {
     // Tracking.
     const { sourceId, sourceUid, responseId, emailResponseId, setTrackingData } = this.props;
     setTrackingData({ sourceId, sourceUid, responseId, emailResponseId });
+
+    // Fundraising.
+    const { fundraisingGoal, fundraisingCreatePage, setFundraising } = this.props;
+    setFundraising({
+      goal: fundraisingGoal,
+      createPage: fundraisingCreatePage,
+    });
 
     // Init API.
     RegistrationApi.init({
@@ -180,14 +183,15 @@ const mapStateToProps = state => {
 const actions = {
   updateAppSettings: updateAppSettings,
   changeLanguage: changeLanguage,
-  
+
   setAuth: setAuth,
-  fetchAuthCustomer: fetchAuthCustomer,
+  setTrackingData: setTrackingData,
+  setFundraising: setFundraising,
 
   fetchEvents: fetchEvents,
   fetchFullEvent: fetchFullEvent,
   fetchSettings: fetchSettings,
-  setTrackingData: setTrackingData,
+  fetchAuthCustomer: fetchAuthCustomer,
 };
 
 const RegistrationRoot = connect(mapStateToProps, actions)(_RegistrationRoot);
