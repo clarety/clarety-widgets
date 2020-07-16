@@ -12,7 +12,7 @@ import { statuses, setPanels, setLanguages, changeLanguage, setClientIds, setAut
 import { PanelManager } from 'shared/components';
 import { Resources, getJwtAccount } from 'shared/utils';
 import { MiniCart, MiniCartBrand, BusyOverlay } from 'registration/components';
-import { fetchEvents, fetchFullEvent, fetchAuthCustomer } from 'registration/actions';
+import { fetchEvents, fetchFullEvent, fetchAuthCustomer, setFundraising } from 'registration/actions';
 import { rootReducer } from 'registration/reducers';
 import { RegistrationApi } from 'registration/utils';
 
@@ -49,6 +49,10 @@ export class Registration extends React.Component {
     Registration.resources.setComponent(name, component);
   }
 
+  static setFundraising({ goal, createPage }) {
+    Registration.store.dispatch(setFundraising({ goal, createPage }));
+  }
+
   render() {
     return (
       <ReduxProvider store={Registration.store}>
@@ -66,16 +70,6 @@ export class Registration extends React.Component {
 
 class _RegistrationRoot extends React.Component {
   async componentDidMount() {
-    // Translations.
-    const { languages, defaultLanguage, changeLanguage } = this.props;
-    i18next.init({
-      lng: defaultLanguage,
-      resources: languages,
-      returnNull: false,
-    });
-    changeLanguage(defaultLanguage);
-    i18next.on('languageChanged', () => this.forceUpdate());
-
     // Settings.
     const { currencySymbol, currencyCode, updateAppSettings } = this.props;
     const currency = currencySymbol ? { code: currencyCode, symbol: currencySymbol } : undefined;
@@ -88,6 +82,16 @@ class _RegistrationRoot extends React.Component {
       currency: currency,
       ...this.props.settings,
     });
+
+    // Translations.
+    const { languages, defaultLanguage, changeLanguage } = this.props;
+    i18next.init({
+      lng: defaultLanguage,
+      resources: languages,
+      returnNull: false,
+    });
+    changeLanguage(defaultLanguage);
+    i18next.on('languageChanged', () => this.forceUpdate());
 
     // Tracking.
     const { sourceId, sourceUid, responseId, emailResponseId, setTrackingData } = this.props;

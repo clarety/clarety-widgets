@@ -284,7 +284,10 @@ const getDefaultOffer = (state, participant) => getOffers(state, participant.typ
 const getDefaultWave = (state, participant) => getOffer(state, participant).waves[0];
 
 const getFundraisingPostData = (state) => {
+  const cart = getCart(state);
+
   return {
+    ...cart.fundraising,
     donationAmount: getDonationAmount(state),
   };
 };

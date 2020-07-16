@@ -3,6 +3,8 @@ import { types } from 'registration/actions';
 
 export const cartReducer = (state, action) => {
   switch (action.type) {
+    case types.setFundraising:              return setFundraising(state, action);
+
     case types.registrationCreateRequest:   return registrationCreateRequest(state, action);
     case types.registrationCreateSuccess:   return registrationCreateSuccess(state, action);
     case types.registrationCreateFailure:   return registrationCreateFailure(state, action);
@@ -13,6 +15,16 @@ export const cartReducer = (state, action) => {
     default:                                return sharedCartReducer(state, action);
   }
 };
+
+function setFundraising(state, action) {
+  return {
+    ...state,
+    fundraising: {
+      createPage: action.createPage,
+      goal: action.goal,
+    },
+  };
+}
 
 function registrationCreateRequest(state, action) {
   return {

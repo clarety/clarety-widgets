@@ -30,6 +30,8 @@ export const types = {
 
   // Registration Action Types
 
+  setFundraising: 'SET_FUNDRAISING',
+
   registrationCreateRequest: 'REGISTRATION_CREATE_REQUEST',
   registrationCreateSuccess: 'REGISTRATION_CREATE_SUCCESS',
   registrationCreateFailure: 'REGISTRATION_CREATE_FAILURE',
