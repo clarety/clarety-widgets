@@ -47,10 +47,8 @@ export class OffersPanel extends BasePanel {
 
     setFirstNames(names);
 
-    if (settings.showOffers) {
-      setOffers(offers);
-      this.addOffersToCart();
-    }
+    setOffers(offers);
+    this.addOffersToCart();
 
     if (settings.showPrefill) {
       prefillDetails(prefills);

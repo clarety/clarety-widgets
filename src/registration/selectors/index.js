@@ -202,7 +202,7 @@ export const getCreateTeamPostData = (state) => {
     teamId:           '', // NOTE: the api wants an empty string...
     customerId:       customer.id,
     name:             formData['team.name'],
-    type:             formData['team.type'],
+    type:             formData['team.type'] || getSetting(state, 'teamType'),
     passwordRequired: formData['team.passwordRequired'] || false,
     password:         formData['team.passwordRequired'] ? formData['team.password'] : undefined,
   };

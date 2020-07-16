@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import { setPayment, isStripe, prepareStripePayment, authoriseStripePayment } from 'shared/actions';
 import { getCart } from 'shared/selectors';
 import { setErrors, clearErrors } from 'form/actions';
@@ -160,9 +161,13 @@ const handlePaymentAuthorise = (result, paymentData, paymentMethod) => {
 
 const handlePaymentComplete = (result, paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
+    const state = getState();
+    const cart = getCart(state);
+
     dispatch(registrationSubmitSuccess(result));
 
     // Redirect on success.
+    Cookies.set('session-jwt', cart.jwt);
     window.location.href = result.redirect;
   }
 };

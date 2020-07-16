@@ -22,10 +22,7 @@ export const injectStripe = (PaymentPanelComponent) => {
     getPaymentMethod() {
       const { paymentMethods } = this.props;
 
-      console.log('getPaymentMethod', paymentMethods);
-
       if (!paymentMethods) return null;
-
       return paymentMethods.find(method => method.gateway === 'stripe' || method.gateway === 'stripe-sca');
     }
 
