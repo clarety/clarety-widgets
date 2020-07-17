@@ -88,6 +88,7 @@ export class AddressPanel extends BasePanel {
       formData['customer.delivery.suburb']   = customer.delivery.suburb;
       formData['customer.delivery.state']    = customer.delivery.state;
       formData['customer.delivery.postcode'] = customer.delivery.postcode;
+      formData['customer.delivery.country']  = customer.delivery.country;
     }
 
     if (customer.billing) {
@@ -96,6 +97,7 @@ export class AddressPanel extends BasePanel {
       formData['customer.billing.suburb']   = customer.billing.suburb;
       formData['customer.billing.state']    = customer.billing.state;
       formData['customer.billing.postcode'] = customer.billing.postcode;
+      formData['customer.billing.country']  = customer.billing.country;
     }
 
     this.setState(prevState => ({
@@ -220,17 +222,34 @@ export class AddressPanel extends BasePanel {
 
         <Form.Row>
           <Col>
-            <TextInput field={`${fieldPrefix}.suburb`} label={getSuburbLabel(country)} required hideLabel={settings.hideLabels} />
+            <TextInput
+              field={`${fieldPrefix}.suburb`}
+              label={getSuburbLabel(country)}
+              hideLabel={settings.hideLabels}
+              required
+            />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col>
-            <StateInput field={`${fieldPrefix}.state`} label={getStateLabel(country)} country={country} required hideLabel={settings.hideLabels} />
+            <StateInput
+              field={`${fieldPrefix}.state`}
+              label={getStateLabel(country)}
+              country={country}
+              hideLabel={settings.hideLabels}
+              required
+            />
           </Col>
 
           <Col>
-            <PostcodeInput field={`${fieldPrefix}.postcode`} label={getPostcodeLabel(country)} country={country} required hideLabel={settings.hideLabels} />
+            <PostcodeInput
+              field={`${fieldPrefix}.postcode`}
+              label={getPostcodeLabel(country)}
+              country={country}
+              hideLabel={settings.hideLabels}
+              required
+            />
           </Col>
         </Form.Row>
       </React.Fragment>
@@ -249,7 +268,14 @@ export class AddressPanel extends BasePanel {
     return (
       <Form.Row>
         <Col>
-          <CountryInput field={`${fieldPrefix}.country`} label="Country" initialValue={defaultCountry} required hideLabel={settings.hideLabels} />
+          <CountryInput
+            field={`${fieldPrefix}.country`}
+            label="Country"
+            initialValue={defaultCountry}
+            region={settings.region}
+            hideLabel={settings.hideLabels}
+            required
+          />
         </Col>
       </Form.Row>
     );
