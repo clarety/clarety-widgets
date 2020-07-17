@@ -6,12 +6,20 @@ export const injectStripe = (PaymentPanelComponent) => {
   class PaymentPanel extends React.Component {
     static stripePromise = null;
 
+    componentDidMount() {
+      this.maybeLoadStripe();
+    }
+
     componentDidUpdate(prevProps) {
       if (prevProps.paymentMethods !== this.props.paymentMethods) {
-        if (this.shouldUseStripe() && !this.stripePromise) {
-          const paymentMethod = this.getPaymentMethod();
-          this.stripePromise = loadStripe(paymentMethod.publicKey);
-        }
+        this.maybeLoadStripe();
+      }
+    }
+
+    maybeLoadStripe() {
+      if (this.shouldUseStripe() && !this.stripePromise) {
+        const paymentMethod = this.getPaymentMethod();
+        this.stripePromise = loadStripe(paymentMethod.publicKey);
       }
     }
 
