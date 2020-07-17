@@ -8,6 +8,17 @@ export function loadAddressFinder(onLoadCallback) {
   document.body.appendChild(script);
 }
 
+export function getCountryOptions(region) {
+  if (region === 'AU-NZ') {
+    return [
+      { value: 'AU', label: 'Australia' },
+      { value: 'NZ', label: 'New Zealand' },
+    ];
+  }
+
+  return allCountryOptions;
+}
+
 export function getStateOptions(country) {
   switch (country) {
     case 'AU': return auStateOptions;
@@ -20,6 +31,7 @@ export function getStateOptions(country) {
 export function getSuburbLabel(country) {
   switch (country) {
     case 'AU': return 'Suburb';
+    case 'NZ': return 'Suburb';
     default:   return t('label.customer.address.suburb', 'City / Suburb');
   }
 }
@@ -39,7 +51,7 @@ export function getPostcodeLabel(country) {
   }
 }
 
-export const auStateOptions = [
+const auStateOptions = [
   { value: 'NSW', label: 'NSW' },
   { value: 'VIC', label: 'VIC' },
   { value: 'QLD', label: 'QLD' },
@@ -50,7 +62,7 @@ export const auStateOptions = [
   { value: 'ACT', label: 'ACT' },
 ];
 
-export const ukStateOptions = [
+const ukStateOptions = [
   { value: 'UK', label: 'UK' },
   { value: 'England', label: 'England' },
   { value: 'Channel Islands', label: 'Channel Islands' },
@@ -62,7 +74,7 @@ export const ukStateOptions = [
   { value: 'UK-Aberdeen', label: 'UK-Aberdeen' },
 ];
 
-export const usStateOptions = [
+const usStateOptions = [
   { value:'AL', label: 'Alabama' },
   { value:'AK', label: 'Alaska' },
   { value:'AZ', label: 'Arizona' },
@@ -116,7 +128,7 @@ export const usStateOptions = [
   { value:'WY', label: 'Wyoming' },
 ];
 
-export const countryOptions = [
+const allCountryOptions = [
   { value: 'US', label: 'United States' },
   { value: 'AU', label: 'Australia' },
   { value: 'UK', label: 'United Kingdom' },

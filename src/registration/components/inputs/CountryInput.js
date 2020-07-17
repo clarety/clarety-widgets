@@ -1,10 +1,10 @@
 import React from 'react';
-import { countryOptions } from 'shared/utils';
+import { getCountryOptions } from 'shared/utils';
 import { SimpleSelectInput } from 'registration/components';
 
-export const CountryInput = (props) => (
+export const CountryInput = ({ region, ...props }) => (
   <SimpleSelectInput
+    options={getCountryOptions(region)}
     {...props}
-    options={countryOptions}
   />
 );
