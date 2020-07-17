@@ -11,9 +11,8 @@ import { t } from 'shared/translations';
 import { statuses, setPanels, setLanguages, changeLanguage, setClientIds, setAuth, setTrackingData, fetchSettings, updateAppSettings } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources, getJwtAccount } from 'shared/utils';
-import { mapDonationSettings } from 'donate/utils';
 import { MiniCart, MiniCartBrand, BusyOverlay } from 'registration/components';
-import { fetchEvents, fetchAuthCustomer } from 'registration/actions';
+import { fetchEvents, fetchFullEvent, fetchAuthCustomer, setFundraising } from 'registration/actions';
 import { rootReducer } from 'registration/reducers';
 import { RegistrationApi } from 'registration/utils';
 
@@ -67,31 +66,39 @@ export class Registration extends React.Component {
 
 class _RegistrationRoot extends React.Component {
   async componentDidMount() {
-    const { updateAppSettings, fetchEvents, setTrackingData, fetchSettings } = this.props;
-    const { languages, defaultLanguage } = this.props;
+    // Settings.
+    const { currencySymbol, currencyCode, updateAppSettings } = this.props;
+    const currency = currencySymbol ? { code: currencyCode, symbol: currencySymbol } : undefined;
+    updateAppSettings({
+      storeId: this.props.storeId,
+      seriesId: this.props.seriesId,
+      prevSeriesId: this.props.prevSeriesId,
+      teamType: this.props.teamType,
+      variant: this.props.variant,
+      paymentMethods: this.props.paymentMethods,
+      currency: currency,
+      ...this.props.settings,
+    });
 
-    // Init translations.
+    // Translations.
+    const { languages, defaultLanguage, changeLanguage } = this.props;
     i18next.init({
       lng: defaultLanguage,
       resources: languages,
       returnNull: false,
     });
-
+    changeLanguage(defaultLanguage);
     i18next.on('languageChanged', () => this.forceUpdate());
-    this.props.changeLanguage(defaultLanguage);
 
-    // Settings.
-    const { currencySymbol, currencyCode } = this.props;
-    const currency = currencySymbol ? { code: currencyCode, symbol: currencySymbol } : undefined;
+    // Tracking.
+    const { sourceId, sourceUid, responseId, emailResponseId, setTrackingData } = this.props;
+    setTrackingData({ sourceId, sourceUid, responseId, emailResponseId });
 
-    updateAppSettings({
-      storeId: this.props.storeId,
-      seriesId: this.props.seriesId,
-      prevSeriesId: this.props.prevSeriesId,
-      variant: this.props.variant,
-      paymentMethods: this.props.paymentMethods,
-      currency: currency,
-      ...this.props.settings,
+    // Fundraising.
+    const { fundraisingGoal, fundraisingCreatePage, setFundraising } = this.props;
+    setFundraising({
+      goal: fundraisingGoal,
+      createPage: fundraisingCreatePage,
     });
 
     // Init API.
@@ -111,16 +118,18 @@ class _RegistrationRoot extends React.Component {
     }
 
     // Events.
-    const didFetch = await fetchEvents();
-    if (!didFetch) return;
-
-    // Tracking.
-    const { sourceId, sourceUid, responseId, emailResponseId } = this.props;
-    setTrackingData({ sourceId, sourceUid, responseId, emailResponseId });
+    const { eventId, fetchFullEvent, fetchEvents } = this.props;
+    if (eventId) {
+      await fetchFullEvent(eventId);
+    } else {
+      await fetchEvents();
+    }
 
     // Donations.
-    const { storeUid, donationSingleOfferId, donationRecurringOfferId } = this.props;
+    const { storeUid, donationSingleOfferId, donationRecurringOfferId, fetchSettings } = this.props;
     if (donationSingleOfferId || donationRecurringOfferId) {
+      const mapDonationSettings = (result) => ({ priceHandles: result.offers });
+
       await fetchSettings('donations/', {
         storeUid: storeUid,
         offerSingle: donationSingleOfferId,
@@ -177,11 +186,13 @@ const actions = {
   changeLanguage: changeLanguage,
 
   setAuth: setAuth,
-  fetchAuthCustomer: fetchAuthCustomer,
+  setTrackingData: setTrackingData,
+  setFundraising: setFundraising,
 
   fetchEvents: fetchEvents,
+  fetchFullEvent: fetchFullEvent,
   fetchSettings: fetchSettings,
-  setTrackingData: setTrackingData,
+  fetchAuthCustomer: fetchAuthCustomer,
 };
 
 const RegistrationRoot = connect(mapStateToProps, actions)(_RegistrationRoot);

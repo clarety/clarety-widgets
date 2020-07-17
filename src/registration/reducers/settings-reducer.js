@@ -14,11 +14,7 @@ const initialState = {
   elements: null,
 
   priceHandles: null,
-
-  currency: {
-    symbol: '$',
-    code: 'AUD',
-  },
+  currency: null,
 };
 
 export const settingsReducer = (state = initialState, action) => {
@@ -41,6 +37,7 @@ export const settingsReducer = (state = initialState, action) => {
         isBusy: false,
         event: convertEvent(action.result.events[0]),
         extendForm: convertExtendForm(action.result.extendForms[0]),
+        paymentMethods: action.result.paymentMethods,
         elements: action.result.elements,
       };
 
