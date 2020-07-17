@@ -102,7 +102,7 @@ export class DetailsPanel extends BasePanel {
   }
 
   prefillCustomerFormData(customer) {
-    const { settings } = this.props;
+    const { settings, event } = this.props;
 
     const formData = {};
 
@@ -123,7 +123,7 @@ export class DetailsPanel extends BasePanel {
       formData['customer.billing.suburb']   = customer.billing.suburb;
       formData['customer.billing.state']    = customer.billing.state;
       formData['customer.billing.postcode'] = customer.billing.postcode;
-      formData['customer.billing.country']  = customer.billing.country;
+      formData['customer.billing.country']  = customer.billing.country || event.country;
     }
 
     if (settings.showDeliveryAddress && customer.delivery) {
@@ -132,7 +132,7 @@ export class DetailsPanel extends BasePanel {
       formData['customer.delivery.suburb']   = customer.delivery.suburb;
       formData['customer.delivery.state']    = customer.delivery.state;
       formData['customer.delivery.postcode'] = customer.delivery.postcode;
-      formData['customer.delivery.country']  = customer.delivery.country;
+      formData['customer.delivery.country']  = customer.delivery.country || event.country;
     }    
 
     this.setState(prevState => ({
@@ -503,6 +503,17 @@ export class DetailsPanel extends BasePanel {
 
         <Form.Row>
           <Col>
+            <CountryInput
+              field={`customer.${type}.country`}
+              label={t('label.customer.address.country', 'Country')}
+              initialValue={event.country}
+              required
+            />
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col>
             <TextInput
               field={`customer.${type}.address1`}
               label={t('label.customer.address.address1', 'Address 1')}
@@ -544,17 +555,6 @@ export class DetailsPanel extends BasePanel {
               field={`customer.${type}.postcode`}
               label={getPostcodeLabel(country)}
               country={country}
-              required
-            />
-          </Col>
-        </Form.Row>
-
-        <Form.Row>
-          <Col>
-            <CountryInput
-              field={`customer.${type}.country`}
-              label={t('label.customer.address.country', 'Country')}
-              initialValue={event.country}
               required
             />
           </Col>

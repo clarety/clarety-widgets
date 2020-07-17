@@ -20,7 +20,7 @@ export function getStateOptions(country) {
 export function getSuburbLabel(country) {
   switch (country) {
     case 'AU': return 'Suburb';
-    default:   return t('label.customer.address.suburb', 'Suburb / City');
+    default:   return t('label.customer.address.suburb', 'City / Suburb');
   }
 }
 
