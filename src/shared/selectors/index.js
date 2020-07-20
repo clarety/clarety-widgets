@@ -71,3 +71,5 @@ export const getSourceOptions = (state) => {
 };
 
 export const getLanguages = (state) => getTranslations(state).languages;
+
+export const getSelectedLanguage = (state) => getTranslations(state).selectedLanguage;
