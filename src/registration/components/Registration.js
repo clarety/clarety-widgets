@@ -82,12 +82,15 @@ class _RegistrationRoot extends React.Component {
 
     // Translations.
     const { languages, defaultLanguage, changeLanguage } = this.props;
+    const language = defaultLanguage || navigator.language || navigator.userLanguage || 'en';
     i18next.init({
-      lng: defaultLanguage,
+      load: 'languageOnly',
+      lng: language,
+      fallbackLng: defaultLanguage || 'en',
       resources: languages,
       returnNull: false,
     });
-    changeLanguage(defaultLanguage);
+    changeLanguage(language);
     i18next.on('languageChanged', () => this.forceUpdate());
 
     // Tracking.

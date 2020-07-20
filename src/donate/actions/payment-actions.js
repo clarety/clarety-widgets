@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 import { ClaretyApi } from 'clarety-utils';
-import { statuses, setStatus, setRecaptcha, setPayment, updateCartData, isStripe, prepareStripePayment, authoriseStripePayment } from 'shared/actions';
+import { statuses, setStatus, setRecaptcha, clearRecaptcha, setPayment, updateCartData, isStripe, prepareStripePayment, authoriseStripePayment } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
 import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
@@ -145,6 +145,7 @@ const handleStripeAuthorise = (paymentResult, paymentData, paymentMethod) => {
     } else {
       // Prepare payment.
       dispatch(setPayment(authResult.payment));
+      dispatch(clearRecaptcha());
 
       // Attempt payment.
       const result = await dispatch(attemptPayment(paymentData, paymentMethod));

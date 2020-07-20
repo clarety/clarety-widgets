@@ -33,7 +33,9 @@ export const types = {
   setOrganisation:       'SET_ORGANISATION',
   setPromoCode:          'SET_PROMO_CODE',
   setTrackingData:       'SET_TRACKING_DATA',
+
   setRecaptcha:          'SET_RECAPTCHA',
+  clearRecaptcha:        'CLEAR_RECAPTCHA',
 
   // Auth Action Types
 
