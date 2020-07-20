@@ -138,6 +138,7 @@ export class QtysPanel extends BasePanel {
 
   renderBtnInputs() {
     const { types } = this.props;
+    if (!types) return null;
 
     return Object.entries(types).map(([key, type]) =>
       <div className="m-3" key={key}>
@@ -151,6 +152,7 @@ export class QtysPanel extends BasePanel {
 
   renderQtyInputs() {
     const { types } = this.props;
+    if (!types) return null;
 
     return Object.entries(types).map(([key, type]) =>
       <Form.Group key={key}>

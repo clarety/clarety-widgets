@@ -148,6 +148,12 @@ export const cartReducer = (state = initialState, action) => {
         recaptcha: action.recaptcha,
       };
 
+    case types.clearRecaptcha:
+      return {
+        ...state,
+        recaptcha: null,
+      };
+
     default:
       return state;
   }

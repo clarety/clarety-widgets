@@ -99,3 +99,7 @@ export const setRecaptcha = (recaptcha) => ({
   type: types.setRecaptcha,
   recaptcha: recaptcha,
 });
+
+export const clearRecaptcha = () => ({
+  type: types.clearRecaptcha,
+});
