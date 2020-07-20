@@ -59,7 +59,7 @@ export const applyPromoCode = promoCode => {
 
     dispatch(applyPromoCodeRequest(promoCode));
 
-    const results = await ClaretyApi.put(`carts/${cart.cartUid}/promo-codes/`);
+    const results = await ClaretyApi.post(`carts/${cart.cartUid}/promo-codes/`, { promoCode });
     const result = results[0];
 
     if (result.status === 'error') {
