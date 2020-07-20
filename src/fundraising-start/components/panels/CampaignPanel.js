@@ -47,7 +47,7 @@ export class CampaignPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, isBusy, index } = this.props;
+    const { layout, isBusy, index, settings } = this.props;
 
     return (
       <PanelContainer layout={layout}>
@@ -63,7 +63,11 @@ export class CampaignPanel extends BasePanel {
             <Form.Row>
               <Col>
                 <Form.Group>
-                  <TextInput field="campaign.name" placeholder="Campaign Name" required />
+                  <TextInput
+                    field="campaign.name"
+                    placeholder="Campaign Name"
+                    required
+                  />
                 </Form.Group>
               </Col>
             </Form.Row>
@@ -71,7 +75,11 @@ export class CampaignPanel extends BasePanel {
             <Form.Row>
               <Col>
                 <Form.Group>
-                  <CurrencyInput field="campaign.goal" placeholder="Campaign Amount" required />
+                  <CurrencyInput
+                    field="campaign.goal"
+                    placeholder={settings.campaignGoalLabel || 'Campaign Amount'}
+                    required
+                  />
                 </Form.Group>
               </Col>
             </Form.Row>

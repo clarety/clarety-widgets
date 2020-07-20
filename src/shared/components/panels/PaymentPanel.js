@@ -381,7 +381,7 @@ export class _PaymentPanel extends BasePanel {
 
           <Col>
             <Form.Group controlId="ccv">
-              <Form.Label>{t('label.payment.cardCcv', 'CCV')}</Form.Label>
+              <Form.Label>{t('label.payment.cardCcv', 'CVC')}</Form.Label>
               <CcvInput field="payment.cardSecurityCode" testId="ccv-input" />
             </Form.Group>
           </Col>
@@ -486,7 +486,7 @@ export class _PaymentPanel extends BasePanel {
 
           <Col>
             <Form.Group controlId="ccv">
-              <Form.Label>{t('label.payment.cardCcv', 'CCV')}</Form.Label>
+              <Form.Label>{t('label.payment.cardCcv', 'CVC')}</Form.Label>
               <CardCvcElement options={{ style }} />
             </Form.Group>
           </Col>
