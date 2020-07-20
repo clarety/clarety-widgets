@@ -2,7 +2,7 @@ import React from 'react';
 import { DonationPanel, LoginPanel } from '../../src/shared/components';
 import { ModePanel, EventPanel, TeamPanel, QtysPanel, OffersPanel, DetailsPanel, ValidatePanel, PaymentPanel } from '../../src/registration/components';
 import { MerchPanel, MerchConnect } from '../../src/registration/components';
-import { ModeConnect, EventConnect, RegistrationLoginConnect, TeamConnect, QtysConnect, OffersConnect, DetailsConnect, DonationConnect, ValidateConnect, PaymentConnect } from '../../src/registration/components';
+import { ModeConnect, EventConnect, LoginConnect, TeamConnect, QtysConnect, OffersConnect, DetailsConnect, DonationConnect, ValidateConnect, PaymentConnect } from '../../src/registration/components';
 import { Registration, setupRegistrationAxiosMock } from '../../src';
 import enTranslation from '../../src/registration/translations/en';
 import '../../src/registration/style.scss';
@@ -44,7 +44,7 @@ Registration.setPanels([
   },
   {
     component: LoginPanel,
-    connect: RegistrationLoginConnect,
+    connect: LoginConnect,
     settings: {
       allowGuest: false,
       createAccount: true,

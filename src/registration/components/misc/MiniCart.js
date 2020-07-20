@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Container, Row, Col, ProgressBar } from 'react-bootstrap';
 import { Breakpoint } from 'react-socks';
 import { t } from 'shared/translations';
-import { Qty } from 'registration/components';
+import { Qty, LanguageSelect } from 'registration/components';
 import { getEventName, getQtys, getFormattedCartTotal, getProgress } from 'registration/selectors';
 
 class _MiniCart extends React.Component {
@@ -14,15 +14,19 @@ class _MiniCart extends React.Component {
     return (
       <div className="mini-cart">
         <Container>
-          <Breakpoint small down>
+          <Breakpoint medium down>
             <Row noGutters>
               <Col>
                 <MiniCartBrand title={t('app.title', 'Registration')} />
               </Col>
+              <Col>
+                <div><LanguageSelect /></div>
+                <div className="mini-cart__cart-total">{cartTotal}</div>
+              </Col>
             </Row>
           </Breakpoint>
 
-          <Breakpoint medium up>
+          <Breakpoint large up>
             <Row noGutters>
               <Col>
                 <MiniCartBrand title={t('app.title', 'Registration')} />
@@ -36,7 +40,8 @@ class _MiniCart extends React.Component {
                 )}
               </Col>
               <Col>
-                {cartTotal}
+                <div><LanguageSelect /></div>
+                <div className="mini-cart__cart-total">{cartTotal}</div>
               </Col>
             </Row>
           </Breakpoint>

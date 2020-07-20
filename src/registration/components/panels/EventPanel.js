@@ -4,7 +4,6 @@ import Select from 'react-select';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { Button, TextInput } from 'form/components';
-import { LanguageSelect } from 'registration/components';
 
 export class EventPanel extends BasePanel {
   state = {
@@ -108,10 +107,6 @@ export class EventPanel extends BasePanel {
               {t('btn.next', 'Next')}
             </Button>
           </div>
-
-          {settings.showLanguageSelect &&
-            <LanguageSelect />
-          }
 
         </PanelBody>
       </PanelContainer>
