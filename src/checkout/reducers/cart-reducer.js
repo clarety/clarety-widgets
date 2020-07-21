@@ -71,7 +71,7 @@ export const cartReducer = (state = initialState, action) => {
     case types.fetchPaymentMethodsSuccess:
       return {
         ...state,
-        paymentMethods: action.results,
+        paymentMethods: action.result.types,
       };
 
     // Payment

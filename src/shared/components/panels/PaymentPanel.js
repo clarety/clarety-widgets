@@ -253,6 +253,7 @@ export class _PaymentPanel extends BasePanel {
   renderContent() {
     const { layout, isBusy, settings, formData } = this.props;
     const paymentMethod = this.getPaymentMethod(formData['payment.type']);
+    if (!paymentMethod) return null;
 
     return (
       <React.Fragment>
@@ -497,7 +498,9 @@ export class _PaymentPanel extends BasePanel {
   }
 
   renderNoPaymentFields() {
-    return null;
+    return (
+      <p>{t('paymentPanel.noPaymentMessage', 'Your order is free, no payment is required.')}</p>
+    );
   }
 
   renderDone() {
