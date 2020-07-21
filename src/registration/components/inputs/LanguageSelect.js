@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Select from 'react-select';
+import { Dropdown } from 'react-bootstrap';
 import { t } from 'shared/translations';
 import { getLanguages } from 'shared/selectors';
 import { changeLanguage } from 'shared/actions';
@@ -9,17 +9,28 @@ const _LanguageSelect = ({ languages, changeLanguage }) => {
   if (!languages) return null;
 
   return (
-    <Select
-      placeholder={t('label.changeLanguage', 'Change Language')}
-      onChange={([code, language]) => changeLanguage(code)}
-      options={Object.entries(languages)}
-      getOptionValue={([code, language]) => code}
-      getOptionLabel={([code, language]) => getLanguageName(language)}
-      className="language-select"
-      classNamePrefix="react-select"
-    />
+    <Dropdown className="language-select">
+      <Dropdown.Toggle size="sm">
+        {t('label.changeLanguage', 'Change Language')}
+      </Dropdown.Toggle>
+
+      <Dropdown.Menu alignRight>
+        {Object.entries(languages).map(([code, language]) =>
+          <Dropdown.Item key={code} onClick={() => changeLanguage(code)}>
+            {getLanguageName(language)}
+          </Dropdown.Item>
+        )}
+      </Dropdown.Menu>
+    </Dropdown>
   );
 };
+
+function getLanguageName(language) {
+  return language
+      && language.translation
+      && language.translation.app
+      && language.translation.app.language;
+}
 
 const mapStateToProps = (state, ownProps) => ({
   languages: getLanguages(state),
@@ -28,10 +39,3 @@ const mapStateToProps = (state, ownProps) => ({
 const actions = { changeLanguage };
 
 export const LanguageSelect = connect(mapStateToProps, actions)(_LanguageSelect);
-
-function getLanguageName(language) {
-  return language
-      && language.translation
-      && language.translation.app
-      && language.translation.app.language;
-}
