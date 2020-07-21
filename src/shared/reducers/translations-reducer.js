@@ -2,7 +2,7 @@ import { types } from 'shared/actions';
 
 const initialState = {
   selectedLanguage: null,
-  languages: {},
+  languages: null,
 };
 
 export const translationsReducer = (state = initialState, action) => {
