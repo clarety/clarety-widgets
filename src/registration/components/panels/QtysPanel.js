@@ -163,7 +163,7 @@ export class QtysPanel extends BasePanel {
               <p className="text-muted">{this.getTypeSubtitle(type)}</p>
             </Form.Label>
           </Col>
-          <Col md="auto">
+          <Col xs="auto">
             <QtyInput
               value={this.state.qtys[key] || 0}
               onChange={qty => this.onChangeQty(key, qty)}
