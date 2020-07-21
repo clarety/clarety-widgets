@@ -14,12 +14,13 @@ export const fetchPaymentMethods = () => {
     dispatch(fetchPaymentMethodsRequest());
 
     const results = await ClaretyApi.get(`carts/${cart.cartUid}/payment-methods/`);
+    const result = results[0];
 
-    if (!results) {
+    if (!result) {
       dispatch(fetchPaymentMethodsFailure());
       return false;
     } else {
-      dispatch(fetchPaymentMethodsSuccess(results));
+      dispatch(fetchPaymentMethodsSuccess(result));
       return true;
     }
   };
@@ -147,9 +148,9 @@ const fetchPaymentMethodsRequest = () => ({
   type: types.fetchPaymentMethodsRequest,
 });
 
-const fetchPaymentMethodsSuccess = (results) => ({
+const fetchPaymentMethodsSuccess = (result) => ({
   type: types.fetchPaymentMethodsSuccess,
-  results: results,
+  result: result,
 });
 
 const fetchPaymentMethodsFailure = () => ({

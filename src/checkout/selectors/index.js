@@ -25,9 +25,7 @@ export const getPaymentMethods = (state) => {
   }
 
   // Filter out any methods that aren't allowed.
-  return availableMethods.filter(availableMethod => {
-    return !!allowedMethods.find(allowedMethod => allowedMethod.type === availableMethod.type);
-  });
+  return availableMethods.filter(method => allowedMethods.includes(method.type));
 };
 
 export const getPaymentMethod = (state, type) => {
