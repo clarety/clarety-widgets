@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Form, Col } from 'react-bootstrap';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { DetailsPanel, Qty, QtyInput } from 'registration/components';
+import { DetailsPanel, DetailsConnect, Qty, QtyInput } from 'registration/components';
 
 export class QtysPanel extends BasePanel {
   state = {
@@ -53,6 +53,7 @@ export class QtysPanel extends BasePanel {
     for (let participantIndex = 0; participantIndex < participantCount; participantIndex++) {
       detailsPanels.push({
         component: DetailsPanel,
+        connect: DetailsConnect,
         data: { participantIndex },
       });
     }
