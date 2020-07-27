@@ -1,8 +1,8 @@
 import Cookies from 'js-cookie';
 import { ClaretyApi } from 'clarety-utils';
 import { setPayment, isStripe, prepareStripePayment, authoriseStripePayment } from 'shared/actions';
-import { getCart } from 'shared/selectors';
-import { getPath, getJwtSession } from 'shared/utils';
+import { getCart, getSetting } from 'shared/selectors';
+import { getJwtSession } from 'shared/utils';
 import { types } from 'checkout/actions';
 import { getPaymentMethod, getPaymentPostData } from 'checkout/selectors';
 
@@ -113,10 +113,13 @@ const handlePaymentComplete = (result, paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     dispatch(makePaymentSuccess(result));
 
-    // Redirect on success.
+    const state = getState();
+    const confirmPageUrl = getSetting(state, 'confirmPageUrl');
     const jwtSession = getJwtSession();
+
+    // Set cookie and redirect to confirm page.
     Cookies.set('jwtConfirm', jwtSession.jwtString);
-    window.location.href = getPath('shop-app-confirm');
+    window.location.href = confirmPageUrl || 'shop-confirm.php';
   }
 };
 
