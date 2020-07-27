@@ -60,8 +60,10 @@ export class DonationPanel extends BasePanel {
         message: 'Please select a donation amount',
       });
     }
-    if(givingTypeOptions)
+
+    if (givingTypeOptions) {
       requiredField(errors, formData, 'saleline.givingType');
+    }
   }
 
   renderWait() {
@@ -91,61 +93,46 @@ export class DonationPanel extends BasePanel {
   }
 
   renderContent() {
-    const { layout, isBusy, index, settings } = this.props;
+    const { layout, isBusy } = this.props;
 
     return (
       <PanelContainer layout={layout} status="edit" className="donation-panel">
-        {!settings.hideHeader &&
-          <PanelHeader
-            status="edit"
-            layout={layout}
-            number={index + 1}
-            title={settings.title}
-          />
-        }
+        {this.renderHeader()}
 
-        <PanelBody layout={layout} status="edit" isBusy={isBusy}>
-          {layout !== 'page' && <ErrorMessages />}
-          
-          <FrequencySelect />
-
+        <PanelBody layout={layout} status="edit" isBusy={isBusy}>          
+          {this.renderErrorMessages()}
+          {this.renderFrequencySelect()}
           {this.renderPriceHandles()}
-
           {this.renderGivingType()}
         </PanelBody>
 
-        {layout !== 'page' &&
-          <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
-            <Form.Row className="justify-content-center">
-              <Col>
-                <SubmitButton title="Next" block testId="next-button" />
-              </Col>
-            </Form.Row>
-          </PanelFooter>
-        }
+        {this.renderFooter()}
       </PanelContainer>
     );
   }
 
-  renderGivingType() {
-    const { givingTypeOptions:options } = this.props;
+  renderHeader() {
+    const { layout, index, settings } = this.props;
+    if (settings.hideHeader) return null;
 
-    if(!options) return (null);
     return (
-        <div className="giving-type">
-          <Row>
-            <Col>
-              <Form.Group controlId="givingType">
-                <Form.Label>Give To</Form.Label>
-                <SelectInput
-                  field="saleline.givingType"
-                  options={options}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-        </div>
+      <PanelHeader
+        status="edit"
+        layout={layout}
+        number={index + 1}
+        title={settings.title}
+      />
     );
+  }
+
+  renderErrorMessages() {
+    if (this.props.layout === 'page') return null;
+
+    return <ErrorMessages />;
+  }
+
+  renderFrequencySelect() {
+    return <FrequencySelect />;
   }
 
   renderPriceHandles() {
@@ -228,6 +215,46 @@ export class DonationPanel extends BasePanel {
         onMouseLeave={this.onMouseLeaveAmount}
         isSelected={currentSelection.isVariableAmount}
       />
+    );
+  }
+
+  renderGivingType() {
+    const { givingTypeOptions } = this.props;
+    if (!givingTypeOptions) return null;
+
+    return (
+      <div className="giving-type">
+        <Row>
+          <Col>
+            <Form.Group controlId="givingType">
+              <Form.Label>Give To</Form.Label>
+              <SelectInput
+                field="saleline.givingType"
+                options={givingTypeOptions}
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+      </div>
+    );
+  }
+
+  renderFooter() {
+    const { layout, isBusy, settings } = this.props;
+    if (layout === 'page') return null;
+
+    return (
+      <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
+        <Form.Row className="justify-content-center">
+          <Col>
+            <SubmitButton
+              title={settings.submitBtnText || 'Next'}
+              testId="next-button"
+              block
+            />
+          </Col>
+        </Form.Row>
+      </PanelFooter>
     );
   }
 

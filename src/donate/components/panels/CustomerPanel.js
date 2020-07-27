@@ -165,45 +165,42 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderContent() {
-    const { layout, isBusy, index, settings } = this.props;
+    const { layout, isBusy } = this.props;
 
     return (
       <PanelContainer layout={layout} status="edit" className="customer-panel">
-        {!settings.hideHeader &&
-          <PanelHeader
-            status="edit"
-            layout={layout}
-            number={index + 1}
-            title={settings.title}
-          />
-        }
+        {this.renderHeader()}
 
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
-          <Row className="justify-content-center">
-            <Col>
-              {layout !== 'page' && <ErrorMessages />}
-              {this.renderTypeFields()}
-              {this.renderBasicFields()}
-              {this.renderAddressFields()}
-              {this.renderSourceFields()}
-            </Col>
-          </Row>
+          {this.renderErrorMessages()}
+          {this.renderTypeFields()}
+          {this.renderBasicFields()}
+          {this.renderAddressFields()}
+          {this.renderSourceFields()}
         </PanelBody>
-    
-        {layout !== 'page' &&
-          <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
-            <Form.Row className="justify-content-center">
-              <Col xs={6}>
-                <BackButton title="Back" block onClick={this.onPressBack} />
-              </Col>
-              <Col xs={6}>
-                <SubmitButton title="Next" block testId="next-button" />
-              </Col>
-            </Form.Row>
-          </PanelFooter>
-        }
+
+        {this.renderFooter()}
       </PanelContainer>
     );
+  }
+
+  renderHeader() {
+    const { layout, index, settings } = this.props;
+    if (settings.hideHeader) return null;
+
+    return (
+      <PanelHeader
+        status="edit"
+        layout={layout}
+        number={index + 1}
+        title={settings.title}
+      />
+    );
+  }
+
+  renderErrorMessages() {
+    if (this.props.layout === 'page') return null;
+    return <ErrorMessages />;
   }
 
   renderTypeFields() {
@@ -396,6 +393,24 @@ export class CustomerPanel extends BasePanel {
           </Form.Row>
         }
       </React.Fragment>
+    );
+  }
+
+  renderFooter() {
+    const { layout, isBusy, settings } = this.props;
+    if (layout === 'page') return null;
+
+    return (
+      <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
+        <Form.Row className="justify-content-center">
+          <Col xs={6}>
+            <BackButton title={settings.backBtnText || 'Back'} block onClick={this.onPressBack} />
+          </Col>
+          <Col xs={6}>
+            <SubmitButton title={settings.submitBtnText || 'Next'} block testId="next-button" />
+          </Col>
+        </Form.Row>
+      </PanelFooter>
     );
   }
 
