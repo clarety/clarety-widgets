@@ -68,63 +68,81 @@ export class FundraisingPanel extends BasePanel {
   }
 
   renderContent() {
-    const { layout, isBusy, index, settings } = this.props;
+    const { layout, isBusy } = this.props;
 
     return (
       <PanelContainer layout={layout} status="edit" className="fundraising-panel">
-        {!settings.hideHeader &&
-          <PanelHeader
-            status="edit"
-            layout={layout}
-            number={index + 1}
-            title={settings.title}
-          />
-        }
+        {this.renderHeader()}
 
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
-          <Row className="justify-content-center">
-            <Col>
-              <Form.Row>
-                <Col>
-                  <Form.Group controlId="fundraising.isAnonymous">
-                    <CheckboxInput
-                      field="fundraising.isAnonymous"
-                      label="Hide my name from displaying on the fundraiser's page"
-                      testId="fundraising-is-anonymous-input"
-                    />
-                  </Form.Group>
-                </Col>
-              </Form.Row>
-
-              <Form.Row>
-                <Col>
-                  <Form.Group controlId="fundraising.message">
-                    <Form.Label>Add a message (this message is visible to everyone)</Form.Label>
-                    <TextAreaInput
-                      field="fundraising.message"
-                      rows={4}
-                      testId="fundraising-message-input"
-                    />
-                  </Form.Group>
-                </Col>
-              </Form.Row>
-            </Col>
-          </Row>
+          {this.renderFields()}
         </PanelBody>
 
-        {layout !== 'page' &&
-          <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
-            <Form.Row className="justify-content-center">
-              <Col xs={6}>
-                <BackButton title="Back" block onClick={this.onPressBack} />
-              </Col>
-              <Col xs={6}>
-                <SubmitButton title="Next" block testId="next-button" />
-              </Col>
-            </Form.Row>
-          </PanelFooter>
-        }
+        {this.renderFooter()}
       </PanelContainer>
+    );
+  }
+
+  renderHeader() {
+    const { layout, index, settings } = this.props;
+    if (settings.hideHeader) return null;
+
+    return (
+      <PanelHeader
+        status="edit"
+        layout={layout}
+        number={index + 1}
+        title={settings.title}
+      />
+    );
+  }
+
+  renderFields() {
+    return (
+      <React.Fragment>
+        <Form.Row>
+          <Col>
+            <Form.Group controlId="fundraising.isAnonymous">
+              <CheckboxInput
+                field="fundraising.isAnonymous"
+                label="Hide my name from displaying on the fundraiser's page"
+                testId="fundraising-is-anonymous-input"
+              />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col>
+            <Form.Group controlId="fundraising.message">
+              <Form.Label>Add a message (this message is visible to everyone)</Form.Label>
+              <TextAreaInput
+                field="fundraising.message"
+                rows={4}
+                testId="fundraising-message-input"
+              />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+      </React.Fragment>
+    );
+  }
+
+  renderFooter() {
+    const { layout, isBusy } = this.props;
+    if (layout === 'page') return null;
+
+    return (
+      <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
+        <Form.Row className="justify-content-center">
+          <Col xs={6}>
+            <BackButton title="Back" block onClick={this.onPressBack} />
+          </Col>
+          <Col xs={6}>
+            <SubmitButton title="Next" block testId="next-button" />
+          </Col>
+        </Form.Row>
+      </PanelFooter>
     );
   }
 
