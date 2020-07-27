@@ -112,6 +112,7 @@ export class _DonateWidgetRoot extends React.Component {
 
   render() {
     const { status, reCaptchaKey, showStepIndicator, layout } = this.props;
+    const variant = this.props.variant || '';
 
     // Show a loading indicator while we init.
     if (status === statuses.initializing) {
@@ -121,8 +122,9 @@ export class _DonateWidgetRoot extends React.Component {
         </div>
       );
     }
+
     return (
-      <div className={`clarety-donate-widget h-100 ${layout}`}>
+      <div className={`clarety-donate-widget h-100 ${layout} ${variant}`}>
         <BlockUi tag="div" blocking={status === statuses.busy} loader={<span></span>}>
           {showStepIndicator && <StepIndicator />}
 
