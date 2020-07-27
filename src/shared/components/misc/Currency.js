@@ -8,9 +8,9 @@ const _CurrencySymbol = ({ currency, hideCurrencyCode }) => (
   </React.Fragment>
 );
 
-const _Currency = ({ amount }) => (
+const _Currency = ({ amount, hideCents }) => (
   <React.Fragment>
-    <CurrencySymbol />{(Number(amount) || 0).toFixed(2)}
+    <CurrencySymbol />{(Number(amount) || 0).toFixed(hideCents ? 0 : 2)}
   </React.Fragment>
 );
 

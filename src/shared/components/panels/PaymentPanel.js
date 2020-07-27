@@ -226,62 +226,59 @@ export class _PaymentPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, index, paymentMethods, settings } = this.props;
+    const { layout, paymentMethods } = this.props;
 
     return (
       <form onSubmit={this.onPressNext} data-testid="payment-panel">
         <PanelContainer layout={layout} status="edit" className="payment-panel">
-          {!settings.hideHeader &&
-            <PanelHeader
-              status="edit"
-              layout={layout}
-              number={index + 1}
-              title={settings.title || t('paymentPanel.editTitle', 'Payment Details')}
-            />
-          }
+          {this.renderHeader()}
 
           {paymentMethods
             ? this.renderContent()
             : this.renderLoading()
           }
-          
         </PanelContainer>
       </form>
     );
   }
 
+  renderHeader() {
+    const { layout, index, settings } = this.props;
+    if (settings.hideHeader) return null;
+
+    return (
+      <PanelHeader
+        status="edit"
+        layout={layout}
+        number={index + 1}
+        title={settings.title || t('paymentPanel.editTitle', 'Payment Details')}
+      />
+    );
+  }
+
   renderContent() {
-    const { layout, isBusy, settings, formData } = this.props;
+    const { layout, isBusy, formData } = this.props;
     const paymentMethod = this.getPaymentMethod(formData['payment.type']);
     if (!paymentMethod) return null;
 
     return (
       <React.Fragment>
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
-          {layout !== 'page' && <ErrorMessages />}
+          {this.renderErrorMessages()}
           {this.renderCartSummary()}
           {this.renderPaymentMethodOptions()}
           {this.renderPaymentFields(paymentMethod)}
           {this.renderTermsCheckbox()}
         </PanelBody>
-  
-        {layout !== 'page' &&
-          <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
-            <Form.Row className="justify-content-center">
-              {layout === 'tabs' && 
-                <Col xs={6}>
-                  <BackButton title={t('btn.back', 'Back')} onClick={this.onPressBack} />
-                </Col>
-              }
 
-              <Col xs={layout === 'tabs' ? 6 : 12}>
-                <SubmitButton title={settings.submitBtnText || t('btn.pay', 'Pay Now')} testId="next-button" />
-              </Col>
-            </Form.Row>
-          </PanelFooter>
-        }
+        {this.renderFooter()}
       </React.Fragment>
     );
+  }
+
+  renderErrorMessages() {
+    if (this.props.layout === 'page') return null;
+    return <ErrorMessages />;
   }
 
   renderCartSummary() {
@@ -500,6 +497,33 @@ export class _PaymentPanel extends BasePanel {
   renderNoPaymentFields() {
     return (
       <p>{t('paymentPanel.noPaymentMessage', 'Your order is free, no payment is required.')}</p>
+    );
+  }
+
+  renderFooter() {
+    const { layout, isBusy, settings } = this.props;
+    if (layout === 'page') return null;
+
+    return (
+      <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
+        <Form.Row className="justify-content-center">
+          {layout === 'tabs' && 
+            <Col xs={6}>
+              <BackButton
+                title={settings.backBtnText || t('btn.back', 'Back')}
+                onClick={this.onPressBack}
+              />
+            </Col>
+          }
+
+          <Col xs={layout === 'tabs' ? 6 : 12}>
+            <SubmitButton
+              title={settings.submitBtnText || t('btn.pay', 'Pay Now')}
+              testId="next-button"
+            />
+          </Col>
+        </Form.Row>
+      </PanelFooter>
     );
   }
 
