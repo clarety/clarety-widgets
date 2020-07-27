@@ -85,6 +85,6 @@ const createStripeRecurringToken = async (paymentData, paymentMethod) => {
 
   return {
     error: result.error,
-    token: result.setupIntent.payment_method,
+    token: result.setupIntent && result.setupIntent.payment_method,
   };
 };
