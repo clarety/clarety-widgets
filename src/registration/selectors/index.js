@@ -313,10 +313,12 @@ const getMerchandisePostData = (state) => {
 
 export const getSubmitRegistrationPostData = (state) => {
   const cart = getCart(state);
+  const fundraising = getFundraisingPostData(state);
 
   return {
     uid: state.cart.uid,
     jwt: state.cart.jwt,
+    fundraising: fundraising,
     ...cart.payment,
   };
 };
