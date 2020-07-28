@@ -7,10 +7,12 @@ import { currency } from 'shared/utils';
 import { ErrorMessages } from 'form/components';
 
 export class DonationPanel extends BasePanel {
-  state = {
-    frequency: null,
-    selections: {},
-  };
+  constructor(props) {
+    super(props);
+
+    const defaults = this.getDefaults(props.priceHandles);
+    this.state = { ...defaults };
+  }
 
   onChangeFrequency = (frequency) => {
     this.setState({ frequency });
@@ -77,33 +79,37 @@ export class DonationPanel extends BasePanel {
     const { priceHandles } = this.props;
 
     if (prevProps.priceHandles !== priceHandles) {
-      this.selectDefaultAmounts();
+      const defaults = this.getDefaults(priceHandles);
+      this.setState({ ...defaults });
     }
   }
 
-  selectDefaultAmounts() {
-    const { priceHandles } = this.props;
+  getDefaults(priceHandles) {
+    const result = {
+      frequency: null,
+      selections: {},
+    };
 
-    if (!priceHandles || !priceHandles.length) return;
+    if (priceHandles && priceHandles.length) {
+      const defaultFrequency = priceHandles[0].frequency;
+      const defaultSelections = {};
 
-    const defaultFrequency = priceHandles[0].frequency;
-    const defaultSelections = {};
+      for (let offer of priceHandles) {
+        const defaultAmount = offer.amounts.find(amount => amount.default);
 
-    for (let offer of priceHandles) {
-      const defaultAmount = offer.amounts.find(amount => amount.default);
+        defaultSelections[offer.frequency] = {
+          offerUid:         offer.offerUid,
+          offerPaymentUid:  offer.offerPaymentUid,
+          amount:           defaultAmount ? defaultAmount.amount : 0,
+          isVariableAmount: false,
+        };
+      }
 
-      defaultSelections[offer.frequency] = {
-        offerUid:         offer.offerUid,
-        offerPaymentUid:  offer.offerPaymentUid,
-        amount:           defaultAmount ? defaultAmount.amount : 0,
-        isVariableAmount: false,
-      };
+      result.frequency = defaultFrequency;
+      result.selections = defaultSelections;
     }
 
-    this.setState({
-      frequency: defaultFrequency,
-      selections: defaultSelections,
-    });
+    return result;
   }
 
   reset() {
