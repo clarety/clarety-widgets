@@ -2,11 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Dropdown } from 'react-bootstrap';
 import { t } from 'shared/translations';
-import { getLanguages } from 'shared/selectors';
+import { getLanguages, getIsEditingFirstPanel } from 'shared/selectors';
 import { changeLanguage } from 'shared/actions';
 
-const _LanguageSelect = ({ languages, changeLanguage }) => {
+const _LanguageSelect = ({ languages, changeLanguage, isEditingFirstPanel }) => {
   if (!languages) return null;
+
+  // Only show when on the first panel.
+  if (!isEditingFirstPanel) return null;
 
   return (
     <Dropdown className="language-select">
@@ -34,6 +37,7 @@ function getLanguageName(language) {
 
 const mapStateToProps = (state, ownProps) => ({
   languages: getLanguages(state),
+  isEditingFirstPanel: getIsEditingFirstPanel(state),
 });
 
 const actions = { changeLanguage };
