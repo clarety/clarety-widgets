@@ -25,10 +25,12 @@ export const CartItem = ({ item }) => (
         </Row>
       )}
 
-      <Row as="dl">
-        <dt className="col">Quantity</dt>
-        <dd className="col text-right">{item.quantity}</dd>
-      </Row>
+      {!item.variablePrice &&
+        <Row as="dl">
+          <dt className="col">Quantity</dt>
+          <dd className="col text-right">{item.quantity}</dd>
+        </Row>
+      }
     </Col>
   </Row>
 );
