@@ -10,8 +10,8 @@ const _CartFooter = ({ isEmpty }) => {
 
   return (
       <div className="cart-widget__footer text-center">
-          <p>Shipping, taxes, and discounts are calculated at checkout.</p>
-          <a href={checkoutUrl} className="btn btn-primary checkout">Checkout</a>
+          <p>Shipping, taxes, and discounts<br />are calculated at checkout.</p>
+          <a href={checkoutUrl} className="btn btn-primary">Checkout</a>
       </div>
   );
 };

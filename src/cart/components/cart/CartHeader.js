@@ -6,13 +6,13 @@ import { faShoppingCart, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const _CartHeader = ({ isBusy }) => (
     <Row className="cart-widget__header">
-        <Col xs={9}>
+        <Col>
             {isBusy
                 ? <Spinner animation="border" size="sm" />
                 : <span><FontAwesomeIcon icon={faShoppingCart} /> Cart</span>
             }
         </Col>
-        <Col xs={3} className="text-right">
+        <Col className="text-right">
             <button type="button" className="close" aria-label="Close" onClick={window.hideCartModal}>
                 <span aria-hidden="true"><FontAwesomeIcon icon={faTimes} /></span>
             </button>
