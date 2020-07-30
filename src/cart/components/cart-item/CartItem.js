@@ -16,6 +16,14 @@ class _CartItem extends React.Component {
         };
     }
 
+    componentDidUpdate(prevProps) {
+        const { item } = this.props;
+
+        if (item.quantity !== prevProps.item.quantity) {
+            this.setState({ quantity: item.quantity });
+        }
+    }
+
     onInputChange = (text) => {
         const quantity = text ? Number(text) : '';
 
