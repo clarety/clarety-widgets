@@ -19,6 +19,24 @@ export class ShippingPanel extends BasePanel {
     this.props.fetchShippingOptions();
   }
 
+  componentDidUpdate(prevProps) {
+    super.componentDidUpdate(prevProps);
+
+    if (prevProps.shippingOptions !== this.props.shippingOptions) {
+      this.selectDefaultShipping();
+    }
+  }
+
+  selectDefaultShipping() {
+    const { shippingOptions, setFormData } = this.props;
+    if (!shippingOptions || shippingOptions.length !== 1) return;
+
+    const { shippingUid } = shippingOptions[0];
+    if (shippingUid === 'shipping-standard' || shippingUid === 'shipping-included') {
+      setFormData({ 'sale.shippingUid': shippingUid });
+    }
+  }
+
   renderWait() {
     const { layout, index } = this.props;
 

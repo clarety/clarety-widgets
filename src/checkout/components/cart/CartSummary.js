@@ -19,7 +19,7 @@ class _CartSummary extends React.Component {
 
         <hr />
         
-        {cart.summary && <CartTotals summary={cart.summary} />}
+        {cart.summary && <CartTotals cart={cart} />}
 
         <a href="shop?showCart=true" className="btn btn-link btn-edit-cart">Edit Cart</a>
       </div>
@@ -37,13 +37,17 @@ const actions = {};
 
 export const CartSummary = connect(mapStateToProps, actions)(_CartSummary);
 
-const CartTotals = ({ summary }) => (
+const CartTotals = ({ cart }) => (
   <div className="cart-totals">
-    <TotalLine label="Subtotal" value={summary.subTotal} />
-    <TotalLine label="Shipping" value={summary.shipping} />
-    <TotalLine label="Discount Code" value={summary.discount} />
+    <TotalLine label="Subtotal" value={cart.summary.subTotal} />
+
+    {shouldShowShipping(cart) &&
+      <TotalLine label="Shipping" value={cart.summary.shipping} />
+    }
+
+    <TotalLine label="Discount Code" value={cart.summary.discount} />
     <hr />
-    <TotalLine label="Total" value={summary.total} />
+    <TotalLine label="Total" value={cart.summary.total} />
   </div>
 );
 
@@ -61,3 +65,11 @@ const TotalLine = ({ label, value }) => {
     </Row>
   );
 };
+
+// NOTE: A bug in the API causes the cart to return a shipping cost of $0 if shipping has not been calculated yet.
+// So we hide the value until an address has been set in the cart, at which point we assume the shipping value is now correct.
+function shouldShowShipping(cart) {
+  const isRequired = cart.shippingRequired;
+  const hasAddress = cart.customer && cart.customer.delivery && cart.customer.delivery.address1;
+  return isRequired && hasAddress;
+}
