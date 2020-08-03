@@ -9,28 +9,36 @@ export const CartItem = ({ item }) => (
     </Col>
 
     <Col>
-      <span className="cart-item-title">{item.description}</span>
+      <p className="cart-item__description">
+        {item.description}
+        {item.rewardDescription &&
+          <span className="cart-item__reward">
+            <br />Includes: {item.rewardDescription}
+          </span>
+        }
+      </p>
+      
 
-      <Row as="dl">
-        <dt className="col">Amount</dt>
-        <dd className="col text-right">
+      {!item.variablePrice &&
+        <Row>
+          <Col className="label">Quantity</Col>
+          <Col className="text-right">{item.quantity}</Col>
+        </Row>
+      }
+
+      <Row>
+        <Col className="label">Amount</Col>
+        <Col className="text-right">
           <Currency amount={item.total} />
-        </dd>
+        </Col>
       </Row>
 
       {item.variantDetails && item.variantDetails.map((detail, index) => 
-        <Row as="dl" key={index}>
-          <dt className="col">{detail.label}</dt>
-          <dd className="col text-right">{detail.value}</dd>
+        <Row key={index}>
+          <Col className="label">{detail.label}</Col>
+          <Col className="text-right">{detail.value}</Col>
         </Row>
-      )}
-
-      {!item.variablePrice &&
-        <Row as="dl">
-          <dt className="col">Quantity</dt>
-          <dd className="col text-right">{item.quantity}</dd>
-        </Row>
-      }
+      )}      
     </Col>
   </Row>
 );
