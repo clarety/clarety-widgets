@@ -1,4 +1,12 @@
-import { getSetting, getCart } from 'shared/selectors';
+import { getSetting, getCart, getPanelManager } from 'shared/selectors';
+
+export const getCartSummaryMode = (state) => {
+  const panels = getPanelManager(state);
+  const currentPanelIndex = panels.findIndex(panel => panel.status === 'edit');
+  const isLastPanel = currentPanelIndex === panels.length - 1;
+
+  return isLastPanel ? 'complete' : 'incomplete';
+};
 
 export const hasSelectedShippingOption = (state) => {
   return !!state.formData['sale.shippingUid'];
