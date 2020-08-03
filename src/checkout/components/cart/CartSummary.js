@@ -48,7 +48,6 @@ const CartTotals = ({ cart, mode }) => (
 
     {mode === 'complete' &&
       <React.Fragment>
-        <TotalLine label="Discount Code" value={cart.summary.discount} />
         <TotalLine label="Shipping" value={cart.summary.shipping} />
 
         {cart.summary.taxType !== "Inclusive" &&
