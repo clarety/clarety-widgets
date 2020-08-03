@@ -5,14 +5,16 @@ import { BasePanel, Button } from 'checkout/components';
 
 export class ShippingPanel extends BasePanel {
   onPressNext = async () => {
-    const { canContinue, nextPanel } = this.props;
+    const { canContinue, nextPanel, updateSale, selectedOptionUid } = this.props;
 
-    if (canContinue) nextPanel();
+    if (canContinue) {
+      await updateSale(selectedOptionUid);
+      nextPanel();
+    }
   };
 
   onSelectOption = (uid) => {
     this.props.setFormData({ 'sale.shippingUid': uid });
-    this.props.updateSale(uid);
   };
 
   onShowPanel() {
@@ -28,11 +30,12 @@ export class ShippingPanel extends BasePanel {
   }
 
   selectDefaultShipping() {
-    const { shippingOptions, setFormData } = this.props;
-    if (!shippingOptions || shippingOptions.length !== 1) return;
+    // If there's only one shipping option, just select it by default.
 
-    const { shippingUid } = shippingOptions[0];
-    if (shippingUid === 'shipping-standard' || shippingUid === 'shipping-included') {
+    const { shippingOptions, setFormData } = this.props;
+
+    if (shippingOptions.length === 1) {
+      const { shippingUid } = shippingOptions[0];
       setFormData({ 'sale.shippingUid': shippingUid });
     }
   }
