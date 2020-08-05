@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Row, Col, Button } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { requiredField, emailField, customerTypeOptions, loadAddressFinder, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
-import { TextInput, EmailInput, StateInput, CountryInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
+import { TextInput, EmailInput, CheckboxInput, StateInput, CountryInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
   addressFinder = null;
@@ -177,6 +177,7 @@ export class CustomerPanel extends BasePanel {
           {this.renderBasicFields()}
           {this.renderAddressFields()}
           {this.renderSourceFields()}
+          {this.renderOptIn()}
         </PanelBody>
 
         {this.renderFooter()}
@@ -393,6 +394,23 @@ export class CustomerPanel extends BasePanel {
           </Form.Row>
         }
       </React.Fragment>
+    );
+  }
+
+  renderOptIn() {
+    const { settings } = this.props;
+    if (!settings.showOptIn) return null;
+
+    return (
+      <Row className="optin-checkbox">
+        <Col>
+          <CheckboxInput
+            field="additionalData.optIn"
+            label={settings.optInText || 'Sign up for our newsletter'}
+            initialValue={!!settings.preTickOptIn}
+          />
+        </Col>
+      </Row>
     );
   }
 

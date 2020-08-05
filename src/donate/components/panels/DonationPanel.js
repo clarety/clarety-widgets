@@ -104,6 +104,7 @@ export class DonationPanel extends BasePanel {
           {this.renderFrequencySelect()}
           {this.renderPriceHandles()}
           {this.renderGivingType()}
+          {this.renderScheduleSelect()}
         </PanelBody>
 
         {this.renderFooter()}
@@ -237,6 +238,12 @@ export class DonationPanel extends BasePanel {
         </Row>
       </div>
     );
+  }
+
+  renderScheduleSelect() {
+    // Overridden in instances for now,
+    // add a core implementation soon.
+    return null;
   }
 
   renderFooter() {
