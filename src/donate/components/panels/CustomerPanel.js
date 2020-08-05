@@ -349,6 +349,7 @@ export class CustomerPanel extends BasePanel {
             <CountryInput
               field="customer.billing.country"
               initialValue={defaultCountry}
+              region={settings.region}
               testId="country-input"
             />
           </Form.Group>
