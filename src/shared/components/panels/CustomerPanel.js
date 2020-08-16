@@ -61,7 +61,7 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderWait() {
-    const { layout, index } = this.props;
+    const { layout, index, settings } = this.props;
 
     return (
       <PanelContainer layout={layout} status="wait" className="customer-panel">
@@ -69,7 +69,7 @@ export class CustomerPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title="Personal Details"
+          title={settings.title}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -131,11 +131,11 @@ export class CustomerPanel extends BasePanel {
         {this.renderPhoneField()}
         {this.renderAddressFields()}
 
-        <Row className="panel-actions">
-          <Col className="text-center">
+        <div className="panel-actions">
+          {/* <Col className="text-center"> */}
             <SubmitButton title={settings.submitBtnText} isBusy={isBusy} />
-          </Col>
-        </Row>
+          {/* </Col> */}
+        </div>
 
         {settings.showOptIn &&
           <Form.Row className="opt-in">
