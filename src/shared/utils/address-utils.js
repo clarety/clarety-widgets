@@ -29,11 +29,6 @@ export function getStateOptions(country) {
 };
 
 export function getSuburbLabel(country) {
-
-  // if not translated or in english...
-
-
-
   switch (country) {
     case 'AU': return 'Suburb';
     case 'NZ': return 'Suburb';
