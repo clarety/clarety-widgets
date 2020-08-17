@@ -264,8 +264,8 @@ export class _PaymentPanel extends BasePanel {
     return (
       <React.Fragment>
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
-          {this.renderErrorMessages()}
           {this.renderCartSummary()}
+          {this.renderErrorMessages()}
           {this.renderPaymentMethodOptions()}
           {this.renderPaymentFields(paymentMethod)}
           {this.renderTermsCheckbox()}

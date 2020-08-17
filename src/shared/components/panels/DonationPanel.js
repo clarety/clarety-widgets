@@ -171,12 +171,12 @@ export class DonationPanel extends BasePanel {
             <div className="panel-actions">
               {settings.showNoneButton &&
                 <Button onClick={this.onClickNone} variant="secondary">
-                  {t('btn.none', 'None')}
+                  {t(['donationPanel.btn.none', 'btn.none'], 'None')}
                 </Button>
               }
               
               <Button type="submit"> 
-                {t('btn.next', 'Next')}
+                {t(['donationPanel.btn.next', 'btn.next'], 'Next')}
               </Button>
             </div>
 

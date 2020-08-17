@@ -35,17 +35,24 @@ export const getExtendField = (columnKey, settings) => {
 };
 
 export function getGenderOptions(settings) {
+  // Try to get from elements.
   let genderOptions = getElementOptions('customer.gender', settings);
 
-  if (genderOptions) {
-    return genderOptions;
-  } else {
-    return [
+  // Try to get from settings.
+  if (!genderOptions) {
+    genderOptions = settings['genderOptions'];
+  }
+
+  // Fallback to default.
+  if (!genderOptions) {
+    genderOptions = [
       { value: 'Male', label: 'Male' },
       { value: 'Female', label: 'Female' },
       { value: 'Prefer to not say', label: 'Prefer to not say' },
     ];
   }
+
+  return genderOptions;
 }
 
 export function parseTeamErrors(result) {

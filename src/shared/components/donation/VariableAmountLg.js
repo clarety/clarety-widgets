@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Form, Card, InputGroup } from 'react-bootstrap';
 import { CurrencySymbol } from 'shared/components';
 import { cleanDecimal } from 'form/utils';
@@ -9,7 +8,7 @@ export const VariableAmountLg = ({ value, amountInfo, isSelected, onChange }) =>
 
   return (
     <Card
-      className="mx-1 d-none d-lg-block"
+      className="mx-1 d-none d-lg-block variable-amount"
       style={{ cursor: 'pointer' }}
       bg={isSelected ? 'primary' : 'light'}
       text={isSelected ? 'white' : null}
