@@ -349,7 +349,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="cardName">
-              <Form.Label>{t('label.payment.cardName', 'Card Name')}</Form.Label>
+              <Form.Label>{t('label.payment.cardName', 'Name on Card')}</Form.Label>
               <TextInput field="payment.cardName" testId="card-name-input" />
             </Form.Group>
           </Col>
@@ -459,7 +459,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="cardName">
-              <Form.Label>{t('label.payment.cardName', 'Card Name')}</Form.Label>
+              <Form.Label>{t('label.payment.cardName', 'Name on Card')}</Form.Label>
               <TextInput field="payment.cardName" testId="card-name-input" />
             </Form.Group>
           </Col>
