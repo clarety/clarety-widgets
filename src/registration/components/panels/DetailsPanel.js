@@ -197,7 +197,7 @@ export class DetailsPanel extends BasePanel {
   }
 
   validateFields(errors) {
-    const { eventDate, minAge, maxAge, waveOptions } = this.props;
+    const { eventDate, minAge, maxAge, waveOptions, settings } = this.props;
     const { formData } = this.state;
 
     this.validateRequired('customer.firstName', formData, errors);
@@ -207,7 +207,10 @@ export class DetailsPanel extends BasePanel {
     this.validateRequired('customer.dateOfBirthDay', formData, errors);
     this.validateRequired('customer.dateOfBirthMonth', formData, errors);
     this.validateRequired('customer.dateOfBirthYear', formData, errors);
-    this.validatePhone('customer.mobile', formData, errors);
+
+    if (settings.isMobileRequired) {
+      this.validatePhone('customer.mobile', formData, errors);
+    }
 
     this.validateDob({
       field: 'customer.dateOfBirth',
@@ -440,7 +443,7 @@ export class DetailsPanel extends BasePanel {
               <PhoneInput
                 field="customer.mobile"
                 label={t('label.customer.mobile', 'Mobile')}
-                required
+                required={settings.isMobileRequired}
               />
             </Col>
           </Form.Row>
