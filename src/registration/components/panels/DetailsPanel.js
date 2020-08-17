@@ -500,7 +500,7 @@ export class DetailsPanel extends BasePanel {
         }
 
         {settings.showBillingAddress && showBilling &&
-          this.renderAddressFields(billingAddressTitle)
+          this.renderAddressFields(billingAddressTitle, 'billing')
         }
       </React.Fragment>
     );

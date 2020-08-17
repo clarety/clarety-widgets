@@ -47,8 +47,8 @@ export function getStateLabel(country) {
 export function getPostcodeLabel(country) {
   switch (country) {
     case 'AU': return 'Postcode';
-    case 'UK': return 'Postcode';
     case 'NZ': return 'Postcode';
+    case 'UK': return 'Postcode';
     case 'US': return 'Zip Code';
     default:   return t('label.customer.address.postcode', 'Zip Code / Postcode');
   }
