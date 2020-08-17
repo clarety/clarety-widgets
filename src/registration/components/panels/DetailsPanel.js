@@ -354,6 +354,8 @@ export class DetailsPanel extends BasePanel {
     const showEmail  = !formData['autofill.email'];
     const showMobile = !formData['autofill.mobile'];
 
+    const country = formData['customer.billing.country'];
+
     return (
       <FormContext.Provider value={this.state}>
 
@@ -443,6 +445,7 @@ export class DetailsPanel extends BasePanel {
               <PhoneInput
                 field="customer.mobile"
                 label={t('label.customer.mobile', 'Mobile')}
+                country={country}
                 required={settings.isMobileRequired}
               />
             </Col>
