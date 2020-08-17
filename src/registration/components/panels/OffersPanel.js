@@ -23,6 +23,11 @@ export class OffersPanel extends BasePanel {
 
   onShowPanel() {
     this.autoSelectSingleOffers();
+
+    // Pre-select 'yourself' for first participant.
+    if (this.getPrefillOptions(0).find(option => option.value === 'yourself')) {
+      this.onSelectPrefill(0, 'yourself');
+    }
   }
 
   autoSelectSingleOffers() {
