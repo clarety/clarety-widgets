@@ -475,9 +475,14 @@ export class DetailsPanel extends BasePanel {
     
     const showBilling = !formData['autofill.billing'];
 
+    const deliveryAddressTitle = settings.deliveryAddressTitle || t('detailsPanel.deliveryAddressTitle', 'Delivery Address');
+    const billingAddressTitle  = settings.billingAddressTitle  || t('detailsPanel.billingAddressTitle',  'Billing Address');
+
     return (
       <React.Fragment>
-        {settings.showDeliveryAddress && this.renderAddressFields('Delivery Address', 'delivery')}
+        {settings.showDeliveryAddress &&
+          this.renderAddressFields(deliveryAddressTitle, 'delivery')
+        }
 
         {settings.showDeliveryAddress && settings.showBillingAddress &&
           <Form.Row>
@@ -491,7 +496,9 @@ export class DetailsPanel extends BasePanel {
           </Form.Row>
         }
 
-        {settings.showBillingAddress && showBilling && this.renderAddressFields('Billing Address', 'billing')}
+        {settings.showBillingAddress && showBilling &&
+          this.renderAddressFields(billingAddressTitle)
+        }
       </React.Fragment>
     );
   }
