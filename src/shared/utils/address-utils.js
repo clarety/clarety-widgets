@@ -29,6 +29,11 @@ export function getStateOptions(country) {
 };
 
 export function getSuburbLabel(country) {
+
+  // if not translated or in english...
+
+
+
   switch (country) {
     case 'AU': return 'Suburb';
     case 'NZ': return 'Suburb';
@@ -46,8 +51,11 @@ export function getStateLabel(country) {
 
 export function getPostcodeLabel(country) {
   switch (country) {
+    case 'AU': return 'Postcode';
+    case 'UK': return 'Postcode';
+    case 'NZ': return 'Postcode';
     case 'US': return 'Zip Code';
-    default:   return t('label.customer.address.postcode', 'Postcode');
+    default:   return t('label.customer.address.postcode', 'Zip Code / Postcode');
   }
 }
 
