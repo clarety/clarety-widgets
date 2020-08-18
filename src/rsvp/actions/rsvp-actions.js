@@ -22,8 +22,7 @@ export const createRsvp = () => {
     const postData = getRsvpPostData(state);
     dispatch(createRsvpRequest(postData));
 
-    // TODO: this endpoint will change soon...
-    const results = await ClaretyApi.post('rsvp/', postData);
+    const results = await ClaretyApi.post('events/rsvp/', postData);
     const result = results[0];
 
     if (result.status === 'error') {

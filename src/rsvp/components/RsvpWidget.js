@@ -104,7 +104,7 @@ export class _RsvpWidgetRoot extends React.Component {
     }
 
     return (
-      <div className="clarety-rsvp-widget h-100">
+      <div className="clarety-rsvp-widget">
         <ErrorMessages />
         <PanelManager layout="accordian" resources={this.props.resources} />
         <Recaptcha siteKey={this.props.reCaptchaKey} />
