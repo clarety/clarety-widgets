@@ -25,6 +25,7 @@ module.exports = {
           'lead-gen':          './src/lead-gen',
           'quiz':              './src/quiz',
           'registration':      './src/registration',
+          'rsvp':              './src/rsvp',
           'shared':            './src/shared',
           'subscribe':         './src/subscribe',
         },

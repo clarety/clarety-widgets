@@ -9,7 +9,8 @@ Config.init({
   // instanceKey: 'tnc',
   // instanceKey: 'clarety-church',
   // instanceKey: 'ethiopiaid',
-  instanceKey: 'a21',
+  // instanceKey: 'a21',
+  instanceKey: 'miraclebabies',
   devSitePath: 'http://localhost:3000/',
   phoneCountry: 'AU',
 });
@@ -78,6 +79,11 @@ const Demo = () => {
     return <FileUploadDemo />;
   }
 
+  if (url.endsWith('rsvp')) {
+    const RsvpDemo = require('./RsvpDemo').default;
+    return <RsvpDemo />;
+  }
+
   return (
     <div className="list-group m-5">
       <a href="subscribe" className="list-group-item list-group-item-action">Subscribe Widget Demo</a>
@@ -90,6 +96,7 @@ const Demo = () => {
       <a href="quiz" className="list-group-item list-group-item-action">Quiz Demo</a>
       <a href="fundraising-start" className="list-group-item list-group-item-action">Fundraising Start Demo</a>
       <a href="file-upload" className="list-group-item list-group-item-action">File Upload Demo</a>
+      <a href="rsvp" className="list-group-item list-group-item-action">RSVP Demo</a>
     </div>
   );
 };
