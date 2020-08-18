@@ -20,6 +20,7 @@ const _PhoneInput = ({ value, placeholder, country, onChange, error, required })
         limitMaxLength={true}
         country={country}
         showCountrySelect={false}
+        displayInitialValueAsLocalNumber
         inputClassName="form-control"
       />
       <FieldError error={error} />
