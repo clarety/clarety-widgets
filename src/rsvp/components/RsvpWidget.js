@@ -4,11 +4,10 @@ import { connect, Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import i18next from 'i18next';
 import { ClaretyApi } from 'clarety-utils';
-import { setStatus, setAuth, setPanels, setClientIds, updateAppSettings, setTrackingData, fetchSettings } from 'shared/actions';
+import { setStatus, setPanels, setClientIds, updateAppSettings, setTrackingData, fetchSettings } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources, getJwtAccount } from 'shared/utils';
 import { Recaptcha, ErrorMessages } from 'form/components';
-import { fetchCustomer } from 'checkout/actions';
 import { rootReducer } from 'rsvp/reducers';
 import { settingsMap } from 'rsvp/utils';
 
@@ -58,19 +57,13 @@ export class _RsvpWidgetRoot extends React.Component {
 
     i18next.init();
 
-    const { updateAppSettings, setTrackingData, setStatus, setAuth, fetchCustomer, fetchSettings } = this.props;
-
-    const { currencyCode, currencySymbol } = this.props;
-    const currency = currencySymbol ? { code: currencyCode, symbol: currencySymbol } : undefined;
+    const { updateAppSettings, setTrackingData, setStatus, fetchSettings } = this.props;
 
     updateAppSettings({
       widgetElementId: this.props.elementId,
-      seriesId: this.props.seriesId,
       storeUid: this.props.storeUid,
-      pageType: this.props.pageType,
       confirmPageUrl: this.props.confirmPageUrl,
       variant: this.props.variant,
-      currency: currency,
     });
 
     setTrackingData({
@@ -78,13 +71,6 @@ export class _RsvpWidgetRoot extends React.Component {
       responseId: this.props.responseId,
       emailResponseId: this.props.emailResponseId,
     });
-
-    const jwtAccount = getJwtAccount();
-    if (jwtAccount) {
-      ClaretyApi.setAuth(jwtAccount.jwtString);
-      setAuth(jwtAccount.jwtString);
-      await fetchCustomer(jwtAccount.customer_uid);
-    }
 
     const { storeUid, eventUid } = this.props;
     await fetchSettings('rsvp/', { storeUid, eventUid }, settingsMap);
@@ -121,8 +107,6 @@ const actions = {
   updateAppSettings: updateAppSettings,
   setTrackingData: setTrackingData,
   setStatus: setStatus,
-  setAuth: setAuth,
-  fetchCustomer: fetchCustomer,
   fetchSettings: fetchSettings,
 };
 
