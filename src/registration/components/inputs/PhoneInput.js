@@ -27,6 +27,7 @@ class PurePhoneInput extends React.PureComponent {
           limitMaxLength={true}
           inputClassName={className}
           country={country}
+          displayInitialValueAsLocalNumber
         />
         <FieldError error={error} />
       </Form.Group>

@@ -197,7 +197,7 @@ export class DetailsPanel extends BasePanel {
   }
 
   validateFields(errors) {
-    const { eventDate, minAge, maxAge, waveOptions } = this.props;
+    const { eventDate, minAge, maxAge, waveOptions, settings } = this.props;
     const { formData } = this.state;
 
     this.validateRequired('customer.firstName', formData, errors);
@@ -207,7 +207,10 @@ export class DetailsPanel extends BasePanel {
     this.validateRequired('customer.dateOfBirthDay', formData, errors);
     this.validateRequired('customer.dateOfBirthMonth', formData, errors);
     this.validateRequired('customer.dateOfBirthYear', formData, errors);
-    this.validatePhone('customer.mobile', formData, errors);
+
+    if (settings.isMobileRequired) {
+      this.validatePhone('customer.mobile', formData, errors);
+    }
 
     this.validateDob({
       field: 'customer.dateOfBirth',
@@ -351,6 +354,8 @@ export class DetailsPanel extends BasePanel {
     const showEmail  = !formData['autofill.email'];
     const showMobile = !formData['autofill.mobile'];
 
+    const country = formData['customer.billing.country'];
+
     return (
       <FormContext.Provider value={this.state}>
 
@@ -440,7 +445,8 @@ export class DetailsPanel extends BasePanel {
               <PhoneInput
                 field="customer.mobile"
                 label={t('label.customer.mobile', 'Mobile')}
-                required
+                country={country}
+                required={settings.isMobileRequired}
               />
             </Col>
           </Form.Row>
@@ -472,9 +478,14 @@ export class DetailsPanel extends BasePanel {
     
     const showBilling = !formData['autofill.billing'];
 
+    const deliveryAddressTitle = settings.deliveryAddressTitle || t('detailsPanel.deliveryAddressTitle', 'Delivery Address');
+    const billingAddressTitle  = settings.billingAddressTitle  || t('detailsPanel.billingAddressTitle',  'Billing Address');
+
     return (
       <React.Fragment>
-        {settings.showDeliveryAddress && this.renderAddressFields('Delivery Address', 'delivery')}
+        {settings.showDeliveryAddress &&
+          this.renderAddressFields(deliveryAddressTitle, 'delivery')
+        }
 
         {settings.showDeliveryAddress && settings.showBillingAddress &&
           <Form.Row>
@@ -488,7 +499,9 @@ export class DetailsPanel extends BasePanel {
           </Form.Row>
         }
 
-        {settings.showBillingAddress && showBilling && this.renderAddressFields('Billing Address', 'billing')}
+        {settings.showBillingAddress && showBilling &&
+          this.renderAddressFields(billingAddressTitle, 'billing')
+        }
       </React.Fragment>
     );
   }
