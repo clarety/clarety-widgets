@@ -10,6 +10,7 @@ import { Resources, getJwtAccount } from 'shared/utils';
 import { Recaptcha, ErrorMessages } from 'form/components';
 import { fetchCustomer } from 'checkout/actions';
 import { rootReducer } from 'rsvp/reducers';
+import { settingsMap } from 'rsvp/utils';
 
 export class RsvpWidget extends React.Component {
   static store;
@@ -86,7 +87,7 @@ export class _RsvpWidgetRoot extends React.Component {
     }
 
     const { storeUid, eventUid } = this.props;
-    await fetchSettings('rsvp/', { storeUid, eventUid }, settings => ({ sessions: settings.sessions }));
+    await fetchSettings('rsvp/', { storeUid, eventUid }, settingsMap);
 
     setStatus('ready');
     this.setState({ isInitialising: false });
@@ -103,7 +104,7 @@ export class _RsvpWidgetRoot extends React.Component {
     }
 
     return (
-      <div className="clarety-fundraising-start h-100">
+      <div className="clarety-rsvp-widget h-100">
         <ErrorMessages />
         <PanelManager layout="accordian" resources={this.props.resources} />
         <Recaptcha siteKey={this.props.reCaptchaKey} />

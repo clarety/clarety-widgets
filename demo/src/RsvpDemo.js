@@ -1,8 +1,8 @@
 import React from 'react';
 import { RsvpWidget } from '../../src/';
-import { CustomerPanel, CustomerConnect } from '../../src/shared/components';
-import { SessionPanel, SessionConnect } from '../../src/rsvp/components';
-import '../../src/fundraising-start/style.scss';
+import { CustomerPanel } from '../../src/shared/components';
+import { SessionPanel, SessionConnect, CustomerConnect } from '../../src/rsvp/components';
+import '../../src/rsvp/style.scss';
 
 RsvpWidget.init();
 

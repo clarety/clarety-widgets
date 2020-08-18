@@ -28,12 +28,12 @@ export class SessionPanel extends BasePanel {
     const { layout, index } = this.props;
 
     return (
-      <PanelContainer layout={layout} status="wait">
+      <PanelContainer layout={layout} status="wait" className="session-panel">
         <PanelHeader
           status="wait"
           layout={layout}
           number={index + 1}
-          title="Start a Campaign"
+          title="Select Sessions"
         />
 
         <PanelBody layout={layout} status="wait">
@@ -59,12 +59,12 @@ export class SessionPanel extends BasePanel {
     const { layout, isBusy, index, settings, sessions } = this.props;
 
     return (
-      <PanelContainer layout={layout}>
+      <PanelContainer layout={layout} status="edit" className="session-panel">
         <PanelHeader
           status="edit"
           layout={layout}
           number={index + 1}
-          title="Select a Session"
+          title="Select Sessions"
         />
         
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
@@ -75,7 +75,7 @@ export class SessionPanel extends BasePanel {
                 <CheckboxInput
                   key={index}
                   field={`sessions.${session.sessionUid}`}
-                  label={`${session.startTime} - ${session.endTime}, ${session.date}`}
+                  label={session.displayDate}
                 />
               )}
             </div>
@@ -90,20 +90,24 @@ export class SessionPanel extends BasePanel {
   }
 
   renderDone() {
-    const { layout, index, formData } = this.props;
-    const title = formData['campaign.name'];
+    const { layout, index, sessions, formData } = this.props;
+
+    const selectedSessions = sessions.filter(session => !!formData[`sessions.${session.sessionUid}`]);
 
     return (
-      <PanelContainer layout={layout} status="done">
+      <PanelContainer layout={layout} status="done" className="session-panel">
         <PanelHeader
           status="done"
           layout={layout}
           number={index + 1}
-          title={title}
+          title="Selected Sessions"
           onPressEdit={this.onPressEdit}
         />
 
-        <PanelBody layout={layout} status="done">
+        <PanelBody layout={layout} status="edit">
+          {selectedSessions.map((session, index) =>
+            <p key={index}>{session.displayDate}</p>
+          )}
         </PanelBody>
       </PanelContainer>
     );

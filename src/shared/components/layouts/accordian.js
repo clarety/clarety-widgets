@@ -3,8 +3,8 @@ import { Button } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 
-export const AccordianPanelContainer = ({ children }) => (
-  <div className="panel">{children}</div>
+export const AccordianPanelContainer = ({ className, children }) => (
+  <div className={className}>{children}</div>
 );
 
 export const AccordianPanelHeader = ({ status, number, title, onPressEdit }) => {
@@ -28,21 +28,21 @@ export const AccordianPanelFooter = ({ status, isBusy, children }) => {
 const WaitPanelHeader = ({ number, title }) => (
   <div className="panel-header inactive">
     <span className="circle">{number}</span>
-    <h4>{title}</h4>
+    <h4 className="panel-header__title">{title}</h4>
   </div>
 );
 
 const EditPanelHeader = ({ number, title }) => (
   <div className="panel-header active">
     <span className="circle">{number}</span>
-    <h4>{title}</h4>
+    <h4 className="panel-header__title">{title}</h4>
   </div>
 );
 
 const DonePanelHeader = ({ number, title, onPressEdit }) => (
   <div className="panel-header inactive">
     <span className="circle">{number}</span>
-    <p>{title}</p>
+    <p className="panel-header__title">{title}</p>
     <Button onClick={onPressEdit} variant="edit">Edit</Button>
   </div>
 );
