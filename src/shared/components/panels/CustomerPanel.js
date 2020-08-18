@@ -132,9 +132,7 @@ export class CustomerPanel extends BasePanel {
         {this.renderAddressFields()}
 
         <div className="panel-actions">
-          {/* <Col className="text-center"> */}
-            <SubmitButton title={settings.submitBtnText} isBusy={isBusy} />
-          {/* </Col> */}
+          <SubmitButton title={settings.submitBtnText} isBusy={isBusy} />
         </div>
 
         {settings.showOptIn &&
