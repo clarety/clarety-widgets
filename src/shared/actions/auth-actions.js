@@ -38,8 +38,10 @@ export const logout = () => {
   return async (dispatch) => {
     dispatch(logoutRequest());
 
-    Cookies.remove('jwtAccount');
     await axios.post('ajax.php?SiteCustomer/logout', {}, { validateStatus: false });
+
+    Cookies.remove('jwtAccount');
+    ClaretyApi.clearAuth();
 
     dispatch(logoutSuccess());
 
