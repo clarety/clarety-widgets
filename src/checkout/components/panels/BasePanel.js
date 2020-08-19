@@ -36,6 +36,12 @@ export class BasePanel extends React.Component {
     }));
   };
 
+  updateFormData(formData) {
+    this.setState(prevState => ({
+      formData: { ...prevState.formData, ...formData },
+    }));
+  }
+
   reset() {
     this.setState({
       formData: {},

@@ -8,8 +8,10 @@ class PureTextInput extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    if (props.initialValue !== undefined) {
-      props.onChange(props.field, props.initialValue);
+    const { initialValue, value, field, onChange } = props;
+
+    if (initialValue && !value) {
+      onChange(field, initialValue);
     }
   }
 
