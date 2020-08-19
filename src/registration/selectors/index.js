@@ -209,14 +209,15 @@ export const getCreateTeamPostData = (state) => {
 };
 
 export const getCreateRegistrationPostData = (state) => {
+  const cart = getCart(state);
   const event = getEvent(state);
   const channel = getChannel(state);
   const promoCode = getPromoCode(state);
   const participants = getParticipants(state);
   const fundraising = getFundraisingPostData(state);
   const organisation = getOrganisation(state);
-  const trackingData = getTrackingData(state);
   const merchandise = getMerchandisePostData(state);
+  const trackingData = getTrackingData(state);
 
   return {
     eventId: event.eventId,
@@ -226,6 +227,7 @@ export const getCreateRegistrationPostData = (state) => {
     registrations: participants.map((participant, index) =>
       getParticipantPostData(state, participant, index)
     ),
+    customer: cart.customer,
     fundraising: fundraising,
     merchandise: merchandise,
     ...trackingData,

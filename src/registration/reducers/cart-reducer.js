@@ -9,7 +9,6 @@ export const cartReducer = (state, action) => {
     case types.registrationCreateSuccess:   return registrationCreateSuccess(state, action);
     case types.registrationCreateFailure:   return registrationCreateFailure(state, action);
 
-    case types.fetchShippingOptionsSuccess: return updateShipping(state, action.result);
     case types.updateShippingSuccess:       return updateShipping(state, action.result.sale);
 
     default:                                return sharedCartReducer(state, action);

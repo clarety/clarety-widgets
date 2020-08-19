@@ -2,8 +2,8 @@ import Cookies from 'js-cookie';
 import { setPayment, isStripe, prepareStripePayment, authoriseStripePayment } from 'shared/actions';
 import { getCart } from 'shared/selectors';
 import { setErrors, clearErrors } from 'form/actions';
-import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getIsLoggedIn, getPaymentMethod } from 'registration/selectors';
-import { types, updateAuthCustomer } from 'registration/actions';
+import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getPaymentMethod } from 'registration/selectors';
+import { types } from 'registration/actions';
 import { RegistrationApi } from 'registration/utils';
 
 export const createRegistration = () => {
@@ -11,45 +11,19 @@ export const createRegistration = () => {
     const state = getState();
 
     const postData = getCreateRegistrationPostData(state);
-    const forceExpress = !getIsLoggedIn(state);
 
     dispatch(clearErrors());
     dispatch(registrationCreateRequest(postData));
     
-    const result = await RegistrationApi.createRegistration(postData, { forceExpress });
+    const result = await RegistrationApi.createRegistration(postData);
 
     if (result.status !== 'error') {
       dispatch(registrationCreateSuccess(result));
-
-      if (postData.merchandise.length) {
-        // If we have merch, update the delivery address of logged-in customer, then fetch the shipping options.
-        await dispatch(updateAuthCustomer());
-        await dispatch(fetchShippingOptions());
-      }
       
       return true;
     } else {
       dispatch(registrationCreateFailure(result));
       dispatch(setErrors(result.validationErrors));
-      return false;
-    }
-  };
-};
-
-export const fetchShippingOptions = () => {
-  return async (dispatch, getState) => {
-    const state = getState();
-    const cart = getCart(state);
-
-    dispatch(fetchShippingOptionsRequest(cart.id));
-
-    const result = await RegistrationApi.fetchSale(cart.id);
-
-    if (result.status !== 'error') {
-      dispatch(fetchShippingOptionsSuccess(result));
-      return true;
-    } else {
-      dispatch(fetchShippingOptionsFailure(result.validationErrors));
       return false;
     }
   };
@@ -207,23 +181,6 @@ const registrationCreateSuccess = (result) => ({
 const registrationCreateFailure = (result) => ({
   type: types.registrationCreateFailure,
   result: result,
-});
-
-// Fetch Shipping Options
-
-const fetchShippingOptionsRequest = (saleId) => ({
-  type: types.fetchShippingOptionsRequest,
-  saleId: saleId,
-});
-
-const fetchShippingOptionsSuccess = (result) => ({
-  type: types.fetchShippingOptionsSuccess,
-  result: result,
-});
-
-const fetchShippingOptionsFailure = (errors) => ({
-  type: types.fetchShippingOptionsFailure,
-  errors: errors,
 });
 
 // Update Shipping

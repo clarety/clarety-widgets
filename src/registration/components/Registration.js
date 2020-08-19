@@ -105,11 +105,8 @@ class _RegistrationRoot extends React.Component {
     });
 
     // Init API.
-    RegistrationApi.init({
-      storeId: this.props.storeId,
-      seriesId: this.props.seriesId,
-      isExpress: this.props.variant === 'express',
-    });
+    const { storeId, seriesId } = this.props;
+    RegistrationApi.init({ storeId, seriesId });
 
     // Auth.
     const jwtAccount = getJwtAccount();
