@@ -8,9 +8,9 @@ class PureSelectInput extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    const { initialValue, field, onChange } = props;
+    const { initialValue, value, field, onChange } = props;
 
-    if (initialValue !== undefined) {
+    if (initialValue && !value) {
       onChange(field, initialValue);
     }
   }

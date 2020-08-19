@@ -21,7 +21,10 @@ export class AddressPanel extends BasePanel {
         formData['customer.billing.suburb']   = formData['customer.delivery.suburb'];
         formData['customer.billing.state']    = formData['customer.delivery.state'];
         formData['customer.billing.postcode'] = formData['customer.delivery.postcode'];
+        formData['customer.billing.country']  = formData['customer.delivery.country'];
+        this.updateFormData(formData);
       }
+      
       setFormData(formData);
       
       invalidatePanel({ component: 'ShippingPanel' });
@@ -42,6 +45,7 @@ export class AddressPanel extends BasePanel {
       this.validateRequired('customer.delivery.suburb', errors);
       this.validateRequired('customer.delivery.state', errors);
       this.validateRequired('customer.delivery.postcode', errors);
+      this.validateRequired('customer.delivery.country', errors);
     }
 
     if (!this.state.billingIsSameAsShipping) {
@@ -49,6 +53,7 @@ export class AddressPanel extends BasePanel {
       this.validateRequired('customer.billing.suburb', errors);
       this.validateRequired('customer.billing.state', errors);
       this.validateRequired('customer.billing.postcode', errors);
+      this.validateRequired('customer.billing.country', errors);
     }
 
     this.setState({ errors });
@@ -75,6 +80,19 @@ export class AddressPanel extends BasePanel {
     if (this.props.errors !== prevProps.errors) {
       this.setState({ errors: this.props.errors });
     }
+
+    // Clear state when country is changed, but not when we just prefilled!
+    if (!this.state.didJustPrefill) {
+      if (prevState.formData['customer.delivery.country'] !== this.state.formData['customer.delivery.country']) {
+        this.onChangeField('customer.delivery.state', undefined);
+      }
+
+      if (prevState.formData['customer.billing.country'] !== this.state.formData['customer.billing.country']) {
+        this.onChangeField('customer.billing.state', undefined);
+      }
+    }
+
+    if (this.state.didJustPrefill) this.setState({ didJustPrefill: false });
   }
 
   prefillCustomerData(customer) {
@@ -100,12 +118,8 @@ export class AddressPanel extends BasePanel {
       formData['customer.billing.country']  = customer.billing.country;
     }
 
-    this.setState(prevState => ({
-      formData: {
-        ...prevState.formData,
-        ...formData,
-      },
-    }));
+    this.updateFormData(formData);
+    this.setState({ didJustPrefill: true });
   }
 
   renderWait() {

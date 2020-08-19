@@ -10,7 +10,7 @@ export class AddressConnect {
       customer: state.cart.customer,
       errors: state.errors,
       defaultCountry: getSetting(state, 'defaultCountry'),
-      shippingRequired: getCartShippingRequired(state)
+      shippingRequired: getCartShippingRequired(state),
     };
   };
   
