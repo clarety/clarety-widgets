@@ -94,23 +94,33 @@ export class LoginPanel extends BasePanel {
   onPressCreateAccount = async (event) => {
     event.preventDefault();
 
-    const { setFormData, nextPanel, settings, createAccount } = this.props;
+    const { setFormData, nextPanel, settings, createAccount, createGuestAccount } = this.props;
 
     if (this.validate()) {
-      const createAccountFormData = this.getCreateAccountFormData();
-      setFormData(createAccountFormData);
+      const formData = this.getCreateAccountFormData();
+      setFormData(formData);
 
-      if (settings.createAccount) await createAccount();
+      if (settings.createAccount) {
+        if (this.state.mode === 'guest-account') {
+          await createGuestAccount();
+        } else {
+          await createAccount();
+        }
+      }      
 
       nextPanel();
     }
   };
 
   onPressGuestCheckout = () => {
-    const { setFormData, nextPanel } = this.props;
+    const { setFormData, nextPanel, settings } = this.props;
 
-    setFormData({ 'customer.email': this.state.formData.email });
-    nextPanel();
+    if (settings.showGuestForm) {
+      this.setMode('guest-account');
+    } else {
+      setFormData({ 'customer.email': this.state.formData.email });
+      nextPanel();
+    }    
   };
 
   onPressStayLoggedIn = () => {
@@ -152,8 +162,11 @@ export class LoginPanel extends BasePanel {
     }
 
     if (mode === 'create-account') {
-      this.validateEmail('email', errors);
       this.validatePassword('password', errors);
+    }
+
+    if (mode === 'create-account' || mode === 'guest-account') {
+      this.validateEmail('email', errors);
 
       if (settings.showFirstName) this.validateRequired('firstName', errors);
       if (settings.showLastName)  this.validateRequired('lastName', errors);
@@ -188,10 +201,11 @@ export class LoginPanel extends BasePanel {
   getCreateAccountFormData() {
     const { settings } = this.props;
 
-    const formData = {
-      'customer.email':    this.state.formData.email,
-      'customer.password': this.state.formData.password,
-    };
+    const formData = { 'customer.email': this.state.formData.email };
+
+    if (this.state.mode === 'create-account') {
+      formData['customer.password'] = this.state.formData.password;
+    }
 
     if (settings.showFirstName) formData['customer.firstName'] = this.state.formData.firstName;
     if (settings.showLastName)  formData['customer.lastName']  = this.state.formData.lastName;
@@ -257,6 +271,7 @@ export class LoginPanel extends BasePanel {
     if (mode === 'check-email')    return this.renderEmailCheckForm(false);
     if (mode === 'no-account')     return this.renderEmailCheckForm(true);
     if (mode === 'create-account') return this.renderCreateAccountForm();
+    if (mode === 'guest-account')  return this.renderCreateAccountForm();
     if (mode === 'login')          return this.renderLoginForm();
     if (mode === 'logged-in')      return this.renderIsLoggedInForm();
   }
@@ -404,18 +419,20 @@ export class LoginPanel extends BasePanel {
               />
             </Col>
           </Form.Row>
-
-          <Form.Row>
-            <Col>
-              <TextInput
-                field="password"
-                label={t('label.customer.password', 'Password')}
-                type="password"
-                hideLabel={settings.hideLabels}
-                required
-              />
-            </Col>
-          </Form.Row>
+          
+          {this.state.mode === 'create-account' &&
+            <Form.Row>
+              <Col>
+                <TextInput
+                  field="password"
+                  label={t('label.customer.password', 'Password')}
+                  type="password"
+                  hideLabel={settings.hideLabels}
+                  required
+                />
+              </Col>
+            </Form.Row>
+          }
 
           {settings.showFirstName &&
             <Form.Row>
@@ -460,13 +477,11 @@ export class LoginPanel extends BasePanel {
           }
 
           <div className="panel-actions">
-            {settings.allowGuest &&
-              <Button
-                title={t('btn.cancel', 'Cancel')}
-                onClick={this.onPressCancelCreateAccount}
-                variant="secondary"
-              />
-            }
+            <Button
+              title={t('btn.cancel', 'Cancel')}
+              onClick={this.onPressCancelCreateAccount}
+              variant="secondary"
+            />
 
             <Button
               title={t('btn.next', 'Next')}

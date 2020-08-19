@@ -62,6 +62,10 @@ export const types = {
   createAccountSuccess: 'CREATE_ACCOUNT_SUCCESS',
   createAccountFailure: 'CREATE_ACCOUNT_FAILURE',
 
+  createGuestAccountRequest: 'CREATE_GUEST_ACCOUNT_REQUEST',
+  createGuestAccountSuccess: 'CREATE_GUEST_ACCOUNT_SUCCESS',
+  createGuestAccountFailure: 'CREATE_GUEST_ACCOUNT_FAILURE',
+
   fetchAuthCustomerRequest: 'FETCH_AUTH_CUSTOMER_REQUEST',
   fetchAuthCustomerSuccess: 'FETCH_AUTH_CUSTOMER_SUCCESS',
   fetchAuthCustomerFailure: 'FETCH_AUTH_CUSTOMER_FAILURE',

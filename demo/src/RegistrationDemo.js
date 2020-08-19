@@ -46,8 +46,9 @@ Registration.setPanels([
     component: LoginPanel,
     connect: LoginConnect,
     settings: {
-      allowGuest: false,
       createAccount: true,
+      allowGuest: true,
+      showGuestForm: true,
       showFirstName: true,
       showLastName: true,
     },

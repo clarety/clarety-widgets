@@ -3,12 +3,14 @@ import { ClaretyApi } from 'clarety-utils';
 export class RegistrationApi {
   static storeId = null;
   static seriesId = null;
-  static isExpress = null;
 
-  static init({ storeId, seriesId, isExpress }) {
+  static init({ storeId, seriesId }) {
     this.storeId = storeId;
     this.seriesId = seriesId;
-    this.isExpress = isExpress;
+  }
+
+  static setJwtCustomer(jwtCustomer) {
+    ClaretyApi.setJwtCustomer(jwtCustomer);
   }
 
   // Events
@@ -39,6 +41,11 @@ export class RegistrationApi {
 
   static async createAccount(data) {
     const results = await ClaretyApi.post('customer-new/', data);
+    return results[0];
+  }
+
+  static async createGuestAccount(data) {
+    const results = await ClaretyApi.post('registration-guest/', data);
     return results[0];
   }
 
@@ -83,12 +90,8 @@ export class RegistrationApi {
 
   // Registration
 
-  static async createRegistration(data, { forceExpress }) {
-    const endpoint = this.isExpress || forceExpress
-      ? 'registration-sale-express/'
-      : 'registration-sale/';
-
-    const results = await ClaretyApi.post(endpoint, data, { storeId: this.storeId });
+  static async createRegistration(data) {
+    const results = await ClaretyApi.post('registration-sale/', data, { storeId: this.storeId });
     return results[0];
   }
 

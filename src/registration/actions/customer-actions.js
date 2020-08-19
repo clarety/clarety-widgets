@@ -77,6 +77,34 @@ export const createAccount = () => {
   };
 };
 
+export const createGuestAccount = () => {
+  return async (dispatch, getState) => {
+    const { formData } = getState();
+    const { customer } = parseNestedElements(formData);
+    
+    dispatch(createGuestAccountRequest(customer));
+    dispatch(setStatus('busy'));
+
+    const result = await RegistrationApi.createGuestAccount(customer);
+
+    dispatch(setStatus('ready'));
+
+    if (result.status === 'error') {
+      dispatch(createGuestAccountFailure(result));
+      return false;
+    } else {
+      RegistrationApi.setJwtCustomer(result.jwtCustomer);
+
+      // Set customer in the cart.
+      dispatch(setCustomer({ ...customer, id: result.customerId }));
+
+      dispatch(createGuestAccountSuccess(result));
+
+      return true;
+    }
+  };
+};
+
 export const fetchAuthCustomer = () => {
   return async (dispatch, getState) => {
     const state = getState();
@@ -168,6 +196,23 @@ const createAccountSuccess = (result) => ({
 
 const createAccountFailure = (result) => ({
   type: types.createAccountFailure,
+  result: result,
+});
+
+// Guest Account
+
+const createGuestAccountRequest = (postData) => ({
+  type: types.createGuestAccountRequest,
+  postData: postData,
+});
+
+const createGuestAccountSuccess = (result) => ({
+  type: types.createGuestAccountSuccess,
+  result: result,
+});
+
+const createGuestAccountFailure = (result) => ({
+  type: types.createGuestAccountFailure,
   result: result,
 });
 
