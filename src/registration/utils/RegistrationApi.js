@@ -95,11 +95,6 @@ export class RegistrationApi {
     return results[0];
   }
 
-  static async fetchSale(saleId) {
-    const results = await ClaretyApi.get(`sale/${saleId}`, { storeId: this.storeId });
-    return results[0];
-  }
-
   static async updateShipping(saleId, shippingKey) {
     const data = { saleId, key: shippingKey };
     const results = await ClaretyApi.post('registration-shipping/', data, { storeId: this.storeId });

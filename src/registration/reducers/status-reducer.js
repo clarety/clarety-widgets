@@ -31,8 +31,6 @@ export const statusReducer = (state = initialState, action) => {
     case types.checkPromoCodeFailure:
     case types.registrationCreateSuccess:
     case types.registrationCreateFailure:
-    case types.fetchShippingOptionsSuccess:
-    case types.fetchShippingOptionsFailure:
     case types.updateShippingSuccess:
     case types.updateShippingFailure:
     case types.registrationSubmitFailure:
@@ -41,7 +39,6 @@ export const statusReducer = (state = initialState, action) => {
     // Validating.
     case types.registrationCreateRequest:
     case types.updateAuthCustomerRequest:
-    case types.fetchShippingOptionsRequest:
       return statuses.validating;
     
     // Submitting.
