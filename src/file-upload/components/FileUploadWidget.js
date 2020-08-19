@@ -1,8 +1,8 @@
 import React from 'react';
 import { FilePond, registerPlugin } from 'react-filepond';
 import { Status } from 'filepond';
-import { create as createDoka } from '../react-doka/lib/doka.esm.min';
-import '../react-doka/lib/doka.min.css';
+// import { create as createDoka } from '../react-doka/lib/doka.esm.min';
+// import '../react-doka/lib/doka.min.css';
 
 // Filepond Plugins
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
@@ -152,7 +152,7 @@ export class FileUploadWidget extends React.Component {
           onprocessfiles={this.onProcessFiles}
           onremovefile={this.onRemoveFile}
           
-          imageEditEditor={showImageEditor ? createDoka() : null}
+          // imageEditEditor={showImageEditor ? createDoka() : null}
         />
         <input type="hidden" name={name} value={JSON.stringify(uploads)} />
         <input type="hidden" name={`filecount-${name}`} value={uploads.length} />
