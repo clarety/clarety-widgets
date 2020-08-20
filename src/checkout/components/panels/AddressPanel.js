@@ -81,18 +81,24 @@ export class AddressPanel extends BasePanel {
       this.setState({ errors: this.props.errors });
     }
 
-    // Clear state when country is changed, but not when we just prefilled!
-    if (!this.state.didJustPrefill) {
-      if (prevState.formData['customer.delivery.country'] !== this.state.formData['customer.delivery.country']) {
-        this.onChangeField('customer.delivery.state', undefined);
-      }
+    this.clearStateOnCountryChange(prevProps, prevState);
+  }
 
-      if (prevState.formData['customer.billing.country'] !== this.state.formData['customer.billing.country']) {
-        this.onChangeField('customer.billing.state', undefined);
-      }
+  clearStateOnCountryChange(prevProps, prevState) {
+    const formData = this.state.formData;
+    const prevFormData = prevState.formData;
+
+    const isNewDeliveryCountry = prevFormData['customer.delivery.country'] !== formData['customer.delivery.country'];
+    const isNewDeliveryState   = prevFormData['customer.delivery.state']   !== formData['customer.delivery.state'];
+    if (isNewDeliveryCountry && !isNewDeliveryState) {
+      this.onChangeField('customer.delivery.state', undefined);
     }
 
-    if (this.state.didJustPrefill) this.setState({ didJustPrefill: false });
+    const isNewBillingCountry = prevFormData['customer.billing.country'] !== formData['customer.billing.country'];
+    const isNewBillingState   = prevFormData['customer.billing.state']   !== formData['customer.billing.state'];
+    if (isNewBillingCountry && !isNewBillingState) {
+      this.onChangeField('customer.billing.state', undefined);
+    }
   }
 
   prefillCustomerData(customer) {
@@ -119,7 +125,6 @@ export class AddressPanel extends BasePanel {
     }
 
     this.updateFormData(formData);
-    this.setState({ didJustPrefill: true });
   }
 
   renderWait() {

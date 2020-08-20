@@ -94,18 +94,33 @@ export class CustomerPanel extends BasePanel {
         }
 
         <PanelBody status="edit" layout={layout} isBusy={isBusy}>
-          <ErrorMessages />
+          {this.renderErrorMessages()}
           {this.renderCustomerForm()}
+          {this.renderFooter()}
         </PanelBody>
       </PanelContainer>
     );
   }
 
-  renderCustomerForm() {
-    const { isBusy, settings } = this.props;
+  renderErrorMessages() {
+    return <ErrorMessages />; 
+  }
 
+  renderCustomerForm() {
     return (
       <Form onSubmit={this.onClickSubmit}>
+        {this.renderBasicFields()}
+        {this.renderPhoneField()}
+        {this.renderAddressFields()}
+        {this.renderOptIn()}
+        {this.renderActions()}
+      </Form>
+    );
+  }
+
+  renderBasicFields() {
+    return (
+      <React.Fragment>
         <Form.Row>
           <Col sm>
             <Form.Group>
@@ -127,22 +142,7 @@ export class CustomerPanel extends BasePanel {
             </Form.Group>
           </Col>
         </Form.Row>
-
-        {this.renderPhoneField()}
-        {this.renderAddressFields()}
-
-        <div className="panel-actions">
-          <SubmitButton title={settings.submitBtnText} isBusy={isBusy} />
-        </div>
-
-        {settings.showOptIn &&
-          <Form.Row className="opt-in">
-            <Col className="text-center">
-              <CheckboxInput field="optIn" label={settings.optInText} />
-            </Col>
-          </Form.Row>
-        }
-      </Form>
+      </React.Fragment>
     );
   }
 
@@ -248,6 +248,42 @@ export class CustomerPanel extends BasePanel {
 
   renderInternationalAddressFields() {
     throw new Erorr('[Clarety] Customer Panel render international address not implemented');
+  }
+
+  renderOptIn() {
+    const { settings } = this.props;
+
+    if (!settings.showOptIn) return null;
+
+    return (
+      <Form.Row className="opt-in">
+        <Col>
+          <CheckboxInput field="optIn" label={settings.optInText || 'Subscribe to newsletter'} />
+        </Col>
+      </Form.Row>
+    );
+  }
+
+  renderActions() {
+    const { settings, isBusy } = this.props;
+
+    return (
+      <div className="panel-actions">
+        <SubmitButton title={settings.submitBtnText} isBusy={isBusy} />
+      </div>
+    );
+  }
+
+  renderFooter() {
+    const { settings } = this.props;
+
+    if (settings.hideFooter) return null;
+
+    if (settings.FooterComponent) return (
+      <settings.FooterComponent {...this.props} />
+    );
+
+    return null;
   }
 
   renderDone() {
