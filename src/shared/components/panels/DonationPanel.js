@@ -212,7 +212,7 @@ export class DonationPanel extends BasePanel {
     );
   }
 
-  renderSuggestedAmount = suggestedAmount => {
+  renderSuggestedAmount = (suggestedAmount) => {
     // Ignore variable amount, we'll add a field below the suggested amounts.
     if (suggestedAmount.variable) return null;
 

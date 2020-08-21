@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Card, InputGroup } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { CurrencySymbol } from 'shared/components';
 import { cleanDecimal } from 'form/utils';
 
@@ -16,14 +17,16 @@ export const VariableAmountLg = ({ value, amountInfo, isSelected, onChange }) =>
     >
       <Card.Img src={amountInfo.image} variant="top" />
       <Card.Body>
-        <Card.Title className="mb-3">{amountInfo.description}</Card.Title>
+        {amountInfo.description &&
+          <Card.Title className="mb-3">{amountInfo.description}</Card.Title>
+        }
         <Card.Text as="div">
           <InputGroup>
             <InputGroup.Prepend>
               <InputGroup.Text><CurrencySymbol /></InputGroup.Text>
             </InputGroup.Prepend>
             <Form.Control
-              placeholder="Enter Amount"
+              placeholder={t('label.variableAmountInput', 'Enter Amount')}
               ref={input}
               value={value}
               type="text"
