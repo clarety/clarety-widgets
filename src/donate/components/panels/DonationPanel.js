@@ -102,9 +102,9 @@ export class DonationPanel extends BasePanel {
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>          
           {this.renderErrorMessages()}
           {this.renderFrequencySelect()}
+          {this.renderScheduleSelect()}
           {this.renderPriceHandles()}
           {this.renderGivingType()}
-          {this.renderScheduleSelect()}
         </PanelBody>
 
         {this.renderFooter()}
