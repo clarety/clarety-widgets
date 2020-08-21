@@ -90,8 +90,17 @@ class _RegistrationRoot extends React.Component {
       resources: languages,
       returnNull: false,
     });
+
+    i18next.on('languageChanged', (language) => {
+      this.forceUpdate();
+
+      if (Registration.onChangeLanguage) {
+        Registration.onChangeLanguage(language);
+      }
+    });
+
     changeLanguage(language);
-    i18next.on('languageChanged', () => this.forceUpdate());
+    
 
     // Tracking.
     const { sourceId, sourceUid, responseId, emailResponseId, setTrackingData } = this.props;
