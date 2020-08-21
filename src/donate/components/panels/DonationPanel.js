@@ -133,7 +133,14 @@ export class DonationPanel extends BasePanel {
   }
 
   renderFrequencySelect() {
-    return <FrequencySelect />;
+    const { settings } = this.props;
+
+    return (
+      <FrequencySelect
+        singleLabel={settings.singleLabel}
+        recurringLabel={settings.recurringLabel}
+      />
+    );
   }
 
   renderPriceHandles() {
