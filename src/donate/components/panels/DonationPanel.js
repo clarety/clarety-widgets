@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Row, Col } from 'react-bootstrap';
+import { Form, Row, Col, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import { Breakpoint } from 'react-socks';
 import { requiredField } from 'shared/utils';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
@@ -143,6 +143,38 @@ export class DonationPanel extends BasePanel {
     );
   }
 
+  renderScheduleSelect() {
+    const { frequency, selections } = this.props;
+    const offer = this._getOffer(frequency);
+
+    if (frequency !== 'recurring' || !offer.schedules || offer.schedules.length === 1) {
+      return null;
+    }
+
+    const value = selections['recurring'].offerPaymentUid;
+
+    return (
+      <div className="schedule-select">
+        <ToggleButtonGroup
+          type="radio"
+          name="schedule"
+          value={value || ''}
+          onChange={this.onSelectSchedule}
+        >
+          {offer.schedules.map(option => (
+            <ToggleButton
+              key={option.offerPaymentUid}
+              value={option.offerPaymentUid}
+              variant="outline-secondary"
+            >
+              {option.label}
+            </ToggleButton>
+          ))}
+        </ToggleButtonGroup>
+      </div>
+    );
+  }
+
   renderPriceHandles() {
     const { frequency, layout } = this.props;
     
@@ -245,12 +277,6 @@ export class DonationPanel extends BasePanel {
         </Row>
       </div>
     );
-  }
-
-  renderScheduleSelect() {
-    // Overridden in instances for now,
-    // add a core implementation soon.
-    return null;
   }
 
   renderFooter() {
