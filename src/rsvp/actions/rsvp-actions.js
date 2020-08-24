@@ -1,8 +1,6 @@
 import Cookies from 'js-cookie';
 import { ClaretyApi } from 'clarety-utils';
-import { setStatus, setPanelSettings, updateAppSettings, setRecaptcha } from 'shared/actions';
-import { getSetting } from 'shared/selectors';
-import { getCmsConfirmContent } from 'shared/utils';
+import { setStatus, setRecaptcha } from 'shared/actions';
 import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { getRsvpPostData } from 'rsvp/selectors';
