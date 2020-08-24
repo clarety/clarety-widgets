@@ -1,4 +1,6 @@
 export * from './amounts/FrequencySelect';
+export * from './amounts/ScheduleSelectButtonGroup';
+export * from './amounts/ScheduleSelectDropdown';
 export * from './amounts/SuggestedAmount';
 export * from './amounts/SuggestedAmountLg';
 export * from './amounts/VariableAmount';

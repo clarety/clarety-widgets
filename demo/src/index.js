@@ -9,8 +9,9 @@ Config.init({
   // instanceKey: 'tnc',
   // instanceKey: 'clarety-church',
   // instanceKey: 'ethiopiaid',
-  instanceKey: 'a21',
+  // instanceKey: 'a21',
   // instanceKey: 'miraclebabies',
+  instanceKey: 'bsfs',
   devSitePath: 'http://localhost:3000/',
   phoneCountry: 'AU',
 });
