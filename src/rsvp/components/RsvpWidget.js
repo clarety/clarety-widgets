@@ -3,10 +3,10 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { connect, Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import i18next from 'i18next';
-import { ClaretyApi } from 'clarety-utils';
+import BlockUi from 'react-block-ui';
 import { setStatus, setPanels, setClientIds, updateAppSettings, setTrackingData, fetchSettings } from 'shared/actions';
 import { PanelManager } from 'shared/components';
-import { Resources, getJwtAccount } from 'shared/utils';
+import { Resources } from 'shared/utils';
 import { Recaptcha, ErrorMessages } from 'form/components';
 import { rootReducer } from 'rsvp/reducers';
 import { settingsMap } from 'rsvp/utils';
@@ -91,16 +91,20 @@ export class _RsvpWidgetRoot extends React.Component {
 
     return (
       <div className="clarety-rsvp-widget">
-        <ErrorMessages />
-        <PanelManager layout="accordian" resources={this.props.resources} />
-        <Recaptcha siteKey={this.props.reCaptchaKey} />
+        <BlockUi tag="div" blocking={this.props.isBusy} loader={<span></span>}>
+          <ErrorMessages />
+          <PanelManager layout="accordian" resources={this.props.resources} />
+          <Recaptcha siteKey={this.props.reCaptchaKey} />
+        </BlockUi>
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => {
-  return {};
+  return {
+    isBusy: state.status !== 'ready',
+  };
 };
 
 const actions = {
