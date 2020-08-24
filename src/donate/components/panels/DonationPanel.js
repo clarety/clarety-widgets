@@ -4,7 +4,7 @@ import { Breakpoint } from 'react-socks';
 import { requiredField } from 'shared/utils';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { SubmitButton, ErrorMessages, SelectInput } from 'form/components';
-import { FrequencySelect } from 'donate/components';
+import { FrequencySelect, ScheduleSelectButtonGroup, ScheduleSelectDropdown } from 'donate/components';
 
 export class DonationPanel extends BasePanel {
   onShowPanel() {
@@ -144,7 +144,7 @@ export class DonationPanel extends BasePanel {
   }
 
   renderScheduleSelect() {
-    const { frequency, selections } = this.props;
+    const { frequency, selections, settings } = this.props;
     const offer = this._getOffer(frequency);
 
     if (frequency !== 'recurring' || !offer.schedules || offer.schedules.length === 1) {
@@ -155,22 +155,21 @@ export class DonationPanel extends BasePanel {
 
     return (
       <div className="schedule-select">
-        <ToggleButtonGroup
-          type="radio"
-          name="schedule"
-          value={value || ''}
-          onChange={this.onSelectSchedule}
-        >
-          {offer.schedules.map(option => (
-            <ToggleButton
-              key={option.offerPaymentUid}
-              value={option.offerPaymentUid}
-              variant="outline-secondary"
-            >
-              {option.label}
-            </ToggleButton>
-          ))}
-        </ToggleButtonGroup>
+        <h3>{settings.scheduleSelectHeading || 'Select Frequency'}</h3>
+
+        {offer.schedules.length > 3
+          ? <ScheduleSelectDropdown
+              value={value}
+              schedules={offer.schedules}
+              onChange={this.onSelectSchedule}
+            />
+            
+          : <ScheduleSelectButtonGroup
+              value={value}
+              schedules={offer.schedules}
+              onChange={this.onSelectSchedule}
+            />
+        }
       </div>
     );
   }
