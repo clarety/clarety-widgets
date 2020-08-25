@@ -1,4 +1,4 @@
-import { getOrganisation, getPromoCode, getTrackingData } from 'shared/selectors';
+import { getOrganisation, getPromoCode, getTrackingData, getCurrency } from 'shared/selectors';
 import { parseNestedElements } from 'shared/utils';
 
 export const getSettings = (state) => state.settings;
@@ -73,11 +73,13 @@ export const getCartTotal = (state) => {
 
 export const getFormattedCartTotal = (state) => {
   const total = getCartTotal(state);
-  const currency = getSetting(state, 'currency');
+  const currency = getCurrency(state);
 
-  return currency
-    ? `${currency.code} ${currency.symbol}${total.toFixed(2)}`
-    : '$' + total.toFixed(2);
+  if (!currency.code || currency.code === 'NOK') {
+    return `${currency.symbol}${total.toFixed(2)}`;
+  }
+
+  return `${currency.code} ${currency.symbol}${total.toFixed(2)}`;
 };
 
 export const getCustomer = (state) => getCart(state).customer;

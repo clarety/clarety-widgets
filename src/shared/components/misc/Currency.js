@@ -2,11 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { getSetting, getCurrency } from 'shared/selectors';
 
-const _CurrencySymbol = ({ currency, hideCurrencyCode }) => (
-  <React.Fragment>
-    {!hideCurrencyCode && currency.code} {currency.symbol}
-  </React.Fragment>
-);
+const _CurrencySymbol = ({ currency, hideCurrencyCode }) => {
+  if (hideCurrencyCode || !currency.code || currency.code === 'NOK') {
+    return currency.symbol;
+  }
+
+  return currency.code + ' ' + currency.symbol;
+};
 
 const _Currency = ({ amount, hideCents }) => (
   <React.Fragment>
