@@ -226,6 +226,8 @@ export class DetailsPanel extends BasePanel {
     if (waveOptions.length > 1)  {
       this.validateRequired('waveProductId', formData, errors);
     }
+    
+    this.validateExtendFields(errors);
   }
 
   validateAddressFields(errors) {
@@ -238,6 +240,17 @@ export class DetailsPanel extends BasePanel {
       this.validateRequired('customer.billing.state', formData, errors);
       this.validateRequired('customer.billing.postcode', formData, errors);
       this.validateRequired('customer.billing.country', formData, errors);
+    }
+  }
+
+  validateExtendFields(errors) {
+    const { extendFields } = this.props;
+    const { formData } = this.state;
+
+    for (const field of extendFields) {
+      if (field.required) {
+        this.validateRequired(`extendForm.${field.columnKey}`, formData, errors);
+      }
     }
   }
 
