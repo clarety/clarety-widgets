@@ -161,21 +161,6 @@ const getExtendFormId = (state) => {
 
 export const getSaleId = (state) => getCart(state).id;
 
-export const getChannel = (state) => {
-  const individualChannel = '7';
-  const multipleChannel   = '8';
-  const familyChannel     = '9';
-
-  if (getIsCorporateTeam(state)) return multipleChannel;
-  if (getParticipantCount(state) === 1) return individualChannel;
-
-  const mode = getSetting(state, 'registrationMode');
-  if (mode === 'group')  return multipleChannel;
-  if (mode === 'family') return familyChannel;
-
-  return multipleChannel;
-};
-
 export const getIsLoggedIn = (state) => !!getAuth(state).jwt;
 
 export const getPaymentMethods = (state) => {
@@ -210,7 +195,6 @@ export const getCreateTeamPostData = (state) => {
 
 export const getCreateRegistrationPostData = (state) => {
   const event = getEvent(state);
-  const channel = getChannel(state);
   const promoCode = getPromoCode(state);
   const participants = getParticipants(state);
   const fundraising = getFundraisingPostData(state);
@@ -221,7 +205,6 @@ export const getCreateRegistrationPostData = (state) => {
   return {
     eventId: event.eventId,
     organisationId: organisation ? organisation.teamId : '',
-    channel: channel,
     promoCode: promoCode,
     registrations: participants.map((participant, index) =>
       getParticipantPostData(state, participant, index)
