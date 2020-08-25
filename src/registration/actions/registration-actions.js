@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 import { setPayment, isStripe, prepareStripePayment, authoriseStripePayment } from 'shared/actions';
-import { getCart } from 'shared/selectors';
+import { getCart, getSetting } from 'shared/selectors';
 import { setErrors, clearErrors } from 'form/actions';
 import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getPaymentMethod } from 'registration/selectors';
 import { types } from 'registration/actions';
@@ -137,12 +137,13 @@ const handlePaymentComplete = (result, paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     const state = getState();
     const cart = getCart(state);
+    const confirmPageUrl = getSetting(state, 'confirmPageUrl');
 
     dispatch(registrationSubmitSuccess(result));
 
     // Redirect on success.
     Cookies.set('session-jwt', cart.jwt);
-    window.location.href = result.redirect;
+    window.location.href = confirmPageUrl || result.redirect || 'register-confirm.php';
   }
 };
 
