@@ -77,7 +77,7 @@ export class Checkout extends React.Component {
   render() {
     if (!this.state.isReady) {
       return (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '400px' }}>
           <Spinner animation="border" />
         </div>
       );

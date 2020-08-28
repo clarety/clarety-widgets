@@ -47,8 +47,9 @@ export const makePayment = (paymentData) => {
 
 const preparePayment = (paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
-    // Stripe payment.
     if (isStripe(paymentMethod)) {
+      // Stripe payment.
+
       const result = await dispatch(prepareStripePayment(paymentData, paymentMethod));
 
       if (result.validationErrors) {
@@ -58,11 +59,19 @@ const preparePayment = (paymentData, paymentMethod) => {
         dispatch(setPayment(result.payment));
         return true;
       }
+    } else {
+      // Standard payment.
+
+      // TODO: temp api fix...
+      // carts api uses different expiry fields to the other apis.
+      paymentData.expiryMonth = paymentData.cardExpiryMonth;
+      paymentData.cardExpiryMonth = undefined;
+      paymentData.expiryYear = paymentData.cardExpiryYear;
+      paymentData.cardExpiryYear = undefined;
+
+      dispatch(setPayment(paymentData));
+      return true;
     }
-    
-    // Standard payment.
-    dispatch(setPayment(paymentData));
-    return true;
   };
 };
 
