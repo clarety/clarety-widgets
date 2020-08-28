@@ -73,7 +73,7 @@ export class _RsvpWidgetRoot extends React.Component {
     });
 
     const { storeUid, eventUid } = this.props;
-    await fetchSettings('rsvp/', { storeUid, eventUid }, settingsMap);
+    await fetchSettings('events/rsvp/', { storeUid, eventUid }, settingsMap);
 
     setStatus('ready');
     this.setState({ isInitialising: false });
