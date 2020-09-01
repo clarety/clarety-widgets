@@ -50,6 +50,7 @@ function registrationCreateSuccess(state, action) {
     summary: {
       ...state.summary,
       shipping: action.result.sale.shipping,
+      tax: actions.result.sale.includesTax,
       total: action.result.sale.total,
     }
   };
@@ -72,7 +73,8 @@ function updateShipping(state, sale) {
     summary: {
       ...state.summary,
       shipping: sale.shipping,
-      total:    sale.total,
+      tax: sale.includesTax,
+      total: sale.total,
     }
   };
 }
