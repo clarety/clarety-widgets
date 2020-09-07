@@ -15,12 +15,19 @@ export function getCustomerPanelSettingsFromWidgetProps(props) {
     title:             props.headingText,
     subtitle:          props.subHeadingText,
     submitBtnText:     props.buttonText,
+
     showOptIn:         props.showOptIn === '1',
     optInText:         props.optInText,
+
     phoneType:         getPhoneType(props.phoneOption),
     isPhoneRequired:   getIsPhoneRequired(props.phoneOption),
+
     addressType:       getAddressType(props.addressOption),
     isAddressRequired: getIsAddressRequired(props.addressOption),
+
+    showDetails:       getShowDetails(props.detailsOption),
+    isDetailsRequired: getIsDetailsRequired(props.detailsOption),
+    detailsText:       props.detailsText,
   };
 };
 
@@ -50,4 +57,14 @@ function getIsAddressRequired(addressOption) {
   if (addressOption === 'international_required') return true;
 
   return false;
+}
+
+function getShowDetails(detailsOption) {
+  if (detailsOption === 'optional' || detailsOption === 'required') return true;
+
+  return false;
+}
+
+function getIsDetailsRequired(detailsOption) {
+  return detailsOption === 'required';
 }

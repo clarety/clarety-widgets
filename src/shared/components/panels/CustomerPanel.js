@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { requiredField, emailField } from 'shared/utils';
-import { TextInput, EmailInput, PhoneInput, CheckboxInput, StateInput, PostcodeInput, SubmitButton, ErrorMessages, FormElement } from 'form/components';
+import { TextInput, TextAreaInput, EmailInput, PhoneInput, CheckboxInput, StateInput, PostcodeInput, SubmitButton, ErrorMessages, FormElement } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
   onClickSubmit = async (event) => {
@@ -28,6 +28,10 @@ export class CustomerPanel extends BasePanel {
 
     if (settings.isPhoneRequired) {
       requiredField(errors, formData, 'customer.mobile');
+    }
+
+    if (settings.isDetailsRequired) {
+      requiredField(errors, formData, 'details');
     }
 
     this.validateAddress(errors);
@@ -112,6 +116,7 @@ export class CustomerPanel extends BasePanel {
         {this.renderBasicFields()}
         {this.renderPhoneField()}
         {this.renderAddressFields()}
+        {this.renderDetailsField()}
         {this.renderOptIn()}
         {this.renderActions()}
       </Form>
@@ -248,6 +253,26 @@ export class CustomerPanel extends BasePanel {
 
   renderInternationalAddressFields() {
     throw new Erorr('[Clarety] Customer Panel render international address not implemented');
+  }
+
+  renderDetailsField() {
+    const { settings } = this.props;
+
+    if (!settings.showDetails) return null;
+
+    return (
+      <Form.Row className="details">
+        <Col>
+          <Form.Group>
+            <TextAreaInput
+              field="details"
+              placeholder={settings.detailsText || 'Details'}
+              required={settings.isDetailsRequired}
+            />
+          </Form.Group>
+        </Col>
+      </Form.Row>
+    );
   }
 
   renderOptIn() {
