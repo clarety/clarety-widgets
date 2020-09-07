@@ -3,7 +3,7 @@ import { Form, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import Select from 'react-select';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { Button, TextInput } from 'form/components';
+import { Button } from 'form/components';
 
 export class EventPanel extends BasePanel {
   state = {
@@ -41,16 +41,10 @@ export class EventPanel extends BasePanel {
   }
 
   onClickNext = async () => {
-    const { formData, fetchFullEvent, checkPromoCode, nextPanel } = this.props;
+    const { fetchFullEvent, nextPanel } = this.props;
     const { event } = this.state;
-    const promoCode = formData['promoCode'];
 
     if (!event) return;
-
-    if (promoCode) {
-      const isValidPromoCode = await checkPromoCode(promoCode);
-      if (!isValidPromoCode) return;
-    }
 
     const didFetch = await fetchFullEvent(event.eventId);
     if (!didFetch) return;
@@ -97,7 +91,6 @@ export class EventPanel extends BasePanel {
         <PanelBody layout={layout} status="edit">
           {this.renderStateButtons()}
           {this.renderEventSelect()}
-          {this.renderPromoCode()}
           {this.renderActions()}
         </PanelBody>
       </PanelContainer>
@@ -150,25 +143,6 @@ export class EventPanel extends BasePanel {
     return events
       .filter(event => event.state === state)
       .sort((a, b) => b.listOrder - a.listOrder);
-  }
-
-  renderPromoCode() {
-    const { settings } = this.props;
-    if (!settings.showPromoCode) return null;
-
-    return (
-      <div className="promo-code">
-        <Form.Group controlId="promoCode">
-          <Form.Label>
-            {t('label.promoCodePrompt', 'If applicable, enter the promo code provided')}
-          </Form.Label>
-          <TextInput
-            field="promoCode"
-            placeholder={t('label.promoCode', 'Promo code')}
-          />
-        </Form.Group>
-      </div>
-    );
   }
 
   renderActions() {
