@@ -83,7 +83,7 @@ export class EventPanel extends BasePanel {
   }
   
   renderEdit() {
-    const { layout, index, settings } = this.props;
+    const { layout, index } = this.props;
 
     return (
       <PanelContainer layout={layout} status="edit" className="event-panel">
@@ -93,27 +93,21 @@ export class EventPanel extends BasePanel {
           number={index + 1}
           title={t('eventPanel.editTitle', 'Which Location Are You Registering For?')}
         />
+
         <PanelBody layout={layout} status="edit">
-
-          {settings.showStateButtons && this.renderStateButtons()}
+          {this.renderStateButtons()}
           {this.renderEventSelect()}
-          {settings.showPromoCode && this.renderPromoCode()}
-
-          <div className="panel-actions">
-            <Button
-              onClick={this.onClickNext}
-              disabled={!this.state.event}
-            >
-              {t('btn.next', 'Next')}
-            </Button>
-          </div>
-
+          {this.renderPromoCode()}
+          {this.renderActions()}
         </PanelBody>
       </PanelContainer>
     );
   }
 
   renderStateButtons() {
+    const { settings } = this.props;
+    if (!settings.showStateButtons) return null;
+
     return (
       <ToggleButtonGroup
         type="radio"
@@ -159,6 +153,9 @@ export class EventPanel extends BasePanel {
   }
 
   renderPromoCode() {
+    const { settings } = this.props;
+    if (!settings.showPromoCode) return null;
+
     return (
       <div className="promo-code">
         <Form.Group controlId="promoCode">
@@ -170,6 +167,19 @@ export class EventPanel extends BasePanel {
             placeholder={t('label.promoCode', 'Promo code')}
           />
         </Form.Group>
+      </div>
+    );
+  }
+
+  renderActions() {
+    return (
+      <div className="panel-actions">
+        <Button
+          onClick={this.onClickNext}
+          disabled={!this.state.event}
+        >
+          {t('btn.next', 'Next')}
+        </Button>
       </div>
     );
   }
