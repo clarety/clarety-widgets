@@ -594,6 +594,7 @@ export class DetailsPanel extends BasePanel {
       <FormContext.Provider value={this.state}>
         {this.renderWaveSelect()}
         {this.renderAddOns()}
+        {this.renderOptIn()}
         {this.renderExtendFields()}
       </FormContext.Provider>
     );
@@ -621,6 +622,18 @@ export class DetailsPanel extends BasePanel {
         key={addOn.offerId}
         field={`addOns.${addOn.offerId}`}
         label={t(`label.addOn.${addOn.offerId}`, addOn.name)}
+      />
+    );
+  }
+
+  renderOptIn() {
+    const { settings } = this.props;
+
+    return (
+      <CheckboxInput
+        field="customer.optin"
+        label={settings.optInText || t('label.optIn', 'Sign up for our newsletter')}
+        initialValue={settings.preTickOptIn}
       />
     );
   }

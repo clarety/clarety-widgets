@@ -5,6 +5,16 @@ import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
 
 class PureCheckboxInput extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    const { initialValue, value, field, onChange } = props;
+
+    if (initialValue && !value) {
+      onChange(field, initialValue);
+    }
+  }
+
   render() {
     const { field, checked, disabled, onChange, label, explanation, error, required } = this.props;
 
