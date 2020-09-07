@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { setPayment, isStripe, prepareStripePayment, authoriseStripePayment } from 'shared/actions';
+import { setPayment, isStripe, prepareStripePayment, authoriseStripePayment, setStatus, statuses } from 'shared/actions';
 import { getCart, getSetting } from 'shared/selectors';
 import { setErrors, clearErrors } from 'form/actions';
 import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getPaymentMethod } from 'registration/selectors';
@@ -51,6 +51,8 @@ export const updateShipping = (shippingKey) => {
 
 export const submitRegistration = (paymentData) => {
   return async (dispatch, getState) => {
+    dispatch(setStatus(statuses.submitting));
+
     const state = getState();
 
     const paymentMethod = getPaymentMethod(state, paymentData.type);
