@@ -3,7 +3,7 @@ import { Form, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import Select from 'react-select';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { Button, TextInput } from 'form/components';
+import { Button } from 'form/components';
 
 export class EventPanel extends BasePanel {
   state = {
@@ -41,16 +41,10 @@ export class EventPanel extends BasePanel {
   }
 
   onClickNext = async () => {
-    const { formData, fetchFullEvent, checkPromoCode, nextPanel } = this.props;
+    const { fetchFullEvent, nextPanel } = this.props;
     const { event } = this.state;
-    const promoCode = formData['promoCode'];
 
     if (!event) return;
-
-    if (promoCode) {
-      const isValidPromoCode = await checkPromoCode(promoCode);
-      if (!isValidPromoCode) return;
-    }
 
     const didFetch = await fetchFullEvent(event.eventId);
     if (!didFetch) return;
@@ -83,7 +77,7 @@ export class EventPanel extends BasePanel {
   }
   
   renderEdit() {
-    const { layout, index, settings } = this.props;
+    const { layout, index } = this.props;
 
     return (
       <PanelContainer layout={layout} status="edit" className="event-panel">
@@ -93,27 +87,20 @@ export class EventPanel extends BasePanel {
           number={index + 1}
           title={t('eventPanel.editTitle', 'Which Location Are You Registering For?')}
         />
+
         <PanelBody layout={layout} status="edit">
-
-          {settings.showStateButtons && this.renderStateButtons()}
+          {this.renderStateButtons()}
           {this.renderEventSelect()}
-          {settings.showPromoCode && this.renderPromoCode()}
-
-          <div className="panel-actions">
-            <Button
-              onClick={this.onClickNext}
-              disabled={!this.state.event}
-            >
-              {t('btn.next', 'Next')}
-            </Button>
-          </div>
-
+          {this.renderActions()}
         </PanelBody>
       </PanelContainer>
     );
   }
 
   renderStateButtons() {
+    const { settings } = this.props;
+    if (!settings.showStateButtons) return null;
+
     return (
       <ToggleButtonGroup
         type="radio"
@@ -158,18 +145,15 @@ export class EventPanel extends BasePanel {
       .sort((a, b) => b.listOrder - a.listOrder);
   }
 
-  renderPromoCode() {
+  renderActions() {
     return (
-      <div className="promo-code">
-        <Form.Group controlId="promoCode">
-          <Form.Label>
-            {t('label.promoCodePrompt', 'If applicable, enter the promo code provided')}
-          </Form.Label>
-          <TextInput
-            field="promoCode"
-            placeholder={t('label.promoCode', 'Promo code')}
-          />
-        </Form.Group>
+      <div className="panel-actions">
+        <Button
+          onClick={this.onClickNext}
+          disabled={!this.state.event}
+        >
+          {t('btn.next', 'Next')}
+        </Button>
       </div>
     );
   }

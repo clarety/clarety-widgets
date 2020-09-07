@@ -1,6 +1,6 @@
 import { insertPanels, removePanels } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
-import { setQtys, resetQtys } from 'registration/actions';
+import { setQtys, resetQtys, checkPromoCode } from 'registration/actions';
 import { getRegistrationTypes, getQtys } from 'registration/selectors';
 
 export class QtysConnect {
@@ -9,6 +9,7 @@ export class QtysConnect {
       registrationMode: getSetting(state, 'registrationMode'),
       types: getRegistrationTypes(state),
       qtys: getQtys(state),
+      formData: state.formData,
     };
   };
 
@@ -17,5 +18,6 @@ export class QtysConnect {
     resetQtys: resetQtys,
     insertPanels: insertPanels,
     removePanels: removePanels,
+    checkPromoCode: checkPromoCode,
   };
 }
