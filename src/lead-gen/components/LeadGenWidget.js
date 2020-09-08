@@ -59,6 +59,7 @@ export class _LeadGenRoot extends React.Component {
       widgetElementId: this.props.elementId,
       storeCode: this.props.storeCode,
       caseTypeUid: this.props.caseTypeUid,
+      caseStage: this.props.caseStage,
       variant: this.props.variant,
       confirmPageUrl: this.props.confirmPageUrl,
     });
