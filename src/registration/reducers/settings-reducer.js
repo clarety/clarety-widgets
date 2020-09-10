@@ -118,7 +118,7 @@ function convertExtendForm(extendForm) {
 
   for (let field of extendForm.extendFields) {
     // Check if field has an options object.
-    if (field.options && typeof field.options === 'object') {
+    if (field.options && !Array.isArray(field.options)) {
       // Map options to an array of values and labels.
       field.options = Object.entries(field.options).map(
         ([key, value]) => ({ value: key, label: value })
