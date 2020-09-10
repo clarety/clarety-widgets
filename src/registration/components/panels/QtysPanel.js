@@ -9,6 +9,16 @@ export class QtysPanel extends BasePanel {
     qtys: {},
   };
 
+  onShowPanel() {
+    const { registrationMode, types } = this.props;
+    const typeKeys = Object.keys(types);
+
+    // Skip panel for individuals if there's only one type.
+    if (registrationMode === 'individual' && typeKeys.length === 1) {
+      this.onSelectType(typeKeys[0]);
+    }
+  }
+
   onClickNext = async () => {
     const { setQtys, nextPanel } = this.props;
 
