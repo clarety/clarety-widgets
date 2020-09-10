@@ -88,7 +88,7 @@ const CartTotals = ({ summary }) => (
   <div className="cart-totals">
     <TotalLine label={t('label.subtotal', 'Subtotal')} value={summary.subTotal} />
     <TotalLine label={t('label.promoCode', 'Promo Code')} value={summary.discount} />
-    <TotalLine label={t('label.shipping', 'Shipping')} value={summary.shipping} />
+    {!!summary.shipping && <TotalLine label={t('label.shipping', 'Shipping')} value={summary.shipping} />}
     {!!summary.tax && <TotalLine label={t('label.tax', 'Tax')} value={summary.tax} />}
     <hr />
     <TotalLine label={t('label.total', 'Total')} value={summary.total} />

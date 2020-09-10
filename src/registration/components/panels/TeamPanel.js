@@ -108,7 +108,7 @@ export class TeamPanel extends BasePanel {
   }
 
   renderTeamSelect() {
-    const { layout, index } = this.props;
+    const { layout, index, settings } = this.props;
     const { mode } = this.state;
 
     return (
@@ -117,7 +117,7 @@ export class TeamPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title={t('teamPanel.editTitle', 'Do you want to participate with a team?')}
+          title={t('teamPanel.editTitle', settings.title || 'Do you want to participate with a team?')}
         />
 
         <PanelBody layout={layout} status="edit">
@@ -134,8 +134,8 @@ export class TeamPanel extends BasePanel {
 
     return (
       <Form className="panel-body panel-body-team">
-        <p>{t('teamPanel.message-1', 'Combine your efforts and participate as a team! Either create a new team or join one that’s already been created.')}</p>
-        <p>{t('teamPanel.message-2', 'If you are registering with an existing team, please contact your team leader for the team name and password (if applicable) before proceeding with the team registration process.')}</p>
+        <p>{t('teamPanel.message-1', settings.messageText1 || 'Combine your efforts and participate as a team! Either create a new team or join one that’s already been created.')}</p>
+        <p>{t('teamPanel.message-2', settings.messageText2 || 'If you are registering with an existing team, please contact your team leader for the team name and password (if applicable) before proceeding with the team registration process.')}</p>
 
         <div className="panel-actions">
 
