@@ -3,6 +3,7 @@ import { Button, Form, Row, Col } from 'react-bootstrap';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { currency, capitalize } from 'shared/utils';
+import { TextInput } from 'form/components';
 
 export class OffersPanel extends BasePanel {
   state = {
@@ -42,13 +43,19 @@ export class OffersPanel extends BasePanel {
     }
   }
 
-  onClickNext = (event) => {
+  onClickNext = async (event) => {
     event.preventDefault();
 
     if (!this.canContinue()) return;
 
-    const { settings, setFirstNames, setOffers, prefillDetails, nextPanel } = this.props;
+    const { settings, setFirstNames, setOffers, prefillDetails, nextPanel, formData, checkPromoCode } = this.props;
     const { names, offers, prefills } = this.state;
+
+    const promoCode = formData['promoCode'];
+    if (promoCode) {
+      const isValidPromoCode = await checkPromoCode(promoCode);
+      if (!isValidPromoCode) return;
+    }
 
     setFirstNames(names);
 
@@ -141,11 +148,8 @@ export class OffersPanel extends BasePanel {
           <Form onSubmit={this.onClickNext}>
             {participants.map(this.renderRow)}
 
-            <div className="panel-actions">
-              <Button type="submit" disabled={!this.canContinue()}>
-                {t('btn.next', 'Next')}
-              </Button>
-            </div>
+            {this.renderPromoCode()}
+            {this.renderActions()}
           </Form>
 
         </PanelBody>
@@ -247,6 +251,35 @@ export class OffersPanel extends BasePanel {
           onClick={() => this.onSelectOffer(index, offer)}
         />
       </Col>
+    );
+  }
+
+  renderPromoCode() {
+    const { settings } = this.props;
+    if (!settings.showPromoCode) return null;
+
+    return (
+      <div className="promo-code">
+        <Form.Group controlId="promoCode">
+          <Form.Label>
+            {t('label.promoCodePrompt', 'If applicable, enter the promo code provided')}
+          </Form.Label>
+          <TextInput
+            field="promoCode"
+            placeholder={t('label.promoCode', 'Promo code')}
+          />
+        </Form.Group>
+      </div>
+    );
+  }
+
+  renderActions() {
+    return (
+      <div className="panel-actions">
+        <Button type="submit" disabled={!this.canContinue()}>
+          {t('btn.next', 'Next')}
+        </Button>
+      </div>
     );
   }
 
