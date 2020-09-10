@@ -3,7 +3,7 @@ import { Button, Form, Row, Col, Alert } from 'react-bootstrap';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext, parseNestedElements, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
-import { TextInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput, StateInput, PostcodeInput, CountryInput } from 'registration/components';
+import { TextInput, NumberInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput, StateInput, PostcodeInput, CountryInput } from 'registration/components';
 import { getGenderOptions, scrollIntoView } from 'registration/utils';
 
 export class DetailsPanel extends BasePanel {
@@ -653,6 +653,7 @@ export class DetailsPanel extends BasePanel {
   renderExtendField = (field) => {
     switch (field.type) {
       case 'text':        return this.renderTextField(field);
+      case 'number':      return this.renderNumberField(field);
       case 'select':      return this.renderSelectField(field);
       case 'checkbox':    return this.renderCheckboxField(field);
       case 'phonenumber': return this.renderPhoneField(field);
@@ -664,6 +665,16 @@ export class DetailsPanel extends BasePanel {
   renderTextField(field) {
     return (
       <TextInput
+        field={`extendForm.${field.columnKey}`}
+        label={t(`label.extendForm.${field.columnKey}`, field.label)}
+        required={field.required}
+      />
+    );
+  }
+
+  renderNumberField(field) {
+    return (
+      <NumberInput
         field={`extendForm.${field.columnKey}`}
         label={t(`label.extendForm.${field.columnKey}`, field.label)}
         required={field.required}
