@@ -129,9 +129,10 @@ export class MerchPanel extends BasePanel {
   }
 
   validateFields(errors) {
+    const { settings } = this.props;
     const { formData } = this.state;
 
-    if (this.hasAddedMerch()) {
+    if (this.hasAddedMerch() && !settings.hideAddress) {
       phoneNumberField(errors, formData, 'customer.mobile');
       requiredField(errors, formData, 'customer.delivery.address1');
       requiredField(errors, formData, 'customer.delivery.suburb');
@@ -160,7 +161,7 @@ export class MerchPanel extends BasePanel {
   }
   
   renderEdit() {
-    const { layout, index, isBusy, merchandise } = this.props;
+    const { layout, index, isBusy, settings, merchandise } = this.props;
     const { selectedItem, qtys } = this.state;
 
     return (
@@ -172,6 +173,8 @@ export class MerchPanel extends BasePanel {
           title={t('merchPanel.editTitle', 'Check Out Our Official Merchandise')}
         />
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
+
+          <p className="message-text">{t('merchPanel.message', settings.messageText || '')}</p>
 
           <Row className="merch-items">
             {merchandise.map(item =>
@@ -208,6 +211,9 @@ export class MerchPanel extends BasePanel {
   }
 
   renderAddressFields() {
+    const { settings } = this.props;
+
+    if (settings.hideAddress) return null;
     if (!this.hasAddedMerch()) return null;
 
     const country = this.state.formData['customer.delivery.country'];

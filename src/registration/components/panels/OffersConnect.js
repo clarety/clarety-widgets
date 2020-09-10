@@ -1,6 +1,6 @@
 import { addItem, removeItemsWithPanel } from 'shared/actions';
 import { getVariant } from 'shared/selectors';
-import { setFirstNames, resetFirstNames, setOffers, resetOffers, prefillDetails } from 'registration/actions';
+import { setFirstNames, resetFirstNames, setOffers, resetOffers, prefillDetails, checkPromoCode } from 'registration/actions';
 import { getParticipants, getOffersForAllParticipants, getPreviousParticipants, getEvent } from 'registration/selectors';
 
 export class OffersConnect {
@@ -11,6 +11,7 @@ export class OffersConnect {
       previousParticipants: getPreviousParticipants(state),
       event: getEvent(state),
       variant: getVariant(state),
+      formData: state.formData,
     };
   };
 
@@ -22,5 +23,6 @@ export class OffersConnect {
     resetOffers: resetOffers,
     addToCart: addItem,
     removeItemsWithPanel: removeItemsWithPanel,
+    checkPromoCode: checkPromoCode,
   };
 }

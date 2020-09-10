@@ -5,6 +5,12 @@ import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
 
 class PureTextInput extends React.PureComponent {
+  onChange = (event) => {
+    const { field, cleanFn } = this.props;
+    const cleanValue = cleanFn ? cleanFn(event.target.value) : event.target.value;
+    this.props.onChange(field, cleanValue);
+  };
+
   render() {
     const { field, label, placeholder, explanation, value, onChange, type, error, disabled, required } = this.props;
 
@@ -16,7 +22,7 @@ class PureTextInput extends React.PureComponent {
 
         <Form.Control
           value={value}
-          onChange={event => onChange(field, event.target.value)}
+          onChange={this.onChange}
           placeholder={placeholder}
           type={type}
           disabled={disabled}

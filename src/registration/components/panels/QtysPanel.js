@@ -2,7 +2,6 @@ import React from 'react';
 import { Button, Form, Col } from 'react-bootstrap';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { TextInput } from 'form/components';
 import { DetailsPanel, DetailsConnect, Qty, QtyInput } from 'registration/components';
 
 export class QtysPanel extends BasePanel {
@@ -10,14 +9,18 @@ export class QtysPanel extends BasePanel {
     qtys: {},
   };
 
-  onClickNext = async () => {
-    const { formData, checkPromoCode, setQtys, nextPanel } = this.props;
+  onShowPanel() {
+    const { registrationMode, types } = this.props;
+    const typeKeys = Object.keys(types);
 
-    const promoCode = formData['promoCode'];
-    if (promoCode) {
-      const isValidPromoCode = await checkPromoCode(promoCode);
-      if (!isValidPromoCode) return;
+    // Skip panel for individuals if there's only one type.
+    if (registrationMode === 'individual' && typeKeys.length === 1) {
+      this.onSelectType(typeKeys[0]);
     }
+  }
+
+  onClickNext = async () => {
+    const { setQtys, nextPanel } = this.props;
 
     const participantCount = this.participantCount();
     this.setupDetailsPanels(participantCount);
@@ -27,13 +30,7 @@ export class QtysPanel extends BasePanel {
   };
 
   onSelectType = async (type) => {
-    const { formData, checkPromoCode, setQtys, nextPanel } = this.props;
-
-    const promoCode = formData['promoCode'];
-    if (promoCode) {
-      const isValidPromoCode = await checkPromoCode(promoCode);
-      if (!isValidPromoCode) return;
-    }
+    const { setQtys, nextPanel } = this.props;
 
     const qtys = { [type]: 1 };
     this.setState({ qtys });
@@ -129,7 +126,6 @@ export class QtysPanel extends BasePanel {
       <React.Fragment>
         <Form>
           {this.renderBtnInputs()}
-          {this.renderPromoCode()}
           <p>{t('qtysPanel.message', '')}</p>
         </Form>
       </React.Fragment>
@@ -142,8 +138,6 @@ export class QtysPanel extends BasePanel {
         <Form>
           {this.renderQtyInputs()}
           <p>{t('qtysPanel.message', '')}</p>
-
-          {this.renderPromoCode()}
         </Form>
 
         <div className="panel-actions">
@@ -205,25 +199,6 @@ export class QtysPanel extends BasePanel {
     return undefined;
   }
 
-  renderPromoCode() {
-    const { settings } = this.props;
-    if (!settings.showPromoCode) return null;
-
-    return (
-      <div className="promo-code">
-        <Form.Group controlId="promoCode">
-          <Form.Label>
-            {t('label.promoCodePrompt', 'If applicable, enter the promo code provided')}
-          </Form.Label>
-          <TextInput
-            field="promoCode"
-            placeholder={t('label.promoCode', 'Promo code')}
-          />
-        </Form.Group>
-      </div>
-    );
-  }
-
   renderDone() {
     const { layout, index, qtys } = this.props;
 
@@ -238,7 +213,7 @@ export class QtysPanel extends BasePanel {
         />
         <PanelBody layout={layout} status="done">
 
-          <div className="qtys">
+          <div className="qtys mb-3">
             {Object.keys(qtys).map(key =>
               <Qty key={key} type={key} qty={qtys[key]} />
             )}

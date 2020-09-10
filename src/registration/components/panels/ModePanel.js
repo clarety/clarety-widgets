@@ -34,7 +34,7 @@ export class ModePanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, isBusy, index } = this.props;
+    const { layout, isBusy, index, settings } = this.props;
 
     return (
       <PanelContainer layout={layout} status="edit">
@@ -42,10 +42,13 @@ export class ModePanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title={t('modePanel.editTitle', 'Registrations')}
+          title={t('modePanel.editTitle', settings.title || 'Registrations')}
         />
 
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
+
+          <p>{t('modePanel.message', settings.messageText || '')}</p>
+
           <p>{t('modePanel.prompt', 'Are you registering as an individual or a group?')}</p>
 
           <div className="panel-actions">
@@ -59,7 +62,7 @@ export class ModePanel extends BasePanel {
   }
   
   renderDone() {
-    const { layout, index, selectedMode } = this.props;
+    const { layout, index, selectedMode, settings } = this.props;
 
     return (
       <PanelContainer layout={layout} status="done">
@@ -67,7 +70,7 @@ export class ModePanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title={t('modePanel.doneTitle', 'Registrations')}
+          title={t('modePanel.doneTitle', settings.title || 'Registrations')}
           onPressEdit={this.onPressEdit}
         />
 

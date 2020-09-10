@@ -229,7 +229,7 @@ export class LoginPanel extends BasePanel {
   }
 
   renderWait() {
-    const { layout, index } = this.props;
+    const { layout, index, settings } = this.props;
 
     return (
       <PanelContainer layout={layout} status="wait">
@@ -237,7 +237,7 @@ export class LoginPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title={t('loginPanel.waitTitle', 'Account Details')}
+          title={t('loginPanel.waitTitle', settings.title || 'Account Details')}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -247,7 +247,7 @@ export class LoginPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, isBusy, isBusyResetPassword, index } = this.props;
+    const { layout, isBusy, isBusyResetPassword, index, settings } = this.props;
 
     return (
       <PanelContainer layout={layout} className="login-panel">
@@ -255,7 +255,7 @@ export class LoginPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title={t('loginPanel.editTitle', 'Account Details')}
+          title={t('loginPanel.editTitle', settings.title || 'Account Details')}
         />
 
         <PanelBody layout={layout} status="edit" isBusy={isBusy || isBusyResetPassword}>

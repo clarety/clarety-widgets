@@ -150,7 +150,7 @@ export class DonationPanel extends BasePanel {
         />
         <PanelBody layout={layout} status="edit">
           
-          <p className="message-text">{t('donationPanel.message', '')}</p>
+          <p className="message-text">{t('donationPanel.message', settings.messageText || '')}</p>
 
           <Form onSubmit={this.onClickNext}>
 
