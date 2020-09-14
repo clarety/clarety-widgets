@@ -54,8 +54,10 @@ export class DonationPanel extends BasePanel {
   onClickNext = (event) => {
     event.preventDefault();
 
-    const { addToCart, nextPanel } = this.props;
+    const { addToCart, nextPanel, layout } = this.props;
     const { frequency, selections } = this.state;
+
+    if (layout === 'page') return;
 
     const selection = selections[frequency];
 

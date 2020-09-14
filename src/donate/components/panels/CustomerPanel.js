@@ -81,7 +81,9 @@ export class CustomerPanel extends BasePanel {
   onPressNext = async (event) => {
     event.preventDefault();
 
-    const { onSubmit, nextPanel } = this.props;
+    const { onSubmit, nextPanel, layout } = this.props;
+
+    if (layout === 'page') return;
 
     const isValid = this.validate();
     if (!isValid) return;
