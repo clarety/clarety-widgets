@@ -11,6 +11,8 @@ export class QtysPanel extends BasePanel {
 
   onShowPanel() {
     const { registrationMode, types } = this.props;
+    if (!types) return;
+      
     const typeKeys = Object.keys(types);
 
     // Skip panel for individuals if there's only one type.
