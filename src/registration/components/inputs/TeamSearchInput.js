@@ -34,6 +34,7 @@ export class _TeamSeachInput extends React.Component {
         isLoading={isBusySearch}
         getOptionLabel={option => option.name}
         getOptionValue={option => option.teamId}
+        noOptionsMessage={() => searchResults ? 'No teams found' : 'Enter team name'}
         classNamePrefix="react-select"
       />
     );

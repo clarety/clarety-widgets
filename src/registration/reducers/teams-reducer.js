@@ -6,7 +6,7 @@ const initialState = {
   isBusyPassword: false,
   isBusyCreate: false,
   isBusyPromoCode: false,
-  searchResults: [],
+  searchResults: undefined,
 };
 
 export const teamsReducer = (state = initialState, action) => {
