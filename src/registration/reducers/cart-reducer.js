@@ -37,20 +37,22 @@ function registrationCreateRequest(state, action) {
 }
 
 function registrationCreateSuccess(state, action) {
+  const sale = action.result.sale;
+
   return {
     ...state,
     id: action.result.id,
     uid: action.result.uid,
     jwt: action.result.jwt,
-    status: action.result.sale.status,
-    items: resolveCartItems(state.items, action.result.sale.salelines),
-    shippingOptions: action.result.sale.shippingOptions,
-    shippingKey: action.result.sale.shippingKey,
+    status: sale.status,
+    items: resolveCartItems(state.items, sale.salelines),
+    shippingOptions: sale.shippingOptions,
+    shippingKey: sale.shippingKey,
     summary: {
       ...state.summary,
-      shipping: action.result.sale.shipping,
-      tax: action.result.sale.includesTax,
-      total: action.result.sale.total,
+      shipping: sale.shipping,
+      tax: sale.include === "exc" ? sale.includesTax : undefined,
+      total: sale.total,
     }
   };
 }
@@ -72,7 +74,7 @@ function updateShipping(state, sale) {
     summary: {
       ...state.summary,
       shipping: sale.shipping,
-      tax: sale.includesTax,
+      tax: sale.include === "exc" ? sale.includesTax : undefined,
       total: sale.total,
     }
   };
