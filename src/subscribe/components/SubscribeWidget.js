@@ -54,6 +54,7 @@ export class _SubscribeWidgetRoot extends React.Component {
       widgetElementId: this.props.elementId,
       storeCode: this.props.storeCode,
       caseTypeUid: this.props.caseTypeUid,
+      dropOptInField: this.props.dropOptInField,
       confirmPageUrl: this.props.confirmPageUrl,
       reCaptchaKey: this.props.reCaptchaKey,
     });

@@ -9,9 +9,13 @@ export const getSubscribePostData = (state) => {
 
   if (nameOption === 'full') convertFullName(formData);
 
+  // Some instances don't use the optIn field, and instead
+  // let the case automations handle the newsletter circle.
+  const optIn = getSetting(state, 'dropOptInField') ? false : true;
+
   return {
     caseTypeUid: caseTypeUid,
-    optIn: true,
+    optIn: optIn,
     ...formData,
     ...trackingData,
     recaptchaResponse: recaptcha,
