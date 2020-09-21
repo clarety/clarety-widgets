@@ -6,11 +6,11 @@ import { Currency } from 'shared/components';
 
 export class MerchItem extends React.Component {
   render() {
-    const { merchItem } = this.props;
+    const { merchItem, imageBaseUrl } = this.props;
 
     return (
       <div className="merch-item">
-        <Image src={`https://neutrinodata.s3.amazonaws.com/a21/cmsimages/thumb/${merchItem.image}`} fluid className="merch-item__image" />
+        <Image src={`${imageBaseUrl}/${merchItem.image}`} fluid className="merch-item__image" />
         <h3 className="merch-item__name">{merchItem.name}</h3>
         <h4 className="merch-item__price"><Currency amount={merchItem.sell} /></h4>
         <div className="merch-item__description">{merchItem.shortDescription}</div>

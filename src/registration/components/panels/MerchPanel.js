@@ -182,6 +182,7 @@ export class MerchPanel extends BasePanel {
                 <MerchItem
                   key={item.offerId}
                   merchItem={item}
+                  imageBaseUrl={settings.imageBaseUrl}
                   qtys={qtys[item.offerId]}
                   onShowQtys={this.onSelectMerchItem}
                   onChangeQty={this.onChangeQty}
