@@ -29,7 +29,8 @@ class PureCheckboxInput extends React.PureComponent {
           />
 
           <FormCheck.Label>
-            {label}{!required && <span className="optional"> (Optional)</span>}
+            <span dangerouslySetInnerHTML={{ __html: label }} />
+            {!required && <span className="optional"> (Optional)</span>}
           </FormCheck.Label>
 
           {explanation &&
