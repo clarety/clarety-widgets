@@ -170,7 +170,7 @@ export class MerchPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title={t('merchPanel.editTitle', 'Check Out Our Official Merchandise')}
+          title={t('merchPanel.editTitle', settings.title || 'Check Out Our Official Merchandise')}
         />
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
 
@@ -297,7 +297,7 @@ export class MerchPanel extends BasePanel {
   }
 
   renderDone() {
-    const { layout, index } = this.props;
+    const { layout, index, settings } = this.props;
 
     return (
       <PanelContainer layout={layout} status="done" className="merch-panel">
@@ -310,7 +310,7 @@ export class MerchPanel extends BasePanel {
         />
         <PanelBody layout={layout} status="done">
           
-          <p>{t('merchPanel.doneMessage', 'Check out our offical merchandise')}</p>
+          <p>{t('merchPanel.doneMessage', settings.title || 'Check Out Our Official Merchandise')}</p>
 
           <Button onClick={this.onClickEdit}>
             {t('btn.edit', 'Edit')}
