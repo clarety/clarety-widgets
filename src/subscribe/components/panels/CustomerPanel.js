@@ -3,7 +3,7 @@ import { Form, Row, Col } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { requiredField, emailField } from 'shared/utils';
 import { InputGroup } from 'react-bootstrap';
-import { TextInput, EmailInput, CountryInput, ErrorMessages, SubmitButton } from 'form/components';
+import { TextInput, EmailInput, StateInput, CountryInput, ErrorMessages, SubmitButton } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
   onClickSubmit = async (event) => {
@@ -81,7 +81,7 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderCustomerForm() {
-    const { nameOption, showCountry, buttonText } = this.props.settings;
+    const { nameOption, showState, showCountry, buttonText } = this.props.settings;
 
     return (
       <Form onSubmit={this.onClickSubmit}>
@@ -99,6 +99,10 @@ export class CustomerPanel extends BasePanel {
           }
           
           <EmailInput field="customer.email" type="email" placeholder="Email" hideErrors required />
+
+          {showState &&
+            <StateInput field="customer.billing.state" placeholder="State" country="AU" hideErrors required />
+          }
 
           {showCountry &&
             <CountryInput field="customer.billing.country" placeholder="Country" hideErrors required />
