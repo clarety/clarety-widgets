@@ -78,6 +78,7 @@ const preparePayment = (paymentData, paymentMethod) => {
 
       if (result.validationErrors) {
         dispatch(setErrors(result.validationErrors));
+        dispatch(setStatus(statuses.ready));
         return false;
       } else {
         dispatch(setPayment(result.payment));
