@@ -13,7 +13,7 @@ export class MerchItem extends React.Component {
         <Image src={`${imageBaseUrl}/${merchItem.image}`} fluid className="merch-item__image" />
         <h3 className="merch-item__name">{merchItem.name}</h3>
         <h4 className="merch-item__price"><Currency amount={merchItem.sell} /></h4>
-        <div className="merch-item__description">{merchItem.shortDescription}</div>
+        <div className="merch-item__description" dangerouslySetInnerHTML={{ __html: merchItem.shortDescription }} />
         <div className="merch-item__action">
           {this.renderMerchAction()}
         </div>
