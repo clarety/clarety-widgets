@@ -29,7 +29,11 @@ class PureCheckboxInput extends React.PureComponent {
           />
 
           <FormCheck.Label>
-            <span dangerouslySetInnerHTML={{ __html: label }} />
+            {/* Allow labels to be strings that contain HTML, or react components that we can render as-is */}
+            {typeof label === 'string'
+              ? <span dangerouslySetInnerHTML={{ __html: label }} />
+              : label
+            }
             {!required && <span className="optional"> (Optional)</span>}
           </FormCheck.Label>
 
