@@ -1,6 +1,6 @@
 import { parseISO, format } from 'date-fns';
 
-export const settingsMap = settings => {
+export const settingsMap = (settings) => {
   return {
     sessions: settings.sessions.map(session => ({
       sessionUid:  session.sessionUid,
@@ -21,5 +21,5 @@ function getDisplayDate(session) {
   const endTime = format(endDate, "h:mmaaaaa'm'");
   const date = format(startDate, 'eeee d MMMM yyyy');
   
-  return `${startTime} - ${endTime} ${date}`;
+  return `${startTime} - ${endTime}, ${date}`;
 }

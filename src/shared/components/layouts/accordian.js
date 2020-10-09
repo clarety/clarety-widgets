@@ -28,21 +28,21 @@ export const AccordianPanelFooter = ({ status, isBusy, children }) => {
 const WaitPanelHeader = ({ number, title }) => (
   <div className="panel-header inactive">
     <span className="circle">{number}</span>
-    <h4 className="panel-header__title">{title}</h4>
+    <h4 className="panel-header__title" dangerouslySetInnerHTML={{ __html: title }} />
   </div>
 );
 
 const EditPanelHeader = ({ number, title }) => (
   <div className="panel-header active">
     <span className="circle">{number}</span>
-    <h4 className="panel-header__title">{title}</h4>
+    <h4 className="panel-header__title" dangerouslySetInnerHTML={{ __html: title }} />
   </div>
 );
 
 const DonePanelHeader = ({ number, title, onPressEdit }) => (
   <div className="panel-header inactive">
     <span className="circle">{number}</span>
-    <p className="panel-header__title">{title}</p>
+    <p className="panel-header__title" dangerouslySetInnerHTML={{ __html: title }} />
     <Button onClick={onPressEdit} variant="edit">Edit</Button>
   </div>
 );

@@ -33,7 +33,7 @@ export class SessionPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title="Select Sessions"
+          title={settings.title || 'Select Sessions'}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -64,7 +64,7 @@ export class SessionPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title="Select Sessions"
+          title={settings.title || 'Select Sessions'}
         />
         
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
@@ -100,7 +100,7 @@ export class SessionPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title="Selected Sessions"
+          title={settings.title || 'Select Sessions'}
           onPressEdit={this.onPressEdit}
         />
 
