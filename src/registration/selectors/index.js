@@ -272,11 +272,16 @@ const getDefaultWave = (state, participant) => getOffer(state, participant).wave
 
 const getFundraisingPostData = (state) => {
   const cart = getCart(state);
+  const isRegisteringForSelf = getIsRegisteringForSelf(state);
 
-  return {
-    ...cart.fundraising,
-    donationAmount: getDonationAmount(state),
-  };
+  if (isRegisteringForSelf) {
+    return {
+      ...cart.fundraising,
+      donationAmount: getDonationAmount(state),
+    };  
+  } else {
+    return undefined;
+  }
 };
 
 const getDonationAmount = (state) => {
@@ -309,3 +314,21 @@ export const getSubmitRegistrationPostData = (state) => {
     ...cart.payment,
   };
 };
+
+const getIsRegisteringForSelf = (state) => {
+  const cart = getCart(state);
+
+  if (!cart.customer || !cart.customer.id) {
+    return false;
+  }
+
+  const participants = getParticipants(state);
+
+  for (const participant of participants) {
+    if (participant.customer && participant.customer.id === cart.customer.id) {
+      return true;
+    }
+  }
+
+  return false;
+}
