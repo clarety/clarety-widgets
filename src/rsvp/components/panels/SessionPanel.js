@@ -90,7 +90,7 @@ export class SessionPanel extends BasePanel {
   }
 
   renderDone() {
-    const { layout, index, sessions, formData } = this.props;
+    const { layout, index, settings, sessions, formData } = this.props;
 
     const selectedSessions = sessions.filter(session => !!formData[`sessions.${session.sessionUid}`]);
 
