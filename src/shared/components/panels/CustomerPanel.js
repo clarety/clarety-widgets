@@ -18,26 +18,42 @@ export class CustomerPanel extends BasePanel {
   };
 
   validate() {
-    const { formData, setErrors, settings } = this.props;
     const errors = [];
+    this.validateFields(errors);
+    this.props.setErrors(errors);
+    return errors.length === 0;
+  }
+
+  validateFields(errors) {
+    this.validateBasic(errors);
+    this.validatePhone(errors);
+    this.validateDetails(errors);
+    this.validateAddress(errors);
+  }
+
+  validateBasic(errors) {
+    const { formData } = this.props;
 
     requiredField(errors, formData, 'customer.firstName');
     requiredField(errors, formData, 'customer.lastName');
     requiredField(errors, formData, 'customer.email');
     emailField(errors, formData, 'customer.email');
+  }
+
+  validatePhone(errors) {
+    const { formData, settings } = this.props;
 
     if (settings.isPhoneRequired) {
       requiredField(errors, formData, 'customer.mobile');
     }
+  }
+
+  validateDetails(errors) {
+    const { formData, settings } = this.props;
 
     if (settings.isDetailsRequired) {
       requiredField(errors, formData, 'details');
     }
-
-    this.validateAddress(errors);
-
-    setErrors(errors);
-    return errors.length === 0;
   }
 
   validateAddress(errors) {

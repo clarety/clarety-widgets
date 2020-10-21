@@ -1,4 +1,4 @@
-import { getSetting, getParsedFormData, getTrackingData, getRecaptcha,  } from 'shared/selectors';
+import { getParsedFormData, getRecaptcha } from 'shared/selectors';
 
 export const getRsvpPostData = (state) => {  
   const formData = getParsedFormData(state);
@@ -13,5 +13,6 @@ export const getRsvpPostData = (state) => {
     sessions: sessions,
     customer: formData.customer,
     recaptchaResponse: recaptcha,
+    ...formData.additionalData,
   };
 };
