@@ -525,8 +525,20 @@ export class _PaymentPanel extends BasePanel {
             />
           </Col>
         </Form.Row>
+
+        {this.renderTerms()}
       </PanelFooter>
     );
+  }
+
+  renderTerms() {
+    const { settings } = this.props;
+
+    if (settings.TermsComponent) {
+      return <settings.TermsComponent {...this.props} />;
+    }
+
+    return null;
   }
 
   renderDone() {
