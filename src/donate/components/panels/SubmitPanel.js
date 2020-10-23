@@ -84,6 +84,12 @@ export class SubmitPanel extends BasePanel {
   }
 
   renderFooter() {
+    const { settings } = this.props;
+
+    if (settings.TermsComponent) {
+      return <settings.TermsComponent {...this.props} />;
+    }
+
     return null;
   }
 
