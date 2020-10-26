@@ -1,4 +1,4 @@
-import { getFormData, getErrors, getIsBusy } from 'shared/selectors';
+import { getFormData, getErrors, getIsBusy, getSetting } from 'shared/selectors';
 import { setErrors } from 'form/actions';
 
 export class CustomerConnect {
@@ -7,6 +7,7 @@ export class CustomerConnect {
       isBusy: getIsBusy(state),
       formData: getFormData(state),
       errors: getErrors(state),
+      variant: getSetting(state, 'variant'),
     };
   };
 
