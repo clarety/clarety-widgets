@@ -1,11 +1,81 @@
 import React from 'react';
 import { Form, Col } from 'react-bootstrap';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { FormContext, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
+import { FormContext, getSuburbLabel, getStateLabel, getPostcodeLabel, setupAddressFinder } from 'shared/utils';
 import { BasePanel, TextInput, PureCheckboxInput, StateInput, CountryInput, PostcodeInput, FormElement, Button } from 'checkout/components';
 
 export class AddressPanel extends BasePanel {
-  onPressContinue = async event => {
+  billingAddressFinder = null;
+  deliveryAddressFinder = null;
+
+  onShowPanel() {
+    if (this.shouldUseAddressFinder()) {
+      // Billing address finder.
+      setupAddressFinder({
+        elementId: 'customer.billing-address-finder-input',
+        apiKey: this.props.addressFinderKey,
+        country: this.props.defaultCountry,
+        onLoad: (addressFinder) => this.billingAddressFinder = addressFinder,
+        onSelect: (address) => this.onAddressFinderSelect('billing', address),
+      });
+
+      if (this.props.shippingRequired) {
+        // Delivery address finder.
+        setupAddressFinder({
+          elementId: 'customer.delivery-address-finder-input',
+          apiKey: this.props.addressFinderKey,
+          country: this.props.defaultCountry,
+          onLoad: (addressFinder) => this.deliveryAddressFinder = addressFinder,
+          onSelect: (address) => this.onAddressFinderSelect('delivery', address),
+        });
+      }
+    }
+  }
+
+  shouldUseAddressFinder() {
+    const { customer, addressFinderKey, defaultCountry } = this.props;
+    return !customer.customerUid && addressFinderKey && defaultCountry;
+  }
+
+  componentWillUnmount() {
+    if (this.billingAddressFinder) {
+      this.billingAddressFinder.destroy();
+      this.billingAddressFinder = null;
+    }
+
+    if (this.deliveryAddressFinder) {
+      this.deliveryAddressFinder.destroy();
+      this.deliveryAddressFinder = null;
+    }
+  }
+
+  onAddressFinderSelect = (addressType, address) => {
+    if (addressType === 'billing') {
+      this.updateFormData({
+        'customer.billing.address1': address.address1,
+        'customer.billing.address2': address.address2,
+        'customer.billing.suburb':   address.suburb,
+        'customer.billing.state':    address.state,
+        'customer.billing.postcode': address.postcode,
+        'customer.billing.country':  address.country,
+        'customer.billing.dpid':     address.dpid,
+      });
+    }
+
+    if (addressType === 'delivery') {
+      this.updateFormData({
+        'customer.delivery.address1': address.address1,
+        'customer.delivery.address2': address.address2,
+        'customer.delivery.suburb':   address.suburb,
+        'customer.delivery.state':    address.state,
+        'customer.delivery.postcode': address.postcode,
+        'customer.delivery.country':  address.country,
+        'customer.delivery.dpid':     address.dpid,
+      });
+    }
+  };
+
+  onPressContinue = async (event) => {
     event.preventDefault();
 
     const { invalidatePanel, setFormData } = this.props;
@@ -40,7 +110,7 @@ export class AddressPanel extends BasePanel {
     const { shippingRequired } = this.props;
     const errors = [];
 
-    if(shippingRequired) {
+    if (shippingRequired) {
       this.validateRequired('customer.delivery.address1', errors);
       this.validateRequired('customer.delivery.suburb', errors);
       this.validateRequired('customer.delivery.state', errors);
@@ -209,6 +279,22 @@ export class AddressPanel extends BasePanel {
 
   renderAddressFields(title, fieldPrefix) {
     const { settings } = this.props;
+
+    if (this.shouldUseAddressFinder()) {
+      return (
+        <React.Fragment>
+          <h5>{title}</h5>
+
+          <Form.Row>
+            <Col>
+              <Form.Group>
+                <Form.Control id={`${fieldPrefix}-address-finder-input`} />
+              </Form.Group>
+            </Col>
+          </Form.Row>
+        </React.Fragment>
+      );
+    }
 
     const country = this.state.formData[`${fieldPrefix}.country`];
 

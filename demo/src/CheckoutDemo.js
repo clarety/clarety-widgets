@@ -65,7 +65,10 @@ export default class CheckoutDemo extends React.Component {
   render() {
     return (
       <div className="checkout">
-        <Checkout defaultCountry="US" />
+        <Checkout
+          addressFinderKey="B6QWYX7U93GELTMCD48J"
+          defaultCountry="NZ"
+        />
       </div>
     );
   }

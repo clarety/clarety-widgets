@@ -1,5 +1,6 @@
 export * from './resources';
 
+export * from './address-finder';
 export * from './address-utils';
 export * from './date-utils';
 export * from './element-utils';

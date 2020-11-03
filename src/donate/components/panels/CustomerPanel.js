@@ -38,7 +38,7 @@ export class CustomerPanel extends BasePanel {
     );
 
     this.addressFinder.on('result:select', this.onAddressFinderSelect);
-  }
+  };
 
   onAddressFinderSelect = (fullAddress, metaData) => {
     const { defaultCountry, setFormData } = this.props;

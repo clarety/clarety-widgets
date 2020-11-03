@@ -11,6 +11,7 @@ export class AddressConnect {
       errors: state.errors,
       defaultCountry: getSetting(state, 'defaultCountry'),
       shippingRequired: getCartShippingRequired(state),
+      addressFinderKey: getSetting(state, 'addressFinderKey'),
     };
   };
   
