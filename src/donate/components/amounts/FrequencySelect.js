@@ -33,9 +33,7 @@ const mapStateToProps = (state, ownProps) => {
     value: state.panels.donationPanel.frequency,
     options: priceHandles.map(offer => ({
       value: offer.frequency,
-      label: offer.frequency === 'single'
-        ? ownProps.singleLabel || 'Single Gift'
-        : ownProps.recurringLabel || 'Monthly Gift',
+      label: offer.frequency === 'single' ? ownProps.singleLabel : ownProps.recurringLabel,
     })),
   }
 };

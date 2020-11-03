@@ -1,4 +1,5 @@
 import cardValidator from 'card-validator';
+import { t } from 'shared/translations';
 
 export function requiredField(errors, formData, field, message) {
   const value = formData[field];
@@ -35,7 +36,7 @@ export function validateRequired(value, field, errors, message) {
   if (!value) {
     errors.push({
       'field': field,
-      'message': message || 'This is a required field.',
+      'message': message || t('invalid-required'),
     });
   }
 }
@@ -47,7 +48,7 @@ export function validateEmail(email, field, errors, message) {
   if (!regex.test(email)) {
     errors.push({
       field: field,
-      message: message || 'Please enter a valid email.',
+      message: message || t('invalid-email'),
     });
   }
 }
@@ -56,7 +57,7 @@ export function validatePhoneNumber(phoneNumber, field, errors, message) {
   if (!phoneNumber || phoneNumber.length < 10 || phoneNumber.length > 14) {
     errors.push({
       field: field,
-      message: message || 'Please enter a valid phone number.',
+      message: message || t('invalid-phone'),
     });
   }
 }
@@ -66,7 +67,7 @@ export function validatePassword(password, field, errors, message) {
   if (!password || password.length < 8 || numberCount < 2) {
     errors.push({
       'field': field,
-      'message': message || 'Password must contain at least 8 characters including 2 numbers.',
+      'message': message || t('invalid-password'),
     });
   }
 }
@@ -77,7 +78,7 @@ export function validateCardNumber(cardNumber, field, errors, message) {
   if (!isValid) {
     errors.push({
       field: field,
-      message: message || 'Please enter a valid card number.',
+      message: message || t('invalid-card-number'),
     });
   }
 }
@@ -88,7 +89,7 @@ export function validateCardExpiry(month, year, field, errors, message) {
   if (!isValid) {
     errors.push({
       field: field,
-      message: message || 'Please enter a valid expiry date.',
+      message: message || t('invalid-card-expiry'),
     });
   }
 }
@@ -99,7 +100,7 @@ export function validateCcv(ccv, field, errors, message) {
   if (!isValid) {
     errors.push({
       field: field,
-      message: message || 'Please enter a valid CCV.',
+      message: message || t('invalid-ccv'),
     });
   }
 }
@@ -114,14 +115,20 @@ export function validateDob({ field, day, month, year, comparisonDate, minAge, m
   if (minAge) {
     const turnsMinAge = new Date(year + minAge, month, day);
     if (turnsMinAge > comparisonDate) {
-      errors.push({ 'field': field, 'message': `You must be at least ${minAge}.` });
+      errors.push({
+        'field': field,
+        'message': `${t('invalid-min-age')} ${minAge}`,
+      });
     }
   }
 
   if (maxAge) {
     const turnsMaxAge = new Date(year + maxAge, month, day);
     if (turnsMaxAge < comparisonDate) {
-      errors.push({ 'field': field, 'message': `You must not be older than ${maxAge}.` });
+      errors.push({
+        'field': field,
+        'message': `${t('invalid-max-age')} ${maxAge}`,
+      });
     }
   }
 }

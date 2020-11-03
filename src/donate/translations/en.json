@@ -1,0 +1,78 @@
+{
+  "translation": {
+    "invalid-donation": "Please select a donation amount",
+    "invalid-required": "This is a required field",
+    "invalid-email": "Please enter a valid email",
+    "invalid-phone": "Please enter a valid phone number",
+    "invalid-password": "Password must contain at least 8 characters including 2 numbers",
+    "invalid-card-number": "Please enter a valid card number",
+    "invalid-card-expiry": "Please enter a valid expiry date",
+    "invalid-ccv": "Please enter a valid CCV",
+    "invalid-min-age": "You must be at least",
+    "invalid-max-age": "You must not be older than",
+
+
+
+
+    "donationPanel": {
+      "waitTitle": null,
+      "editTitle": null,
+      "doneTitle": null
+    },
+
+    "customerPanel": {
+      "waitTitle": null,
+      "editTitle": null,
+      "doneTitle": null
+    },
+
+    "fundraisingPanel": {
+      "waitTitle": null,
+      "editTitle": null,
+      "doneTitle": null
+    },
+
+
+    "single-gift": "Single Gift",
+    "monthly-gift": "Monthly Gift",
+    "select-frequency": "Select Frequency",
+    "give-to": "Give To",
+    "other-amount": "Other Amount",
+
+    "back": "Back",
+    "next": "Next",
+    "select": "Select",
+
+    "type": "Type",
+    "business-name": "Business Name",
+    "first-name": "First Name",
+    "last-name": "Last Name",
+    "email": "Email",
+
+    "address": "Address",
+    "street": "Street",
+    "suburb": "City / Suburb",
+    "suburb-au": "Suburb",
+    "suburb-nz": "Suburb",
+    "state": "State",
+    "region": "Region",
+    "city": "City",
+    "postcode": "Postcode",
+    "zipcode": "Zipcode",
+    "country": "Country",
+
+    "cant-find-your-address": "Can't find your address?",
+    "how-did-you-hear-about-us": "How did you hear about us?",
+    "newsletter-opt-in": "Sign up for our newsletter",
+    "hide-my-name": "Hide my name from displaying on the fundraiser's page",
+    "add-a-message": "Add a message (this message is visible to everyone)",
+
+
+    "donation-amount": "Donation Amount:",
+    "monthly-donation-amount": "Monthly Donation Amount:",
+    "start-date": "Start Date",
+    "donate": "Donate",
+
+    "card-expiry-placeholder": "MM / YY"
+  } 
+}

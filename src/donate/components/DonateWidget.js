@@ -7,7 +7,7 @@ import { BreakpointProvider } from 'react-socks';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { ClaretyApi } from 'clarety-utils';
-import { statuses, setStore, setTrackingData, fetchSettings, updateAppSettings, setPanels } from 'shared/actions';
+import { statuses, setStore, setTrackingData, setLanguages, fetchSettings, updateAppSettings, setPanels, changeLanguage } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { getJwtCustomer, Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
@@ -20,6 +20,7 @@ import { fetchCustomer } from 'donate/actions/customer-actions';
 export class DonateWidget extends React.Component {
   static store;
   static resources;
+  static languages;
 
   static init() {
     // Setup redux store.
@@ -45,12 +46,18 @@ export class DonateWidget extends React.Component {
     DonateWidget.resources.setComponent(name, component);
   }
 
+  static setLanguages(languages) {
+    DonateWidget.languages = languages;
+    DonateWidget.store.dispatch(setLanguages(languages));
+  }
+
   render() {
     return (
       <ReduxProvider store={DonateWidget.store}>
         <BreakpointProvider>
           <DonateWidgetRoot
             resources={DonateWidget.resources}
+            languages={DonateWidget.languages}
             {...this.props}
           />
         </BreakpointProvider>
@@ -70,7 +77,23 @@ export class _DonateWidgetRoot extends React.Component {
       ? this.props.givingTypeOptions.map(option => ({ value: option, label: option }))
       : undefined;
 
-    i18next.init();
+    // Translations.
+    const { languages, defaultLanguage, changeLanguage } = this.props;
+    const language = defaultLanguage || navigator.language || navigator.userLanguage || 'en';
+    i18next.init({
+      debug: true,
+      load: 'languageOnly',
+      lng: language,
+      fallbackLng: defaultLanguage || 'en',
+      resources: languages,
+      returnNull: false,
+    });
+
+    i18next.on('languageChanged', (language) => {
+      this.forceUpdate();
+    });
+
+    changeLanguage(language);
 
     updateAppSettings({
       variant:            this.props.variant,
@@ -154,6 +177,7 @@ const actions = {
   handleUrlParams: handleUrlParams,
   fetchCustomer: fetchCustomer,
   selectFrequency: selectFrequency,
+  changeLanguage: changeLanguage,
 };
 
 export const connectDonateWidgetRoot = connect(mapStateToProps, actions);

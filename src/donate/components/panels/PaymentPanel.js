@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { _PaymentPanel as BasePaymentPanel, injectStripe } from 'shared/components';
 import { SelectInput } from 'form/components';
 import { Currency } from 'shared/components';
@@ -44,8 +45,8 @@ export class _PaymentPanel extends BasePaymentPanel {
   renderCartSummary() {
     const { frequency, amount } = this.props;
     const label = frequency === 'recurring'
-      ? 'Monthly Donation Amount:'
-      : 'Donation Amount:';
+      ? t('monthly-donation-amount')
+      : t('donation-amount');
 
     return (
       <p className="donation-summary">
@@ -70,7 +71,7 @@ export class _PaymentPanel extends BasePaymentPanel {
       <Row>
         <Col>
           <Form.Group controlId="startDate">
-            <Form.Label>Start Date</Form.Label>
+            <Form.Label>{t('start-date')}</Form.Label>
             <SelectInput
               field="additionalData.startDate"
               options={this.getStartDateOptions(paymentMethod)}

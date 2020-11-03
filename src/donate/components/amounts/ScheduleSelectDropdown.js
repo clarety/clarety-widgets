@@ -1,10 +1,11 @@
 import React from 'react';
 import { Dropdown } from 'react-bootstrap';
+import { t } from 'shared/translations';
 
 export const ScheduleSelectDropdown = ({ value, placeholder, schedules, onChange }) => (
   <Dropdown>
     <Dropdown.Toggle>
-      {getLabel(schedules, value) || placeholder || 'Select'}
+      {getLabel(schedules, value) || placeholder || t('select')}
     </Dropdown.Toggle>
 
     <Dropdown.Menu>

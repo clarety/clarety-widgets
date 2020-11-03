@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Row, Col, Button } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { requiredField, emailField, customerTypeOptions, loadAddressFinder, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
 import { TextInput, EmailInput, CheckboxInput, StateInput, CountryInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
@@ -149,7 +150,7 @@ export class CustomerPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title={settings.title}
+          title={settings.title || t('customerPanel.waitTitle')}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -196,7 +197,7 @@ export class CustomerPanel extends BasePanel {
         status="edit"
         layout={layout}
         number={index + 1}
-        title={settings.title}
+        title={settings.title || t('customerPanel.editTitle')}
       />
     );
   }
@@ -216,7 +217,7 @@ export class CustomerPanel extends BasePanel {
           <Form.Row>
             <Col>
               <Form.Group controlId="customerType">
-                <Form.Label>Type</Form.Label>
+                <Form.Label>{t('type')}</Form.Label>
                 <SelectInput
                   field="customer.type"
                   options={customerTypeOptions}
@@ -233,7 +234,7 @@ export class CustomerPanel extends BasePanel {
           <Form.Row>
             <Col>
               <Form.Group controlId="businessName">
-                <Form.Label>Business Name</Form.Label>
+                <Form.Label>{t('business-name')}</Form.Label>
                 <TextInput field="customer.businessName" testId="business-name-input" required />
               </Form.Group>
             </Col>
@@ -251,20 +252,20 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col sm>
             <Form.Group controlId="firstName">
-              <Form.Label>First Name</Form.Label>
+              <Form.Label>{t('first-name')}</Form.Label>
               <TextInput field="customer.firstName" testId="first-name-input" required />
             </Form.Group>
           </Col>
           <Col sm>
             <Form.Group controlId="lastName">
-              <Form.Label>Last Name</Form.Label>
+              <Form.Label>{t('last-name')}</Form.Label>
               <TextInput field="customer.lastName" testId="last-name-input" required />
             </Form.Group>
           </Col>
         </Form.Row>
 
         <Form.Group controlId="email">
-          <Form.Label>Email</Form.Label>
+          <Form.Label>{t('email')}</Form.Label>
           <EmailInput field="customer.email" type="email" testId="email-input" readOnly={emailReadonly} required />
         </Form.Group>
       </React.Fragment>
@@ -281,11 +282,11 @@ export class CustomerPanel extends BasePanel {
           <Form.Row>
             <Col>
               <Form.Group>
-                <Form.Label htmlFor="address-finder-input">Address</Form.Label>
+                <Form.Label htmlFor="address-finder-input">{t('address')}</Form.Label>
                 <Form.Control id="address-finder-input" />
 
                 <Button variant="link" onClick={this.onPressDisableAddressFinder}>
-                  Can't find your address?
+                  {t('cant-find-your-address')}
                 </Button>
               </Form.Group>
             </Col>
@@ -301,7 +302,7 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col sm>
             <Form.Group controlId="street">
-              <Form.Label>Street</Form.Label>
+              <Form.Label>{t('street')}</Form.Label>
               <TextInput field="customer.billing.address1" type="street" testId="street-input" />
             </Form.Group>
           </Col>
@@ -347,7 +348,7 @@ export class CustomerPanel extends BasePanel {
       <Form.Row>
         <Col>
           <Form.Group controlId="country">
-            <Form.Label>Country</Form.Label>
+            <Form.Label>{t('country')}</Form.Label>
             <CountryInput
               field="customer.billing.country"
               initialValue={defaultCountry}
@@ -371,7 +372,7 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="customerSource">
-              <Form.Label>How did you hear about us?</Form.Label>
+              <Form.Label>{t('how-did-you-hear-about-us')}</Form.Label>
               <SelectInput
                 field="sale.sourceId"
                 options={this.props.sourceOptions}
@@ -409,7 +410,7 @@ export class CustomerPanel extends BasePanel {
         <Col>
           <CheckboxInput
             field="additionalData.optIn"
-            label={settings.optInText || 'Sign up for our newsletter'}
+            label={settings.optInText || t('newsletter-opt-in')}
             initialValue={!!settings.preTickOptIn}
           />
         </Col>
@@ -425,10 +426,18 @@ export class CustomerPanel extends BasePanel {
       <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
         <Form.Row className="justify-content-center">
           <Col xs={6}>
-            <BackButton title={settings.backBtnText || 'Back'} block onClick={this.onPressBack} />
+            <BackButton
+              title={settings.backBtnText || t('back')}
+              onClick={this.onPressBack}
+              block
+            />
           </Col>
           <Col xs={6}>
-            <SubmitButton title={settings.submitBtnText || 'Next'} block testId="next-button" />
+            <SubmitButton
+              title={settings.submitBtnText || t('next')}
+              testId="next-button"
+              block
+            />
           </Col>
         </Form.Row>
       </PanelFooter>
@@ -458,7 +467,7 @@ export class CustomerPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title={settings.title}
+          title={settings.title || t('customerPanel.doneTitle')}
           onPressEdit={this.onPressEdit}
         />
 
