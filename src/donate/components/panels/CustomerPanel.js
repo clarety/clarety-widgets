@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Row, Col, Button } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { requiredField, emailField, customerTypeOptions, loadAddressFinder, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
-import { TextInput, EmailInput, CheckboxInput, StateInput, CountryInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
+import { TextInput, EmailInput, PhoneInput, CheckboxInput, StateInput, CountryInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
   addressFinder = null;
@@ -98,12 +98,19 @@ export class CustomerPanel extends BasePanel {
   validate() {
     const errors = [];
     this.validateFields(errors);
-
     this.props.setErrors(errors);
     return errors.length === 0;
   }
 
   validateFields(errors) {
+    this.validateTypeFields(errors);
+    this.validateBasicFields(errors);
+    this.validatePhoneField(errors);
+    this.validateAddressFields(errors);
+    this.validateSourceFields(errors);
+  }
+
+  validateTypeFields(errors) {
     const { formData, settings } = this.props;
 
     if (settings.showCustomerType) {
@@ -113,12 +120,28 @@ export class CustomerPanel extends BasePanel {
     if (formData['customer.type'] === 'business') {
       requiredField(errors, formData, 'customer.businessName');
     }
+  }
+
+  validateBasicFields(errors) {
+    const { formData } = this.props;
 
     requiredField(errors, formData, 'customer.firstName');
     requiredField(errors, formData, 'customer.lastName');
 
     requiredField(errors, formData, 'customer.email');
     emailField(errors, formData, 'customer.email');
+  }
+
+  validatePhoneField(errors) {
+    const { formData, settings } = this.props;
+
+    if (settings.phoneType === 'mobile' && settings.isPhoneRequired) {
+      requiredField(errors, formData, 'customer.mobile');
+    }
+  }
+
+  validateAddressFields(errors) {
+    const { formData } = this.props;
 
     requiredField(errors, formData, 'customer.billing.address1');
 
@@ -129,6 +152,10 @@ export class CustomerPanel extends BasePanel {
     requiredField(errors, formData, 'customer.billing.state');
     requiredField(errors, formData, 'customer.billing.postcode');
     requiredField(errors, formData, 'customer.billing.country');
+  }
+
+  validateSourceFields(errors) {
+    const { formData } = this.props;
 
     if (this.shouldShowSourceFields()) {
       requiredField(errors, formData, 'sale.sourceId');
@@ -177,6 +204,7 @@ export class CustomerPanel extends BasePanel {
           {this.renderErrorMessages()}
           {this.renderTypeFields()}
           {this.renderBasicFields()}
+          {this.renderPhoneField()}
           {this.renderAddressFields()}
           {this.renderSourceFields()}
           {this.renderOptIn()}
@@ -244,7 +272,7 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderBasicFields() {
-    const { emailReadonly } = this.props;
+    const { canEditEmail } = this.props;
 
     return (
       <React.Fragment>
@@ -265,10 +293,29 @@ export class CustomerPanel extends BasePanel {
 
         <Form.Group controlId="email">
           <Form.Label>Email</Form.Label>
-          <EmailInput field="customer.email" type="email" testId="email-input" readOnly={emailReadonly} required />
+          <EmailInput field="customer.email" type="email" testId="email-input" readOnly={!canEditEmail} required />
         </Form.Group>
       </React.Fragment>
     );
+  }
+
+  renderPhoneField() {
+    const { settings } = this.props;
+
+    if (settings.phoneType === 'mobile') {
+      return (
+        <Form.Row>
+          <Col>
+            <Form.Group controlId="mobile">
+              <Form.Label>Mobile</Form.Label>
+              <PhoneInput field="customer.mobile" required={settings.isPhoneRequired} />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+      );
+    }
+
+    return null;
   }
 
   renderAddressFields() {
