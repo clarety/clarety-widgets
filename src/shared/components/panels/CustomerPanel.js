@@ -25,13 +25,13 @@ export class CustomerPanel extends BasePanel {
   }
 
   validateFields(errors) {
-    this.validateBasic(errors);
-    this.validatePhone(errors);
-    this.validateDetails(errors);
-    this.validateAddress(errors);
+    this.validateBasicFields(errors);
+    this.validatePhoneField(errors);
+    this.validateDetailsField(errors);
+    this.validateAddressFields(errors);
   }
 
-  validateBasic(errors) {
+  validateBasicFields(errors) {
     const { formData } = this.props;
 
     requiredField(errors, formData, 'customer.firstName');
@@ -40,15 +40,15 @@ export class CustomerPanel extends BasePanel {
     emailField(errors, formData, 'customer.email');
   }
 
-  validatePhone(errors) {
+  validatePhoneField(errors) {
     const { formData, settings } = this.props;
 
-    if (settings.isPhoneRequired) {
+    if (settings.phoneType === 'mobile' && settings.isPhoneRequired) {
       requiredField(errors, formData, 'customer.mobile');
     }
   }
 
-  validateDetails(errors) {
+  validateDetailsField(errors) {
     const { formData, settings } = this.props;
 
     if (settings.isDetailsRequired) {
@@ -56,7 +56,7 @@ export class CustomerPanel extends BasePanel {
     }
   }
 
-  validateAddress(errors) {
+  validateAddressFields(errors) {
     const { formData, settings } = this.props;
     const { addressType, isAddressRequired } = settings;
 

@@ -48,6 +48,7 @@
     "first-name": "First Name",
     "last-name": "Last Name",
     "email": "Email",
+    "mobile": "Mobile",
 
     "address": "Address",
     "street": "Street",

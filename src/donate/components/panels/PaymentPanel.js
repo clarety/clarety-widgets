@@ -75,6 +75,7 @@ export class _PaymentPanel extends BasePaymentPanel {
             <SelectInput
               field="additionalData.startDate"
               options={this.getStartDateOptions(paymentMethod)}
+              autoSelectSingleOption
               testId="start-date-input"
             />
           </Form.Group>
