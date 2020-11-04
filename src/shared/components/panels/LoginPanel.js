@@ -29,7 +29,7 @@ export class LoginPanel extends BasePanel {
   onPressCheckEmail = async (event) => {
     event.preventDefault();
 
-    const { hasAccount, settings } = this.props;
+    const { hasAccount } = this.props;
     const { email } = this.state.formData;
 
     if (this.validate()) {
@@ -37,13 +37,7 @@ export class LoginPanel extends BasePanel {
       
       if (emailStatus === 'not-checked') this.setMode('check-email');
 
-      if (emailStatus === 'no-account') {
-        if (settings.allowGuest) {
-          this.setMode('no-account');
-        } else {
-          this.setMode('create-account');
-        }
-      }
+      if (emailStatus === 'no-account') this.setMode('no-account');
 
       if (emailStatus === 'has-account') {
         this.setMode('login');
@@ -317,16 +311,23 @@ export class LoginPanel extends BasePanel {
   }
   
   renderNoAccountButtons() {
+    const { settings } = this.props;
+
     return (
       <React.Fragment>
-        <p>{t('loginPanel.noAccountPrompt', 'There is no account associated with this email, would you like to create one or checkout as a guest?')}</p>
+        {settings.allowGuest
+          ? <p>{t('loginPanel.noAccountPrompt', 'There is no account associated with this email, would you like to create one or checkout as a guest?')}</p>
+          : <p>{t('loginPanel.noAccountPrompt', 'There is no account associated with this email, would you like to create one?')}</p>
+        }
 
         <div className="panel-actions">
-          <Button
-            title={t('btn.guestCheckout', 'Guest Checkout')}
-            onClick={this.onPressGuestCheckout}
-            variant="secondary"
-          />
+          {settings.allowGuest &&
+            <Button
+              title={t('btn.guestCheckout', 'Guest Checkout')}
+              onClick={this.onPressGuestCheckout}
+              variant="secondary"
+            />
+          }
 
           <Button
             title={t('btn.createAccount', 'Create Account')}
