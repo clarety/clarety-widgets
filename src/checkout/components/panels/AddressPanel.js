@@ -112,15 +112,23 @@ export class AddressPanel extends BasePanel {
 
     if (shippingRequired) {
       this.validateRequired('customer.delivery.address1', errors);
-      this.validateRequired('customer.delivery.suburb', errors);
+
+      if (this.state.formData['customer.delivery.country'] !== 'NZ') {
+        this.validateRequired('customer.delivery.suburb', errors);
+      }
+      
       this.validateRequired('customer.delivery.state', errors);
       this.validateRequired('customer.delivery.postcode', errors);
       this.validateRequired('customer.delivery.country', errors);
-    }
+    }    
 
     if (!this.state.billingIsSameAsShipping) {
       this.validateRequired('customer.billing.address1', errors);
-      this.validateRequired('customer.billing.suburb', errors);
+      
+      if (this.state.formData['customer.billing.country'] !== 'NZ') {
+        this.validateRequired('customer.billing.suburb', errors);
+      }
+
       this.validateRequired('customer.billing.state', errors);
       this.validateRequired('customer.billing.postcode', errors);
       this.validateRequired('customer.billing.country', errors);
