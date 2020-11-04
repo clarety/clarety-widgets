@@ -19,7 +19,7 @@ export class CustomerConnect {
       variant: getSetting(state, 'variant'),
       tracking: getTrackingData(state),
 
-      emailReadonly: getCustomerHasProfile(state),
+      canEditEmail: !getCustomerHasProfile(state),
       defaultCountry: getSetting(state, 'defaultCountry'),
       sourceOptions: getSourceOptions(state),
       addressFinderKey: getSetting(state, 'addressFinderKey'),
