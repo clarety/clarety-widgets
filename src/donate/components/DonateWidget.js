@@ -81,7 +81,6 @@ export class _DonateWidgetRoot extends React.Component {
     const { languages, defaultLanguage, changeLanguage } = this.props;
     const language = defaultLanguage || navigator.language || navigator.userLanguage || 'en';
     i18next.init({
-      debug: true,
       load: 'languageOnly',
       lng: language,
       fallbackLng: defaultLanguage || 'en',

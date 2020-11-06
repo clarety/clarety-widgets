@@ -5,7 +5,7 @@ import { t } from 'shared/translations';
 export const ScheduleSelectDropdown = ({ value, placeholder, schedules, onChange }) => (
   <Dropdown>
     <Dropdown.Toggle>
-      {getLabel(schedules, value) || placeholder || t('select')}
+      {getLabel(schedules, value) || placeholder || t('select', 'Select')}
     </Dropdown.Toggle>
 
     <Dropdown.Menu>

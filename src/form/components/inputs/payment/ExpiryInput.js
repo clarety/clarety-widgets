@@ -43,7 +43,7 @@ class _ExpiryInput extends React.Component {
         <Form.Control
           type="text"
           value={value}
-          placeholder={placeholder || t('card-expiry-placeholder')}
+          placeholder={placeholder || t('card-expiry-placeholder', 'MM / YY')}
           onChange={onChange}
           onKeyDown={this.onKeyDown}
           type="tel"
