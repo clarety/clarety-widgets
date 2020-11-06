@@ -21,8 +21,6 @@
     "address": "Address",
     "street": "Street",
     "suburb": "City / Suburb",
-    "suburb-au": "Suburb",
-    "suburb-nz": "Suburb",
     "state": "State",
     "region": "Region",
     "city": "City",
