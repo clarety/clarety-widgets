@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, InputGroup } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { CurrencySymbol } from 'shared/components';
 import { cleanDecimal } from 'form/utils';
 
@@ -12,7 +13,7 @@ export const VariableAmount = ({ amountInfo, value, placeholder, isSelected, onC
 
       <Form.Control
         value={value}
-        placeholder={placeholder || 'Other Amount'}
+        placeholder={placeholder || t('other-amount', 'Other Amount')}
         type="tel"
         onFocus={event => onChange(event.target.value)}
         onChange={event => onChange(cleanDecimal(event.target.value))}

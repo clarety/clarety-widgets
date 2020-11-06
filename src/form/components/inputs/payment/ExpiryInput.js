@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { updateFormData } from 'form/actions';
 import { getValidationError, formatExpiry, cleanExpiry } from 'form/utils';
 import { FieldError } from 'form/components';
@@ -42,7 +43,7 @@ class _ExpiryInput extends React.Component {
         <Form.Control
           type="text"
           value={value}
-          placeholder={placeholder || 'MM / YY'}
+          placeholder={placeholder || t('card-expiry-placeholder', 'MM / YY')}
           onChange={onChange}
           onKeyDown={this.onKeyDown}
           type="tel"

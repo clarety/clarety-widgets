@@ -1,5 +1,6 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelBody } from 'shared/components';
 import { SubmitButton, ErrorMessages } from 'form/components';
 
@@ -64,7 +65,7 @@ export class SubmitPanel extends BasePanel {
                 <ErrorMessages />
 
                 <SubmitButton
-                  title={settings.submitBtnText || 'Donate'}
+                  title={settings.submitBtnText || t('donate', 'Donate')}
                   isDisabled={!this.canContinue()}
                   testId="donate-button"
                   block

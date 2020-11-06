@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { TextAreaInput, CheckboxInput, SubmitButton, BackButton } from 'form/components';
 
@@ -12,7 +13,6 @@ export class FundraisingPanel extends BasePanel {
 
   onPressBack = (event) => {
     event.preventDefault();
-
     this.props.prevPanel();
   };
 
@@ -107,7 +107,7 @@ export class FundraisingPanel extends BasePanel {
             <Form.Group controlId="fundraising.isAnonymous">
               <CheckboxInput
                 field="fundraising.isAnonymous"
-                label="Hide my name from displaying on the fundraiser's page"
+                label={t('hide-my-name', "Hide my name from displaying on the fundraiser's page")}
                 testId="fundraising-is-anonymous-input"
               />
             </Form.Group>
@@ -117,7 +117,7 @@ export class FundraisingPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="fundraising.message">
-              <Form.Label>Add a message (this message is visible to everyone)</Form.Label>
+              <Form.Label>{t('add-a-message', 'Add a message (this message is visible to everyone)')}</Form.Label>
               <TextAreaInput
                 field="fundraising.message"
                 rows={4}
@@ -138,10 +138,10 @@ export class FundraisingPanel extends BasePanel {
       <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
         <Form.Row className="justify-content-center">
           <Col xs={6}>
-            <BackButton title="Back" block onClick={this.onPressBack} />
+            <BackButton title={t('back', 'Back')} block onClick={this.onPressBack} />
           </Col>
           <Col xs={6}>
-            <SubmitButton title="Next" block testId="next-button" />
+            <SubmitButton title={t('next', 'Next')} block testId="next-button" />
           </Col>
         </Form.Row>
       </PanelFooter>

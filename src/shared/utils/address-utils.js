@@ -30,27 +30,28 @@ export function getStateOptions(country) {
 
 export function getSuburbLabel(country) {
   switch (country) {
-    case 'AU': return 'Suburb';
-    case 'NZ': return 'Suburb';
-    default:   return t('label.customer.address.suburb', 'City / Suburb');
+    case 'AU': return t('suburb', 'Suburb');
+    case 'NZ': return t('suburb', 'Suburb');
+    default:   return t('suburb', 'City / Suburb');
   }
 }
 
 export function getStateLabel(country) {
   switch (country) {
-    case 'UK': return 'Region';
-    case 'NZ': return 'City';
-    default:   return t('label.customer.address.state', 'State');
+    case 'UK': return t('region', 'Region');
+    case 'NZ': return t('city', 'City');
+    default:   return t('state', 'State');
   }
 }
 
 export function getPostcodeLabel(country) {
   switch (country) {
-    case 'AU': return 'Postcode';
-    case 'NZ': return 'Postcode';
-    case 'UK': return 'Postcode';
-    case 'US': return 'Zip Code';
-    default:   return t('label.customer.address.postcode', 'Zip Code / Postcode');
+    case 'AU': 
+    case 'NZ': 
+    case 'UK':
+        return t('postcode', 'Postcode');
+    case 'US': return t('zipcode', 'Zip Code');
+    default:   return t('postcode', 'Zip Code / Postcode');
   }
 }
 

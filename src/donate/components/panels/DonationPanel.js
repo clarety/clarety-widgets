@@ -1,7 +1,8 @@
 import React from 'react';
-import { Form, Row, Col, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
+import { Form, Row, Col } from 'react-bootstrap';
 import { Breakpoint } from 'react-socks';
 import { requiredField } from 'shared/utils';
+import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { SubmitButton, ErrorMessages, SelectInput } from 'form/components';
 import { FrequencySelect, ScheduleSelectButtonGroup, ScheduleSelectDropdown } from 'donate/components';
@@ -58,9 +59,7 @@ export class DonationPanel extends BasePanel {
     // Make sure an amount has been selected.
     const selection = selections[frequency];
     if (!Number(selection.amount)) {
-      errors.push({
-        message: 'Please select a donation amount',
-      });
+      errors.push({ message: t('invalid-donation', 'Please select a donation amount') });
     }
 
     if (givingTypeOptions) {
@@ -139,8 +138,8 @@ export class DonationPanel extends BasePanel {
 
     return (
       <FrequencySelect
-        singleLabel={settings.singleLabel}
-        recurringLabel={settings.recurringLabel}
+        singleLabel={settings.singleLabel || t('single-gift', 'Single Gift')}
+        recurringLabel={settings.recurringLabel || t('monthly-gift', 'Monthly Gift')}
       />
     );
   }
@@ -157,7 +156,7 @@ export class DonationPanel extends BasePanel {
 
     return (
       <div className="schedule-select">
-        <h3>{settings.scheduleSelectHeading || 'Select Frequency'}</h3>
+        <h3>{settings.scheduleSelectHeading || t('select-frequency', 'Select Frequency')}</h3>
 
         {offer.schedules.length > 3
           ? <ScheduleSelectDropdown
@@ -268,7 +267,7 @@ export class DonationPanel extends BasePanel {
         <Row>
           <Col>
             <Form.Group controlId="givingType">
-              <Form.Label>Give To</Form.Label>
+              <Form.Label>{t('give-to', 'Give To')}</Form.Label>
               <SelectInput
                 field="saleline.givingType"
                 options={givingTypeOptions}
@@ -289,7 +288,7 @@ export class DonationPanel extends BasePanel {
         <Form.Row className="justify-content-center">
           <Col>
             <SubmitButton
-              title={settings.submitBtnText || 'Next'}
+              title={settings.submitBtnText || t('next', 'Next')}
               testId="next-button"
               block
             />

@@ -218,7 +218,7 @@ export class _PaymentPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title={settings.title || t('paymentPanel.waitTitle', 'Payment Details')}
+          title={settings.title || t('payment-details', 'Payment Details')}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -253,7 +253,7 @@ export class _PaymentPanel extends BasePanel {
         status="edit"
         layout={layout}
         number={index + 1}
-        title={settings.title || t('paymentPanel.editTitle', 'Payment Details')}
+        title={settings.title || t('payment-details', 'Payment Details')}
       />
     );
   }
@@ -314,8 +314,8 @@ export class _PaymentPanel extends BasePanel {
           value={this.props.formData['payment.type']}
           onChange={this.onSelectPaymentType}
         >
-          {showCC && <ToggleButton value="gatewaycc" variant="outline-secondary">{t('label.payment.creditCard', 'Credit Card')}</ToggleButton>}
-          {showDD && <ToggleButton value="gatewaydd" variant="outline-secondary">{t('label.payment.directDebit', 'Direct Debit')}</ToggleButton>}
+          {showCC && <ToggleButton value="gatewaycc" variant="outline-secondary">{t('credit-card', 'Credit Card')}</ToggleButton>}
+          {showDD && <ToggleButton value="gatewaydd" variant="outline-secondary">{t('direct-debit', 'Direct Debit')}</ToggleButton>}
         </ToggleButtonGroup>
       </div>
     );
@@ -351,7 +351,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="cardName">
-              <Form.Label>{t('label.payment.cardName', 'Name on Card')}</Form.Label>
+              <Form.Label>{t('card-name', 'Name on Card')}</Form.Label>
               <TextInput field="payment.cardName" testId="card-name-input" />
             </Form.Group>
           </Col>
@@ -360,7 +360,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="cardNumber">
-              <Form.Label>{t('label.payment.cardNumber', 'Card Number')}</Form.Label>
+              <Form.Label>{t('card-number', 'Card Number')}</Form.Label>
               <CardNumberInput field="payment.cardNumber" testId="card-number-input" />
             </Form.Group>
           </Col>
@@ -369,7 +369,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group>
-              <Form.Label>{t('label.payment.cardExpiry', 'Expiry')}</Form.Label>
+              <Form.Label>{t('card-expiry', 'Expiry')}</Form.Label>
               <ExpiryInput
                 field="payment.cardExpiry"
                 monthField="payment.cardExpiryMonth"
@@ -381,7 +381,7 @@ export class _PaymentPanel extends BasePanel {
 
           <Col>
             <Form.Group controlId="ccv">
-              <Form.Label>{t('label.payment.cardCcv', 'CVC')}</Form.Label>
+              <Form.Label>{t('card-ccv', 'CVC')}</Form.Label>
               <CcvInput field="payment.cardSecurityCode" testId="ccv-input" />
             </Form.Group>
           </Col>
@@ -396,7 +396,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="accountName">
-              <Form.Label>{t('label.payment.accountName', 'Account Name')}</Form.Label>
+              <Form.Label>{t('account-name', 'Account Name')}</Form.Label>
               <TextInput field="payment.accountName" testId="account-name-input" />
             </Form.Group>
           </Col>
@@ -405,14 +405,14 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col sm={6}>
             <Form.Group controlId="accountBSB">
-              <Form.Label>{t('label.payment.accountBSB', 'Account BSB')}</Form.Label>
+              <Form.Label>{t('account-bsb', 'Account BSB')}</Form.Label>
               <BsbInput field="payment.accountBSB" testId="account-bsb-input" />
             </Form.Group>
           </Col>
 
           <Col sm={6}>
             <Form.Group controlId="accountNumber">
-              <Form.Label>{t('label.payment.accountNumber', 'Account Number')}</Form.Label>
+              <Form.Label>{t('account-number', 'Account Number')}</Form.Label>
               <AccountNumberInput field="payment.accountNumber" testId="account-number-input" />
             </Form.Group>
           </Col>
@@ -427,7 +427,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="accountName">
-              <Form.Label>{t('label.payment.accountName', 'Account Name')}</Form.Label>
+              <Form.Label>{t('account-name', 'Account Name')}</Form.Label>
               <TextInput field="payment.accountName" testId="account-name-input" />
             </Form.Group>
           </Col>
@@ -436,7 +436,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group>
-              <Form.Label>{t('label.payment.accountNumber', 'Account Number')}</Form.Label>
+              <Form.Label>{t('account-number', 'Account Number')}</Form.Label>
 
               <NZAccountNumberInput
                 bankCodeField="payment.bankCode"
@@ -461,7 +461,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="cardName">
-              <Form.Label>{t('label.payment.cardName', 'Name on Card')}</Form.Label>
+              <Form.Label>{t('card-name', 'Name on Card')}</Form.Label>
               <TextInput field="payment.cardName" testId="card-name-input" />
             </Form.Group>
           </Col>
@@ -470,7 +470,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="cardNumber">
-              <Form.Label>{t('label.payment.cardNumber', 'Card Number')}</Form.Label>
+              <Form.Label>{t('card-number', 'Card Number')}</Form.Label>
               <CardNumberElement options={{ style }} />
             </Form.Group>
           </Col>
@@ -479,14 +479,14 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group>
-              <Form.Label>{t('label.payment.cardExpiry', 'Expiry')}</Form.Label>
+              <Form.Label>{t('card-expiry', 'Expiry')}</Form.Label>
               <CardExpiryElement options={{ style }} />
             </Form.Group>
           </Col>
 
           <Col>
             <Form.Group controlId="ccv">
-              <Form.Label>{t('label.payment.cardCcv', 'CVC')}</Form.Label>
+              <Form.Label>{t('card-ccv', 'CVC')}</Form.Label>
               <CardCvcElement options={{ style }} />
             </Form.Group>
           </Col>
@@ -498,7 +498,7 @@ export class _PaymentPanel extends BasePanel {
 
   renderNoPaymentFields() {
     return (
-      <p>{t('paymentPanel.noPaymentMessage', 'Your order is free, no payment is required.')}</p>
+      <p>{t('free-order', 'Your order is free, no payment is required.')}</p>
     );
   }
 
@@ -512,7 +512,7 @@ export class _PaymentPanel extends BasePanel {
           {layout === 'tabs' && 
             <Col xs={6}>
               <BackButton
-                title={settings.backBtnText || t('btn.back', 'Back')}
+                title={settings.backBtnText || t('back', 'Back')}
                 onClick={this.onPressBack}
               />
             </Col>
@@ -520,7 +520,7 @@ export class _PaymentPanel extends BasePanel {
 
           <Col xs={layout === 'tabs' ? 6 : 12}>
             <SubmitButton
-              title={settings.submitBtnText || t('btn.pay', 'Pay Now')}
+              title={settings.submitBtnText || t('pay', 'Pay Now')}
               testId="next-button"
             />
           </Col>
@@ -550,7 +550,7 @@ export class _PaymentPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title={settings.title || t('paymentPanel.doneTitle', 'Payment Details')}
+          title={settings.title || t('payment-details', 'Payment Details')}
           onPressEdit={this.onPressEdit}
         />
 
