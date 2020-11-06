@@ -46,7 +46,8 @@ export class Checkout extends React.Component {
     i18next.init();
 
     Checkout.store.dispatch(updateAppSettings({
-      defaultCountry: this.props.defaultCountry,
+      defaultCountry:   this.props.defaultCountry,
+      addressFinderKey: this.props.addressFinderKey,
     }));
 
     const jwtAccount = getJwtAccount();
