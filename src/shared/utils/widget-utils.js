@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import Cookies from 'js-cookie';
 import jwtDecode from 'jwt-decode';
 import { Config } from 'clarety-utils';
+import { t } from 'shared/translations';
 
 export const FormContext = React.createContext();
 
@@ -84,7 +85,7 @@ export function capitalize(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-export const customerTypeOptions = [
-  { value: 'individual', label: 'Individual' },
-  { value: 'business',   label: 'Business'   },
+export const getCustomerTypeOptions = () => [
+  { value: 'individual', label: t('individual', 'Individual') },
+  { value: 'business',   label: t('business', 'Business') },
 ];
