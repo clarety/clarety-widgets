@@ -52,7 +52,7 @@ export class FundraisingPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title={settings.title || t('fundraisingPanel.waitTitle')}
+          title={settings.title}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -94,7 +94,7 @@ export class FundraisingPanel extends BasePanel {
         status="edit"
         layout={layout}
         number={index + 1}
-        title={settings.title || t('fundraisingPanel.editTitle')}
+        title={settings.title}
       />
     );
   }
@@ -107,7 +107,7 @@ export class FundraisingPanel extends BasePanel {
             <Form.Group controlId="fundraising.isAnonymous">
               <CheckboxInput
                 field="fundraising.isAnonymous"
-                label={t('hide-my-name')}
+                label={t('hide-my-name', "Hide my name from displaying on the fundraiser's page")}
                 testId="fundraising-is-anonymous-input"
               />
             </Form.Group>
@@ -117,7 +117,7 @@ export class FundraisingPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="fundraising.message">
-              <Form.Label>{t('add-a-message')}</Form.Label>
+              <Form.Label>{t('add-a-message', 'Add a message (this message is visible to everyone)')}</Form.Label>
               <TextAreaInput
                 field="fundraising.message"
                 rows={4}
@@ -138,10 +138,10 @@ export class FundraisingPanel extends BasePanel {
       <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
         <Form.Row className="justify-content-center">
           <Col xs={6}>
-            <BackButton title={t('back')} block onClick={this.onPressBack} />
+            <BackButton title={t('back', 'Back')} block onClick={this.onPressBack} />
           </Col>
           <Col xs={6}>
-            <SubmitButton title={t('next')} block testId="next-button" />
+            <SubmitButton title={t('next', 'Next')} block testId="next-button" />
           </Col>
         </Form.Row>
       </PanelFooter>
@@ -157,7 +157,7 @@ export class FundraisingPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title={settings.title || t('fundraisingPanel.doneTitle')}
+          title={settings.title}
           onPressEdit={this.onPressEdit}
         />
 

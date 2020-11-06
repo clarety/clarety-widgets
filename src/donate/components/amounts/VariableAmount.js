@@ -13,7 +13,7 @@ export const VariableAmount = ({ amountInfo, value, placeholder, isSelected, onC
 
       <Form.Control
         value={value}
-        placeholder={placeholder || t('other-amount')}
+        placeholder={placeholder || t('other-amount', 'Other Amount')}
         type="tel"
         onFocus={event => onChange(event.target.value)}
         onChange={event => onChange(cleanDecimal(event.target.value))}

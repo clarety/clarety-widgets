@@ -45,12 +45,12 @@ export class _PaymentPanel extends BasePaymentPanel {
   renderCartSummary() {
     const { frequency, amount } = this.props;
     const label = frequency === 'recurring'
-      ? t('monthly-donation-amount')
-      : t('donation-amount');
+      ? t('monthly-donation-amount', 'Montly Donation Amount')
+      : t('donation-amount', 'Donation Amount');
 
     return (
       <p className="donation-summary">
-        {label} <b><Currency amount={amount} /></b>
+        {label}: <b><Currency amount={amount} /></b>
       </p>
     );
   }
@@ -71,7 +71,7 @@ export class _PaymentPanel extends BasePaymentPanel {
       <Row>
         <Col>
           <Form.Group controlId="startDate">
-            <Form.Label>{t('start-date')}</Form.Label>
+            <Form.Label>{t('start-date', 'Start Date')}</Form.Label>
             <SelectInput
               field="additionalData.startDate"
               options={this.getStartDateOptions(paymentMethod)}

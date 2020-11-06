@@ -36,7 +36,7 @@ export function validateRequired(value, field, errors, message) {
   if (!value) {
     errors.push({
       'field': field,
-      'message': message || t('invalid-required'),
+      'message': message || t('invalid-required', 'This is a required field'),
     });
   }
 }
@@ -48,7 +48,7 @@ export function validateEmail(email, field, errors, message) {
   if (!regex.test(email)) {
     errors.push({
       field: field,
-      message: message || t('invalid-email'),
+      message: message || t('invalid-email', 'Please enter a valid email'),
     });
   }
 }
@@ -57,7 +57,7 @@ export function validatePhoneNumber(phoneNumber, field, errors, message) {
   if (!phoneNumber || phoneNumber.length < 10 || phoneNumber.length > 14) {
     errors.push({
       field: field,
-      message: message || t('invalid-phone'),
+      message: message || t('invalid-phone', 'Please enter a valid phone number'),
     });
   }
 }
@@ -67,7 +67,7 @@ export function validatePassword(password, field, errors, message) {
   if (!password || password.length < 8 || numberCount < 2) {
     errors.push({
       'field': field,
-      'message': message || t('invalid-password'),
+      'message': message || t('invalid-password', 'Password must contain at least 8 characters including 2 numbers'),
     });
   }
 }
@@ -78,7 +78,7 @@ export function validateCardNumber(cardNumber, field, errors, message) {
   if (!isValid) {
     errors.push({
       field: field,
-      message: message || t('invalid-card-number'),
+      message: message || t('invalid-card-number', 'Please enter a valid card number'),
     });
   }
 }
@@ -89,7 +89,7 @@ export function validateCardExpiry(month, year, field, errors, message) {
   if (!isValid) {
     errors.push({
       field: field,
-      message: message || t('invalid-card-expiry'),
+      message: message || t('invalid-card-expiry', 'Please enter a valid expiry date'),
     });
   }
 }
@@ -100,7 +100,7 @@ export function validateCcv(ccv, field, errors, message) {
   if (!isValid) {
     errors.push({
       field: field,
-      message: message || t('invalid-ccv'),
+      message: message || t('invalid-ccv', 'Please enter a valid CCV'),
     });
   }
 }
@@ -117,7 +117,7 @@ export function validateDob({ field, day, month, year, comparisonDate, minAge, m
     if (turnsMinAge > comparisonDate) {
       errors.push({
         'field': field,
-        'message': `${t('invalid-min-age')} ${minAge}`,
+        'message': `${t('invalid-min-age', 'You must be at least')} ${minAge}`,
       });
     }
   }
@@ -127,7 +127,7 @@ export function validateDob({ field, day, month, year, comparisonDate, minAge, m
     if (turnsMaxAge < comparisonDate) {
       errors.push({
         'field': field,
-        'message': `${t('invalid-max-age')} ${maxAge}`,
+        'message': `${t('invalid-max-age', 'You must not be older than')} ${maxAge}`,
       });
     }
   }

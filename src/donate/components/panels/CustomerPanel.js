@@ -177,7 +177,7 @@ export class CustomerPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title={settings.title || t('customerPanel.waitTitle')}
+          title={settings.title}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -225,7 +225,7 @@ export class CustomerPanel extends BasePanel {
         status="edit"
         layout={layout}
         number={index + 1}
-        title={settings.title || t('customerPanel.editTitle')}
+        title={settings.title}
       />
     );
   }
@@ -245,7 +245,7 @@ export class CustomerPanel extends BasePanel {
           <Form.Row>
             <Col>
               <Form.Group controlId="customerType">
-                <Form.Label>{t('type')}</Form.Label>
+                <Form.Label>{t('type', 'Type')}</Form.Label>
                 <SelectInput
                   field="customer.type"
                   options={customerTypeOptions}
@@ -262,7 +262,7 @@ export class CustomerPanel extends BasePanel {
           <Form.Row>
             <Col>
               <Form.Group controlId="businessName">
-                <Form.Label>{t('business-name')}</Form.Label>
+                <Form.Label>{t('business-name', 'Business Name')}</Form.Label>
                 <TextInput field="customer.businessName" testId="business-name-input" required />
               </Form.Group>
             </Col>
@@ -280,20 +280,20 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col sm>
             <Form.Group controlId="firstName">
-              <Form.Label>{t('first-name')}</Form.Label>
+              <Form.Label>{t('first-name', 'First Name')}</Form.Label>
               <TextInput field="customer.firstName" testId="first-name-input" required />
             </Form.Group>
           </Col>
           <Col sm>
             <Form.Group controlId="lastName">
-              <Form.Label>{t('last-name')}</Form.Label>
+              <Form.Label>{t('last-name', 'Last Name')}</Form.Label>
               <TextInput field="customer.lastName" testId="last-name-input" required />
             </Form.Group>
           </Col>
         </Form.Row>
 
         <Form.Group controlId="email">
-          <Form.Label>{t('email')}</Form.Label>
+          <Form.Label>{t('email', 'Email')}</Form.Label>
           <EmailInput field="customer.email" type="email" testId="email-input" readOnly={!canEditEmail} required />
         </Form.Group>
       </React.Fragment>
@@ -308,7 +308,7 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="mobile">
-              <Form.Label>{t('mobile')}</Form.Label>
+              <Form.Label>{t('mobile', 'Mobile')}</Form.Label>
               <PhoneInput field="customer.mobile" required={settings.isPhoneRequired} />
             </Form.Group>
           </Col>
@@ -329,11 +329,11 @@ export class CustomerPanel extends BasePanel {
           <Form.Row>
             <Col>
               <Form.Group>
-                <Form.Label htmlFor="address-finder-input">{t('address')}</Form.Label>
+                <Form.Label htmlFor="address-finder-input">{t('address', 'Address')}</Form.Label>
                 <Form.Control id="address-finder-input" />
 
                 <Button variant="link" onClick={this.onPressDisableAddressFinder}>
-                  {t('cant-find-your-address')}
+                  {t('cant-find-your-address', "Can't find your address?")}
                 </Button>
               </Form.Group>
             </Col>
@@ -349,7 +349,7 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col sm>
             <Form.Group controlId="street">
-              <Form.Label>{t('street')}</Form.Label>
+              <Form.Label>{t('street', 'Street')}</Form.Label>
               <TextInput field="customer.billing.address1" type="street" testId="street-input" />
             </Form.Group>
           </Col>
@@ -395,7 +395,7 @@ export class CustomerPanel extends BasePanel {
       <Form.Row>
         <Col>
           <Form.Group controlId="country">
-            <Form.Label>{t('country')}</Form.Label>
+            <Form.Label>{t('country', 'Country')}</Form.Label>
             <CountryInput
               field="customer.billing.country"
               initialValue={defaultCountry}
@@ -419,7 +419,7 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="customerSource">
-              <Form.Label>{t('how-did-you-hear-about-us')}</Form.Label>
+              <Form.Label>{t('how-did-you-hear-about-us', 'How did you hear about us?')}</Form.Label>
               <SelectInput
                 field="sale.sourceId"
                 options={this.props.sourceOptions}
@@ -457,7 +457,7 @@ export class CustomerPanel extends BasePanel {
         <Col>
           <CheckboxInput
             field="additionalData.optIn"
-            label={settings.optInText || t('newsletter-opt-in')}
+            label={settings.optInText || t('newsletter-opt-in', 'Sign up for our newsletter')}
             initialValue={!!settings.preTickOptIn}
           />
         </Col>
@@ -474,14 +474,14 @@ export class CustomerPanel extends BasePanel {
         <Form.Row className="justify-content-center">
           <Col xs={6}>
             <BackButton
-              title={settings.backBtnText || t('back')}
+              title={settings.backBtnText || t('back', 'Back')}
               onClick={this.onPressBack}
               block
             />
           </Col>
           <Col xs={6}>
             <SubmitButton
-              title={settings.submitBtnText || t('next')}
+              title={settings.submitBtnText || t('next', 'Next')}
               testId="next-button"
               block
             />
@@ -514,7 +514,7 @@ export class CustomerPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title={settings.title || t('customerPanel.doneTitle')}
+          title={settings.title}
           onPressEdit={this.onPressEdit}
         />
 

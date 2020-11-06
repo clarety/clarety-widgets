@@ -59,7 +59,7 @@ export class DonationPanel extends BasePanel {
     // Make sure an amount has been selected.
     const selection = selections[frequency];
     if (!Number(selection.amount)) {
-      errors.push({ message: t('invalid-donation') });
+      errors.push({ message: t('invalid-donation', 'Please select a donation amount') });
     }
 
     if (givingTypeOptions) {
@@ -76,7 +76,7 @@ export class DonationPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title={settings.title || t('donationPanel.waitTitle')}
+          title={settings.title}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -122,7 +122,7 @@ export class DonationPanel extends BasePanel {
         status="edit"
         layout={layout}
         number={index + 1}
-        title={settings.title || t('donationPanel.editTitle')}
+        title={settings.title}
       />
     );
   }
@@ -138,8 +138,8 @@ export class DonationPanel extends BasePanel {
 
     return (
       <FrequencySelect
-        singleLabel={settings.singleLabel || t('single-gift')}
-        recurringLabel={settings.recurringLabel || t('monthly-gift')}
+        singleLabel={settings.singleLabel || t('single-gift', 'Single Gift')}
+        recurringLabel={settings.recurringLabel || t('monthly-gift', 'Monthly Gift')}
       />
     );
   }
@@ -156,7 +156,7 @@ export class DonationPanel extends BasePanel {
 
     return (
       <div className="schedule-select">
-        <h3>{settings.scheduleSelectHeading || t('select-frequency') }</h3>
+        <h3>{settings.scheduleSelectHeading || t('select-frequency', 'Select Frequency')}</h3>
 
         {offer.schedules.length > 3
           ? <ScheduleSelectDropdown
@@ -267,7 +267,7 @@ export class DonationPanel extends BasePanel {
         <Row>
           <Col>
             <Form.Group controlId="givingType">
-              <Form.Label>{t('give-to')}</Form.Label>
+              <Form.Label>{t('give-to', 'Give To')}</Form.Label>
               <SelectInput
                 field="saleline.givingType"
                 options={givingTypeOptions}
@@ -288,7 +288,7 @@ export class DonationPanel extends BasePanel {
         <Form.Row className="justify-content-center">
           <Col>
             <SubmitButton
-              title={settings.submitBtnText || t('next')}
+              title={settings.submitBtnText || t('next', 'Next')}
               testId="next-button"
               block
             />
@@ -307,7 +307,7 @@ export class DonationPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title={settings.title || t('donationPanel.doneTitle')}
+          title={settings.title}
           onPressEdit={this.onPressEdit}
         />
 

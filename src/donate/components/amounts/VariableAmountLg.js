@@ -31,7 +31,7 @@ export const VariableAmountLg = ({ amountInfo, value, placeholder, isSelected, o
             
             <Form.Control
               value={value}
-              placeholder={placeholder || t('other-amount')}
+              placeholder={placeholder || t('other-amount', 'Other Amount')}
               ref={input}
               type="tel"
               onFocus={event => onChange(event.target.value)}

@@ -65,7 +65,7 @@ export class SubmitPanel extends BasePanel {
                 <ErrorMessages />
 
                 <SubmitButton
-                  title={settings.submitBtnText || t('donate')}
+                  title={settings.submitBtnText || t('donate', 'Donate')}
                   isDisabled={!this.canContinue()}
                   testId="donate-button"
                   block
