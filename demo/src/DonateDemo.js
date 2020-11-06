@@ -91,8 +91,7 @@ export default class DonateDemo extends React.Component {
 
       showStepIndicator: true,
 
-      // addressFinderKey: 'ADDRESSFINDER_DEMO_KEY',
-      addressFinderKey: 'B6QWYX7U93GELTMCD48J',
+      addressFinderKey: 'ADDRESSFINDER_DEMO_KEY',
       defaultCountry: 'NZ',
     });
   }
