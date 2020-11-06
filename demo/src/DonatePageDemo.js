@@ -86,8 +86,7 @@ export default class DonatePageDemo extends React.Component {
       
       // reCaptchaKey: '1234',
 
-      // addressFinderKey: 'ADDRESSFINDER_DEMO_KEY',
-      addressFinderKey: 'B6QWYX7U93GELTMCD48J',
+      addressFinderKey: 'ADDRESSFINDER_DEMO_KEY',
       // defaultCountry: 'AU',
       defaultCountry: 'NZ',
 

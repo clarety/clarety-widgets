@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Row, Col, Button } from 'react-bootstrap';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
-import { requiredField, emailField, customerTypeOptions, loadAddressFinder, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
+import { requiredField, emailField, customerTypeOptions, setupAddressFinder, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
 import { TextInput, EmailInput, PhoneInput, CheckboxInput, StateInput, CountryInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
@@ -16,7 +16,13 @@ export class CustomerPanel extends BasePanel {
     }
 
     if (this.shouldUseAddressFinder()) {
-      loadAddressFinder(this.onAddressFinderLoaded);
+      setupAddressFinder({
+        elementId: 'address-finder-input',
+        apiKey: this.props.addressFinderKey,
+        country: this.props.defaultCountry,
+        onLoad: (addressFinder) => this.addressFinder = addressFinder,
+        onSelect: this.onAddressFinderSelect,
+      });
     }
   }
 
@@ -31,42 +37,16 @@ export class CustomerPanel extends BasePanel {
     }
   }
 
-  onAddressFinderLoaded = () => {
-    this.addressFinder = new AddressFinder.Widget(
-      document.getElementById('address-finder-input'),
-      this.props.addressFinderKey,
-      this.props.defaultCountry,
-    );
-
-    this.addressFinder.on('result:select', this.onAddressFinderSelect);
-  }
-
-  onAddressFinderSelect = (fullAddress, metaData) => {
-    const { defaultCountry, setFormData } = this.props;
-
-    if (defaultCountry === 'NZ') {
-      const selected = new AddressFinder.NZSelectedAddress(fullAddress, metaData);
-
-      setFormData({
-        'customer.billing.address1': selected.address_line_1(),
-        'customer.billing.address2': selected.address_line_2(),
-        'customer.billing.suburb':   selected.suburb(),
-        'customer.billing.state':    selected.city(),
-        'customer.billing.postcode': selected.postcode(),
-        'customer.billing.country':  'NZ',
-      });
-    }
-
-    if (defaultCountry === 'AU') {
-      setFormData({
-        'customer.billing.address1': metaData.address_line_1,
-        'customer.billing.address2': metaData.address_line_2,
-        'customer.billing.suburb':   metaData.locality_name,
-        'customer.billing.state':    metaData.state_territory,
-        'customer.billing.postcode': metaData.postcode,
-        'customer.billing.country':  'AU',
-      });
-    }
+  onAddressFinderSelect = (address) => {
+    this.props.setFormData({
+      'customer.billing.address1': address.address1,
+      'customer.billing.address2': address.address2,
+      'customer.billing.suburb':   address.suburb,
+      'customer.billing.state':    address.state,
+      'customer.billing.postcode': address.postcode,
+      'customer.billing.country':  address.country,
+      'customer.billing.pdid':     address.pdid,
+    });
   };
 
   onPressDisableAddressFinder = () => this.setState({

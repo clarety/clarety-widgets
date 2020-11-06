@@ -1,13 +1,5 @@
 import { t } from 'shared/translations';
 
-export function loadAddressFinder(onLoadCallback) {
-  const script = document.createElement('script');
-  script.src = 'https://api.addressfinder.io/assets/v3/widget.js';
-  script.async = true;
-  script.onload = onLoadCallback;
-  document.body.appendChild(script);
-}
-
 export function getCountryOptions(region) {
   if (region === 'AU-NZ') {
     return [
