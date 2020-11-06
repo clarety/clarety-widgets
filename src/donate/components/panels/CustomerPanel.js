@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Row, Col, Button } from 'react-bootstrap';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
-import { requiredField, emailField, customerTypeOptions, loadAddressFinder, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
+import { requiredField, emailField, getCustomerTypeOptions, loadAddressFinder, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
 import { TextInput, EmailInput, PhoneInput, CheckboxInput, StateInput, CountryInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
@@ -238,6 +238,7 @@ export class CustomerPanel extends BasePanel {
   renderTypeFields() {
     const { settings, formData } = this.props;
     const showBusinessName = formData['customer.type'] === 'business';
+    const customerTypeOptions = getCustomerTypeOptions();
 
     return (
       <React.Fragment>

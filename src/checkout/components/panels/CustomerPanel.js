@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { FormContext, customerTypeOptions } from 'shared/utils';
+import { FormContext, getCustomerTypeOptions } from 'shared/utils';
 import { BasePanel, TextInput, SelectInput, PhoneInput, DobInput, CheckboxInput, Button } from 'checkout/components';
 
 export class CheckoutCustomerPanel extends BasePanel {
@@ -142,6 +142,7 @@ export class CheckoutCustomerPanel extends BasePanel {
     const { formData } = this.state;
 
     const showBusinessName = formData['customer.type'] === 'business';
+    const customerTypeOptions = getCustomerTypeOptions();
 
     return (
       <PanelContainer layout={layout}>

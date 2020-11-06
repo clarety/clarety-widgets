@@ -27,7 +27,7 @@
     "region": "Region",
     "city": "City",
     "postcode": "Postcode",
-    "zipcode": "Zipcode",
+    "zipcode": "Zip Code",
     "country": "Country",
 
     "cant-find-your-address": "Can't find your address?",

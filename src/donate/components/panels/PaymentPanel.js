@@ -83,6 +83,11 @@ export class _PaymentPanel extends BasePaymentPanel {
       </Row>
     );
   }
+
+  getSubmitBtnText() {
+    const { settings } = this.props;
+    return settings.submitBtnText || t('donate', 'Donate');
+  }
 }
 
 export const PaymentPanel = injectStripe(_PaymentPanel);

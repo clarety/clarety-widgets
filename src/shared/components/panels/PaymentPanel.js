@@ -520,7 +520,7 @@ export class _PaymentPanel extends BasePanel {
 
           <Col xs={layout === 'tabs' ? 6 : 12}>
             <SubmitButton
-              title={settings.submitBtnText || t('pay', 'Pay Now')}
+              title={this.getSubmitBtnText()}
               testId="next-button"
             />
           </Col>
@@ -529,6 +529,11 @@ export class _PaymentPanel extends BasePanel {
         {this.renderTerms()}
       </PanelFooter>
     );
+  }
+
+  getSubmitBtnText() {
+    const { settings } = this.props;
+    return settings.submitBtnText || t('pay', 'Pay Now');
   }
 
   renderTerms() {
