@@ -1,55 +1,14 @@
 import React from 'react';
 import { Form, Col, Alert } from 'react-bootstrap';
 import { t } from 'shared/translations';
-import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
+import { PanelContainer, PanelHeader, PanelBody, AddressFinder } from 'shared/components';
 import { FormContext, getSuburbLabel, getStateLabel, getPostcodeLabel, setupAddressFinder } from 'shared/utils';
 import { BasePanel, TextInput, PureCheckboxInput, StateInput, CountryInput, PostcodeInput, FormElement, Button } from 'checkout/components';
 
 export class AddressPanel extends BasePanel {
-  billingAddressFinder = null;
-  deliveryAddressFinder = null;
-
-  onShowPanel() {
-    if (this.shouldUseAddressFinder()) {
-      // Billing address finder.
-      if (!this.billingAddressFinder) {
-        setupAddressFinder({
-          elementId: 'billing-address-finder-input',
-          apiKey: this.props.addressFinderKey,
-          country: this.props.defaultCountry,
-          onLoad: (addressFinder) => this.billingAddressFinder = addressFinder,
-          onSelect: (address) => this.onAddressFinderSelect('billing', address),
-        });
-      }
-
-      // Delivery address finder.
-      if (this.props.shippingRequired && !this.deliveryAddressFinder) {
-        setupAddressFinder({
-          elementId: 'delivery-address-finder-input',
-          apiKey: this.props.addressFinderKey,
-          country: this.props.defaultCountry,
-          onLoad: (addressFinder) => this.deliveryAddressFinder = addressFinder,
-          onSelect: (address) => this.onAddressFinderSelect('delivery', address),
-        });
-      }
-    }
-  }
-
   shouldUseAddressFinder() {
     const { addressFinderKey, defaultCountry } = this.props;
     return addressFinderKey && defaultCountry;
-  }
-
-  onHidePanel() {
-    if (this.billingAddressFinder) {
-      this.billingAddressFinder.destroy();
-      this.billingAddressFinder = null;
-    }
-
-    if (this.deliveryAddressFinder) {
-      this.deliveryAddressFinder.destroy();
-      this.deliveryAddressFinder = null;
-    }
   }
 
   onAddressFinderSelect = (addressType, address) => {
@@ -427,10 +386,12 @@ export class AddressPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group>
-              <Form.Control
+              <AddressFinder
                 id={`${addressType}-address-finder-input`}
                 defaultValue={this.getInitialAddress(addressType)}
-                key={`${addressType}-address-finder-input`}
+                apiKey={this.props.addressFinderKey}
+                country={this.props.defaultCountry}
+                onSelect={(address) => this.onAddressFinderSelect(addressType, address)}
               />
 
               <Button
@@ -454,12 +415,10 @@ export class AddressPanel extends BasePanel {
   }
 
   renderDone() {
-    const { formData } = this.state;
-    const { layout, index, shippingRequired } = this.props;
-    const addressKey = shippingRequired?'delivery':'billing';
-    const address = formData['customer.'+addressKey+'.address1'];
-    const suburb = formData['customer.'+addressKey+'.suburb'];
-    const title = `${address}, ${suburb}`;
+    const { layout, index, shippingRequired, customer } = this.props;
+
+    const address = shippingRequired ? customer.delivery : customer.billing;
+    const title = this.getFormattedAddress(address);
 
     return (
       <PanelContainer layout={layout} status="done">
@@ -492,10 +451,11 @@ export class AddressPanel extends BasePanel {
     if (!address) return undefined;
 
     const { address1, address2, suburb, state, postcode } = address;
-    if (!address1 || !suburb || !state || !postcode) return undefined;
+    if (!address1 || !state || !postcode) return undefined;
 
-    return address1 + (address2 ? ', ' + address2 : '')
-         + ', ' + suburb
+    return address1
+         + (address2 ? ', ' + address2 : '')
+         + (suburb   ? ', ' + suburb   : '')
          + ', ' + state
          + ' '  + postcode;
   }

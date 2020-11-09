@@ -1,40 +1,21 @@
 import React from 'react';
 import { Form, Row, Col, Button } from 'react-bootstrap';
 import { t } from 'shared/translations';
-import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
-import { requiredField, emailField, getCustomerTypeOptions, setupAddressFinder, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
+import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, AddressFinder } from 'shared/components';
+import { requiredField, emailField, getCustomerTypeOptions, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
 import { TextInput, EmailInput, PhoneInput, CheckboxInput, StateInput, CountryInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
-  addressFinder = null;
-
   state = {};
 
   onShowPanel() {
     if (this.props.layout === 'tabs') {
       this.scrollIntoView();
     }
-
-    if (this.shouldUseAddressFinder()) {
-      setupAddressFinder({
-        elementId: 'address-finder-input',
-        apiKey: this.props.addressFinderKey,
-        country: this.props.defaultCountry,
-        onLoad: (addressFinder) => this.addressFinder = addressFinder,
-        onSelect: this.onAddressFinderSelect,
-      });
-    }
   }
 
   shouldUseAddressFinder() {
     return this.props.addressFinderKey && this.props.defaultCountry;
-  }
-
-  componentWillUnmount() {
-    if (this.addressFinder) {
-      this.addressFinder.destroy();
-      this.addressFinder = null;
-    }
   }
 
   onAddressFinderSelect = (address) => {
@@ -311,7 +292,12 @@ export class CustomerPanel extends BasePanel {
             <Col>
               <Form.Group>
                 <Form.Label htmlFor="address-finder-input">{t('address', 'Address')}</Form.Label>
-                <Form.Control id="address-finder-input" />
+                <AddressFinder
+                  id="address-finder-input"
+                  apiKey={this.props.addressFinderKey}
+                  country={this.props.defaultCountry}
+                  onSelect={this.onAddressFinderSelect}
+                />
 
                 <Button variant="link" onClick={this.onPressDisableAddressFinder}>
                   {t('cant-find-your-address', "Can't find your address?")}
