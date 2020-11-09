@@ -100,6 +100,7 @@ export class AddressPanel extends BasePanel {
         formData['customer.billing.state']    = formData['customer.delivery.state'];
         formData['customer.billing.postcode'] = formData['customer.delivery.postcode'];
         formData['customer.billing.country']  = formData['customer.delivery.country'];
+        formData['customer.billing.dpid']     = formData['customer.delivery.dpid'];
         this.updateFormData(formData);
       }
       
