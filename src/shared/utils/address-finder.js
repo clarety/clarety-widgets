@@ -6,7 +6,7 @@ export async function setupAddressFinder({ elementId, apiKey, country, onLoad, o
   const options = {
     show_locations: false,
     address_params: {
-      au_paf: true,
+      au_paf: '1',
     },
   };
 
