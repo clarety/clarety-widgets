@@ -13,12 +13,20 @@ export class BasePanel extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.status === 'wait' && this.props.status === 'edit') {
+    if (prevProps.status !== 'edit' && this.props.status === 'edit') {
       this.onShowPanel();
+    }
+
+    if (prevProps.status === 'edit' && this.props.status !== 'edit') {
+      this.onHidePanel();
     }
   }
 
   onShowPanel() {
+    // Override in subclass.
+  }
+
+  onHidePanel() {
     // Override in subclass.
   }
 
