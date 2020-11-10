@@ -10,7 +10,7 @@ export class PaymentConnect {
 
     return {
       isBusy: getIsBusy(state),
-      amount: selection.amount,
+      amount: selection ? selection.amount : 0,
       frequency: getSelectedFrequency(state),
       paymentMethods: getPaymentMethods(state),
       formData: getFormData(state),

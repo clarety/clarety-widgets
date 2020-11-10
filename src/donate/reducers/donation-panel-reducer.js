@@ -68,10 +68,10 @@ const selectAmount = (state, action) => {
 };
 
 const selectDefaults = (state, offers) => {
-  const defaultFrequency = offers[0].frequency;
+  const defaultFrequency = offers[0] ? offers[0].frequency : undefined;
   const defaultSelections = {};
 
-  for (let offer of offers) {
+  for (const offer of offers) {
     const defaultAmount = offer.amounts.find(amount => amount.default);
     const defaultPaymentUid = getDefaultOfferPaymentUid(offer);
 

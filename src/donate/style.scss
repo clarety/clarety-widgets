@@ -2,9 +2,25 @@
 
 .clarety-donate-widget {
   h4 {
-    margin: 10px;
+    margin: 10px 0;
     font-size: 1.5rem;
     text-align: center;
+  }
+
+  .fund-info {
+    margin-top: 2rem;
+
+    &__image {
+      // @extend .img-fluid;
+      margin-bottom: 0.5rem;
+      width: 100%;
+      height: auto;
+    }
+
+    &__title {
+      text-align: left;
+      margin: 0 0 10px 0;
+    }
   }
 
   .giving-type {
