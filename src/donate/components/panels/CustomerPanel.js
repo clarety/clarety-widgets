@@ -26,7 +26,7 @@ export class CustomerPanel extends BasePanel {
       'customer.billing.state':    address.state,
       'customer.billing.postcode': address.postcode,
       'customer.billing.country':  address.country,
-      'customer.billing.pdid':     address.pdid,
+      'customer.billing.dpid':     address.dpid,
     });
   };
 
