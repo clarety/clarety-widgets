@@ -6,14 +6,13 @@ import i18next from 'i18next';
 import { BreakpointProvider } from 'react-socks';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { ClaretyApi } from 'clarety-utils';
 import { statuses, setStore, setTrackingData, setLanguages, fetchSettings, updateAppSettings, setPanels, changeLanguage } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { getJwtCustomer, Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { handleUrlParams, selectFrequency } from 'donate/actions';
 import { rootReducer } from 'donate/reducers';
-import { mapDonationSettings, setupDefaultResources } from 'donate/utils';
+import { DonationApi, mapDonationSettings, setupDefaultResources } from 'donate/utils';
 import { StepIndicator } from 'donate/components';
 import { fetchCustomer } from 'donate/actions/customer-actions';
 
@@ -117,7 +116,7 @@ export class _DonateWidgetRoot extends React.Component {
 
     const jwtCustomer = getJwtCustomer();
     if (jwtCustomer) {
-      ClaretyApi.setJwtCustomer(jwtCustomer.jwtString);
+      DonationApi.setJwtCustomer(jwtCustomer.jwtString);
       await fetchCustomer();
     }
 

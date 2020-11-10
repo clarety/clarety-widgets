@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Row, Col, Button } from 'react-bootstrap';
+import { Form, Row, Col } from 'react-bootstrap';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { SubmitButton, ErrorMessages, SelectInput } from 'form/components';

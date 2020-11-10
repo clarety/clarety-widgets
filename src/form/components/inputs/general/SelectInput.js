@@ -31,12 +31,13 @@ class _SelectInput extends React.Component {
           data-testid={testId}
           isInvalid={error !== null}
         >
-          <option value="" disabled hidden>{placeholder || 'Select'}</option>
+          <option value="" hidden>{placeholder || 'Select'}</option>
           
           {options.map(option =>
             <option key={option.value} value={option.value}>{option.label}</option>
           )}
         </Form.Control>
+
         {!hideErrors && <FieldError error={error} />}
       </React.Fragment>
     );
