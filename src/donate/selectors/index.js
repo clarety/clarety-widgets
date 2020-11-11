@@ -24,25 +24,27 @@ export const getFunds = (state) => getSetting(state, 'funds');
 
 export const getFundOptions = (state) => {
   return getFunds(state).map(fund => ({
-    value: fund.fundUid,
+    value: fund.offerId,
     label: fund.title,
   }));
 };
 
-export const getDefaultFundUid = (state) => {
-  const fund = getFunds(state).find(fund => fund.isDefault);
-  return fund ? fund.fundUid : undefined;
+export const getDefaultFundId = (state) => {
+  const funds = getFunds(state);
+  if (!funds || !funds.length) return undefined;
+
+  return funds[0].offerId;
 };
 
-export const getFund = (state, fundUid) => {
-  return getFunds(state).find(fund => fund.fundUid === fundUid);
+export const getFund = (state, fundId) => {
+  return getFunds(state).find(fund => fund.offerId === fundId);
 };
 
 export const getSelectedFund = (state) => {
-  const { fundUid } = getFormData(state);
-  if (!fundUid) return null;
+  const { fundId } = getFormData(state);
+  if (!fundId) return null;
 
-  return getFund(state, fundUid);
+  return getFund(state, fundId);
 };
 
 export const getDonationPanelSelection = (state) => {

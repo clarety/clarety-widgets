@@ -1,14 +1,14 @@
 import { statuses, setStatus, fetchSettings } from 'shared/actions';
-import { getSelectedFund, getStoreUid } from 'donate/selectors';
+import { getFormData } from 'shared/selectors';
+import { getStoreUid } from 'donate/selectors';
 import { types } from 'donate/actions';
-
 import { mapDonationSettings } from 'donate/utils';
 
 export const fetchFundOffers = () => {
   return async (dispatch, getState) => {
     const state = getState();
-    const fund = getSelectedFund(state);
-    return dispatch(fetchOffers(fund.singleOfferId, fund.recurringOfferId));
+    const { fundId } = getFormData(state);
+    return dispatch(fetchOffers(fundId, fundId));
   };
 };
 

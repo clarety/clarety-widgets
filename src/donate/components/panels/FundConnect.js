@@ -1,7 +1,7 @@
 import { getSetting } from 'shared/selectors';
 import { getFormData, getErrors } from 'form/selectors';
 import { setErrors, setFormData } from 'form/actions';
-import { getIsBusy, getFunds, getFundOptions, getDefaultFundUid, getSelectedFund } from 'donate/selectors';
+import { getIsBusy, getFunds, getFundOptions, getDefaultFundId, getSelectedFund } from 'donate/selectors';
 import { fetchFundOffers } from 'donate/actions';
 
 export class FundConnect {
@@ -12,7 +12,7 @@ export class FundConnect {
       errors: getErrors(state),
       funds: getFunds(state),
       fundOptions: getFundOptions(state),
-      defaultFundUid: getDefaultFundUid(state),
+      defaultFundId: getDefaultFundId(state),
       selectedFund: getSelectedFund(state),
     };
   };

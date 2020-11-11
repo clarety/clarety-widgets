@@ -110,10 +110,10 @@ export class FundPanel extends BasePanel {
   renderFundSelector() {
     return (
       <SelectInput
-        field="fundUid"
+        field="fundId"
         placeholder={t('select-a-fund-placeholder', 'Select a Fund...')}
         options={this.props.fundOptions}
-        initialValue={this.props.defaultFundUid}
+        initialValue={this.props.defaultFundId}
       />
     );
   }
@@ -124,16 +124,13 @@ export class FundPanel extends BasePanel {
 
     return (
       <Row className="fund-info">
-        <Col sm={4}>
-          {selectedFund.image &&
+        {selectedFund.image &&
+          <Col sm={4}>
             <img src={selectedFund.image} className="fund-info__image" />
-          }
-          {selectedFund.image2 &&
-            <img src={selectedFund.image2} className="fund-info__image" />
-          }
-        </Col>
+          </Col>
+        }
 
-        <Col sm={8}>
+        <Col sm={selectedFund.image ? 8 : undefined}>
           <h4 className="fund-info__title">{selectedFund.title}</h4>
           <p className="fund-info__description">{selectedFund.description}</p>
         </Col>
