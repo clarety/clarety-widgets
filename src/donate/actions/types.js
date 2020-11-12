@@ -10,7 +10,7 @@ export const types = {
   makePaymentSuccess: 'MAKE_PAYMENT_SUCCESS',
   makePaymentFailure: 'MAKE_PAYMENT_FAILURE',
 
-  //Fetch Customer Types
+  // Customer Action Types
   fetchDonationCustomerRequest: 'FETCH_DONATION_CUSTOMER_REQUEST',
   fetchDonationCustomerSuccess: 'FETCH_DONATION_CUSTOMER_SUCCESS',
   fetchDonationCustomerFailure: 'FETCH_DONATION_CUSTOMER_FAILURE',

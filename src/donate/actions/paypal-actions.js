@@ -1,6 +1,6 @@
-import { ClaretyApi } from 'clarety-utils';
 import { statuses, setStatus, setPayment, setCustomer } from 'shared/actions';
 import { setFormData } from 'form/actions';
+import { DonationApi } from 'donate/utils';
 import { addDonationToCart, makePaymentRequest, handlePaymentResult } from 'donate/actions';
 import { getPaymentPostData } from 'donate/selectors';
 
@@ -72,8 +72,7 @@ export const makePayPalPayment = (data, order, authorization) => {
     const postData = getPaymentPostData(state);
     dispatch(makePaymentRequest(postData));
   
-    const results = await ClaretyApi.post('donations/', postData);
-    const result = results[0];
+    const result = await DonationApi.createDonation(postData);
 
     // Handle result.
     return dispatch(handlePaymentResult(result));

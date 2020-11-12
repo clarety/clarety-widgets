@@ -5,13 +5,13 @@ import { Config } from '../../src';
 
 Config.init({
   // instanceKey: 'mdc',
-  // instanceKey: 'clarety-baseline',
+  instanceKey: 'clarety-baseline',
   // instanceKey: 'tnc',
   // instanceKey: 'clarety-church',
   // instanceKey: 'ethiopiaid',
   // instanceKey: 'a21',
   // instanceKey: 'miraclebabies',
-  instanceKey: 'bibleleague',
+  // instanceKey: 'bibleleague',
   //instanceKey: 'bsfs',
   devSitePath: 'http://localhost:3000/',
   phoneCountry: 'AU',
@@ -39,6 +39,11 @@ const Demo = () => {
   if (url.indexOf('donate-page') !== -1) {
     const DonatePageDemo = require('./DonatePageDemo').default;
     return <DonatePageDemo />;
+  }
+
+  if (url.indexOf('fund-donate') !== -1) {
+    const FundDonateDemo = require('./FundDonateDemo').default;
+    return <FundDonateDemo />;
   }
 
   if (url.indexOf('donate') !== -1) {
@@ -90,6 +95,7 @@ const Demo = () => {
     <div className="list-group m-5">
       <a href="subscribe" className="list-group-item list-group-item-action">Subscribe Widget Demo</a>
       <a href="donate" className="list-group-item list-group-item-action">Donate Widget Demo</a>
+      <a href="fund-donate" className="list-group-item list-group-item-action">Fund Donate Widget Demo</a>
       <a href="donate-page" className="list-group-item list-group-item-action">Donate Page Demo</a>
       <a href="registration" className="list-group-item list-group-item-action">Registration Demo</a>
       <a href="checkout" className="list-group-item list-group-item-action">Checkout Demo</a>

@@ -18,6 +18,35 @@ export const getCustomerHasProfile = (state) => getSetting(state, 'customerHasPr
 
 export const getSelectedFrequency = (state) => getDonationPanel(state).frequency;
 
+export const getStoreUid = (state) => getCart(state).store;
+
+export const getFunds = (state) => getSetting(state, 'funds');
+
+export const getFundOptions = (state) => {
+  return getFunds(state).map(fund => ({
+    value: fund.offerId,
+    label: fund.title,
+  }));
+};
+
+export const getDefaultFundId = (state) => {
+  const funds = getFunds(state);
+  if (!funds || !funds.length) return undefined;
+
+  return funds[0].offerId;
+};
+
+export const getFund = (state, fundId) => {
+  return getFunds(state).find(fund => fund.offerId === fundId);
+};
+
+export const getSelectedFund = (state) => {
+  const { fundId } = getFormData(state);
+  if (!fundId) return null;
+
+  return getFund(state, fundId);
+};
+
 export const getDonationPanelSelection = (state) => {
   const donationPanel = getDonationPanel(state);
   return donationPanel.selections[donationPanel.frequency];

@@ -13,7 +13,7 @@ export class CustomerConnect {
       formData: getFormData(state),
       errors: getErrors(state),
 
-      amount: selection.amount,
+      amount: selection ? selection.amount : 0,
       frequency: getSelectedFrequency(state),
       
       variant: getSetting(state, 'variant'),

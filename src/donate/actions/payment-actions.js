@@ -1,9 +1,9 @@
 import Cookies from 'js-cookie';
-import { ClaretyApi } from 'clarety-utils';
 import { statuses, setStatus, setRecaptcha, clearRecaptcha, setPayment, updateCartData, isStripe, prepareStripePayment, authoriseStripePayment } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
 import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
+import { DonationApi } from 'donate/utils';
 import { types, addDonationToCart, addCustomerToCart } from 'donate/actions';
 import { getPaymentMethod, getPaymentPostData, getSelectedFrequency } from 'donate/selectors';
 
@@ -72,8 +72,7 @@ const attemptPayment = (paymentData, paymentMethod) => {
     const postData = getPaymentPostData(state);
     dispatch(makePaymentRequest(postData));
   
-    const results = await ClaretyApi.post('donations/', postData);
-    return results[0];
+    return DonationApi.createDonation(postData);
   };
 };
 

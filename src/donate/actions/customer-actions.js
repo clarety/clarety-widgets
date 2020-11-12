@@ -1,63 +1,61 @@
-import { ClaretyApi } from 'clarety-utils';
-import { setCustomer } from 'shared/actions';
+import { setCustomer, updateAppSettings } from 'shared/actions';
+import { setFormData } from 'form/actions';
+import { DonationApi } from 'donate/utils';
 import { types } from 'donate/actions';
-import {setFormData} from "form/actions";
-import {updateAppSettings} from 'shared/actions';
 
 export const fetchCustomer = () => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     dispatch(fetchCustomerRequest());
-    const results = await ClaretyApi.get(`donations/customer/`);
-    const customer = results[0];
+    const customer = await DonationApi.fetchCustomer();
+
     if (customer) {
       dispatch(fetchCustomerSuccess(customer));
       dispatch(setCustomer(customer));
-      dispatch(populateCustomer(customer));
+      dispatch(setCustomerFormData(customer));
+      dispatch(updateAppSettings({ customerHasProfile: customer.hasProfile }));
       return true;
+    } else {
+      dispatch(fetchCustomerFailure(customer));
+      return false;
     }
-    dispatch(fetchCustomerFailure(customer));
-    return false;
   };
 };
 
-export const populateCustomer = (customer) => {
-  return async (dispatch) => {
-    let customerData = {}, hasProfile = false;
-    if(customer.hasProfile) hasProfile = true;
-    customerData['customer.firstName'] = customer.firstName;
-    customerData['customer.lastName'] = customer.lastName;
-    customerData['customer.email'] = customer.email;
-    if(customer.billing &&
-      customer.billing.country &&
-      customer.billing.country.toLowerCase() == 'au') {
-      const billing = customer.billing;
-      const billingState = billing.state;
-      customerData['customer.billing.address1'] = billing.address1;
-      customerData['customer.billing.suburb'] = billing.suburb;
-      customerData['customer.billing.postcode'] = billing.postcode;
-      if(billingState){
-        switch(billingState.toUpperCase()) {
-          case 'NSW':
-          case 'VIC':
-          case 'QLD':
-          case 'SA':
-          case 'WA':
-          case 'TAS':
-          case 'ACT':
-          case 'NT':
-          //todo adam to look into state input bug; issue is if invalid state added QLD always selected i.e. first index
-            customerData['customer.billing.state'] = billingState.toUpperCase();
+export const setCustomerFormData = (customer) => {
+  return async (dispatch, getState) => {
+    const formData = {
+      'customer.firstName': customer.firstName,
+      'customer.lastName':  customer.lastName,
+      'customer.email':     customer.email,
+    };
+
+    const { billing } = customer;
+
+    if (billing) {
+      formData['customer.billing.address1'] = billing.address1;
+      formData['customer.billing.address2'] = billing.address2;
+      formData['customer.billing.suburb']   = billing.suburb;
+      formData['customer.billing.state']    = billing.state;
+      formData['customer.billing.postcode'] = billing.postcode;
+      formData['customer.billing.country']  = billing.country;
+
+      if (billing.country === 'AU' && billing.state) {
+        const state = billing.state.toUpperCase();
+        if (['NSW', 'VIC', 'QLD', 'SA', 'WA', 'TAS', 'ACT', 'NT'].includes(state)) {
+          formData['customer.billing.state'] = state;
+        } else {
+          formData['customer.billing.state'] = undefined;
         }
       }
     }
-    dispatch(setFormData(customerData));
-    dispatch(updateAppSettings({
-      customerHasProfile:hasProfile
-    }));
+
+    dispatch(setFormData(formData));
   }
 }
 
+
 // Fetch Customer
+
 const fetchCustomerRequest = () => ({
   type: types.fetchDonationCustomerRequest,
 });

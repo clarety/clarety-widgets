@@ -4,7 +4,7 @@ import { Breakpoint } from 'react-socks';
 import { requiredField } from 'shared/utils';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
-import { SubmitButton, ErrorMessages, SelectInput } from 'form/components';
+import { SubmitButton, BackButton, ErrorMessages, SelectInput } from 'form/components';
 import { FrequencySelect, ScheduleSelectButtonGroup, ScheduleSelectDropdown } from 'donate/components';
 
 export class DonationPanel extends BasePanel {
@@ -27,6 +27,11 @@ export class DonationPanel extends BasePanel {
 
   onSelectSchedule = (offerPaymentUid) => {
     this.props.selectSchedule(offerPaymentUid);
+  };
+
+  onPressBack = (event) => {
+    event.preventDefault();
+    this.props.prevPanel();
   };
 
   onPressNext = async (event) => {
@@ -280,17 +285,25 @@ export class DonationPanel extends BasePanel {
   }
 
   renderFooter() {
-    const { layout, isBusy, settings } = this.props;
+    const { layout, isBusy, settings, index } = this.props;
     if (layout === 'page') return null;
 
     return (
       <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
         <Form.Row className="justify-content-center">
-          <Col>
+          {index !== 0 &&
+            <Col xs={6}>
+              <BackButton
+                title={settings.backBtnText || t('back', 'Back')}
+                onClick={this.onPressBack}
+              />
+            </Col>
+          }
+
+          <Col xs={index !== 0 ? 6 : 12}>
             <SubmitButton
               title={settings.submitBtnText || t('next', 'Next')}
               testId="next-button"
-              block
             />
           </Col>
         </Form.Row>
