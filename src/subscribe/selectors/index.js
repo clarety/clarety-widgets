@@ -1,4 +1,4 @@
-import { getSetting, getParsedFormData, getTrackingData, getRecaptcha, getCurrentPanelComponentName } from 'shared/selectors';
+import { getSetting, getParsedFormData, getTrackingData, getRecaptcha } from 'shared/selectors';
 
 export const getSubscribePostData = (state) => {
   const caseTypeUid = getSetting(state, 'caseTypeUid');
