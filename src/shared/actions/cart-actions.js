@@ -84,15 +84,21 @@ export const setPromoCode = (promoCode) => ({
   promoCode: promoCode,
 });
 
-export const setTrackingData = ({ sourceId, sourceAdditional, sourceUid, responseId, emailResponseId }) => ({
+export const setTrackingData = (trackingData) => ({
   type: types.setTrackingData,
+  trackingData: trackingData,
+});
 
-  sourceId: sourceId,
-  sourceUid: sourceUid,
-  sourceAdditional: sourceAdditional,
-  
-  responseId: responseId,
-  emailResponseId: emailResponseId,
+export const initTrackingData = (widgetProps) => ({
+  type: types.setTrackingData,
+  trackingData: {
+    sourceId:         widgetProps.sourceId,
+    sourceUid:        widgetProps.sourceUid,
+    sourceAdditional: widgetProps.sourceAdditional,
+    responseId:       widgetProps.responseId,
+    emailResponseId:  widgetProps.emailResponseId,
+    ...widgetProps.tracking,
+  }
 });
 
 export const setRecaptcha = (recaptcha) => ({

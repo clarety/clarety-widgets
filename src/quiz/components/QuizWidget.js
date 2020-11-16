@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect, Provider } from 'react-redux';
 import i18next from 'i18next';
-import { setStatus, setPanels, setClientIds, updateAppSettings, setTrackingData, fetchSettings } from 'shared/actions';
+import { setStatus, setPanels, setClientIds, updateAppSettings, initTrackingData, fetchSettings } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources, configureStore } from 'shared/utils';
 import { getIsResumed } from 'shared/selectors';
@@ -55,7 +55,7 @@ export class _QuizWidgetRoot extends React.Component {
   async componentDidMount() {
     if (!this.props.reCaptchaKey) throw new Error('[Clarety] missing reCaptcha key');
 
-    const { isResumed, updateAppSettings, setTrackingData, fetchSettings, setStatus, setupPanels } = this.props;
+    const { isResumed, updateAppSettings, initTrackingData, fetchSettings, setStatus, setupPanels } = this.props;
 
     i18next.init();
 
@@ -69,11 +69,7 @@ export class _QuizWidgetRoot extends React.Component {
       variant: this.props.variant,
     });
 
-    setTrackingData({
-      sourceUid: this.props.sourceUid,
-      responseId: this.props.responseId,
-      emailResponseId: this.props.emailResponseId,
-    });
+    initTrackingData(this.props);
 
     if (!isResumed) {
       await fetchSettings('quiz/', { quizUid: this.props.quizUid }, settingsMap);
@@ -116,7 +112,7 @@ const actions = {
   fetchSettings: fetchSettings,
   setupPanels: setupPanels,
   updateAppSettings: updateAppSettings,
-  setTrackingData: setTrackingData,
+  initTrackingData: initTrackingData,
   setStatus: setStatus,
 };
 

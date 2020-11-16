@@ -4,7 +4,7 @@ import { connect, Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import i18next from 'i18next';
 import BlockUi from 'react-block-ui';
-import { setStatus, setPanels, setClientIds, updateAppSettings, setTrackingData, fetchSettings } from 'shared/actions';
+import { setStatus, setPanels, setClientIds, updateAppSettings, initTrackingData, fetchSettings } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources } from 'shared/utils';
 import { Recaptcha, ErrorMessages } from 'form/components';
@@ -57,7 +57,7 @@ export class _RsvpWidgetRoot extends React.Component {
 
     i18next.init();
 
-    const { updateAppSettings, setTrackingData, setStatus, fetchSettings } = this.props;
+    const { updateAppSettings, initTrackingData, setStatus, fetchSettings } = this.props;
 
     updateAppSettings({
       widgetElementId: this.props.elementId,
@@ -66,11 +66,7 @@ export class _RsvpWidgetRoot extends React.Component {
       variant: this.props.variant,
     });
 
-    setTrackingData({
-      sourceUid: this.props.sourceUid,
-      responseId: this.props.responseId,
-      emailResponseId: this.props.emailResponseId,
-    });
+    initTrackingData(this.props);
 
     const { storeUid, eventUid } = this.props;
     await fetchSettings('events/rsvp/', { storeUid, eventUid }, settingsMap);
@@ -109,7 +105,7 @@ const mapStateToProps = (state) => {
 
 const actions = {
   updateAppSettings: updateAppSettings,
-  setTrackingData: setTrackingData,
+  initTrackingData: initTrackingData,
   setStatus: setStatus,
   fetchSettings: fetchSettings,
 };

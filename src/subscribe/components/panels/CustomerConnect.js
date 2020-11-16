@@ -1,4 +1,4 @@
-import { getFormData, getErrors, getStatus } from 'shared/selectors';
+import { getFormData, getErrors, getStatus, getTrackingData } from 'shared/selectors';
 import { setErrors } from 'form/actions';
 import { subscribe } from 'subscribe/actions';
 
@@ -8,6 +8,7 @@ export class CustomerConnect {
       isBusy: getStatus(state) !== 'ready',
       formData: getFormData(state),
       errors: getErrors(state),
+      trackingData: getTrackingData(state),
     };
   };
 

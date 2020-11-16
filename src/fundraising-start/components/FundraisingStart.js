@@ -4,7 +4,7 @@ import { connect, Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import i18next from 'i18next';
 import { ClaretyApi } from 'clarety-utils';
-import { setStatus, setAuth, setPanels, setClientIds, updateAppSettings, setTrackingData } from 'shared/actions';
+import { setStatus, setAuth, setPanels, setClientIds, updateAppSettings, initTrackingData } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources, getJwtAccount } from 'shared/utils';
 import { Recaptcha, ErrorMessages } from 'form/components';
@@ -57,7 +57,7 @@ export class _FundraisingStartRoot extends React.Component {
 
     i18next.init();
 
-    const { updateAppSettings, setTrackingData, setStatus, setAuth, fetchCustomer } = this.props;
+    const { updateAppSettings, initTrackingData, setStatus, setAuth, fetchCustomer } = this.props;
 
     const { currencyCode, currencySymbol } = this.props;
     const currency = currencySymbol ? { code: currencyCode, symbol: currencySymbol } : undefined;
@@ -72,11 +72,7 @@ export class _FundraisingStartRoot extends React.Component {
       currency: currency,
     });
 
-    setTrackingData({
-      sourceUid: this.props.sourceUid,
-      responseId: this.props.responseId,
-      emailResponseId: this.props.emailResponseId,
-    });
+    initTrackingData(this.props);
 
     const jwtAccount = getJwtAccount();
     if (jwtAccount) {
@@ -115,7 +111,7 @@ const mapStateToProps = (state) => {
 
 const actions = {
   updateAppSettings: updateAppSettings,
-  setTrackingData: setTrackingData,
+  initTrackingData: initTrackingData,
   setStatus: setStatus,
   setAuth: setAuth,
   fetchCustomer: fetchCustomer,
