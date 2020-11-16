@@ -6,7 +6,7 @@ import i18next from 'i18next';
 import { BreakpointProvider } from 'react-socks';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { statuses, setStore, setTrackingData, setLanguages, fetchSettings, updateAppSettings, setPanels, changeLanguage } from 'shared/actions';
+import { statuses, setStore, initTrackingData, setLanguages, fetchSettings, updateAppSettings, setPanels, changeLanguage } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { getJwtCustomer, Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
@@ -68,7 +68,7 @@ export class DonateWidget extends React.Component {
 export class _DonateWidgetRoot extends React.Component {
   async componentWillMount() {
     const { storeUid, singleOfferId, recurringOfferId, categoryUid } = this.props;
-    const { updateAppSettings, setStore, setTrackingData, fetchSettings, handleUrlParams, fetchCustomer, selectFrequency } = this.props;
+    const { updateAppSettings, setStore, initTrackingData, fetchSettings, handleUrlParams, fetchCustomer, selectFrequency } = this.props;
 
     if (!singleOfferId && !recurringOfferId && !categoryUid) {
       throw new Error('[DonateWidget] A singleOfferId, recurringOfferId, or categoryUid is required');
@@ -107,12 +107,7 @@ export class _DonateWidgetRoot extends React.Component {
 
     setStore(storeUid);
 
-    setTrackingData({
-      sourceId:         this.props.sourceId,
-      sourceAdditional: this.props.sourceAdditional,
-      responseId:       this.props.responseId,
-      emailResponseId:  this.props.emailResponseId,
-    });
+    initTrackingData(this.props);
 
     const jwtCustomer = getJwtCustomer();
     if (jwtCustomer) {
@@ -173,7 +168,7 @@ const mapStateToProps = state => {
 
 const actions = {
   setStore: setStore,
-  setTrackingData: setTrackingData,
+  initTrackingData: initTrackingData,
   fetchSettings: fetchSettings,
   updateAppSettings: updateAppSettings,
   handleUrlParams: handleUrlParams,

@@ -3,7 +3,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { connect, Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import i18next from 'i18next';
-import { statuses, setPanels, updateAppSettings, setTrackingData, setPanelSettings, fetchSettings } from 'shared/actions';
+import { statuses, setPanels, updateAppSettings, initTrackingData, setPanelSettings, fetchSettings } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
 import { PanelManager } from 'shared/components';
 import { Resources, getCustomerPanelSettingsFromWidgetProps } from 'shared/utils';
@@ -51,7 +51,7 @@ export class _LeadGenRoot extends React.Component {
   componentWillMount() {
     if (!this.props.reCaptchaKey) throw new Error('[Clarety] missing reCaptcha key');
     
-    const { updateAppSettings, setTrackingData, setPanelSettings, fetchSettings } = this.props;
+    const { updateAppSettings, initTrackingData, setPanelSettings, fetchSettings } = this.props;
 
     i18next.init();
 
@@ -64,8 +64,7 @@ export class _LeadGenRoot extends React.Component {
       confirmPageUrl: this.props.confirmPageUrl,
     });
 
-    const { sourceUid, responseId, emailResponseId } = this.props;
-    setTrackingData({ sourceUid, responseId, emailResponseId });
+    initTrackingData(this.props);
 
     const customerPanelSettings = getCustomerPanelSettingsFromWidgetProps(this.props);
     setPanelSettings('CustomerPanel', customerPanelSettings);
@@ -127,7 +126,7 @@ const mapStateToProps = state => {
 
 const actions = {
   updateAppSettings: updateAppSettings,
-  setTrackingData: setTrackingData,
+  initTrackingData: initTrackingData,
   setPanelSettings: setPanelSettings,
   fetchSettings: fetchSettings,
 };

@@ -8,7 +8,7 @@ import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { ClaretyApi } from 'clarety-utils';
 import { t } from 'shared/translations';
-import { statuses, setPanels, setLanguages, changeLanguage, setClientIds, setAuth, setTrackingData, fetchSettings, updateAppSettings } from 'shared/actions';
+import { statuses, setPanels, setLanguages, changeLanguage, setClientIds, setAuth, initTrackingData, fetchSettings, updateAppSettings } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources, getJwtAccount } from 'shared/utils';
 import { MiniCart, MiniCartBrand, BusyOverlay } from 'registration/components';
@@ -100,11 +100,9 @@ class _RegistrationRoot extends React.Component {
     });
 
     changeLanguage(language);
-    
 
     // Tracking.
-    const { sourceId, sourceUid, responseId, emailResponseId, setTrackingData } = this.props;
-    setTrackingData({ sourceId, sourceUid, responseId, emailResponseId });
+    this.props.initTrackingData(this.props);
 
     // Fundraising.
     const { fundraisingGoal, fundraisingCreatePage, setFundraising } = this.props;
@@ -195,7 +193,7 @@ const actions = {
   changeLanguage: changeLanguage,
 
   setAuth: setAuth,
-  setTrackingData: setTrackingData,
+  initTrackingData: initTrackingData,
   setFundraising: setFundraising,
 
   fetchEvents: fetchEvents,

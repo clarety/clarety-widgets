@@ -134,11 +134,8 @@ export const cartReducer = (state = initialState, action) => {
         ...state,
         
         tracking: {
-          sourceId:         action.sourceId         || state.tracking.sourceId,
-          sourceUid:        action.sourceUid        || state.tracking.sourceUid,
-          sourceAdditional: action.sourceAdditional || state.tracking.sourceAdditional,
-          sendResponseUid:  action.responseId       || state.tracking.responseId,
-          emailResponseUid: action.emailResponseId  || state.tracking.emailResponseId,
+          ...state.tracking,
+          ...action.trackingData,
         },
       };
 
