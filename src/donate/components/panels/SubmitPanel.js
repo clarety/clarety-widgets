@@ -29,6 +29,7 @@ export class SubmitPanel extends BasePanel {
   getPaymentPanel() {
     return this.props.panelRefs.find(
       panel => panel.constructor.name === '_PaymentPanel'
+            || panel.constructor.name === 'PaymentPanel'
     );
   }
 
