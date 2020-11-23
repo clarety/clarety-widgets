@@ -5,7 +5,7 @@ import { requiredField } from 'shared/utils';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { SubmitButton, BackButton, ErrorMessages, SelectInput } from 'form/components';
-import { FrequencySelect, ScheduleSelectButtonGroup, ScheduleSelectDropdown } from 'donate/components';
+import { FrequencySelect, ScheduleSelectButtonGroup, ScheduleSelectDropdown, DonatePayPalBtn } from 'donate/components';
 
 export class DonationPanel extends BasePanel {
   onShowPanel() {
@@ -290,6 +290,11 @@ export class DonationPanel extends BasePanel {
 
     return (
       <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
+
+        <Form.Row>
+          <DonatePayPalBtn />
+        </Form.Row>
+
         <Form.Row className="justify-content-center">
           {index !== 0 &&
             <Col xs={6}>
