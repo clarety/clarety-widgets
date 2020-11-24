@@ -66,8 +66,9 @@ export default class DonatePageDemo extends React.Component {
     window.renderDonatePage({
       elementId: 'donate-page-demo',
 
+      storeUid: 'str_wey5', // baseline
       // storeUid: 'str_k1or',
-      storeUid: 'str_8qx4',
+      // storeUid: 'str_8qx4',
       singleOfferId: '8',
       recurringOfferId: '17',
       //fundraisingPageUid: 'abc-123',

@@ -163,3 +163,14 @@ export const getSuccessfulDonation = (state) => {
 
   return { frequency, amount };
 };
+
+export const getHasExpressPaymentMethods = (state) => {
+  const expressMethods = ['paypal'];
+
+  const paymentMethods = getPaymentMethods(state);
+  for (const method of paymentMethods) {
+    if (expressMethods.includes(method.type)) return true;
+  }
+
+  return false;
+};

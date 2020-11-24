@@ -111,6 +111,7 @@ export class DonationPanel extends BasePanel {
           {this.renderScheduleSelect()}
           {this.renderPriceHandles()}
           {this.renderGivingType()}
+          {this.renderExpressCheckoutBtns()}
         </PanelBody>
 
         {this.renderFooter()}
@@ -284,17 +285,27 @@ export class DonationPanel extends BasePanel {
     );
   }
 
+  renderExpressCheckoutBtns() {
+    const { layout, settings, hasExpressPaymentMethods } = this.props;
+
+    if (layout === 'page') return null;
+    if (!settings.showExpressCheckoutBtns) return null;
+    if (!hasExpressPaymentMethods) return null;
+
+    return (
+      <div className="express-checkout-buttons">
+        <h4>{t('express-donation', 'Express Donation')}</h4>
+        <DonatePayPalBtn />
+      </div>
+    );
+  }
+
   renderFooter() {
     const { layout, isBusy, settings, index } = this.props;
     if (layout === 'page') return null;
 
     return (
       <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
-
-        <Form.Row>
-          <DonatePayPalBtn />
-        </Form.Row>
-
         <Form.Row className="justify-content-center">
           {index !== 0 &&
             <Col xs={6}>

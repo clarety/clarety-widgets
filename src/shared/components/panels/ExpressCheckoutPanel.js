@@ -1,29 +1,10 @@
 import React from 'react';
 import { t } from 'shared/translations';
-import { BasePanel, PanelContainer, PanelHeader, PanelBody, PayPalBtn } from 'shared/components';
+import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { ErrorMessages } from 'form/components';
+import { DonatePayPalBtn } from 'donate/components';
 
 export class ExpressCheckoutPanel extends BasePanel {
-  getPaymentMethod(type) {
-    return this.props.paymentMethods.find(method => method.type === type);
-  }
-
-  shouldShowPaymentMethod(method) {
-    const { frequency } = this.props;
-
-    if (!method) return false;
-
-    if (method.singleOnly && frequency !== 'single') {
-      return false;
-    }
-
-    if (method.recurringOnly && frequency !== 'recurring') {
-      return false;
-    }
-
-    return true;
-  }
-
   renderWait() {
     const { layout, index, settings } = this.props;
 
@@ -43,12 +24,10 @@ export class ExpressCheckoutPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, index, isBusy, settings } = this.props;
+    const { layout, index, isBusy, settings, hasExpressPaymentMethods } = this.props;
 
-    const paypal = this.getPaymentMethod('paypal');
-
-    // Don't display if there's no valid payment methods.
-    if (!paypal) return null;
+    // Don't display if there's no express payment methods.
+    if (!hasExpressPaymentMethods) return null;
 
     return (
       <PanelContainer layout={layout} status="edit" className="express-checkout-panel">
@@ -65,23 +44,13 @@ export class ExpressCheckoutPanel extends BasePanel {
           <ErrorMessages />
 
           <div className="express-checkout-buttons">
-            {this.shouldShowPaymentMethod(paypal) &&
-              <PayPalBtn
-                paymentMethod={paypal}
-                currency={this.props.currency}
-                amount={this.props.amount}
-                onClick={this.props.onPayPalClick}
-                onSuccess={this.props.onPayPalSuccess}
-                onCancel={this.props.onPayPalCancel}
-                onError={this.props.onPayPalError}
-              />
-            }
+            <DonatePayPalBtn />
           </div>
           
           {!settings.hideOrTitle &&
             <div className="express-checkout-or">
               <div className="line" />
-              <h2 className="title">{settings.orTitle || 'Or'}</h2>
+              <h2 className="title">{settings.orTitle || t('or', 'Or')}</h2>
               <div className="line" />
             </div>
           }
