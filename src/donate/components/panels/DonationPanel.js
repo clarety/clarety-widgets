@@ -5,7 +5,7 @@ import { requiredField } from 'shared/utils';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { SubmitButton, BackButton, ErrorMessages, SelectInput } from 'form/components';
-import { FrequencySelect, ScheduleSelectButtonGroup, ScheduleSelectDropdown } from 'donate/components';
+import { FrequencySelect, ScheduleSelectButtonGroup, ScheduleSelectDropdown, DonatePayPalBtn } from 'donate/components';
 
 export class DonationPanel extends BasePanel {
   onShowPanel() {
@@ -111,6 +111,7 @@ export class DonationPanel extends BasePanel {
           {this.renderScheduleSelect()}
           {this.renderPriceHandles()}
           {this.renderGivingType()}
+          {this.renderExpressCheckoutBtns()}
         </PanelBody>
 
         {this.renderFooter()}
@@ -280,6 +281,21 @@ export class DonationPanel extends BasePanel {
             </Form.Group>
           </Col>
         </Row>
+      </div>
+    );
+  }
+
+  renderExpressCheckoutBtns() {
+    const { layout, settings, hasExpressPaymentMethods } = this.props;
+
+    if (layout === 'page') return null;
+    if (!settings.showExpressCheckoutBtns) return null;
+    if (!hasExpressPaymentMethods) return null;
+
+    return (
+      <div className="express-checkout-buttons">
+        <h4>{t('express-donation', 'Express Donation')}</h4>
+        <DonatePayPalBtn />
       </div>
     );
   }

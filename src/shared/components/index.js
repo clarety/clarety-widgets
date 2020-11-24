@@ -4,11 +4,10 @@ export * from './donation/SuggestedAmountLg';
 export * from './donation/VariableAmount';
 export * from './donation/VariableAmountLg';
 
-export * from './express-checkout/PayPalBtn';
-
 export * from './misc/AddressFinder';
 export * from './misc/Currency';
 export * from './misc/inject-stripe';
+export * from './misc/PayPalBtn';
 export * from './misc/ScrollIntoView';
 
 export * from './panels/BasePanel';

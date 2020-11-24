@@ -22,6 +22,7 @@ window.renderDonateWidget = (props) => {
       settings: {
         tabName: 'Amount',
         hideHeader: true,
+        showExpressCheckoutBtns: true,
       },
     },
     {
@@ -68,7 +69,8 @@ export default class DonateDemo extends React.Component {
     window.renderDonateWidget({
       elementId: 'donate-widget-demo',
 
-      storeUid: 'str_l9p7',
+      storeUid: 'str_wey5', // baseline
+      // storeUid: 'str_l9p7',
       singleOfferId: '8',
       recurringOfferId: '17',
 
@@ -98,6 +100,8 @@ export default class DonateDemo extends React.Component {
 
       addressFinderKey: 'ADDRESSFINDER_DEMO_KEY',
       defaultCountry: 'NZ',
+
+      confirmPageUrl: 'http://google.com/',
     });
   }
 

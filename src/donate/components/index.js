@@ -6,6 +6,7 @@ export * from './amounts/SuggestedAmountLg';
 export * from './amounts/VariableAmount';
 export * from './amounts/VariableAmountLg';
 
+export * from './misc/DonatePayPalBtn';
 export * from './misc/StepIndicator';
 
 export * from './panels/CustomerPanel';
