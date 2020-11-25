@@ -2,6 +2,7 @@ import { getSetting, getParsedFormData, getTrackingData, getRecaptcha } from 'sh
 
 export const getSubscribePostData = (state) => {
   const caseTypeUid = getSetting(state, 'caseTypeUid');
+  const caseStage = getSetting(state, 'caseStage');
   const formData = getParsedFormData(state);
   const nameOption = getSetting(state, 'nameOption');
   const trackingData = getTrackingData(state);
@@ -10,11 +11,12 @@ export const getSubscribePostData = (state) => {
   if (nameOption === 'full') convertFullName(formData);
 
   // Some instances don't use the optIn field, and instead
-  // let the case automations handle the newsletter circle.
+  // let the case activities handle the newsletter circle.
   const optIn = getSetting(state, 'dropOptInField') ? false : true;
 
   return {
     caseTypeUid: caseTypeUid,
+    stage: caseStage,
     optIn: optIn,
     ...formData,
     ...trackingData,
