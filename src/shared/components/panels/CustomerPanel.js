@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { requiredField, emailField } from 'shared/utils';
-import { TextInput, TextAreaInput, EmailInput, PhoneInput, CheckboxInput, StateInput, PostcodeInput, SubmitButton, ErrorMessages, FormElement } from 'form/components';
+import { TextInput, TextAreaInput, EmailInput, PhoneInput, CheckboxInput, StateInput, PostcodeInput, SubmitButton, ErrorMessages, FormElement, CustomerTypeInput, SalutationInput, DobInput } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
   onClickSubmit = async (event) => {
@@ -25,10 +25,33 @@ export class CustomerPanel extends BasePanel {
   }
 
   validateFields(errors) {
+    this.validateCustomerTypeFields(errors);
+    this.validateSalutationField(errors);
     this.validateBasicFields(errors);
     this.validatePhoneField(errors);
-    this.validateDetailsField(errors);
+    this.validateDobField(errors);
     this.validateAddressFields(errors);
+    this.validateDetailsField(errors);
+  }
+
+  validateCustomerTypeFields(errors) {
+    const { formData, settings } = this.props;
+
+    if (settings.showCustomerType) {
+      requiredField(errors, formData, 'customer.type');
+
+      if (formData['customer.type'] === 'business') {
+        requiredField(errors, formData, 'customer.businessName');
+      }
+    }
+  }
+
+  validateSalutationField(errors) {
+    const { formData, settings } = this.props;
+
+    if (settings.requireSalutation) {
+      requiredField(errors, formData, 'customer.salutation');
+    }
   }
 
   validateBasicFields(errors) {
@@ -45,6 +68,21 @@ export class CustomerPanel extends BasePanel {
 
     if (settings.phoneType === 'mobile' && settings.isPhoneRequired) {
       requiredField(errors, formData, 'customer.mobile');
+    }
+  }
+
+  validateDobField(errors) {
+    const { formData, settings } = this.props;
+
+    const atLeastOneInputHasData =
+      !!formData['customer.dateOfBirthDay']   ||
+      !!formData['customer.dateOfBirthMonth'] ||
+      !!formData['customer.dateOfBirthYear'];
+
+    if (settings.requireDob || atLeastOneInputHasData) {
+      requiredField(errors, formData, 'customer.dateOfBirthDay');
+      requiredField(errors, formData, 'customer.dateOfBirthMonth');
+      requiredField(errors, formData, 'customer.dateOfBirthYear');
     }
   }
 
@@ -129,13 +167,53 @@ export class CustomerPanel extends BasePanel {
   renderCustomerForm() {
     return (
       <Form onSubmit={this.onClickSubmit}>
+        {this.renderCustomerTypeFields()}
+        {this.renderSalutationField()}
         {this.renderBasicFields()}
         {this.renderPhoneField()}
+        {this.renderDobField()}
         {this.renderAddressFields()}
         {this.renderDetailsField()}
         {this.renderOptIn()}
         {this.renderActions()}
       </Form>
+    );
+  }
+
+  renderCustomerTypeFields() {
+    const { settings } = this.props;
+    if (!settings.showCustomerType) return null;
+
+    return (
+      <CustomerTypeInput />
+    );
+  }
+
+  renderSalutationField() {
+    const { settings } = this.props;
+    if (!settings.showSalutation) return null;
+
+    return (
+      <Form.Row>
+        <Col>
+          <Form.Group>
+            <SalutationInput
+              required={settings.requireSalutation}
+            />
+          </Form.Group>
+        </Col>
+      </Form.Row>
+    );
+  }
+
+  renderDobField() {
+    const { settings } = this.props;
+    if (!settings.showDob) return null;
+
+    return (
+      <DobInput
+        required={settings.requireDob}
+      />
     );
   }
 

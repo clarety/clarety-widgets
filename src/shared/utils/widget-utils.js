@@ -89,3 +89,21 @@ export const getCustomerTypeOptions = () => [
   { value: 'individual', label: t('individual', 'Individual') },
   { value: 'business',   label: t('business', 'Business') },
 ];
+
+export function iterate(from, to, callback) {
+  const results = [];
+
+  if (from < to) {
+    // Count upwards.
+    for (let index = from; index <= to; index++) {
+      results.push(callback(index));
+    }
+  } else {
+    // Count downwards.
+    for (let index = from; index >= to; index--) {
+      results.push(callback(index));
+    }
+  }
+
+  return results;
+}

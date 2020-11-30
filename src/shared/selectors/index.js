@@ -78,3 +78,21 @@ export const getIsEditingFirstPanel = (state) => {
   const panels = getPanelManager(state);
   return panels[0].status === 'edit';
 };
+
+export const getSalutationOptions = (state) => {
+  // Try to load from settings.
+  const setting = getSetting(state, 'salutationOptions');
+  if (setting) return setting;
+
+  // Try to load from elements.
+  const element = getElement(state, 'salutation');
+  if (element) return element.options;
+
+  // Fallback to default.
+  return [
+    { value: 'mr',   label: 'Mr' },
+    { value: 'mrs',  label: 'Mrs' },
+    { value: 'miss', label: 'Miss' },
+    { value: 'ms',   label: 'Ms' },
+  ];
+};

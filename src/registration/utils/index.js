@@ -1,26 +1,6 @@
 import { getElementOptions } from 'shared/utils';
 export * from './RegistrationApi';
 
-export const currentYear = new Date().getFullYear();
-
-export function iterate(from, to, callback) {
-  const results = [];
-
-  if (from < to) {
-    // Count upwards.
-    for (let index = from; index <= to; index++) {
-      results.push(callback(index));
-    }
-  } else {
-    // Count downwards.
-    for (let index = from; index >= to; index--) {
-      results.push(callback(index));
-    }
-  }
-
-  return results;
-}
-
 export function scrollIntoView(elementRef) {
   // TODO: querySelector isn't very react-y...
   // Can we get a ref from the MiniCart component or something?

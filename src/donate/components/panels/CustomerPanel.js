@@ -3,7 +3,7 @@ import { Form, Row, Col, Button } from 'react-bootstrap';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, AddressFinder } from 'shared/components';
 import { requiredField, emailField, getCustomerTypeOptions, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
-import { TextInput, EmailInput, PhoneInput, CheckboxInput, StateInput, CountryInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
+import { TextInput, EmailInput, PhoneInput, CheckboxInput, StateInput, CountryInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement, CustomerTypeInput } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
   state = {};
@@ -65,14 +65,14 @@ export class CustomerPanel extends BasePanel {
   }
 
   validateFields(errors) {
-    this.validateTypeFields(errors);
+    this.validateCustomerTypeFields(errors);
     this.validateBasicFields(errors);
     this.validatePhoneField(errors);
     this.validateAddressFields(errors);
     this.validateSourceFields(errors);
   }
 
-  validateTypeFields(errors) {
+  validateCustomerTypeFields(errors) {
     const { formData, settings } = this.props;
 
     if (settings.showCustomerType) {
@@ -164,7 +164,7 @@ export class CustomerPanel extends BasePanel {
 
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
           {this.renderErrorMessages()}
-          {this.renderTypeFields()}
+          {this.renderCustomerTypeFields()}
           {this.renderBasicFields()}
           {this.renderPhoneField()}
           {this.renderAddressFields()}
@@ -196,41 +196,12 @@ export class CustomerPanel extends BasePanel {
     return <ErrorMessages />;
   }
 
-  renderTypeFields() {
-    const { settings, formData } = this.props;
-    const showBusinessName = formData['customer.type'] === 'business';
-    const customerTypeOptions = getCustomerTypeOptions();
+  renderCustomerTypeFields() {
+    const { settings } = this.props;
+    if (!settings.showCustomerType) return null;
 
     return (
-      <React.Fragment>
-        {settings.showCustomerType &&
-          <Form.Row>
-            <Col>
-              <Form.Group controlId="customerType">
-                <Form.Label>{t('type', 'Type')}</Form.Label>
-                <SelectInput
-                  field="customer.type"
-                  options={customerTypeOptions}
-                  initialValue={customerTypeOptions[0].value}
-                  testId="customer-type-input"
-                  required
-                />
-              </Form.Group>
-            </Col>
-          </Form.Row>
-        }
-
-        {showBusinessName &&
-          <Form.Row>
-            <Col>
-              <Form.Group controlId="businessName">
-                <Form.Label>{t('business-name', 'Business Name')}</Form.Label>
-                <TextInput field="customer.businessName" testId="business-name-input" required />
-              </Form.Group>
-            </Col>
-          </Form.Row>
-        }
-      </React.Fragment>
+      <CustomerTypeInput />
     );
   }
 

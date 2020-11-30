@@ -1,11 +1,14 @@
 import React from 'react';
+import { connect } from 'react-redux';  
 import { Form, Col } from 'react-bootstrap';
 import { t } from 'shared/translations';
-import { FormContext, currentYear, iterate } from 'shared/utils';
+import { getFormData, getErrors } from 'shared/selectors';
+import { currentYear, iterate } from 'shared/utils';
 import { FieldError } from 'form/components';
+import { updateFormData } from 'form/actions';
 import { getValidationError } from 'form/utils';
 
-class PureDobInput extends React.PureComponent {
+class _DobInput extends React.Component {
   render() {
     const { label, error, dayError, monthError, yearError, required } = this.props;
 
@@ -105,33 +108,28 @@ class PureDobInput extends React.PureComponent {
   }
 }
 
-export class DobInput extends React.Component {
-  render() {
-    const { formData, errors, onChange } = this.context;
-    const { field, dayField, monthField, yearField } = this.props;
+const mapStateToProps = (state, ownProps) => {
+  const formData = getFormData(state);
+  const errors = getErrors(state);
 
-    const error      = getValidationError(field, errors);
-    const dayError   = getValidationError(dayField, errors);
-    const monthError = getValidationError(monthField, errors);
-    const yearError  = getValidationError(yearField, errors);
+  return {
+    day:   formData[ownProps.dayField]   || '',
+    month: formData[ownProps.monthField] || '',
+    year:  formData[ownProps.yearField]  || '',
 
-    return (
-      <PureDobInput
-        {...this.props}
+    error:      getValidationError(ownProps.field, errors),
+    dayError:   getValidationError(ownProps.dayField, errors),
+    monthError: getValidationError(ownProps.monthField, errors),
+    yearError:  getValidationError(ownProps.yearField, errors),
+  };  
+};
 
-        day={formData[dayField] || ''}
-        month={formData[monthField] || ''}
-        year={formData[yearField] || ''}
+const actions = { onChange: updateFormData };
 
-        onChange={onChange}
+export const DobInput = connect(mapStateToProps, actions)(_DobInput);
 
-        error={error}
-        dayError={dayError}
-        monthError={monthError}
-        yearError={yearError}
-      />
-    );
-  }
-}
-
-DobInput.contextType = FormContext;
+DobInput.defaultProps = {
+  dayField:   'customer.dateOfBirthDay',
+  monthField: 'customer.dateOfBirthMonth',
+  yearField:  'customer.dateOfBirthYear',
+};

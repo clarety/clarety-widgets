@@ -6,6 +6,10 @@ export * from './inputs/address/CountryInput';
 export * from './inputs/address/StateInput';
 export * from './inputs/address/PostcodeInput';
 
+export * from './inputs/customer/CustomerTypeInput';
+export * from './inputs/customer/DobInput';
+export * from './inputs/customer/SalutationInput';
+
 export * from './inputs/payment/AccountNumberInput';
 export * from './inputs/payment/BsbInput';
 export * from './inputs/payment/CardNameInput';
