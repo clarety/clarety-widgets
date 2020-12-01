@@ -9,6 +9,7 @@ import { Resources, getJwtSession, getJwtAccount } from 'shared/utils';
 import { PanelManager } from 'shared/components';
 import { setPanels, setClientIds, setAuth, fetchSettings, updateAppSettings, removePanels } from 'shared/actions';
 import { getIsCartComplete, getCartShippingRequired } from 'shared/selectors';
+import { updateFormData } from 'form/actions';
 import { Recaptcha } from 'form/components';
 import { fetchCart, fetchCustomer } from 'checkout/actions';
 import { rootReducer } from 'checkout/reducers';
@@ -50,6 +51,10 @@ export class Checkout extends React.Component {
       addressFinderKey: this.props.addressFinderKey,
     }));
 
+    // Set tracking data.
+    Checkout.store.dispatch(updateFormData('sale.responseId', this.props.responseId));
+    Checkout.store.dispatch(updateFormData('sale.emailResponseId', this.props.emailResponseId));
+
     const jwtAccount = getJwtAccount();
     if (jwtAccount) {
       ClaretyApi.setAuth(jwtAccount.jwtString);
@@ -61,11 +66,12 @@ export class Checkout extends React.Component {
     if (jwtSession) {
       ClaretyApi.setJwtSession(jwtSession.jwtString);
       await Checkout.store.dispatch(fetchCart(jwtSession.cartUid));
+
       const state = Checkout.store.getState();
       this.setState({ isCartComplete: getIsCartComplete(state) });
 
-      //removes shipping options panel if shipping isn't required.
-      if(!getCartShippingRequired(state)){
+      // Remove shipping panel if shipping isn't required.
+      if (!getCartShippingRequired(state)) {
         Checkout.store.dispatch(removePanels({ withComponent: 'ShippingPanel' }));
       }
     }
