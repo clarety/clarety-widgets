@@ -1,6 +1,6 @@
 import { getEnv } from 'clarety-utils';
 import { statuses } from 'shared/actions';
-import { parseNestedElements } from 'shared/utils';
+import { parseNestedElements, getElementOptions } from 'shared/utils';
 
 export const getAuth = (state) => state.auth;
 export const getStatus = (state) => state.status;
@@ -80,19 +80,12 @@ export const getIsEditingFirstPanel = (state) => {
 };
 
 export const getSalutationOptions = (state) => {
-  // Try to load from settings.
-  const setting = getSetting(state, 'salutationOptions');
-  if (setting) return setting;
-
-  // Try to load from elements.
-  const element = getElement(state, 'salutation');
-  if (element) return element.options;
-
-  // Fallback to default.
-  return [
-    { value: 'mr',   label: 'Mr' },
-    { value: 'mrs',  label: 'Mrs' },
-    { value: 'miss', label: 'Miss' },
-    { value: 'ms',   label: 'Ms' },
-  ];
+  // Try to get the 'customer -> title' element, which may not exist.
+  try {
+    const customerElement = getElement(state, 'xcustomer');
+    const titleElement = customerElement.elements.find(element => element.property === 'title');
+    return titleElement.options;
+  } catch (error) {
+    return [];
+  }
 };

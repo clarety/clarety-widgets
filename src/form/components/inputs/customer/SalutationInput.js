@@ -6,7 +6,7 @@ import { SelectInput } from 'form/components';
 
 const _SalutationInput = ({ field, placeholder, ...props }) => (
   <SelectInput
-    field={field || 'customer.salutation'}
+    field={field || 'customer.title'}
     placeholder={placeholder || t('salutation', 'Salutation')}
     {...props}
   />
