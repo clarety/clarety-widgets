@@ -95,8 +95,8 @@ export const initTrackingData = (widgetProps) => ({
     sourceId:         widgetProps.sourceId,
     sourceUid:        widgetProps.sourceUid,
     sourceAdditional: widgetProps.sourceAdditional,
-    responseId:       widgetProps.responseId,
-    emailResponseId:  widgetProps.emailResponseId,
+    sendResponseUid:  widgetProps.responseId,
+    emailResponseUid: widgetProps.emailResponseId,
     ...widgetProps.tracking,
   }
 });

@@ -52,8 +52,8 @@ export class Checkout extends React.Component {
     }));
 
     // Set tracking data.
-    Checkout.store.dispatch(updateFormData('sale.responseId', this.props.responseId));
-    Checkout.store.dispatch(updateFormData('sale.emailResponseId', this.props.emailResponseId));
+    Checkout.store.dispatch(updateFormData('sale.sendResponseUid', this.props.responseId));
+    Checkout.store.dispatch(updateFormData('sale.emailResponseUid', this.props.emailResponseId));
 
     const jwtAccount = getJwtAccount();
     if (jwtAccount) {
