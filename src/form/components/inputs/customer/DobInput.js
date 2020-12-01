@@ -15,7 +15,10 @@ class _DobInput extends React.Component {
     return (
       <Form.Group>
         <Form.Label>
-          {label || 'Date of Birth'}{!required && <span className="optional"> (Optional)</span>}
+          {label || t('date-of-birth', 'Date of Birth')}
+          {!required &&
+            <span className="optional"> ({t('optional', 'Optional')})</span>
+          }
         </Form.Label>
 
         <Form.Row>
@@ -47,7 +50,7 @@ class _DobInput extends React.Component {
     return (
       <Form.Control as="select" value={day} onChange={onChangeDay} isInvalid={isInvalid}>
         <option value="" disabled hidden>
-          {t('date.day', 'Day')}
+          {t('day', 'Day')}
         </option>
 
         {iterate(1, 31, value => 
@@ -66,21 +69,21 @@ class _DobInput extends React.Component {
     return (
       <Form.Control as="select" value={month} onChange={onChangeMonth} isInvalid={isInvalid}>
         <option value="" disabled hidden>
-          {t('date.month', 'Month')}
+          {t('month', 'Month')}
         </option>
         
-        <option value="1">{t('date.month1', 'January')}</option>
-        <option value="2">{t('date.month2', 'February')}</option>
-        <option value="3">{t('date.month3', 'March')}</option>
-        <option value="4">{t('date.month4', 'April')}</option>
-        <option value="5">{t('date.month5', 'May')}</option>
-        <option value="6">{t('date.month6', 'June')}</option>
-        <option value="7">{t('date.month7', 'July')}</option>
-        <option value="8">{t('date.month8', 'August')}</option>
-        <option value="9">{t('date.month9', 'September')}</option>
-        <option value="10">{t('date.month10', 'October')}</option>
-        <option value="11">{t('date.month11', 'November')}</option>
-        <option value="12">{t('date.month12', 'December')}</option>
+        <option value="1">{t('month1', 'January')}</option>
+        <option value="2">{t('month2', 'February')}</option>
+        <option value="3">{t('month3', 'March')}</option>
+        <option value="4">{t('month4', 'April')}</option>
+        <option value="5">{t('month5', 'May')}</option>
+        <option value="6">{t('month6', 'June')}</option>
+        <option value="7">{t('month7', 'July')}</option>
+        <option value="8">{t('month8', 'August')}</option>
+        <option value="9">{t('month9', 'September')}</option>
+        <option value="10">{t('month10', 'October')}</option>
+        <option value="11">{t('month11', 'November')}</option>
+        <option value="12">{t('month12', 'December')}</option>
       </Form.Control>
     );
   }
@@ -97,7 +100,7 @@ class _DobInput extends React.Component {
     return (
       <Form.Control as="select" value={year} onChange={onChangeYear} isInvalid={isInvalid}>
         <option value="" disabled hidden>
-          {t('date.year', 'Year')}
+          {t('year', 'Year')}
         </option>
 
         {iterate(startYear, endYear, value => 

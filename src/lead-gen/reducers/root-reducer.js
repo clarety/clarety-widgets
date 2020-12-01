@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { statusReducer, settingsReducer, panelManagerReducer, cartReducer } from 'shared/reducers';
+import { statusReducer, settingsReducer, panelManagerReducer, cartReducer, translationsReducer } from 'shared/reducers';
 import { formDataReducer, errorsReducer } from 'form/reducers';
 
 export const rootReducer = combineReducers({
@@ -9,4 +9,5 @@ export const rootReducer = combineReducers({
   cart: cartReducer,
   formData: formDataReducer,
   errors: errorsReducer,
+  translations: translationsReducer,
 });

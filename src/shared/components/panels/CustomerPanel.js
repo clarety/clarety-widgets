@@ -1,7 +1,8 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { requiredField, emailField } from 'shared/utils';
+import { requiredField, emailField, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
 import { TextInput, TextAreaInput, EmailInput, PhoneInput, CheckboxInput, StateInput, PostcodeInput, SubmitButton, ErrorMessages, FormElement, CustomerTypeInput, SalutationInput, DobInput } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
@@ -223,13 +224,21 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col sm>
             <Form.Group>
-              <TextInput field="customer.firstName" placeholder="First Name" required />
+              <TextInput
+                field="customer.firstName"
+                placeholder={t('first-name', 'First Name')}
+                required
+              />
             </Form.Group>
           </Col>
 
           <Col sm>
             <Form.Group>
-              <TextInput field="customer.lastName" placeholder="Last Name" required />
+              <TextInput
+                field="customer.lastName"
+                placeholder={t('last-name', 'Last Name')}
+                required
+              />
             </Form.Group>
           </Col>
         </Form.Row>
@@ -237,7 +246,11 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group>
-              <EmailInput field="customer.email" placeholder="Email" required />
+              <EmailInput
+                field="customer.email"
+                placeholder={t('email', 'Email')}
+                required
+              />
             </Form.Group>
           </Col>
         </Form.Row>
@@ -253,7 +266,11 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group>
-              <PhoneInput field="customer.mobile" placeholder="Mobile" required={settings.isPhoneRequired} />
+              <PhoneInput
+                field="customer.mobile"
+                placeholder={t('mobile', 'Mobile')}
+                required
+              />
             </Form.Group>
           </Col>
         </Form.Row>
@@ -282,13 +299,18 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderPostCodeField() {
-    const { settings } = this.props;
+    const { settings, formData } = this.props;
+    const country = formData['customer.billing.country'];
 
     return (
       <Form.Row>
         <Col sm>
           <Form.Group>
-            <PostcodeInput field="customer.billing.postcode" placeholder="Postcode" required={settings.isAddressRequired} />
+            <PostcodeInput
+              field="customer.billing.postcode"
+              placeholder={getPostcodeLabel(country)}
+              required={settings.isAddressRequired}
+            />
           </Form.Group>
         </Col>
         <Col sm></Col>
@@ -297,14 +319,19 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderAustralianAddressFields() {
-    const { settings } = this.props;
+    const { settings, formData } = this.props;
+    const country = formData['customer.billing.country'];
 
     return (
       <React.Fragment>
         <Form.Row>
           <Col>
             <Form.Group>
-              <TextInput field="customer.billing.address1" placeholder="Street Address 1" required={settings.isAddressRequired} />
+              <TextInput
+                field="customer.billing.address1"
+                placeholder={t('street', 'Street Address 1')}
+                required={settings.isAddressRequired}
+              />
             </Form.Group>
           </Col>
         </Form.Row>
@@ -312,7 +339,10 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group>
-              <TextInput field="customer.billing.address2" placeholder="Street Address 2" />
+              <TextInput
+                field="customer.billing.address2"
+                placeholder={t('street-2', 'Street Address 2')}
+              />
             </Form.Group>
           </Col>
         </Form.Row>
@@ -320,13 +350,21 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col sm>
             <Form.Group>
-              <TextInput field="customer.billing.suburb" placeholder="Suburb" required={settings.isAddressRequired} />
+              <TextInput
+                field="customer.billing.suburb"
+                placeholder={getSuburbLabel(country)}
+                required={settings.isAddressRequired}  
+              />
             </Form.Group>
           </Col>
 
           <Col sm>
             <Form.Group>
-              <StateInput field="customer.billing.state" placeholder="State" required={settings.isAddressRequired} />
+              <StateInput
+                field="customer.billing.state"
+                placeholder={getStateLabel(country)}
+                required={settings.isAddressRequired}
+              />
             </Form.Group>
           </Col>
         </Form.Row>
@@ -334,13 +372,20 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col sm>
             <Form.Group>
-              <PostcodeInput field="customer.billing.postcode" placeholder="Postcode" required={settings.isAddressRequired} />
+              <PostcodeInput
+                field="customer.billing.postcode"
+                placeholder={getPostcodeLabel(country)}
+                required={settings.isAddressRequired}
+              />
             </Form.Group>
           </Col>
           <Col sm></Col>
         </Form.Row>
 
-        <FormElement field="customer.billing.country" value="AU" />
+        <FormElement
+          field="customer.billing.country"
+          value="AU"
+        />
       </React.Fragment>
     );
   }
@@ -360,7 +405,7 @@ export class CustomerPanel extends BasePanel {
           <Form.Group>
             <TextAreaInput
               field="details"
-              placeholder={settings.detailsText || 'Details'}
+              placeholder={settings.detailsText || t('details', 'Details')}
               required={settings.isDetailsRequired}
             />
           </Form.Group>
@@ -377,7 +422,10 @@ export class CustomerPanel extends BasePanel {
     return (
       <Form.Row className="opt-in">
         <Col>
-          <CheckboxInput field="optIn" label={settings.optInText || 'Subscribe to newsletter'} />
+          <CheckboxInput
+            field="optIn"
+            label={settings.optInText || t('subscribe-to-newsletter', 'Subscribe to newsletter')}
+          />
         </Col>
       </Form.Row>
     );
