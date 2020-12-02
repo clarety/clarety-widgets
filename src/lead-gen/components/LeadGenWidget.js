@@ -108,17 +108,29 @@ export class _LeadGenRoot extends React.Component {
 
     return (
       <div className={`clarety-lead-gen-widget h-100 ${variant}`}>
-        {variant === 'sos' && this.renderSosHeader()}
-        {variant === 'download' && this.renderDownloadHeader()}
-
+        {this.renderHeader()}
         <PanelManager layout="tabs" resources={resources} />
         <Recaptcha siteKey={reCaptchaKey} />
       </div>
     );
   }
 
-  renderSosHeader() {
-    return <SosProgress sos={this.props.sos} />;
+  renderHeader() {
+    const { HeaderComponent, variant } = this.props;
+
+    if (HeaderComponent) {
+      return <HeaderComponent {...this.props} />;
+    }
+
+    if (variant === 'sos') {
+      return <SosProgress sos={this.props.sos} />;
+    }
+
+    if (variant === 'download') {
+      return this.renderDownloadHeader();
+    }
+
+    return null;
   }
 
   renderDownloadHeader() {

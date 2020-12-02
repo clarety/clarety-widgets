@@ -138,19 +138,11 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, index, isBusy, settings } = this.props;
+    const { layout, isBusy } = this.props;
 
     return (
       <PanelContainer layout={layout} status="edit" className="customer-panel">
-        {!settings.hideHeader &&
-          <PanelHeader
-            status="edit"
-            layout={layout}
-            number={index + 1}
-            title={settings.title}
-            subtitle={settings.subtitle}
-          />
-        }
+        {this.renderHeader()}
 
         <PanelBody status="edit" layout={layout} isBusy={isBusy}>
           {this.renderErrorMessages()}
@@ -158,6 +150,22 @@ export class CustomerPanel extends BasePanel {
           {this.renderFooter()}
         </PanelBody>
       </PanelContainer>
+    );
+  }
+
+  renderHeader() {
+    const { layout, index, settings } = this.props;
+
+    if (settings.hideHeader) return null;
+
+    return (
+      <PanelHeader
+        status="edit"
+        layout={layout}
+        number={index + 1}
+        title={settings.title}
+        subtitle={settings.subtitle}
+      />
     );
   }
 

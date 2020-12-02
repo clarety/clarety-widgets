@@ -152,11 +152,10 @@ export class DonationPanel extends BasePanel {
 
   renderScheduleSelect() {
     const { frequency, selections, settings } = this.props;
-    const offer = this._getOffer(frequency);
+    if (frequency !== 'recurring') return null;
 
-    if (frequency !== 'recurring' || !offer.schedules || offer.schedules.length === 1) {
-      return null;
-    }
+    const offer = this._getOffer('recurring');
+    if (!offer.schedules || offer.schedules.length < 2) return null;
 
     const value = selections['recurring'].offerPaymentUid;
 
