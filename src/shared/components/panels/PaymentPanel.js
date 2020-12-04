@@ -7,6 +7,10 @@ import { requiredField, cardNumberField, cardExpiryField, ccvField } from 'share
 import { TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, AccountNumberInput, BsbInput, NZAccountNumberInput } from 'form/components';
 
 export class _PaymentPanel extends BasePanel {
+  state = {
+    showCvcInfo: false,
+  };
+
   constructor(props) {
     super(props);
     this.selectFirstPaymentMethod();
@@ -382,10 +386,13 @@ export class _PaymentPanel extends BasePanel {
           <Col>
             <Form.Group controlId="ccv">
               <Form.Label>{t('card-ccv', 'CVC')}</Form.Label>
+              {this.renderCvcInfoBtn()}
               <CcvInput field="payment.cardSecurityCode" testId="ccv-input" />
             </Form.Group>
           </Col>
         </Form.Row>
+
+        {this.renderCvcInfo()}
       </React.Fragment>
     );
   }
@@ -487,11 +494,51 @@ export class _PaymentPanel extends BasePanel {
           <Col>
             <Form.Group controlId="ccv">
               <Form.Label>{t('card-ccv', 'CVC')}</Form.Label>
+              {this.renderCvcInfoBtn()}
               <CardCvcElement options={{ style }} />
             </Form.Group>
           </Col>
         </Form.Row>
 
+        {this.renderCvcInfo()}
+
+      </React.Fragment>
+    );
+  }
+
+  renderCvcInfoBtn() {
+    return (
+      <a href="#" onClick={this.onClickCvcInfo} className="float-right small">
+        {t('what-is-this', 'What is this?')}
+      </a>
+    );
+  }
+
+  onClickCvcInfo = (event) => {
+    event.preventDefault();
+
+    this.setState(prevState => ({
+      showCvcInfo: !prevState.showCvcInfo,
+    }));
+  }
+
+  renderCvcInfo() {
+    if (!this.state.showCvcInfo) return null;
+
+    return (
+      <React.Fragment>
+        <p className="cvc-info small">
+          {t('cvc-info', "CVV is a security feature to help verify that you are in possession of your credit card. For Visa, Mastercard, or Discover, the three-digit CVV number is printed on the signature panel on the back of the card immediately after the card's account number. For American Express, the four-digit CVV number is printed on the front of the card above the card account number.")}
+        </p>
+
+        <Form.Row className="mb-4">
+          <Col className="text-right">
+            <img src="images/cvv-amex.png" className="img-fluid" />
+          </Col>
+          <Col>
+            <img src="images/cvv-visa.png" className="img-fluid" />
+          </Col>
+        </Form.Row>
       </React.Fragment>
     );
   }

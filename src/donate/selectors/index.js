@@ -77,11 +77,15 @@ export const getSchedules = (state) => {
 export const getScheduleLabel = (state) => {
   const selection = getDonationPanelSelection(state);
   const schedules = getSchedules(state);
-  const offerPaymentUid = selection.offerPaymentUid;
-  if(schedules && offerPaymentUid){
-    const result = schedules.find(schedule => schedule.offerPaymentUid === offerPaymentUid);
-    return result?result.label:'';
+
+  if (schedules && selection.offerPaymentUid) {
+    const result = schedules.find(schedule => schedule.offerPaymentUid === selection.offerPaymentUid);
+    if (result) return result.label;
   }
+
+  // If we have an offerPaymentUid, but couldn't find a label, just assume monthly.
+  if (selection.offerPaymentUid) return 'Monthly';
+
   return '';
 };
 
