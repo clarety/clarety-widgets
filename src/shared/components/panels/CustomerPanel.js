@@ -29,7 +29,7 @@ export class CustomerPanel extends BasePanel {
     this.validateCustomerTypeFields(errors);
     this.validateSalutationField(errors);
     this.validateBasicFields(errors);
-    this.validatePhoneField(errors);
+    this.validateMobileField(errors);
     this.validateDobField(errors);
     this.validateAddressFields(errors);
     this.validateDetailsField(errors);
@@ -51,7 +51,7 @@ export class CustomerPanel extends BasePanel {
     const { formData, settings } = this.props;
 
     if (settings.requireSalutation) {
-      requiredField(errors, formData, 'customer.salutation');
+      requiredField(errors, formData, 'customer.title');
     }
   }
 
@@ -64,7 +64,7 @@ export class CustomerPanel extends BasePanel {
     emailField(errors, formData, 'customer.email');
   }
 
-  validatePhoneField(errors) {
+  validateMobileField(errors) {
     const { formData, settings } = this.props;
 
     if (settings.phoneType === 'mobile' && settings.isPhoneRequired) {
@@ -179,7 +179,7 @@ export class CustomerPanel extends BasePanel {
         {this.renderCustomerTypeFields()}
         {this.renderSalutationField()}
         {this.renderBasicFields()}
-        {this.renderPhoneField()}
+        {this.renderMobileField()}
         {this.renderDobField()}
         {this.renderAddressFields()}
         {this.renderDetailsField()}
@@ -266,26 +266,24 @@ export class CustomerPanel extends BasePanel {
     );
   }
 
-  renderPhoneField() {
+  renderMobileField() {
     const { settings } = this.props;
 
-    if (settings.phoneType === 'mobile') {
-      return (
-        <Form.Row>
-          <Col>
-            <Form.Group>
-              <PhoneInput
-                field="customer.mobile"
-                placeholder={t('mobile', 'Mobile')}
-                required
-              />
-            </Form.Group>
-          </Col>
-        </Form.Row>
-      );
-    }
+    if (settings.phoneType !== 'mobile') return null;
 
-    return null;
+    return (
+      <Form.Row>
+        <Col>
+          <Form.Group>
+            <PhoneInput
+              field="customer.mobile"
+              placeholder={t('mobile', 'Mobile')}
+              required
+            />
+          </Form.Group>
+        </Col>
+      </Form.Row>
+    );
   }
 
   renderAddressFields() {

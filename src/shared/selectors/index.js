@@ -82,7 +82,7 @@ export const getIsEditingFirstPanel = (state) => {
 export const getSalutationOptions = (state) => {
   // Try to get the 'customer -> title' element, which may not exist.
   try {
-    const customerElement = getElement(state, 'xcustomer');
+    const customerElement = getElement(state, 'customer');
     const titleElement = customerElement.elements.find(element => element.property === 'title');
     return titleElement.options;
   } catch (error) {
