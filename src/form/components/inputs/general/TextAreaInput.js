@@ -6,7 +6,7 @@ import { getValidationError } from 'form/utils';
 import { FieldError } from 'form/components';
 
 const _TextAreaInput = ({ value, rows, placeholder, testId, error, onChange, required }) => {
-  if (placeholder && !required) placeholder += ' (Optional)';
+  if (placeholder && !required) placeholder += t('optional-label', ' (Optional)');
 
   return (
     <React.Fragment>
