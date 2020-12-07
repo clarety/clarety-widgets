@@ -1,18 +1,24 @@
 import React from 'react';
+import { connect } from 'react-redux';  
 import { Form, Col } from 'react-bootstrap';
 import { t } from 'shared/translations';
-import { FormContext, currentYear, iterate } from 'shared/utils';
+import { getFormData, getErrors } from 'shared/selectors';
+import { currentYear, iterate } from 'shared/utils';
 import { FieldError } from 'form/components';
+import { updateFormData } from 'form/actions';
 import { getValidationError } from 'form/utils';
 
-class PureDobInput extends React.PureComponent {
+class _DobInput extends React.Component {
   render() {
     const { label, error, dayError, monthError, yearError, required } = this.props;
 
     return (
       <Form.Group>
         <Form.Label>
-          {label || 'Date of Birth'}{!required && <span className="optional"> (Optional)</span>}
+          {label || t('date-of-birth', 'Date of Birth')}
+          {!required &&
+            <span className="optional"> ({t('optional', 'Optional')})</span>
+          }
         </Form.Label>
 
         <Form.Row>
@@ -44,7 +50,7 @@ class PureDobInput extends React.PureComponent {
     return (
       <Form.Control as="select" value={day} onChange={onChangeDay} isInvalid={isInvalid}>
         <option value="" disabled hidden>
-          {t('date.day', 'Day')}
+          {t('day', 'Day')}
         </option>
 
         {iterate(1, 31, value => 
@@ -63,21 +69,21 @@ class PureDobInput extends React.PureComponent {
     return (
       <Form.Control as="select" value={month} onChange={onChangeMonth} isInvalid={isInvalid}>
         <option value="" disabled hidden>
-          {t('date.month', 'Month')}
+          {t('month', 'Month')}
         </option>
         
-        <option value="1">{t('date.month1', 'January')}</option>
-        <option value="2">{t('date.month2', 'February')}</option>
-        <option value="3">{t('date.month3', 'March')}</option>
-        <option value="4">{t('date.month4', 'April')}</option>
-        <option value="5">{t('date.month5', 'May')}</option>
-        <option value="6">{t('date.month6', 'June')}</option>
-        <option value="7">{t('date.month7', 'July')}</option>
-        <option value="8">{t('date.month8', 'August')}</option>
-        <option value="9">{t('date.month9', 'September')}</option>
-        <option value="10">{t('date.month10', 'October')}</option>
-        <option value="11">{t('date.month11', 'November')}</option>
-        <option value="12">{t('date.month12', 'December')}</option>
+        <option value="1">{t('month1', 'January')}</option>
+        <option value="2">{t('month2', 'February')}</option>
+        <option value="3">{t('month3', 'March')}</option>
+        <option value="4">{t('month4', 'April')}</option>
+        <option value="5">{t('month5', 'May')}</option>
+        <option value="6">{t('month6', 'June')}</option>
+        <option value="7">{t('month7', 'July')}</option>
+        <option value="8">{t('month8', 'August')}</option>
+        <option value="9">{t('month9', 'September')}</option>
+        <option value="10">{t('month10', 'October')}</option>
+        <option value="11">{t('month11', 'November')}</option>
+        <option value="12">{t('month12', 'December')}</option>
       </Form.Control>
     );
   }
@@ -94,7 +100,7 @@ class PureDobInput extends React.PureComponent {
     return (
       <Form.Control as="select" value={year} onChange={onChangeYear} isInvalid={isInvalid}>
         <option value="" disabled hidden>
-          {t('date.year', 'Year')}
+          {t('year', 'Year')}
         </option>
 
         {iterate(startYear, endYear, value => 
@@ -105,33 +111,28 @@ class PureDobInput extends React.PureComponent {
   }
 }
 
-export class DobInput extends React.Component {
-  render() {
-    const { formData, errors, onChange } = this.context;
-    const { field, dayField, monthField, yearField } = this.props;
+const mapStateToProps = (state, ownProps) => {
+  const formData = getFormData(state);
+  const errors = getErrors(state);
 
-    const error      = getValidationError(field, errors);
-    const dayError   = getValidationError(dayField, errors);
-    const monthError = getValidationError(monthField, errors);
-    const yearError  = getValidationError(yearField, errors);
+  return {
+    day:   formData[ownProps.dayField]   || '',
+    month: formData[ownProps.monthField] || '',
+    year:  formData[ownProps.yearField]  || '',
 
-    return (
-      <PureDobInput
-        {...this.props}
+    error:      getValidationError(ownProps.field, errors),
+    dayError:   getValidationError(ownProps.dayField, errors),
+    monthError: getValidationError(ownProps.monthField, errors),
+    yearError:  getValidationError(ownProps.yearField, errors),
+  };  
+};
 
-        day={formData[dayField] || ''}
-        month={formData[monthField] || ''}
-        year={formData[yearField] || ''}
+const actions = { onChange: updateFormData };
 
-        onChange={onChange}
+export const DobInput = connect(mapStateToProps, actions)(_DobInput);
 
-        error={error}
-        dayError={dayError}
-        monthError={monthError}
-        yearError={yearError}
-      />
-    );
-  }
-}
-
-DobInput.contextType = FormContext;
+DobInput.defaultProps = {
+  dayField:   'customer.dateOfBirthDay',
+  monthField: 'customer.dateOfBirthMonth',
+  yearField:  'customer.dateOfBirthYear',
+};

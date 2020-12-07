@@ -1,7 +1,6 @@
 import React from 'react';
 import { Form, Col } from 'react-bootstrap';
-import { FormContext } from 'shared/utils';
-import { currentYear, iterate } from 'registration/utils';
+import { FormContext, currentYear, iterate } from 'shared/utils';
 import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
 

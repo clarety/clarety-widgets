@@ -1,8 +1,9 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { requiredField, emailField } from 'shared/utils';
-import { TextInput, TextAreaInput, EmailInput, PhoneInput, CheckboxInput, StateInput, PostcodeInput, SubmitButton, ErrorMessages, FormElement } from 'form/components';
+import { requiredField, emailField, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
+import { TextInput, TextAreaInput, EmailInput, PhoneInput, CheckboxInput, StateInput, PostcodeInput, SubmitButton, ErrorMessages, FormElement, CustomerTypeInput, SalutationInput, DobInput } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
   onClickSubmit = async (event) => {
@@ -25,10 +26,33 @@ export class CustomerPanel extends BasePanel {
   }
 
   validateFields(errors) {
+    this.validateCustomerTypeFields(errors);
+    this.validateSalutationField(errors);
     this.validateBasicFields(errors);
-    this.validatePhoneField(errors);
-    this.validateDetailsField(errors);
+    this.validateMobileField(errors);
+    this.validateDobField(errors);
     this.validateAddressFields(errors);
+    this.validateDetailsField(errors);
+  }
+
+  validateCustomerTypeFields(errors) {
+    const { formData, settings } = this.props;
+
+    if (settings.showCustomerType) {
+      requiredField(errors, formData, 'customer.type');
+
+      if (formData['customer.type'] === 'business') {
+        requiredField(errors, formData, 'customer.businessName');
+      }
+    }
+  }
+
+  validateSalutationField(errors) {
+    const { formData, settings } = this.props;
+
+    if (settings.requireSalutation) {
+      requiredField(errors, formData, 'customer.title');
+    }
   }
 
   validateBasicFields(errors) {
@@ -40,11 +64,26 @@ export class CustomerPanel extends BasePanel {
     emailField(errors, formData, 'customer.email');
   }
 
-  validatePhoneField(errors) {
+  validateMobileField(errors) {
     const { formData, settings } = this.props;
 
     if (settings.phoneType === 'mobile' && settings.isPhoneRequired) {
       requiredField(errors, formData, 'customer.mobile');
+    }
+  }
+
+  validateDobField(errors) {
+    const { formData, settings } = this.props;
+
+    const atLeastOneInputHasData =
+      !!formData['customer.dateOfBirthDay']   ||
+      !!formData['customer.dateOfBirthMonth'] ||
+      !!formData['customer.dateOfBirthYear'];
+
+    if (settings.requireDob || atLeastOneInputHasData) {
+      requiredField(errors, formData, 'customer.dateOfBirthDay');
+      requiredField(errors, formData, 'customer.dateOfBirthMonth');
+      requiredField(errors, formData, 'customer.dateOfBirthYear');
     }
   }
 
@@ -99,19 +138,11 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, index, isBusy, settings } = this.props;
+    const { layout, isBusy } = this.props;
 
     return (
       <PanelContainer layout={layout} status="edit" className="customer-panel">
-        {!settings.hideHeader &&
-          <PanelHeader
-            status="edit"
-            layout={layout}
-            number={index + 1}
-            title={settings.title}
-            subtitle={settings.subtitle}
-          />
-        }
+        {this.renderHeader()}
 
         <PanelBody status="edit" layout={layout} isBusy={isBusy}>
           {this.renderErrorMessages()}
@@ -122,6 +153,22 @@ export class CustomerPanel extends BasePanel {
     );
   }
 
+  renderHeader() {
+    const { layout, index, settings } = this.props;
+
+    if (settings.hideHeader) return null;
+
+    return (
+      <PanelHeader
+        status="edit"
+        layout={layout}
+        number={index + 1}
+        title={settings.title}
+        subtitle={settings.subtitle}
+      />
+    );
+  }
+
   renderErrorMessages() {
     return <ErrorMessages />; 
   }
@@ -129,13 +176,53 @@ export class CustomerPanel extends BasePanel {
   renderCustomerForm() {
     return (
       <Form onSubmit={this.onClickSubmit}>
+        {this.renderCustomerTypeFields()}
+        {this.renderSalutationField()}
         {this.renderBasicFields()}
-        {this.renderPhoneField()}
+        {this.renderMobileField()}
+        {this.renderDobField()}
         {this.renderAddressFields()}
         {this.renderDetailsField()}
         {this.renderOptIn()}
         {this.renderActions()}
       </Form>
+    );
+  }
+
+  renderCustomerTypeFields() {
+    const { settings } = this.props;
+    if (!settings.showCustomerType) return null;
+
+    return (
+      <CustomerTypeInput />
+    );
+  }
+
+  renderSalutationField() {
+    const { settings } = this.props;
+    if (!settings.showSalutation) return null;
+
+    return (
+      <Form.Row>
+        <Col>
+          <Form.Group>
+            <SalutationInput
+              required={settings.requireSalutation}
+            />
+          </Form.Group>
+        </Col>
+      </Form.Row>
+    );
+  }
+
+  renderDobField() {
+    const { settings } = this.props;
+    if (!settings.showDob) return null;
+
+    return (
+      <DobInput
+        required={settings.requireDob}
+      />
     );
   }
 
@@ -145,13 +232,21 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col sm>
             <Form.Group>
-              <TextInput field="customer.firstName" placeholder="First Name" required />
+              <TextInput
+                field="customer.firstName"
+                placeholder={t('first-name', 'First Name')}
+                required
+              />
             </Form.Group>
           </Col>
 
           <Col sm>
             <Form.Group>
-              <TextInput field="customer.lastName" placeholder="Last Name" required />
+              <TextInput
+                field="customer.lastName"
+                placeholder={t('last-name', 'Last Name')}
+                required
+              />
             </Form.Group>
           </Col>
         </Form.Row>
@@ -159,7 +254,11 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group>
-              <EmailInput field="customer.email" placeholder="Email" required />
+              <EmailInput
+                field="customer.email"
+                placeholder={t('email', 'Email')}
+                required
+              />
             </Form.Group>
           </Col>
         </Form.Row>
@@ -167,22 +266,24 @@ export class CustomerPanel extends BasePanel {
     );
   }
 
-  renderPhoneField() {
+  renderMobileField() {
     const { settings } = this.props;
 
-    if (settings.phoneType === 'mobile') {
-      return (
-        <Form.Row>
-          <Col>
-            <Form.Group>
-              <PhoneInput field="customer.mobile" placeholder="Mobile" required={settings.isPhoneRequired} />
-            </Form.Group>
-          </Col>
-        </Form.Row>
-      );
-    }
+    if (settings.phoneType !== 'mobile') return null;
 
-    return null;
+    return (
+      <Form.Row>
+        <Col>
+          <Form.Group>
+            <PhoneInput
+              field="customer.mobile"
+              placeholder={t('mobile', 'Mobile')}
+              required
+            />
+          </Form.Group>
+        </Col>
+      </Form.Row>
+    );
   }
 
   renderAddressFields() {
@@ -204,13 +305,18 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderPostCodeField() {
-    const { settings } = this.props;
+    const { settings, formData } = this.props;
+    const country = formData['customer.billing.country'];
 
     return (
       <Form.Row>
         <Col sm>
           <Form.Group>
-            <PostcodeInput field="customer.billing.postcode" placeholder="Postcode" required={settings.isAddressRequired} />
+            <PostcodeInput
+              field="customer.billing.postcode"
+              placeholder={getPostcodeLabel(country)}
+              required={settings.isAddressRequired}
+            />
           </Form.Group>
         </Col>
         <Col sm></Col>
@@ -219,14 +325,19 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderAustralianAddressFields() {
-    const { settings } = this.props;
+    const { settings, formData } = this.props;
+    const country = formData['customer.billing.country'];
 
     return (
       <React.Fragment>
         <Form.Row>
           <Col>
             <Form.Group>
-              <TextInput field="customer.billing.address1" placeholder="Street Address 1" required={settings.isAddressRequired} />
+              <TextInput
+                field="customer.billing.address1"
+                placeholder={t('street', 'Street Address 1')}
+                required={settings.isAddressRequired}
+              />
             </Form.Group>
           </Col>
         </Form.Row>
@@ -234,7 +345,10 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group>
-              <TextInput field="customer.billing.address2" placeholder="Street Address 2" />
+              <TextInput
+                field="customer.billing.address2"
+                placeholder={t('street-2', 'Street Address 2')}
+              />
             </Form.Group>
           </Col>
         </Form.Row>
@@ -242,13 +356,21 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col sm>
             <Form.Group>
-              <TextInput field="customer.billing.suburb" placeholder="Suburb" required={settings.isAddressRequired} />
+              <TextInput
+                field="customer.billing.suburb"
+                placeholder={getSuburbLabel(country)}
+                required={settings.isAddressRequired}  
+              />
             </Form.Group>
           </Col>
 
           <Col sm>
             <Form.Group>
-              <StateInput field="customer.billing.state" placeholder="State" required={settings.isAddressRequired} />
+              <StateInput
+                field="customer.billing.state"
+                placeholder={getStateLabel(country)}
+                required={settings.isAddressRequired}
+              />
             </Form.Group>
           </Col>
         </Form.Row>
@@ -256,13 +378,20 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col sm>
             <Form.Group>
-              <PostcodeInput field="customer.billing.postcode" placeholder="Postcode" required={settings.isAddressRequired} />
+              <PostcodeInput
+                field="customer.billing.postcode"
+                placeholder={getPostcodeLabel(country)}
+                required={settings.isAddressRequired}
+              />
             </Form.Group>
           </Col>
           <Col sm></Col>
         </Form.Row>
 
-        <FormElement field="customer.billing.country" value="AU" />
+        <FormElement
+          field="customer.billing.country"
+          value="AU"
+        />
       </React.Fragment>
     );
   }
@@ -282,7 +411,7 @@ export class CustomerPanel extends BasePanel {
           <Form.Group>
             <TextAreaInput
               field="details"
-              placeholder={settings.detailsText || 'Details'}
+              placeholder={settings.detailsText || t('details', 'Details')}
               required={settings.isDetailsRequired}
             />
           </Form.Group>
@@ -299,7 +428,10 @@ export class CustomerPanel extends BasePanel {
     return (
       <Form.Row className="opt-in">
         <Col>
-          <CheckboxInput field="optIn" label={settings.optInText || 'Subscribe to newsletter'} />
+          <CheckboxInput
+            field="optIn"
+            label={settings.optInText || t('subscribe-to-newsletter', 'Subscribe to newsletter')}
+          />
         </Col>
       </Form.Row>
     );

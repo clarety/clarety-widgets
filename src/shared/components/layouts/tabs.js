@@ -13,7 +13,7 @@ export const TabsPanelContainer = ({ status, className, children }) => {
 
 export const TabsPanelHeader = ({ status, title, subtitle }) => (
   <div className="panel-header">
-    <h2 className="title">{title}</h2>
+    {title && <h2 className="title">{title}</h2>}
     {subtitle && <p className="subtitle">{subtitle}</p>}
   </div>
 );

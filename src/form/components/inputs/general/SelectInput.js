@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { findElement } from 'shared/utils';
 import { updateFormData } from 'form/actions';
 import { getValidationError } from 'form/utils';
@@ -34,7 +35,9 @@ class _SelectInput extends React.Component {
           <option value="" hidden>{placeholder || 'Select'}</option>
           
           {options.map(option =>
-            <option key={option.value} value={option.value}>{option.label}</option>
+            <option key={option.value} value={option.value}>
+              {t(option.label, option.label)}
+            </option>
           )}
         </Form.Control>
 

@@ -2,8 +2,8 @@ import React from 'react';
 import { Form, Row, Col, Button } from 'react-bootstrap';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, AddressFinder } from 'shared/components';
-import { requiredField, emailField, getCustomerTypeOptions, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
-import { TextInput, EmailInput, PhoneInput, CheckboxInput, StateInput, CountryInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement } from 'form/components';
+import { requiredField, emailField, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
+import { TextInput, EmailInput, PhoneInput, CheckboxInput, StateInput, CountryInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement, CustomerTypeInput, SalutationInput, DobInput } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
   state = {};
@@ -65,22 +65,32 @@ export class CustomerPanel extends BasePanel {
   }
 
   validateFields(errors) {
-    this.validateTypeFields(errors);
+    this.validateCustomerTypeFields(errors);
+    this.validateSalutationField(errors);
     this.validateBasicFields(errors);
-    this.validatePhoneField(errors);
+    this.validateMobileField(errors);
+    this.validateDobField(errors);
     this.validateAddressFields(errors);
     this.validateSourceFields(errors);
   }
 
-  validateTypeFields(errors) {
+  validateCustomerTypeFields(errors) {
     const { formData, settings } = this.props;
 
     if (settings.showCustomerType) {
       requiredField(errors, formData, 'customer.type');
-    }
 
-    if (formData['customer.type'] === 'business') {
-      requiredField(errors, formData, 'customer.businessName');
+      if (formData['customer.type'] === 'business') {
+        requiredField(errors, formData, 'customer.businessName');
+      }
+    }
+  }
+
+  validateSalutationField(errors) {
+    const { formData, settings } = this.props;
+
+    if (settings.requireSalutation) {
+      requiredField(errors, formData, 'customer.title');
     }
   }
 
@@ -94,11 +104,26 @@ export class CustomerPanel extends BasePanel {
     emailField(errors, formData, 'customer.email');
   }
 
-  validatePhoneField(errors) {
+  validateMobileField(errors) {
     const { formData, settings } = this.props;
 
-    if (settings.phoneType === 'mobile' && settings.isPhoneRequired) {
+    if (settings.isPhoneRequired || settings.requireMobile) {
       requiredField(errors, formData, 'customer.mobile');
+    }
+  }
+
+  validateDobField(errors) {
+    const { formData, settings } = this.props;
+
+    const atLeastOneInputHasData =
+      !!formData['customer.dateOfBirthDay']   ||
+      !!formData['customer.dateOfBirthMonth'] ||
+      !!formData['customer.dateOfBirthYear'];
+
+    if (settings.requireDob || atLeastOneInputHasData) {
+      requiredField(errors, formData, 'customer.dateOfBirthDay');
+      requiredField(errors, formData, 'customer.dateOfBirthMonth');
+      requiredField(errors, formData, 'customer.dateOfBirthYear');
     }
   }
 
@@ -164,9 +189,11 @@ export class CustomerPanel extends BasePanel {
 
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
           {this.renderErrorMessages()}
-          {this.renderTypeFields()}
+          {this.renderCustomerTypeFields()}
+          {this.renderSalutationField()}
           {this.renderBasicFields()}
-          {this.renderPhoneField()}
+          {this.renderMobileField()}
+          {this.renderDobField()}
           {this.renderAddressFields()}
           {this.renderSourceFields()}
           {this.renderOptIn()}
@@ -196,41 +223,30 @@ export class CustomerPanel extends BasePanel {
     return <ErrorMessages />;
   }
 
-  renderTypeFields() {
-    const { settings, formData } = this.props;
-    const showBusinessName = formData['customer.type'] === 'business';
-    const customerTypeOptions = getCustomerTypeOptions();
+  renderCustomerTypeFields() {
+    const { settings } = this.props;
+    if (!settings.showCustomerType) return null;
 
     return (
-      <React.Fragment>
-        {settings.showCustomerType &&
-          <Form.Row>
-            <Col>
-              <Form.Group controlId="customerType">
-                <Form.Label>{t('type', 'Type')}</Form.Label>
-                <SelectInput
-                  field="customer.type"
-                  options={customerTypeOptions}
-                  initialValue={customerTypeOptions[0].value}
-                  testId="customer-type-input"
-                  required
-                />
-              </Form.Group>
-            </Col>
-          </Form.Row>
-        }
+      <CustomerTypeInput />
+    );
+  }
 
-        {showBusinessName &&
-          <Form.Row>
-            <Col>
-              <Form.Group controlId="businessName">
-                <Form.Label>{t('business-name', 'Business Name')}</Form.Label>
-                <TextInput field="customer.businessName" testId="business-name-input" required />
-              </Form.Group>
-            </Col>
-          </Form.Row>
-        }
-      </React.Fragment>
+  renderSalutationField() {
+    const { settings } = this.props;
+    if (!settings.showSalutation) return null;
+
+    return (
+      <Form.Row>
+        <Col>
+          <Form.Group>
+          <Form.Label>{t('salutation', 'Salutation')}</Form.Label>
+            <SalutationInput
+              required={settings.requireSalutation}
+            />
+          </Form.Group>
+        </Col>
+      </Form.Row>
     );
   }
 
@@ -262,23 +278,35 @@ export class CustomerPanel extends BasePanel {
     );
   }
 
-  renderPhoneField() {
+  renderMobileField() {
     const { settings } = this.props;
 
-    if (settings.phoneType === 'mobile') {
-      return (
-        <Form.Row>
-          <Col>
-            <Form.Group controlId="mobile">
-              <Form.Label>{t('mobile', 'Mobile')}</Form.Label>
-              <PhoneInput field="customer.mobile" required={settings.isPhoneRequired} />
-            </Form.Group>
-          </Col>
-        </Form.Row>
-      );
-    }
+    const showMobile = settings.phoneType === 'mobile' || settings.showMobile;
+    if (!showMobile) return null;
 
-    return null;
+    const requireMobile = settings.isPhoneRequired || settings.requireMobile;
+
+    return (
+      <Form.Row>
+        <Col>
+          <Form.Group controlId="mobile">
+            <Form.Label>{t('mobile', 'Mobile')}</Form.Label>
+            <PhoneInput field="customer.mobile" required={requireMobile} />
+          </Form.Group>
+        </Col>
+      </Form.Row>
+    );
+  }
+
+  renderDobField() {
+    const { settings } = this.props;
+    if (!settings.showDob) return null;
+
+    return (
+      <DobInput
+        required={settings.requireDob}
+      />
+    );
   }
 
   renderAddressFields() {

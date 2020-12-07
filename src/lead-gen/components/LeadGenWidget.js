@@ -3,7 +3,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { connect, Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import i18next from 'i18next';
-import { statuses, setPanels, updateAppSettings, initTrackingData, setPanelSettings, fetchSettings } from 'shared/actions';
+import { statuses, setPanels, setLanguages, updateAppSettings, initTrackingData, setPanelSettings, fetchSettings, changeLanguage } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
 import { PanelManager } from 'shared/components';
 import { Resources, getCustomerPanelSettingsFromWidgetProps } from 'shared/utils';
@@ -31,6 +31,11 @@ export class LeadGenWidget extends React.Component {
     LeadGenWidget.store.dispatch(setPanels(panels));
   }
 
+  static setLanguages(languages) {
+    LeadGenWidget.languages = languages;
+    LeadGenWidget.store.dispatch(setLanguages(languages));
+  }
+
   static setComponent(name, component) {
     LeadGenWidget.resources.setComponent(name, component);
   }
@@ -40,6 +45,7 @@ export class LeadGenWidget extends React.Component {
       <Provider store={LeadGenWidget.store}>
         <LeadGenRoot
           resources={LeadGenWidget.resources}
+          languages={LeadGenWidget.languages}
           {...this.props}
         />
       </Provider>
@@ -53,7 +59,22 @@ export class _LeadGenRoot extends React.Component {
     
     const { updateAppSettings, initTrackingData, setPanelSettings, fetchSettings } = this.props;
 
-    i18next.init();
+    // Translations.
+    const { languages, defaultLanguage, changeLanguage } = this.props;
+    const language = defaultLanguage || navigator.language || navigator.userLanguage || 'en';
+    i18next.init({
+      load: 'languageOnly',
+      lng: language,
+      fallbackLng: defaultLanguage || 'en',
+      resources: languages,
+      returnNull: false,
+    });
+
+    i18next.on('languageChanged', (language) => {
+      this.forceUpdate();
+    });
+
+    changeLanguage(language);
 
     updateAppSettings({
       widgetElementId: this.props.elementId,
@@ -87,17 +108,29 @@ export class _LeadGenRoot extends React.Component {
 
     return (
       <div className={`clarety-lead-gen-widget h-100 ${variant}`}>
-        {variant === 'sos' && this.renderSosHeader()}
-        {variant === 'download' && this.renderDownloadHeader()}
-
+        {this.renderHeader()}
         <PanelManager layout="tabs" resources={resources} />
         <Recaptcha siteKey={reCaptchaKey} />
       </div>
     );
   }
 
-  renderSosHeader() {
-    return <SosProgress sos={this.props.sos} />;
+  renderHeader() {
+    const { HeaderComponent, variant } = this.props;
+
+    if (HeaderComponent) {
+      return <HeaderComponent {...this.props} />;
+    }
+
+    if (variant === 'sos') {
+      return <SosProgress sos={this.props.sos} />;
+    }
+
+    if (variant === 'download') {
+      return this.renderDownloadHeader();
+    }
+
+    return null;
   }
 
   renderDownloadHeader() {
@@ -129,6 +162,7 @@ const actions = {
   initTrackingData: initTrackingData,
   setPanelSettings: setPanelSettings,
   fetchSettings: fetchSettings,
+  changeLanguage: changeLanguage,
 };
 
 const LeadGenRoot = connect(mapStateToProps, actions)(_LeadGenRoot);

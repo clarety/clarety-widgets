@@ -10,7 +10,15 @@ LeadGenWidget.setPanels([
   {
     component: CustomerPanel,
     connect: CustomerConnect,
-    settings: {},
+    settings: {
+      showCustomerType: true,
+
+      showSalutation: true,
+      requireSalutation: true,
+
+      showDob: true,
+      // requireDob: true,
+    },
   },
   {
     component: CmsConfirmPanel,

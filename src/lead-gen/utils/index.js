@@ -1,21 +1,19 @@
 export const settingsMap = (result) => {
-  const settings = {};
+  const settings = {
+    elements: result.elements,
+  };
 
-  const sos = result.sos || result.Sos;
-
-  if (sos) {
+  if (result.sos) {
     settings.sos = {
-      current: Number(sos.actual),
-      goal: Number(sos.goal),
+      current: Number(result.sos.actual),
+      goal: Number(result.sos.goal),
     };
   }
 
-  const download = result.download || result.Download;
-
-  if (download) {
+  if (result.download) {
     settings.download = {
-      image: download.coverImage,
-      file: download.file,
+      image: result.download.coverImage,
+      file: result.download.file,
     };
   }
 
