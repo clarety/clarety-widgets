@@ -5,6 +5,7 @@ import { requiredField } from 'shared/utils';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { SubmitButton, BackButton, ErrorMessages, SelectInput } from 'form/components';
+import { getValidationError } from 'form/utils';
 import { FrequencySelect, ScheduleSelectButtonGroup, ScheduleSelectDropdown, DonatePayPalBtn } from 'donate/components';
 
 export class DonationPanel extends BasePanel {
@@ -247,7 +248,7 @@ export class DonationPanel extends BasePanel {
   renderVariableAmount(variableAmount, componentName) {
     if (!variableAmount) return null;
 
-    const { selections, frequency, resources } = this.props;
+    const { selections, frequency, resources, errors } = this.props;
     const currentSelection = selections[frequency];
     const VariableAmount = resources.getComponent(componentName);
 
@@ -259,6 +260,7 @@ export class DonationPanel extends BasePanel {
         onMouseEnter={this.onMouseEnterAmount}
         onMouseLeave={this.onMouseLeaveAmount}
         isSelected={currentSelection.isVariableAmount}
+        error={getValidationError('variable-amount', errors)}
       />
     );
   }
