@@ -3,8 +3,9 @@ import { Form, InputGroup } from 'react-bootstrap';
 import { t } from 'shared/translations';
 import { CurrencySymbol } from 'shared/components';
 import { cleanDecimal } from 'form/utils';
+import { FieldError } from 'form/components';
 
-export const VariableAmount = ({ amountInfo, value, placeholder, isSelected, onChange, onMouseEnter, onMouseLeave }) => (
+export const VariableAmount = ({ amountInfo, value, placeholder, isSelected, onChange, onMouseEnter, onMouseLeave, error }) => (
   <div className={`variable-amount ${isSelected ? 'variable-amount--selected' : ''}`}>
     <InputGroup>
       <InputGroup.Prepend>
@@ -20,7 +21,10 @@ export const VariableAmount = ({ amountInfo, value, placeholder, isSelected, onC
         onMouseEnter={() => onMouseEnter(amountInfo)}
         onMouseLeave={() => onMouseLeave(amountInfo)}
         data-testid="variable-amount-input"
+        isInvalid={!!error}
       />
+
+      <FieldError error={error} />
     </InputGroup>
   </div>
 );
