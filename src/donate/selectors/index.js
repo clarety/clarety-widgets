@@ -82,12 +82,13 @@ export const getScheduleLabel = (state) => {
   if (!selection.offerPaymentUid) return '';
 
   const schedules = getSchedules(state);
-  if (!schedules) return '';
 
-  const result = schedules.find(schedule => schedule.offerPaymentUid === selection.offerPaymentUid);
+  const schedule = schedules
+    ? schedules.find(schedule => schedule.offerPaymentUid === selection.offerPaymentUid)
+    : null;
 
-  // If we couldn't find a label, just assume monthly.
-  return result ? result.label : 'Monthly';
+  // If we couldn't find a schedule, just assume monthly.
+  return schedule ? schedule.label : 'Monthly';
 };
 
 export const getSelectedOffer = (state) => {
