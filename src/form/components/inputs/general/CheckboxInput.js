@@ -9,7 +9,7 @@ class _CheckboxInput extends React.Component {
   constructor(props) {
     super(props);
 
-    if (props.initialValue !== undefined) {
+    if (!props.value && props.initialValue !== undefined) {
       props.setInitialValue(props.initialValue);
     }
   }

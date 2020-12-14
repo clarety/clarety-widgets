@@ -11,12 +11,16 @@ class _SelectInput extends React.Component {
   constructor(props) {
     super(props);
 
-    if (props.initialValue !== undefined) {
-      props.setInitialValue(props.initialValue);
-    }
-
-    if (props.autoSelectSingleOption && props.options.length === 1) {
-      props.setInitialValue(props.options[0].value);
+    if (!props.value) {
+      // Set initial value.
+      if (props.initialValue !== undefined) {
+        props.setInitialValue(props.initialValue);
+      }
+      
+      // Auto select value.
+      if (props.autoSelectSingleOption && props.options.length === 1) {
+        props.setInitialValue(props.options[0].value);
+      }
     }
   }
 
