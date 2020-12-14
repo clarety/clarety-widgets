@@ -71,22 +71,23 @@ export const getFrequencyLabel = (state, offerUid) => {
 
 export const getSchedules = (state) => {
   const offer = getSelectedOffer(state);
-  return offer.schedules;
+  return offer ? offer.schedules : undefined;
 }
 
 export const getScheduleLabel = (state) => {
   const selection = getDonationPanelSelection(state);
+  if (!selection) return '';
+
+  // If we don't have an offer payment UID, this isn't a recurring payment.
+  if (!selection.offerPaymentUid) return '';
+
   const schedules = getSchedules(state);
+  if (!schedules) return '';
 
-  if (schedules && selection.offerPaymentUid) {
-    const result = schedules.find(schedule => schedule.offerPaymentUid === selection.offerPaymentUid);
-    if (result) return result.label;
-  }
+  const result = schedules.find(schedule => schedule.offerPaymentUid === selection.offerPaymentUid);
 
-  // If we have an offerPaymentUid, but couldn't find a label, just assume monthly.
-  if (selection.offerPaymentUid) return 'Monthly';
-
-  return '';
+  // If we couldn't find a label, just assume monthly.
+  return result ? result.label : 'Monthly';
 };
 
 export const getSelectedOffer = (state) => {
