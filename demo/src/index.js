@@ -31,6 +31,11 @@ Cookies.set('jwtSession', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoic2Fs
 const Demo = () => {
   const url = window.location.href;
 
+  if (url.endsWith('unsubscribe')) {
+    const UnsubscribeDemo = require('./UnsubscribeDemo').default;
+    return <UnsubscribeDemo />;
+  }
+
   if (url.endsWith('subscribe')) {
     const SubscribeDemo = require('./SubscribeDemo').default;
     return <SubscribeDemo />;
@@ -94,6 +99,7 @@ const Demo = () => {
   return (
     <div className="list-group m-5">
       <a href="subscribe" className="list-group-item list-group-item-action">Subscribe Widget Demo</a>
+      <a href="unsubscribe" className="list-group-item list-group-item-action">Unsubscribe Widget Demo</a>
       <a href="donate" className="list-group-item list-group-item-action">Donate Widget Demo</a>
       <a href="fund-donate" className="list-group-item list-group-item-action">Fund Donate Widget Demo</a>
       <a href="donate-page" className="list-group-item list-group-item-action">Donate Page Demo</a>
