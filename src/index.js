@@ -26,6 +26,8 @@ export { LeadGenWidget } from 'lead-gen/components';
 export { SubscribeWidget } from 'subscribe/components';
 export { setupSubscribeAxiosMock } from 'subscribe/mocks';
 
+export { UnsubscribeWidget } from 'unsubscribe/components';
+
 export { FundraisingStart } from 'fundraising-start/components';
 
 export { QuizWidget } from 'quiz/components';

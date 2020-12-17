@@ -28,6 +28,7 @@ module.exports = {
           'rsvp':              './src/rsvp',
           'shared':            './src/shared',
           'subscribe':         './src/subscribe',
+          'unsubscribe':       './src/unsubscribe',
         },
       }],
     ],
