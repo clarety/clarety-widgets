@@ -507,6 +507,9 @@ export class _PaymentPanel extends BasePanel {
   }
 
   renderCvcInfoBtn() {
+    const { settings } = this.props;
+    if (!settings.showCvcInfoBtn) return null;
+
     return (
       <a href="#" onClick={this.onClickCvcInfo} className="float-right small">
         {t('what-is-this', 'What is this?')}
