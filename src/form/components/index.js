@@ -8,7 +8,7 @@ export * from './inputs/address/PostcodeInput';
 
 export * from './inputs/customer/CustomerTypeInput';
 export * from './inputs/customer/DobInput';
-export * from './inputs/customer/SalutationInput';
+export * from './inputs/customer/TitleInput';
 
 export * from './inputs/payment/AccountNumberInput';
 export * from './inputs/payment/BsbInput';

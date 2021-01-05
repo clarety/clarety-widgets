@@ -3,7 +3,7 @@ import { Form, Row, Col } from 'react-bootstrap';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { requiredField, emailField, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
-import { TextInput, TextAreaInput, EmailInput, PhoneInput, CheckboxInput, StateInput, PostcodeInput, SubmitButton, ErrorMessages, FormElement, CustomerTypeInput, SalutationInput, DobInput } from 'form/components';
+import { TextInput, TextAreaInput, EmailInput, PhoneInput, CheckboxInput, StateInput, PostcodeInput, SubmitButton, ErrorMessages, FormElement, CustomerTypeInput, TitleInput, DobInput } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
   onClickSubmit = async (event) => {
@@ -27,7 +27,7 @@ export class CustomerPanel extends BasePanel {
 
   validateFields(errors) {
     this.validateCustomerTypeFields(errors);
-    this.validateSalutationField(errors);
+    this.validateTitleField(errors);
     this.validateBasicFields(errors);
     this.validateMobileField(errors);
     this.validateDobField(errors);
@@ -47,10 +47,10 @@ export class CustomerPanel extends BasePanel {
     }
   }
 
-  validateSalutationField(errors) {
+  validateTitleField(errors) {
     const { formData, settings } = this.props;
 
-    if (settings.requireSalutation) {
+    if (settings.requireTitle) {
       requiredField(errors, formData, 'customer.title');
     }
   }
@@ -177,7 +177,7 @@ export class CustomerPanel extends BasePanel {
     return (
       <Form onSubmit={this.onClickSubmit}>
         {this.renderCustomerTypeFields()}
-        {this.renderSalutationField()}
+        {this.renderTitleField()}
         {this.renderBasicFields()}
         {this.renderMobileField()}
         {this.renderDobField()}
@@ -198,16 +198,16 @@ export class CustomerPanel extends BasePanel {
     );
   }
 
-  renderSalutationField() {
+  renderTitleField() {
     const { settings } = this.props;
-    if (!settings.showSalutation) return null;
+    if (!settings.showTitle) return null;
 
     return (
       <Form.Row>
         <Col>
           <Form.Group>
-            <SalutationInput
-              required={settings.requireSalutation}
+            <TitleInput
+              required={settings.requireTitle}
             />
           </Form.Group>
         </Col>

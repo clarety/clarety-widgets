@@ -13,8 +13,8 @@ LeadGenWidget.setPanels([
     settings: {
       showCustomerType: true,
 
-      showSalutation: true,
-      requireSalutation: true,
+      showTitle: true,
+      requireTitle: true,
 
       showDob: true,
       // requireDob: true,

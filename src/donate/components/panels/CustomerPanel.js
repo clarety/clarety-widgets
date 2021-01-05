@@ -3,7 +3,7 @@ import { Form, Row, Col, Button } from 'react-bootstrap';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, AddressFinder } from 'shared/components';
 import { requiredField, emailField, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
-import { TextInput, EmailInput, PhoneInput, CheckboxInput, StateInput, CountryInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement, CustomerTypeInput, SalutationInput, DobInput } from 'form/components';
+import { TextInput, EmailInput, PhoneInput, CheckboxInput, StateInput, CountryInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement, CustomerTypeInput, TitleInput, DobInput } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
   state = {};
@@ -66,7 +66,7 @@ export class CustomerPanel extends BasePanel {
 
   validateFields(errors) {
     this.validateCustomerTypeFields(errors);
-    this.validateSalutationField(errors);
+    this.validateTitleField(errors);
     this.validateBasicFields(errors);
     this.validateMobileField(errors);
     this.validateDobField(errors);
@@ -86,10 +86,10 @@ export class CustomerPanel extends BasePanel {
     }
   }
 
-  validateSalutationField(errors) {
+  validateTitleField(errors) {
     const { formData, settings } = this.props;
 
-    if (settings.requireSalutation) {
+    if (settings.requireTitle) {
       requiredField(errors, formData, 'customer.title');
     }
   }
@@ -190,7 +190,7 @@ export class CustomerPanel extends BasePanel {
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
           {this.renderErrorMessages()}
           {this.renderCustomerTypeFields()}
-          {this.renderSalutationField()}
+          {this.renderTitleField()}
           {this.renderBasicFields()}
           {this.renderMobileField()}
           {this.renderDobField()}
@@ -232,17 +232,17 @@ export class CustomerPanel extends BasePanel {
     );
   }
 
-  renderSalutationField() {
+  renderTitleField() {
     const { settings } = this.props;
-    if (!settings.showSalutation) return null;
+    if (!settings.showTitle) return null;
 
     return (
       <Form.Row>
         <Col>
           <Form.Group>
-          <Form.Label>{t('salutation', 'Salutation')}</Form.Label>
-            <SalutationInput
-              required={settings.requireSalutation}
+          <Form.Label>{t('title', 'Title')}</Form.Label>
+            <TitleInput
+              required={settings.requireTitle}
             />
           </Form.Group>
         </Col>
