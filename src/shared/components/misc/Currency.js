@@ -17,7 +17,10 @@ const _CurrencySymbol = ({ currency, hideCurrencyCode }) => {
 const _Currency = ({ amount = 0, hideCents }) => (
   <React.Fragment>
     <CurrencySymbol />
-    {Number(amount).toLocaleString(undefined, { maximumFractionDigits: hideCents ? 0 : 2 })}
+    {Number(amount).toLocaleString(undefined, {
+      minimumFractionDigits: hideCents ? 0 : 2,
+      maximumFractionDigits: hideCents ? 0 : 2,
+    })}
   </React.Fragment>
 );
 
