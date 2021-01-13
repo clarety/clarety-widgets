@@ -16,7 +16,8 @@ const _CurrencySymbol = ({ currency, hideCurrencyCode }) => {
 
 const _Currency = ({ amount = 0, hideCents }) => (
   <React.Fragment>
-    <CurrencySymbol />{numberWithCommas(Number(amount), hideCents)}
+    <CurrencySymbol />
+    {Number(amount).toLocaleString(undefined, { maximumFractionDigits: hideCents ? 0 : 2 })}
   </React.Fragment>
 );
 
@@ -29,11 +30,3 @@ const mapStateToProps = (state, ownProps) => {
 
 export const CurrencySymbol = connect(mapStateToProps)(_CurrencySymbol);
 export const Currency = connect(mapStateToProps)(_Currency);
-
-// stolen from stack overflow and modified.
-// https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
-function numberWithCommas(number, hideCents) {
-  return number
-          .toFixed(hideCents ? 0 : 2)
-          .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-}
