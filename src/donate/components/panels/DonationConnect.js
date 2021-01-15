@@ -2,7 +2,7 @@ import { getSetting } from 'shared/selectors';
 import { clearItems } from 'shared/actions';
 import { getFormData, getErrors } from 'form/selectors';
 import { setErrors } from 'form/actions';
-import { getSelectedAmount, getGivingTypeOptions, getHasExpressPaymentMethods } from 'donate/selectors';
+import { getSelectedAmount, getGivingTypeOptions } from 'donate/selectors';
 import { selectAmount, selectSchedule, addDonationToCart } from 'donate/actions';
 
 export class DonationConnect {
@@ -15,7 +15,6 @@ export class DonationConnect {
       selections: donationPanel.selections,
       selectedAmount: getSelectedAmount(state),
       givingTypeOptions: getGivingTypeOptions(state),
-      hasExpressPaymentMethods: getHasExpressPaymentMethods(state),
       formData: getFormData(state),
       errors: getErrors(state),
       variant: getSetting(state, 'variant'),
