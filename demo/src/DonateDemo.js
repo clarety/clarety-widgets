@@ -22,7 +22,6 @@ window.renderDonateWidget = (props) => {
       settings: {
         tabName: 'Amount',
         hideHeader: true,
-        showExpressCheckoutBtns: true,
       },
     },
     {
@@ -31,6 +30,7 @@ window.renderDonateWidget = (props) => {
       settings: {
         tabName: 'Details',
         hideHeader: true,
+        showExpressCheckoutBtns: true,
       },
     },
     {

@@ -1,7 +1,7 @@
 import { getSetting, getTrackingData, getSourceOptions } from 'shared/selectors';
 import { getFormData, getErrors } from 'form/selectors';
 import { setErrors, setFormData } from 'form/actions';
-import { getIsBusy, getCustomerHasProfile, getSelectedFrequency, getDonationPanelSelection } from 'donate/selectors';
+import { getIsBusy, getCustomerHasProfile, getSelectedFrequency, getDonationPanelSelection, getHasExpressPaymentMethods } from 'donate/selectors';
 import { addCustomerToCart } from 'donate/actions';
 
 export class CustomerConnect {
@@ -23,6 +23,8 @@ export class CustomerConnect {
       defaultCountry: getSetting(state, 'defaultCountry'),
       sourceOptions: getSourceOptions(state),
       addressFinderKey: getSetting(state, 'addressFinderKey'),
+
+      hasExpressPaymentMethods: getHasExpressPaymentMethods(state),
     };
   };
 
