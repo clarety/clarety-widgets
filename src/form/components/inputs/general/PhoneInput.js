@@ -65,6 +65,9 @@ function getLabels() {
       labels[country] = `${countryLabel} +${callingCode}`;
     }
 
+    // 'International' label.
+    labels['ZZ'] = t(labels['ZZ'], labels['ZZ']);
+
     cachedLabels[lang] = labels;
   }
 

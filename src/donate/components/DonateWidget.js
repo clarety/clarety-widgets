@@ -87,6 +87,7 @@ export class _DonateWidgetRoot extends React.Component {
       fallbackLng: defaultLanguage || 'en',
       resources: languages,
       returnNull: false,
+      keySeparator: false,
     });
 
     i18next.on('languageChanged', (language) => {
