@@ -278,6 +278,7 @@ export class CustomerPanel extends BasePanel {
             <PhoneInput
               field="customer.mobile"
               placeholder={t('mobile', 'Mobile')}
+              showCountrySelect={settings.showPhoneCountrySelect}
               required
             />
           </Form.Group>
