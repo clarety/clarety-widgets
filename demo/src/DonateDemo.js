@@ -31,6 +31,8 @@ window.renderDonateWidget = (props) => {
         tabName: 'Details',
         hideHeader: true,
         showExpressCheckoutBtns: true,
+        showMobile: true,
+        showPhoneCountrySelect: true,
       },
     },
     {

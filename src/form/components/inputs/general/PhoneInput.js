@@ -1,12 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ReactPhoneNumberInput from 'react-phone-number-input';
+import { getCountries, getCountryCallingCode } from 'react-phone-number-input/input';
+import enLabels from 'react-phone-number-input/locale/en';
 import { Config } from 'clarety-utils';
+import { t, getLanguage } from 'shared/translations';
 import { FieldError } from 'form/components';
 import { updateFormData } from 'form/actions';
 import { getValidationError } from 'form/utils';
 
-const _PhoneInput = ({ value, placeholder, country, onChange, error, required }) => {
+const _PhoneInput = ({ value, placeholder, country, onChange, error, required, showCountrySelect = false }) => {
   country = country || Config.get('phoneCountry') || 'AU';
   if (placeholder && !required) placeholder += t('optional-label', ' (Optional)');
 
@@ -18,7 +21,8 @@ const _PhoneInput = ({ value, placeholder, country, onChange, error, required })
         placeholder={placeholder}
         limitMaxLength={true}
         country={country}
-        showCountrySelect={false}
+        showCountrySelect={showCountrySelect}
+        labels={getLabels()}
         displayInitialValueAsLocalNumber
         inputClassName="form-control"
       />
@@ -41,3 +45,27 @@ const mapDispatchToProps = (dispatch, { field }) => {
 };
 
 export const PhoneInput = connect(mapStateToProps, mapDispatchToProps)(_PhoneInput);
+
+
+// Phone country labels.
+
+const cachedLabels = {};
+
+function getLabels() {
+  const lang = getLanguage();
+
+  if (!cachedLabels[lang]) {
+    const labels = { ...enLabels };
+
+    for (const country of getCountries()) {
+      // Translate label and append calling code.
+      const countryLabel = t(labels[country], labels[country]);
+      const callingCode = getCountryCallingCode(country);
+      labels[country] = `${countryLabel} +${callingCode}`;
+    }
+
+    cachedLabels[lang] = labels;
+  }
+
+  return cachedLabels[lang];
+}

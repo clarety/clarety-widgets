@@ -317,7 +317,11 @@ export class CustomerPanel extends BasePanel {
         <Col>
           <Form.Group controlId="mobile">
             <Form.Label>{t('mobile', 'Mobile')}</Form.Label>
-            <PhoneInput field="customer.mobile" required={requireMobile} />
+            <PhoneInput
+              field="customer.mobile"
+              showCountrySelect={settings.showPhoneCountrySelect}
+              required={requireMobile}
+            />
           </Form.Group>
         </Col>
       </Form.Row>

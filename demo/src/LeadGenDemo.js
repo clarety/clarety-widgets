@@ -18,6 +18,8 @@ LeadGenWidget.setPanels([
 
       showDob: true,
       // requireDob: true,
+
+      showPhoneCountrySelect: true,
     },
   },
   {
@@ -57,7 +59,7 @@ const LeadGenDemo = () => (
                   buttonText="This is the button"
                   // showOptIn="1"
                   // optInText="This is the opt in"
-                  // phoneOption="mobile"
+                  phoneOption="mobile"
                   // addressOption="postcode"
 
                   sourceUid="src_dy4v"
