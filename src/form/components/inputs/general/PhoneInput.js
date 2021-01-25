@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import ReactPhoneNumberInput from 'react-phone-number-input';
 import { getCountries, getCountryCallingCode } from 'react-phone-number-input/input';
 import enLabels from 'react-phone-number-input/locale/en';
+import 'react-phone-number-input/style.css';
 import { Config } from 'clarety-utils';
 import { t, getLanguage } from 'shared/translations';
 import { FieldError } from 'form/components';
