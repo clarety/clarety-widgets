@@ -36,7 +36,7 @@ class _SelectInput extends React.Component {
           data-testid={testId}
           isInvalid={error !== null}
         >
-          <option value="" hidden>{placeholder || 'Select'}</option>
+          <option value="" hidden>{placeholder || t('select', 'Select')}</option>
           
           {options.map(option =>
             <option key={option.value} value={option.value}>
