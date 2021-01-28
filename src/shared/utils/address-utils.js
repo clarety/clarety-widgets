@@ -228,7 +228,7 @@ const allCountryOptions = [
   { value: 'HT', label: 'Haiti' },
   { value: 'HM', label: 'Heard and McDonald Islands' },
   { value: 'HN', label: 'Honduras' },
-  { value: 'HK', label: 'Hong Kong' },
+  { value: 'HK', label: 'Hong Kong (SAR)' },
   { value: 'HU', label: 'Hungary' },
   { value: 'IS', label: 'Iceland' },
   { value: 'IN', label: 'India' },
