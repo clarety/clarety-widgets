@@ -48,13 +48,14 @@ export class CustomerPanel extends BasePanel {
 
     if (layout === 'page') return;
 
+    this.onPressDisableAddressFinder();
+
     const isValid = this.validate();
     if (!isValid) return;
     
     const didSubmit = await onSubmit();
     if (!didSubmit) return;
 
-    this.onPressDisableAddressFinder();
     nextPanel();
   };
 
