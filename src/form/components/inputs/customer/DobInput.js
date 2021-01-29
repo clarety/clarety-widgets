@@ -17,7 +17,7 @@ class _DobInput extends React.Component {
         <Form.Label>
           {label || t('date-of-birth', 'Date of Birth')}
           {!required &&
-            <span className="optional"> ({t('optional', 'Optional')})</span>
+            <span className="optional">{t('optional-label', ' (Optional)')}</span>
           }
         </Form.Label>
 
