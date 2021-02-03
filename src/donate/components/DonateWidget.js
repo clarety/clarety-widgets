@@ -68,7 +68,7 @@ export class DonateWidget extends React.Component {
 export class _DonateWidgetRoot extends React.Component {
   async componentWillMount() {
     const { storeUid, singleOfferId, recurringOfferId, categoryUid } = this.props;
-    const { updateAppSettings, setStore, initTrackingData, fetchSettings, handleUrlParams, fetchCustomer, selectFrequency } = this.props;
+    const { updateAppSettings, setStore, initTrackingData, fetchSettings, handleUrlParams, fetchCustomer } = this.props;
 
     if (!singleOfferId && !recurringOfferId && !categoryUid) {
       throw new Error('[DonateWidget] A singleOfferId, recurringOfferId, or categoryUid is required');
@@ -104,6 +104,7 @@ export class _DonateWidgetRoot extends React.Component {
       givingTypeOptions:  givingTypeOptions,
       addressFinderKey:   this.props.addressFinderKey,
       hideCurrencyCode:   this.props.hideCurrencyCode,
+      defaultFrequency:   this.props.defaultFrequency,
     });
 
     setStore(storeUid);
@@ -124,9 +125,8 @@ export class _DonateWidgetRoot extends React.Component {
     }, mapDonationSettings);
 
     // Select default frequency.
-    if (recurringOfferId && this.props.defaultFrequency === 'recurring') {
-      selectFrequency('recurring');
-    }
+    const { defaultFrequency, selectFrequency } = this.props;
+    if (defaultFrequency) selectFrequency(defaultFrequency);
 
     handleUrlParams();
   }
