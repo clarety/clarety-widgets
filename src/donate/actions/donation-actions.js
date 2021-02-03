@@ -1,5 +1,5 @@
 import { statuses, setStatus, fetchSettings } from 'shared/actions';
-import { getFormData } from 'shared/selectors';
+import { getFormData, getSetting } from 'shared/selectors';
 import { getStoreUid } from 'donate/selectors';
 import { types } from 'donate/actions';
 import { mapDonationSettings } from 'donate/utils';
@@ -24,6 +24,10 @@ export const fetchOffers = (singleOfferId, recurringOfferId) => {
       offerSingle: singleOfferId,
       offerRecurring: recurringOfferId,
     }, mapDonationSettings));
+
+    // Select default frequency.
+    const defaultFrequency = getSetting(state, 'defaultFrequency');
+    if (defaultFrequency) dispatch(selectFrequency(defaultFrequency));
 
     dispatch(setStatus(statuses.ready));
 
