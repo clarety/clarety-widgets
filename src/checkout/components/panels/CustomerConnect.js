@@ -13,6 +13,7 @@ export class CheckoutCustomerConnect {
       tracking: getTrackingData(state),
 
       sourceOptions: getSourceOptions(state),
+      defaultCountry: getSetting(state, 'defaultCountry'),
     };
   };
   

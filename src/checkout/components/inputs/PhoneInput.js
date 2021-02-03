@@ -9,11 +9,11 @@ import { getValidationError } from 'form/utils';
 
 class PurePhoneInput extends React.PureComponent {
   render() {
-    let { field, label, placeholder, value, onChange, error, required, hideLabel } = this.props;
+    let { field, label, placeholder, value, onChange, error, required, hideLabel, country } = this.props;
     if (hideLabel) placeholder = label;
     if (!required) placeholder += ' (Optional)';
 
-    const country = Config.get('phoneCountry');
+    country = country || Config.get('phoneCountry') || 'AU';
 
     return (
       <Form.Group controlId={field}>

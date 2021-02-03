@@ -138,7 +138,7 @@ export class CheckoutCustomerPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, isBusy, index, settings } = this.props;
+    const { layout, isBusy, index, settings, defaultCountry } = this.props;
     const { formData } = this.state;
 
     const showBusinessName = formData['customer.type'] === 'business';
@@ -193,17 +193,35 @@ export class CheckoutCustomerPanel extends BasePanel {
               {settings.showHomeAndWorkPhone &&
                 <Form.Row>
                   <Col sm={6}>
-                    <PhoneInput field="customer.phone1" label="Home Phone" hideLabel required={settings.requirePhone} />
+                    <PhoneInput
+                      field="customer.phone1"
+                      label="Home Phone"
+                      hideLabel
+                      required={settings.requirePhone}
+                      country={defaultCountry}
+                    />
                   </Col>
                   <Col sm={6}>
-                    <PhoneInput field="customer.phone2" label="Work Phone" hideLabel required={settings.requirePhone} />
+                    <PhoneInput
+                      field="customer.phone2"
+                      label="Work Phone"
+                      hideLabel
+                      required={settings.requirePhone}
+                      country={defaultCountry}
+                    />
                   </Col>
                 </Form.Row>
               }
 
               <Form.Row>
                 <Col sm={6}>
-                  <PhoneInput field="customer.mobile" label="Mobile Phone" hideLabel required={settings.requirePhone} />
+                  <PhoneInput
+                    field="customer.mobile"
+                    label="Mobile Phone"
+                    hideLabel
+                    required={settings.requirePhone}
+                    country={defaultCountry}
+                  />
                 </Col>
                 <Col sm={6}>
                 </Col>
