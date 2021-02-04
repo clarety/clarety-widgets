@@ -66,6 +66,7 @@ export class _FundraisingStartRoot extends React.Component {
       widgetElementId: this.props.elementId,
       seriesId: this.props.seriesId,
       storeUid: this.props.storeUid,
+      teamId: this.props.teamId,
       pageType: this.props.pageType,
       confirmPageUrl: this.props.confirmPageUrl,
       variant: this.props.variant,
