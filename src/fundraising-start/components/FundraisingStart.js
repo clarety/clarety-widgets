@@ -65,6 +65,7 @@ export class _FundraisingStartRoot extends React.Component {
     updateAppSettings({
       widgetElementId: this.props.elementId,
       seriesId: this.props.seriesId,
+      teamId: this.props.teamId,
       storeUid: this.props.storeUid,
       pageType: this.props.pageType,
       confirmPageUrl: this.props.confirmPageUrl,
