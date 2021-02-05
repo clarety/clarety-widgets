@@ -3,7 +3,7 @@ import { Form, Row, Col } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { requiredField, emailField } from 'shared/utils';
 import { InputGroup } from 'react-bootstrap';
-import { TextInput, EmailInput, StateInput, CountryInput, ErrorMessages, SubmitButton } from 'form/components';
+import { TextInput, EmailInput, StateInput, CountryInput, ErrorMessages, SubmitButton, FormElement } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
   onClickSubmit = async (event) => {
@@ -81,6 +81,7 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderCustomerForm() {
+    const { defaultCountry } = this.props;
     const { nameOption, showState, showCountry, buttonText } = this.props.settings;
 
     return (
@@ -104,8 +105,9 @@ export class CustomerPanel extends BasePanel {
             <StateInput field="customer.billing.state" placeholder="State" country="AU" hideErrors required />
           }
 
-          {showCountry &&
-            <CountryInput field="customer.billing.country" placeholder="Country" hideErrors required />
+          {showCountry
+            ? <CountryInput field="customer.billing.country" initialValue={defaultCountry} placeholder="Country" hideErrors required />
+            : <FormElement field="customer.billing.country" value={defaultCountry} />
           }
 
           <InputGroup.Append>
