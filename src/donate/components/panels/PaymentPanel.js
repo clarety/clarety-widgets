@@ -46,7 +46,7 @@ export class _PaymentPanel extends BasePaymentPanel {
     const { frequency, amount } = this.props;
     
     const label = frequency === 'recurring'
-      ? t('monthly-donation-amount', 'Montly Donation Amount')
+      ? t('monthly-donation-amount', 'Monthly Donation Amount')
       : t('donation-amount', 'Donation Amount');
 
     return (
