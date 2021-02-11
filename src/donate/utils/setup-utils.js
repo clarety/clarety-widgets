@@ -1,4 +1,4 @@
-import { SuggestedAmount, SuggestedAmountLg, VariableAmount, VariableAmountLg } from 'donate/components';
+import { SuggestedAmount, SuggestedAmountLg, VariableAmount, VariableAmountLg, SuggestedAmountPriceOnly } from 'donate/components';
 
 export const mapDonationSettings = (result) => {
   const settings = {
@@ -17,7 +17,11 @@ export const mapDonationSettings = (result) => {
 
 export function setupDefaultResources(resources) {
   resources.setComponent('SuggestedAmount', SuggestedAmount);
-  resources.setComponent('SuggestedAmountLg', SuggestedAmountLg);
   resources.setComponent('VariableAmount', VariableAmount);
+
+  resources.setComponent('SuggestedAmountLg', SuggestedAmountLg);
   resources.setComponent('VariableAmountLg', VariableAmountLg);
+  
+  resources.setComponent('SuggestedAmountPriceOnly', SuggestedAmountPriceOnly);
+  resources.setComponent('VariableAmountPriceOnly', VariableAmount);
 }
