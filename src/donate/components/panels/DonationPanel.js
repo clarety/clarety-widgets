@@ -1,11 +1,10 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
-import { Breakpoint } from 'react-socks';
 import { requiredField } from 'shared/utils';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { SubmitButton, BackButton, ErrorMessages, SelectInput } from 'form/components';
-import { getValidationError } from 'form/utils';
+import { PriceHandlesStandard, PriceHandlesPriceOnly } from 'donate/components';
 import { FrequencySelect, ScheduleSelectButtonGroup, ScheduleSelectDropdown } from 'donate/components';
 
 export class DonationPanel extends BasePanel {
@@ -13,18 +12,6 @@ export class DonationPanel extends BasePanel {
     const { layout, clearItems } = this.props;
     if (layout === 'tabs') clearItems();
   }
-
-  onMouseEnterAmount = (amountInfo) => {
-    // Override in subclass.
-  };
-
-  onMouseLeaveAmount = (amountInfo) => {
-    // Override in subclass.
-  };
-
-  onSelectAmount = (frequency, amount, isVariableAmount) => {
-    this.props.selectAmount(frequency, amount, isVariableAmount);
-  };
 
   onSelectSchedule = (offerPaymentUid) => {
     this.props.selectSchedule(offerPaymentUid);
@@ -72,6 +59,10 @@ export class DonationPanel extends BasePanel {
       requiredField(errors, formData, 'saleline.givingType');
     }
   }
+
+  getOffer(frequency) {
+    return this.props.offers.find(offer => offer.frequency === frequency);
+  };
 
   renderWait() {
     const { layout, index, settings } = this.props;
@@ -154,7 +145,7 @@ export class DonationPanel extends BasePanel {
     const { frequency, selections, settings } = this.props;
     if (frequency !== 'recurring') return null;
 
-    const offer = this._getOffer('recurring');
+    const offer = this.getOffer('recurring');
     if (!offer.schedules || offer.schedules.length < 2) return null;
 
     const value = selections['recurring'].offerPaymentUid;
@@ -181,85 +172,24 @@ export class DonationPanel extends BasePanel {
   }
 
   renderPriceHandles() {
-    const { frequency, layout } = this.props;
-    
-    const offer = this._getOffer(frequency);
-    const variableAmount = this._getVariableAmount(offer);
+    const { frequency, layout, settings, selections, resources, errors } = this.props;
+    const offer = this.getOffer(frequency);
 
-    const singleColPriceHandles = (
-      <div className="price-handles" data-testid="suggested-amounts">
-        {offer.amounts.map((amount, index) =>
-          this.renderSuggestedAmount(amount, index, 'SuggestedAmount')
-        )}
-        {this.renderVariableAmount(variableAmount, 'VariableAmount')}
-      </div>
-    );
-
-    const multiColPriceHandles = (
-      <div className="price-handles-lg" data-testid="suggested-amounts-lg">
-        {offer.amounts.map((amount, index) =>
-          this.renderSuggestedAmount(amount, index, 'SuggestedAmountLg')
-        )}
-        {this.renderVariableAmount(variableAmount, 'VariableAmountLg')}
-      </div>
-    );
-
-    if (layout === 'tabs') {
-      return singleColPriceHandles;
+    let PriceHandlesComponent;
+    switch (settings.priceHandleStyle) {
+      case 'price-only': PriceHandlesComponent = PriceHandlesPriceOnly; break;
+      default:           PriceHandlesComponent = PriceHandlesStandard;  break;
     }
 
     return (
-      <React.Fragment>
-        <Breakpoint medium down>
-          {singleColPriceHandles}
-        </Breakpoint>
-
-        <Breakpoint large up>
-          {multiColPriceHandles}
-        </Breakpoint>
-      </React.Fragment>
-    );
-  }
-
-  renderSuggestedAmount = (suggestedAmount, index, componentName) => {
-    const { selections, frequency, resources } = this.props;
-    const currentSelection = selections[frequency];
-
-    // Ignore variable amount, we'll add a field below the suggested amounts.
-    if (suggestedAmount.variable) return null;
-
-    const SuggestedAmount = resources.getComponent(componentName);
-    const isSelected = !currentSelection.isVariableAmount && currentSelection.amount === suggestedAmount.amount;
-
-    return (
-      <SuggestedAmount
-        key={suggestedAmount.amount}
-        amountInfo={suggestedAmount}
-        onClick={amount => this.onSelectAmount(frequency, amount, false)}
-        onMouseEnter={this.onMouseEnterAmount}
-        onMouseLeave={this.onMouseLeaveAmount}
-        isSelected={isSelected}
-        index={index}
-      />
-    );
-  };
-
-  renderVariableAmount(variableAmount, componentName) {
-    if (!variableAmount) return null;
-
-    const { selections, frequency, resources, errors } = this.props;
-    const currentSelection = selections[frequency];
-    const VariableAmount = resources.getComponent(componentName);
-
-    return (
-      <VariableAmount
-        amountInfo={variableAmount}
-        value={currentSelection.variableAmount || ''}
-        onChange={amount => this.onSelectAmount(frequency, amount, true)}
-        onMouseEnter={this.onMouseEnterAmount}
-        onMouseLeave={this.onMouseLeaveAmount}
-        isSelected={currentSelection.isVariableAmount}
-        error={getValidationError('variable-amount', errors)}
+      <PriceHandlesComponent
+        offer={offer}
+        frequency={frequency}
+        selections={selections}
+        errors={errors}
+        layout={layout}
+        style={settings.priceHandleStyle}
+        resources={resources}
       />
     );
   }
@@ -284,8 +214,6 @@ export class DonationPanel extends BasePanel {
       </div>
     );
   }
-
-  
 
   renderFooter() {
     const { layout, isBusy, settings, index } = this.props;
@@ -331,32 +259,5 @@ export class DonationPanel extends BasePanel {
         </PanelBody>
       </PanelContainer>
     );
-  }
-
-  _getOffer = frequency => {
-    return this.props.offers.find(offer => offer.frequency === frequency);
-  };
-
-  _getVariableAmount = offer => {
-    return offer.amounts.find(amount => amount.variable === true);
-  };
-
-  _getDefaultAmountInfo(frequency) {
-    const offer = this._getOffer(frequency);
-    const defaultAmount = offer.amounts.find(amountInfo => amountInfo.default);
-    return defaultAmount;
-  }
-
-  _getSelectedAmountInfo() {
-    const { selections, frequency } = this.props;
-
-    const offer = this._getOffer(frequency);
-    const selection = selections[frequency];
-
-    const amount = selection.isVariableAmount
-      ? offer.amounts.find(amount => amount.variable)
-      : offer.amounts.find(amount => amount.amount === selection.amount);
-    
-    return amount;
   }
 }

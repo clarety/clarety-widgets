@@ -3,6 +3,9 @@ export * from './amounts/ScheduleSelectButtonGroup';
 export * from './amounts/ScheduleSelectDropdown';
 export * from './amounts/SuggestedAmount';
 export * from './amounts/SuggestedAmountLg';
+export * from './amounts/SuggestedAmountPriceOnly';
+export * from './amounts/PriceHandlesStandard';
+export * from './amounts/PriceHandlesPriceOnly';
 export * from './amounts/VariableAmount';
 export * from './amounts/VariableAmountLg';
 
