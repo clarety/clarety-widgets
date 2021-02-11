@@ -42,7 +42,7 @@ class _PriceHandlesPriceOnly extends _PriceHandlesStandard {
     const variableAmount = this.getVariableAmount(offer);
 
     return (
-      <div className="price-handles--no-images">
+      <div className="price-handles--price-only">
         {offer.amounts.map((amount, index) =>
           this.renderSuggestedAmount(amount, index, 'SuggestedAmountPriceOnly')
         )}
