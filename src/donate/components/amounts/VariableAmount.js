@@ -5,7 +5,7 @@ import { CurrencySymbol } from 'shared/components';
 import { cleanDecimal } from 'form/utils';
 import { FieldError } from 'form/components';
 
-export const VariableAmount = ({ amountInfo, value, placeholder, isSelected, onChange, onMouseEnter, onMouseLeave, error }) => (
+export const VariableAmount = ({ amountInfo, value, placeholder, isSelected, autoFocus, onChange, onMouseEnter, onMouseLeave, error }) => (
   <div className={`variable-amount ${isSelected ? 'variable-amount--selected' : ''}`}>
     <InputGroup>
       <InputGroup.Prepend>
@@ -22,6 +22,7 @@ export const VariableAmount = ({ amountInfo, value, placeholder, isSelected, onC
         onMouseLeave={() => onMouseLeave(amountInfo)}
         data-testid="variable-amount-input"
         isInvalid={!!error}
+        autoFocus={autoFocus}
       />
 
       <FieldError error={error} />

@@ -5,6 +5,8 @@ import { selectAmount } from 'donate/actions';
 import { _PriceHandlesStandard } from 'donate/components';
 
 class _PriceHandlesPriceOnly extends _PriceHandlesStandard {
+  autoFocusVariableAmount = true;
+
   constructor(props) {
     super(props);
 
@@ -74,9 +76,6 @@ class _PriceHandlesPriceOnly extends _PriceHandlesStandard {
 
     // Select variable amount.
     this.onSelectAmount(frequency, currentSelection.variableAmount, true);
-
-    // Focus input.
-    // TODO:!!
   };
 }
 
