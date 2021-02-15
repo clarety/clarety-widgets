@@ -5,6 +5,7 @@ import { getValidationError } from 'form/utils';
 import { selectAmount } from 'donate/actions';
 
 export class _PriceHandlesStandard extends React.Component {
+  autoFocusVariableAmount = false;
 
   onMouseEnterAmount = (amountInfo) => {
     // Override in subclass.
@@ -118,6 +119,7 @@ export class _PriceHandlesStandard extends React.Component {
         onMouseLeave={this.onMouseLeaveAmount}
         isSelected={currentSelection.isVariableAmount}
         error={getValidationError('variable-amount', errors)}
+        autoFocus={this.autoFocusVariableAmount}
       />
     );
   }
