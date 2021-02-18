@@ -6,6 +6,7 @@ import { SelectInput } from 'form/components';
 import { Currency } from 'shared/components';
 import { requiredField } from 'shared/utils';
 import { createStartDateOptions } from 'donate/utils';
+import { CoverFeesCheckbox } from 'donate/components';
 
 export class _PaymentPanel extends BasePaymentPanel {
   shouldShowStartDate(paymentMethod) {
@@ -83,6 +84,18 @@ export class _PaymentPanel extends BasePaymentPanel {
         </Col>
       </Row>
     );
+  }
+
+  renderTermsCheckbox() {
+    const { settings } = this.props;
+
+    if (settings.calcFeesFn) {
+      return (
+        <CoverFeesCheckbox calculateFees={settings.calcFeesFn} />
+      );
+    }
+
+    return null;
   }
 
   getSubmitBtnText() {

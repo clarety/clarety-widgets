@@ -8,6 +8,10 @@ import { SuccessPanel, SuccessConnect } from '../../src/donate/components';
 import enTranslation from '../../src/donate/translations/en';
 import '../../src/donate/style.scss';
 
+function getCoverFeesAmount(donationAmount) {
+  return donationAmount * 0.05;
+}
+
 window.renderDonateWidget = (props) => {
   DonateWidget.init();
 
@@ -52,6 +56,7 @@ window.renderDonateWidget = (props) => {
         hideHeader: true,
         // hideStartDate: true,
         submitBtnText: 'Donate',
+        calcFeesFn: getCoverFeesAmount,
       },
     },
     {
