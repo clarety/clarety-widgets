@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 import { selectAmount } from 'donate/actions';
 import { _PriceHandlesStandard } from 'donate/components';
 
-class _PriceHandlesPriceOnly extends _PriceHandlesStandard {
+export class _PriceHandlesPriceOnly extends _PriceHandlesStandard {
   autoFocusVariableAmount = true;
 
   constructor(props) {
