@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 import { ClaretyApi } from 'clarety-utils';
-import { setPayment, isStripe, prepareStripePayment, authoriseStripePayment } from 'shared/actions';
+import { setPayment, isStripe, prepareStripePayment, authoriseStripePayment, setStatus, statuses } from 'shared/actions';
 import { getCart, getSetting } from 'shared/selectors';
 import { getJwtSession } from 'shared/utils';
 import { types } from 'checkout/actions';
@@ -28,6 +28,8 @@ export const fetchPaymentMethods = () => {
 
 export const makePayment = (paymentData) => {
   return async (dispatch, getState) => {
+    dispatch(setStatus(statuses.busy));
+
     const state = getState();
 
     const paymentMethod = getPaymentMethod(state, paymentData.type);
