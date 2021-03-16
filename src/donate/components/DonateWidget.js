@@ -97,6 +97,8 @@ export class _DonateWidgetRoot extends React.Component {
     changeLanguage(language);
 
     updateAppSettings({
+      singleOfferId:      singleOfferId,
+      recurringOfferId:   recurringOfferId,
       variant:            this.props.variant,
       confirmPageUrl:     this.props.confirmPageUrl,
       defaultCountry:     this.props.defaultCountry,

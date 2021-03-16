@@ -1,11 +1,11 @@
 import Cookies from 'js-cookie';
-import { statuses, setStatus, setRecaptcha, clearRecaptcha, setPayment, updateCartData, isStripe, prepareStripePayment, authoriseStripePayment } from 'shared/actions';
+import { statuses, setStatus, setRecaptcha, clearRecaptcha, setPayment, updateCartData, isStripe, prepareStripePayment, authoriseStripePayment, updateAppSettings } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
 import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { DonationApi } from 'donate/utils';
 import { types, addDonationToCart, addCustomerToCart } from 'donate/actions';
-import { getPaymentMethod, getPaymentPostData, getSelectedFrequency } from 'donate/selectors';
+import { getStoreUid, getPaymentMethod, getPaymentPostData, getSelectedFrequency } from 'donate/selectors';
 
 export const makePayment = (paymentData, { isPageLayout } = {}) => {
   return async (dispatch, getState) => {
@@ -78,12 +78,18 @@ const attemptPayment = (paymentData, paymentMethod) => {
 
 export const handlePaymentResult = (result, paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
-    dispatch(updateCartData({
+
+    const updatedCartData = {
       uid: result.uid,
       jwt: result.jwt,
       status: result.status,
-      customer: result.customer,
-    }));
+    };
+
+    if (result.customer) {
+      updatedCartData.customer = result.customer;
+    }
+
+    dispatch(updateCartData(updatedCartData));
 
     switch (result.status) {
       case 'error':     return dispatch(handlePaymentError(result, paymentData, paymentMethod));
@@ -96,6 +102,11 @@ export const handlePaymentResult = (result, paymentData, paymentMethod) => {
 
 const handlePaymentError = (result, paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
+    if (isStripe(paymentMethod)) {
+      // Fetch payment-methods again to get a new payment intent.
+      await dispatch(fetchPaymentMethods());
+    }
+
     dispatch(makePaymentFailure(result));
     dispatch(setErrors(result.validationErrors));
     dispatch(setStatus(statuses.ready));
@@ -156,6 +167,27 @@ const handleStripeAuthorise = (paymentResult, paymentData, paymentMethod) => {
   };
 };
 
+const fetchPaymentMethods = () => {
+  return async (dispatch, getState) => {
+    dispatch(fetchPaymentMethodsRequest());
+    
+    const state = getState();
+    const storeUid = getStoreUid(state);
+    const singleOfferId = getSetting(state, 'singleOfferId');
+    const recurringOfferId = getSetting(state, 'recurringOfferId');
+    const result = await DonationApi.fetchPaymentMethods(storeUid, singleOfferId, recurringOfferId);
+
+    if (result.paymentMethods) {
+      dispatch(fetchPaymentMethodsSuccess());
+      dispatch(updateAppSettings({ paymentMethods: result.paymentMethods }));
+      return true;
+    } else {
+      dispatch(fetchPaymentMethodsFailure());
+      return false;
+    }
+  };
+};
+
 
 // Make Payment
 
@@ -172,4 +204,15 @@ export const makePaymentSuccess = (result) => ({
 export const makePaymentFailure = (result) => ({
   type: types.makePaymentFailure,
   result: result,
+});
+
+// Fetch Payment Methods
+
+const fetchPaymentMethodsRequest = () => ({
+  type: types.fetchPaymentMethodsRequest,
+});
+
+const fetchPaymentMethodsSuccess = (paymentMethods) => ({
+  type: types.fetchPaymentMethodsSuccess,
+  paymentMethods: paymentMethods,
 });
