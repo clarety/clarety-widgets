@@ -1,8 +1,13 @@
 import React from 'react';
 import { UnsubscribePanel, UnsubscribeConnect, ConfirmPanel } from '../../src/unsubscribe/components';
 import { UnsubscribeWidget } from '../../src';
+import enTranslation from '../../src/unsubscribe/translations/en';
 
 UnsubscribeWidget.init();
+
+UnsubscribeWidget.setLanguages({
+  en: enTranslation,
+});
 
 UnsubscribeWidget.setPanels([
   {
@@ -17,7 +22,7 @@ UnsubscribeWidget.setPanels([
   }
 ]);
 
-const SubscribeDemo = () => (
+const UnsubscribeDemo = () => (
   <div className="container my-5">
     <div className="row">
       <div className="col">
@@ -51,4 +56,4 @@ const SubscribeDemo = () => (
   </div>
 );
 
-export default SubscribeDemo;
+export default UnsubscribeDemo;

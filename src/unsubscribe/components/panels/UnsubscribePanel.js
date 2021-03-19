@@ -1,8 +1,9 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { emailField } from 'shared/utils';
-import { TextInput, EmailInput, StateInput, CountryInput, ErrorMessages, SubmitButton } from 'form/components';
+import { EmailInput, ErrorMessages, SubmitButton } from 'form/components';
 
 export class UnsubscribePanel extends BasePanel {
   onClickSubmit = async (event) => {
@@ -41,7 +42,7 @@ export class UnsubscribePanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title="Personal Details"
+          title={t('unsubscribe-title', 'Personal Details')}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -76,8 +77,8 @@ export class UnsubscribePanel extends BasePanel {
 
     return (
       <Form onSubmit={this.onClickSubmit}>          
-        <EmailInput field="email" type="email" placeholder="Please enter your email" hideErrors required />
-        <SubmitButton title={settings.buttonText || 'Unsubscribe'} />
+        <EmailInput field="email" type="email" placeholder={t('unsubscribe-email-placeholder', 'Please enter your email')} hideErrors required />
+        <SubmitButton title={settings.buttonText || t('unsubscribe-btn', 'Unsubscribe')} />
       </Form>
     );
   }
