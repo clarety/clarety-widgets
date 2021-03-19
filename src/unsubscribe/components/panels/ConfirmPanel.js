@@ -15,7 +15,7 @@ export class ConfirmPanel extends BasePanel {
       <PanelContainer layout={layout} status="edit" className="confirm-panel">
         <PanelBody layout={layout} status="edit">
 
-          <div className="confirm-content">{content}</div>
+          <div className="confirm-content" dangerouslySetInnerHTML={{ __html: content }} />
 
         </PanelBody>
       </PanelContainer>
