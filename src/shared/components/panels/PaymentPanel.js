@@ -478,7 +478,9 @@ export class _PaymentPanel extends BasePanel {
           <Col>
             <Form.Group controlId="cardNumber">
               <Form.Label>{t('card-number', 'Card Number')}</Form.Label>
-              <CardNumberElement options={{ style }} />
+              <CardNumberElement
+                options={{ style, placeholder: '•••• •••• •••• ••••' }}
+              />
             </Form.Group>
           </Col>
         </Form.Row>
@@ -487,7 +489,12 @@ export class _PaymentPanel extends BasePanel {
           <Col>
             <Form.Group>
               <Form.Label>{t('card-expiry', 'Expiry')}</Form.Label>
-              <CardExpiryElement options={{ style }} />
+              <CardExpiryElement
+                options={{
+                  style,
+                  placeholder: t('card-expiry-placeholder', 'MM / YY'),
+                }}
+              />
             </Form.Group>
           </Col>
 
@@ -495,7 +502,9 @@ export class _PaymentPanel extends BasePanel {
             <Form.Group controlId="ccv">
               <Form.Label>{t('card-ccv', 'CVC')}</Form.Label>
               {this.renderCvcInfoBtn()}
-              <CardCvcElement options={{ style }} />
+              <CardCvcElement
+                options={{ style, placeholder: '•••' }}
+              />
             </Form.Group>
           </Col>
         </Form.Row>
