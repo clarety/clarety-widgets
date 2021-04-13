@@ -1,6 +1,7 @@
 import React from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, ElementsConsumer } from '@stripe/react-stripe-js';
+import { getLanguage } from 'shared/translations';
 
 export const injectStripe = (PaymentPanelComponent) => {
   class PaymentPanel extends React.Component {
@@ -17,9 +18,11 @@ export const injectStripe = (PaymentPanelComponent) => {
     }
 
     maybeLoadStripe() {
+      const locale = getLanguage();
+
       if (this.shouldUseStripe() && !this.stripePromise) {
         const paymentMethod = this.getPaymentMethod();
-        this.stripePromise = loadStripe(paymentMethod.publicKey);
+        this.stripePromise = loadStripe(paymentMethod.publicKey, { locale });
       }
     }
 
