@@ -1,7 +1,7 @@
 import React from 'react';
-import { LoginPanel, PaymentPanel } from '../../src/shared/components';
+import { LoginPanel, PaymentPanel, DonationPanel } from '../../src/shared/components';
 import { CheckoutCustomerPanel, AddressPanel, ShippingPanel } from '../../src/checkout/components';
-import { LoginConnect, CheckoutCustomerConnect, AddressConnect, ShippingConnect, PaymentConnect } from '../../src/checkout/components';
+import { LoginConnect, CheckoutCustomerConnect, AddressConnect, ShippingConnect, PaymentConnect, DonationConnect } from '../../src/checkout/components';
 import { Checkout, setupCheckoutAxiosMock } from '../../src';
 import '../../src/checkout/style.scss';
 
@@ -15,6 +15,14 @@ Checkout.setClientIds({
 });
 
 Checkout.setPanels([
+  {
+    component: DonationPanel,
+    connect: DonationConnect,
+    settings: {
+      showFrequencySelect: true,
+      showNoneButton: true,
+    },
+  },
   {
     component: LoginPanel,
     connect: LoginConnect,
@@ -69,6 +77,11 @@ export default class CheckoutDemo extends React.Component {
         <Checkout
           addressFinderKey="ADDRESSFINDER_DEMO_KEY"
           defaultCountry="NZ"
+
+          // A21
+          storeUid="str_8lo8"
+          donationSingleOfferId="19"
+          donationRecurringOfferId="164"
         />
       </div>
     );

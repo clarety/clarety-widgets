@@ -3,7 +3,7 @@ import { parseNestedElements } from 'shared/utils';
 import { types } from 'checkout/actions';
 
 export const fetchCart = (cartUid) => {
-  return async dispatch => {
+  return async (dispatch) => {
     dispatch(fetchCartRequest(cartUid));
 
     const results = await ClaretyApi.get(`carts/${cartUid}/`);
@@ -53,7 +53,7 @@ export const updateSale = () => {
   };
 };
 
-export const applyPromoCode = promoCode => {
+export const applyPromoCode = (promoCode) => {
   return async (dispatch, getState) => {
     const { cart } = getState();
 
@@ -73,29 +73,29 @@ export const applyPromoCode = promoCode => {
 
 // Fetch Cart
 
-const fetchCartRequest = id => ({
+const fetchCartRequest = (id) => ({
   type: types.fetchCartRequest,
   id: id,
 });
 
-const fetchCartSuccess = result => ({
+const fetchCartSuccess = (result) => ({
   type: types.fetchCartSuccess,
   result: result,
 });
 
-const fetchCartFailure = result => ({
+const fetchCartFailure = (result) => ({
   type: types.fetchCartFailure,
   result: result,
 });
 
 // Fetch Shipping Options
 
-const fetchShippingOptionsRequest = cardUid => ({
+const fetchShippingOptionsRequest = (cardUid) => ({
   type: types.fetchShippingOptionsRequest,
   cardUid: cardUid,
 });
 
-const fetchShippingOptionsSuccess = results => ({
+const fetchShippingOptionsSuccess = (results) => ({
   type: types.fetchShippingOptionsSuccess,
   results: results,
 });
@@ -106,34 +106,34 @@ const fetchShippingOptionsFailure = () => ({
 
 // Update Sale
 
-const updateSaleRequest = putData => ({
+const updateSaleRequest = (putData) => ({
   type: types.updateSaleRequest,
   putData: putData,
 });
 
-const updateSaleSuccess = result => ({
+const updateSaleSuccess = (result) => ({
   type: types.updateSaleSuccess,
   result: result,
 });
 
-const updateSaleFailure = result => ({
+const updateSaleFailure = (result) => ({
   type: types.updateSaleFailure,
   result: result,
 });
 
 // Apply Promo Code
 
-const applyPromoCodeRequest = promoCode => ({
+const applyPromoCodeRequest = (promoCode) => ({
   type: types.applyPromoCodeRequest,
   promoCode: promoCode,
 });
 
-const applyPromoCodeSuccess = result => ({
+const applyPromoCodeSuccess = (result) => ({
   type: types.applyPromoCodeSuccess,
   result: result,
 });
 
-const applyPromoCodeFailure = result => ({
+const applyPromoCodeFailure = (result) => ({
   type: types.applyPromoCodeFailure,
   result: result,
 });

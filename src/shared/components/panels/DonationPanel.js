@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Spinner } from 'react-bootstrap';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FrequencySelect, SuggestedAmount, SuggestedAmountLg, VariableAmount, VariableAmountLg } from 'shared/components';
@@ -12,6 +12,12 @@ export class DonationPanel extends BasePanel {
 
     const defaults = this.getDefaults(props.priceHandles);
     this.state = { ...defaults };
+  }
+
+  onShowPanel() {
+    if (this.props.onShowPanel) {
+      this.props.onShowPanel();
+    }
   }
 
   onChangeFrequency = (frequency) => {
@@ -98,10 +104,11 @@ export class DonationPanel extends BasePanel {
 
       for (let offer of priceHandles) {
         const defaultAmount = offer.amounts.find(amount => amount.default);
+        const defaultOfferPaymentUid = offer.schedules ? offer.schedules[0].offerPaymentUid : undefined;
 
         defaultSelections[offer.frequency] = {
           offerUid:         offer.offerUid,
-          offerPaymentUid:  offer.offerPaymentUid,
+          offerPaymentUid:  defaultOfferPaymentUid,
           amount:           defaultAmount ? defaultAmount.amount : 0,
           isVariableAmount: false,
         };
@@ -136,11 +143,7 @@ export class DonationPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, index, settings } = this.props;
-    const { frequency } = this.state;
-    
-    const offer = this.getOffer(frequency);
-    const variableAmount = this.getVariableAmount(offer);
+    const { layout, index, priceHandles } = this.props;
 
     return (
       <PanelContainer layout={layout} status="edit" className="donation-panel">
@@ -151,40 +154,62 @@ export class DonationPanel extends BasePanel {
           title={t('donationPanel.editTitle', 'Make A Donation')}
         />
         <PanelBody layout={layout} status="edit">
-          
-          <p className="message-text">{t('donationPanel.message', settings.messageText || '')}</p>
-
-          <Form onSubmit={this.onClickNext}>
-
-            <ErrorMessages />
-
-            {settings.showFrequencySelect &&
-              <FrequencySelect
-                value={frequency}
-                onChange={this.onChangeFrequency}
-              />
-            }
-
-            <div className="card-deck flex-column mt-3 mx-n3 text-left flex-lg-row">
-              {offer.amounts.map(this.renderSuggestedAmount)}
-              {this.renderVariableAmount(variableAmount)}
-            </div>
-
-            <div className="panel-actions">
-              {settings.showNoneButton &&
-                <Button onClick={this.onClickNone} variant="secondary">
-                  {t(['donationPanel.btn.none', 'btn.none'], 'None')}
-                </Button>
-              }
-              
-              <Button type="submit"> 
-                {t(['donationPanel.btn.next', 'btn.next'], 'Next')}
-              </Button>
-            </div>
-
-          </Form>
+          {priceHandles
+            ? this.renderContent()
+            : this.renderSpinner()
+          }
         </PanelBody>
       </PanelContainer>
+    );
+  }
+
+  renderContent() {
+    const { settings } = this.props;
+    const { frequency } = this.state;
+    
+    const offer = this.getOffer(frequency);
+    if (!offer) return null;
+
+    const variableAmount = this.getVariableAmount(offer);
+
+    return (
+      <Form onSubmit={this.onClickNext}>
+        <p className="message-text">{t('donationPanel.message', settings.messageText || '')}</p>
+
+        <ErrorMessages />
+
+        {settings.showFrequencySelect &&
+          <FrequencySelect
+            value={frequency}
+            onChange={this.onChangeFrequency}
+          />
+        }
+
+        <div className="card-deck flex-column mt-3 mx-n3 text-left flex-lg-row">
+          {offer.amounts.map(this.renderSuggestedAmount)}
+          {this.renderVariableAmount(variableAmount)}
+        </div>
+
+        <div className="panel-actions">
+          {settings.showNoneButton &&
+            <Button onClick={this.onClickNone} variant="secondary">
+              {t(['donationPanel.btn.none', 'btn.none'], 'None')}
+            </Button>
+          }
+          
+          <Button type="submit"> 
+            {t(['donationPanel.btn.next', 'btn.next'], 'Next')}
+          </Button>
+        </div>
+      </Form>
+    );
+  }
+
+  renderSpinner() {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100px' }}>
+        <Spinner animation="border" />
+      </div>
     );
   }
 
