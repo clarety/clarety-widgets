@@ -5,16 +5,16 @@ import { Config } from '../../src';
 
 Config.init({
   // instanceKey: 'mdc',
-  instanceKey: 'clarety-baseline',
-  // instanceKey: 'tnc',
+  // instanceKey: 'clarety-baseline',
+  instanceKey: 'tnc-hk',
   // instanceKey: 'clarety-church',
   // instanceKey: 'ethiopiaid',
   // instanceKey: 'a21',
   // instanceKey: 'miraclebabies',
   // instanceKey: 'bibleleague',
-  //instanceKey: 'bsfs',
+  // instanceKey: 'bsfs',
   devSitePath: 'http://localhost:3000/',
-  phoneCountry: 'AU',
+  // phoneCountry: 'AU',
 });
 
 // Mock cookies.

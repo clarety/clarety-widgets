@@ -4,7 +4,7 @@ import { CardNumberElement, CardExpiryElement, CardCvcElement } from '@stripe/re
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, injectStripe } from 'shared/components';
 import { requiredField, cardNumberField, cardExpiryField, ccvField } from 'shared/utils';
-import { TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, AccountNumberInput, BsbInput, NZAccountNumberInput } from 'form/components';
+import { TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, AccountNumberInput, BsbInput, NZAccountNumberInput, PhoneInput, NumberInput, SelectInput } from 'form/components';
 
 export class _PaymentPanel extends BasePanel {
   state = {
@@ -62,10 +62,27 @@ export class _PaymentPanel extends BasePanel {
     this.props.updateFormData('payment.type', paymentType);
   };
 
+  isHKDirectDebitAuth() {
+    if (this.props.cartStatus === 'authorise') {
+      const paymentMethod = this.getSelectedPaymentMethod();
+      if (paymentMethod) {
+        return paymentMethod.type === 'gatewaydd'
+            && paymentMethod.gateway === 'hk';
+      }
+    }
+
+    return false;
+  }
+
   onPressBack = (event) => {
     event.preventDefault();
 
-    this.props.prevPanel();
+    if (this.isHKDirectDebitAuth()) {
+      const paymentMethod = this.getSelectedPaymentMethod();
+      this.props.cancelPaymentAuthorise(paymentMethod);
+    } else {
+      this.props.prevPanel();
+    }
   };
 
   onPressNext = async (event) => {
@@ -86,13 +103,12 @@ export class _PaymentPanel extends BasePanel {
   };
 
   validate() {
-    const { setErrors, formData } = this.props;
-    const paymentMethod = this.getPaymentMethod(formData['payment.type']);
+    const errors = [];
 
-    const errors = [];    
+    const paymentMethod = this.getSelectedPaymentMethod();
     this.validateFields(paymentMethod, errors);
 
-    setErrors(errors);
+    this.props.setErrors(errors);
     return errors.length === 0;
   }
 
@@ -106,10 +122,10 @@ export class _PaymentPanel extends BasePanel {
     }
     
     if (paymentMethod.type === 'gatewaydd') {
-      if (paymentMethod.gateway === 'nz') {
-        return this.validateNZDirectDebitFields(errors);
-      } else {
-        return this.validateDirectDebitFields(errors);
+      switch (paymentMethod.gateway) {
+        case 'nz': return this.validateNZDirectDebitFields(errors);
+        case 'hk': return this.validateHKDirectDebitFields(errors);
+        default:   return this.validateDirectDebitFields(errors);
       }
     }
     
@@ -152,12 +168,27 @@ export class _PaymentPanel extends BasePanel {
     requiredField(errors, formData, 'payment.suffixCode');
   }
 
+  validateHKDirectDebitFields(errors) {
+    const { formData, cartStatus } = this.props;
+
+    requiredField(errors, formData, 'payment.accountName');
+    requiredField(errors, formData, 'payment.bankCode');
+    requiredField(errors, formData, 'payment.accountNumber');
+
+    requiredField(errors, formData, 'payment.verificationType');
+    requiredField(errors, formData, 'payment.verificationNumber');
+
+    if (cartStatus === 'authorise') {
+      requiredField(errors, formData, 'payment.authPassword');
+    }
+  }
+
   validateNoPaymentFields(errors) {
     // NOTE: no validation required.
   }
 
   getPaymentData() {
-    const { formData } = this.props;
+    const { formData, cartStatus } = this.props;
 
     const paymentType = formData['payment.type'];
     const paymentMethod = this.getPaymentMethod(paymentType);
@@ -192,6 +223,23 @@ export class _PaymentPanel extends BasePanel {
           accountNumber: formData['payment.accountNumber'],
           suffixCode:    formData['payment.suffixCode'],
         };
+      } else if (paymentMethod.gateway === 'hk') {
+        const paymentData = {
+          type:               paymentType,
+          accountName:        formData['payment.accountName'],
+          bankCode:           formData['payment.bankCode'],
+          accountNumber:      formData['payment.accountNumber'],
+          verificationType:   formData['payment.verificationType'],
+          verificationNumber: formData['payment.verificationNumber'],
+          verificationMobile: formData['payment.verificationMobile'],
+        };
+
+        if (cartStatus === 'authorise') {
+          paymentData['authSecret']   = this.props.authSecret;
+          paymentData['authPassword'] = formData['payment.authPassword'];
+        }
+
+        return paymentData;
       } else {
         return {
           type:          paymentType,
@@ -207,6 +255,11 @@ export class _PaymentPanel extends BasePanel {
     }
 
     throw new Error(`[Clarety] unhandled 'getPaymentData' for paymentType: ${paymentType}`);
+  }
+
+  getSelectedPaymentMethod() {
+    const paymentType = this.props.formData['payment.type'];
+    return this.getPaymentMethod(paymentType);
   }
 
   getPaymentMethod(type) {
@@ -263,9 +316,13 @@ export class _PaymentPanel extends BasePanel {
   }
 
   renderContent() {
-    const { layout, isBusy, formData } = this.props;
-    const paymentMethod = this.getPaymentMethod(formData['payment.type']);
+    const { layout, isBusy } = this.props;
+    const paymentMethod = this.getSelectedPaymentMethod();
     if (!paymentMethod) return null;
+
+    if (this.isHKDirectDebitAuth()) {
+      return this.renderHKAuthorise();
+    }
 
     return (
       <React.Fragment>
@@ -335,10 +392,10 @@ export class _PaymentPanel extends BasePanel {
     }
 
     if (paymentMethod.type === 'gatewaydd') {
-      if (paymentMethod.gateway === 'nz') {
-        return this.renderNZDirectDebitFields(paymentMethod);
-      } else {
-        return this.renderDirectDebitFields(paymentMethod);
+      switch (paymentMethod.gateway) {
+        case 'nz': return this.renderNZDirectDebitFields(paymentMethod);
+        case 'hk': return this.renderHKDirectDebitFields(paymentMethod);
+        default:   return this.renderDirectDebitFields(paymentMethod);
       }
     }
 
@@ -451,6 +508,68 @@ export class _PaymentPanel extends BasePanel {
                 accountNumberField="payment.accountNumber"
                 suffixCodeField="payment.suffixCode"
               />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+      </React.Fragment>
+    );
+  }
+
+  renderHKDirectDebitFields(paymentMethod) {
+    return (
+      <React.Fragment>
+        <Form.Row>
+          <Col>
+            <Form.Group controlId="accountName">
+              <Form.Label>{t('account-name', 'Account Name')}</Form.Label>
+              <TextInput field="payment.accountName" testId="account-name-input" />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col sm={6}>
+            <Form.Group controlId="bankCode">
+              <Form.Label>{t('bank-code', 'Bank Code')}</Form.Label>
+              <NumberInput field="payment.bankCode" maxLength={3} testId="bank-code-input" />
+            </Form.Group>
+          </Col>
+
+          <Col sm={6}>
+            <Form.Group controlId="accountNumber">
+              <Form.Label>{t('account-number', 'Account Number')}</Form.Label>
+              <AccountNumberInput field="payment.accountNumber" maxLength={12} testId="account-number-input" />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col>
+            <Form.Group controlId="verificationType">
+              <Form.Label>{t('verification-type', 'Verification Type')}</Form.Label>
+              <SelectInput
+                field="payment.verificationType"
+                options={[
+                  { value: '1', label: t('hkid', 'HKID') },
+                  { value: '2', label: t('passport', 'Passport') }
+                ]}
+              />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col sm={6}>
+            <Form.Group controlId="verificationNumber">
+              <Form.Label>{t('verification-number', 'Verification Number')}</Form.Label>
+              <TextInput field="payment.verificationNumber" testId="verification-number-input" />
+            </Form.Group>
+          </Col>
+
+          <Col sm={6}>
+            <Form.Group controlId="verificationMobile">
+              <Form.Label>{t('verification-mobile', 'Verification Mobile')}</Form.Label>
+              <PhoneInput field="payment.verificationMobile" testId="verification-mobile-input" />
             </Form.Group>
           </Col>
         </Form.Row>
@@ -587,6 +706,36 @@ export class _PaymentPanel extends BasePanel {
 
         {this.renderTerms()}
       </PanelFooter>
+    );
+  }
+
+  renderHKAuthorise() {
+    const { layout, isBusy } = this.props;
+
+    return (
+      <React.Fragment>
+        <PanelBody layout={layout} status="edit" isBusy={isBusy}>
+          {this.renderCartSummary()}
+          {this.renderErrorMessages()}
+          
+          <Form.Row>
+            <Col>
+              <Form.Group controlId="authPassword">
+                <Form.Label>
+                  {t('payment-auth-code', 'Please enter the authorisation code sent to your device')}
+                </Form.Label>
+                <NumberInput
+                  field="payment.authPassword"
+                  maxLength={6}
+                  testId="auth-password-input"
+                />
+              </Form.Group>
+            </Col>
+          </Form.Row>
+        </PanelBody>
+
+        {this.renderFooter()}
+      </React.Fragment>
     );
   }
 

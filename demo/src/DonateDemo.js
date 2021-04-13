@@ -40,14 +40,14 @@ window.renderDonateWidget = (props) => {
         showPhoneCountrySelect: true,
       },
     },
-    {
-      component: FundraisingPanel,
-      connect: FundraisingConnect,
-      settings: {
-        tabName: 'Fundraising',
-        hideHeader: true,
-      },
-    },
+    // {
+    //   component: FundraisingPanel,
+    //   connect: FundraisingConnect,
+    //   settings: {
+    //     tabName: 'Fundraising',
+    //     hideHeader: true,
+    //   },
+    // },
     {
       component: PaymentPanel,
       connect: PaymentConnect,
@@ -77,10 +77,12 @@ export default class DonateDemo extends React.Component {
     window.renderDonateWidget({
       elementId: 'donate-widget-demo',
 
-      storeUid: 'str_wey5', // baseline
+      // storeUid: 'str_wey5', // baseline
+      storeUid: 'str_mp60', // tnc-hk
       // storeUid: 'str_l9p7',
-      singleOfferId: '8',
-      recurringOfferId: '17',
+
+      singleOfferId: '1001',
+      recurringOfferId: '1002',
 
       // storeUid: 'str_8qx4',
       // singleOfferId: '103',
@@ -92,7 +94,7 @@ export default class DonateDemo extends React.Component {
       responseId: 'e9c2e351d90b11e996fd',
       emailResponseId: '1234',
 
-      // defaultFrequency: 'recurring', //single|recurring
+      defaultFrequency: 'recurring', //single|recurring
 
       // givingTypeOptions: [
       //     "General Donation",

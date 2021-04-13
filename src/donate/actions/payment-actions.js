@@ -120,6 +120,10 @@ const handlePaymentAuthorise = (result, paymentData, paymentMethod) => {
       return dispatch(handleStripeAuthorise(result, paymentData, paymentMethod));
     }
 
+    if (isHongKongDirectDebit(paymentMethod)) {
+      return dispatch(handleHKDirectDebitAuthorise(result, paymentData, paymentMethod));
+    }
+
     throw new Error('handlePaymentAuthorise not implemented for payment method: ' +  JSON.stringify(paymentMethod));
   };
 };
@@ -167,6 +171,38 @@ const handleStripeAuthorise = (paymentResult, paymentData, paymentMethod) => {
   };
 };
 
+const handleHKDirectDebitAuthorise = (paymentResult, paymentData, paymentMethod) => {
+  return async (dispatch, getState) => {
+    dispatch(updateCartData({
+      authSecret: paymentResult.authoriseSecret,
+    }));
+
+    dispatch(setStatus(statuses.ready));
+  };
+};
+
+export const cancelPaymentAuthorise = (paymentMethod) => {
+  return async (dispatch, getState) => {
+    if (isHongKongDirectDebit(paymentMethod)) {
+      return dispatch(cancelHKDirectDebitAuthorise(paymentMethod));
+    }
+
+    throw new Error('cancelPaymentAuthorise not implemented for payment method: ' +  JSON.stringify(paymentMethod));
+  };
+};
+
+const cancelHKDirectDebitAuthorise = (paymentMethod) => {
+  return async (dispatch, getState) => {
+    dispatch(updateCartData({
+      id: undefined,
+      uid: undefined,
+      jwt: undefined,
+      status: undefined,
+      authSecret: undefined,
+    }));
+  };
+};
+
 const fetchPaymentMethods = () => {
   return async (dispatch, getState) => {
     dispatch(fetchPaymentMethodsRequest());
@@ -187,6 +223,10 @@ const fetchPaymentMethods = () => {
     }
   };
 };
+
+function isHongKongDirectDebit(paymentMethod) {
+  return paymentMethod.type === 'gatewaydd' && paymentMethod.gateway === 'hk';
+}
 
 
 // Make Payment

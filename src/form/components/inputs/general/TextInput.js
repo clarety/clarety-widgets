@@ -5,7 +5,7 @@ import { updateFormData } from 'form/actions';
 import { getValidationError } from 'form/utils';
 import { FieldError } from 'form/components';
 
-const _TextInput = ({ value, type, placeholder, testId, error, onChange, required, hideErrors, ...props }) => {
+const _TextInput = ({ value, type, placeholder, testId, error, onChange, required, hideErrors, cleanFn, ...props }) => {
   if (placeholder && !required) placeholder += t('optional-label', ' (Optional)');
 
   return (
