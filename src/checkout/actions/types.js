@@ -19,6 +19,10 @@ export const types = {
   addDonationSuccess: 'ADD_DONATION_SUCCESS',
   addDonationFailure: 'ADD_DONATION_FAILURE',
 
+  removeItemRequest: 'REMOVE_ITEM_REQUEST',
+  removeItemSuccess: 'REMOVE_ITEM_SUCCESS',
+  removeItemFailure: 'REMOVE_ITEM_FAILURE',
+
   createCustomerRequest: 'CREATE_CUSTOMER_REQUEST',
   createCustomerSuccess: 'CREATE_CUSTOMER_SUCCESS',
   createCustomerFailure: 'CREATE_CUSTOMER_FAILURE',

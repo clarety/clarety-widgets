@@ -17,6 +17,24 @@ export const fetchCart = (cartUid) => {
   };
 };
 
+export const removeItem = (itemUid) => {
+  return async (dispatch, getState) => {
+    const { cart } = getState();
+
+    dispatch(removeItemRequest(cart.cartUid));
+    const results = await ClaretyApi.delete(`carts/${cart.cartUid}/items/${itemUid}/`);
+    const result = results[0];
+
+    if (!results) {
+      dispatch(removeItemFailure());
+      return false;
+    } else {
+      dispatch(removeItemSuccess(result));
+      return true;
+    }
+  };
+};
+
 export const fetchShippingOptions = () => {
   return async (dispatch, getState) => {
     const { cart } = getState();
@@ -88,11 +106,27 @@ const fetchCartFailure = (result) => ({
   result: result,
 });
 
+// Remove Item
+
+const removeItemRequest = (itemUid) => ({
+  type: types.removeItemRequest,
+  itemUid: itemUid,
+});
+
+const removeItemSuccess = (result) => ({
+  type: types.removeItemSuccess,
+  result: result,
+});
+
+const removeItemFailure = () => ({
+  type: types.removeItemFailure,
+});
+
 // Fetch Shipping Options
 
-const fetchShippingOptionsRequest = (cardUid) => ({
+const fetchShippingOptionsRequest = (cartUid) => ({
   type: types.fetchShippingOptionsRequest,
-  cardUid: cardUid,
+  cartUid: cartUid,
 });
 
 const fetchShippingOptionsSuccess = (results) => ({

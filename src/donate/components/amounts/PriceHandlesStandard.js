@@ -1,10 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Breakpoint } from 'react-socks';
 import { getValidationError } from 'form/utils';
-import { selectAmount } from 'donate/actions';
 
-export class _PriceHandlesStandard extends React.Component {
+export class PriceHandlesStandard extends React.Component {
   autoFocusVariableAmount = false;
 
   onMouseEnterAmount = (amountInfo) => {
@@ -94,6 +92,7 @@ export class _PriceHandlesStandard extends React.Component {
       <SuggestedAmount
         key={suggestedAmount.amount}
         amountInfo={suggestedAmount}
+        hideCents={this.props.hideCents}
         onClick={amount => this.onSelectAmount(frequency, amount, false)}
         onMouseEnter={this.onMouseEnterAmount}
         onMouseLeave={this.onMouseLeaveAmount}
@@ -118,19 +117,9 @@ export class _PriceHandlesStandard extends React.Component {
         onMouseEnter={this.onMouseEnterAmount}
         onMouseLeave={this.onMouseLeaveAmount}
         isSelected={currentSelection.isVariableAmount}
-        error={getValidationError('variable-amount', errors)}
+        error={errors && getValidationError('variable-amount', errors)}
         autoFocus={this.autoFocusVariableAmount}
       />
     );
   }
 }
-
-const mapStateToProps = (state, ownProps) => ({
-
-});
-
-const actions = {
-  selectAmount: selectAmount,
-};
-
-export const PriceHandlesStandard = connect(mapStateToProps, actions)(_PriceHandlesStandard);

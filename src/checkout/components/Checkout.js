@@ -14,6 +14,7 @@ import { Recaptcha } from 'form/components';
 import { fetchCart, fetchCustomer } from 'checkout/actions';
 import { rootReducer } from 'checkout/reducers';
 import { CartSummary } from 'checkout/components';
+import { setupDefaultResources } from 'checkout/utils';
 
 export class Checkout extends React.Component {
   static store;
@@ -28,6 +29,7 @@ export class Checkout extends React.Component {
 
     // Setup resources.
     Checkout.resources = new Resources();
+    setupDefaultResources(Checkout.resources);
   }
 
   static setClientIds({ dev, prod }) {
@@ -47,11 +49,11 @@ export class Checkout extends React.Component {
     i18next.init();
 
     Checkout.store.dispatch(updateAppSettings({
-      storeUid:                 this.props.storeUid,
-      defaultCountry:           this.props.defaultCountry,
-      addressFinderKey:         this.props.addressFinderKey,
-      donationSingleOfferId:    this.props.donationSingleOfferId,
-      donationRecurringOfferId: this.props.donationRecurringOfferId,
+      storeUid:         this.props.storeUid,
+      defaultCountry:   this.props.defaultCountry,
+      addressFinderKey: this.props.addressFinderKey,
+      donationOfferId:  this.props.donationOfferId,
+      donationOfferUid: this.props.donationOfferUid,
     }));
 
     // Set tracking data.

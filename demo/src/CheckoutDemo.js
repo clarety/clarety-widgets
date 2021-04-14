@@ -19,8 +19,8 @@ Checkout.setPanels([
     component: DonationPanel,
     connect: DonationConnect,
     settings: {
-      showFrequencySelect: true,
       showNoneButton: true,
+      priceHandleStyle: 'price-only',
     },
   },
   {
@@ -80,8 +80,8 @@ export default class CheckoutDemo extends React.Component {
 
           // A21
           storeUid="str_8lo8"
-          donationSingleOfferId="19"
-          donationRecurringOfferId="164"
+          donationOfferId="19"
+          donationOfferUid="ofr_y2qy"
         />
       </div>
     );

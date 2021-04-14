@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import { Currency } from 'shared/components';
 
-export const SuggestedAmountPriceOnly = ({ amountInfo, isSelected, onClick, onMouseEnter, onMouseLeave }) => {
+export const SuggestedAmountPriceOnly = ({ amountInfo, isSelected, hideCents, onClick, onMouseEnter, onMouseLeave }) => {
   return (
     <Button
       onClick={() => onClick(amountInfo.amount)}
@@ -11,7 +11,7 @@ export const SuggestedAmountPriceOnly = ({ amountInfo, isSelected, onClick, onMo
       onMouseEnter={() => onMouseEnter(amountInfo)}
       onMouseLeave={() => onMouseLeave(amountInfo)}
     >
-      <Currency amount={amountInfo.amount} />
+      <Currency amount={amountInfo.amount} hideCents={hideCents} />
     </Button>
   );
 };

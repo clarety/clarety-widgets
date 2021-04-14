@@ -1,6 +1,5 @@
-import { addItem, removeItemsWithType } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
-import { fetchPriceHandles, addDonation } from 'checkout/actions';
+import { fetchPriceHandles, addDonation, removeDonation } from 'checkout/actions';
 
 export class DonationConnect {
   static mapStateToProps = (state) => {
@@ -12,6 +11,6 @@ export class DonationConnect {
   static actions = {
     onShowPanel: fetchPriceHandles,
     addToCart: addDonation,
-    removeItemsWithType: removeItemsWithType,
+    removeItemsWithType: removeDonation,
   };
 }
