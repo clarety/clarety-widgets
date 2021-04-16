@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import { statuses, setStatus, setRecaptcha, clearRecaptcha, setPayment, updateCartData, isStripe, prepareStripePayment, authoriseStripePayment, updateAppSettings } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
-import { setErrors } from 'form/actions';
+import { setErrors, updateFormData } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { DonationApi } from 'donate/utils';
 import { types, addDonationToCart, addCustomerToCart } from 'donate/actions';
@@ -176,6 +176,9 @@ const handleHKDirectDebitAuthorise = (paymentResult, paymentData, paymentMethod)
     dispatch(updateCartData({
       authSecret: paymentResult.authoriseSecret,
     }));
+
+    // Clear auth password field.
+    dispatch(updateFormData('payment.authPassword', ''));
 
     dispatch(setStatus(statuses.ready));
   };
