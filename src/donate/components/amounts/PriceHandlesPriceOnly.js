@@ -1,10 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
-import { selectAmount } from 'donate/actions';
-import { _PriceHandlesStandard } from 'donate/components';
+import { PriceHandlesStandard } from 'donate/components';
 
-export class _PriceHandlesPriceOnly extends _PriceHandlesStandard {
+export class PriceHandlesPriceOnly extends PriceHandlesStandard {
   autoFocusVariableAmount = true;
 
   constructor(props) {
@@ -78,13 +76,3 @@ export class _PriceHandlesPriceOnly extends _PriceHandlesStandard {
     this.onSelectAmount(frequency, currentSelection.variableAmount, true);
   };
 }
-
-const mapStateToProps = (state, ownProps) => ({
-
-});
-
-const actions = {
-  selectAmount: selectAmount,
-};
-
-export const PriceHandlesPriceOnly = connect(mapStateToProps, actions)(_PriceHandlesPriceOnly);

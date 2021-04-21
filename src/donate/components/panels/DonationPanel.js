@@ -172,7 +172,7 @@ export class DonationPanel extends BasePanel {
   }
 
   renderPriceHandles() {
-    const { frequency, layout, settings, selections, resources, errors } = this.props;
+    const { frequency, layout, settings, selections, resources, errors, selectAmount } = this.props;
     const offer = this.getOffer(frequency);
 
     let PriceHandlesComponent;
@@ -190,6 +190,8 @@ export class DonationPanel extends BasePanel {
         layout={layout}
         style={settings.priceHandleStyle}
         resources={resources}
+        selectAmount={selectAmount}
+        hideCents={settings.hideCents}
       />
     );
   }

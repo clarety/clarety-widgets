@@ -28,6 +28,8 @@ export const cartReducer = (state = initialState, action) => {
     case types.fetchCartSuccess:
     case types.updateSaleSuccess:
     case types.applyPromoCodeSuccess:
+    case types.addDonationSuccess:
+    case types.removeItemSuccess:
       // Only update customer if we don't already have one.
       const customer = state.customer || { customerUid: action.result.customerUid };
 

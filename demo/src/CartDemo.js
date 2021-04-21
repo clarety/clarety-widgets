@@ -5,7 +5,7 @@ Cart.init();
 
 export default class CartDemo extends React.Component {
   componentWillMount() {
-    setupCartAxiosMock();
+    // setupCartAxiosMock();
   }
 
   render() {

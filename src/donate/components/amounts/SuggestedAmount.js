@@ -1,7 +1,7 @@
 import React from 'react';
 import { Currency } from 'shared/components';
 
-export const SuggestedAmount = ({ amountInfo, isSelected, onClick, onMouseEnter, onMouseLeave }) => (
+export const SuggestedAmount = ({ amountInfo, isSelected, hideCents, onClick, onMouseEnter, onMouseLeave }) => (
   <div
     className={`suggested-amount ${isSelected ? 'suggested-amount--selected' : ''}`}
     onClick={() => onClick(amountInfo.amount)}
@@ -15,7 +15,7 @@ export const SuggestedAmount = ({ amountInfo, isSelected, onClick, onMouseEnter,
     />
 
     <div className="suggested-amount__body">
-      <div className="suggested-amount__title"><Currency amount={amountInfo.amount} /></div>
+      <div className="suggested-amount__title"><Currency amount={amountInfo.amount} hideCents={hideCents} /></div>
       <div className="suggested-amount__text">{amountInfo.description}</div>
     </div>
   </div>

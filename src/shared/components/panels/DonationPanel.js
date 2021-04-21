@@ -1,10 +1,11 @@
 import React from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Spinner } from 'react-bootstrap';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { FrequencySelect, SuggestedAmount, SuggestedAmountLg, VariableAmount, VariableAmountLg } from 'shared/components';
+import { FrequencySelect } from 'shared/components';
 import { currency } from 'shared/utils';
-import { ErrorMessages } from 'form/components';
+import { ErrorMessages, Button } from 'form/components';
+import { PriceHandlesStandard, PriceHandlesPriceOnly } from 'donate/components';
 
 export class DonationPanel extends BasePanel {
   constructor(props) {
@@ -12,6 +13,14 @@ export class DonationPanel extends BasePanel {
 
     const defaults = this.getDefaults(props.priceHandles);
     this.state = { ...defaults };
+  }
+
+  onShowPanel() {
+    if (this.props.onShowPanel) {
+      this.props.onShowPanel();
+    }
+
+    this.props.removeItemsWithType('donation');
   }
 
   onChangeFrequency = (frequency) => {
@@ -46,12 +55,14 @@ export class DonationPanel extends BasePanel {
 
   onClickNone = (event) => {
     event.preventDefault();
+
     this.onChangeFrequency('single');
     this.onSelectAmount('single', 0, false);
+
     this.props.nextPanel();
   };
 
-  onClickNext = (event) => {
+  onClickNext = async (event) => {
     event.preventDefault();
 
     const { addToCart, nextPanel, layout } = this.props;
@@ -61,17 +72,19 @@ export class DonationPanel extends BasePanel {
 
     const selection = selections[frequency];
 
-    addToCart({
+    this.setState({ isBusy: true });
+    await addToCart({
       type:            'donation',
       offerUid:        selection.offerUid,
       offerPaymentUid: selection.offerPaymentUid,
       price:           selection.amount,
     });
+    this.setState({ isBusy: false });
 
     nextPanel();
   };
 
-  onClickEdit = (event) => {
+  onPressEdit = (event) => {
     event.preventDefault();
     this.props.removeItemsWithType('donation');
     this.props.editPanel();
@@ -98,10 +111,11 @@ export class DonationPanel extends BasePanel {
 
       for (let offer of priceHandles) {
         const defaultAmount = offer.amounts.find(amount => amount.default);
+        const defaultOfferPaymentUid = offer.schedules ? offer.schedules[0].offerPaymentUid : undefined;
 
         defaultSelections[offer.frequency] = {
           offerUid:         offer.offerUid,
-          offerPaymentUid:  offer.offerPaymentUid,
+          offerPaymentUid:  defaultOfferPaymentUid,
           amount:           defaultAmount ? defaultAmount.amount : 0,
           isVariableAmount: false,
         };
@@ -136,11 +150,7 @@ export class DonationPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, index, settings } = this.props;
-    const { frequency } = this.state;
-    
-    const offer = this.getOffer(frequency);
-    const variableAmount = this.getVariableAmount(offer);
+    const { layout, index, priceHandles } = this.props;
 
     return (
       <PanelContainer layout={layout} status="edit" className="donation-panel">
@@ -151,40 +161,84 @@ export class DonationPanel extends BasePanel {
           title={t('donationPanel.editTitle', 'Make A Donation')}
         />
         <PanelBody layout={layout} status="edit">
-          
-          <p className="message-text">{t('donationPanel.message', settings.messageText || '')}</p>
-
-          <Form onSubmit={this.onClickNext}>
-
-            <ErrorMessages />
-
-            {settings.showFrequencySelect &&
-              <FrequencySelect
-                value={frequency}
-                onChange={this.onChangeFrequency}
-              />
-            }
-
-            <div className="card-deck flex-column mt-3 mx-n3 text-left flex-lg-row">
-              {offer.amounts.map(this.renderSuggestedAmount)}
-              {this.renderVariableAmount(variableAmount)}
-            </div>
-
-            <div className="panel-actions">
-              {settings.showNoneButton &&
-                <Button onClick={this.onClickNone} variant="secondary">
-                  {t(['donationPanel.btn.none', 'btn.none'], 'None')}
-                </Button>
-              }
-              
-              <Button type="submit"> 
-                {t(['donationPanel.btn.next', 'btn.next'], 'Next')}
-              </Button>
-            </div>
-
-          </Form>
+          {priceHandles
+            ? this.renderContent()
+            : this.renderSpinner()
+          }
         </PanelBody>
       </PanelContainer>
+    );
+  }
+
+  renderContent() {
+    const { settings } = this.props;
+    const { frequency } = this.state;
+    
+    const offer = this.getOffer(frequency);
+    if (!offer) return null;
+
+    return (
+      <Form onSubmit={this.onClickNext}>
+        <p className="message-text">{t('donationPanel.message', settings.messageText || '')}</p>
+
+        <ErrorMessages />
+
+        {settings.showFrequencySelect &&
+          <FrequencySelect
+            value={frequency}
+            onChange={this.onChangeFrequency}
+          />
+        }
+
+        {this.renderPriceHandles()}
+
+        <div className="panel-actions">
+          {settings.showNoneButton &&
+            <Button onClick={this.onClickNone} variant="secondary" disabled={this.state.isBusy}>
+              {t(['donationPanel.btn.none', 'btn.none'], 'None')}
+            </Button>
+          }
+          
+          <Button type="submit" isBusy={this.state.isBusy}>
+            {t(['donationPanel.btn.next', 'btn.next'], 'Next')}
+          </Button>
+        </div>
+      </Form>
+    );
+  }
+
+  renderPriceHandles() {
+    const { layout, settings, resources, errors } = this.props;
+    const { frequency, selections } = this.state;
+
+    const offer = this.getOffer(frequency);
+
+    let PriceHandlesComponent;
+    switch (settings.priceHandleStyle) {
+      case 'price-only': PriceHandlesComponent = PriceHandlesPriceOnly; break;
+      default:           PriceHandlesComponent = PriceHandlesStandard;  break;
+    }
+
+    return (
+      <PriceHandlesComponent
+        offer={offer}
+        frequency={frequency}
+        selections={selections}
+        errors={errors}
+        layout={layout}
+        style={settings.priceHandleStyle}
+        resources={resources}
+        selectAmount={this.onSelectAmount}
+        hideCents={settings.hideCents}
+      />
+    );
+  }
+
+  renderSpinner() {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100px' }}>
+        <Spinner animation="border" />
+      </div>
     );
   }
 
@@ -205,8 +259,8 @@ export class DonationPanel extends BasePanel {
 
           <p>{selectedAmount}</p>
 
-          <Button onClick={this.onClickEdit}>
             {t('btn.edit', 'Edit')}
+          <Button onClick={this.onPressEdit}>
           </Button>
 
         </PanelBody>
@@ -214,62 +268,8 @@ export class DonationPanel extends BasePanel {
     );
   }
 
-  renderSuggestedAmount = (suggestedAmount) => {
-    // Ignore variable amount, we'll add a field below the suggested amounts.
-    if (suggestedAmount.variable) return null;
-
-    const { frequency, selections } = this.state;
-    const currentSelection = selections[frequency];
-
-    const isSelected = !currentSelection.isVariableAmount && currentSelection.amount === suggestedAmount.amount;
-    return (
-      <React.Fragment key={suggestedAmount.amount}>
-        <SuggestedAmount
-          key={suggestedAmount.amount}
-          amountInfo={suggestedAmount}
-          onClick={amount => this.onSelectAmount(frequency, amount)}
-          isSelected={isSelected}
-        />
-        <SuggestedAmountLg
-          key={`${suggestedAmount.amount}-lg`}
-          amountInfo={suggestedAmount}
-          onClick={amount => this.onSelectAmount(frequency, amount)}
-          isSelected={isSelected}
-        />
-      </React.Fragment>
-    );
-  };
-
-  renderVariableAmount(variableAmount) {
-    if (!variableAmount) return null;
-
-    const { frequency, selections } = this.state;
-    const currentSelection = selections[frequency];
-
-    return (
-      <React.Fragment>
-        <VariableAmount
-          amountInfo={variableAmount}
-          value={currentSelection.variableAmount || ''}
-          onChange={amount => this.onSelectAmount(frequency, amount, true)}
-          isSelected={currentSelection.isVariableAmount}
-        />
-        <VariableAmountLg
-          amountInfo={variableAmount}
-          value={currentSelection.variableAmount || ''}
-          onChange={amount => this.onSelectAmount(frequency, amount, true)}
-          isSelected={currentSelection.isVariableAmount}
-        />
-      </React.Fragment>
-    );
-  }
-
   getOffer(frequency) {
     return this.props.priceHandles.find(offer => offer.frequency === frequency);
-  }
-
-  getVariableAmount(offer) {
-    return offer.amounts.find(amount => amount.variable === true);
   }
 
   getSelectedAmount() {
