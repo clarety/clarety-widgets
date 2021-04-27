@@ -2,12 +2,20 @@ import React from 'react';
 import { Form, Col, Alert } from 'react-bootstrap';
 import { t } from 'shared/translations';
 import { PanelContainer, PanelHeader, PanelBody, AddressFinder } from 'shared/components';
-import { FormContext, getSuburbLabel, getStateLabel, getPostcodeLabel, setupAddressFinder } from 'shared/utils';
+import { FormContext, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
 import { BasePanel, TextInput, PureCheckboxInput, StateInput, CountryInput, PostcodeInput, FormElement, Button } from 'checkout/components';
 
 export class AddressPanel extends BasePanel {
-  shouldUseAddressFinder() {
-    const { addressFinderKey, defaultCountry } = this.props;
+  shouldUseAddressFinder(addressType) {
+    const { addressFinderKey, addressFinderCountry, defaultCountry } = this.props;
+    const { formData } = this.state;
+
+    if (addressFinderCountry) {
+      if (formData[`customer.${addressType}.country`] !== addressFinderCountry) {
+        return false;
+      }
+    }
+
     return addressFinderKey && defaultCountry;
   }
 
@@ -279,7 +287,7 @@ export class AddressPanel extends BasePanel {
       ? this.state.disableBillingAddressFinder
       : this.state.disableDeliveryAddressFinder;
 
-    if (this.shouldUseAddressFinder() && !disableAddressFinder) {
+    if (this.shouldUseAddressFinder(addressType) && !disableAddressFinder) {
       return this.renderAddressFinderInput(title, addressType);
     }
 
@@ -382,6 +390,8 @@ export class AddressPanel extends BasePanel {
     return (
       <React.Fragment>
         <h5>{title}</h5>
+
+        {this.renderCountryField(addressType)}
 
         <Form.Row>
           <Col>

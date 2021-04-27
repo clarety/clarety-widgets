@@ -49,11 +49,12 @@ export class Checkout extends React.Component {
     i18next.init();
 
     Checkout.store.dispatch(updateAppSettings({
-      storeUid:         this.props.storeUid,
-      defaultCountry:   this.props.defaultCountry,
-      addressFinderKey: this.props.addressFinderKey,
-      donationOfferId:  this.props.donationOfferId,
-      donationOfferUid: this.props.donationOfferUid,
+      storeUid:             this.props.storeUid,
+      defaultCountry:       this.props.defaultCountry,
+      addressFinderKey:     this.props.addressFinderKey,
+      addressFinderCountry: this.props.addressFinderCountry,
+      donationOfferId:      this.props.donationOfferId,
+      donationOfferUid:     this.props.donationOfferUid,
     }));
 
     // Set tracking data.

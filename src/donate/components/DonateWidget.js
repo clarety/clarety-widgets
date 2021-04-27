@@ -97,16 +97,17 @@ export class _DonateWidgetRoot extends React.Component {
     changeLanguage(language);
 
     updateAppSettings({
-      singleOfferId:      singleOfferId,
-      recurringOfferId:   recurringOfferId,
-      variant:            this.props.variant,
-      confirmPageUrl:     this.props.confirmPageUrl,
-      defaultCountry:     this.props.defaultCountry,
-      fundraisingPageUid: this.props.fundraisingPageUid,
-      givingTypeOptions:  givingTypeOptions,
-      addressFinderKey:   this.props.addressFinderKey,
-      hideCurrencyCode:   this.props.hideCurrencyCode,
-      defaultFrequency:   this.props.defaultFrequency,
+      singleOfferId:        singleOfferId,
+      recurringOfferId:     recurringOfferId,
+      variant:              this.props.variant,
+      confirmPageUrl:       this.props.confirmPageUrl,
+      defaultCountry:       this.props.defaultCountry,
+      fundraisingPageUid:   this.props.fundraisingPageUid,
+      givingTypeOptions:    givingTypeOptions,
+      addressFinderKey:     this.props.addressFinderKey,
+      addressFinderCountry: this.props.addressFinderCountry,
+      hideCurrencyCode:     this.props.hideCurrencyCode,
+      defaultFrequency:     this.props.defaultFrequency,
     });
 
     setStore(storeUid);

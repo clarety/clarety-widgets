@@ -12,6 +12,7 @@ export class AddressConnect {
       defaultCountry: getSetting(state, 'defaultCountry'),
       shippingRequired: getCartShippingRequired(state),
       addressFinderKey: getSetting(state, 'addressFinderKey'),
+      addressFinderCountry: getSetting(state, 'addressFinderCountry'),
     };
   };
   

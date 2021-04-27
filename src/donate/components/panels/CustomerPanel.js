@@ -16,7 +16,15 @@ export class CustomerPanel extends BasePanel {
   }
 
   shouldUseAddressFinder() {
-    return this.props.addressFinderKey && this.props.defaultCountry;
+    const { addressFinderKey, addressFinderCountry, defaultCountry, formData } = this.props;
+    
+    if (addressFinderCountry) {
+      if (formData['customer.billing.country'] !== addressFinderCountry) {
+        return false;
+      }
+    }
+
+    return addressFinderKey && defaultCountry;
   }
 
   onAddressFinderSelect = (address) => {
@@ -347,6 +355,8 @@ export class CustomerPanel extends BasePanel {
     if (this.shouldUseAddressFinder() && !disableAddressFinder) {
       return (
         <React.Fragment>
+          {this.renderCountryField()}
+
           <Form.Row>
             <Col>
               <Form.Group>
