@@ -23,6 +23,7 @@ export class CustomerConnect {
       defaultCountry: getSetting(state, 'defaultCountry'),
       sourceOptions: getSourceOptions(state),
       addressFinderKey: getSetting(state, 'addressFinderKey'),
+      addressFinderCountry: getSetting(state, 'addressFinderCountry'),
 
       hasExpressPaymentMethods: getHasExpressPaymentMethods(state),
     };
