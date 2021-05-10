@@ -29,7 +29,7 @@ export class CampaignPanel extends BasePanel {
   }
 
   renderWait() {
-    const { layout, index } = this.props;
+    const { layout, index, isJoiningTeam } = this.props;
 
     return (
       <PanelContainer layout={layout} status="wait">
@@ -37,7 +37,7 @@ export class CampaignPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title="Start a Campaign"
+          title={isJoiningTeam ? 'Join a Team' : 'Start a Campaign'}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -47,7 +47,7 @@ export class CampaignPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, isBusy, index, settings } = this.props;
+    const { layout, isBusy, index, isJoiningTeam, settings } = this.props;
 
     return (
       <PanelContainer layout={layout}>
@@ -55,7 +55,7 @@ export class CampaignPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title="Start a Campaign"
+          title={isJoiningTeam ? 'Join a Team' : 'Start a Campaign'}
         />
         
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
@@ -65,7 +65,7 @@ export class CampaignPanel extends BasePanel {
                 <Form.Group>
                   <TextInput
                     field="campaign.name"
-                    placeholder="Campaign Name"
+                    placeholder="Page Name"
                     required
                   />
                 </Form.Group>
@@ -77,7 +77,7 @@ export class CampaignPanel extends BasePanel {
                 <Form.Group>
                   <CurrencyInput
                     field="campaign.goal"
-                    placeholder={settings.campaignGoalLabel || 'Campaign Amount'}
+                    placeholder={settings.campaignGoalLabel || 'Fundraising Goal'}
                     required
                   />
                 </Form.Group>
