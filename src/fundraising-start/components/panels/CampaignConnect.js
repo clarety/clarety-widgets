@@ -1,4 +1,4 @@
-import { getFormData, getErrors } from 'shared/selectors';
+import { getFormData, getErrors, getSetting } from 'shared/selectors';
 import { setErrors } from 'form/actions';
 
 export class CampaignConnect {
@@ -6,6 +6,7 @@ export class CampaignConnect {
     return {
       formData: getFormData(state),
       errors: getErrors(state),
+      isJoiningTeam: !!getSetting(state, 'teamId'),
     };
   };
 
