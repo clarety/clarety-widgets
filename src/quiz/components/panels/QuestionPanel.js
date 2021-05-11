@@ -29,10 +29,15 @@ export class QuestionPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, isBusy, index, question, quizType } = this.props;
+    const { layout, isBusy, index, question, questions, quizType, settings } = this.props;
+
+	const questionIndex = questions.findIndex((q) => q.id === question.id);
 
     return (
       <PanelContainer layout={layout} status="edit">
+
+		  {settings.showProgressIndicator && <div className="progress-indicator">Question {questionIndex + 1} of {questions.length}</div>}
+
         <PanelHeader
           status="edit"
           layout={layout}
