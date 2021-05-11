@@ -6,7 +6,7 @@ export class CampaignConnect {
     return {
       formData: getFormData(state),
       errors: getErrors(state),
-      isJoiningTeam: !!getSetting(state, 'teamId'),
+      teamName: getSetting(state, 'teamName'),
     };
   };
 

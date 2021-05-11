@@ -29,7 +29,7 @@ export class CampaignPanel extends BasePanel {
   }
 
   renderWait() {
-    const { layout, index, isJoiningTeam } = this.props;
+    const { layout, index, teamName } = this.props;
 
     return (
       <PanelContainer layout={layout} status="wait">
@@ -37,7 +37,7 @@ export class CampaignPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title={isJoiningTeam ? 'Join a Team' : 'Start a Campaign'}
+          title={teamName ? `Join ${teamName}` : 'Start a Campaign'}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -47,7 +47,7 @@ export class CampaignPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, isBusy, index, isJoiningTeam, settings } = this.props;
+    const { layout, isBusy, index, teamName, settings } = this.props;
 
     return (
       <PanelContainer layout={layout}>
@@ -55,7 +55,7 @@ export class CampaignPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title={isJoiningTeam ? 'Join a Team' : 'Start a Campaign'}
+          title={teamName ? `Join ${teamName}` : 'Start a Campaign'}
         />
         
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
