@@ -20,12 +20,13 @@ export const setupPanels = (props) => {
       // TODO: what about other panels?
       dispatch(removePanels({ withComponent: 'QuestionPanel' }));
       dispatch(removePanels({ withComponent: 'CustomerPanel' }));
-      dispatch(setPanelStatus(0, 'edit'));
     } else {
       // Setup question and customer panels.
       dispatch(setupQuestionPanels());
       dispatch(setupCustomerPanel(props));
     }
+
+    dispatch(setPanelStatus(0, 'edit'));
   };
 };
 
