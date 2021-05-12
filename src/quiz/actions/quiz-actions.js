@@ -1,6 +1,6 @@
 import { ClaretyApi } from 'clarety-utils';
 import { setStatus, removePanels, insertPanels, setPanelStatus, setPanelSettings, updateAppSettings, setRecaptcha } from 'shared/actions';
-import { getSetting, getFormData } from 'shared/selectors';
+import { getSetting, getFormData, getIndexOfPanelWithComponent } from 'shared/selectors';
 import { saveState, getCustomerPanelSettingsFromWidgetProps } from 'shared/utils';
 import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
@@ -33,6 +33,7 @@ const setupQuestionPanels = () => {
   return async (dispatch, getState) => {
     const state = getState();
     const questions = getSetting(state, 'questions');
+    const questionPanelIndex = getIndexOfPanelWithComponent(state, 'QuestionPanel');
 
     dispatch(removePanels({ withComponent: 'QuestionPanel' }));
 
@@ -43,7 +44,7 @@ const setupQuestionPanels = () => {
       }));
 
       dispatch(insertPanels({
-        atIndex: 0,
+        atIndex: questionPanelIndex,
         panels: questionPanels,
       }));
 

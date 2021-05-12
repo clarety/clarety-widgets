@@ -79,6 +79,11 @@ export const getIsEditingFirstPanel = (state) => {
   return panels[0].status === 'edit';
 };
 
+export const getIndexOfPanelWithComponent = (state, componentName) => {
+  const panels = getPanelManager(state);
+  return panels.findIndex(panel => panel.component === componentName);
+};
+
 export const getTitleOptions = (state) => {
   // Try to get the 'customer -> title' element, which may not exist.
   try {
