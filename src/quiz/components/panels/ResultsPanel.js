@@ -61,25 +61,29 @@ export class ResultsPanel extends BasePanel {
   }
 
   renderQuizResults() {
-    const { layout, isBusy, index, questions } = this.props;
+    const { layout, isBusy, index, questions, formData } = this.props;
+	const firstName = formData['customer.firstName'];
 
     return (
       <PanelContainer layout={layout} status="edit" className="results-panel">
-        <PanelHeader
-          status="edit"
-          layout={layout}
-          number={index + 1}
-          title={`You scored ${this.getScore()}/${questions.length}`}
-        />
+		 { firstName && <p className="results-thank-you">Thank you for taking part {firstName}.</p>}
+        <p className="quiz-score">{`You scored ${this.getScore()} out of ${questions.length}`} correctly.</p>
         
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
 
-          {questions.map(question =>
-            <div key={question.id} className="quiz-result">
-              <h5 className="question">{question.title}</h5>
-              <p className="selected"><strong>You selected:</strong> {this.getSelectedAnswer(question).label}</p>
-              <p className="correct"><strong>Correct answer:</strong> {this.getCorrectAnswer(question).label}</p>
-            </div>
+          {questions.map(question => {
+				const isCorrectAnswer = this.getSelectedAnswer(question) === this.getCorrectAnswer(question);
+
+				return (	
+					<div key={question.id} className="quiz-result">
+						<h5 className="question">{question.title}</h5>	
+						<div className={isCorrectAnswer ? "answer correct-answer" : "answer incorrect-answer"}>
+							<p className="selected"><strong>You selected:</strong> {this.getSelectedAnswer(question).label}</p>
+							<p className="correct"><strong>Correct answer:</strong> {this.getCorrectAnswer(question).label}</p>
+						</div>
+					</div>
+					)
+				}
           )}
 
         </PanelBody>
