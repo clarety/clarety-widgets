@@ -62,7 +62,7 @@ export class ResultsPanel extends BasePanel {
 
   renderQuizResults() {
     const { layout, isBusy, index, questions, formData } = this.props;
-	const firstName = formData['customer.firstName'];
+	  const firstName = formData['customer.firstName'];
 
     return (
       <PanelContainer layout={layout} status="edit" className="results-panel">

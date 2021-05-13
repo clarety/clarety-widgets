@@ -215,17 +215,6 @@ export class CustomerPanel extends BasePanel {
     );
   }
 
-  renderDobField() {
-    const { settings } = this.props;
-    if (!settings.showDob) return null;
-
-    return (
-      <DobInput
-        required={settings.requireDob}
-      />
-    );
-  }
-
   renderBasicFields() {
     return (
       <React.Fragment>
@@ -284,6 +273,17 @@ export class CustomerPanel extends BasePanel {
           </Form.Group>
         </Col>
       </Form.Row>
+    );
+  }
+
+  renderDobField() {
+    const { settings } = this.props;
+    if (!settings.showDob) return null;
+
+    return (
+      <DobInput
+        required={settings.requireDob}
+      />
     );
   }
 
