@@ -5,21 +5,28 @@ import { updateFormData } from 'form/actions';
 import { getValidationError } from 'form/utils';
 import { FieldError } from 'form/components';
 
-const _TextInput = ({ value, type, placeholder, testId, error, onChange, required, hideErrors, cleanFn, ...props }) => {
+const _TextInput = ({ value, type, placeholder, testId, error, onChange, required, hideErrors, cleanFn, label, hideLabel, ...props }) => {
   if (placeholder && !required) placeholder += t('optional-label', ' (Optional)');
 
   return (
     <React.Fragment>
-      <Form.Control
-        type={type || 'text'}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        data-testid={testId}
-        isInvalid={!!error}
-        {...props}
-      />
-      {!hideErrors && <FieldError error={error} />}
+		<Form.Group>
+			<Form.Label srOnly={hideLabel}>
+			{label}
+			{!required && <span className="optional"> (Optional)</span>}
+			</Form.Label>
+
+			<Form.Control
+				type={type || 'text'}
+				placeholder={placeholder}
+				value={value}
+				onChange={onChange}
+				data-testid={testId}
+				isInvalid={!!error}
+				{...props}
+			/>
+			{!hideErrors && <FieldError error={error} />}
+		</Form.Group>
     </React.Fragment>
   );
 };

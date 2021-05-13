@@ -66,8 +66,8 @@ export class ResultsPanel extends BasePanel {
 
     return (
       <PanelContainer layout={layout} status="edit" className="results-panel">
-		 { firstName && <p className="results-thank-you">Thank you for taking part {firstName}.</p>}
-        <p className="quiz-score">{`You scored ${this.getScore()} out of ${questions.length}`} correctly.</p>
+		 { firstName && <p className="results-thank-you">Thanks for taking part {firstName}.</p>}
+        <p className="quiz-score">{`You answered ${this.getScore()} out of ${questions.length}`} correctly.</p>
         
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
 
@@ -78,7 +78,7 @@ export class ResultsPanel extends BasePanel {
 					<div key={question.id} className="quiz-result">
 						<h5 className="question">{question.title}</h5>	
 						<div className={isCorrectAnswer ? "answer correct-answer" : "answer incorrect-answer"}>
-							<p className="selected"><strong>You selected:</strong> {this.getSelectedAnswer(question).label}</p>
+							<p className="selected"><strong>You answered:</strong> {this.getSelectedAnswer(question).label}</p>
 							<p className="correct"><strong>Correct answer:</strong> {this.getCorrectAnswer(question).label}</p>
 						</div>
 					</div>

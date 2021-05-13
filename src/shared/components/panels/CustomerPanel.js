@@ -227,6 +227,8 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderBasicFields() {
+	const { settings } = this.props;
+
     return (
       <React.Fragment>
         <Form.Row>
@@ -236,6 +238,8 @@ export class CustomerPanel extends BasePanel {
                 field="customer.firstName"
                 placeholder={t('first-name', 'First Name')}
                 required
+				label="First Name"
+				hideLabel={settings.hideLabel}
               />
             </Form.Group>
           </Col>
@@ -246,6 +250,8 @@ export class CustomerPanel extends BasePanel {
                 field="customer.lastName"
                 placeholder={t('last-name', 'Last Name')}
                 required
+				label="Last Name"
+				hideLabel={settings.hideLabel}
               />
             </Form.Group>
           </Col>
@@ -258,6 +264,8 @@ export class CustomerPanel extends BasePanel {
                 field="customer.email"
                 placeholder={t('email', 'Email')}
                 required
+				label="Email"
+				hideLabel={settings.hideLabel}
               />
             </Form.Group>
           </Col>

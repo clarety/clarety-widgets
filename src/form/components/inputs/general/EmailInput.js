@@ -5,16 +5,23 @@ import { updateFormData } from 'form/actions';
 import { getValidationError } from 'form/utils';
 import { FieldError } from 'form/components';
 
-const _EmailInput = ({ value, placeholder, error, onChange, hideErrors, readOnly }) => (
+const _EmailInput = ({ value, placeholder, error, onChange, hideErrors, readOnly,label, hideLabel, required }) => (
   <React.Fragment>
-    <Form.Control
-      placeholder={placeholder}
-      value={value}
-      onChange={onChange}
-      isInvalid={error !== null}
-      readOnly={readOnly}
-    />
-    {!hideErrors && <FieldError error={error} />}
+	  <Form.Group>
+		<Form.Label srOnly={hideLabel}>
+		{label}
+		{!required && <span className="optional"> (Optional)</span>}
+		</Form.Label>
+
+		<Form.Control
+		placeholder={placeholder}
+		value={value}
+		onChange={onChange}
+		isInvalid={error !== null}
+		readOnly={readOnly}
+		/>
+		{!hideErrors && <FieldError error={error} />}
+	</Form.Group>
   </React.Fragment>
 );
 
