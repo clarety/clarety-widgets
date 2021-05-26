@@ -16,6 +16,17 @@
   "campaign-name": "Page Name",
   "campaign-goal": "Fundraising Goal",
 
+  "cart": "Cart",
+  "cart-empty": "Your cart is empty",
+  "cart-footer": "Shipping, taxes, and discounts are calculated at checkout.",
+  "subtotal": "Subtotal",
+  "amount": "Amount",
+  "remove": "Remove",
+  "quantity": "Quantity",
+  "close": "Close",
+
+  "checkout": "Checkout",
+
   "invalid-required": "This is a required field",
   "invalid-email": "Please enter a valid email",
   "invalid-phone": "Please enter a valid phone number",

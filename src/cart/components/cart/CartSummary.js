@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Row, Col } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { CartItem, TotalLine } from 'cart/components';
 
 class _CartSummary extends React.Component {
@@ -14,7 +15,7 @@ class _CartSummary extends React.Component {
     if (!cart.items || !cart.items.length) {
         return (
             <div className="cart-widget__empty">
-                Your cart is empty.
+                {t('cart-empty', 'Your cart is empty.')}
             </div>
         );
     }
@@ -52,7 +53,7 @@ const CartTotals = ({ summary }) => (
         </Col>
         <Col xs={9}>
             <Row>
-                <TotalLine label="Subtotal" value={summary.subTotal} />
+                <TotalLine label={t('subtotal', 'Subtotal')} value={summary.subTotal} />
             </Row>
         </Col>
     </Row>
