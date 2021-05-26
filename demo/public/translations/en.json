@@ -1,0 +1,23 @@
+{
+  "personal-details": "Personal Details",
+
+  "first-name": "First Name",
+  "last-name": "Last Name",
+  "full-name": "Full Name",
+  "email": "Email",
+  "state": "State",
+  "country": "Country",
+
+  "opt-in": "Sign Up",
+  "opt-in-confirm": "Thank you for subscribing!",
+
+  "invalid-required": "This is a required field",
+  "invalid-email": "Please enter a valid email",
+  "invalid-phone": "Please enter a valid phone number",
+  "invalid-password": "Password must contain at least 8 characters including 2 numbers",
+  "invalid-card-number": "Please enter a valid card number",
+  "invalid-card-expiry": "Please enter a valid expiry date",
+  "invalid-ccv": "Please enter a valid CCV",
+  "invalid-min-age": "You must be at least",
+  "invalid-max-age": "You must not be older than"
+}

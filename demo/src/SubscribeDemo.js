@@ -5,6 +5,8 @@ import { SubscribeWidget } from '../../src';
 
 SubscribeWidget.init();
 
+SubscribeWidget.setTranslationsPath('translations/{{lng}}.json');
+
 SubscribeWidget.setPanels([
   {
     component: CustomerPanel,
