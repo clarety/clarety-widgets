@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Col } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { requiredField } from 'shared/utils';
 import { TextInput, CurrencyInput, SubmitButton } from 'form/components';
@@ -37,7 +38,7 @@ export class CampaignPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title={teamName ? `Join ${teamName}` : 'Start a Campaign'}
+          title={teamName ? `${t('join', 'Join')} ${teamName}` : t('start-a-campaign', 'Start a Campaign')}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -55,7 +56,7 @@ export class CampaignPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title={teamName ? `Join ${teamName}` : 'Start a Campaign'}
+          title={teamName ? `${t('join', 'Join')} ${teamName}` : t('start-a-campaign', 'Start a Campaign')}
         />
         
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
@@ -65,7 +66,7 @@ export class CampaignPanel extends BasePanel {
                 <Form.Group>
                   <TextInput
                     field="campaign.name"
-                    placeholder="Page Name"
+                    placeholder={t('campaign-name', 'Page Name')}
                     required
                   />
                 </Form.Group>
@@ -77,7 +78,7 @@ export class CampaignPanel extends BasePanel {
                 <Form.Group>
                   <CurrencyInput
                     field="campaign.goal"
-                    placeholder={settings.campaignGoalLabel || 'Fundraising Goal'}
+                    placeholder={settings.campaignGoalLabel || t('campaign-goal', 'Fundraising Goal')}
                     required
                   />
                 </Form.Group>

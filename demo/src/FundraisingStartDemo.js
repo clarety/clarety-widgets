@@ -6,6 +6,8 @@ import '../../src/fundraising-start/style.scss';
 
 FundraisingStart.init();
 
+FundraisingStart.setTranslationsPath('translations/{{lng}}.json');
+
 FundraisingStart.setClientIds({
   dev:  '82ee4a2479780256c9bf9b951f5d1cfb',
   prod: '',

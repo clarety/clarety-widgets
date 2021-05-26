@@ -11,6 +11,11 @@
   "opt-in": "Sign Up",
   "opt-in-confirm": "Thank you for subscribing!",
 
+  "join": "Join",
+  "start-a-campaign": "Start a Campaign",
+  "campaign-name": "Page Name",
+  "campaign-goal": "Fundraising Goal",
+
   "invalid-required": "This is a required field",
   "invalid-email": "Please enter a valid email",
   "invalid-phone": "Please enter a valid phone number",
