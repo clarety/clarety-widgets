@@ -1,23 +1,25 @@
 import React from 'react';
 import { DonateWidget, renderWidget } from '../../src/';
+import { initTranslations } from '../../src/shared/translations';
 import { DonationPanel, DonationConnect } from '../../src/donate/components';
 import { CustomerPanel, CustomerConnect } from '../../src/donate/components';
 import { FundraisingPanel, FundraisingConnect } from '../../src/donate/components';
 import { PaymentPanel, PaymentConnect } from '../../src/donate/components';
 import { SuccessPanel, SuccessConnect } from '../../src/donate/components';
-import enTranslation from '../../src/donate/translations/en';
 import '../../src/donate/style.scss';
 
 function getCoverFeesAmount(donationAmount) {
   return donationAmount * 0.05;
 }
 
-window.renderDonateWidget = (props) => {
-  DonateWidget.init();
+window.renderDonateWidget = async (props) => {
 
-  DonateWidget.setLanguages({
-    en: enTranslation,
+  await initTranslations({
+    translationsPath: 'translations/{{lng}}.json',
+    defaultLanguage: 'en',
   });
+
+  DonateWidget.init();
 
   DonateWidget.setPanels([
     {
