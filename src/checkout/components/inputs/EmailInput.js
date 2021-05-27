@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { FormContext } from 'shared/utils';
 import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
@@ -7,13 +8,13 @@ import { getValidationError } from 'form/utils';
 class PureEmailInput extends React.PureComponent {
   render() {
     let { field, label, placeholder, value, onChange, error, required, hideLabel } = this.props;
-    if (!required && hideLabel) placeholder = label + ' (Optional)';
+    if (!required && hideLabel) placeholder = label + ` (${t('optional', 'Optional')})`;
 
     return (
       <Form.Group controlId={field}>
         <Form.Label srOnly={hideLabel}>
           {label}
-          {!required && <span className="optional"> (Optional)</span>}
+          {!required && <span className="optional"> ({t('optional', 'Optional')})</span>}
         </Form.Label>
 
         <Form.Control

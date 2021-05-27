@@ -6,6 +6,7 @@ import { Checkout, setupCheckoutAxiosMock } from '../../src';
 import '../../src/checkout/style.scss';
 
 Checkout.init();
+Checkout.setTranslationsPath('translations/{{lng}}.json');
 
 Checkout.setClientIds({
   //dev:  '82ee4a2479780256c9bf9b951f5d1cfb', // baseline

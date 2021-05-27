@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { FormContext } from 'shared/utils';
 import { getValidationError, cleanCcv } from 'form/utils';
 import { FieldError } from 'form/components';
@@ -14,13 +15,13 @@ class PureCcvInput extends React.PureComponent {
 
   render() {
     let { value, field, label, placeholder, error, required, hideLabel } = this.props;
-    if (!required) label += ' (Optional)';
+    if (!required) label += ` (${t('optional', 'Optional')})`;
 
     return (
       <Form.Group controlId={field}>
         <Form.Label srOnly={hideLabel}>
           {label}
-          {!required && <span className="optional"> (Optional)</span>}
+          {!required && <span className="optional"> ({t('optional', 'Optional')})</span>}
         </Form.Label>
 
         <Form.Control

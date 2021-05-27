@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Col, Form } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
+import { t } from 'shared/translations';
 import { statuses } from 'shared/actions';
 import { FormContext } from 'shared/utils';
 import { TextInput, Button } from 'checkout/components';
@@ -51,11 +52,11 @@ class _PromoCodeForm extends React.Component {
           <Form onSubmit={this.onPressApplyDiscount} className="promo-code-form">
             <Form.Row>
               <Col>
-                <TextInput field="promoCode" label="Discount Code" hideLabel required />
+                <TextInput field="promoCode" label={t('promo-code', 'Discount Code')} hideLabel required />
               </Col>
               <Col xs="auto">
                 <Button
-                  title="Apply"
+                  title={t('apply', 'Apply')}
                   type="submit"
                   isBusy={isBusy}
                   disabled={!promoCode}

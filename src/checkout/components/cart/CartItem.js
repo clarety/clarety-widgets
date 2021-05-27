@@ -1,5 +1,6 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { Currency } from 'shared/components';
 
 export const CartItem = ({ item }) => (
@@ -13,21 +14,20 @@ export const CartItem = ({ item }) => (
         {item.description}
         {item.rewardDescription &&
           <span className="cart-item__reward">
-            <br />Includes: {item.rewardDescription}
+            <br />{t('includes', 'Includes')}: {item.rewardDescription}
           </span>
         }
       </p>
-      
 
       {!item.variablePrice &&
         <Row>
-          <Col className="label">Quantity</Col>
+          <Col className="label">{t('quantity', 'Quantity')}</Col>
           <Col className="text-right">{item.quantity}</Col>
         </Row>
       }
 
       <Row>
-        <Col className="label">Amount</Col>
+        <Col className="label">{t('amount', 'Amount')}</Col>
         <Col className="text-right">
           <Currency amount={item.total} />
         </Col>

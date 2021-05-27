@@ -87,35 +87,29 @@ export class AddressPanel extends BasePanel {
     const errors = [];
 
     if (shippingRequired) {
-      let country = this.state.formData['customer.delivery.country'];
-
-      this.validateRequired('customer.delivery.address1', errors, 'Address 1 is required');
-
-      if (this.state.formData['customer.delivery.country'] !== 'NZ') {
-        this.validateRequired('customer.delivery.suburb', errors, `${getSuburbLabel(country)} is required`);
-      }
-      
-      this.validateRequired('customer.delivery.state', errors, `${getStateLabel(country)} is required`);
-      this.validateRequired('customer.delivery.postcode', errors, `${getPostcodeLabel(country)} is required`);
-      this.validateRequired('customer.delivery.country', errors, 'Country is required');
+      this.validateAddress('delivery', errors);
     }    
 
     if (!this.state.billingIsSameAsShipping) {
-      let country = this.state.formData['customer.billing.country'];
-
-      this.validateRequired('customer.billing.address1', errors, 'Address 1 is required');
-      
-      if (this.state.formData['customer.billing.country'] !== 'NZ') {
-        this.validateRequired('customer.billing.suburb', errors, `${getSuburbLabel(country)} is required`);
-      }
-
-      this.validateRequired('customer.billing.state', errors, `${getStateLabel(country)} is required`);
-      this.validateRequired('customer.billing.postcode', errors, `${getPostcodeLabel(country)} is required`);
-      this.validateRequired('customer.billing.country', errors, 'Country is required');
+      this.validateAddress('billing', errors);
     }
 
     this.setState({ errors });
     return errors.length === 0;
+  }
+
+  validateAddress(addressType, errors) {
+    let country = this.state.formData[`customer.${addressType}.country`];
+
+    this.validateRequired(`customer.${addressType}.address1`, errors, t('address-1', 'Address 1') + ' ' + t('is-required', 'is required'));
+
+    if (country !== 'NZ') {
+      this.validateRequired(`customer.${addressType}.suburb`, errors, getSuburbLabel(country) + ' ' + t('is-required', 'is required'));
+    }
+    
+    this.validateRequired(`customer.${addressType}.state`, errors, getStateLabel(country) + ' ' + t('is-required', 'is required'));
+    this.validateRequired(`customer.${addressType}.postcode`, errors, getPostcodeLabel(country) + ' ' + t('is-required', 'is required'));
+    this.validateRequired(`customer.${addressType}.country`, errors, t('country', 'Country') + ' ' + t('is-required', 'is required'));
   }
 
   onChangeBillingIsSameAsShipping = (field, isChecked) => {
@@ -187,7 +181,9 @@ export class AddressPanel extends BasePanel {
 
   renderWait() {
     const { layout, index, shippingRequired } = this.props;
-    const title = shippingRequired ? 'Shipping Details' : 'Billing Details';
+    const title = shippingRequired
+      ? t('shipping-details', 'Shipping Details')
+      : t('billing-details', 'Billing Details');
 
     return (
       <PanelContainer layout={layout} status="wait">
@@ -206,7 +202,9 @@ export class AddressPanel extends BasePanel {
 
   renderEdit() {
     const { layout, isBusy, index, shippingRequired } = this.props;
-    const title = shippingRequired ? 'Shipping Details' : 'Billing Details';
+    const title = shippingRequired
+      ? t('shipping-details', 'Shipping Details')
+      : t('billing-details', 'Billing Details');
 
     return (
       <PanelContainer layout={layout}>
@@ -255,13 +253,13 @@ export class AddressPanel extends BasePanel {
     if (this.props.shippingRequired) {
       return (
         <React.Fragment>
-          {this.renderAddressFields('Shipping Address', 'delivery')}
+          {this.renderAddressFields(t('shipping-address', 'Shipping Address'), 'delivery')}
           {this.renderBillingIsSameAsShippingCheckbox()}
-          {!billingIsSameAsShipping && this.renderAddressFields('Billing Address', 'billing')}
+          {!billingIsSameAsShipping && this.renderAddressFields(t('billing-address', 'Billing Address'), 'billing')}
         </React.Fragment>
       );
     } else {
-      return this.renderAddressFields('Billing Address', 'billing');
+      return this.renderAddressFields(t('billing-address', 'Billing Address'), 'billing');
     }
   }
 
@@ -273,7 +271,7 @@ export class AddressPanel extends BasePanel {
         <Col>
           <PureCheckboxInput
             field="billingIsSameAsShipping"
-            label="Billing Address is the same as Shipping Address"
+            label={t('billing-same-as-shipping', 'Billing Address is the same as Shipping Address')}
             checked={billingIsSameAsShipping || false}
             onChange={this.onChangeBillingIsSameAsShipping}
           />
@@ -308,7 +306,7 @@ export class AddressPanel extends BasePanel {
           <Col>
             <TextInput
               field={`customer.${addressType}.address1`}
-              label={settings.address1Label || "Address 1"}
+              label={settings.address1Label || t('address-1', 'Address 1')}
               hideLabel={settings.hideLabels}
               required
             />
@@ -319,7 +317,7 @@ export class AddressPanel extends BasePanel {
           <Col>
             <TextInput
               field={`customer.${addressType}.address2`}
-              label={settings.address2Label || "Address 2"}
+              label={settings.address2Label || t('address-2', 'Address 2')}
               hideLabel={settings.hideLabels}
             />
           </Col>
@@ -375,7 +373,7 @@ export class AddressPanel extends BasePanel {
         <Col>
           <CountryInput
             field={`customer.${addressType}.country`}
-            label="Country"
+            label={t('country', 'Country')}
             initialValue={defaultCountry}
             region={settings.region}
             hideLabel={settings.hideLabels}
@@ -407,7 +405,7 @@ export class AddressPanel extends BasePanel {
               <Button
                 variant="link"
                 onClick={() => this.onPressDisableAddressFinder(addressType)}
-                title={t('cant-find-your-address', "Can't find your address?")} 
+                title={t('cant-find-your-address', "Can't find your address?")}
               />
             </Form.Group>
           </Col>
@@ -419,7 +417,7 @@ export class AddressPanel extends BasePanel {
   renderActions() {
     return (
       <div className="panel-actions">
-        <Button title="Continue" type="submit" isBusy={this.props.isBusy} />
+        <Button title={t('continue', 'Continue')} type="submit" isBusy={this.props.isBusy} />
       </div>
     );
   }

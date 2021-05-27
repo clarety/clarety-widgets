@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { FormContext } from 'shared/utils';
 import { getValidationError, formatExpiry, cleanExpiry } from 'form/utils';
 import { FieldError } from 'form/components';
@@ -44,20 +45,20 @@ class PureExpiryInput extends React.PureComponent {
   
   render() {
     let { field, label, expiryMonth, expiryYear, error, required, hideLabel } = this.props;
-    if (!required && hideLabel) label += ' (Optional)';
+    if (!required && hideLabel) label += ` (${t('optional', 'Optional')})`;
 
     return (
       <Form.Group controlId={field}>
         <Form.Label srOnly={hideLabel}>
           {label}
-          {!required && <span className="optional"> (Optional)</span>}
+          {!required && <span className="optional"> ({t('optional', 'Optional')})</span>}
         </Form.Label>
 
         <Form.Control
           value={formatExpiry(expiryMonth, expiryYear)}
           onChange={this.onChange}
           onKeyDown={this.onKeyDown}
-          placeholder={hideLabel ? label : 'MM / YY'}
+          placeholder={hideLabel ? label : t('card-expiry-placeholder', 'MM / YY')}
           required={required}
           isInvalid={!!error}
           className="expiry-input"

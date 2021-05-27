@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext, getCustomerTypeOptions } from 'shared/utils';
 import { BasePanel, TextInput, SelectInput, PhoneInput, DobInput, CheckboxInput, Button } from 'checkout/components';
@@ -49,7 +50,7 @@ export class CheckoutCustomerPanel extends BasePanel {
     if (settings.requirePhone) {
       if (settings.showHomeAndWorkPhone) {
         if (!formData['customer.phone1'] && !formData['customer.phone2'] && !formData['customer.mobile']) {
-          this.validateRequired('customer.phone1', errors, 'Please provide a phone number');
+          this.validateRequired('customer.phone1', errors, t('provide-phone', 'Please provide a phone number'));
         }
       } else {
         this.validateRequired('customer.mobile', errors);
@@ -128,7 +129,7 @@ export class CheckoutCustomerPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title="Personal Details"
+          title={t('personal-details', 'Personal Details')}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -150,7 +151,7 @@ export class CheckoutCustomerPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title="Personal Details"
+          title={t('personal-details', 'Personal Details')}
         />
         
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
@@ -162,7 +163,7 @@ export class CheckoutCustomerPanel extends BasePanel {
                   <Col>
                     <SelectInput
                       field="customer.type"
-                      label="Type"
+                      label={t('type', 'Type')}
                       options={customerTypeOptions}
                       initialValue={customerTypeOptions[0].value}
                       testId="customer-type-input"
@@ -176,17 +177,17 @@ export class CheckoutCustomerPanel extends BasePanel {
               {showBusinessName &&
                 <Form.Row>
                   <Col>
-                    <TextInput field="customer.businessName" label="Business Name" hideLabel required />
+                    <TextInput field="customer.businessName" label={t('business-name', 'Business Name')} hideLabel required />
                   </Col>
                 </Form.Row>
               }
 
               <Form.Row>
                 <Col sm={6}>
-                  <TextInput field="customer.firstName" label="First Name" hideLabel required />
+                  <TextInput field="customer.firstName" label={t('first-name', 'First Name')} hideLabel required />
                 </Col>
                 <Col sm={6}>
-                  <TextInput field="customer.lastName" label="Last Name" hideLabel required />
+                  <TextInput field="customer.lastName" label={t('last-name', 'Last Name')} hideLabel required />
                 </Col>
               </Form.Row>
 
@@ -195,7 +196,7 @@ export class CheckoutCustomerPanel extends BasePanel {
                   <Col sm={6}>
                     <PhoneInput
                       field="customer.phone1"
-                      label="Home Phone"
+                      label={t('home-phone', 'Home Phone')}
                       hideLabel
                       required={settings.requirePhone}
                       country={defaultCountry}
@@ -204,7 +205,7 @@ export class CheckoutCustomerPanel extends BasePanel {
                   <Col sm={6}>
                     <PhoneInput
                       field="customer.phone2"
-                      label="Work Phone"
+                      label={t('work-phone', 'Work Phone')}
                       hideLabel
                       required={settings.requirePhone}
                       country={defaultCountry}
@@ -217,7 +218,7 @@ export class CheckoutCustomerPanel extends BasePanel {
                 <Col sm={6}>
                   <PhoneInput
                     field="customer.mobile"
-                    label="Mobile Phone"
+                    label={t('mobile-phone', 'Mobile Phone')}
                     hideLabel
                     required={settings.requirePhone}
                     country={defaultCountry}
@@ -231,7 +232,7 @@ export class CheckoutCustomerPanel extends BasePanel {
                 <Form.Row>
                   <Col>
                     <DobInput
-                      label="Date of Birth"
+                      label={t('date-of-birth', 'Date of Birth')}
                       field="customer.dateOfBirth"
                       dayField="customer.dateOfBirthDay"
                       monthField="customer.dateOfBirthMonth"
@@ -247,7 +248,7 @@ export class CheckoutCustomerPanel extends BasePanel {
               {this.renderOptInFields()}
 
               <div className="panel-actions">
-                <Button title="Continue" type="submit" />
+                <Button title={t('continue', 'Continue')} type="submit" />
               </div>
             </Form>
           </FormContext.Provider>
@@ -268,7 +269,7 @@ export class CheckoutCustomerPanel extends BasePanel {
           <Col>
             <SelectInput
               field="sale.sourceId"
-              placeholder="How did you hear about us?"
+              placeholder={t('how-did-you-hear-about-us', 'How did you hear about us?')}
               options={this.props.sourceOptions}
               testId="source-id-input"
               hideLabel
@@ -303,7 +304,7 @@ export class CheckoutCustomerPanel extends BasePanel {
         <Col>
           <CheckboxInput
             field="customer.optIn"
-            label={settings.optInText || 'Sign up to receive our newsletter.'}
+            label={settings.optInText || t('newsletter-opt-in', 'Sign up to receive our newsletter.')}
             initialValue={settings.preTickOptIn}
           />
         </Col>

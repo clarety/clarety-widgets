@@ -3,11 +3,13 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import i18next from 'i18next';
+import i18nextHttpBackend from 'i18next-http-backend';
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import { ClaretyApi } from 'clarety-utils';
+import { t } from 'shared/translations';
 import { Resources, getJwtSession, getJwtAccount } from 'shared/utils';
 import { PanelManager } from 'shared/components';
-import { setPanels, setClientIds, setAuth, fetchSettings, updateAppSettings, removePanels } from 'shared/actions';
+import { setPanels, setClientIds, setAuth, fetchSettings, updateAppSettings, removePanels, changeLanguage } from 'shared/actions';
 import { getIsCartComplete, getCartShippingRequired } from 'shared/selectors';
 import { updateFormData } from 'form/actions';
 import { Recaptcha } from 'form/components';
@@ -19,6 +21,7 @@ import { setupDefaultResources } from 'checkout/utils';
 export class Checkout extends React.Component {
   static store;
   static resources;
+  static translationsPath;
 
   state = { isReady: false, isCartComplete: false };
 
@@ -30,6 +33,10 @@ export class Checkout extends React.Component {
     // Setup resources.
     Checkout.resources = new Resources();
     setupDefaultResources(Checkout.resources);
+  }
+
+  static setTranslationsPath(path) {
+    Checkout.translationsPath = path;
   }
 
   static setClientIds({ dev, prod }) {
@@ -46,7 +53,26 @@ export class Checkout extends React.Component {
   }
 
   async componentDidMount() {
-    i18next.init();
+    // Translations.
+    const { defaultLanguage } = this.props;
+    const language = defaultLanguage || navigator.language || navigator.userLanguage || 'en';
+    i18next.use(i18nextHttpBackend);
+    await i18next.init({
+      load: 'languageOnly',
+      lng: language,
+      fallbackLng: defaultLanguage || 'en',
+      returnNull: false,
+      keySeparator: false,
+      backend: {
+        loadPath: Checkout.translationsPath,
+      },
+    });
+
+    i18next.on('languageChanged', (language) => {
+      this.forceUpdate();
+    });
+
+    Checkout.store.dispatch(changeLanguage(language));
 
     Checkout.store.dispatch(updateAppSettings({
       storeUid:             this.props.storeUid,
@@ -99,7 +125,7 @@ export class Checkout extends React.Component {
     if (this.state.isCartComplete) {
       return (
         <div className="text-center">
-          Your order has already been completed, you may not checkout at this time.
+          {t('checkout-cart-complete', 'Your order has already been completed.')}
         </div>
       );
     }
@@ -115,7 +141,7 @@ export class Checkout extends React.Component {
             </Col>
 
             <Col lg={6} className="col-checkout">
-              <h1>Checkout</h1>
+              <h1>{t('checkout', 'Checkout')}</h1>
               <PanelManager layout="accordian" resources={Checkout.resources} />
             </Col>
           </Row>
