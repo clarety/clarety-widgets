@@ -1,8 +1,13 @@
 import React from 'react';
-import { FundraisingStart } from '../../src/';
+import { FundraisingStart, initTranslations } from '../../src/';
 import { LoginPanel } from '../../src/shared/components';
 import { CampaignPanel, CampaignConnect, FundraisingStartLoginConnect } from '../../src/fundraising-start/components';
 import '../../src/fundraising-start/style.scss';
+
+initTranslations({
+  translationsPath: 'translations/{{lng}}.json',
+  defaultLanguage: 'en',
+});
 
 FundraisingStart.init();
 

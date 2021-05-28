@@ -1,13 +1,14 @@
 import React from 'react';
-import { Cart, setupCartAxiosMock } from '../../src';
+import { Cart, initTranslations } from '../../src';
+
+initTranslations({
+  translationsPath: 'translations/{{lng}}.json',
+  defaultLanguage: 'en',
+});
 
 Cart.init();
 
 export default class CartDemo extends React.Component {
-  componentWillMount() {
-    // setupCartAxiosMock();
-  }
-
   render() {
     return (
       <div className="m-5">

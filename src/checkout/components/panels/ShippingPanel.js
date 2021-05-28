@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Spinner } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { PanelContainer, PanelHeader, PanelBody, Currency } from 'shared/components';
 import { BasePanel, Button } from 'checkout/components';
 
@@ -49,7 +50,7 @@ export class ShippingPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title="Shipping Options"
+          title={t('shipping-options', 'Shipping Options')}
         />
         <PanelBody layout={layout} status="wait">
         </PanelBody>
@@ -66,7 +67,7 @@ export class ShippingPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title="Shipping Options"
+          title={t('shipping-options', 'Shipping Options')}
         />
 
         {shippingOptions
@@ -86,7 +87,7 @@ export class ShippingPanel extends BasePanel {
 
         <div className="panel-actions">
           <Button
-            title="Continue"
+            title={t('continue', 'Continue')}
             onClick={this.onPressNext}
             isBusy={isBusy}
             disabled={!canContinue}
@@ -111,7 +112,11 @@ export class ShippingPanel extends BasePanel {
           <span className="cost"><Currency amount={option.amount} /></span>
         </Form.Check.Label>
 
-        {option.expectedDelivery && <p className="date">Estimated Delivery Date: {option.expectedDelivery}</p>}
+        {option.expectedDelivery &&
+          <p className="date">
+            {t('estimated-delivery-date', 'Estimated Delivery Date')}: {option.expectedDelivery}
+          </p>
+        }
       </Form.Check>
     );
   };

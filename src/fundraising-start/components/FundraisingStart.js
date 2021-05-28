@@ -4,7 +4,7 @@ import { connect, Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import i18next from 'i18next';
 import { ClaretyApi } from 'clarety-utils';
-import { setStatus, setAuth, setPanels, setClientIds, updateAppSettings, initTrackingData } from 'shared/actions';
+import { setStatus, setAuth, setPanels, setClientIds, updateAppSettings, initTrackingData, changeLanguage } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources, getJwtAccount } from 'shared/utils';
 import { Recaptcha, ErrorMessages } from 'form/components';
@@ -55,7 +55,17 @@ export class _FundraisingStartRoot extends React.Component {
   async componentDidMount() {
     if (!this.props.reCaptchaKey) throw new Error('[Clarety] missing reCaptcha key');
 
-    i18next.init();
+    // Translations.
+    if (i18next.isInitialized) {
+      i18next.on('languageChanged', (language) => {
+        this.forceUpdate();
+      });
+  
+      this.props.changeLanguage(i18next.language);
+    } else {
+      // Use i18next without translation.
+      await i18next.init();
+    }
 
     const { updateAppSettings, initTrackingData, setStatus, setAuth, fetchCustomer } = this.props;
 
@@ -117,6 +127,7 @@ const actions = {
   setStatus: setStatus,
   setAuth: setAuth,
   fetchCustomer: fetchCustomer,
+  changeLanguage: changeLanguage,
 };
 
 const FundraisingStartRoot = connect(mapStateToProps, actions)(_FundraisingStartRoot);

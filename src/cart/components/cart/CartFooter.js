@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { t } from 'shared/translations';
 import { getPath } from 'shared/utils';
 import { getIsEmpty } from 'cart/selectors';
 
@@ -10,8 +11,8 @@ const _CartFooter = ({ isEmpty }) => {
 
   return (
       <div className="cart-widget__footer text-center">
-          <p>Shipping, taxes, and discounts<br />are calculated at checkout.</p>
-          <a href={checkoutUrl} className="btn btn-primary">Checkout</a>
+          <p>{t('cart-footer', 'Shipping, taxes, and discounts are calculated at checkout.')}</p>
+          <a href={checkoutUrl} className="btn btn-primary">{t('checkout', 'Checkout')}</a>
       </div>
   );
 };

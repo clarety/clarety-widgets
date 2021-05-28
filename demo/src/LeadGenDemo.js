@@ -1,8 +1,13 @@
 import React from 'react';
 import { CustomerPanel, CmsConfirmPanel, CmsConfirmConnect } from '../../src/shared/components';
 import { CustomerConnect } from '../../src/lead-gen/components';
-import { LeadGenWidget } from '../../src/';
+import { LeadGenWidget, initTranslations } from '../../src/';
 import '../../src/lead-gen/style.scss';
+
+initTranslations({
+  translationsPath: 'translations/{{lng}}.json',
+  defaultLanguage: 'en',
+});
 
 LeadGenWidget.init();
 

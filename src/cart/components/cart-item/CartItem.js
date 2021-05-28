@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Row, Col, Button } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { QtyInput, TotalLine, CartItemDescription, CartItemVariationDescription } from 'cart/components';
 import { updateItemQuantity } from 'cart/actions';
 
@@ -63,13 +64,13 @@ class _CartItem extends React.Component {
                         <CartItemDescription item={item} />
 
                         <Row>
-                            <TotalLine label="Amount" value={item.price} />
+                            <TotalLine label={t('amount', 'Amount')} value={item.price} />
                             <CartItemVariationDescription item={item} />
 
                             {this.renderQty()}
 
                             <Col className="text-right">
-                                <a href="#" onClick={this.onPressRemove}>Remove</a>
+                                <a href="#" onClick={this.onPressRemove}>{t('remove', 'Remove')}</a>
                             </Col>
                         </Row>
                     </Col>
@@ -83,7 +84,7 @@ class _CartItem extends React.Component {
 
         return (
             <React.Fragment>
-                <Col as="dt" xs={6}>Quantity</Col>
+                <Col as="dt" xs={6}>{t('quantity', 'Quantity')}</Col>
                 <Col as="dd" xs={6} className="text-right">
                     <QtyInput
                         value={this.state.quantity}

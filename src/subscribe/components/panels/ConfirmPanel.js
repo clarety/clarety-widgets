@@ -8,7 +8,7 @@ export class ConfirmPanel extends BasePanel {
 
   renderEdit() {
     const { layout, settings } = this.props;
-    const content = settings.confirmContent || 'Thank you for subscribing!';
+    const content = settings.confirmContent || t('opt-in-confirm', 'Thank you for subscribing!');
 
     return (
       <PanelContainer layout={layout} status="edit" className="cms-confirm-panel">

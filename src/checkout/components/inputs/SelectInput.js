@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { FormContext } from 'shared/utils';
 import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
@@ -17,13 +18,13 @@ class PureSelectInput extends React.PureComponent {
 
   render() {
     let { value, field, onChange, options, label, placeholder, required, error, hideLabel } = this.props;
-    if (!required && hideLabel) placeholder = label + ' (Optional)';
+    if (!required && hideLabel) placeholder = label + ` (${t('optional', 'Optional')})`;
 
     return (
       <Form.Group controlId={field}>
         <Form.Label srOnly={hideLabel}>
           {label}
-          {!required && <span className="optional"> (Optional)</span>}
+          {!required && <span className="optional"> ({t('optional', 'Optional')})</span>}
         </Form.Label>
 
         <Form.Control
@@ -32,7 +33,7 @@ class PureSelectInput extends React.PureComponent {
           onChange={event => onChange(field, event.target.value)}
           isInvalid={!!error}
         >
-          <option value="" disabled hidden>{placeholder || 'Select'}</option>
+          <option value="" disabled hidden>{placeholder || t('select', 'Select')}</option>
           
           {options.map(option =>
             <option key={option.value} value={option.value}>{option.label}</option>

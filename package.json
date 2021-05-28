@@ -44,6 +44,7 @@
     "filepond-plugin-image-resize": "^2.0.4",
     "filepond-plugin-image-transform": "^3.6.1",
     "i18next": "^19.5.4",
+    "i18next-http-backend": "^1.2.6",
     "js-cookie": "^2.2.1",
     "jwt-decode": "^2.2.0",
     "load-script": "^1.0.0",

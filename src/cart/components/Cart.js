@@ -4,6 +4,7 @@ import { Provider} from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import i18next from 'i18next';
 import { ClaretyApi } from 'clarety-utils';
+import { changeLanguage } from 'shared/actions';
 import { getJwtSession } from 'shared/utils';
 import { CartHeader, CartSummary, CartFooter } from "cart/components";
 import { cartReducer } from 'cart/reducers';
@@ -17,8 +18,18 @@ export class Cart extends React.Component {
         Cart.store = createStore(cartReducer, composeDevTools(applyMiddleware(thunkMiddleware)));
     }
 
-    componentDidMount() {
-        i18next.init();
+    async componentDidMount() {
+        // Translations.
+        if (i18next.isInitialized) {
+            i18next.on('languageChanged', (language) => {
+                this.forceUpdate();
+            });
+        
+            Cart.store.dispatch(changeLanguage(i18next.language));
+        } else {
+            // Use i18next without translation.
+            await i18next.init();
+        }
 
         this.refreshCart();
 

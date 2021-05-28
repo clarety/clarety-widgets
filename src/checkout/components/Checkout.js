@@ -5,9 +5,10 @@ import thunkMiddleware from 'redux-thunk';
 import i18next from 'i18next';
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import { ClaretyApi } from 'clarety-utils';
+import { t } from 'shared/translations';
 import { Resources, getJwtSession, getJwtAccount } from 'shared/utils';
 import { PanelManager } from 'shared/components';
-import { setPanels, setClientIds, setAuth, fetchSettings, updateAppSettings, removePanels } from 'shared/actions';
+import { setPanels, setClientIds, setAuth, fetchSettings, updateAppSettings, removePanels, changeLanguage } from 'shared/actions';
 import { getIsCartComplete, getCartShippingRequired } from 'shared/selectors';
 import { updateFormData } from 'form/actions';
 import { Recaptcha } from 'form/components';
@@ -46,7 +47,17 @@ export class Checkout extends React.Component {
   }
 
   async componentDidMount() {
-    i18next.init();
+    // Translations.
+    if (i18next.isInitialized) {
+      i18next.on('languageChanged', (language) => {
+        this.forceUpdate();
+      });
+  
+      Checkout.store.dispatch(changeLanguage(i18next.language));
+    } else {
+      // Use i18next without translation.
+      await i18next.init();
+    }
 
     Checkout.store.dispatch(updateAppSettings({
       storeUid:             this.props.storeUid,
@@ -99,7 +110,7 @@ export class Checkout extends React.Component {
     if (this.state.isCartComplete) {
       return (
         <div className="text-center">
-          Your order has already been completed, you may not checkout at this time.
+          {t('checkout-cart-complete', 'Your order has already been completed.')}
         </div>
       );
     }
@@ -115,7 +126,7 @@ export class Checkout extends React.Component {
             </Col>
 
             <Col lg={6} className="col-checkout">
-              <h1>Checkout</h1>
+              <h1>{t('checkout', 'Checkout')}</h1>
               <PanelManager layout="accordian" resources={Checkout.resources} />
             </Col>
           </Row>

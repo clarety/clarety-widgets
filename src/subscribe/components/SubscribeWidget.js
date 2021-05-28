@@ -4,7 +4,7 @@ import { Provider, connect } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import i18next from 'i18next';
 import { PanelManager } from 'shared/components';
-import { setPanels, fetchSettings, updateAppSettings, initTrackingData, setPanelSettings } from 'shared/actions';
+import { setPanels, fetchSettings, updateAppSettings, initTrackingData, setPanelSettings, changeLanguage } from 'shared/actions';
 import { Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { rootReducer } from 'subscribe/reducers';
@@ -46,9 +46,19 @@ export class SubscribeWidget extends React.Component {
 
 export class _SubscribeWidgetRoot extends React.Component {
   async componentDidMount() {
-    const { updateAppSettings, setPanelSettings, initTrackingData } = this.props;
+    // Translations.
+    if (i18next.isInitialized) {
+      i18next.on('languageChanged', (language) => {
+        this.forceUpdate();
+      });
+  
+      this.props.changeLanguage(i18next.language);
+    } else {
+      // Use i18next without translation.
+      await i18next.init();
+    }
 
-    i18next.init();
+    const { updateAppSettings, setPanelSettings, initTrackingData } = this.props;
 
     updateAppSettings({
       widgetElementId: this.props.elementId,
@@ -107,6 +117,7 @@ const actions = {
   setPanelSettings: setPanelSettings,
   initTrackingData: initTrackingData,
   fetchSettings: fetchSettings,
+  changeLanguage: changeLanguage,
 };
 
 const SubscribeWidgetRoot = connect(mapStateToProps, actions)(_SubscribeWidgetRoot);

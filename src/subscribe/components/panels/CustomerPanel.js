@@ -3,6 +3,7 @@ import { Form, Row, Col } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { requiredField, emailField } from 'shared/utils';
 import { InputGroup } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { TextInput, EmailInput, StateInput, CountryInput, ErrorMessages, SubmitButton, FormElement } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
@@ -23,18 +24,18 @@ export class CustomerPanel extends BasePanel {
     const errors = [];
 
     if (settings.nameOption === 'firstandlast') {
-      requiredField(errors, formData, 'customer.firstName', 'Please enter your first name.');
-      requiredField(errors, formData, 'customer.lastName', 'Please enter your last name.');
+      requiredField(errors, formData, 'customer.firstName');
+      requiredField(errors, formData, 'customer.lastName');
     }
 
     if (settings.nameOption === 'full') {
-      requiredField(errors, formData, 'customer.fullName', 'Please enter your name.');
+      requiredField(errors, formData, 'customer.fullName');
     }
 
     emailField(errors, formData, 'customer.email');
 
     if (settings.showCountry) {
-      requiredField(errors, formData, 'customer.billing.country', 'Please select your country.');
+      requiredField(errors, formData, 'customer.billing.country');
     }
 
     setErrors(errors);
@@ -50,7 +51,7 @@ export class CustomerPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title="Personal Details"
+          title={t('personal-details', 'Personal Details')}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -90,28 +91,28 @@ export class CustomerPanel extends BasePanel {
         <InputGroup>
           {(nameOption === 'firstandlast' || !nameOption) &&
             <React.Fragment>
-              <TextInput field="customer.firstName" placeholder="First Name" hideErrors required />
-              <TextInput field="customer.lastName" placeholder="Last Name" hideErrors required />
+              <TextInput field="customer.firstName" placeholder={t('first-name', 'First Name')} hideErrors required />
+              <TextInput field="customer.lastName" placeholder={t('last-name', 'Last Name')} hideErrors required />
             </React.Fragment>
           }
 
           {nameOption === 'full' &&
-            <TextInput field="customer.fullName" placeholder="Full Name" hideErrors required />
+            <TextInput field="customer.fullName" placeholder={t('full-name', 'Full Name')} hideErrors required />
           }
           
-          <EmailInput field="customer.email" type="email" placeholder="Email" hideErrors required />
+          <EmailInput field="customer.email" type="email" placeholder={t('email', 'Email')} hideErrors required />
 
           {showState &&
-            <StateInput field="customer.billing.state" placeholder="State" country="AU" hideErrors required />
+            <StateInput field="customer.billing.state" placeholder={t('state', 'State')} country="AU" hideErrors required />
           }
 
           {showCountry
-            ? <CountryInput field="customer.billing.country" initialValue={defaultCountry} placeholder="Country" hideErrors required />
+            ? <CountryInput field="customer.billing.country" initialValue={defaultCountry} placeholder={t('country', 'Country')} hideErrors required />
             : <FormElement field="customer.billing.country" value={defaultCountry} />
           }
 
           <InputGroup.Append>
-            <SubmitButton title={buttonText || 'Sign Up'} />
+            <SubmitButton title={buttonText || t('opt-in', 'Sign Up')} />
           </InputGroup.Append>
         </InputGroup>
 

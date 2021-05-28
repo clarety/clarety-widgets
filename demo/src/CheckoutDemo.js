@@ -2,8 +2,13 @@ import React from 'react';
 import { LoginPanel, PaymentPanel, DonationPanel } from '../../src/shared/components';
 import { CheckoutCustomerPanel, AddressPanel, ShippingPanel } from '../../src/checkout/components';
 import { LoginConnect, CheckoutCustomerConnect, AddressConnect, ShippingConnect, PaymentConnect, DonationConnect } from '../../src/checkout/components';
-import { Checkout, setupCheckoutAxiosMock } from '../../src';
+import { Checkout, initTranslations, setupCheckoutAxiosMock } from '../../src';
 import '../../src/checkout/style.scss';
+
+initTranslations({
+  translationsPath: 'translations/{{lng}}.json',
+  defaultLanguage: 'en',
+});
 
 Checkout.init();
 

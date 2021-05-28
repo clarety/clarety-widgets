@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Row, Col } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { Currency } from 'shared/components';
 import { getCart } from 'shared/selectors';
 import { getCartSummaryMode } from 'checkout/selectors';
@@ -24,7 +25,7 @@ class _CartSummary extends React.Component {
         <CartTotals cart={cart} mode={mode} />
 
         {mode === 'incomplete' &&
-          <a href="shop?showCart=true" className="btn btn-link btn-edit-cart">Edit Cart</a>
+          <a href="shop?showCart=true" className="btn btn-link btn-edit-cart">{t('edit-cart', 'Edit Cart')}</a>
         }
       </div>
     );
@@ -44,18 +45,18 @@ export const CartSummary = connect(mapStateToProps, actions)(_CartSummary);
 
 const CartTotals = ({ cart, mode }) => (
   <div className="cart-totals">
-    <TotalLine label="Subtotal" value={cart.summary.subTotal} />
+    <TotalLine label={t('subtotal', 'Subtotal')} value={cart.summary.subTotal} />
 
     {mode === 'complete' &&
       <React.Fragment>
-        <TotalLine label="Shipping" value={cart.summary.shipping} />
+        <TotalLine label={t('shipping', 'Shipping')} value={cart.summary.shipping} />
 
         {cart.summary.taxType !== "Inclusive" &&
-          <TotalLine label="Tax" value={cart.summary.tax} />
+          <TotalLine label={t('tax', 'Tax')} value={cart.summary.tax} />
         }
 
         <hr />
-        <TotalLine label="Total" value={cart.summary.total} className="grand-total" />
+        <TotalLine label={t('total', 'Total')} value={cart.summary.total} className="grand-total" />
       </React.Fragment>
     }
   </div>

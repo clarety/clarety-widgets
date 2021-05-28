@@ -6,7 +6,7 @@ import i18next from 'i18next';
 import { BreakpointProvider } from 'react-socks';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { statuses, setStore, initTrackingData, setLanguages, fetchSettings, updateAppSettings, setPanels, changeLanguage } from 'shared/actions';
+import { statuses, setStore, initTrackingData, fetchSettings, updateAppSettings, setPanels, changeLanguage } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { getJwtCustomer, Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
@@ -19,7 +19,6 @@ import { fetchCustomer } from 'donate/actions/customer-actions';
 export class DonateWidget extends React.Component {
   static store;
   static resources;
-  static languages;
 
   static init() {
     // Setup redux store.
@@ -45,18 +44,12 @@ export class DonateWidget extends React.Component {
     DonateWidget.resources.setComponent(name, component);
   }
 
-  static setLanguages(languages) {
-    DonateWidget.languages = languages;
-    DonateWidget.store.dispatch(setLanguages(languages));
-  }
-
   render() {
     return (
       <ReduxProvider store={DonateWidget.store}>
         <BreakpointProvider>
           <DonateWidgetRoot
             resources={DonateWidget.resources}
-            languages={DonateWidget.languages}
             {...this.props}
           />
         </BreakpointProvider>
@@ -74,27 +67,21 @@ export class _DonateWidgetRoot extends React.Component {
       throw new Error('[DonateWidget] A singleOfferId, recurringOfferId, or categoryUid is required');
     }
 
+    // Translations.
+    if (i18next.isInitialized) {
+      i18next.on('languageChanged', (language) => {
+        this.forceUpdate();
+      });
+  
+      this.props.changeLanguage(i18next.language);
+    } else {
+      // Use i18next without translation.
+      await i18next.init();
+    }
+
     const givingTypeOptions = this.props.givingTypeOptions
       ? this.props.givingTypeOptions.map(option => ({ value: option, label: option }))
       : undefined;
-
-    // Translations.
-    const { languages, defaultLanguage, changeLanguage } = this.props;
-    const language = defaultLanguage || navigator.language || navigator.userLanguage || 'en';
-    i18next.init({
-      load: 'languageOnly',
-      lng: language,
-      fallbackLng: defaultLanguage || 'en',
-      resources: languages,
-      returnNull: false,
-      keySeparator: false,
-    });
-
-    i18next.on('languageChanged', (language) => {
-      this.forceUpdate();
-    });
-
-    changeLanguage(language);
 
     updateAppSettings({
       singleOfferId:        singleOfferId,

@@ -1,0 +1,97 @@
+{
+  "personal-details": "Personal Details",
+
+  "type": "Type",
+  "business-name": "Business Name",
+  "first-name": "First Name",
+  "last-name": "Last Name",
+  "full-name": "Full Name",
+  "email": "Email",
+  "home-phone": "Home Phone",
+  "work-phone": "Work Phone",
+  "mobile-phone": "Mobile Phone",
+  "address-1": "Address 1",
+  "address-2": "Address 2",
+  "state": "State",
+  "country": "Country",
+
+  "opt-in": "Sign Up",
+  "newsletter-opt-in": "Sign up to receive our newsletter",
+  "opt-in-confirm": "Thank you for subscribing!",
+
+  "join": "Join",
+  "start-a-campaign": "Start a Campaign",
+  "campaign-name": "Page Name",
+  "campaign-goal": "Fundraising Goal",
+
+  "cart": "Cart",
+  "cart-empty": "Your cart is empty",
+  "cart-footer": "Shipping, taxes, and discounts are calculated at checkout.",
+  
+  "amount": "Amount",
+  "remove": "Remove",
+  "quantity": "Quantity",
+  "includes": "Includes",
+
+  "checkout": "Checkout",
+  "checkout-cart-complete": "Your order has already been completed.",
+  "edit-cart": "Edit Cart",
+  "shipping": "Shipping",
+  "tax": "Tax",
+  "subtotal": "Subtotal",
+  "total": "Total",
+  "promo-code": "Discount Code",
+  "apply": "Apply",
+
+  "optional": "Optional",
+  "select": "Select",
+  "continue": "Continue",
+  "close": "Close",
+
+  "card-expiry-placeholder": "MM / YY",
+
+  "day": "Day",
+  "month": "Month",
+  "year": "Year",
+  "month-1": "January",
+  "month-2": "February",
+  "month-3": "March",
+  "month-4": "April",
+  "month-5": "May",
+  "month-6": "June",
+  "month-7": "July",
+  "month-8": "August",
+  "month-9": "September",
+  "month-10": "October",
+  "month-11": "November",
+  "month-12": "December",
+
+  "shipping-details": "Shipping Details",
+  "billing-details": "Billing Details",
+  "shipping-address": "Shipping Address",
+  "billing-address": "Billing Address",
+  "billing-same-as-shipping": "Billing Address is the same as Shipping Address",
+  "cant-find-your-address": "Can't find your address?",
+  
+  "provide-phone": "Please provide a phone number",
+
+  "how-did-you-hear-about-us": "How did you hear about us?",
+
+  "shipping-options": "Shipping Options",
+  "estimated-delivery-date": "Estimated Delivery Date",
+
+  "unsubscribe-email-placeholder": "Your email",
+  "unsubscribe-btn": "Yes, Unsubscribe",
+  "unsubscribe-success": "Ok, you have unsubscribed.",
+
+  "is-required": "is required",
+  "invalid-required": "This is a required field",
+  "invalid-email": "Please enter a valid email",
+  "invalid-phone": "Please enter a valid phone number",
+  "invalid-password": "Password must contain at least 8 characters including 2 numbers",
+  "invalid-card-number": "Please enter a valid card number",
+  "invalid-card-expiry": "Please enter a valid expiry date",
+  "invalid-ccv": "Please enter a valid CCV",
+  "invalid-min-age": "You must be at least",
+  "invalid-max-age": "You must not be older than"
+}
