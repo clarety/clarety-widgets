@@ -80,6 +80,10 @@
   "shipping-options": "Shipping Options",
   "estimated-delivery-date": "Estimated Delivery Date",
 
+  "unsubscribe-email-placeholder": "Your email",
+  "unsubscribe-btn": "Yes, Unsubscribe",
+  "unsubscribe-success": "Ok, you have unsubscribed.",
+
   "is-required": "is required",
   "invalid-required": "This is a required field",
   "invalid-email": "Please enter a valid email",

@@ -53,8 +53,6 @@ export class _FundraisingStartRoot extends React.Component {
   state = { isInitialising: true };
 
   async componentDidMount() {
-    const { updateAppSettings, initTrackingData, setStatus, setAuth, fetchCustomer } = this.props;
-
     if (!this.props.reCaptchaKey) throw new Error('[Clarety] missing reCaptcha key');
 
     // Translations.
@@ -68,6 +66,8 @@ export class _FundraisingStartRoot extends React.Component {
       // Use i18next without translation.
       await i18next.init();
     }
+
+    const { updateAppSettings, initTrackingData, setStatus, setAuth, fetchCustomer } = this.props;
 
     const { currencyCode, currencySymbol } = this.props;
     const currency = currencySymbol ? { code: currencyCode, symbol: currencySymbol } : undefined;

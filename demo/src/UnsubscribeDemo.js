@@ -1,13 +1,13 @@
 import React from 'react';
 import { UnsubscribePanel, UnsubscribeConnect, ConfirmPanel } from '../../src/unsubscribe/components';
-import { UnsubscribeWidget } from '../../src';
-import enTranslation from '../../src/unsubscribe/translations/en';
+import { UnsubscribeWidget, initTranslations } from '../../src';
+
+initTranslations({
+  translationsPath: 'translations/{{lng}}.json',
+  defaultLanguage: 'en',
+});
 
 UnsubscribeWidget.init();
-
-UnsubscribeWidget.setLanguages({
-  en: enTranslation,
-});
 
 UnsubscribeWidget.setPanels([
   {

@@ -67,10 +67,6 @@ export class _DonateWidgetRoot extends React.Component {
       throw new Error('[DonateWidget] A singleOfferId, recurringOfferId, or categoryUid is required');
     }
 
-    const givingTypeOptions = this.props.givingTypeOptions
-      ? this.props.givingTypeOptions.map(option => ({ value: option, label: option }))
-      : undefined;
-
     // Translations.
     if (i18next.isInitialized) {
       i18next.on('languageChanged', (language) => {
@@ -82,6 +78,10 @@ export class _DonateWidgetRoot extends React.Component {
       // Use i18next without translation.
       await i18next.init();
     }
+
+    const givingTypeOptions = this.props.givingTypeOptions
+      ? this.props.givingTypeOptions.map(option => ({ value: option, label: option }))
+      : undefined;
 
     updateAppSettings({
       singleOfferId:        singleOfferId,

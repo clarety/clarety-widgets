@@ -1,20 +1,20 @@
 import React from 'react';
-import { DonateWidget, renderWidget } from '../../src/';
+import { DonateWidget, renderWidget, initTranslations } from '../../src/';
 import { FundPanel, FundConnect } from '../../src/donate/components';
 import { DonationPanel, DonationConnect } from '../../src/donate/components';
 import { CustomerPanel, CustomerConnect } from '../../src/donate/components';
 import { FundraisingPanel, FundraisingConnect } from '../../src/donate/components';
 import { PaymentPanel, PaymentConnect } from '../../src/donate/components';
 import { SuccessPanel, SuccessConnect } from '../../src/donate/components';
-import enTranslation from '../../src/donate/translations/en';
 import '../../src/donate/style.scss';
 
-window.renderDonateWidget = (props) => {
-  DonateWidget.init();
-
-  DonateWidget.setLanguages({
-    en: enTranslation,
+window.renderDonateWidget = async (props) => {
+  await initTranslations({
+    translationsPath: 'translations/{{lng}}.json',
+    defaultLanguage: 'en',
   });
+
+  DonateWidget.init();
 
   DonateWidget.setPanels([
     {

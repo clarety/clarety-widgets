@@ -46,8 +46,6 @@ export class SubscribeWidget extends React.Component {
 
 export class _SubscribeWidgetRoot extends React.Component {
   async componentDidMount() {
-    const { updateAppSettings, setPanelSettings, initTrackingData } = this.props;
-
     // Translations.
     if (i18next.isInitialized) {
       i18next.on('languageChanged', (language) => {
@@ -59,6 +57,8 @@ export class _SubscribeWidgetRoot extends React.Component {
       // Use i18next without translation.
       await i18next.init();
     }
+
+    const { updateAppSettings, setPanelSettings, initTrackingData } = this.props;
 
     updateAppSettings({
       widgetElementId: this.props.elementId,

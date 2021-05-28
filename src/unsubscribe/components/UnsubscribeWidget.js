@@ -3,7 +3,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { connect, Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import i18next from 'i18next';
-import { statuses, setPanels, setLanguages, updateAppSettings, initTrackingData, changeLanguage, setStatus } from 'shared/actions';
+import { statuses, setPanels, updateAppSettings, initTrackingData, changeLanguage, setStatus } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
@@ -27,11 +27,6 @@ export class UnsubscribeWidget extends React.Component {
     UnsubscribeWidget.store.dispatch(setPanels(panels));
   }
 
-  static setLanguages(languages) {
-    UnsubscribeWidget.languages = languages;
-    UnsubscribeWidget.store.dispatch(setLanguages(languages));
-  }
-
   static setComponent(name, component) {
     UnsubscribeWidget.resources.setComponent(name, component);
   }
@@ -41,7 +36,6 @@ export class UnsubscribeWidget extends React.Component {
       <Provider store={UnsubscribeWidget.store}>
         <UnsubscribeRoot
           resources={UnsubscribeWidget.resources}
-          languages={UnsubscribeWidget.languages}
           {...this.props}
         />
       </Provider>
@@ -50,27 +44,22 @@ export class UnsubscribeWidget extends React.Component {
 }
 
 export class _UnsubscribeRoot extends React.Component {
-  componentWillMount() {
+  async componentWillMount() {
     if (!this.props.reCaptchaKey) throw new Error('[Clarety] missing reCaptcha key');
-    
-    const { updateAppSettings, initTrackingData } = this.props;
 
     // Translations.
-    const { languages, defaultLanguage, changeLanguage } = this.props;
-    const language = defaultLanguage || navigator.language || navigator.userLanguage || 'en';
-    i18next.init({
-      load: 'languageOnly',
-      lng: language,
-      fallbackLng: defaultLanguage || 'en',
-      resources: languages,
-      returnNull: false,
-    });
+    if (i18next.isInitialized) {
+      i18next.on('languageChanged', (language) => {
+        this.forceUpdate();
+      });
+  
+      this.props.changeLanguage(i18next.language);
+    } else {
+      // Use i18next without translation.
+      await i18next.init();
+    }
 
-    i18next.on('languageChanged', (language) => {
-      this.forceUpdate();
-    });
-
-    changeLanguage(language);
+    const { updateAppSettings, initTrackingData } = this.props;
 
     updateAppSettings({
       widgetElementId: this.props.elementId,
