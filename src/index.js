@@ -7,6 +7,7 @@ smoothscroll.polyfill();
 export { Config } from 'clarety-utils';
 export { connect } from 'react-redux';
 
+export { initTranslations } from 'shared/translations';
 export { renderWidget, getElementOptions, getSitePath, loadCss } from 'shared/utils';
 
 export { DonateWidget } from 'donate/components';

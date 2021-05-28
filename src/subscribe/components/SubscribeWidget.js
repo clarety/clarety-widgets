@@ -3,7 +3,6 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider, connect } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import i18next from 'i18next';
-import i18nextHttpBackend from 'i18next-http-backend';
 import { PanelManager } from 'shared/components';
 import { setPanels, fetchSettings, updateAppSettings, initTrackingData, setPanelSettings, changeLanguage } from 'shared/actions';
 import { Resources } from 'shared/utils';
@@ -13,7 +12,6 @@ import { rootReducer } from 'subscribe/reducers';
 export class SubscribeWidget extends React.Component {
   static store;
   static resources;
-  static translationsPath;
 
   static init() {
     // Setup store.
@@ -23,10 +21,6 @@ export class SubscribeWidget extends React.Component {
 
     // Setup resources.
     SubscribeWidget.resources = new Resources();
-  }
-
-  static setTranslationsPath(path) {
-    SubscribeWidget.translationsPath = path;
   }
 
   static setPanels(panels) {
@@ -43,7 +37,6 @@ export class SubscribeWidget extends React.Component {
       <Provider store={SubscribeWidget.store}>
         <SubscribeWidgetRoot
           resources={SubscribeWidget.resources}
-          translationsPath={SubscribeWidget.translationsPath}
           {...this.props}
         />
       </Provider>
@@ -56,25 +49,16 @@ export class _SubscribeWidgetRoot extends React.Component {
     const { updateAppSettings, setPanelSettings, initTrackingData } = this.props;
 
     // Translations.
-    const { defaultLanguage, changeLanguage, translationsPath } = this.props;
-    const language = defaultLanguage || navigator.language || navigator.userLanguage || 'en';
-    i18next.use(i18nextHttpBackend);
-    await i18next.init({
-      load: 'languageOnly',
-      lng: language,
-      fallbackLng: defaultLanguage || 'en',
-      returnNull: false,
-      keySeparator: false,
-      backend: {
-        loadPath: translationsPath,
-      },
-    });
-
-    i18next.on('languageChanged', (language) => {
-      this.forceUpdate();
-    });
-
-    changeLanguage(language);
+    if (i18next.isInitialized) {
+      i18next.on('languageChanged', (language) => {
+        this.forceUpdate();
+      });
+  
+      this.props.changeLanguage(i18next.language);
+    } else {
+      // Use i18next without translation.
+      await i18next.init();
+    }
 
     updateAppSettings({
       widgetElementId: this.props.elementId,

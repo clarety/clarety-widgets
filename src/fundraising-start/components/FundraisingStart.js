@@ -3,7 +3,6 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { connect, Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import i18next from 'i18next';
-import i18nextHttpBackend from 'i18next-http-backend';
 import { ClaretyApi } from 'clarety-utils';
 import { setStatus, setAuth, setPanels, setClientIds, updateAppSettings, initTrackingData, changeLanguage } from 'shared/actions';
 import { PanelManager } from 'shared/components';
@@ -15,7 +14,6 @@ import { rootReducer } from 'fundraising-start/reducers';
 export class FundraisingStart extends React.Component {
   static store;
   static resources;
-  static translationsPath;
 
   static init() {
     // Setup store.
@@ -24,10 +22,6 @@ export class FundraisingStart extends React.Component {
 
     // Setup resources.
     FundraisingStart.resources = new Resources();
-  }
-
-  static setTranslationsPath(path) {
-    FundraisingStart.translationsPath = path;
   }
 
   static setClientIds({ dev, prod }) {
@@ -48,7 +42,6 @@ export class FundraisingStart extends React.Component {
       <Provider store={FundraisingStart.store}>
         <FundraisingStartRoot
           resources={FundraisingStart.resources}
-          translationsPath={FundraisingStart.translationsPath}
           {...this.props}
         />
       </Provider>
@@ -65,25 +58,16 @@ export class _FundraisingStartRoot extends React.Component {
     if (!this.props.reCaptchaKey) throw new Error('[Clarety] missing reCaptcha key');
 
     // Translations.
-    const { defaultLanguage, changeLanguage, translationsPath } = this.props;
-    const language = defaultLanguage || navigator.language || navigator.userLanguage || 'en';
-    i18next.use(i18nextHttpBackend);
-    await i18next.init({
-      load: 'languageOnly',
-      lng: language,
-      fallbackLng: defaultLanguage || 'en',
-      returnNull: false,
-      keySeparator: false,
-      backend: {
-        loadPath: translationsPath,
-      },
-    });
-
-    i18next.on('languageChanged', (language) => {
-      this.forceUpdate();
-    });
-
-    changeLanguage(language);
+    if (i18next.isInitialized) {
+      i18next.on('languageChanged', (language) => {
+        this.forceUpdate();
+      });
+  
+      this.props.changeLanguage(i18next.language);
+    } else {
+      // Use i18next without translation.
+      await i18next.init();
+    }
 
     const { currencyCode, currencySymbol } = this.props;
     const currency = currencySymbol ? { code: currencyCode, symbol: currencySymbol } : undefined;

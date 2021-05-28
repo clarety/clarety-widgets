@@ -1,12 +1,15 @@
 import React from 'react';
-import { FundraisingStart } from '../../src/';
+import { FundraisingStart, initTranslations } from '../../src/';
 import { LoginPanel } from '../../src/shared/components';
 import { CampaignPanel, CampaignConnect, FundraisingStartLoginConnect } from '../../src/fundraising-start/components';
 import '../../src/fundraising-start/style.scss';
 
-FundraisingStart.init();
+initTranslations({
+  translationsPath: 'translations/{{lng}}.json',
+  defaultLanguage: 'en',
+});
 
-FundraisingStart.setTranslationsPath('translations/{{lng}}.json');
+FundraisingStart.init();
 
 FundraisingStart.setClientIds({
   dev:  '82ee4a2479780256c9bf9b951f5d1cfb',

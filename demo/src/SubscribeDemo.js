@@ -1,11 +1,14 @@
 import React from 'react';
 import { CmsConfirmPanel } from '../../src/shared/components';
 import { CustomerPanel, CustomerConnect } from '../../src/subscribe/components';
-import { SubscribeWidget } from '../../src';
+import { SubscribeWidget, initTranslations } from '../../src';
+
+initTranslations({
+  translationsPath: 'translations/{{lng}}.json',
+  defaultLanguage: 'en',
+});
 
 SubscribeWidget.init();
-
-SubscribeWidget.setTranslationsPath('translations/{{lng}}.json');
 
 SubscribeWidget.setPanels([
   {
