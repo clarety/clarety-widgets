@@ -1,12 +1,17 @@
 import React from 'react';
+import { initTranslations } from '../../src/shared/translations';
 import { LoginPanel, PaymentPanel, DonationPanel } from '../../src/shared/components';
 import { CheckoutCustomerPanel, AddressPanel, ShippingPanel } from '../../src/checkout/components';
 import { LoginConnect, CheckoutCustomerConnect, AddressConnect, ShippingConnect, PaymentConnect, DonationConnect } from '../../src/checkout/components';
 import { Checkout, setupCheckoutAxiosMock } from '../../src';
 import '../../src/checkout/style.scss';
 
+initTranslations({
+  translationsPath: 'translations/{{lng}}.json',
+  defaultLanguage: 'en',
+});
+
 Checkout.init();
-Checkout.setTranslationsPath('translations/{{lng}}.json');
 
 Checkout.setClientIds({
   //dev:  '82ee4a2479780256c9bf9b951f5d1cfb', // baseline

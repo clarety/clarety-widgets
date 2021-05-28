@@ -3,7 +3,6 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import i18next from 'i18next';
-import i18nextHttpBackend from 'i18next-http-backend';
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import { ClaretyApi } from 'clarety-utils';
 import { t } from 'shared/translations';
@@ -21,7 +20,6 @@ import { setupDefaultResources } from 'checkout/utils';
 export class Checkout extends React.Component {
   static store;
   static resources;
-  static translationsPath;
 
   state = { isReady: false, isCartComplete: false };
 
@@ -33,10 +31,6 @@ export class Checkout extends React.Component {
     // Setup resources.
     Checkout.resources = new Resources();
     setupDefaultResources(Checkout.resources);
-  }
-
-  static setTranslationsPath(path) {
-    Checkout.translationsPath = path;
   }
 
   static setClientIds({ dev, prod }) {
@@ -54,25 +48,16 @@ export class Checkout extends React.Component {
 
   async componentDidMount() {
     // Translations.
-    const { defaultLanguage } = this.props;
-    const language = defaultLanguage || navigator.language || navigator.userLanguage || 'en';
-    i18next.use(i18nextHttpBackend);
-    await i18next.init({
-      load: 'languageOnly',
-      lng: language,
-      fallbackLng: defaultLanguage || 'en',
-      returnNull: false,
-      keySeparator: false,
-      backend: {
-        loadPath: Checkout.translationsPath,
-      },
-    });
-
-    i18next.on('languageChanged', (language) => {
-      this.forceUpdate();
-    });
-
-    Checkout.store.dispatch(changeLanguage(language));
+    if (i18next.isInitialized) {
+      i18next.on('languageChanged', (language) => {
+        this.forceUpdate();
+      });
+  
+      Checkout.store.dispatch(changeLanguage(i18next.language));
+    } else {
+      // Use i18next without translation.
+      await i18next.init();
+    }
 
     Checkout.store.dispatch(updateAppSettings({
       storeUid:             this.props.storeUid,
