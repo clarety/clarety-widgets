@@ -10,6 +10,7 @@ export class LoginConnect {
       isBusy: state.status === statuses.busy,
       isLoggedIn: getIsLoggedIn(state),
       customer: state.cart.customer,
+      cartAllowsGuest: state.cart.allowGuest,
       errors: state.errors,
     };
   };
