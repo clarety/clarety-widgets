@@ -37,3 +37,5 @@ export { setupQuizAxiosMock } from 'quiz/mocks';
 export { FileUploadWidget } from 'file-upload/components';
 
 export { RsvpWidget } from 'rsvp/components';
+
+export { CaseWidget } from 'case/components';

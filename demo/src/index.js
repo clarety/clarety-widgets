@@ -96,6 +96,11 @@ const Demo = () => {
     return <RsvpDemo />;
   }
 
+  if (url.endsWith('case')) {
+    const CaseDemo = require('./CaseDemo').default;
+    return <CaseDemo />;
+  }
+
   return (
     <div className="list-group m-5">
       <a href="subscribe" className="list-group-item list-group-item-action">Subscribe Widget Demo</a>
@@ -111,6 +116,7 @@ const Demo = () => {
       <a href="fundraising-start" className="list-group-item list-group-item-action">Fundraising Start Demo</a>
       <a href="file-upload" className="list-group-item list-group-item-action">File Upload Demo</a>
       <a href="rsvp" className="list-group-item list-group-item-action">RSVP Demo</a>
+      <a href="case" className="list-group-item list-group-item-action">Case Demo</a>
     </div>
   );
 };
