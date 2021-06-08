@@ -20,12 +20,14 @@ export * from './inputs/payment/NZAccountNumberInput';
 
 export * from './inputs/general/BackButton';
 export * from './inputs/general/Button';
+export * from './inputs/general/CheckboxesInput';
 export * from './inputs/general/CheckboxInput';
 export * from './inputs/general/CurrencyInput';
 export * from './inputs/general/EmailInput';
 export * from './inputs/general/FormElement';
 export * from './inputs/general/NumberInput';
 export * from './inputs/general/PhoneInput';
+export * from './inputs/general/RadioInput';
 export * from './inputs/general/SelectInput';
 export * from './inputs/general/SubmitButton';
 export * from './inputs/general/TextAreaInput';

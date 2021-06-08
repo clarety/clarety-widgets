@@ -76,11 +76,10 @@ export class _CaseWidgetRoot extends React.Component {
 
     this.props.initTrackingData(this.props);
 
-    // await this.props.fetchSettings('cases/', {
-    //   storeUid: this.props.storeUid,
-    // });
-
-    this.props.setStatus('ready');
+    await this.props.fetchSettings('cases/', {
+      storeUid: this.props.storeUid,
+      caseTypeUid: this.props.caseTypeUid,
+    });
   }
 
   render() {

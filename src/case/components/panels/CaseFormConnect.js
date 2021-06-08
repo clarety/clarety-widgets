@@ -10,6 +10,7 @@ export class CaseFormConnect {
       formData: getFormData(state),
       errors: getErrors(state),
       variant: getSetting(state, 'variant'),
+      form: getSetting(state, 'extendForm'),
     };
   };
 

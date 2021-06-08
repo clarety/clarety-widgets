@@ -21,7 +21,7 @@ const renderCaseWidget = async (props) => {
   ]);
 
   renderWidget(props.elementId,
-    <CaseWidget />
+    <CaseWidget {...props} />
   );
 };
 
@@ -29,6 +29,7 @@ export default class CaseDemo extends React.Component {
   componentDidMount() {
     renderCaseWidget({
       elementId: 'case-widget-demo',
+      caseTypeUid: 'ctp_7lvr', // baseline
     });
   }
 
