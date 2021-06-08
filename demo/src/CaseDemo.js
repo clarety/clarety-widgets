@@ -5,7 +5,7 @@ import { CaseFormPanel, CaseFormConnect } from '../../src/case/components';
 const renderCaseWidget = async (props) => {
   await initTranslations({
     translationsPath: 'translations/{{lng}}.json',
-    defaultLanguage: 'en',
+    defaultLanguage: 'th',
   });
 
   CaseWidget.init();

@@ -3,7 +3,7 @@ import { Form, Row, Col, Button } from 'react-bootstrap';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { requiredField, emailField } from 'shared/utils';
-import { TextInput, TextAreaInput, EmailInput, PhoneInput, NumberInput, CurrencyInput, CheckboxInput, CheckboxesInput, SelectInput, RadioInput, FormElement, SubmitButton, BackButton, ErrorMessages } from 'form/components';
+import { TextInput, TextAreaInput, EmailInput, PhoneInput, NumberInput, CurrencyInput, CheckboxInput, CheckboxesInput, SelectInput, RadioInput, DateInput, FormElement, SubmitButton, BackButton, ErrorMessages } from 'form/components';
 
 export class CaseFormPanel extends BasePanel {
   onShowPanel() {
@@ -306,9 +306,19 @@ export class CaseFormPanel extends BasePanel {
   }
 
   renderDateField(field) {
-    // TODO:
     return (
-      <div key={field.columnKey}>TODO: Date Field</div>
+      <Form.Group controlId={field.columnKey} key={field.columnKey} className="field field--date">
+        <Form.Label>{field.question || field.label}</Form.Label>
+
+        <DateInput
+          field={`extend.${field.columnKey}`}
+          required={field.required}
+        />
+
+        {field.explanation &&
+          <div className="explanation">{field.explanation}</div>
+        }
+      </Form.Group>
     );
   }
 
