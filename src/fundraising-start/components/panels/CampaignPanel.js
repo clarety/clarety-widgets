@@ -27,9 +27,9 @@ export class CampaignPanel extends BasePanel {
 
     requiredField(errors, formData, 'campaign.name');
 
-	if(!settings.hideCampaignGoal) {
-		requiredField(errors, formData, 'campaign.goal');
-	}
+    if (!settings.hideCampaignGoal) {
+      requiredField(errors, formData, 'campaign.goal');
+    }
   }
 
   getTitle() {
