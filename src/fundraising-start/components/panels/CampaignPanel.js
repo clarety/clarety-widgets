@@ -23,10 +23,13 @@ export class CampaignPanel extends BasePanel {
   }
 
   validateFields(errors) {
-    const { formData } = this.props;
+    const { formData, settings } = this.props;
 
     requiredField(errors, formData, 'campaign.name');
-    requiredField(errors, formData, 'campaign.goal');
+
+	if(!settings.hideCampaignGoal) {
+		requiredField(errors, formData, 'campaign.goal');
+	}
   }
 
   getTitle() {
