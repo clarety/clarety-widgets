@@ -90,13 +90,13 @@ export class CampaignPanel extends BasePanel {
             {!settings.hideCampaignGoal && 
               <Form.Row>
                 <Col>
-                <Form.Group>
-                  <CurrencyInput
-                    field="campaign.goal"
-                    placeholder={settings.campaignGoalLabel || t('campaign-goal', 'Fundraising Goal')}
-                    required
-                  />
-                </Form.Group>
+                  <Form.Group>
+                    <CurrencyInput
+                      field="campaign.goal"
+                      placeholder={settings.campaignGoalLabel || t('campaign-goal', 'Fundraising Goal')}
+                      required
+                    />
+                  </Form.Group>
                 </Col>
               </Form.Row>
             }
