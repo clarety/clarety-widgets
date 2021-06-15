@@ -21,4 +21,6 @@ const mapStateToProps = (state, ownProps) => ({
   currency: ownProps.currency || getSetting(state, 'currency'),
 });
 
-export const CurrencyInput = connect(mapStateToProps)(_CurrencyInput);
+const actions = {};
+
+export const CurrencyInput = connect(mapStateToProps, actions)(_CurrencyInput);

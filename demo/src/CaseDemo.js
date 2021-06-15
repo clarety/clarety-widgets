@@ -5,7 +5,7 @@ import { CaseFormPanel, CaseFormConnect } from '../../src/case/components';
 const renderCaseWidget = async (props) => {
   await initTranslations({
     translationsPath: 'translations/{{lng}}.json',
-    defaultLanguage: 'th',
+    defaultLanguage: 'en',
   });
 
   CaseWidget.init();
@@ -29,7 +29,8 @@ export default class CaseDemo extends React.Component {
   componentDidMount() {
     renderCaseWidget({
       elementId: 'case-widget-demo',
-      caseTypeUid: 'ctp_7lvr', // baseline
+      // caseTypeUid: 'ctp_7lvr', // baseline
+      caseTypeUid: 'ctp_w5kw', // a21
     });
   }
 
