@@ -1,0 +1,53 @@
+@import '~bootstrap/scss/bootstrap.scss';
+
+.react-datepicker__input-container input {
+  @extend .form-control;
+}
+
+.widget-step-indicator {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 0 0 5px;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-bottom: none;
+  font-size: 0.75rem;
+
+  li {
+    display: inline-block;
+    position: relative;
+    margin: -10px 0 0;
+    padding: 0 24px;
+    counter-increment: steps;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 0.9rem;
+
+    > * {
+      display: inline-block;
+      padding-top: 20px;
+    }
+
+    &.visited::after,
+    &.visited > ::before,
+    &.current > ::before {
+      background: $primary;
+      color: $white;
+    }
+
+    > ::before {
+      position: absolute;
+      content: counter(steps);
+      z-index: 1;
+      left: 50%;
+      top: 0;
+      width: 20px;
+      height: 20px;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: $gray-300;
+      font-size: 0.8rem;
+      line-height: 1.3rem;
+    }
+  }
+}

@@ -13,6 +13,8 @@ export class CaseFormConnect {
       variant: getSetting(state, 'variant'),
       form: getSetting(state, 'extendForm'),
       customerElement: getElement(state, 'customer'),
+      shownFields: getSetting(state, 'shownFields'),
+      requiredFields: getSetting(state, 'requiredFields'),
     };
   };
 

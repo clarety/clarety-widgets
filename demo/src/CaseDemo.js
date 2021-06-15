@@ -1,6 +1,7 @@
 import React from 'react';
 import { renderWidget, CaseWidget, initTranslations } from '../../src/';
 import { CaseFormPanel, CaseFormConnect } from '../../src/case/components';
+import '../../src/case/style.scss';
 
 const renderCaseWidget = async (props) => {
   await initTranslations({
@@ -15,13 +16,12 @@ const renderCaseWidget = async (props) => {
       component: CaseFormPanel,
       connect: CaseFormConnect,
       settings: {
-
       },
     },
   ]);
 
   renderWidget(props.elementId,
-    <CaseWidget {...props} />
+    <CaseWidget showStepIndicator {...props} />
   );
 };
 
@@ -29,8 +29,23 @@ export default class CaseDemo extends React.Component {
   componentDidMount() {
     renderCaseWidget({
       elementId: 'case-widget-demo',
+      
       // caseTypeUid: 'ctp_7lvr', // baseline
       caseTypeUid: 'ctp_w5kw', // a21
+      caseStage: 0,
+      
+      shownFields: [
+        'customer.firstname',
+        'customer.lastname',
+        'customer.email',
+        'customer.churchattended',
+        'extendFields.testcaseformformtexttwo',
+        'extendFields.testcaseformformtextthree',
+      ],
+      requiredFields: [
+        'customer.firstname',
+        'extendFields.testcaseformformtexttwo',
+      ],
     });
   }
 

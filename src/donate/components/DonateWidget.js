@@ -7,13 +7,12 @@ import { BreakpointProvider } from 'react-socks';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { statuses, setStore, initTrackingData, fetchSettings, updateAppSettings, setPanels, changeLanguage } from 'shared/actions';
-import { PanelManager } from 'shared/components';
+import { PanelManager, StepIndicator } from 'shared/components';
 import { getJwtCustomer, Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { handleUrlParams, selectFrequency } from 'donate/actions';
 import { rootReducer } from 'donate/reducers';
 import { DonationApi, mapDonationSettings, setupDefaultResources } from 'donate/utils';
-import { StepIndicator } from 'donate/components';
 import { fetchCustomer } from 'donate/actions/customer-actions';
 
 export class DonateWidget extends React.Component {

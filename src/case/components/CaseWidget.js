@@ -6,10 +6,12 @@ import i18next from 'i18next';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { statuses, setStore, setStatus, initTrackingData, fetchSettings, updateAppSettings, setPanels, changeLanguage } from 'shared/actions';
-import { PanelManager } from 'shared/components';
+import { PanelManager, StepIndicator } from 'shared/components';
 import { Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { rootReducer } from 'case/reducers';
+import { setupFormPanels } from 'case/actions';
+import { mapCaseSettings } from 'case/utils';
 
 export class CaseWidget extends React.Component {
   static store;
@@ -65,7 +67,10 @@ export class _CaseWidgetRoot extends React.Component {
     }
 
     this.props.updateAppSettings({
+      caseStage:            this.props.caseStage,
       variant:              this.props.variant,
+      shownFields:          this.props.shownFields,
+      requiredFields:       this.props.requiredFields,
       confirmPageUrl:       this.props.confirmPageUrl,
       defaultCountry:       this.props.defaultCountry,
       addressFinderKey:     this.props.addressFinderKey,
@@ -79,11 +84,13 @@ export class _CaseWidgetRoot extends React.Component {
     await this.props.fetchSettings('cases/', {
       storeUid: this.props.storeUid,
       caseTypeUid: this.props.caseTypeUid,
-    });
+    }, mapCaseSettings);
+
+    this.props.setupFormPanels();
   }
 
   render() {
-    const { status, reCaptchaKey, layout } = this.props;
+    const { status, reCaptchaKey, layout, showStepIndicator } = this.props;
     const variant = this.props.variant || '';
 
     // Show a loading indicator while we init.
@@ -98,6 +105,8 @@ export class _CaseWidgetRoot extends React.Component {
     return (
       <div className={`clarety-case-widget h-100 ${layout} ${variant}`}>
         <BlockUi tag="div" blocking={status === statuses.busy} loader={<span></span>}>
+          {showStepIndicator && <StepIndicator />}
+
           <PanelManager
             layout={layout || 'tabs'}
             resources={this.props.resources}
@@ -123,6 +132,7 @@ const actions = {
   fetchSettings: fetchSettings,
   updateAppSettings: updateAppSettings,
   changeLanguage: changeLanguage,
+  setupFormPanels: setupFormPanels,
 };
 
 export const connectCaseWidgetRoot = connect(mapStateToProps, actions);

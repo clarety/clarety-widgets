@@ -38,18 +38,18 @@ const setupQuestionPanels = () => {
 
     dispatch(removePanels({ withComponent: 'QuestionPanel' }));
 
-      const questionPanels = questions.map(question => ({
-        component: QuestionPanel,
-        connect: QuestionConnect,
-        data: { question },
-      }));
+    const questionPanels = questions.map(question => ({
+      component: QuestionPanel,
+      connect: QuestionConnect,
+      data: { question },
+    }));
 
-      dispatch(insertPanels({
-        atIndex: questionPanelIndex,
-        panels: questionPanels,
-      }));
+    dispatch(insertPanels({
+      atIndex: questionPanelIndex,
+      panels: questionPanels,
+    }));
 
-      dispatch(setPanelStatus(0, 'edit'));
+    dispatch(setPanelStatus(0, 'edit'));
   };
 };
 

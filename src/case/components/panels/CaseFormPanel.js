@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Row, Col, Button } from 'react-bootstrap';
+import { Form, Row, Col } from 'react-bootstrap';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { requiredField, emailField, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
@@ -19,15 +19,17 @@ export class CaseFormPanel extends BasePanel {
   onPressNext = async (event) => {
     event.preventDefault();
 
-    const { onSubmit, nextPanel } = this.props;
+    const { onSubmit, nextPanel, isLastForm } = this.props;
 
     const isValid = this.validate();
     if (!isValid) return;
-    
-    const didSubmit = await onSubmit();
-    if (!didSubmit) return;
 
-    // nextPanel();
+    if (isLastForm) {
+      const didSubmit = await onSubmit();
+      if (!didSubmit) return;
+    }
+
+    nextPanel();
   };
 
   validate() {
@@ -38,7 +40,46 @@ export class CaseFormPanel extends BasePanel {
   }
 
   validateFields(errors) {
+    const { section } = this.props;
     
+    if (section === 'customer') {
+      // Only validate customer fields.
+      this.validateCustomerFields(errors);
+    } else {
+      this.validateExtendFields(errors, section);
+    }
+  }
+
+  validateCustomerFields(errors) {
+    const { customerElement, requiredFields, formData } = this.props;
+
+    // Validate required.
+    for (const element of customerElement.elements) {
+      const fieldKey = `customer.${element.property}`;
+      if (requiredFields.includes(fieldKey)) {
+        requiredField(errors, formData, fieldKey);
+      }
+    }
+
+    // Validate email.
+    if (formData['customer.email']) {
+      emailField(errors, formData, 'customer.email');
+    }
+  }
+
+  validateExtendFields(errors, section = null) {
+    const { requiredFields, formData } = this.props;
+
+    const form = section !== null
+      ? this.props.form.sections[section]
+      : this.props.form;
+
+    for (const field of form.extendFields) {
+      const fieldKey = `extendFields.${field.columnKey}`;
+      if (requiredFields.includes(fieldKey)) {
+        requiredField(errors, formData, fieldKey);
+      }
+    }
   }
 
   renderWait() {
@@ -76,8 +117,7 @@ export class CaseFormPanel extends BasePanel {
 
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
           {this.renderErrorMessages()}
-          {this.renderCustomerForm()}
-          {this.renderExtendForm()}
+          {this.renderForm()}
         </PanelBody>
 
         {this.renderFooter()}
@@ -103,27 +143,66 @@ export class CaseFormPanel extends BasePanel {
     return <ErrorMessages />;
   }
 
+  renderForm() {
+    const { section } = this.props;
+
+    // No sections, render all fields.
+    if (section === undefined) {
+      return (
+        <React.Fragment>
+          {this.renderCustomerForm()}
+          {this.renderExtendForm()}
+        </React.Fragment>
+      );
+    }
+
+    // Customer section.
+    if (section === 'customer') {
+      return this.renderCustomerForm();
+    }
+
+    // Extend form section.
+    return this.renderExtendForm(section);
+  }
+
   renderCustomerForm() {
     const { customerElement } = this.props;
     if (!customerElement) return null;
 
     return (
       <div>
-        {customerElement.elements.map(this.renderElement)}
+        <h2 className="title">{t('your-details', 'Your Details')}</h2>
+        <div>
+          {customerElement.elements.map(this.renderElement)}
+        </div>
       </div>
     );
   }
 
-  renderExtendForm() {
+  renderExtendForm(section = null) {
+    const form = section !== null
+      ? this.props.form.sections[section]
+      : this.props.form;
+
     return (
       <div>
-        {this.props.form.extendFields.map(field => this.renderField(field, 'extendFields'))}
+        <h2 className="title">{form.name}</h2>
+        {form.explanation &&
+          <p>{form.explanation}</p>
+        }
+
+        <div>
+          {form.extendFields.map(field => this.renderField(field, 'extendFields'))}
+        </div>
       </div>
     );
   }
 
   renderField(field, resourceKey = null) {
     const fieldKey = resourceKey ? resourceKey + '.' + field.columnKey : field.columnKey;
+
+    // Ignore fields that aren't in the 'shown fields' list.
+    if (!this.props.shownFields.includes(fieldKey)) return null;
 
     switch (field.type) {
       case 'text':        return this.renderTextField(field, fieldKey);
@@ -455,22 +534,38 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
+  getSubmitBtnText() {
+    const { settings, isLastForm } = this.props;
+
+    if (settings.submitBtnText) {
+      return settings.submitBtnText;
+    }
+
+    if (isLastForm) {
+      return t('submit', 'Submit');
+    }
+
+    return t('next', 'Next');
+  }
+
   renderFooter() {
-    const { layout, isBusy, settings } = this.props;
+    const { layout, isBusy, settings, index } = this.props;
 
     return (
       <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
         <Form.Row className="justify-content-center">
           <Col xs={6}>
-            <BackButton
-              title={settings.backBtnText || t('back', 'Back')}
-              onClick={this.onPressBack}
-              block
-            />
+            {index !== 0 &&
+              <BackButton
+                title={settings.backBtnText || t('back', 'Back')}
+                onClick={this.onPressBack}
+                block
+              />
+            }
           </Col>
           <Col xs={6}>
             <SubmitButton
-              title={settings.submitBtnText || t('next', 'Next')}
+              title={this.getSubmitBtnText()}
               testId="next-button"
               block
             />
