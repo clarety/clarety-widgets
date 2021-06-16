@@ -1,10 +1,9 @@
 import { ClaretyApi } from 'clarety-utils';
 import { setStatus, setPanelSettings, updateAppSettings, setRecaptcha } from 'shared/actions';
-import { getSetting } from 'shared/selectors';
 import { getCmsConfirmContent } from 'shared/utils';
 import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
-import { getCasePostData } from 'case/selectors';
+import { getCasePostData, getCmsConfirmContentFields } from 'case/selectors';
 import { types } from './types';
 
 export const createCase = () => {
@@ -12,6 +11,7 @@ export const createCase = () => {
     dispatch(setStatus('busy'));
 
     const state = getState();
+    const { settings } = state;
 
     const recaptcha = await executeRecaptcha();
     dispatch(setRecaptcha(recaptcha));
@@ -39,11 +39,11 @@ export const createCase = () => {
         window.location.href = redirect;
       } else {
         // Show CMS confirm content.
-        const elementId = getSetting(state, 'widgetElementId');
         const fields = getCmsConfirmContentFields(state);
-        const confirmContent = getCmsConfirmContent(elementId, fields);
+        const confirmContent = getCmsConfirmContent(settings.widgetElementId, fields);
         dispatch(setPanelSettings('CmsConfirmPanel', { confirmContent }));
         dispatch(updateAppSettings({ isShowingConfirmation: true }));
+        dispatch(setStatus('ready'));
 
         return true;
       }
