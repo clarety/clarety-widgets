@@ -11,6 +11,7 @@ import { t } from 'shared/translations';
 import { statuses, setPanels, setLanguages, changeLanguage, setClientIds, setAuth, initTrackingData, fetchSettings, updateAppSettings } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources, getJwtAccount } from 'shared/utils';
+import { SuggestedAmount, SuggestedAmountLg, VariableAmount, VariableAmountLg, SuggestedAmountPriceOnly } from 'donate/components';
 import { MiniCart, MiniCartBrand, BusyOverlay } from 'registration/components';
 import { fetchEvents, fetchFullEvent, fetchAuthCustomer, setFundraising } from 'registration/actions';
 import { rootReducer } from 'registration/reducers';
@@ -29,6 +30,12 @@ export class Registration extends React.Component {
     // Setup resourcs.
     Registration.resources = new Resources();
     Registration.resources.setComponent('MiniCartBrand', MiniCartBrand);
+    Registration.resources.setComponent('SuggestedAmount', SuggestedAmount);
+    Registration.resources.setComponent('VariableAmount', VariableAmount);
+    Registration.resources.setComponent('SuggestedAmountLg', SuggestedAmountLg);
+    Registration.resources.setComponent('VariableAmountLg', VariableAmountLg);
+    Registration.resources.setComponent('SuggestedAmountPriceOnly', SuggestedAmountPriceOnly);
+    Registration.resources.setComponent('VariableAmountPriceOnly', VariableAmount);
   }
 
   static setClientIds({ dev, prod }) {

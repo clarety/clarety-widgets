@@ -112,14 +112,8 @@ export default class RegistrationDemo extends React.Component {
 
           // a21
           storeCode="US"
-          seriesId="26"
-          prevSeriesId="25"
-          donationSingleOfferId="151"
-
-          // a21
-          seriesId="26"
-          prevSeriesId="25"
-          donationSingleOfferId="151"
+          seriesId="30"
+          donationSingleOfferId="4120"
 
           // mdc
           // storeCode="AU"
