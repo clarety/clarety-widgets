@@ -19,8 +19,6 @@ export class DonationPanel extends BasePanel {
     if (this.props.onShowPanel) {
       this.props.onShowPanel();
     }
-
-    this.props.removeItemsWithType('donation');
   }
 
   onChangeFrequency = (frequency) => {
@@ -49,7 +47,7 @@ export class DonationPanel extends BasePanel {
           ...prevState.selections.recurring,
           offerPaymentUid,
         },
-      },  
+      },
     }));
   };
 
@@ -194,12 +192,21 @@ export class DonationPanel extends BasePanel {
 
         <div className="panel-actions">
           {settings.showNoneButton &&
-            <Button onClick={this.onClickNone} variant="secondary" disabled={this.state.isBusy}>
+            <Button
+              variant="secondary"
+              onClick={this.onClickNone}
+              isBusy={this.state.isBusyNone}
+              disabled={this.state.isBusy}
+            >
               {t(['donationPanel.btn.none', 'btn.none'], 'None')}
             </Button>
           }
           
-          <Button type="submit" isBusy={this.state.isBusy}>
+          <Button
+            type="submit"
+            isBusy={this.state.isBusy}
+            disabled={this.state.isBusyNone}
+          >
             {t(['donationPanel.btn.next', 'btn.next'], 'Next')}
           </Button>
         </div>

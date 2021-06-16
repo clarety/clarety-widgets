@@ -42,3 +42,8 @@ export const getPaymentMethod = (state, type) => {
 };
 
 export const getPaymentPostData = (state) => getCart(state).payment;
+
+export const getDonationInCart = (state) => {
+  const offerUid = getSetting(state, 'donationOfferUid');
+  return getCart(state).items.find(item => item.offerUid === offerUid);
+};

@@ -5,11 +5,11 @@ import { Config } from '../../src';
 
 Config.init({
   // instanceKey: 'mdc',
-  instanceKey: 'clarety-baseline',
+  // instanceKey: 'clarety-baseline',
   // instanceKey: 'tnc-hk',
   // instanceKey: 'clarety-church',
   // instanceKey: 'ethiopiaid',
-  // instanceKey: 'a21',
+  instanceKey: 'a21',
   // instanceKey: 'miraclebabies',
   // instanceKey: 'bibleleague',
   // instanceKey: 'bsfs',
@@ -24,7 +24,7 @@ Config.init({
 
 // Real cookies.
 // Cookies.set('jwtAccount', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpZCI6IjAzNDY0NjAyYzY4NmIzZjYyZjk2MzJlODMxMDY1OTNkZjE0ZGMxZmMiLCJqdGkiOiIwMzQ2NDYwMmM2ODZiM2Y2MmY5NjMyZTgzMTA2NTkzZGYxNGRjMWZjIiwiaXNzIjoiIiwiYXVkIjowLCJzdWIiOiI2NjUiLCJ1c2VyX3R5cGUiOiJjdXN0b21lciIsImV4cCI6MzE0MjU0Mjc0MCwiaWF0IjoxNTcxMjcxMjUwLCJ0b2tlbl90eXBlIjoiYmVhcmVyIiwic2NvcGUiOm51bGwsImN1c3RvbWVyX3VpZCI6ImNzdF9qMnprIn0.A6AKBL_sdIeuxzR3-73X9tBh2kcfSyAZlnIasIOwbgQb_FETFoEH601KfOsYm6Kd1MskDPy5nZNi5VCjceqALYXd3ZEmTRvsfKWB1nrhrPxDSV37soYl2E3SEc1uCls_YRMYGOtBiGulJ5ZlxDfjQOLNtqa_sqR6Q6wEcbM-JDU');
-Cookies.set('jwtSession', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoic2FsZSIsInNhbGVJZCI6IjE4OTMiLCJjYXJ0VWlkIjoiY3J0XzNlb3YiLCJpc3MiOiJkZXYiLCJleHAiOjE2MjIwODE1NDQsInN1YiI6IiIsImF1ZCI6IiJ9.tG9AYG8-QYOQj_ZiQSDHl6EXFkmvvAwIWHSlWE_2pYk');
+Cookies.set('jwtSession', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoic2FsZSIsInNhbGVJZCI6IjMyNzIiLCJjYXJ0VWlkIjoiY3J0XzV4MDIiLCJpc3MiOiJkZXYiLCJleHAiOjE2MjM4OTI5NzksInN1YiI6IiIsImF1ZCI6IiJ9.p12Nd3GMO4AboxNyPI27pu1gftbBsvIyrFmPlpljcBk');
 // Cookies.set('jwtCustomer', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lclVpZCI6ImNzdF9sODB3Iiwic3RvcmVVaWQiOiJzdHJfbDlwNyIsImlzcyI6ImRldiIsImV4cCI6MTU4ODcyNzcwMCwic3ViIjoiIiwiYXVkIjoiIn0.1fvSp4np51hnsdIVBUzsJ5I8eMHe1QJ0gIhi4nrYsyM');
 
 
