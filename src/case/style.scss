@@ -4,6 +4,8 @@
   @extend .form-control;
 }
 
+.filepond--credits { display: none; }
+
 .widget-step-indicator {
   display: flex;
   justify-content: center;

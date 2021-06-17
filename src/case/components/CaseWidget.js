@@ -69,6 +69,7 @@ export class _CaseWidgetRoot extends React.Component {
     this.props.updateAppSettings({
       widgetElementId:      this.props.elementId,
       caseStage:            this.props.caseStage,
+      caseSubject:          this.props.caseSubject,
       variant:              this.props.variant,
       shownFields:          this.props.shownFields,
       requiredFields:       this.props.requiredFields,

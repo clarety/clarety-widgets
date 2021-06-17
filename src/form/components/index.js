@@ -25,6 +25,7 @@ export * from './inputs/general/CheckboxInput';
 export * from './inputs/general/CurrencyInput';
 export * from './inputs/general/DateInput';
 export * from './inputs/general/EmailInput';
+export * from './inputs/general/FileUploadInput';
 export * from './inputs/general/FormElement';
 export * from './inputs/general/NumberInput';
 export * from './inputs/general/PhoneInput';

@@ -3,7 +3,7 @@ import { Form, Row, Col } from 'react-bootstrap';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { requiredField, emailField, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
-import { TextInput, TextAreaInput, EmailInput, PhoneInput, NumberInput, CurrencyInput, CheckboxInput, CheckboxesInput, SelectInput, RadioInput, DateInput, StateInput, CountryInput, PostcodeInput, FormElement, SubmitButton, BackButton, ErrorMessages } from 'form/components';
+import { TextInput, TextAreaInput, EmailInput, PhoneInput, NumberInput, CurrencyInput, CheckboxInput, CheckboxesInput, SelectInput, RadioInput, DateInput, StateInput, CountryInput, PostcodeInput, FileUploadInput, FormElement, SubmitButton, BackButton, ErrorMessages } from 'form/components';
 
 export class CaseFormPanel extends BasePanel {
   onShowPanel() {
@@ -12,19 +12,18 @@ export class CaseFormPanel extends BasePanel {
 
   onPressBack = (event) => {
     event.preventDefault();
-
     this.props.prevPanel();
   };
 
   onPressNext = async (event) => {
     event.preventDefault();
 
-    const { onSubmit, nextPanel, isLastForm } = this.props;
+    const { onSubmit, nextPanel, section, isLastSection } = this.props;
 
     const isValid = this.validate();
     if (!isValid) return;
 
-    if (isLastForm) {
+    if (section === undefined || isLastSection) {
       const didSubmit = await onSubmit();
       if (!didSubmit) return;
     }
@@ -102,7 +101,7 @@ export class CaseFormPanel extends BasePanel {
 
   renderEdit() {
     return (
-      <form onSubmit={this.onPressNext} data-testid="case-form-panel">
+      <form onSubmit={this.onPressNext}>
         {this.renderContent()}
       </form>
     );
@@ -171,8 +170,11 @@ export class CaseFormPanel extends BasePanel {
 
     return (
       <div>
-        <h2 className="title">{t('your-details', 'Your Details')}</h2>
-        <div>
+        <div className="form-header">
+          <h2 className="title">{t('your-details', 'Your Details')}</h2>
+        </div>
+
+        <div className="form-fields">
           {customerElement.elements.map(this.renderElement)}
         </div>
       </div>
@@ -186,12 +188,14 @@ export class CaseFormPanel extends BasePanel {
 
     return (
       <div>
-        <h2 className="title">{form.name}</h2>
-        {form.explanation &&
-          <p>{form.explanation}</p>
-        }
+        <div className="form-header">
+          <h2 className="title">{form.name}</h2>
+          {form.explanation &&
+            <p className="explanation">{form.explanation}</p>
+          }
+        </div>
 
-        <div>
+        <div className="form-fields">
           {form.extendFields.map(field => this.renderField(field, 'extendFields'))}
         </div>
       </div>
@@ -217,7 +221,6 @@ export class CaseFormPanel extends BasePanel {
       case 'radio':       return this.renderRadioField(field, fieldKey);
       case 'date':        return this.renderDateField(field, fieldKey);
       case 'fileupload':  return this.renderFileUploadField(field, fieldKey);
-      case 'imageupload': return this.renderImageUploadField(field, fieldKey);
       case 'address':     return this.renderAddressField(field, fieldKey);
       case 'title':       return this.renderTitleField(field, fieldKey);
       case 'hidden':      return this.renderHiddenField(field, fieldKey);
@@ -241,10 +244,14 @@ export class CaseFormPanel extends BasePanel {
     return this.renderField(field, 'customer');
   };
 
+  getFieldLabel(field, fieldKey) {
+    return t(`${fieldKey}.label`, field.question || field.label);
+  }
+
   renderTextField(field, fieldKey) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--text">
-        <Form.Label>{field.question || field.label}</Form.Label>
+        <Form.Label>{this.getFieldLabel(field, fieldKey)}</Form.Label>
 
         <TextInput
           field={fieldKey}
@@ -261,7 +268,7 @@ export class CaseFormPanel extends BasePanel {
   renderTextAreaField(field, fieldKey) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--textarea">
-        <Form.Label>{field.question || field.label}</Form.Label>
+        <Form.Label>{this.getFieldLabel(field, fieldKey)}</Form.Label>
 
         <TextAreaInput
           field={fieldKey}
@@ -278,7 +285,7 @@ export class CaseFormPanel extends BasePanel {
   renderEmailField(field, fieldKey) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--email">
-        <Form.Label>{field.question || field.label}</Form.Label>
+        <Form.Label>{this.getFieldLabel(field, fieldKey)}</Form.Label>
 
         <EmailInput
           field={fieldKey}
@@ -295,7 +302,7 @@ export class CaseFormPanel extends BasePanel {
   renderPhoneField(field, fieldKey) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--phone">
-        <Form.Label>{field.question || field.label}</Form.Label>
+        <Form.Label>{this.getFieldLabel(field, fieldKey)}</Form.Label>
 
         <PhoneInput
           field={fieldKey}
@@ -312,7 +319,7 @@ export class CaseFormPanel extends BasePanel {
   renderNumberField(field, fieldKey) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--number">
-        <Form.Label>{field.question || field.label}</Form.Label>
+        <Form.Label>{this.getFieldLabel(field, fieldKey)}</Form.Label>
 
         <NumberInput
           field={fieldKey}
@@ -329,7 +336,7 @@ export class CaseFormPanel extends BasePanel {
   renderCurrencyField(field, fieldKey) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--currency">
-        <Form.Label>{field.question || field.label}</Form.Label>
+        <Form.Label>{this.getFieldLabel(field, fieldKey)}</Form.Label>
 
         <CurrencyInput
           field={fieldKey}
@@ -362,7 +369,7 @@ export class CaseFormPanel extends BasePanel {
   renderCheckboxesField(field, fieldKey) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--checkboxes">
-        <Form.Label>{field.question || field.label}</Form.Label>
+        <Form.Label>{this.getFieldLabel(field, fieldKey)}</Form.Label>
 
         <CheckboxesInput
           field={fieldKey}
@@ -380,7 +387,7 @@ export class CaseFormPanel extends BasePanel {
   renderSelectField(field, fieldKey) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--select">
-        <Form.Label>{field.question || field.label}</Form.Label>
+        <Form.Label>{this.getFieldLabel(field, fieldKey)}</Form.Label>
 
         <SelectInput
           field={fieldKey}
@@ -398,7 +405,7 @@ export class CaseFormPanel extends BasePanel {
   renderRadioField(field, fieldKey) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--radio">
-        <Form.Label>{field.question || field.label}</Form.Label>
+        <Form.Label>{this.getFieldLabel(field, fieldKey)}</Form.Label>
 
         <RadioInput
           field={fieldKey}
@@ -416,7 +423,7 @@ export class CaseFormPanel extends BasePanel {
   renderDateField(field, fieldKey) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--date">
-        <Form.Label>{field.question || field.label}</Form.Label>
+        <Form.Label>{this.getFieldLabel(field, fieldKey)}</Form.Label>
 
         <DateInput
           field={fieldKey}
@@ -431,16 +438,30 @@ export class CaseFormPanel extends BasePanel {
   }
 
   renderFileUploadField(field, fieldKey) {
-    // TODO:
     return (
-      <div key={fieldKey}>TODO: File Upload</div>
-    );
-  }
+      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--date">
+        <Form.Label>{this.getFieldLabel(field, fieldKey)}</Form.Label>
 
-  renderImageUploadField(field, fieldKey) {
-    // TODO:
-    return (
-      <div key={fieldKey}>TODO: Image Upload</div>
+        <FileUploadInput
+          field={fieldKey}
+          maxFiles={field.maxFiles}
+          maxFileSize={field.maxFileSize}
+          acceptedFileTypes={field.fileTypes}
+          required={field.required}
+        />
+
+        <div className="explanation explanation--fileupload">
+          {t('maximum-files', 'Maximum files')} {field.maxFiles}.
+          {' '}
+          {t('maximum-file-size', 'Maximum file size')} {field.maxFileSize / 1000}mb.
+          {' '}
+          {t('accepted-file-types', 'Accepted file types')}: {field.fileTypes.join(', ')}.
+        </div>
+
+        {field.explanation &&
+          <div className="explanation">{field.explanation}</div>
+        }
+      </Form.Group>
     );
   }
 
@@ -535,21 +556,40 @@ export class CaseFormPanel extends BasePanel {
   }
 
   getSubmitBtnText() {
-    const { settings, isLastForm } = this.props;
+    const { settings, section, isLastSection } = this.props;
 
-    if (settings.submitBtnText) {
-      return settings.submitBtnText;
+    if (section === undefined || isLastSection) {
+      if (settings.submitBtnText) {
+        return settings.submitBtnText;
+      }
+
+      return t('submit', 'Submit');
     }
 
-    if (isLastForm) {
-      return t('submit', 'Submit');
+    if (settings.nextBtnText) {
+      return settings.nextBtnText;
     }
 
     return t('next', 'Next');
   }
 
   renderFooter() {
-    const { layout, isBusy, settings, index } = this.props;
+    const { layout, isBusy, settings, index, section } = this.props;
+
+    if (section === undefined) {
+      return (
+        <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
+          <Form.Row className="justify-content-center">
+            <Col>
+              <SubmitButton
+                title={this.getSubmitBtnText()}
+                block
+              />
+            </Col>
+          </Form.Row>
+        </PanelFooter>
+      );
+    }
 
     return (
       <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
@@ -566,7 +606,6 @@ export class CaseFormPanel extends BasePanel {
           <Col xs={6}>
             <SubmitButton
               title={this.getSubmitBtnText()}
-              testId="next-button"
               block
             />
           </Col>

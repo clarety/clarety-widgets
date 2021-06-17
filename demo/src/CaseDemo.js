@@ -38,13 +38,16 @@ export default class CaseDemo extends React.Component {
         'customer.firstname',
         'customer.lastname',
         'customer.email',
-        'customer.churchattended',
+        // 'customer.churchattended',
+        'extendFields.testcaseformformfileupload',
+        'extendFields.testcaseformformtextone',
         'extendFields.testcaseformformtexttwo',
         'extendFields.testcaseformformtextthree',
+        'extendFields.testcaseformformtextfour',
       ],
       requiredFields: [
-        'customer.firstname',
-        'extendFields.testcaseformformtexttwo',
+        // 'customer.firstname',
+        // 'extendFields.testcaseformformtexttwo',
       ],
     });
   }

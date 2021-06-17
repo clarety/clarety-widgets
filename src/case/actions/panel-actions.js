@@ -21,7 +21,7 @@ export const setupFormPanels = () => {
         connect: CaseFormConnect,
         data: {
           section: section,
-          isLastForm: index === sections.length - 1,
+          isLastSection: index === sections.length - 1,
         },
       }));
 
