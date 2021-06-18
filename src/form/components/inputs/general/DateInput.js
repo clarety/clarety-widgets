@@ -4,30 +4,53 @@ import { Form } from 'react-bootstrap';
 import DatePicker, { setDefaultLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { parseISO, formatISO } from 'date-fns';
-import { getSelectedLanguage } from 'shared/selectors';
+import { getLanguage } from 'shared/translations';
 import { updateFormData } from 'form/actions';
 import { getValidationError } from 'form/utils';
 import { FieldError } from 'form/components';
 
-import localeThai from 'date-fns/locale/th';
+// Date locales.
+import thLocale from 'date-fns/locale/th';
+import ptLocale from 'date-fns/locale/pt';
+import ruLocale from 'date-fns/locale/ru';
+import esLocale from 'date-fns/locale/es';
+import frLocale from 'date-fns/locale/fr';
+import deLocale from 'date-fns/locale/de';
+import nbLocale from 'date-fns/locale/nb';
+import daLocale from 'date-fns/locale/da';
+import svLocale from 'date-fns/locale/sv';
+import bgLocale from 'date-fns/locale/bg';
+import ukLocale from 'date-fns/locale/uk';
+import elLocale from 'date-fns/locale/el';
 
 export class _DateInput extends React.Component {
   constructor(props) {
     super(props);
 
-    this.setLangauge(props.language);
+    const locale = this.getLocale();
+    if (locale) setDefaultLocale(locale);
 
     if (!props.value && props.initialValue !== undefined) {
       props.setInitialValue(props.initialValue);
     }
   }
 
-  setLangauge(language) {
-    // TODO: add other languages...
-    switch (language) {
-      case 'th':
-        setDefaultLocale(localeThai);
-        break;
+  getLocale(language) {
+    switch (getLanguage()) {
+      case 'pt':     return ptLocale;
+      case 'ru':     return ruLocale;
+      case 'es':     return esLocale;
+      case 'es-419': return esLocale;
+      case 'fr':     return frLocale;
+      case 'de':     return deLocale;
+      case 'nb':     return nbLocale;
+      case 'da':     return daLocale;
+      case 'sv':     return svLocale;
+      case 'bg':     return bgLocale;
+      case 'uk':     return ukLocale;
+      case 'el':     return elLocale;
+      case 'th':     return thLocale;
+      case 'km':     return undefined; // TODO: Khmer
     }
   }
 
@@ -59,7 +82,6 @@ const mapStateToProps = (state, ownProps) => {
   return {
     value: state.formData[ownProps.field] || null,
     error: getValidationError(ownProps.field, state.errors),
-    language: getSelectedLanguage(state),
   };
 };
 

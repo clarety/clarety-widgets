@@ -6,6 +6,14 @@ import { updateFormData } from 'form/actions';
 
 // Filepond locales
 import pt_BR from 'filepond/locale/pt-br.js';
+import ru_RU from 'filepond/locale/ru-ru.js';
+import es_ES from 'filepond/locale/es-es.js';
+import fr_FR from 'filepond/locale/fr-fr.js';
+import de_DE from 'filepond/locale/de-de.js';
+import no_NB from 'filepond/locale/no_nb.js';
+import da_DK from 'filepond/locale/da-dk.js';
+import sv_SE from 'filepond/locale/sv_se.js';
+import uk_UA from 'filepond/locale/uk-ua.js';
 
 // Filepond Plugins
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
@@ -89,7 +97,20 @@ export class _FileUploadInput extends React.Component {
 
   getLocaleProps() {
     switch (getLanguage()) {
-      case 'pt': return pt_BR;
+      case 'pt':     return pt_BR;
+      case 'ru':     return ru_RU;
+      case 'es':     return es_ES;
+      case 'es-419': return es_ES;
+      case 'fr':     return fr_FR;
+      case 'de':     return de_DE;
+      case 'nb':     return no_NB;
+      case 'da':     return da_DK;
+      case 'sv':     return sv_SE;
+      case 'bg':     return undefined; // TODO: Bulgarian
+      case 'uk':     return uk_UA;
+      case 'el':     return undefined; // TODO: Greek
+      case 'th':     return undefined; // TODO: Thai
+      case 'km':     return undefined; // TODO: Khmer
     }
 
     return undefined;

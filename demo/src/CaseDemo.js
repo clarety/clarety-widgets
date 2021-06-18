@@ -40,6 +40,7 @@ export default class CaseDemo extends React.Component {
         'customer.email',
         'customer.billingid',
         // 'customer.churchattended',
+        'extendFields.testcaseformformdatefield',
         'extendFields.testcaseformformfileupload',
         'extendFields.testcaseformformtextone',
         'extendFields.testcaseformformtexttwo',
