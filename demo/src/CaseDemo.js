@@ -38,6 +38,7 @@ export default class CaseDemo extends React.Component {
         'customer.firstname',
         'customer.lastname',
         'customer.email',
+        'customer.billingid',
         // 'customer.churchattended',
         'extendFields.testcaseformformfileupload',
         'extendFields.testcaseformformtextone',
@@ -49,6 +50,10 @@ export default class CaseDemo extends React.Component {
         // 'customer.firstname',
         // 'extendFields.testcaseformformtexttwo',
       ],
+
+      fieldTypes: {
+        'customer.billingid': 'country',
+      },
     });
   }
 

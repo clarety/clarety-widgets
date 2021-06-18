@@ -202,13 +202,19 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
+  getFieldType(field, fieldKey) {
+    // Field type can be overridden via fieldTypes prop.
+    // ie: use a country input for billingid instead of an address.
+    return this.props.fieldTypes[fieldKey] || field.type;
+  }
+
   renderField(field, resourceKey = null) {
     const fieldKey = resourceKey ? resourceKey + '.' + field.columnKey : field.columnKey;
 
     // Ignore fields that aren't in the 'shown fields' list.
     if (!this.props.shownFields.includes(fieldKey)) return null;
 
-    switch (field.type) {
+    switch (this.getFieldType(field, fieldKey)) {
       case 'text':        return this.renderTextField(field, fieldKey);
       case 'textarea':    return this.renderTextAreaField(field, fieldKey);
       case 'email':       return this.renderEmailField(field, fieldKey);
@@ -222,6 +228,7 @@ export class CaseFormPanel extends BasePanel {
       case 'date':        return this.renderDateField(field, fieldKey);
       case 'fileupload':  return this.renderFileUploadField(field, fieldKey);
       case 'address':     return this.renderAddressField(field, fieldKey);
+      case 'country':     return this.renderCountryField(field, fieldKey);
       case 'title':       return this.renderTitleField(field, fieldKey);
       case 'hidden':      return this.renderHiddenField(field, fieldKey);
     }

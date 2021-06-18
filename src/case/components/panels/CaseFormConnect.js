@@ -15,6 +15,7 @@ export class CaseFormConnect {
       customerElement: getElement(state, 'customer'),
       shownFields: getSetting(state, 'shownFields'),
       requiredFields: getSetting(state, 'requiredFields'),
+      fieldTypes: getSetting(state, 'fieldTypes'),
     };
   };
 
