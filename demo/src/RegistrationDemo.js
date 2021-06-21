@@ -21,11 +21,6 @@ async function renderRegistrations(props) {
     prod: '',
   });
   
-  Registration.setLanguages({
-    en: 'English',
-    th: 'Thai',
-  });
-  
   Registration.setPanels([
     {
       component: ModePanel,
@@ -137,6 +132,11 @@ export default class RegistrationDemo extends React.Component {
       emailResponseId: '1234',
 
       showLanguageSelect: true,
+
+      languages: {
+        en: 'English',
+        th: 'Thai',
+      },
     });
   }
 

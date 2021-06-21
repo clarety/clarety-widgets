@@ -3,7 +3,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { connect, Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import i18next from 'i18next';
-import { statuses, setPanels, updateAppSettings, initTrackingData, changeLanguage, setStatus } from 'shared/actions';
+import { statuses, setPanels, updateAppSettings, initTrackingData, setStatus } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
@@ -52,8 +52,6 @@ export class _UnsubscribeRoot extends React.Component {
       i18next.on('languageChanged', (language) => {
         this.forceUpdate();
       });
-  
-      this.props.changeLanguage(i18next.language);
     } else {
       // Use i18next without translation.
       await i18next.init();
@@ -103,7 +101,6 @@ const mapStateToProps = state => {
 const actions = {
   updateAppSettings: updateAppSettings,
   initTrackingData: initTrackingData,
-  changeLanguage: changeLanguage,
   setStatus: setStatus,
 };
 

@@ -4,7 +4,7 @@ import { connect, Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import i18next from 'i18next';
 import { ClaretyApi } from 'clarety-utils';
-import { setStatus, setAuth, setPanels, setClientIds, updateAppSettings, initTrackingData, changeLanguage } from 'shared/actions';
+import { setStatus, setAuth, setPanels, setClientIds, updateAppSettings, initTrackingData } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources, getJwtAccount } from 'shared/utils';
 import { Recaptcha, ErrorMessages } from 'form/components';
@@ -60,8 +60,6 @@ export class _FundraisingStartRoot extends React.Component {
       i18next.on('languageChanged', (language) => {
         this.forceUpdate();
       });
-  
-      this.props.changeLanguage(i18next.language);
     } else {
       // Use i18next without translation.
       await i18next.init();
@@ -127,7 +125,6 @@ const actions = {
   setStatus: setStatus,
   setAuth: setAuth,
   fetchCustomer: fetchCustomer,
-  changeLanguage: changeLanguage,
 };
 
 const FundraisingStartRoot = connect(mapStateToProps, actions)(_FundraisingStartRoot);

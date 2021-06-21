@@ -8,7 +8,7 @@ import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { ClaretyApi } from 'clarety-utils';
 import { t } from 'shared/translations';
-import { statuses, setPanels, setLanguages, changeLanguage, setClientIds, setAuth, initTrackingData, fetchSettings, updateAppSettings } from 'shared/actions';
+import { statuses, setPanels, setClientIds, setAuth, initTrackingData, fetchSettings, updateAppSettings } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources, getJwtAccount } from 'shared/utils';
 import { SuggestedAmount, SuggestedAmountLg, VariableAmount, VariableAmountLg, SuggestedAmountPriceOnly } from 'donate/components';
@@ -20,7 +20,6 @@ import { RegistrationApi } from 'registration/utils';
 export class Registration extends React.Component {
   static store;
   static resources;
-  static languages;
 
   static init() {
     // Setup store.
@@ -47,11 +46,6 @@ export class Registration extends React.Component {
     Registration.store.dispatch(setPanels(panels));
   }
 
-  static setLanguages(languages) {
-    Registration.languages = languages;
-    Registration.store.dispatch(setLanguages(languages));
-  }
-
   static setComponent(name, component) {
     Registration.resources.setComponent(name, component);
   }
@@ -62,7 +56,6 @@ export class Registration extends React.Component {
         <BreakpointProvider>
           <RegistrationRoot
             resources={Registration.resources}
-            languages={Registration.languages}
             {...this.props}
           />
         </BreakpointProvider>
@@ -83,6 +76,7 @@ class _RegistrationRoot extends React.Component {
       teamType: this.props.teamType,
       variant: this.props.variant,
       paymentMethods: this.props.paymentMethods,
+      languages: this.props.languages,
       currency: currency,
       ...this.props.settings,
     });
@@ -92,8 +86,6 @@ class _RegistrationRoot extends React.Component {
       i18next.on('languageChanged', (language) => {
         this.forceUpdate();
       });
-  
-      this.props.changeLanguage(i18next.language);
     } else {
       // Use i18next without translation.
       await i18next.init();
@@ -188,7 +180,6 @@ const mapStateToProps = state => {
 
 const actions = {
   updateAppSettings: updateAppSettings,
-  changeLanguage: changeLanguage,
 
   setAuth: setAuth,
   initTrackingData: initTrackingData,

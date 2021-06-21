@@ -1,11 +1,11 @@
 import React from 'react';
+import i18next from 'i18next';
 import { connect } from 'react-redux';
 import { Dropdown } from 'react-bootstrap';
 import { t } from 'shared/translations';
-import { getLanguages, getIsEditingFirstPanel } from 'shared/selectors';
-import { changeLanguage } from 'shared/actions';
+import { getSetting, getIsEditingFirstPanel } from 'shared/selectors';
 
-const _LanguageSelect = ({ languages, changeLanguage, isEditingFirstPanel }) => {
+const _LanguageSelect = ({ languages, isEditingFirstPanel }) => {
   if (!languages) return null;
 
   // Only show when on the first panel.
@@ -19,7 +19,7 @@ const _LanguageSelect = ({ languages, changeLanguage, isEditingFirstPanel }) => 
 
       <Dropdown.Menu alignRight>
         {Object.entries(languages).map(([code, language]) =>
-          <Dropdown.Item key={code} onClick={() => changeLanguage(code)}>
+          <Dropdown.Item key={code} onClick={() => i18next.changeLanguage(code)}>
             {language}
           </Dropdown.Item>
         )}
@@ -29,10 +29,8 @@ const _LanguageSelect = ({ languages, changeLanguage, isEditingFirstPanel }) => 
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  languages: getLanguages(state),
+  languages: getSetting(state, 'languages'),
   isEditingFirstPanel: getIsEditingFirstPanel(state),
 });
 
-const actions = { changeLanguage };
-
-export const LanguageSelect = connect(mapStateToProps, actions)(_LanguageSelect);
+export const LanguageSelect = connect(mapStateToProps, null)(_LanguageSelect);
