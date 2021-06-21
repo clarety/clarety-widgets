@@ -20,20 +20,13 @@ const _LanguageSelect = ({ languages, changeLanguage, isEditingFirstPanel }) => 
       <Dropdown.Menu alignRight>
         {Object.entries(languages).map(([code, language]) =>
           <Dropdown.Item key={code} onClick={() => changeLanguage(code)}>
-            {getLanguageName(language)}
+            {language}
           </Dropdown.Item>
         )}
       </Dropdown.Menu>
     </Dropdown>
   );
 };
-
-function getLanguageName(language) {
-  return language
-      && language.translation
-      && language.translation.app
-      && language.translation.app.language;
-}
 
 const mapStateToProps = (state, ownProps) => ({
   languages: getLanguages(state),

@@ -88,25 +88,16 @@ class _RegistrationRoot extends React.Component {
     });
 
     // Translations.
-    const { languages, defaultLanguage, changeLanguage } = this.props;
-    const language = defaultLanguage || navigator.language || navigator.userLanguage || 'en';
-    i18next.init({
-      load: 'languageOnly',
-      lng: language,
-      fallbackLng: defaultLanguage || 'en',
-      resources: languages,
-      returnNull: false,
-    });
-
-    i18next.on('languageChanged', (language) => {
-      this.forceUpdate();
-
-      if (Registration.onChangeLanguage) {
-        Registration.onChangeLanguage(language);
-      }
-    });
-
-    changeLanguage(language);
+    if (i18next.isInitialized) {
+      i18next.on('languageChanged', (language) => {
+        this.forceUpdate();
+      });
+  
+      this.props.changeLanguage(i18next.language);
+    } else {
+      // Use i18next without translation.
+      await i18next.init();
+    }
 
     // Tracking.
     this.props.initTrackingData(this.props);
