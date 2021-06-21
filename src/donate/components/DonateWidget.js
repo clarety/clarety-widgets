@@ -6,7 +6,7 @@ import i18next from 'i18next';
 import { BreakpointProvider } from 'react-socks';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { statuses, setStore, initTrackingData, fetchSettings, updateAppSettings, setPanels, changeLanguage } from 'shared/actions';
+import { statuses, setStore, initTrackingData, fetchSettings, updateAppSettings, setPanels } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { getJwtCustomer, Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
@@ -72,8 +72,6 @@ export class _DonateWidgetRoot extends React.Component {
       i18next.on('languageChanged', (language) => {
         this.forceUpdate();
       });
-  
-      this.props.changeLanguage(i18next.language);
     } else {
       // Use i18next without translation.
       await i18next.init();
@@ -165,7 +163,6 @@ const actions = {
   handleUrlParams: handleUrlParams,
   fetchCustomer: fetchCustomer,
   selectFrequency: selectFrequency,
-  changeLanguage: changeLanguage,
 };
 
 export const connectDonateWidgetRoot = connect(mapStateToProps, actions);

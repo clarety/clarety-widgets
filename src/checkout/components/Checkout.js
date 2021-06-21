@@ -8,7 +8,7 @@ import { ClaretyApi } from 'clarety-utils';
 import { t } from 'shared/translations';
 import { Resources, getJwtSession, getJwtAccount } from 'shared/utils';
 import { PanelManager } from 'shared/components';
-import { setPanels, setClientIds, setAuth, fetchSettings, updateAppSettings, removePanels, changeLanguage } from 'shared/actions';
+import { setPanels, setClientIds, setAuth, fetchSettings, updateAppSettings, removePanels } from 'shared/actions';
 import { getIsCartComplete, getCartShippingRequired } from 'shared/selectors';
 import { updateFormData } from 'form/actions';
 import { Recaptcha } from 'form/components';
@@ -52,8 +52,6 @@ export class Checkout extends React.Component {
       i18next.on('languageChanged', (language) => {
         this.forceUpdate();
       });
-  
-      Checkout.store.dispatch(changeLanguage(i18next.language));
     } else {
       // Use i18next without translation.
       await i18next.init();

@@ -57,9 +57,4 @@ export const types = {
   setPanelStatus:  'SET_PANEL_STATUS',
   invalidatePanel: 'INVALIDATE_PANEL',
   resetAllPanels:  'RESET_ALL_PANELS',
-
-  // Translations Action Types
-
-  setLanguages:   'SET_LANGUAGES',
-  changeLanguage: 'CHANGE_LANGUAGE',
 };
