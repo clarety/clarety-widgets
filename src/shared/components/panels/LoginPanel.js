@@ -222,6 +222,15 @@ export class LoginPanel extends BasePanel {
     }));
   }
 
+  allowGuest() {
+    const { settings, cartAllowsGuest } = this.props;
+
+    // Ignore panel setting if cart doesn't allow guest.
+    if (cartAllowsGuest === false) return false;
+
+    return settings.allowGuest;
+  }
+
   renderWait() {
     const { layout, index, settings } = this.props;
 
@@ -315,13 +324,13 @@ export class LoginPanel extends BasePanel {
 
     return (
       <React.Fragment>
-        {settings.allowGuest
+        {this.allowGuest()
           ? <p>{t('loginPanel.noAccountPrompt', 'There is no account associated with this email, would you like to create one or checkout as a guest?')}</p>
           : <p>{t('loginPanel.noAccountPrompt', 'There is no account associated with this email, please create one.')}</p>
         }
 
         <div className="panel-actions">
-          {settings.allowGuest &&
+          {this.allowGuest() &&
             <Button
               title={t('btn.guestCheckout', 'Guest Checkout')}
               onClick={this.onPressGuestCheckout}

@@ -23,14 +23,31 @@ export class CampaignPanel extends BasePanel {
   }
 
   validateFields(errors) {
-    const { formData } = this.props;
+    const { formData, settings } = this.props;
 
     requiredField(errors, formData, 'campaign.name');
-    requiredField(errors, formData, 'campaign.goal');
+
+    if (!settings.hideCampaignGoal) {
+      requiredField(errors, formData, 'campaign.goal');
+    }
+  }
+
+  getTitle() {
+    const { teamName, settings } = this.props;
+
+    if (settings.title) {
+      return settings.title;
+    }
+
+    if (teamName) {
+      return `${t('join', 'Join')} ${teamName}`;
+    }
+
+    return t('start-a-campaign', 'Start a Campaign');
   }
 
   renderWait() {
-    const { layout, index, teamName } = this.props;
+    const { layout, index } = this.props;
 
     return (
       <PanelContainer layout={layout} status="wait">
@@ -38,7 +55,7 @@ export class CampaignPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title={teamName ? `${t('join', 'Join')} ${teamName}` : t('start-a-campaign', 'Start a Campaign')}
+          title={this.getTitle()}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -48,7 +65,7 @@ export class CampaignPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, isBusy, index, teamName, settings } = this.props;
+    const { layout, isBusy, index, settings } = this.props;
 
     return (
       <PanelContainer layout={layout}>
@@ -56,7 +73,7 @@ export class CampaignPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title={teamName ? `${t('join', 'Join')} ${teamName}` : t('start-a-campaign', 'Start a Campaign')}
+          title={this.getTitle()}
         />
         
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
@@ -73,17 +90,19 @@ export class CampaignPanel extends BasePanel {
               </Col>
             </Form.Row>
 
-            <Form.Row>
-              <Col>
-                <Form.Group>
-                  <CurrencyInput
-                    field="campaign.goal"
-                    placeholder={settings.campaignGoalLabel || t('campaign-goal', 'Fundraising Goal')}
-                    required
-                  />
-                </Form.Group>
-              </Col>
-            </Form.Row>
+            {!settings.hideCampaignGoal && 
+              <Form.Row>
+                <Col>
+                  <Form.Group>
+                    <CurrencyInput
+                      field="campaign.goal"
+                      placeholder={settings.campaignGoalLabel || t('campaign-goal', 'Fundraising Goal')}
+                      required
+                    />
+                  </Form.Group>
+                </Col>
+              </Form.Row>
+            }
             
             <div className="panel-actions">
               <SubmitButton title="Continue" isBusy={isBusy} />

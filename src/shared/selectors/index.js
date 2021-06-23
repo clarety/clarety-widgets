@@ -70,10 +70,6 @@ export const getSourceOptions = (state) => {
   return element ? element.options : undefined;
 };
 
-export const getLanguages = (state) => getTranslations(state).languages;
-
-export const getSelectedLanguage = (state) => getTranslations(state).selectedLanguage;
-
 export const getIsEditingFirstPanel = (state) => {
   const panels = getPanelManager(state);
   return panels[0].status === 'edit';

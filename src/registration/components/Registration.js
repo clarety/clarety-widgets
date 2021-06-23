@@ -8,9 +8,10 @@ import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { ClaretyApi } from 'clarety-utils';
 import { t } from 'shared/translations';
-import { statuses, setPanels, setLanguages, changeLanguage, setClientIds, setAuth, initTrackingData, fetchSettings, updateAppSettings } from 'shared/actions';
+import { statuses, setPanels, setClientIds, setAuth, initTrackingData, fetchSettings, updateAppSettings } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources, getJwtAccount } from 'shared/utils';
+import { SuggestedAmount, SuggestedAmountLg, VariableAmount, VariableAmountLg, SuggestedAmountPriceOnly } from 'donate/components';
 import { MiniCart, MiniCartBrand, BusyOverlay } from 'registration/components';
 import { fetchEvents, fetchFullEvent, fetchAuthCustomer, setFundraising } from 'registration/actions';
 import { rootReducer } from 'registration/reducers';
@@ -19,7 +20,6 @@ import { RegistrationApi } from 'registration/utils';
 export class Registration extends React.Component {
   static store;
   static resources;
-  static languages;
 
   static init() {
     // Setup store.
@@ -29,6 +29,12 @@ export class Registration extends React.Component {
     // Setup resourcs.
     Registration.resources = new Resources();
     Registration.resources.setComponent('MiniCartBrand', MiniCartBrand);
+    Registration.resources.setComponent('SuggestedAmount', SuggestedAmount);
+    Registration.resources.setComponent('VariableAmount', VariableAmount);
+    Registration.resources.setComponent('SuggestedAmountLg', SuggestedAmountLg);
+    Registration.resources.setComponent('VariableAmountLg', VariableAmountLg);
+    Registration.resources.setComponent('SuggestedAmountPriceOnly', SuggestedAmountPriceOnly);
+    Registration.resources.setComponent('VariableAmountPriceOnly', VariableAmount);
   }
 
   static setClientIds({ dev, prod }) {
@@ -38,11 +44,6 @@ export class Registration extends React.Component {
   static setPanels(panels) {
     Registration.resources.setPanels(panels);
     Registration.store.dispatch(setPanels(panels));
-  }
-
-  static setLanguages(languages) {
-    Registration.languages = languages;
-    Registration.store.dispatch(setLanguages(languages));
   }
 
   static setComponent(name, component) {
@@ -55,7 +56,6 @@ export class Registration extends React.Component {
         <BreakpointProvider>
           <RegistrationRoot
             resources={Registration.resources}
-            languages={Registration.languages}
             {...this.props}
           />
         </BreakpointProvider>
@@ -76,30 +76,20 @@ class _RegistrationRoot extends React.Component {
       teamType: this.props.teamType,
       variant: this.props.variant,
       paymentMethods: this.props.paymentMethods,
+      languages: this.props.languages,
       currency: currency,
       ...this.props.settings,
     });
 
     // Translations.
-    const { languages, defaultLanguage, changeLanguage } = this.props;
-    const language = defaultLanguage || navigator.language || navigator.userLanguage || 'en';
-    i18next.init({
-      load: 'languageOnly',
-      lng: language,
-      fallbackLng: defaultLanguage || 'en',
-      resources: languages,
-      returnNull: false,
-    });
-
-    i18next.on('languageChanged', (language) => {
-      this.forceUpdate();
-
-      if (Registration.onChangeLanguage) {
-        Registration.onChangeLanguage(language);
-      }
-    });
-
-    changeLanguage(language);
+    if (i18next.isInitialized) {
+      i18next.on('languageChanged', (language) => {
+        this.forceUpdate();
+      });
+    } else {
+      // Use i18next without translation.
+      await i18next.init();
+    }
 
     // Tracking.
     this.props.initTrackingData(this.props);
@@ -190,7 +180,6 @@ const mapStateToProps = state => {
 
 const actions = {
   updateAppSettings: updateAppSettings,
-  changeLanguage: changeLanguage,
 
   setAuth: setAuth,
   initTrackingData: initTrackingData,

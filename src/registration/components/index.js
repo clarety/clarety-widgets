@@ -4,7 +4,6 @@ export * from './inputs/CheckboxInput';
 export * from './inputs/CountryInput';
 export * from './inputs/DobInput';
 export * from './inputs/EmailInput';
-export * from './inputs/LanguageSelect';
 export * from './inputs/NumberInput';
 export * from './inputs/PhoneInput';
 export * from './inputs/PostcodeInput';
@@ -40,6 +39,7 @@ export * from './panels/ValidatePanel';
 export * from './panels/ValidateConnect';
 
 export * from './misc/BusyOverlay';
+export * from './misc/LanguageSelect';
 export * from './misc/MerchItem';
 export * from './misc/MerchQtysModal';
 export * from './misc/MiniCart';

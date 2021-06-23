@@ -22,6 +22,7 @@ export * from './panels/AddressPanel';
 export * from './panels/AddressConnect';
 export * from './panels/CustomerPanel';
 export * from './panels/CustomerConnect';
+export * from './panels/DonationPanel';
 export * from './panels/DonationConnect';
 export * from './panels/LoginConnect';
 export * from './panels/PaymentConnect';
