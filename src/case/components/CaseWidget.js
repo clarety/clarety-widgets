@@ -5,7 +5,7 @@ import { connect, Provider as ReduxProvider } from 'react-redux';
 import i18next from 'i18next';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { statuses, setStore, setStatus, initTrackingData, fetchSettings, updateAppSettings, setPanels, changeLanguage } from 'shared/actions';
+import { statuses, setStore, setStatus, initTrackingData, fetchSettings, updateAppSettings, setPanels } from 'shared/actions';
 import { PanelManager, StepIndicator } from 'shared/components';
 import { Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
@@ -59,8 +59,6 @@ export class _CaseWidgetRoot extends React.Component {
       i18next.on('languageChanged', (language) => {
         this.forceUpdate();
       });
-  
-      this.props.changeLanguage(i18next.language);
     } else {
       // Use i18next without translation.
       await i18next.init();
@@ -134,7 +132,6 @@ const actions = {
   initTrackingData: initTrackingData,
   fetchSettings: fetchSettings,
   updateAppSettings: updateAppSettings,
-  changeLanguage: changeLanguage,
   setupFormPanels: setupFormPanels,
 };
 
