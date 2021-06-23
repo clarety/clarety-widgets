@@ -238,12 +238,10 @@ export class CaseFormPanel extends BasePanel {
   }
 
   renderElement = (element) => {
-    // TODO: translate input label
-
     const field = {
       columnKey: element.property,
-      type:      element.input.type,
-      label:     element.input.label,
+      type:      element.additional.inputType,
+      label:     element.additional.label,
       required:  element.required,
       options:   element.options,
     };
