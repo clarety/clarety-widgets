@@ -17,6 +17,7 @@ module.exports = {
       ['module-resolver', {
         'alias': {
           'cart':              './src/cart',
+          'case':              './src/case',
           'checkout':          './src/checkout',
           'donate':            './src/donate',
           'file-upload':       './src/file-upload',

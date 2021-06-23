@@ -9,6 +9,7 @@ export * from './misc/Currency';
 export * from './misc/inject-stripe';
 export * from './misc/PayPalBtn';
 export * from './misc/ScrollIntoView';
+export * from './misc/StepIndicator';
 
 export * from './panels/BasePanel';
 export * from './panels/CmsConfirmPanel';

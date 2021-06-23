@@ -8,10 +8,10 @@ export class CmsConfirmPanel extends BasePanel {
   };
 
   onShowPanel() {
-    const { elementId, fields, layout } = this.props;
+    const { elementId, fields, layout, settings } = this.props;
 
     this.setState({
-      confirmContent: getCmsConfirmContent(elementId, fields),
+      confirmContent: settings.confirmContent || getCmsConfirmContent(elementId, fields),
     });
 
     if (layout === 'tabs') this.scrollIntoView();
