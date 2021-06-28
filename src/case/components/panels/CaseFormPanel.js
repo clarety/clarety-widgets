@@ -548,7 +548,7 @@ export class CaseFormPanel extends BasePanel {
   renderTitleField(field, fieldKey) {
     return (
       <div key={fieldKey} className="field field--title">
-        {field.question || field.label}
+        <h2 className="title">{field.question || field.label}</h2>
 
         {field.explanation &&
           <div className="explanation">{field.explanation}</div>
