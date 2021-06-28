@@ -1,7 +1,7 @@
 export const mapCaseSettings = (settings) => {
   const { extendForm } = settings;
   if (extendForm) {
-    extendForm.name = settings.name;
+    extendForm.name = '';
 
     if (extendForm.extendFields && extendForm.extendFields[0].type === 'section') {
       extendForm.sections = splitFormIntoSections(extendForm);

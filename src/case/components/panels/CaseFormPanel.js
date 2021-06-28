@@ -40,11 +40,16 @@ export class CaseFormPanel extends BasePanel {
 
   validateFields(errors) {
     const { section } = this.props;
-    
-    if (section === 'customer') {
+
+    if (section === undefined) {
+      // Validate all fields.
+      this.validateCustomerFields(errors);
+      this.validateExtendFields(errors);
+    } else if (section === 'customer') {
       // Only validate customer fields.
       this.validateCustomerFields(errors);
     } else {
+      // Only validate extend fields for this section.
       this.validateExtendFields(errors, section);
     }
   }
@@ -188,12 +193,14 @@ export class CaseFormPanel extends BasePanel {
 
     return (
       <div>
-        <div className="form-header">
-          <h2 className="title">{form.name}</h2>
-          {form.explanation &&
-            <p className="explanation">{form.explanation}</p>
-          }
-        </div>
+        {form.name &&
+          <div className="form-header">
+            <h2 className="title">{form.name}</h2>
+            {form.explanation &&
+              <p className="explanation">{form.explanation}</p>
+            }
+          </div>
+        }
 
         <div className="form-fields">
           {form.extendFields.map(field => this.renderField(field, 'extendFields'))}
@@ -581,7 +588,7 @@ export class CaseFormPanel extends BasePanel {
   renderFooter() {
     const { layout, isBusy, settings, index, section } = this.props;
 
-    if (section === undefined) {
+    if (index === 0 || section === undefined) {
       return (
         <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
           <Form.Row className="justify-content-center">
