@@ -13,7 +13,7 @@ export const VariableAmount = ({ value, amountInfo, isSelected, onChange }) => {
           <InputGroup.Text><CurrencySymbol /></InputGroup.Text>
         </InputGroup.Prepend>
         <Form.Control
-          placeholder="Enter Amount"
+          placeholder={t('label.variableAmountInput', 'Enter Amount')}
           ref={input}
           value={value}
           type="text"

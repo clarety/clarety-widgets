@@ -54,7 +54,7 @@ export class PriceHandlesPriceOnly extends PriceHandlesStandard {
           onMouseEnter={() => this.onMouseEnterAmount(variableAmount)}
           onMouseLeave={() => this.onMouseLeaveAmount(variableAmount)}
         >
-          Other
+          {t('other', 'Other')}
         </Button>
 
         {currentSelection.isVariableAmount &&
