@@ -58,7 +58,7 @@ export class DonateWidget extends React.Component {
 }
 
 export class _DonateWidgetRoot extends React.Component {
-  async componentWillMount() {
+  async componentDidMount() {
     const { storeUid, singleOfferId, recurringOfferId, categoryUid } = this.props;
     const { updateAppSettings, setStore, initTrackingData, fetchSettings, handleUrlParams, fetchCustomer } = this.props;
 

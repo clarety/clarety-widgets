@@ -1,9 +1,9 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
-import { t } from 'shared/translations';
+import { getLanguage, t } from 'shared/translations';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext, getCustomerTypeOptions } from 'shared/utils';
-import { BasePanel, TextInput, SelectInput, PhoneInput, DobInput, CheckboxInput, Button } from 'checkout/components';
+import { BasePanel, TextInput, SelectInput, PhoneInput, DobInput, CheckboxInput, FormElement, Button } from 'checkout/components';
 
 export class CheckoutCustomerPanel extends BasePanel {
   onPressNext = event => {
@@ -246,6 +246,11 @@ export class CheckoutCustomerPanel extends BasePanel {
               {this.renderSourceFields()}
 
               {this.renderOptInFields()}
+
+              <FormElement
+                field="customer.language"
+                value={getLanguage()}
+              />
 
               <div className="panel-actions">
                 <Button title={t('continue', 'Continue')} type="submit" />

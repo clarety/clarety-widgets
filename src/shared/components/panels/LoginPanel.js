@@ -1,9 +1,9 @@
 import React from 'react';
 import { Row, Col, Form } from 'react-bootstrap';
-import { t } from 'shared/translations';
+import { getLanguage, t } from 'shared/translations';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext } from 'shared/utils';
-import { BasePanel, TextInput, EmailInput, DobInput, Button } from 'checkout/components';
+import { BasePanel, TextInput, EmailInput, DobInput, Button, FormElement } from 'checkout/components';
 
 export class LoginPanel extends BasePanel {
   constructor(props) {
@@ -195,7 +195,10 @@ export class LoginPanel extends BasePanel {
   getCreateAccountFormData() {
     const { settings } = this.props;
 
-    const formData = { 'customer.email': this.state.formData.email };
+    const formData = {
+      'customer.email': this.state.formData.email,
+      'customer.language': this.state.formData.language,
+    };
 
     if (this.state.mode === 'create-account') {
       formData['customer.password'] = this.state.formData.password;
@@ -485,6 +488,11 @@ export class LoginPanel extends BasePanel {
               </Col>
             </Form.Row>
           }
+
+          <FormElement
+            field="language"
+            value={getLanguage()}
+          />
 
           <div className="panel-actions">
             <Button

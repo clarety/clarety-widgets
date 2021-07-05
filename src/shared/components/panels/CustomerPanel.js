@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
-import { t } from 'shared/translations';
+import { getLanguage, t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { requiredField, emailField, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
 import { TextInput, TextAreaInput, EmailInput, PhoneInput, CheckboxInput, StateInput, PostcodeInput, SubmitButton, ErrorMessages, FormElement, CustomerTypeInput, TitleInput, DobInput } from 'form/components';
@@ -182,6 +182,7 @@ export class CustomerPanel extends BasePanel {
         {this.renderMobileField()}
         {this.renderDobField()}
         {this.renderAddressFields()}
+        {this.renderLanguageField()}
         {this.renderDetailsField()}
         {this.renderOptIn()}
         {this.renderActions()}
@@ -399,6 +400,15 @@ export class CustomerPanel extends BasePanel {
 
   renderInternationalAddressFields() {
     throw new Erorr('[Clarety] Customer Panel render international address not implemented');
+  }
+
+  renderLanguageField() {
+    return (
+      <FormElement
+        field="customer.language"
+        value={getLanguage()}
+      />
+    );
   }
 
   renderDetailsField() {

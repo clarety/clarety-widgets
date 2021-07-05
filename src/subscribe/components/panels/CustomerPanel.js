@@ -3,7 +3,7 @@ import { Form, Row, Col } from 'react-bootstrap';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { requiredField, emailField } from 'shared/utils';
 import { InputGroup } from 'react-bootstrap';
-import { t } from 'shared/translations';
+import { getLanguage, t } from 'shared/translations';
 import { TextInput, EmailInput, StateInput, CountryInput, ErrorMessages, SubmitButton, FormElement } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
@@ -117,6 +117,11 @@ export class CustomerPanel extends BasePanel {
         </InputGroup>
 
         <ErrorMessages showAll />
+
+        <FormElement
+          field="customer.language"
+          value={getLanguage()}
+        />
 
       </Form>
     );
