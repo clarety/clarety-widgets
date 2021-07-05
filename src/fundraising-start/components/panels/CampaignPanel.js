@@ -105,7 +105,7 @@ export class CampaignPanel extends BasePanel {
             }
             
             <div className="panel-actions">
-              <SubmitButton title="Continue" isBusy={isBusy} />
+              <SubmitButton title={t('continue', 'Continue')} isBusy={isBusy} />
             </div>
           </Form>
         </PanelBody>
