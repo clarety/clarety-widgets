@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, Form, Row, Col, Alert } from 'react-bootstrap';
-import { t } from 'shared/translations';
+import { getLanguage, t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext, parseNestedElements, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
-import { TextInput, NumberInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput, StateInput, PostcodeInput, CountryInput } from 'registration/components';
+import { TextInput, NumberInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput, StateInput, PostcodeInput, CountryInput, FormElement } from 'registration/components';
 import { getGenderOptions, scrollIntoView } from 'registration/utils';
 
 export class DetailsPanel extends BasePanel {
@@ -106,12 +106,12 @@ export class DetailsPanel extends BasePanel {
 
     const formData = {};
 
-    formData['customer.id']               = customer.id;
-    formData['customer.firstName']        = customer.firstName;
-    formData['customer.lastName']         = customer.lastName;
-    formData['customer.email']            = customer.email;
-    formData['customer.mobile']           = customer.mobile;
-    formData['customer.gender']           = customer.gender;
+    formData['customer.id']        = customer.id;
+    formData['customer.firstName'] = customer.firstName;
+    formData['customer.lastName']  = customer.lastName;
+    formData['customer.email']     = customer.email;
+    formData['customer.mobile']    = customer.mobile;
+    formData['customer.gender']    = customer.gender;
 
     formData['customer.dateOfBirthDay']   = customer.dateOfBirthDay;
     formData['customer.dateOfBirthMonth'] = customer.dateOfBirthMonth;
@@ -478,6 +478,11 @@ export class DetailsPanel extends BasePanel {
         }
 
         {this.renderCustomerAddress()}
+
+        <FormElement
+          field="customer.language"
+          value={getLanguage()}
+        />
 
       </FormContext.Provider>
     );

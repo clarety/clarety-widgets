@@ -4,6 +4,7 @@ export * from './inputs/CheckboxInput';
 export * from './inputs/CountryInput';
 export * from './inputs/DobInput';
 export * from './inputs/EmailInput';
+export * from './inputs/FormElement';
 export * from './inputs/NumberInput';
 export * from './inputs/PhoneInput';
 export * from './inputs/PostcodeInput';

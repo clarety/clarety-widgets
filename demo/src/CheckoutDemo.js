@@ -14,20 +14,20 @@ Checkout.init();
 
 Checkout.setClientIds({
   //dev:  '82ee4a2479780256c9bf9b951f5d1cfb', // baseline
-  // dev: 'ab0c9407ba7f0581ebc49fa787049e80', // a21
-  dev: '43fa6c712a8bf4fcae2f84e3ecd59454', // bible league
+  dev: 'ab0c9407ba7f0581ebc49fa787049e80', // a21
+  // dev: '43fa6c712a8bf4fcae2f84e3ecd59454', // bible league
   prod: '',
 });
 
 Checkout.setPanels([
-  {
-    component: DonationPanel,
-    connect: DonationConnect,
-    settings: {
-      showNoneButton: true,
-      priceHandleStyle: 'price-only',
-    },
-  },
+  // {
+  //   component: DonationPanel,
+  //   connect: DonationConnect,
+  //   settings: {
+  //     showNoneButton: true,
+  //     priceHandleStyle: 'price-only',
+  //   },
+  // },
   {
     component: LoginPanel,
     connect: LoginConnect,

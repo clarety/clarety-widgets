@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
-import { t } from 'shared/translations';
+import { getLanguage, t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { requiredField, emailField, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
 import { TextInput, TextAreaInput, EmailInput, PhoneInput, NumberInput, CurrencyInput, CheckboxInput, CheckboxesInput, SelectInput, RadioInput, DateInput, StateInput, CountryInput, PostcodeInput, FileUploadInput, FormElement, SubmitButton, BackButton, ErrorMessages } from 'form/components';
@@ -182,6 +182,11 @@ export class CaseFormPanel extends BasePanel {
         <div className="form-fields">
           {customerElement.elements.map(this.renderElement)}
         </div>
+
+        <FormElement
+          field="customer.language"
+          value={getLanguage()}
+        />
       </div>
     );
   }
