@@ -57,7 +57,15 @@ export class _QuizWidgetRoot extends React.Component {
 
     const { isResumed, updateAppSettings, initTrackingData, fetchSettings, setStatus, setupPanels } = this.props;
 
-    i18next.init();
+    // Translations.
+    if (i18next.isInitialized) {
+      i18next.on('languageChanged', (language) => {
+        this.forceUpdate();
+      });
+    } else {
+      // Use i18next without translation.
+      await i18next.init();
+    }
 
     updateAppSettings({
       widgetElementId: this.props.elementId,

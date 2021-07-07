@@ -1,5 +1,6 @@
 import React from 'react';
 import { Row, Col, Card, Button } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 
 export class QuestionPanel extends BasePanel {
@@ -36,7 +37,11 @@ export class QuestionPanel extends BasePanel {
     return (
       <PanelContainer layout={layout} status="edit">
 
-		  {settings.showProgressIndicator && <div className="progress-indicator">Question {questionIndex + 1} of {questions.length}</div>}
+        {settings.showProgressIndicator &&
+          <div className="progress-indicator">
+            {t('question', 'Question')} {questionIndex + 1} / {questions.length}
+          </div>
+        }
 
         <PanelHeader
           status="edit"

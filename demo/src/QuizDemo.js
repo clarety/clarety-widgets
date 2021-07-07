@@ -1,29 +1,15 @@
 import React from 'react';
-import { renderWidget, QuizWidget, setupQuizAxiosMock } from '../../src/';
+import { renderWidget, QuizWidget, initTranslations } from '../../src/';
 import { CustomerPanel } from '../../src/shared/components';
 import { QuestionPanel, QuestionConnect, QuizCustomerConnect, ResultsPanel, ResultsConnect } from '../../src/quiz/components';
 import '../../src/quiz/style.scss';
 
+initTranslations({
+  translationsPath: 'translations/{{lng}}.json',
+  defaultLanguage: 'en',
+});
+
 window.renderQuizWidget = (props) => {
-  initQuizWidget(props);
-
-  renderWidget(props.elementId,
-    <QuizWidget
-      quizUid={props.quizUid}
-      caseTypeUid={props.caseTypeUid}
-      variant={props.variant}
-      resultsOnly={props.resultsOnly}
-      headingText={props.headingText}
-      subHeadingText={props.subHeadingText}
-      buttonText={props.buttonText}
-      showOptIn={props.showOptIn}
-      optInText={props.optInText}
-      reCaptchaKey={props.reCaptchaKey}
-    />
-  );
-};
-
-const initQuizWidget = (props) => {
   QuizWidget.init(props);
 
   QuizWidget.setClientIds({
@@ -48,13 +34,13 @@ const initQuizWidget = (props) => {
       settings: {},
     },
   ]);
+
+  renderWidget(props.elementId,
+    <QuizWidget {...props} />
+  );
 };
 
 export default class QuizDemo extends React.Component {
-  componentWillMount() {
-    // setupQuizAxiosMock();
-  }
-
   componentDidMount() {
     window.renderQuizWidget({
       elementId: 'quiz-widget-demo',

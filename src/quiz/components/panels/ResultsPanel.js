@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Row, Col, Card, ProgressBar, Spinner } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 
 export class ResultsPanel extends BasePanel {
@@ -67,10 +68,14 @@ export class ResultsPanel extends BasePanel {
     return (
       <PanelContainer layout={layout} status="edit" className="results-panel">
 		    {firstName &&
-          <p className="results-thank-you">Thanks for taking part {firstName}.</p>
+          <p className="results-thank-you">
+            {t('thanks-for-taking-part', 'Thanks for taking part')} {firstName}.
+          </p>
         }
 
-        <p className="quiz-score">{`You answered ${this.getScore()} out of ${questions.length}`} correctly.</p>
+        <p className="quiz-score">
+          {t('you-answered', 'You answered')} {this.getScore()} / {questions.length} {t('correctly', 'correctly')}.
+        </p>
         
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
 
@@ -81,8 +86,12 @@ export class ResultsPanel extends BasePanel {
               <div key={question.id} className="quiz-result">
                 <h5 className="question">{question.title}</h5>	
                 <div className={isCorrectAnswer ? "answer correct-answer" : "answer incorrect-answer"}>
-                  <p className="selected"><strong>You answered:</strong> {this.getSelectedAnswer(question).label}</p>
-                  <p className="correct"><strong>Correct answer:</strong> {this.getCorrectAnswer(question).label}</p>
+                  <p className="selected">
+                    <strong>{t('you-answered', 'You answered')}:</strong> {this.getSelectedAnswer(question).label}
+                  </p>
+                  <p className="correct">
+                    <strong>{t('correct-answer', 'Correct answer')}:</strong> {this.getCorrectAnswer(question).label}
+                  </p>
                 </div>
               </div>
             );

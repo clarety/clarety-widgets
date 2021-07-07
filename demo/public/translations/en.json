@@ -101,5 +101,11 @@
   "invalid-card-expiry": "Please enter a valid expiry date",
   "invalid-ccv": "Please enter a valid CCV",
   "invalid-min-age": "You must be at least",
-  "invalid-max-age": "You must not be older than"
+  "invalid-max-age": "You must not be older than",
+
+  "question": "Question",
+  "thanks-for-taking-part": "Thanks for taking part",
+  "you-answered": "You answered",
+  "correctly": "correctly",
+  "correct-answer": "Correct answer"
 }
