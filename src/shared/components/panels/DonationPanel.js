@@ -266,8 +266,8 @@ export class DonationPanel extends BasePanel {
 
           <p>{selectedAmount}</p>
 
-            {t('btn.edit', 'Edit')}
           <Button onClick={this.onPressEdit}>
+            {t('btn.edit', 'Edit')}
           </Button>
 
         </PanelBody>
