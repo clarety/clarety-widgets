@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { FormContext } from 'shared/utils';
 import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
@@ -14,14 +15,14 @@ class PureSimpleSelectInput extends React.PureComponent {
   }
 
   render () {
-    const { field, value, onChange, label, placeholder, error, required } = this.props;
+    const { field, value, onChange, label, placeholder, error, required, getTranslationKey } = this.props;
 
     const options = this.props.options.filter(option => option.label.trim());
 
     return (
       <Form.Group controlId={field}>
         <Form.Label>
-          {label}{!required && <span className="optional"> (Optional)</span>}
+          {label}{!required && <span className="optional"> ({t('optional', 'Optional')})</span>}
         </Form.Label>
 
         <Form.Control
@@ -30,11 +31,16 @@ class PureSimpleSelectInput extends React.PureComponent {
           onChange={event => onChange(field, event.target.value)}
           isInvalid={!!error}
         >
-          <option value="" disabled hidden>{placeholder || 'Select'}</option>
+          <option value="" disabled hidden>{placeholder || t('select', 'Select')}</option>
 
-          {options.map(option =>
-            <option key={option.value} value={option.value}>{option.label}</option>
-          )}
+          {options.map(option => {
+            const tKey = getTranslationKey ? getTranslationKey(option.value, option.label) : option.label;
+            return (
+              <option key={option.value} value={option.value}>
+                {t(tKey, option.label)}
+              </option>
+            );
+          })}
         </Form.Control>
 
         <FieldError error={error} />

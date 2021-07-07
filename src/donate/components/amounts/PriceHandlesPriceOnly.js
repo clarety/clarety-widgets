@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { PriceHandlesStandard } from 'donate/components';
 
 export class PriceHandlesPriceOnly extends PriceHandlesStandard {

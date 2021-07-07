@@ -5,6 +5,9 @@ import { SelectInput } from 'form/components';
 export const CountryInput = ({ region, ...props }) => (
   <SelectInput
     options={getCountryOptions(region)}
+    getTranslationKey={(value, label) => {
+      return [`country-${value}`, label];
+    }}
     {...props}
   />
 );

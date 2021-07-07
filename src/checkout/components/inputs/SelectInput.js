@@ -17,7 +17,7 @@ class PureSelectInput extends React.PureComponent {
   }
 
   render() {
-    let { value, field, onChange, options, label, placeholder, required, error, hideLabel } = this.props;
+    let { value, field, onChange, options, label, placeholder, required, error, hideLabel, getTranslationKey } = this.props;
     if (!required && hideLabel) placeholder = label + ` (${t('optional', 'Optional')})`;
 
     return (
@@ -35,9 +35,14 @@ class PureSelectInput extends React.PureComponent {
         >
           <option value="" disabled hidden>{placeholder || t('select', 'Select')}</option>
           
-          {options.map(option =>
-            <option key={option.value} value={option.value}>{option.label}</option>
-          )}
+          {options.map(option => {
+            const tKey = getTranslationKey ? getTranslationKey(option.value, option.label) : option.label;
+            return (
+              <option key={option.value} value={option.value}>
+                {t(tKey, option.label)}
+              </option>
+            );
+          })}
         </Form.Control>
         
         <FieldError error={error} />

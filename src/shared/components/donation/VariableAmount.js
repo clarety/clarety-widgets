@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, InputGroup } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { CurrencySymbol } from 'shared/components';
 import { cleanDecimal } from 'form/utils';
 

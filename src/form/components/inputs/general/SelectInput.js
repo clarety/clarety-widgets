@@ -25,7 +25,7 @@ class _SelectInput extends React.Component {
   }
 
   render() {
-    const { value, options, placeholder, testId, error, hideErrors, onChange } = this.props;
+    const { value, options, placeholder, testId, error, hideErrors, onChange, getTranslationKey } = this.props;
 
     return (
       <React.Fragment>
@@ -40,7 +40,7 @@ class _SelectInput extends React.Component {
           
           {options.map(option =>
             <option key={option.value} value={option.value}>
-              {t(option.label, option.label)}
+              {t(getTranslationKey ? getTranslationKey(option.value, option.label) : option.label, option.label)}
             </option>
           )}
         </Form.Control>

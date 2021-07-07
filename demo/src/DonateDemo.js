@@ -40,6 +40,7 @@ window.renderDonateWidget = async (props) => {
         showExpressCheckoutBtns: true,
         showMobile: true,
         showPhoneCountrySelect: true,
+        showCountry: true,
       },
     },
     // {
@@ -110,8 +111,8 @@ export default class DonateDemo extends React.Component {
 
       showStepIndicator: true,
 
-      addressFinderKey: 'ADDRESSFINDER_DEMO_KEY',
-      defaultCountry: 'NZ',
+      // addressFinderKey: 'ADDRESSFINDER_DEMO_KEY',
+      // defaultCountry: 'NZ',
 
       confirmPageUrl: 'http://google.com/',
     });
