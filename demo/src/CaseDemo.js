@@ -5,7 +5,10 @@ import '../../src/case/style.scss';
 
 const renderCaseWidget = async (props) => {
   await initTranslations({
-    translationsPath: 'translations/{{lng}}.json',
+    translationsPath: [
+      'extra-translations/{{lng}}.json',
+      'translations/{{lng}}.json',
+    ],
     defaultLanguage: 'en',
   });
 
