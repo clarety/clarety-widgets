@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
+import { t } from 'shared/translations';
 
 export const AccordianPanelContainer = ({ className, children }) => (
   <div className={className}>{children}</div>
@@ -43,6 +44,6 @@ const DonePanelHeader = ({ number, title, onPressEdit }) => (
   <div className="panel-header inactive">
     <span className="circle">{number}</span>
     <p className="panel-header__title" dangerouslySetInnerHTML={{ __html: title }} />
-    <Button onClick={onPressEdit} variant="edit">Edit</Button>
+    <Button onClick={onPressEdit} variant="edit">{t('edit', 'Edit')}</Button>
   </div>
 );
