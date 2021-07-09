@@ -1,3 +1,4 @@
+import { t } from 'shared/translations';
 import { types as sharedTypes } from 'shared/actions';
 import { types } from 'form/actions';
 
@@ -15,9 +16,11 @@ export const errorsReducer = (state = initialState, action) => {
       return state.filter(error => error.field !== action.field);
 
     case sharedTypes.loginFailure:
+      const message = action.result.error_description;
+
       return [{
         field: 'password',
-        message: action.result.error_description,
+        message: t(message, message),
       }];
 
     default:

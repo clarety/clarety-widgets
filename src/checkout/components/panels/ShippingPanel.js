@@ -108,7 +108,7 @@ export class ShippingPanel extends BasePanel {
         />
 
         <Form.Check.Label>
-          <span className="name">{option.label}</span>
+          <span className="name">{t(option.label, option.label)}</span>
           <span className="cost"><Currency amount={option.amount} /></span>
         </Form.Check.Label>
 
