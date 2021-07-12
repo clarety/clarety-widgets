@@ -31,7 +31,7 @@ export function getJwtCustomer() {
 }
 
 function getDecodedJwtCookie(cookieName) {
-  let jwtString = Cookies.get(cookieName);
+  const jwtString = Cookies.get(cookieName);
   if (!jwtString) {
     return null;
   };

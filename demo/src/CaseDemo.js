@@ -19,6 +19,8 @@ const renderCaseWidget = async (props) => {
       component: CaseFormPanel,
       connect: CaseFormConnect,
       settings: {
+        submitBtnText: props.submitBtnText,
+        saveBtnText: props.saveBtnText,
       },
     },
   ]);
@@ -35,14 +37,20 @@ export default class CaseDemo extends React.Component {
       
       // caseTypeUid: 'ctp_7lvr', // baseline
       caseTypeUid: 'ctp_w5kw', // a21
-      caseStage: 0,
+
+      allowSave: true,
+      saveStage: '0',
+      saveBtnText: 'Save For Later',
+
+      submitStage: '1',
+      submitBtnText: 'Send Enquiry',
       
       shownFields: [
-        'customer.firstname',
-        'customer.lastname',
+        'customer.firstName',
+        'customer.lastName',
         'customer.email',
-        'customer.billingid',
-        // 'customer.churchattended',
+        'customer.billingAddress',
+        'customer.churchAttended',
         'extendFields.testcaseformformdatefield',
         'extendFields.testcaseformformfileupload',
         'extendFields.testcaseformformtextone',
@@ -51,12 +59,12 @@ export default class CaseDemo extends React.Component {
         'extendFields.testcaseformformtextfour',
       ],
       requiredFields: [
-        // 'customer.firstname',
+        'customer.firstname',
         // 'extendFields.testcaseformformtexttwo',
       ],
 
       fieldTypes: {
-        'customer.billingid': 'country',
+        'customer.billingAddress': 'country',
       },
     });
   }

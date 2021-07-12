@@ -1,13 +1,14 @@
-import { getSetting, getElement } from 'shared/selectors';
+import { getSetting, getElement, getIsLoggedIn } from 'shared/selectors';
 import { getFormData, getErrors } from 'form/selectors';
 import { setErrors, setFormData } from 'form/actions';
 import { getIsBusy } from 'donate/selectors';
-import { createCase } from 'case/actions';
+import { submitCase, saveCase } from 'case/actions';
 
 export class CaseFormConnect {
   static mapStateToProps = (state) => {
     return {
       isBusy: getIsBusy(state),
+      isBusySave: state.status === 'busy-save',
       formData: getFormData(state),
       errors: getErrors(state),
       variant: getSetting(state, 'variant'),
@@ -16,11 +17,13 @@ export class CaseFormConnect {
       shownFields: getSetting(state, 'shownFields'),
       requiredFields: getSetting(state, 'requiredFields'),
       fieldTypes: getSetting(state, 'fieldTypes'),
+      showSaveBtn: getSetting(state, 'allowSave') && getIsLoggedIn(state),
     };
   };
 
   static actions = {
-    onSubmit: createCase,
+    onSubmit: submitCase,
+    onSave: saveCase,
     setFormData: setFormData,
     setErrors: setErrors,
   };

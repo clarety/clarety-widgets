@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Row, Col } from 'react-bootstrap';
+import { Form, Row, Col, Button, Spinner } from 'react-bootstrap';
 import { getLanguage, t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { requiredField, emailField, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
@@ -29,6 +29,12 @@ export class CaseFormPanel extends BasePanel {
     }
 
     nextPanel();
+  };
+
+  onPressSave = async (event) => {
+    await this.props.onSave();
+
+    alert(t('case-form-saved', 'Your progress have been saved. Return to this page at any time to continue.'));
   };
 
   validate() {
@@ -528,6 +534,7 @@ export class CaseFormPanel extends BasePanel {
     if (settings.hideCountry) {
       return (
         <FormElement
+          key={fieldKey}
           field={`${fieldKey}.country`}
           value={defaultCountry}
         />
@@ -535,7 +542,7 @@ export class CaseFormPanel extends BasePanel {
     }
 
     return (
-      <Form.Row>
+      <Form.Row key={fieldKey}>
         <Col>
           <Form.Group controlId="country">
             <Form.Label>{t('country', 'Country')}</Form.Label>
@@ -572,6 +579,88 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
+  renderFooter() {
+    const { layout, isBusy, showSaveBtn } = this.props;
+
+    return (
+      <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
+        <Form.Row className="justify-content-center">
+          {this.renderFooterBtns()}
+        </Form.Row>
+
+        {showSaveBtn && this.renderSaveBtn()}
+      </PanelFooter>
+    );
+  }
+
+  renderSaveBtn() {
+    const { isBusy, isBusySave } = this.props;
+
+    return (
+      <div className="save-btn-container">
+        <Button
+          onClick={this.onPressSave}
+          disabled={isBusy || isBusySave}
+          className="btn-save"
+          variant="link"
+        >
+          {isBusySave
+            ? <Spinner animation="border" size="sm" />
+            : this.getSaveBtnText()
+          }
+        </Button>
+      </div>
+    );
+  }
+
+  getSaveBtnText() {
+    const { settings } = this.props;
+
+    if (settings.saveBtnText) {
+      return settings.saveBtnText;
+    }
+
+    return t('save', 'Save');
+  }
+
+  renderFooterBtns() {
+    const { settings, index, section, isBusySave } = this.props;
+
+    if (index === 0 || section === undefined) {
+      return (
+        <Col>
+          <SubmitButton
+            title={this.getSubmitBtnText()}
+            isDisabled={isBusySave}
+            block
+          />
+        </Col>
+      );
+    }
+
+    return (
+      <React.Fragment>
+        <Col xs={6}>
+          {index !== 0 &&
+            <BackButton
+              title={settings.backBtnText || t('back', 'Back')}
+              onClick={this.onPressBack}
+              isDisabled={isBusySave}
+              block
+            />
+          }
+        </Col>
+        <Col xs={6}>
+          <SubmitButton
+            title={this.getSubmitBtnText()}
+            isDisabled={isBusySave}
+            block
+          />
+        </Col>
+      </React.Fragment>
+    );
+  }
+
   getSubmitBtnText() {
     const { settings, section, isLastSection } = this.props;
 
@@ -588,47 +677,6 @@ export class CaseFormPanel extends BasePanel {
     }
 
     return t('next', 'Next');
-  }
-
-  renderFooter() {
-    const { layout, isBusy, settings, index, section } = this.props;
-
-    if (index === 0 || section === undefined) {
-      return (
-        <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
-          <Form.Row className="justify-content-center">
-            <Col>
-              <SubmitButton
-                title={this.getSubmitBtnText()}
-                block
-              />
-            </Col>
-          </Form.Row>
-        </PanelFooter>
-      );
-    }
-
-    return (
-      <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
-        <Form.Row className="justify-content-center">
-          <Col xs={6}>
-            {index !== 0 &&
-              <BackButton
-                title={settings.backBtnText || t('back', 'Back')}
-                onClick={this.onPressBack}
-                block
-              />
-            }
-          </Col>
-          <Col xs={6}>
-            <SubmitButton
-              title={this.getSubmitBtnText()}
-              block
-            />
-          </Col>
-        </Form.Row>
-      </PanelFooter>
-    );
   }
 
   renderDone() {

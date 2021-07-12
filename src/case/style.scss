@@ -4,6 +4,10 @@
   @extend .form-control;
 }
 
+.save-btn-container {
+  text-align: center;
+}
+
 .filepond--credits { display: none; }
 
 .widget-step-indicator {

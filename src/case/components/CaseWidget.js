@@ -5,12 +5,13 @@ import { connect, Provider as ReduxProvider } from 'react-redux';
 import i18next from 'i18next';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { statuses, setStore, setStatus, initTrackingData, fetchSettings, updateAppSettings, setPanels } from 'shared/actions';
+import { ClaretyApi } from 'clarety-utils';
+import { statuses, setStore, setStatus, setAuth, initTrackingData, fetchSettings, updateAppSettings, setPanels } from 'shared/actions';
 import { PanelManager, StepIndicator } from 'shared/components';
-import { Resources } from 'shared/utils';
+import { Resources, getJwtAccount } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { rootReducer } from 'case/reducers';
-import { setupFormPanels } from 'case/actions';
+import { setupFormPanels, prefillCustomer, prefillInProgressCase } from 'case/actions';
 import { mapCaseSettings } from 'case/utils';
 
 export class CaseWidget extends React.Component {
@@ -66,8 +67,10 @@ export class _CaseWidgetRoot extends React.Component {
 
     this.props.updateAppSettings({
       widgetElementId:      this.props.elementId,
-      caseStage:            this.props.caseStage,
       caseSubject:          this.props.caseSubject,
+      allowSave:            this.props.allowSave,
+      saveStage:            this.props.saveStage,
+      submitStage:          this.props.submitStage,
       variant:              this.props.variant,
       shownFields:          this.props.shownFields,
       requiredFields:       this.props.requiredFields,
@@ -81,6 +84,26 @@ export class _CaseWidgetRoot extends React.Component {
     this.props.setStore(this.props.storeUid);
 
     this.props.initTrackingData(this.props);
+    
+    const jwtAccount = getJwtAccount();
+    if (jwtAccount) {
+      ClaretyApi.setAuth(jwtAccount.jwtString);
+      this.props.setAuth(jwtAccount.jwtString);
+
+      const { prefillCustomer, prefillInProgressCase, caseTypeUid, saveStage } = this.props;
+
+      const promises = [];
+
+      // Pre-fill customer data.
+      promises.push(prefillCustomer());
+      
+      if (this.props.allowSave) {
+        // Pre-fill in-progress case form.
+        promises.push(prefillInProgressCase(caseTypeUid, saveStage));
+      }
+
+      await Promise.allSettled(promises);
+    }
 
     await this.props.fetchSettings('cases/', {
       storeUid: this.props.storeUid,
@@ -103,9 +126,11 @@ export class _CaseWidgetRoot extends React.Component {
       );
     }
 
+    const isBlocked = status === statuses.busy || status === 'busy-save';
+
     return (
       <div className={`clarety-case-widget h-100 ${layout} ${variant}`}>
-        <BlockUi tag="div" blocking={status === statuses.busy} loader={<span></span>}>
+        <BlockUi tag="div" blocking={isBlocked} loader={<span></span>}>
           {showStepIndicator && <StepIndicator />}
 
           <PanelManager
@@ -129,8 +154,11 @@ const mapStateToProps = state => {
 const actions = {
   setStore: setStore,
   setStatus: setStatus,
+  setAuth: setAuth,
   initTrackingData: initTrackingData,
   fetchSettings: fetchSettings,
+  prefillCustomer: prefillCustomer,
+  prefillInProgressCase: prefillInProgressCase,
   updateAppSettings: updateAppSettings,
   setupFormPanels: setupFormPanels,
 };
