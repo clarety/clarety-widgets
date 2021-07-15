@@ -30,3 +30,17 @@ function splitFormIntoSections(form) {
 
   return sections;
 }
+
+export function walkFlattenedKeys(obj, callback, keyPrefix = '') {
+  for (const [key, value] of Object.entries(obj)) {
+    if (isObject(value)) {
+      walkFlattenedKeys(value, callback, keyPrefix + key + '.');
+    } else {
+      callback(keyPrefix + key, value);
+    }
+  }
+}
+
+function isObject(obj) {
+  return obj && obj.constructor.name === 'Object';
+}
