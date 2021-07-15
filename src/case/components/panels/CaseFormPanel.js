@@ -34,7 +34,7 @@ export class CaseFormPanel extends BasePanel {
   onPressSave = async (event) => {
     await this.props.onSave();
 
-    alert(t('case-form-saved', 'Your progress have been saved. Return to this page at any time to continue.'));
+    alert(t('case-form-saved', 'Your progress has been saved. Return to this page at any time to continue.'));
   };
 
   validate() {

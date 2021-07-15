@@ -4,6 +4,7 @@ import { getCmsConfirmContent } from 'shared/utils';
 import { setErrors, updateFormData } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { getSubmitCasePostData, getSaveCasePostData, getCmsConfirmContentFields } from 'case/selectors';
+import { walkFlattenedKeys } from 'case/utils';
 import { types } from './types';
 
 export const saveCase = () => {
@@ -88,9 +89,7 @@ export const prefillCustomer = () => {
 
     if (customer) {
       // Prefill customer form data.
-      for (const key in customer) {
-        dispatch(updateFormData(`customer.${key}`, customer[key]));
-      }
+      walkFlattenedKeys(customer, (key, value) => dispatch(updateFormData(key, value)), 'customer.');
     }
   };
 };
