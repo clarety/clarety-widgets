@@ -6,6 +6,16 @@ import { Currency } from 'shared/components';
 import { formatDate } from 'shared/utils';
 
 export class _PaymentPanel extends BasePaymentPanel {
+  getTitleText() {
+    const { settings } = this.props;
+    return settings.title || t(['rego-payment-title', 'payment-details'], 'Payment Details');
+  }
+
+  getSubmitBtnText() {
+    const { settings } = this.props;
+    return settings.submitBtnText || t(['rego-payment-submit', 'pay'], 'Pay Now');
+  }
+
   renderCartSummary() {
     const { cart } = this.props;
 

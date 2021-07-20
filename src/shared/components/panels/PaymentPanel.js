@@ -266,6 +266,16 @@ export class _PaymentPanel extends BasePanel {
     return this.props.paymentMethods.find(method => method.type === type);
   }
 
+  getTitleText() {
+    const { settings } = this.props;
+    return settings.title || t('payment-details', 'Payment Details');
+  }
+
+  getSubmitBtnText() {
+    const { settings } = this.props;
+    return settings.submitBtnText || t('pay', 'Pay Now');
+  }
+
   renderWait() {
     const { layout, index, settings } = this.props;
 
@@ -275,7 +285,7 @@ export class _PaymentPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title={settings.title || t('payment-details', 'Payment Details')}
+          title={this.getTitleText()}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -310,7 +320,7 @@ export class _PaymentPanel extends BasePanel {
         status="edit"
         layout={layout}
         number={index + 1}
-        title={settings.title || t('payment-details', 'Payment Details')}
+        title={this.getTitleText()}
       />
     );
   }
@@ -739,11 +749,6 @@ export class _PaymentPanel extends BasePanel {
     );
   }
 
-  getSubmitBtnText() {
-    const { settings } = this.props;
-    return settings.submitBtnText || t('pay', 'Pay Now');
-  }
-
   renderTerms() {
     const { settings } = this.props;
 
@@ -763,7 +768,7 @@ export class _PaymentPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title={settings.title || t('payment-details', 'Payment Details')}
+          title={this.getTitleText()}
           onPressEdit={this.onPressEdit}
         />
 
