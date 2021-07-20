@@ -273,14 +273,17 @@ const getDefaultWave = (state, participant) => getOffer(state, participant).wave
 const getFundraisingPostData = (state) => {
   const cart = getCart(state);
   const isRegisteringForSelf = getIsRegisteringForSelf(state);
+  const donationAmount = getDonationAmount(state);
 
   if (isRegisteringForSelf) {
     return {
       ...cart.fundraising,
-      donationAmount: getDonationAmount(state),
-    };  
+      donationAmount,
+    };
   } else {
-    return undefined;
+    return {
+      donationAmount,
+    };
   }
 };
 
