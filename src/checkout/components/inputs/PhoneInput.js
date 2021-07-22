@@ -16,6 +16,8 @@ class PurePhoneInput extends React.PureComponent {
 
     country = country || Config.get('phoneCountry') || 'AU';
 
+    const className = error ? 'form-control is-invalid' : 'form-control';
+
     return (
       <Form.Group controlId={field}>
         <Form.Label srOnly={hideLabel}>
@@ -31,7 +33,7 @@ class PurePhoneInput extends React.PureComponent {
           country={country}
           showCountrySelect={false}
           displayInitialValueAsLocalNumber
-          inputClassName="form-control"
+          inputClassName={className}
         />
         
         <FieldError error={error} />

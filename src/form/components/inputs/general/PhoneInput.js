@@ -14,6 +14,8 @@ const _PhoneInput = ({ value, placeholder, country, onChange, error, required, s
   country = country || Config.get('phoneCountry') || 'AU';
   if (placeholder && !required) placeholder += t('optional-label', ' (Optional)');
 
+  const className = error ? 'form-control is-invalid' : 'form-control';
+
   return (
     <React.Fragment>
       <ReactPhoneNumberInput
@@ -25,7 +27,7 @@ const _PhoneInput = ({ value, placeholder, country, onChange, error, required, s
         showCountrySelect={showCountrySelect}
         labels={getLabels()}
         displayInitialValueAsLocalNumber
-        inputClassName="form-control"
+        inputClassName={className}
       />
       <FieldError error={error} />
     </React.Fragment>
