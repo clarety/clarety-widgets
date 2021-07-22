@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button as BsButton, Spinner as BsSpinner } from 'react-bootstrap';
 
-export const Button = ({ title, onClick, isBusy, disabled, variant, type }) => (
-  <BsButton onClick={onClick} disabled={isBusy || disabled} variant={variant} type={type}>
+export const Button = ({ title, isBusy, disabled, ...props }) => (
+  <BsButton disabled={isBusy || disabled} {...props}>
     {isBusy
       ? <BsSpinner animation="border" size="sm" />
       : title

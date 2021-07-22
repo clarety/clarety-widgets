@@ -317,6 +317,7 @@ export class LoginPanel extends BasePanel {
           title={t('btn.next', 'Next')}
           type="submit"
           isBusy={this.props.isBusy}
+          className="btn-check-email"
         />
       </div>
     );
@@ -338,12 +339,14 @@ export class LoginPanel extends BasePanel {
               title={t('btn.guestCheckout', 'Guest Checkout')}
               onClick={this.onPressGuestCheckout}
               variant="secondary"
+              className="btn-guest-checkout"
             />
           }
 
           <Button
             title={t('btn.createAccount', 'Create Account')}
             onClick={this.onPressShowCreateAccountForm}
+            className="btn-create-account"
           />
         </div>
       </React.Fragment>
@@ -400,12 +403,14 @@ export class LoginPanel extends BasePanel {
               variant="secondary"
               onClick={this.onPressResetPassword}
               isBusy={isBusyResetPassword}
+              className="btn-reset-password"
             />
 
             <Button
               title={t('btn.login', 'Login')}
               type="submit"
               isBusy={isBusy}
+              className="btn-login"
             />
           </div>
         </Form>
@@ -499,12 +504,14 @@ export class LoginPanel extends BasePanel {
               title={t('btn.cancel', 'Cancel')}
               onClick={this.onPressCancelCreateAccount}
               variant="secondary"
+              className="btn-create-account-cancel"
             />
 
             <Button
               title={t('btn.next', 'Next')}
               type="submit"
               isBusy={this.props.isBusy}
+              className="btn-create-account-submit"
             />
           </div>
 
@@ -514,23 +521,40 @@ export class LoginPanel extends BasePanel {
   }
 
   renderIsLoggedInForm() {
-    const { settings } = this.props;
+    const { customer } = this.props;
 
     return (
       <React.Fragment>
-        <p>{t('loginPanel.loggedInPrompt', 'You are currently logged-in as')} {this.props.customer.email}</p>
+        <p>{t('loginPanel.loggedInPrompt', 'You are currently logged-in as')} {customer.email}</p>
         <div className="panel-actions">
-          {settings.useSelfServiceLogout
-            ? <a href="selfservice/login.php?action=logout" className="btn btn-secondary">{t('btn.logout', 'Logout')}</a>
-            : <Button title={t('btn.logout', 'Logout')} onClick={this.onPressLogout} variant="secondary" />
-          }
+          {this.renderLogoutBtn()}
 
           <Button
             title={t('btn.next', 'Next')}
             onClick={this.onPressStayLoggedIn}
+            className="btn-stay-logged-in"
           />
         </div>
       </React.Fragment>
+    );
+  }
+
+  renderLogoutBtn() {
+    if (this.props.settings.useSelfServiceLogout) {
+      return (
+        <a href="selfservice/login.php?action=logout" className="btn btn-secondary btn-logout">
+          {t('btn.logout', 'Logout')}
+        </a>
+      );
+    }
+
+    return (
+      <Button
+        title={t('btn.logout', 'Logout')}
+        onClick={this.onPressLogout}
+        variant="secondary"
+        className="btn-logout"
+      />
     );
   }
 
@@ -557,6 +581,7 @@ export class LoginPanel extends BasePanel {
           <Button
             onClick={this.onClickEdit}
             title={t('btn.edit', 'Edit')}
+            className="btn-edit"
           />
         </PanelBody>
       </PanelContainer>
