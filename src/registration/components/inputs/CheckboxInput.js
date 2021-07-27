@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, FormCheck } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { FormContext } from 'shared/utils';
 import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
@@ -34,7 +35,7 @@ class PureCheckboxInput extends React.PureComponent {
               ? <span dangerouslySetInnerHTML={{ __html: label }} />
               : label
             }
-            {!required && <span className="optional"> (Optional)</span>}
+            {!required && <span className="optional"> ({t('optional', 'Optional')})</span>}
           </FormCheck.Label>
 
           {explanation &&

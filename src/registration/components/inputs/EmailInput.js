@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
+import { t } from 'shared/translations';
 import { FormContext } from 'shared/utils';
 import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
@@ -11,7 +12,7 @@ class PureEmailInput extends React.PureComponent {
     return (
       <Form.Group controlId={field}>
         <Form.Label>
-          {label}{!required && <span className="optional"> (Optional)</span>}
+          {label}{!required && <span className="optional"> ({t('optional', 'Optional')})</span>}
         </Form.Label>
         <Form.Control
           value={value}

@@ -12,7 +12,7 @@ class PureDobInput extends React.PureComponent {
     return (
       <Form.Group>
         <Form.Label>
-          {label || 'Date of Birth'}{!required && <span className="optional"> (Optional)</span>}
+          {label || 'Date of Birth'}{!required && <span className="optional"> ({t('optional', 'Optional')})</span>}
         </Form.Label>
 
         <Form.Row>
