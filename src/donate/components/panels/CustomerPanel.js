@@ -329,8 +329,9 @@ export class CustomerPanel extends BasePanel {
             <Form.Label>{t('mobile', 'Mobile')}</Form.Label>
             <PhoneInput
               field="customer.mobile"
-              showCountrySelect={settings.showPhoneCountrySelect}
               required={requireMobile}
+              showCountrySelect={settings.showPhoneCountrySelect}
+              country={this.props.defaultCountry}
             />
           </Form.Group>
         </Col>
