@@ -226,11 +226,22 @@ export class CaseFormPanel extends BasePanel {
     return this.props.fieldTypes[fieldKey] || field.type;
   }
 
+  shouldShowConditionalField(field) {
+    const value = this.props.formData[`extendFields.${field.conditionalField}`];
+
+    return Array.isArray(value)
+      ? value.includes(field.conditionalValue)
+      : value == field.conditionalValue;
+  }
+
   renderField(field, resourceKey = null) {
     const fieldKey = resourceKey ? resourceKey + '.' + field.columnKey : field.columnKey;
 
     // Ignore fields that aren't in the 'shown fields' list.
     if (!this.props.shownFields.includes(fieldKey)) return null;
+
+    // Ignore conditional fields that don't meet their condition.
+    if (field.conditionalField && !this.shouldShowConditionalField(field)) return null;
 
     switch (this.getFieldType(field, fieldKey)) {
       case 'text':        return this.renderTextField(field, fieldKey);

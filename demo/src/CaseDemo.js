@@ -57,6 +57,9 @@ export default class CaseDemo extends React.Component {
         'extendFields.testcaseformformtexttwo',
         'extendFields.testcaseformformtextthree',
         'extendFields.testcaseformformtextfour',
+        'extendFields.testcaseformformhellorad',
+        'extendFields.testcaseformformhellotext',
+        'extendFields.testcaseformformcheckboxone',
       ],
       requiredFields: [
         'customer.firstname',
