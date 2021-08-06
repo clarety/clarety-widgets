@@ -107,3 +107,16 @@ export function iterate(from, to, callback) {
 
   return results;
 }
+
+export function appendQueryString(url, data) {
+  const queryParams = [];
+  for (const [key, value] of Object.entries(data)) {
+    queryParams.push(`${key}=${value}`);
+  }
+
+  const queryString = queryParams.join('&');
+
+  return url.includes('?')
+    ? `${url}&${queryString}`
+    : `${url}?${queryString}`;
+}
