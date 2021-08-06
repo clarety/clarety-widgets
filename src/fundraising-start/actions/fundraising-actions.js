@@ -1,4 +1,5 @@
 import { ClaretyApi } from 'clarety-utils';
+import { appendQueryString } from 'shared/utils';
 import { setStatus } from 'shared/actions';
 import { setErrors } from 'form/actions';
 import { getSettings } from 'shared/selectors';
@@ -27,7 +28,7 @@ export const createCampaign = () => {
       dispatch(createCampaignSuccess(result));
       
       // Redirect on success.
-      window.location.href = `${settings.confirmPageUrl}?pageUid=${result.pageUid}`;
+      window.location.href = appendQueryString(settings.confirmPageUrl, { pageUid: result.pageUid });
     }
   };
 };
