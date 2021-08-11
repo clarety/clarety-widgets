@@ -5,7 +5,7 @@ export const t = (...args) => i18next.t(...args);
 
 export const getLanguage = () => i18next.language;
 
-export async function initTranslations({ translationsPath, defaultLanguage, fallbackLanguage = 'en', debug = false }) {
+export async function initTranslations({ translationsPath, defaultLanguage, fallbackLanguage = 'en', debug = false, mainSiteUrl = null }) {
   const language = defaultLanguage || navigator.language || navigator.userLanguage || fallbackLanguage;
 
   if (!Array.isArray(translationsPath)) {
@@ -21,6 +21,7 @@ export async function initTranslations({ translationsPath, defaultLanguage, fall
     keySeparator: false,
     backend: {
       loadPaths: translationsPath,
+      mainSiteUrl,
     },
     debug: debug,
   });
@@ -40,6 +41,7 @@ class CustomBackend {
 
   async read(language, namespace, callback) {
     const urls = this.options.loadPaths.map(path => {
+      path = path.replace('{{mainSiteUrl}}', this.options.mainSiteUrl || '');
       return this.services.interpolator.interpolate(path, { lng: language, ns: namespace });
     });
 
@@ -48,7 +50,7 @@ class CustomBackend {
 
     let translations = {};
     responses.forEach(response => {
-      if (response.status === 200 && response.data) {
+      if (response.status === 200 && response.data && response.headers['content-type'] === 'application/json') {
         translations = {
           ...translations,
           ...response.data,
