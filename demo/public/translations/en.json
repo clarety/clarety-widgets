@@ -107,5 +107,8 @@
   "thanks-for-taking-part": "Thanks for taking part",
   "you-answered": "You answered",
   "correctly": "correctly",
-  "correct-answer": "Correct answer"
+  "correct-answer": "Correct answer",
+
+  "customer.type.label": "Hello, Customer Type!",
+  "customer.businessName.label": "Hello, Business Name!"
 }

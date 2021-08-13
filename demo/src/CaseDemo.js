@@ -46,6 +46,7 @@ export default class CaseDemo extends React.Component {
       submitBtnText: 'Send Enquiry',
       
       shownFields: [
+        'customer.type',
         'customer.firstName',
         'customer.lastName',
         'customer.email',
@@ -62,7 +63,7 @@ export default class CaseDemo extends React.Component {
         'extendFields.testcaseformformcheckboxone',
       ],
       requiredFields: [
-        'customer.firstname',
+        'customer.firstName',
         // 'extendFields.testcaseformformtexttwo',
       ],
 

@@ -37,6 +37,10 @@ export class CaseFormPanel extends BasePanel {
     alert(t('case-form-saved', 'Your progress has been saved. Return to this page at any time to continue.'));
   };
 
+  isBusiness() {
+    return this.props.formData['customer.type'] === '1';
+  }
+
   validate() {
     const errors = [];
     this.validateFields(errors);
@@ -74,6 +78,11 @@ export class CaseFormPanel extends BasePanel {
     // Validate email.
     if (formData['customer.email']) {
       emailField(errors, formData, 'customer.email');
+    }
+
+    // Validate business name.
+    if (this.isBusiness()) {
+      requiredField(errors, formData, 'customer.businessName');
     }
   }
 
@@ -186,7 +195,7 @@ export class CaseFormPanel extends BasePanel {
         </div>
 
         <div className="form-fields">
-          {customerElement.elements.map(this.renderElement)}
+          {customerElement.elements.map(this.renderCustomerElement)}
         </div>
 
         <FormElement
@@ -244,29 +253,30 @@ export class CaseFormPanel extends BasePanel {
     if (field.conditionalField && !this.shouldShowConditionalField(field)) return null;
 
     switch (this.getFieldType(field, fieldKey)) {
-      case 'text':        return this.renderTextField(field, fieldKey);
-      case 'textarea':    return this.renderTextAreaField(field, fieldKey);
-      case 'email':       return this.renderEmailField(field, fieldKey);
-      case 'phonenumber': return this.renderPhoneField(field, fieldKey);
-      case 'number':      return this.renderNumberField(field, fieldKey);
-      case 'currency':    return this.renderCurrencyField(field, fieldKey);
-      case 'checkbox':    return this.renderCheckboxField(field, fieldKey);
-      case 'checkboxs':   return this.renderCheckboxesField(field, fieldKey);
-      case 'select':      return this.renderSelectField(field, fieldKey);
-      case 'radio':       return this.renderRadioField(field, fieldKey);
-      case 'date':        return this.renderDateField(field, fieldKey);
-      case 'fileupload':  return this.renderFileUploadField(field, fieldKey);
-      case 'address':     return this.renderAddressField(field, fieldKey);
-      case 'country':     return this.renderCountryField(field, fieldKey);
-      case 'title':       return this.renderTitleField(field, fieldKey);
-      case 'hidden':      return this.renderHiddenField(field, fieldKey);
+      case 'text':         return this.renderTextField(field, fieldKey);
+      case 'textarea':     return this.renderTextAreaField(field, fieldKey);
+      case 'email':        return this.renderEmailField(field, fieldKey);
+      case 'phonenumber':  return this.renderPhoneField(field, fieldKey);
+      case 'number':       return this.renderNumberField(field, fieldKey);
+      case 'currency':     return this.renderCurrencyField(field, fieldKey);
+      case 'checkbox':     return this.renderCheckboxField(field, fieldKey);
+      case 'checkboxs':    return this.renderCheckboxesField(field, fieldKey);
+      case 'select':       return this.renderSelectField(field, fieldKey);
+      case 'radio':        return this.renderRadioField(field, fieldKey);
+      case 'date':         return this.renderDateField(field, fieldKey);
+      case 'fileupload':   return this.renderFileUploadField(field, fieldKey);
+      case 'address':      return this.renderAddressField(field, fieldKey);
+      case 'country':      return this.renderCountryField(field, fieldKey);
+      case 'title':        return this.renderTitleField(field, fieldKey);
+      case 'hidden':       return this.renderHiddenField(field, fieldKey);
+      case 'customertype': return this.renderCustomerTypeField(field, fieldKey);
     }
 
     console.warn(`renderField not implemented for type: ${field.type}`);
     return null;
   }
 
-  renderElement = (element) => {
+  renderCustomerElement = (element) => {
     const field = {
       columnKey: element.property,
       type:      element.additional.inputType,
@@ -274,6 +284,11 @@ export class CaseFormPanel extends BasePanel {
       required:  element.required,
       options:   element.options,
     };
+
+    // Check for customer type field.
+    if (field.columnKey === 'type') {
+      field.type = 'customertype';
+    }
 
     return this.renderField(field, 'customer');
   };
@@ -587,6 +602,24 @@ export class CaseFormPanel extends BasePanel {
         field={fieldKey}
         value={field.defaultValue}
       />
+    );
+  }
+
+  renderCustomerTypeField(field, fieldKey) {
+    const businessNameField = {
+      columnKey: 'businessName',
+      type:      'text',
+      label:     'Business Name',
+      required:  true,
+    };
+
+    return (
+      <React.Fragment key={fieldKey}>
+        {this.renderSelectField(field, fieldKey)}
+        {this.isBusiness() &&
+          this.renderTextField(businessNameField, 'customer.businessName')
+        }
+      </React.Fragment>
     );
   }
 

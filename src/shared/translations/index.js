@@ -50,7 +50,7 @@ class CustomBackend {
 
     let translations = {};
     responses.forEach(response => {
-      if (response.status === 200 && response.data && response.headers['content-type'] === 'application/json') {
+      if (response.status === 200 && response.data && response.headers['content-type'].includes('application/json')) {
         translations = {
           ...translations,
           ...response.data,
