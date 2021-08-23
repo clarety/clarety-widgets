@@ -71,7 +71,20 @@ export class CaseFormPanel extends BasePanel {
     for (const element of customerElement.elements) {
       const fieldKey = `customer.${element.property}`;
       if (requiredFields.includes(fieldKey)) {
-        requiredField(errors, formData, fieldKey);
+        const field = this.getFieldForElement(element);
+        const fieldType = this.getFieldType(field, fieldKey);
+
+        if (fieldType === 'address') {
+          requiredField(errors, formData, `${fieldKey}.address1`);
+          requiredField(errors, formData, `${fieldKey}.suburb`);
+          requiredField(errors, formData, `${fieldKey}.state`);
+          requiredField(errors, formData, `${fieldKey}.postcode`);
+          requiredField(errors, formData, `${fieldKey}.country`);
+        } else if (fieldType === 'country') {
+          requiredField(errors, formData, `${fieldKey}.country`);
+        } else {
+          requiredField(errors, formData, fieldKey);
+        }
       }
     }
 
@@ -229,6 +242,23 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
+  getFieldForElement(element) {
+    const field = {
+      columnKey: element.property,
+      type:      element.additional.inputType,
+      label:     element.additional.label,
+      required:  element.required,
+      options:   element.options,
+    };
+
+    // Check for customer type field.
+    if (field.columnKey === 'type') {
+      field.type = 'customertype';
+    }
+
+    return field;
+  }
+
   getFieldType(field, fieldKey) {
     // Field type can be overridden via fieldTypes prop.
     // ie: use a country input for billingid instead of an address.
@@ -277,19 +307,7 @@ export class CaseFormPanel extends BasePanel {
   }
 
   renderCustomerElement = (element) => {
-    const field = {
-      columnKey: element.property,
-      type:      element.additional.inputType,
-      label:     element.additional.label,
-      required:  element.required,
-      options:   element.options,
-    };
-
-    // Check for customer type field.
-    if (field.columnKey === 'type') {
-      field.type = 'customertype';
-    }
-
+    const field = this.getFieldForElement(element);
     return this.renderField(field, 'customer');
   };
 
