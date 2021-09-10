@@ -14,6 +14,7 @@ export * from './misc/StepIndicator';
 export * from './panels/BasePanel';
 export * from './panels/CmsConfirmPanel';
 export * from './panels/CmsConfirmConnect';
+export * from './panels/ConfirmPanel';
 export * from './panels/CustomerPanel';
 export * from './panels/CustomerConnect';
 export * from './panels/DonationPanel';

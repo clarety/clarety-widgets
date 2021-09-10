@@ -80,6 +80,12 @@ export const getIndexOfPanelWithComponent = (state, componentName) => {
   return panels.findIndex(panel => panel.component === componentName);
 };
 
+export const isNextPanelCmsConfirm = (state) => {
+  const panels = getPanelManager(state);
+  const nextPanel = panels.find(panel => panel.status === 'wait');
+  return nextPanel.component === 'CmsConfirmPanel';
+};
+
 export const getTitleOptions = (state) => {
   // Try to get the 'customer -> title' element, which may not exist.
   try {

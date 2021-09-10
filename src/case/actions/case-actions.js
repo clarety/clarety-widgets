@@ -1,6 +1,7 @@
 import { ClaretyApi } from 'clarety-utils';
 import { setStatus, setPanelSettings, updateAppSettings, setRecaptcha } from 'shared/actions';
-import { getCmsConfirmContent } from 'shared/utils';
+import { appendQueryString, getCmsConfirmContent } from 'shared/utils';
+import { isNextPanelCmsConfirm } from 'shared/selectors';
 import { setErrors, updateFormData } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { getSubmitCasePostData, getSaveCasePostData, getCmsConfirmContentFields } from 'case/selectors';
@@ -64,18 +65,18 @@ export const submitCase = () => {
       
       if (settings.confirmPageUrl) {
         // Redirect.
-        const redirect = result.caseUid
-          ? settings.confirmPageUrl + `?caseUid=${result.caseUid}`
-          : settings.confirmPageUrl;
-        window.location.href = redirect;
+        window.location.href = appendQueryString(settings.confirmPageUrl, { caseUid: result.caseUid });
+        return false;
       } else {
-        // Show CMS confirm content.
-        const fields = getCmsConfirmContentFields(state);
-        const confirmContent = getCmsConfirmContent(settings.widgetElementId, fields);
-        dispatch(setPanelSettings('CmsConfirmPanel', { confirmContent }));
+        // Show confirm content.
+        if (isNextPanelCmsConfirm(state)) {
+          const fields = getCmsConfirmContentFields(state);
+          const confirmContent = getCmsConfirmContent(settings.widgetElementId, fields);
+          dispatch(setPanelSettings('CmsConfirmPanel', { confirmContent }));
+        }
+
         dispatch(updateAppSettings({ isShowingConfirmation: true }));
         dispatch(setStatus('ready'));
-
         return true;
       }
     }
