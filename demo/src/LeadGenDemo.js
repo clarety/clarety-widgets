@@ -1,5 +1,5 @@
 import React from 'react';
-import { CustomerPanel, CmsConfirmPanel, CmsConfirmConnect } from '../../src/shared/components';
+import { CustomerPanel, ConfirmPanel, CmsConfirmPanel, CmsConfirmConnect } from '../../src/shared/components';
 import { CustomerConnect } from '../../src/lead-gen/components';
 import { LeadGenWidget, initTranslations } from '../../src/';
 import '../../src/lead-gen/style.scss';
@@ -28,10 +28,17 @@ LeadGenWidget.setPanels([
     },
   },
   {
-    component: CmsConfirmPanel,
-    connect: CmsConfirmConnect,
-    settings: {},
-  }
+    component: ConfirmPanel,
+    connect: undefined,
+    settings: {
+      confirmContent: 'Hello, confirm panel!',
+    },
+  },
+  // {
+  //   component: CmsConfirmPanel,
+  //   connect: CmsConfirmConnect,
+  //   settings: {},
+  // },
 ]);
 
 const LeadGenDemo = () => (

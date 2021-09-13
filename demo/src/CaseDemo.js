@@ -19,6 +19,7 @@ const renderCaseWidget = async (props) => {
       component: CaseFormPanel,
       connect: CaseFormConnect,
       settings: {
+        showPhoneCountrySelect: true,
         submitBtnText: props.submitBtnText,
         saveBtnText: props.saveBtnText,
       },
@@ -50,6 +51,7 @@ export default class CaseDemo extends React.Component {
         'customer.firstName',
         'customer.lastName',
         'customer.email',
+        'customer.mobile',
         'customer.billingAddress',
         'customer.churchAttended',
         'extendFields.testcaseformformdatefield',

@@ -224,6 +224,8 @@ export class CaseFormPanel extends BasePanel {
       ? this.props.form.sections[section]
       : this.props.form;
 
+    if (!form) return null;
+
     return (
       <div>
         {form.name &&
@@ -367,6 +369,8 @@ export class CaseFormPanel extends BasePanel {
   }
 
   renderPhoneField(field, fieldKey) {
+    const { settings } = this.props;
+
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--phone">
         <Form.Label>{this.getFieldLabel(field, fieldKey)}</Form.Label>
@@ -374,6 +378,7 @@ export class CaseFormPanel extends BasePanel {
         <PhoneInput
           field={fieldKey}
           required={field.required}
+          showCountrySelect={settings.showPhoneCountrySelect}
         />
 
         {field.explanation &&

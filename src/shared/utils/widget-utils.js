@@ -111,8 +111,10 @@ export function iterate(from, to, callback) {
 export function appendQueryString(url, data) {
   const queryParams = [];
   for (const [key, value] of Object.entries(data)) {
-    queryParams.push(`${key}=${value}`);
+    if (value) queryParams.push(`${key}=${value}`);
   }
+
+  if (!queryParams.length) return url;
 
   const queryString = queryParams.join('&');
 
