@@ -102,6 +102,10 @@ export class _PaymentPanel extends BasePanel {
     nextPanel();
   };
 
+  isPaymentTypeDirectDebit(type) {
+    return type === 'gatewaydd' || type === 'dd';
+  }
+
   validate() {
     const errors = [];
 
@@ -120,8 +124,8 @@ export class _PaymentPanel extends BasePanel {
         return this.validateCreditCardFields(errors);
       }
     }
-    
-    if (paymentMethod.type === 'gatewaydd') {
+
+    if (this.isPaymentTypeDirectDebit(paymentMethod.type)) {
       switch (paymentMethod.gateway) {
         case 'nz': return this.validateNZDirectDebitFields(errors);
         case 'hk': return this.validateHKDirectDebitFields(errors);
@@ -213,7 +217,7 @@ export class _PaymentPanel extends BasePanel {
       }
     }
 
-    if (paymentType === 'gatewaydd') {
+    if (this.isPaymentTypeDirectDebit(paymentType)) {
       if (paymentMethod.gateway === 'nz') {
         return {
           type:          paymentType,
@@ -370,9 +374,16 @@ export class _PaymentPanel extends BasePanel {
     );
   }
 
+  getDirectDebitType() {
+    if(!!this.getPaymentMethod('gatewaydd')) return 'gatewaydd';
+    if(!!this.getPaymentMethod('dd')) return 'dd';
+    return null;
+  }
+
   renderPaymentMethodOptions() {
+    const directDebitType = this.getDirectDebitType();
     const showCC = !!this.getPaymentMethod('gatewaycc');
-    const showDD = !!this.getPaymentMethod('gatewaydd');
+    const showDD = !!directDebitType;
 
     // Don't display selector if there's only one option.
     if (!showCC || !showDD) return null;
@@ -386,7 +397,7 @@ export class _PaymentPanel extends BasePanel {
           onChange={this.onSelectPaymentType}
         >
           {showCC && <ToggleButton value="gatewaycc" variant="outline-secondary">{t('credit-card', 'Credit Card')}</ToggleButton>}
-          {showDD && <ToggleButton value="gatewaydd" variant="outline-secondary">{t('direct-debit', 'Direct Debit')}</ToggleButton>}
+          {showDD && <ToggleButton value={directDebitType} variant="outline-secondary">{t('direct-debit', 'Direct Debit')}</ToggleButton>}
         </ToggleButtonGroup>
       </div>
     );
@@ -401,7 +412,7 @@ export class _PaymentPanel extends BasePanel {
       }
     }
 
-    if (paymentMethod.type === 'gatewaydd') {
+    if (this.isPaymentTypeDirectDebit(paymentMethod.type)) {
       switch (paymentMethod.gateway) {
         case 'nz': return this.renderNZDirectDebitFields(paymentMethod);
         case 'hk': return this.renderHKDirectDebitFields(paymentMethod);
