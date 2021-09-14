@@ -314,7 +314,8 @@ export class CaseFormPanel extends BasePanel {
   };
 
   getFieldLabel(field, fieldKey) {
-    return t(`${fieldKey}.label`, field.question || field.label);
+    const __html = t(`${fieldKey}.label`, field.question || field.label);
+    return <span dangerouslySetInnerHTML={{ __html }} />;
   }
 
   renderTextField(field, fieldKey) {
@@ -427,7 +428,7 @@ export class CaseFormPanel extends BasePanel {
       <div key={fieldKey} className="field field--checkbox">
         <CheckboxInput
           field={fieldKey}
-          label={field.question || field.label}
+          label={this.getFieldLabel(field, fieldKey)}
           required={field.required}
         />
 
