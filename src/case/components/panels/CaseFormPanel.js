@@ -318,6 +318,17 @@ export class CaseFormPanel extends BasePanel {
     return <span dangerouslySetInnerHTML={{ __html }} />;
   }
 
+  renderExplanation(field) {
+    if (!field.explanation) return null;
+
+    return (
+      <div
+        className="explanation"
+        dangerouslySetInnerHTML={{ __html: field.explanation }}
+      />
+    );
+  }
+
   renderTextField(field, fieldKey) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--text">
@@ -328,9 +339,7 @@ export class CaseFormPanel extends BasePanel {
           required={field.required}
         />
 
-        {field.explanation &&
-          <div className="explanation">{field.explanation}</div>
-        }
+        {this.renderExplanation(field)}
       </Form.Group>
     );
   }
@@ -345,9 +354,7 @@ export class CaseFormPanel extends BasePanel {
           required={field.required}
         />
 
-        {field.explanation &&
-          <div className="explanation">{field.explanation}</div>
-        }
+        {this.renderExplanation(field)}
       </Form.Group>
     );
   }
@@ -362,9 +369,7 @@ export class CaseFormPanel extends BasePanel {
           required={field.required}
         />
 
-        {field.explanation &&
-          <div className="explanation">{field.explanation}</div>
-        }
+        {this.renderExplanation(field)}
       </Form.Group>
     );
   }
@@ -382,9 +387,7 @@ export class CaseFormPanel extends BasePanel {
           showCountrySelect={settings.showPhoneCountrySelect}
         />
 
-        {field.explanation &&
-          <div className="explanation">{field.explanation}</div>
-        }
+        {this.renderExplanation(field)}
       </Form.Group>
     );
   }
@@ -399,9 +402,7 @@ export class CaseFormPanel extends BasePanel {
           required={field.required}
         />
 
-        {field.explanation &&
-          <div className="explanation">{field.explanation}</div>
-        }
+        {this.renderExplanation(field)}
       </Form.Group>
     );
   }
@@ -416,9 +417,7 @@ export class CaseFormPanel extends BasePanel {
           required={field.required}
         />
 
-        {field.explanation &&
-          <div className="explanation">{field.explanation}</div>
-        }
+        {this.renderExplanation(field)}
       </Form.Group>
     );
   }
@@ -432,9 +431,7 @@ export class CaseFormPanel extends BasePanel {
           required={field.required}
         />
 
-        {field.explanation &&
-          <div className="explanation">{field.explanation}</div>
-        }
+        {this.renderExplanation(field)}
       </div>
     );
   }
@@ -450,9 +447,7 @@ export class CaseFormPanel extends BasePanel {
           required={field.required}
         />
 
-        {field.explanation &&
-          <div className="explanation">{field.explanation}</div>
-        }
+        {this.renderExplanation(field)}
       </Form.Group>
     );
   }
@@ -468,9 +463,7 @@ export class CaseFormPanel extends BasePanel {
           required={field.required}
         />
 
-        {field.explanation &&
-          <div className="explanation">{field.explanation}</div>
-        }
+        {this.renderExplanation(field)}
       </Form.Group>
     );
   }
@@ -486,9 +479,7 @@ export class CaseFormPanel extends BasePanel {
           required={field.required}
         />
 
-        {field.explanation &&
-          <div className="explanation">{field.explanation}</div>
-        }
+        {this.renderExplanation(field)}
       </Form.Group>
     );
   }
@@ -503,9 +494,7 @@ export class CaseFormPanel extends BasePanel {
           required={field.required}
         />
 
-        {field.explanation &&
-          <div className="explanation">{field.explanation}</div>
-        }
+        {this.renderExplanation(field)}
       </Form.Group>
     );
   }
@@ -531,9 +520,7 @@ export class CaseFormPanel extends BasePanel {
           {t('accepted-file-types', 'Accepted file types')}: {field.fileTypes.join(', ')}.
         </div>
 
-        {field.explanation &&
-          <div className="explanation">{field.explanation}</div>
-        }
+        {this.renderExplanation(field)}
       </Form.Group>
     );
   }
@@ -612,9 +599,7 @@ export class CaseFormPanel extends BasePanel {
       <div key={fieldKey} className="field field--title">
         <h2 className="title">{field.question || field.label}</h2>
 
-        {field.explanation &&
-          <div className="explanation">{field.explanation}</div>
-        }
+        {this.renderExplanation(field)}
       </div>
     );
   }
