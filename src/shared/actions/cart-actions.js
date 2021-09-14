@@ -89,17 +89,21 @@ export const setTrackingData = (trackingData) => ({
   trackingData: trackingData,
 });
 
-export const initTrackingData = (widgetProps) => ({
-  type: types.setTrackingData,
-  trackingData: {
-    sourceId:         widgetProps.sourceId,
-    sourceUid:        widgetProps.sourceUid,
-    sourceAdditional: widgetProps.sourceAdditional,
-    sendResponseUid:  widgetProps.responseId,
-    emailResponseUid: widgetProps.emailResponseId,
-    ...widgetProps.tracking,
-  }
-});
+export const initTrackingData = (widgetProps) => {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  return {
+    type: types.setTrackingData,
+    trackingData: {
+      sourceId:         widgetProps.sourceId,
+      sourceUid:        widgetProps.sourceUid,
+      sourceAdditional: widgetProps.sourceAdditional,
+      sendResponseUid:  widgetProps.responseId,
+      emailResponseUid: widgetProps.emailResponseId || urlParams.get('clarety_source'),
+      ...widgetProps.tracking,
+    },
+  };
+};
 
 export const setRecaptcha = (recaptcha) => ({
   type: types.setRecaptcha,
