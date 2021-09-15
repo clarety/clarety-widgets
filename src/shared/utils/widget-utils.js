@@ -122,3 +122,11 @@ export function appendQueryString(url, data) {
     ? `${url}&${queryString}`
     : `${url}?${queryString}`;
 }
+
+export function moveInArray(arr, from, to) {    
+  // Remove the item from it's current position.
+  const item = arr.splice(from, 1);
+
+  // Insert the item to its new position.
+  arr.splice(to, 0, item[0]);
+}
