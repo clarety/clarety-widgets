@@ -22,6 +22,13 @@ const renderCaseWidget = async (props) => {
         showPhoneCountrySelect: true,
         submitBtnText: props.submitBtnText,
         saveBtnText: props.saveBtnText,
+        initialValues: {
+          'customer.firstName': 'Hello!'
+        },
+        reorderCustomerFields: [
+          { move: 'customer.email', after: 'customer.firstName' },
+          { move: 'customer.mobile', before: 'customer.lastName' },
+        ],
       },
     },
   ]);

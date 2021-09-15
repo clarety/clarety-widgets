@@ -1,15 +1,12 @@
 import React from 'react';
+import memoize from 'memoize-one';
 import { Form, Row, Col, Button, Spinner } from 'react-bootstrap';
 import { getLanguage, t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
-import { requiredField, emailField, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
+import { requiredField, emailField, getSuburbLabel, getStateLabel, getPostcodeLabel, moveInArray } from 'shared/utils';
 import { TextInput, TextAreaInput, EmailInput, PhoneInput, NumberInput, CurrencyInput, CheckboxInput, CheckboxesInput, SelectInput, RadioInput, DateInput, StateInput, CountryInput, PostcodeInput, FileUploadInput, FormElement, SubmitButton, BackButton, ErrorMessages } from 'form/components';
 
 export class CaseFormPanel extends BasePanel {
-  onShowPanel() {
-
-  }
-
   onPressBack = (event) => {
     event.preventDefault();
     this.props.prevPanel();
@@ -114,6 +111,46 @@ export class CaseFormPanel extends BasePanel {
     }
   }
 
+  getFieldForElement(element) {
+    const field = {
+      columnKey: element.property,
+      type:      element.additional.inputType,
+      label:     element.additional.label,
+      required:  element.required,
+      options:   element.options,
+    };
+
+    // Check for customer type field.
+    if (field.columnKey === 'type') {
+      field.type = 'customertype';
+    }
+
+    return field;
+  }
+
+  getFieldType(field, fieldKey) {
+    // Field type can be overridden via fieldTypes prop.
+    // ie: use a country input for billingid instead of an address.
+    return this.props.fieldTypes[fieldKey] || field.type;
+  }
+
+  getFieldLabel(field, fieldKey) {
+    return t(`${fieldKey}.label`, field.question || field.label);
+  }
+
+  getInitialValue(fieldKey) {
+    const { initialValues = {} } = this.props.settings;
+    return initialValues[fieldKey];
+  }
+
+  shouldShowConditionalField(field) {
+    const value = this.props.formData[`extendFields.${field.conditionalField}`];
+
+    return Array.isArray(value)
+      ? value.includes(field.conditionalValue)
+      : value == field.conditionalValue;
+  }
+
   renderWait() {
     const { layout, index, settings } = this.props;
 
@@ -201,6 +238,8 @@ export class CaseFormPanel extends BasePanel {
     const { customerElement } = this.props;
     if (!customerElement) return null;
 
+    const elements = this.reorderCustomerElements(customerElement.elements);
+
     return (
       <div>
         <div className="form-header">
@@ -208,7 +247,7 @@ export class CaseFormPanel extends BasePanel {
         </div>
 
         <div className="form-fields">
-          {customerElement.elements.map(this.renderCustomerElement)}
+          {elements.map(this.renderCustomerElement)}
         </div>
 
         <FormElement
@@ -218,6 +257,34 @@ export class CaseFormPanel extends BasePanel {
       </div>
     );
   }
+
+  reorderCustomerElements = memoize((elements) => {
+    const { reorderCustomerFields } = this.props.settings;
+
+    if (!reorderCustomerFields) return elements;
+
+    const newElements = elements.slice();
+
+    for (const { move, before, after } of reorderCustomerFields) {
+      const fromIndex = newElements.findIndex(el => move === `customer.${el.property}`);
+      
+      let toIndex = -1;
+      if (before) toIndex = newElements.findIndex(el => before === `customer.${el.property}`);
+      if (after)  toIndex = newElements.findIndex(el => after  === `customer.${el.property}`);
+
+      if (fromIndex !== -1 && toIndex !== -1) {
+        if (before) moveInArray(newElements, fromIndex, toIndex);
+        if (after)  moveInArray(newElements, fromIndex, toIndex + 1);
+      }
+    }
+
+    return newElements;
+  });
+
+  renderCustomerElement = (element) => {
+    const field = this.getFieldForElement(element);
+    return this.renderField(field, 'customer');
+  };
 
   renderExtendForm(section = null) {
     const form = section !== null
@@ -242,37 +309,6 @@ export class CaseFormPanel extends BasePanel {
         </div>
       </div>
     );
-  }
-
-  getFieldForElement(element) {
-    const field = {
-      columnKey: element.property,
-      type:      element.additional.inputType,
-      label:     element.additional.label,
-      required:  element.required,
-      options:   element.options,
-    };
-
-    // Check for customer type field.
-    if (field.columnKey === 'type') {
-      field.type = 'customertype';
-    }
-
-    return field;
-  }
-
-  getFieldType(field, fieldKey) {
-    // Field type can be overridden via fieldTypes prop.
-    // ie: use a country input for billingid instead of an address.
-    return this.props.fieldTypes[fieldKey] || field.type;
-  }
-
-  shouldShowConditionalField(field) {
-    const value = this.props.formData[`extendFields.${field.conditionalField}`];
-
-    return Array.isArray(value)
-      ? value.includes(field.conditionalValue)
-      : value == field.conditionalValue;
   }
 
   renderField(field, resourceKey = null) {
@@ -308,14 +344,9 @@ export class CaseFormPanel extends BasePanel {
     return null;
   }
 
-  renderCustomerElement = (element) => {
-    const field = this.getFieldForElement(element);
-    return this.renderField(field, 'customer');
-  };
-
-  getFieldLabel(field, fieldKey) {
-    const __html = t(`${fieldKey}.label`, field.question || field.label);
-    return <span dangerouslySetInnerHTML={{ __html }} />;
+  renderLabel(field, fieldKey) {
+    const label = this.getFieldLabel(field, fieldKey);
+    return <label dangerouslySetInnerHTML={{ __html: label }} />;
   }
 
   renderExplanation(field) {
@@ -332,11 +363,12 @@ export class CaseFormPanel extends BasePanel {
   renderTextField(field, fieldKey) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--text">
-        <Form.Label>{this.getFieldLabel(field, fieldKey)}</Form.Label>
+        {this.renderLabel(field, fieldKey)}
 
         <TextInput
           field={fieldKey}
           required={field.required}
+          initialValue={this.getInitialValue(fieldKey)}
         />
 
         {this.renderExplanation(field)}
@@ -347,7 +379,7 @@ export class CaseFormPanel extends BasePanel {
   renderTextAreaField(field, fieldKey) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--textarea">
-        <Form.Label>{this.getFieldLabel(field, fieldKey)}</Form.Label>
+        {this.renderLabel(field, fieldKey)}
 
         <TextAreaInput
           field={fieldKey}
@@ -362,7 +394,7 @@ export class CaseFormPanel extends BasePanel {
   renderEmailField(field, fieldKey) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--email">
-        <Form.Label>{this.getFieldLabel(field, fieldKey)}</Form.Label>
+        {this.renderLabel(field, fieldKey)}
 
         <EmailInput
           field={fieldKey}
@@ -379,7 +411,7 @@ export class CaseFormPanel extends BasePanel {
 
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--phone">
-        <Form.Label>{this.getFieldLabel(field, fieldKey)}</Form.Label>
+        {this.renderLabel(field, fieldKey)}
 
         <PhoneInput
           field={fieldKey}
@@ -395,7 +427,7 @@ export class CaseFormPanel extends BasePanel {
   renderNumberField(field, fieldKey) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--number">
-        <Form.Label>{this.getFieldLabel(field, fieldKey)}</Form.Label>
+        {this.renderLabel(field, fieldKey)}
 
         <NumberInput
           field={fieldKey}
@@ -410,7 +442,7 @@ export class CaseFormPanel extends BasePanel {
   renderCurrencyField(field, fieldKey) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--currency">
-        <Form.Label>{this.getFieldLabel(field, fieldKey)}</Form.Label>
+        {this.renderLabel(field, fieldKey)}
 
         <CurrencyInput
           field={fieldKey}
@@ -429,6 +461,7 @@ export class CaseFormPanel extends BasePanel {
           field={fieldKey}
           label={this.getFieldLabel(field, fieldKey)}
           required={field.required}
+          initialValue={this.getInitialValue(fieldKey)}
         />
 
         {this.renderExplanation(field)}
@@ -439,12 +472,13 @@ export class CaseFormPanel extends BasePanel {
   renderCheckboxesField(field, fieldKey) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--checkboxes">
-        <Form.Label>{this.getFieldLabel(field, fieldKey)}</Form.Label>
+        {this.renderLabel(field, fieldKey)}
 
         <CheckboxesInput
           field={fieldKey}
           options={field.options}
           required={field.required}
+          initialValue={this.getInitialValue(fieldKey)}
         />
 
         {this.renderExplanation(field)}
@@ -455,12 +489,13 @@ export class CaseFormPanel extends BasePanel {
   renderSelectField(field, fieldKey) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--select">
-        <Form.Label>{this.getFieldLabel(field, fieldKey)}</Form.Label>
+        {this.renderLabel(field, fieldKey)}
 
         <SelectInput
           field={fieldKey}
           options={field.options}
           required={field.required}
+          initialValue={this.getInitialValue(fieldKey)}
         />
 
         {this.renderExplanation(field)}
@@ -471,12 +506,13 @@ export class CaseFormPanel extends BasePanel {
   renderRadioField(field, fieldKey) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--radio">
-        <Form.Label>{this.getFieldLabel(field, fieldKey)}</Form.Label>
+        {this.renderLabel(field, fieldKey)}
 
         <RadioInput
           field={fieldKey}
           options={field.options}
           required={field.required}
+          initialValue={this.getInitialValue(fieldKey)}
         />
 
         {this.renderExplanation(field)}
@@ -487,11 +523,12 @@ export class CaseFormPanel extends BasePanel {
   renderDateField(field, fieldKey) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--date">
-        <Form.Label>{this.getFieldLabel(field, fieldKey)}</Form.Label>
+        {this.renderLabel(field, fieldKey)}
 
         <DateInput
           field={fieldKey}
           required={field.required}
+          initialValue={this.getInitialValue(fieldKey)}
         />
 
         {this.renderExplanation(field)}
@@ -502,7 +539,7 @@ export class CaseFormPanel extends BasePanel {
   renderFileUploadField(field, fieldKey) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--date">
-        <Form.Label>{this.getFieldLabel(field, fieldKey)}</Form.Label>
+        {this.renderLabel(field, fieldKey)}
 
         <FileUploadInput
           field={fieldKey}
