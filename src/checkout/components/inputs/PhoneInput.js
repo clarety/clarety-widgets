@@ -10,7 +10,7 @@ import { getValidationError } from 'form/utils';
 
 class PurePhoneInput extends React.PureComponent {
   render() {
-    let { field, label, placeholder, value, onChange, error, required, hideLabel, country } = this.props;
+    let { field, label, placeholder, value, onChange, error, required, hideLabel, country, showCountrySelect = false } = this.props;
     if (hideLabel) placeholder = label;
     if (!required) placeholder += ` (${t('optional', 'Optional')})`;
 
@@ -31,7 +31,7 @@ class PurePhoneInput extends React.PureComponent {
           placeholder={placeholder}
           limitMaxLength={true}
           country={country}
-          showCountrySelect={false}
+          showCountrySelect={showCountrySelect}
           displayInitialValueAsLocalNumber
           inputClassName={className}
         />

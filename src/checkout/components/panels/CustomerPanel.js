@@ -199,6 +199,7 @@ export class CheckoutCustomerPanel extends BasePanel {
                       label={t('home-phone', 'Home Phone')}
                       hideLabel
                       required={settings.requirePhone}
+                      showCountrySelect={settings.showPhoneCountrySelect}
                       country={defaultCountry}
                     />
                   </Col>
@@ -208,6 +209,7 @@ export class CheckoutCustomerPanel extends BasePanel {
                       label={t('work-phone', 'Work Phone')}
                       hideLabel
                       required={settings.requirePhone}
+                      showCountrySelect={settings.showPhoneCountrySelect}
                       country={defaultCountry}
                     />
                   </Col>
@@ -221,6 +223,7 @@ export class CheckoutCustomerPanel extends BasePanel {
                     label={t('mobile-phone', 'Mobile Phone')}
                     hideLabel
                     required={settings.requirePhone}
+                    showCountrySelect={settings.showPhoneCountrySelect}
                     country={defaultCountry}
                   />
                 </Col>
