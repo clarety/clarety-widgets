@@ -2,6 +2,8 @@ import React from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, ElementsConsumer } from '@stripe/react-stripe-js';
 import { getLanguage } from 'shared/translations';
+import { isStripe } from 'shared/actions/stripe-actions';
+
 
 export const injectStripe = (PaymentPanelComponent) => {
   class PaymentPanel extends React.Component {
@@ -19,7 +21,6 @@ export const injectStripe = (PaymentPanelComponent) => {
 
     maybeLoadStripe() {
       const locale = getLanguage();
-
       if (this.shouldUseStripe() && !this.stripePromise) {
         const paymentMethod = this.getPaymentMethod();
         this.stripePromise = loadStripe(paymentMethod.publicKey, { locale });
@@ -34,7 +35,7 @@ export const injectStripe = (PaymentPanelComponent) => {
       const { paymentMethods } = this.props;
 
       if (!paymentMethods) return null;
-      return paymentMethods.find(method => method.gateway === 'stripe' || method.gateway === 'stripe-sca');
+      return paymentMethods.find(method => isStripe(method));
     }
 
     render() {
