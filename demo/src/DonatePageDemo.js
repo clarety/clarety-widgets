@@ -68,15 +68,15 @@ export default class DonatePageDemo extends React.Component {
 
 
       //bible league
-      storeUid: 'str_zj5v',
-      singleOfferId: '8',
-      recurringOfferId: '81',
+      // storeUid: 'str_zj5v',
+      // singleOfferId: '8',
+      // recurringOfferId: '81',
 
-      //storeUid: 'str_wey5', // baseline
+      storeUid: 'str_wey5', // baseline
       // storeUid: 'str_k1or',
       // storeUid: 'str_8qx4',
-      //singleOfferId: '8',
-      //recurringOfferId: '17',
+      singleOfferId: '8',
+      recurringOfferId: '17',
       //fundraisingPageUid: 'abc-123',
       //confirmPageUrl: 'https://google.com',
       // sourceId: '17',
