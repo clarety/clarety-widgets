@@ -173,14 +173,10 @@ export class DonationPanel extends BasePanel {
 
   renderPriceHandles() {
     const { frequency, layout, settings, selections, resources, errors, selectAmount } = this.props;
+
     const offer = this.getOffer(frequency);
-
-    let PriceHandlesComponent;
-    switch (settings.priceHandleStyle) {
-      case 'price-only': PriceHandlesComponent = PriceHandlesPriceOnly; break;
-      default:           PriceHandlesComponent = PriceHandlesStandard;  break;
-    }
-
+    const PriceHandlesComponent = this.getPriceHandlesComponent();
+    
     return (
       <PriceHandlesComponent
         offer={offer}
@@ -194,6 +190,13 @@ export class DonationPanel extends BasePanel {
         hideCents={settings.hideCents}
       />
     );
+  }
+
+  getPriceHandlesComponent() {
+    switch (settings.priceHandleStyle) {
+      case 'price-only': return PriceHandlesPriceOnly;
+      default:           return PriceHandlesStandard;
+    }
   }
 
   renderGivingType() {
