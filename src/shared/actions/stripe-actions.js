@@ -1,14 +1,24 @@
-import { CardNumberElement } from '@stripe/react-stripe-js';
+import {AuBankAccountElement, CardNumberElement} from '@stripe/react-stripe-js';
 
 export function isStripe(paymentMethod) {
-  return paymentMethod.gateway === 'stripe' || paymentMethod.gateway === 'stripe-sca';
+  return isStripeCard(paymentMethod) ||
+      isStripeAuBankAccount(paymentMethod);
+}
+export function isStripeCard(paymentMethod) {
+  return paymentMethod.gateway === 'stripe' ||
+      paymentMethod.gateway === 'stripe-sca';
+}
+export function isStripeAuBankAccount(paymentMethod) {
+  return paymentMethod.gateway === 'stripe-becs';
 }
 
 export const prepareStripePayment = (paymentData, paymentMethod, frequency) => {
   return async (dispatch, getState) => {
-    const result = frequency === 'recurring'
-      ? await createStripeRecurringToken(paymentData, paymentMethod)
-      : await createStripeSingleToken(paymentData, paymentMethod);
+    const result = isStripeAuBankAccount(paymentMethod) ?
+        await createStripeAuBankAccountRecurringToken(paymentData, paymentMethod)
+          : frequency === 'recurring'
+               ? await createStripeRecurringToken(paymentData, paymentMethod)
+               : await createStripeSingleToken(paymentData, paymentMethod);
 
     if (result.error) {
       const validationErrors = [{ message: result.error.message }];
@@ -83,6 +93,27 @@ const createStripeRecurringToken = async (paymentData, paymentMethod) => {
 
   const result = await stripe.confirmCardSetup(clientSecret, data);
 
+  return {
+    error: result.error,
+    token: result.setupIntent && result.setupIntent.payment_method,
+  };
+};
+
+const createStripeAuBankAccountRecurringToken = async (paymentData, paymentMethod) => {
+  const { stripe, elements } = paymentData;
+
+  const clientSecret = paymentMethod.setupIntentSecret;
+  const data = {
+    payment_method: {
+      au_becs_debit: elements.getElement(AuBankAccountElement),
+      billing_details: {
+        name: paymentData.accountName,
+        email: paymentData.customerEmail, //email required for becs
+      },
+    },
+  };
+
+  const result = await stripe.confirmAuBecsDebitSetup(clientSecret, data);
   return {
     error: result.error,
     token: result.setupIntent && result.setupIntent.payment_method,

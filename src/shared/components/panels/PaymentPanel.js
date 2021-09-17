@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Row, Col, Spinner, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
-import { CardNumberElement, CardExpiryElement, CardCvcElement } from '@stripe/react-stripe-js';
+import { CardNumberElement, CardExpiryElement, CardCvcElement, AuBankAccountElement } from '@stripe/react-stripe-js';
+import { isStripeCard, isStripeAuBankAccount } from 'shared/actions/stripe-actions';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, injectStripe } from 'shared/components';
 import { requiredField, cardNumberField, cardExpiryField, ccvField } from 'shared/utils';
@@ -118,7 +119,7 @@ export class _PaymentPanel extends BasePanel {
 
   validateFields(paymentMethod, errors) {
     if (paymentMethod.type === 'gatewaycc') {
-      if (paymentMethod.gateway === 'stripe' || paymentMethod.gateway === 'stripe-sca') {
+      if (isStripeCard(paymentMethod)) {
         return this.validateStripeFields(errors);
       } else {
         return this.validateCreditCardFields(errors);
@@ -126,10 +127,14 @@ export class _PaymentPanel extends BasePanel {
     }
 
     if (this.isPaymentTypeDirectDebit(paymentMethod.type)) {
-      switch (paymentMethod.gateway) {
-        case 'nz': return this.validateNZDirectDebitFields(errors);
-        case 'hk': return this.validateHKDirectDebitFields(errors);
-        default:   return this.validateDirectDebitFields(errors);
+      if(isStripeAuBankAccount(paymentMethod)) {
+        return this.validateStripeAuBankAccountFields(errors);
+      } else {
+        switch (paymentMethod.gateway) {
+          case 'nz': return this.validateNZDirectDebitFields(errors);
+          case 'hk': return this.validateHKDirectDebitFields(errors);
+          default:   return this.validateDirectDebitFields(errors);
+        }
       }
     }
     
@@ -138,6 +143,11 @@ export class _PaymentPanel extends BasePanel {
     }
 
     throw new Error(`[Clarety] unhandled 'validate' for paymentMethod.type: ${paymentMethod.type}`);
+  }
+
+  validateStripeAuBankAccountFields(errors) {
+    const { formData } = this.props;
+    requiredField(errors, formData, 'payment.accountName');
   }
 
   validateStripeFields(errors) {
@@ -198,7 +208,7 @@ export class _PaymentPanel extends BasePanel {
     const paymentMethod = this.getPaymentMethod(paymentType);
 
     if (paymentType === 'gatewaycc') {
-      if (paymentMethod.gateway === 'stripe' || paymentMethod.gateway === 'stripe-sca') {
+      if (isStripeCard(paymentMethod)) {
         return {
           type:     paymentType,
           stripe:   this.props.stripe,
@@ -218,7 +228,15 @@ export class _PaymentPanel extends BasePanel {
     }
 
     if (this.isPaymentTypeDirectDebit(paymentType)) {
-      if (paymentMethod.gateway === 'nz') {
+      if (paymentMethod.gateway === 'stripe-becs') {
+        return {
+          type:     paymentType,
+          stripe:   this.props.stripe,
+          elements: this.props.elements,
+          accountName: formData['payment.accountName'],
+          customerEmail: formData['customer.email'],
+        };
+      } else if (paymentMethod.gateway === 'nz') {
         return {
           type:          paymentType,
           accountName:   formData['payment.accountName'],
@@ -405,7 +423,7 @@ export class _PaymentPanel extends BasePanel {
 
   renderPaymentFields(paymentMethod) {
     if (paymentMethod.type === 'gatewaycc') {
-      if (paymentMethod.gateway === 'stripe' || paymentMethod.gateway === 'stripe-sca') {
+      if (isStripeCard(paymentMethod)) {
         return this.renderStripeFields(paymentMethod);
       } else {
         return this.renderCreditCardFields(paymentMethod);
@@ -413,10 +431,14 @@ export class _PaymentPanel extends BasePanel {
     }
 
     if (this.isPaymentTypeDirectDebit(paymentMethod.type)) {
-      switch (paymentMethod.gateway) {
-        case 'nz': return this.renderNZDirectDebitFields(paymentMethod);
-        case 'hk': return this.renderHKDirectDebitFields(paymentMethod);
-        default:   return this.renderDirectDebitFields(paymentMethod);
+      if(isStripeAuBankAccount(paymentMethod)) {
+        return this.renderStripeBecsFields(paymentMethod);
+      } else {
+        switch (paymentMethod.gateway) {
+          case 'nz': return this.renderNZDirectDebitFields(paymentMethod);
+          case 'hk': return this.renderHKDirectDebitFields(paymentMethod);
+          default:   return this.renderDirectDebitFields(paymentMethod);
+        }
       }
     }
 
@@ -594,6 +616,36 @@ export class _PaymentPanel extends BasePanel {
             </Form.Group>
           </Col>
         </Form.Row>
+      </React.Fragment>
+    );
+  }
+
+  renderStripeBecsFields(paymentMethod) {
+    const { settings } = this.props;
+    const style = settings.stripeStyle || { base: { fontSize: '16px' } };
+    return (
+      <React.Fragment>
+
+        <Form.Row>
+          <Col>
+            <Form.Group controlId="accountName">
+              <Form.Label>{t('account-name', 'Account Name')}</Form.Label>
+              <TextInput field="payment.accountName" testId="account-name-input" />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col>
+            <Form.Group controlId="account">
+              <Form.Label>{t('account', 'Account')}</Form.Label>
+              <AuBankAccountElement
+                options={{ style, hideIcon: true }}
+              />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+
       </React.Fragment>
     );
   }
