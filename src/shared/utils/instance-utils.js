@@ -1,7 +1,7 @@
 import { Config, getEnv } from 'clarety-utils';
 
 // Deprecated
-// TODO: remove one no-one is using...
+// TODO: remove once no-one is using...
 export function getAssetsPath() {
   return getSitePath();
 }

@@ -193,7 +193,7 @@ export class DonationPanel extends BasePanel {
   }
 
   getPriceHandlesComponent() {
-    switch (settings.priceHandleStyle) {
+    switch (this.props.settings.priceHandleStyle) {
       case 'price-only': return PriceHandlesPriceOnly;
       default:           return PriceHandlesStandard;
     }
