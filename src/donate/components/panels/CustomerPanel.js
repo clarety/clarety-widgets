@@ -140,6 +140,11 @@ export class CustomerPanel extends BasePanel {
   validateAddressFields(errors) {
     const { formData } = this.props;
 
+    if (settings.requireAddress === false) {
+      //TODO AP to set up a default settings object, remove this and replace with a wrapped if statement as above.
+      return;
+    }
+
     requiredField(errors, formData, 'customer.billing.address1');
 
     if (formData['customer.billing.country'] !== 'NZ') {
