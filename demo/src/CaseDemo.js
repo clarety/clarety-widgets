@@ -26,8 +26,8 @@ const renderCaseWidget = async (props) => {
           'customer.firstName': 'Hello!'
         },
         reorderCustomerFields: [
-          { move: 'customer.email', after: 'customer.firstName' },
-          { move: 'customer.mobile', before: 'customer.lastName' },
+          // { move: 'customer.email', after: 'customer.firstName' },
+          // { move: 'customer.mobile', before: 'customer.lastName' },
         ],
       },
     },
@@ -44,35 +44,46 @@ export default class CaseDemo extends React.Component {
       elementId: 'case-widget-demo',
       
       // caseTypeUid: 'ctp_7lvr', // baseline
-      caseTypeUid: 'ctp_w5kw', // a21
+      // caseTypeUid: 'ctp_w5kw', // a21
+      caseTypeUid: "ctp_r8nr", // tnc
 
-      allowSave: true,
-      saveStage: '0',
-      saveBtnText: 'Save For Later',
+      // allowSave: true,
+      // saveStage: '0',
+      // saveBtnText: 'Save For Later',
 
       submitStage: '1',
-      submitBtnText: 'Send Enquiry',
+      // submitBtnText: 'Send Enquiry',
       
       shownFields: [
-        'customer.type',
         'customer.firstName',
         'customer.lastName',
         'customer.email',
-        'customer.mobile',
-        'customer.billingAddress',
-        'customer.churchAttended',
-        'extendFields.testcaseformformdatefield',
-        'extendFields.testcaseformformfileupload',
-        'extendFields.testcaseformformtextone',
-        'extendFields.testcaseformformtexttwo',
-        'extendFields.testcaseformformtextthree',
-        'extendFields.testcaseformformtextfour',
-        'extendFields.testcaseformformhellorad',
-        'extendFields.testcaseformformhellotext',
-        'extendFields.testcaseformformcheckboxone',
+        'extendFields.surveyformtestinput',
+        'extendFields.surveyformhellorating'
       ],
+
+      // shownFields: [
+      //   'customer.type',
+      //   'customer.firstName',
+      //   'customer.lastName',
+      //   'customer.email',
+      //   'customer.mobile',
+      //   'customer.billingAddress',
+      //   'customer.churchAttended',
+      //   'extendFields.testcaseformformdatefield',
+      //   'extendFields.testcaseformformfileupload',
+      //   'extendFields.testcaseformformtextone',
+      //   'extendFields.testcaseformformtexttwo',
+      //   'extendFields.testcaseformformtextthree',
+      //   'extendFields.testcaseformformtextfour',
+      //   'extendFields.testcaseformformhellorad',
+      //   'extendFields.testcaseformformhellotext',
+      //   'extendFields.testcaseformformcheckboxone',
+      // ],
       requiredFields: [
         'customer.firstName',
+        'customer.lastName',
+        'customer.email',
         // 'extendFields.testcaseformformtexttwo',
       ],
 

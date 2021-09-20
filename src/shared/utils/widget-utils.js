@@ -130,3 +130,13 @@ export function moveInArray(arr, from, to) {
   // Insert the item to its new position.
   arr.splice(to, 0, item[0]);
 }
+
+export function range(min, max) {
+  const values = [];
+
+  for (let i = min; i <= max; i++) {
+    values.push(i);
+  }
+
+  return values;
+}

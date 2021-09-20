@@ -18,6 +18,8 @@ export * from './inputs/payment/CcvInput';
 export * from './inputs/payment/ExpiryInput';
 export * from './inputs/payment/NZAccountNumberInput';
 
+export * from './inputs/survey/RatingInput';
+
 export * from './inputs/general/BackButton';
 export * from './inputs/general/Button';
 export * from './inputs/general/CheckboxesInput';

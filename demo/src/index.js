@@ -5,7 +5,8 @@ import { Config } from '../../src';
 
 Config.init({
   // instanceKey: 'mdc',
-   instanceKey: 'clarety-baseline',
+  //  instanceKey: 'clarety-baseline',
+  instanceKey: 'tnc',
   // instanceKey: 'tnc-hk',
   // instanceKey: 'clarety-church',
   // instanceKey: 'ethiopiaid',
