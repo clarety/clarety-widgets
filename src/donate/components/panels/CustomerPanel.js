@@ -138,7 +138,7 @@ export class CustomerPanel extends BasePanel {
   }
 
   validateAddressFields(errors) {
-    const { formData } = this.props;
+    const { formData, settings } = this.props;
 
     if (settings.requireAddress === false) {
       //TODO AP to set up a default settings object, remove this and replace with a wrapped if statement as above.
