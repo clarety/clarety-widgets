@@ -59,7 +59,8 @@ export default class CaseDemo extends React.Component {
         'customer.lastName',
         'customer.email',
         'extendFields.surveyformtestinput',
-        'extendFields.surveyformhellorating'
+        'extendFields.surveyformhellorating',
+        'extendFields.surveyformhelloranking',
       ],
 
       // shownFields: [

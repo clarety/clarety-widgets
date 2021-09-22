@@ -125,10 +125,10 @@ export function appendQueryString(url, data) {
 
 export function moveInArray(arr, from, to) {    
   // Remove the item from it's current position.
-  const item = arr.splice(from, 1);
+  const [item] = arr.splice(from, 1);
 
   // Insert the item to its new position.
-  arr.splice(to, 0, item[0]);
+  arr.splice(to, 0, item);
 }
 
 export function range(min, max) {
