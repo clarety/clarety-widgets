@@ -8,6 +8,46 @@
   text-align: center;
 }
 
+.rating-input {
+  display: flex;
+  justify-content: space-between;
+
+  .btn-rating {
+    border: none;
+    border-radius: 100px;
+    width: 30px;
+    height: 30px;
+
+    &:hover, &--selected {
+      background-color: $primary;
+      color: $white;
+    }
+
+    &:focus { outline: none; }
+  }
+}
+
+.ranking-item {
+  display: flex;
+  border: 2px solid lightgrey;
+  border-radius: 10px;
+  padding: 10px 16px;
+  margin-bottom: 10px;
+  background: white;
+
+  &__handle {
+    display: inline-block;
+    width: 30px;
+    color: lightgrey;
+    align-self: center;
+  }
+
+  &__index {
+    display: inline-block;
+    width: 24px;
+  }
+}
+
 .filepond--credits { display: none; }
 
 .widget-step-indicator {

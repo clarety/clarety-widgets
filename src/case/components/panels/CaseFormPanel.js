@@ -4,7 +4,7 @@ import { Form, Row, Col, Button, Spinner } from 'react-bootstrap';
 import { getLanguage, t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
 import { requiredField, emailField, getSuburbLabel, getStateLabel, getPostcodeLabel, moveInArray } from 'shared/utils';
-import { TextInput, TextAreaInput, EmailInput, PhoneInput, NumberInput, CurrencyInput, CheckboxInput, CheckboxesInput, SelectInput, RadioInput, DateInput, StateInput, CountryInput, PostcodeInput, FileUploadInput, FormElement, SubmitButton, BackButton, ErrorMessages } from 'form/components';
+import { TextInput, TextAreaInput, EmailInput, PhoneInput, NumberInput, CurrencyInput, CheckboxInput, CheckboxesInput, SelectInput, RadioInput, DateInput, StateInput, CountryInput, PostcodeInput, FileUploadInput, RatingInput, RankingInput, FormElement, SubmitButton, BackButton, ErrorMessages } from 'form/components';
 
 export class CaseFormPanel extends BasePanel {
   onPressBack = (event) => {
@@ -338,6 +338,8 @@ export class CaseFormPanel extends BasePanel {
       case 'title':        return this.renderTitleField(field, fieldKey);
       case 'hidden':       return this.renderHiddenField(field, fieldKey);
       case 'customertype': return this.renderCustomerTypeField(field, fieldKey);
+      case 'rating':       return this.renderRatingField(field, fieldKey);
+      case 'ranking':      return this.renderRankingField(field, fieldKey);
     }
 
     console.warn(`renderField not implemented for type: ${field.type}`);
@@ -538,7 +540,7 @@ export class CaseFormPanel extends BasePanel {
 
   renderFileUploadField(field, fieldKey) {
     return (
-      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--date">
+      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--fileupload">
         {this.renderLabel(field, fieldKey)}
 
         <FileUploadInput
@@ -566,7 +568,7 @@ export class CaseFormPanel extends BasePanel {
     const country = this.props.formData[`${fieldKey}.country`];
 
     return (
-      <React.Fragment key={fieldKey}>
+      <div key={fieldKey} className="field field--address">
         {this.renderCountryField(field, fieldKey)}
 
         <Form.Row>
@@ -598,7 +600,7 @@ export class CaseFormPanel extends BasePanel {
             </Form.Group>
           </Col>
         </Form.Row>
-      </React.Fragment>
+      </div>
     );
   }
 
@@ -666,6 +668,35 @@ export class CaseFormPanel extends BasePanel {
           this.renderTextField(businessNameField, 'customer.businessName')
         }
       </React.Fragment>
+    );
+  }
+
+  renderRatingField(field, fieldKey) {
+    return (
+      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--rating">
+        {this.renderLabel(field, fieldKey)}
+
+        <RatingInput
+          field={fieldKey}
+        />
+
+        {this.renderExplanation(field)}
+      </Form.Group>
+    );
+  }
+
+  renderRankingField(field, fieldKey) {
+    return (
+      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--ranking">
+        {this.renderLabel(field, fieldKey)}
+
+        <RankingInput
+          field={fieldKey}
+          options={field.options}
+        />
+
+        {this.renderExplanation(field)}
+      </Form.Group>
     );
   }
 
