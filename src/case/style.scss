@@ -97,3 +97,12 @@
     }
   }
 }
+
+.field--acceptterms {
+  .terms-html.scroll {
+    max-height: 300px;
+    overflow: scroll;
+    background: #f9f9f9;
+    padding: 20px;
+  }
+}

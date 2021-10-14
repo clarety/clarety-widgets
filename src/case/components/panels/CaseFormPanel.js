@@ -340,6 +340,7 @@ export class CaseFormPanel extends BasePanel {
       case 'customertype': return this.renderCustomerTypeField(field, fieldKey);
       case 'rating':       return this.renderRatingField(field, fieldKey);
       case 'ranking':      return this.renderRankingField(field, fieldKey);
+      case 'acceptterms':  return this.renderAcceptTermsField(field, fieldKey);
     }
 
     console.warn(`renderField not implemented for type: ${field.type}`);
@@ -697,6 +698,21 @@ export class CaseFormPanel extends BasePanel {
 
         {this.renderExplanation(field)}
       </Form.Group>
+    );
+  }
+
+  renderAcceptTermsField(field, fieldKey) {
+    const shouldScroll = field.size === 'large';
+
+    return (
+      <div key={fieldKey} className="field field--acceptterms">
+        <div
+          className={`terms-html ${shouldScroll ? 'scroll' : ''}`}
+          dangerouslySetInnerHTML={{ __html: field.html }}
+        />
+
+        {this.renderCheckboxField(field, fieldKey)}
+      </div>
     );
   }
 
