@@ -44,8 +44,8 @@ export default class CaseDemo extends React.Component {
       elementId: 'case-widget-demo',
       
       // caseTypeUid: 'ctp_7lvr', // baseline
-      // caseTypeUid: 'ctp_w5kw', // a21
-      caseTypeUid: "ctp_r8nr", // tnc
+      caseTypeUid: 'ctp_w5kw', // a21
+      // caseTypeUid: "ctp_r8nr", // tnc
 
       // allowSave: true,
       // saveStage: '0',
@@ -54,33 +54,34 @@ export default class CaseDemo extends React.Component {
       submitStage: '1',
       // submitBtnText: 'Send Enquiry',
       
-      shownFields: [
-        'customer.firstName',
-        'customer.lastName',
-        'customer.email',
-        'extendFields.surveyformtestinput',
-        'extendFields.surveyformhellorating',
-        'extendFields.surveyformhelloranking',
-      ],
-
       // shownFields: [
-      //   'customer.type',
       //   'customer.firstName',
       //   'customer.lastName',
       //   'customer.email',
-      //   'customer.mobile',
-      //   'customer.billingAddress',
-      //   'customer.churchAttended',
-      //   'extendFields.testcaseformformdatefield',
-      //   'extendFields.testcaseformformfileupload',
-      //   'extendFields.testcaseformformtextone',
-      //   'extendFields.testcaseformformtexttwo',
-      //   'extendFields.testcaseformformtextthree',
-      //   'extendFields.testcaseformformtextfour',
-      //   'extendFields.testcaseformformhellorad',
-      //   'extendFields.testcaseformformhellotext',
-      //   'extendFields.testcaseformformcheckboxone',
+      //   'extendFields.surveyformtestinput',
+      //   'extendFields.surveyformhellorating',
+      //   'extendFields.surveyformhelloranking',
       // ],
+
+      shownFields: [
+        'customer.type',
+        'customer.firstName',
+        'customer.lastName',
+        'customer.email',
+        'customer.mobile',
+        'customer.billingAddress',
+        'customer.churchAttended',
+        'extendFields.testcaseformformdatefield',
+        'extendFields.testcaseformformfileupload',
+        'extendFields.testcaseformformtextone',
+        'extendFields.testcaseformformtexttwo',
+        'extendFields.testcaseformformtextthree',
+        'extendFields.testcaseformformtextfour',
+        'extendFields.testcaseformformhellorad',
+        'extendFields.testcaseformformhellotext',
+        'extendFields.testcaseformformcheckboxone',
+        'extendFields.testcaseformformterms',
+      ],
       requiredFields: [
         'customer.firstName',
         'customer.lastName',
