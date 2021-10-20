@@ -702,12 +702,10 @@ export class CaseFormPanel extends BasePanel {
   }
 
   renderAcceptTermsField(field, fieldKey) {
-    const shouldScroll = field.size === 'large';
-
     return (
       <div key={fieldKey} className="field field--acceptterms">
         <div
-          className={`terms-html ${shouldScroll ? 'scroll' : ''}`}
+          className="terms-html"
           dangerouslySetInnerHTML={{ __html: field.html }}
         />
 
