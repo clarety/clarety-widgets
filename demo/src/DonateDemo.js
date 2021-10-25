@@ -80,16 +80,20 @@ export default class DonateDemo extends React.Component {
     window.renderDonateWidget({
       elementId: 'donate-widget-demo',
 
-      // storeUid: 'str_wey5', // baseline
+      // baseline
+      storeUid: 'str_wey5',
+      singleOfferId: '8',
+      recurringOfferId: '17',
+
       // storeUid: 'str_mp60', // tnc-hk
       // storeUid: 'str_l9p7',
 
       // singleOfferId: '1001',
       // recurringOfferId: '1002',
 
-      storeUid: 'str_8qx4',
-      singleOfferId: '103',
-      recurringOfferId: '105',
+      // storeUid: 'str_8qx4',
+      // singleOfferId: '103',
+      // recurringOfferId: '105',
 
       fundraisingPageUid: 'abc-123',
 

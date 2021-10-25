@@ -2429,9 +2429,9 @@ circular-json@^0.5.4:
   integrity sha512-4ivwqHpIFJZBuhN3g/pEcdbnGUywkBblloGbkglyloVjjR3uT6tieI89MVOfbP2tHX5sgb01FuLgAOzebNlJNQ==
 
 clarety-utils@^1.0.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/clarety-utils/-/clarety-utils-1.1.0.tgz#f82d32c4e8bab886240794ba759f1c5e90eb1d6c"
-  integrity sha512-ZSep1Ry9lZCfG3TLI1+Pbvb0RGy6yu89BWBUPJvNkYwbJDMUpiSvBP8jh9nDXmc56TZMh6VVmxVSb9EndqAW0w==
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/clarety-utils/-/clarety-utils-1.2.0.tgz#f7b128eddf84ae6d1c300bab3cecebafc03abe44"
+  integrity sha512-ufQykphBR2CjODm4ev5yKzF6rD1M83axgGoUedWF8QjtkCTWwiLuNbwmqx+RnVDzeTdtL59G/pwBmS7bxQUFCw==
   dependencies:
     js-cookie "^2.2.0"
 
@@ -4109,10 +4109,10 @@ filepond-plugin-image-transform@^3.6.1:
   resolved "https://registry.yarnpkg.com/filepond-plugin-image-transform/-/filepond-plugin-image-transform-3.7.6.tgz#e954234276bd6f111e5ca7a0c6246fedbc1dfcdb"
   integrity sha512-FiZ+YqupONb+3o3Fph5DdQWGutxOTdb2yKZ4K21lfFoN6Ig9pVsCV8AECz7J+4EZxbblON7HOpiAHVHGm4JnGA==
 
-filepond@^4.9.2:
-  version "4.28.2"
-  resolved "https://registry.yarnpkg.com/filepond/-/filepond-4.28.2.tgz#ee8920a0aa36e8a93e0586d25a84078721eb8357"
-  integrity sha512-D9JLsSMwAG8imNDYCLjk9qrkM4TXA8mR9VXpgnSn9FzBu7LroS/MfmTH45zHbujxLBdEeom75u3pK5EhwkNYkA==
+filepond@^4.28.2:
+  version "4.30.3"
+  resolved "https://registry.yarnpkg.com/filepond/-/filepond-4.30.3.tgz#63a50da7d1f58e5ca39a13e62d8ffe6a2b4baa5f"
+  integrity sha512-G2b1LEe90Sq2vH0SYDASTB+vVU735NBctzIaFPlZtb14QAgi/AL89WyQ6LhTfqgyrMyuZur2O9yHAmzS2E9ZnA==
 
 filesize@3.6.1:
   version "3.6.1"
