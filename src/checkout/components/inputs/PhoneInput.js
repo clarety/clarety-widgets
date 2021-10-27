@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import ReactPhoneNumberInput from 'react-phone-number-input';
+import flags from 'react-phone-number-input/flags';
 import 'react-phone-number-input/style.css';
 import { Config } from 'clarety-utils';
 import { t } from 'shared/translations';
@@ -34,6 +35,7 @@ class PurePhoneInput extends React.PureComponent {
           showCountrySelect={showCountrySelect}
           displayInitialValueAsLocalNumber
           inputClassName={className}
+          flags={flags}
         />
         
         <FieldError error={error} />
