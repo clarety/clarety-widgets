@@ -24,7 +24,10 @@ class _CheckboxInput extends React.Component {
             checked={value}
             onChange={onChange}
           />
-          <FormCheck.Label dangerouslySetInnerHTML={{ __html: label }} />
+          {typeof label === 'string'
+            ? <FormCheck.Label dangerouslySetInnerHTML={{ __html: label }} />
+            : <FormCheck.Label>{label}</FormCheck.Label>
+          }
         </FormCheck>
         <FieldError error={error} />
       </Form.Group>
