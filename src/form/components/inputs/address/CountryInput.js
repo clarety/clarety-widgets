@@ -6,7 +6,7 @@ export const CountryInput = ({ region, ...props }) => (
   <SelectInput
     options={getCountryOptions(region)}
     getTranslationKey={(value, label) => {
-      return [`country-${value}`, label];
+      return [`cldr-country-${value}`, label];
     }}
     {...props}
   />
