@@ -144,20 +144,18 @@ export class CustomerPanel extends BasePanel {
   validateAddressFields(errors) {
     const { formData, settings } = this.props;
 
-    if (settings.requireAddress === false) {
-      //TODO AP to set up a default settings object, remove this and replace with a wrapped if statement as above.
-      return;
+    // NOTE: explicitly check for false! the default (ie 'undefined') is true.
+    if (settings.requireAddress !== false) {
+      requiredField(errors, formData, 'customer.billing.address1');
+
+      if (formData['customer.billing.country'] !== 'NZ') {
+        requiredField(errors, formData, 'customer.billing.suburb');
+      }
+
+      requiredField(errors, formData, 'customer.billing.state');
+      requiredField(errors, formData, 'customer.billing.postcode');
+      requiredField(errors, formData, 'customer.billing.country');
     }
-
-    requiredField(errors, formData, 'customer.billing.address1');
-
-    if (formData['customer.billing.country'] !== 'NZ') {
-      requiredField(errors, formData, 'customer.billing.suburb');
-    }
-
-    requiredField(errors, formData, 'customer.billing.state');
-    requiredField(errors, formData, 'customer.billing.postcode');
-    requiredField(errors, formData, 'customer.billing.country');
   }
 
   validateSourceFields(errors) {
@@ -360,8 +358,12 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderAddressFields() {
+    const { settings } = this.props;
     const { disableAddressFinder } = this.state;
     const country = this.props.formData['customer.billing.country'];
+    
+    // NOTE: explicitly check for false! the default (ie 'undefined') is true.
+    if (settings.showAddress === false) return null;
 
     if (this.shouldUseAddressFinder() && !disableAddressFinder) {
       return (

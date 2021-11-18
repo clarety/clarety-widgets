@@ -36,8 +36,8 @@ export const VariableAmountLg = ({ amountInfo, value, placeholder, isSelected, o
               type="tel"
               onFocus={event => onChange(event.target.value)}
               onChange={event => onChange(cleanDecimal(event.target.value))}
-              onMouseEnter={() => onMouseEnter(amountInfo)}
-              onMouseLeave={() => onMouseLeave(amountInfo)}
+              onMouseEnter={() => onMouseEnter && onMouseEnter(amountInfo)}
+              onMouseLeave={() => onMouseLeave && onMouseLeave(amountInfo)}
               data-testid="variable-amount-input"
             />
           </InputGroup>
