@@ -130,7 +130,7 @@ export class Checkout extends React.Component {
           </Row>
         </Container>
 
-        {reCaptchaKey && <Recaptcha siteKey={reCaptchaKey} />}
+        {reCaptchaKey && <Recaptcha siteKey={reCaptchaKey} language={i18next.language} />}
       </Provider>
     );
   }

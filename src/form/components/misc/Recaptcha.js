@@ -16,11 +16,12 @@ export const executeRecaptcha = () => new Promise(resolve => {
   }
 });
 
-export const Recaptcha = ({ siteKey }) => (
+export const Recaptcha = ({ siteKey, language }) => (
   <ReCAPTCHA
     ref={_ref}
     size="invisible"
     sitekey={siteKey}
+    hl={language}
     onChange={(value) => _resolve(value)}
     onErrored={() => _resolve(null)}
     onExpired={() => _resolve(null)}

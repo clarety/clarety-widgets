@@ -139,7 +139,7 @@ export class _CaseWidgetRoot extends React.Component {
           />
         </BlockUi>
 
-        {reCaptchaKey && <Recaptcha siteKey={reCaptchaKey} />}
+        {reCaptchaKey && <Recaptcha siteKey={reCaptchaKey} language={i18next.language} />}
       </div>
     );
   }

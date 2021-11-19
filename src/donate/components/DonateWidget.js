@@ -142,7 +142,7 @@ export class _DonateWidgetRoot extends React.Component {
           />
         </BlockUi>
 
-        {reCaptchaKey && <Recaptcha siteKey={reCaptchaKey} />}
+        {reCaptchaKey && <Recaptcha siteKey={reCaptchaKey} language={i18next.language} />}
       </div>
     );
   }

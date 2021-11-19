@@ -109,7 +109,7 @@ export class _FundraisingStartRoot extends React.Component {
       <div className="clarety-fundraising-start h-100">
         <ErrorMessages />
         <PanelManager layout="accordian" resources={this.props.resources} />
-        <Recaptcha siteKey={this.props.reCaptchaKey} />
+        <Recaptcha siteKey={this.props.reCaptchaKey} language={i18next.language} />
       </div>
     );
   }

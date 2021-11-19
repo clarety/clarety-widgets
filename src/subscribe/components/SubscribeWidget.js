@@ -97,7 +97,7 @@ export class _SubscribeWidgetRoot extends React.Component {
       <div className="clarety-subscribe-widget h-100">
         {this.renderHeader()}
         <PanelManager layout="tabs" resources={resources} />
-        {reCaptchaKey && <Recaptcha siteKey={reCaptchaKey} />}
+        {reCaptchaKey && <Recaptcha siteKey={reCaptchaKey} language={i18next.language} />}
       </div>
     );
   }

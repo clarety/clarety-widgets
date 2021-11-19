@@ -90,7 +90,7 @@ export class _RsvpWidgetRoot extends React.Component {
         <BlockUi tag="div" blocking={this.props.isBusy} loader={<span></span>}>
           <ErrorMessages />
           <PanelManager layout="accordian" resources={this.props.resources} />
-          <Recaptcha siteKey={this.props.reCaptchaKey} />
+          <Recaptcha siteKey={this.props.reCaptchaKey} language={i18next.language} />
         </BlockUi>
       </div>
     );

@@ -86,7 +86,7 @@ export class _UnsubscribeRoot extends React.Component {
     return (
       <div className={`clarety-unsubscribe-widget h-100 ${variant}`}>
         <PanelManager layout="tabs" resources={resources} />
-        <Recaptcha siteKey={reCaptchaKey} />
+        <Recaptcha siteKey={reCaptchaKey} language={i18next.language} />
       </div>
     );
   }

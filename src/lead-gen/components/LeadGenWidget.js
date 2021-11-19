@@ -97,7 +97,7 @@ export class _LeadGenRoot extends React.Component {
       <div className={`clarety-lead-gen-widget h-100 ${variant}`}>
         {this.renderHeader()}
         <PanelManager layout="tabs" resources={resources} />
-        <Recaptcha siteKey={reCaptchaKey} />
+        <Recaptcha siteKey={reCaptchaKey} language={i18next.language} />
       </div>
     );
   }

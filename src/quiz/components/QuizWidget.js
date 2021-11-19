@@ -104,7 +104,7 @@ export class _QuizWidgetRoot extends React.Component {
     return (
       <div className={`clarety-quiz-widget ${variant} h-100`}>
         <PanelManager layout="tabs" resources={resources} />
-        <Recaptcha siteKey={reCaptchaKey} />
+        <Recaptcha siteKey={reCaptchaKey} language={i18next.language} />
       </div>
     );
   }
