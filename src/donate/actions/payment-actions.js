@@ -137,8 +137,13 @@ const handlePaymentComplete = (result, paymentData, paymentMethod) => {
     dispatch(updateCartData({ items: result.salelines }));
 
     if (confirmPageUrl) {
-      // Redirect on success.
-      Cookies.set('session-jwt', result.jwt);
+      // Set cookie and redirect on success.
+      if (window.location.protocol === 'https:') {
+        Cookies.set('session-jwt', result.jwt, { sameSite: 'none', secure: true });
+      } else {
+        Cookies.set('session-jwt', result.jwt);
+      }
+
       window.location.href = confirmPageUrl;
       return false;
     } else {
