@@ -85,6 +85,7 @@ export class _DonateWidgetRoot extends React.Component {
       recurringOfferId:     recurringOfferId,
       variant:              this.props.variant,
       confirmPageUrl:       this.props.confirmPageUrl,
+      confirmPageMode:      this.props.confirmPageMode,
       defaultCountry:       this.props.defaultCountry,
       fundraisingPageUid:   this.props.fundraisingPageUid,
       givingTypeOptions:    givingTypeOptions,

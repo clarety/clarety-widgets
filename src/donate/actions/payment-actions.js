@@ -1,3 +1,4 @@
+import axios from 'axios';
 import Cookies from 'js-cookie';
 import { statuses, setStatus, setRecaptcha, clearRecaptcha, setPayment, updateCartData, isStripe, prepareStripePayment, authoriseStripePayment, updateAppSettings } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
@@ -132,19 +133,29 @@ const handlePaymentComplete = (result, paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     const state = getState();
     const confirmPageUrl = getSetting(state, 'confirmPageUrl');
+    const confirmPageMode = getSetting(state, 'confirmPageMode') || 'redirect';
     
     dispatch(makePaymentSuccess(result));
     dispatch(updateCartData({ items: result.salelines }));
 
-    if (confirmPageUrl) {
-      // Set cookie and redirect on success.
-      if (window.location.protocol === 'https:') {
-        Cookies.set('session-jwt', result.jwt, { sameSite: 'none', secure: true });
-      } else {
-        Cookies.set('session-jwt', result.jwt);
-      }
+    if (confirmPageUrl) {      
+      if (confirmPageMode === 'redirect') {
+        // Redirect to confirm page, jwt is set in cookie.
+        if (window.location.protocol === 'https:') {
+          Cookies.set('session-jwt', result.jwt, { sameSite: 'none', secure: true });
+        } else {
+          Cookies.set('session-jwt', result.jwt);
+        }
 
-      window.location.href = confirmPageUrl;
+        window.location.href = confirmPageUrl;
+      }
+      
+      if (confirmPageMode === 'replace') {
+        // Replace current page with confirm page, jwt is set in header.
+        const response = await axios.get(confirmPageUrl, { headers: { 'session-jwt': result.jwt } });
+        document.querySelector('html').innerHTML = response.data;
+      }
+      
       return false;
     } else {
       dispatch(setStatus(statuses.ready));
