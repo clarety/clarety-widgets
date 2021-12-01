@@ -431,7 +431,7 @@ export class _PaymentPanel extends BasePanel {
     }
 
     if (this.isPaymentTypeDirectDebit(paymentMethod.type)) {
-      if(isStripeAuBankAccount(paymentMethod)) {
+      if (isStripeAuBankAccount(paymentMethod)) {
         return this.renderStripeBecsFields(paymentMethod);
       } else {
         switch (paymentMethod.gateway) {
@@ -623,9 +623,9 @@ export class _PaymentPanel extends BasePanel {
   renderStripeBecsFields(paymentMethod) {
     const { settings } = this.props;
     const style = settings.stripeStyle || { base: { fontSize: '16px' } };
+
     return (
       <React.Fragment>
-
         <Form.Row>
           <Col>
             <Form.Group controlId="accountName">
@@ -639,13 +639,14 @@ export class _PaymentPanel extends BasePanel {
           <Col>
             <Form.Group controlId="account">
               <Form.Label>{t('account', 'Account')}</Form.Label>
-              <AuBankAccountElement
-                options={{ style, hideIcon: true }}
-              />
+              <AuBankAccountElement options={{ style, hideIcon: true }} />
             </Form.Group>
           </Col>
         </Form.Row>
 
+        <div className="stripe-becs-terms">
+          By providing your bank account details and confirming this payment, you agree to this Direct Debit Request and the <a href="https://stripe.com/au-becs-dd-service-agreement/legal" target="_blank">Direct Debit Request service agreement</a>, and authorise Stripe Payments Australia Pty Ltd ACN 160 180 343 Direct Debit User ID number 507156 (“Stripe”) to debit your account through the Bulk Electronic Clearing System (BECS) on behalf of (the “Merchant”) for any amounts separately communicated to you by the Merchant. You certify that you are either an account holder or an authorised signatory on the account listed above.
+        </div>
       </React.Fragment>
     );
   }
