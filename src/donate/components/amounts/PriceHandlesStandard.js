@@ -23,7 +23,7 @@ export class PriceHandlesStandard extends React.Component {
 
   getDefaultAmountInfo(frequency) {
     const { offer } = this.props;
-    const defaultAmount = offer.amounts.find(amountInfo => amountInfo.default);
+    const defaultAmount = offer.amounts.find(amountInfo => amountInfo.default) || offer.amounts[0];
     return defaultAmount;
   }
 
