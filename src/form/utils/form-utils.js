@@ -4,4 +4,4 @@ export const getValidationError = (field, errors) => {
   }
 
   return null;
-};
+}
