@@ -9,6 +9,7 @@ export const getSubmitCasePostData = (state) => {
 
 export const getSaveCasePostData = (state) => {
   return {
+    inProgress: true,
     stage: getSetting(state, 'saveStage'),
     ...getCasePostData(state),
   };

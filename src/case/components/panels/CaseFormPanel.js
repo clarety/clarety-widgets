@@ -29,9 +29,13 @@ export class CaseFormPanel extends BasePanel {
   };
 
   onPressSave = async (event) => {
-    await this.props.onSave();
+    const didSave = await this.props.onSave();
 
-    alert(t('case-form-saved', 'Your progress has been saved. Return to this page at any time to continue.'));
+    if (didSave) {
+      alert(t('case-form-saved', 'Your progress has been saved. Return to this page at any time to continue.'));
+    } else {
+      alert('An error occured, please correct the invalid fields and try again');
+    }
   };
 
   isBusiness() {
