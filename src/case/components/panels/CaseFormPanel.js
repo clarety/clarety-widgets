@@ -251,7 +251,7 @@ export class CaseFormPanel extends BasePanel {
         </div>
 
         <div className="form-fields">
-          {elements.map(this.renderCustomerElement)}
+          {elements.map(element => this.renderCustomerElement(element))}
         </div>
 
         <FormElement
@@ -285,10 +285,10 @@ export class CaseFormPanel extends BasePanel {
     return newElements;
   });
 
-  renderCustomerElement = (element) => {
+  renderCustomerElement(element) {
     const field = this.getFieldForElement(element);
     return this.renderField(field, 'customer');
-  };
+  }
 
   renderExtendForm(section = null) {
     const form = section !== null
