@@ -132,6 +132,7 @@ export class DonationPanel extends BasePanel {
 
   renderFrequencySelect() {
     const { settings } = this.props;
+    if (settings.showFrequencySelect === false) return null;
 
     return (
       <FrequencySelect
