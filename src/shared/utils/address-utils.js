@@ -24,6 +24,7 @@ export function getSuburbLabel(country) {
   switch (country) {
     case 'AU': return t('suburb', 'Suburb');
     case 'NZ': return t('suburb', 'Suburb');
+    case 'UK': return t(['city-town', 'suburb'], 'City / Town');
     default:   return t(['city-suburb', 'suburb'], 'City / Suburb');
   }
 }
