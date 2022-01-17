@@ -41,6 +41,7 @@ export class PriceHandlesPriceOnly extends PriceHandlesStandard {
     const currentSelection = selections[frequency];
     
     const variableAmount = this.getVariableAmount(offer);
+    const otherBtnText = variableAmount.title || t('other', 'Other');
 
     return (
       <div className="price-handles--price-only">
@@ -55,7 +56,7 @@ export class PriceHandlesPriceOnly extends PriceHandlesStandard {
           onMouseEnter={() => this.onMouseEnterAmount(variableAmount)}
           onMouseLeave={() => this.onMouseLeaveAmount(variableAmount)}
         >
-          {t('other', 'Other')}
+          {otherBtnText}
         </Button>
 
         {currentSelection.isVariableAmount &&
