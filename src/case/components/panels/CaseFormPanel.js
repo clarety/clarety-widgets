@@ -83,6 +83,13 @@ export class CaseFormPanel extends BasePanel {
           requiredField(errors, formData, `${fieldKey}.country`);
         } else if (fieldType === 'country') {
           requiredField(errors, formData, `${fieldKey}.country`);
+        } else if (fieldType === 'country-postcode') {
+          requiredField(errors, formData, `${fieldKey}.postcode`);
+          requiredField(errors, formData, `${fieldKey}.country`);
+        } else if (fieldType === 'country-state-postcode') {
+          requiredField(errors, formData, `${fieldKey}.state`);
+          requiredField(errors, formData, `${fieldKey}.postcode`);
+          requiredField(errors, formData, `${fieldKey}.country`);
         } else {
           requiredField(errors, formData, fieldKey);
         }
@@ -337,14 +344,18 @@ export class CaseFormPanel extends BasePanel {
       case 'radio':        return this.renderRadioField(field, fieldKey);
       case 'date':         return this.renderDateField(field, fieldKey);
       case 'fileupload':   return this.renderFileUploadField(field, fieldKey);
-      case 'address':      return this.renderAddressField(field, fieldKey);
-      case 'country':      return this.renderCountryField(field, fieldKey);
       case 'title':        return this.renderTitleField(field, fieldKey);
       case 'hidden':       return this.renderHiddenField(field, fieldKey);
       case 'customertype': return this.renderCustomerTypeField(field, fieldKey);
       case 'rating':       return this.renderRatingField(field, fieldKey);
       case 'ranking':      return this.renderRankingField(field, fieldKey);
       case 'acceptterms':  return this.renderAcceptTermsField(field, fieldKey);
+
+      // Address fields.
+      case 'address': return this.renderAddressField(field, fieldKey);
+      case 'country': return this.renderCountryField(field, fieldKey);
+      case 'country-postcode': return this.renderCountryPostcodeField(field, fieldKey);
+      case 'country-state-postcode': return this.renderCountryStatePostcodeField(field, fieldKey);
     }
 
     console.warn(`renderField not implemented for type: ${field.type}`);
@@ -570,39 +581,93 @@ export class CaseFormPanel extends BasePanel {
   }
 
   renderAddressField(field, fieldKey) {
+    const { settings, defaultCountry } = this.props;
     const country = this.props.formData[`${fieldKey}.country`];
 
     return (
       <div key={fieldKey} className="field field--address">
-        {this.renderCountryField(field, fieldKey)}
+        {settings.hideCountry
+          ? <FormElement
+              key={fieldKey}
+              field={`${fieldKey}.country`}
+              value={defaultCountry}
+            />
+          : <Form.Row key={fieldKey}>
+              <Col>
+                <CountryField
+                  fieldKey={fieldKey}
+                  region={settings.region}
+                  defaultCountry={defaultCountry}
+                />
+              </Col>
+            </Form.Row>
+        }
 
         <Form.Row>
           <Col sm>
-            <Form.Group controlId={`${fieldKey}.address1`}>
-              <Form.Label>{t('street', 'Street')}</Form.Label>
-              <TextInput field={`${fieldKey}.address1`} type="street" />
-            </Form.Group>
+            <Address1Field fieldKey={fieldKey} country={country} />
           </Col>
           <Col sm>
-            <Form.Group controlId={`${fieldKey}.suburb`}>
-              <Form.Label>{getSuburbLabel(country)}</Form.Label>
-              <TextInput field={`${fieldKey}.suburb`} />
-            </Form.Group>
+            <SuburbField fieldKey={fieldKey} country={country} />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col sm>
-            <Form.Group controlId={`${fieldKey}.state`}>
-              <Form.Label>{getStateLabel(country)}</Form.Label>
-              <StateInput field={`${fieldKey}.state`} country={country} />
-            </Form.Group>
+            <StateField fieldKey={fieldKey} country={country} />
           </Col>
           <Col sm>
-            <Form.Group controlId={`${fieldKey}.postcode`}>
-              <Form.Label>{getPostcodeLabel(country)}</Form.Label>
-              <PostcodeInput field={`${fieldKey}.postcode`} country={country} />
-            </Form.Group>
+            <PostcodeField fieldKey={fieldKey} country={country} />
+          </Col>
+        </Form.Row>
+      </div>
+    );
+  }
+
+  renderCountryPostcodeField(field, fieldKey) {
+    const { settings, defaultCountry } = this.props;
+    const country = this.props.formData[`${fieldKey}.country`];
+
+    return (
+      <div key={fieldKey} className="field field--country-postcode">
+        <Form.Row>
+          <Col sm>
+            <CountryField
+              fieldKey={fieldKey}
+              region={settings.region}
+              defaultCountry={defaultCountry}
+            />
+          </Col>
+          <Col sm>
+            <PostcodeField fieldKey={fieldKey} country={country} />
+          </Col>
+        </Form.Row>
+      </div>
+    );
+  }
+
+  renderCountryStatePostcodeField(field, fieldKey) {
+    const { settings, defaultCountry } = this.props;
+    const country = this.props.formData[`${fieldKey}.country`];
+
+    return (
+      <div key={fieldKey} className="field field--country-state-postcode">
+        <Form.Row key={fieldKey}>
+          <Col>
+            <CountryField
+              fieldKey={fieldKey}
+              region={settings.region}
+              defaultCountry={defaultCountry}
+            />
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col sm>
+            <StateField fieldKey={fieldKey} country={country} />
+          </Col>
+          <Col sm>
+            <PostcodeField fieldKey={fieldKey} country={country} />
           </Col>
         </Form.Row>
       </div>
@@ -612,27 +677,14 @@ export class CaseFormPanel extends BasePanel {
   renderCountryField(field, fieldKey) {
     const { settings, defaultCountry } = this.props;
 
-    if (settings.hideCountry) {
-      return (
-        <FormElement
-          key={fieldKey}
-          field={`${fieldKey}.country`}
-          value={defaultCountry}
-        />
-      );
-    }
-
     return (
       <Form.Row key={fieldKey}>
         <Col>
-          <Form.Group controlId="country">
-            <Form.Label>{t('country', 'Country')}</Form.Label>
-            <CountryInput
-              field={`${fieldKey}.country`}
-              initialValue={defaultCountry}
-              region={settings.region}
-            />
-          </Form.Group>
+          <CountryField
+            fieldKey={fieldKey}
+            region={settings.region}
+            defaultCountry={defaultCountry}
+          />
         </Col>
       </Form.Row>
     );
@@ -836,4 +888,53 @@ export class CaseFormPanel extends BasePanel {
       </PanelContainer>
     );
   }
+}
+
+function Address1Field({ fieldKey }) {
+  return (
+    <Form.Group controlId={`${fieldKey}.address1`}>
+      <Form.Label>{t('street', 'Street')}</Form.Label>
+      <TextInput field={`${fieldKey}.address1`} type="street" />
+    </Form.Group>
+  );
+}
+
+function SuburbField({ fieldKey, country }) {
+  return (
+    <Form.Group controlId={`${fieldKey}.suburb`}>
+      <Form.Label>{getSuburbLabel(country)}</Form.Label>
+      <TextInput field={`${fieldKey}.suburb`} />
+    </Form.Group>
+  );
+}
+
+function StateField({ fieldKey, country }) {
+  return (
+    <Form.Group controlId={`${fieldKey}.state`}>
+      <Form.Label>{getStateLabel(country)}</Form.Label>
+      <StateInput field={`${fieldKey}.state`} country={country} />
+    </Form.Group>
+  );
+}
+
+function PostcodeField({ fieldKey, country }) {
+  return (
+    <Form.Group controlId={`${fieldKey}.postcode`}>
+      <Form.Label>{getPostcodeLabel(country)}</Form.Label>
+      <PostcodeInput field={`${fieldKey}.postcode`} country={country} />
+    </Form.Group>
+  );
+}
+
+function CountryField({ fieldKey, region, defaultCountry }) {
+  return (
+    <Form.Group controlId="country">
+      <Form.Label>{t('country', 'Country')}</Form.Label>
+      <CountryInput
+        field={`${fieldKey}.country`}
+        initialValue={defaultCountry}
+        region={region}
+      />
+    </Form.Group>
+  );
 }
