@@ -13,6 +13,8 @@ import { getValidationError } from 'form/utils';
 
 const _PhoneInput = ({ value, placeholder, country, onChange, error, required, showCountrySelect = false }) => {
   country = country || Config.get('phoneCountry') || 'AU';
+  if (country === 'UK') country = 'GB';
+
   if (placeholder && !required) placeholder += t('optional-label', ' (Optional)');
 
   const className = error ? 'form-control is-invalid' : 'form-control';

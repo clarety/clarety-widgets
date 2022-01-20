@@ -16,6 +16,7 @@ class PurePhoneInput extends React.PureComponent {
     if (!required) placeholder += ` (${t('optional', 'Optional')})`;
 
     country = country || Config.get('phoneCountry') || 'AU';
+    if (country === 'UK') country = 'GB';
 
     const className = error ? 'form-control is-invalid' : 'form-control';
 
