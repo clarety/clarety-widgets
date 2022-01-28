@@ -3,7 +3,7 @@ import { Form, Row, Col } from 'react-bootstrap';
 import { requiredField } from 'shared/utils';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
-import { SubmitButton, BackButton, ErrorMessages, SelectInput } from 'form/components';
+import { SubmitButton, BackButton, ErrorMessages, SelectInput, TextInput } from 'form/components';
 import { PriceHandlesStandard, PriceHandlesPriceOnly } from 'donate/components';
 import { FrequencySelect, ScheduleSelectButtonGroup, ScheduleSelectDropdown } from 'donate/components';
 
@@ -201,8 +201,10 @@ export class DonationPanel extends BasePanel {
   }
 
   renderGivingType() {
-    const { givingTypeOptions } = this.props;
+    const { givingTypeOptions, formData } = this.props;
     if (!givingTypeOptions) return null;
+
+    const selectedGivingType = (formData['saleline.givingType'] || '').toLowerCase();
 
     return (
       <div className="giving-type">
@@ -217,6 +219,17 @@ export class DonationPanel extends BasePanel {
             </Form.Group>
           </Col>
         </Row>
+
+        {selectedGivingType === 'other' &&
+          <Row>
+            <Col>
+              <Form.Group controlId="otherGivingType">
+                <Form.Label>{t('please-specify', 'Please Specify')}</Form.Label>
+                <TextInput field="saleline.otherGivingType" />
+              </Form.Group>
+            </Col>
+          </Row>
+        }
       </div>
     );
   }

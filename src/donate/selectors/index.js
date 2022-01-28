@@ -98,7 +98,15 @@ export const getSelectedOffer = (state) => {
 };
 
 export const getSalelineDescription = (state) => {
-  return getFormData(state)['saleline.givingType'];
+  const formData = getFormData(state);
+  const selectedGivingType = formData['saleline.givingType'] || '';
+
+  // Use input text for 'other' giving type.
+  if (selectedGivingType.toLowerCase() === 'other') {
+    return formData['saleline.otherGivingType'] || selectedGivingType;
+  }
+
+  return selectedGivingType;
 };
 
 export const getPaymentMethod = (state, type) => {
