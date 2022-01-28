@@ -57,7 +57,16 @@ export class DonationPanel extends BasePanel {
 
     if (givingTypeOptions) {
       requiredField(errors, formData, 'saleline.givingType');
+
+      if (this.isOtherGivingType()) {
+        requiredField(errors, formData, 'saleline.otherGivingType');
+      }
     }
+  }
+
+  isOtherGivingType() {
+    const givingType = this.props.formData['saleline.givingType'] || '';
+    return givingType.toLowerCase() === 'other';
   }
 
   getOffer(frequency) {
@@ -201,10 +210,8 @@ export class DonationPanel extends BasePanel {
   }
 
   renderGivingType() {
-    const { givingTypeOptions, formData } = this.props;
+    const { givingTypeOptions } = this.props;
     if (!givingTypeOptions) return null;
-
-    const selectedGivingType = (formData['saleline.givingType'] || '').toLowerCase();
 
     return (
       <div className="giving-type">
@@ -220,7 +227,7 @@ export class DonationPanel extends BasePanel {
           </Col>
         </Row>
 
-        {selectedGivingType === 'other' &&
+        {this.isOtherGivingType() &&
           <Row>
             <Col>
               <Form.Group controlId="otherGivingType">
