@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Row, Col, Spinner, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import { CardNumberElement, CardExpiryElement, CardCvcElement, AuBankAccountElement } from '@stripe/react-stripe-js';
+import { Config } from 'clarety-utils';
 import { isStripeCard, isStripeAuBankAccount } from 'shared/actions/stripe-actions';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, injectStripe } from 'shared/components';
@@ -730,6 +731,8 @@ export class _PaymentPanel extends BasePanel {
   renderCvcInfo() {
     if (!this.state.showCvcInfo) return null;
 
+    const imagePath = Config.get('imagePath') || 'images';
+
     return (
       <React.Fragment>
         <p className="cvc-info small">
@@ -738,10 +741,10 @@ export class _PaymentPanel extends BasePanel {
 
         <Form.Row className="mb-4">
           <Col className="text-right">
-            <img src="images/cvv-amex.png" className="img-fluid" />
+            <img src={`${imagePath}/cvv-amex.png`} className="img-fluid" />
           </Col>
           <Col>
-            <img src="images/cvv-visa.png" className="img-fluid" />
+            <img src={`${imagePath}/cvv-visa.png`} className="img-fluid" />
           </Col>
         </Form.Row>
       </React.Fragment>
