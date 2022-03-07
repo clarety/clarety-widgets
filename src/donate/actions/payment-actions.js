@@ -5,7 +5,7 @@ import { getSetting } from 'shared/selectors';
 import { setErrors, updateFormData } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { DonationApi } from 'donate/utils';
-import { types, addDonationToCart, addCustomerToCart } from 'donate/actions';
+import { types, addDonationToCart, addCustomerToCart, setDonationStartDate } from 'donate/actions';
 import { getStoreUid, getPaymentMethod, getPaymentPostData, getSelectedFrequency } from 'donate/selectors';
 
 export const makePayment = (paymentData, { isPageLayout } = {}) => {
@@ -28,6 +28,8 @@ export const makePayment = (paymentData, { isPageLayout } = {}) => {
       dispatch(addDonationToCart());
       dispatch(addCustomerToCart());
     }
+
+    dispatch(setDonationStartDate());
 
     const paymentMethod = getPaymentMethod(state, paymentData.type);
     const frequency = getSelectedFrequency(state);

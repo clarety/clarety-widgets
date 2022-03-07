@@ -23,7 +23,7 @@ export class _PaymentPanel extends BasePaymentPanel {
     super.validateFields(paymentMethod, errors);
 
     if (this.shouldShowStartDate(paymentMethod)) {
-      requiredField(errors, this.props.formData, 'additionalData.startDate');
+      requiredField(errors, this.props.formData, 'saleline.startDate');
     }
   }
 
@@ -37,7 +37,7 @@ export class _PaymentPanel extends BasePaymentPanel {
     const paymentData = super.getPaymentData();
 
     if (frequency === 'recurring') {
-      paymentData.startDate = formData['additionalData.startDate'];
+      paymentData.startDate = formData['saleline.startDate'];
     }
     
     return paymentData;
@@ -75,7 +75,7 @@ export class _PaymentPanel extends BasePaymentPanel {
           <Form.Group controlId="startDate">
             <Form.Label>{t('start-date', 'Start Date')}</Form.Label>
             <SelectInput
-              field="additionalData.startDate"
+              field="saleline.startDate"
               options={this.getStartDateOptions(paymentMethod)}
               autoSelectSingleOption
               testId="start-date-input"
