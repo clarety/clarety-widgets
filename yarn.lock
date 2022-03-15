@@ -2429,9 +2429,9 @@ circular-json@^0.5.4:
   integrity sha512-4ivwqHpIFJZBuhN3g/pEcdbnGUywkBblloGbkglyloVjjR3uT6tieI89MVOfbP2tHX5sgb01FuLgAOzebNlJNQ==
 
 clarety-utils@^1.0.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/clarety-utils/-/clarety-utils-1.3.0.tgz#d4164d32d6284f22f9ca635e1a0c47b0f7ba3590"
-  integrity sha512-cEqN2UTDa26uM/8qFmr9kHB3KYF0Vjp4HcKm7bsQj+udM7+lKUoDQYM5E55+m68TAd204b4sX9nUfh/4qT8+ig==
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/clarety-utils/-/clarety-utils-1.3.1.tgz#92224fdc8ca49fe4e6c48189862717b56a008310"
+  integrity sha512-ngcA2ldoJfIdIvVW1BrebA4zeXIkIKHCjGLr62SxLlNraaFxWKnlkZs78VEI0U8kUFtv6L2Hi3H8UpM/uf9F6A==
   dependencies:
     js-cookie "^2.2.0"
 
