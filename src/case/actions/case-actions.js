@@ -13,6 +13,7 @@ export const saveCase = () => {
     dispatch(setStatus('busy-save'));
 
     const state = getState();
+    const { settings } = state;
 
     const recaptcha = await executeRecaptcha();
     dispatch(setRecaptcha(recaptcha));
@@ -28,11 +29,20 @@ export const saveCase = () => {
 
     if (result.status === 'error') {
       dispatch(saveCaseFailure(result));
-      dispatch(setErrors(result.validationErrors));  
+      dispatch(setErrors(result.validationErrors));
       return false;
     } else {
       dispatch(saveCaseSuccess(result));
-      dispatch(updateAppSettings({ caseUid: result.caseUid }));
+
+      if (settings.saveConfirmPageUrl) {
+        // Redirect.
+        window.location.href = appendQueryString(settings.saveConfirmPageUrl, { caseUid: result.caseUid });
+      } else {
+        // Show alert.
+        dispatch(updateAppSettings({ caseUid: result.caseUid }));
+        alert(t('case-form-saved', 'Your progress has been saved. Return to this page at any time to continue.'));
+      }
+
       return true;
     }
   };
