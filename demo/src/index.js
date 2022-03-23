@@ -16,7 +16,7 @@ Config.init({
   // instanceKey: 'bsfs',
   devSitePath: 'http://localhost:3000/',
   // phoneCountry: 'AU',
-  localhostProtocol: 'http:',
+  localhostProtocol: 'https:',
 });
 
 // Mock cookies.
