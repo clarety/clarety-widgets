@@ -35,7 +35,7 @@ export class _DateInput extends React.Component {
     }
   }
 
-  getLocale(language) {
+  getLocale() {
     switch (getLanguage()) {
       case 'pt':     return ptLocale;
       case 'ru':     return ruLocale;

@@ -1,9 +1,10 @@
 import { ClaretyApi } from 'clarety-utils';
-import { setStatus, setPanelSettings, updateAppSettings, setRecaptcha } from 'shared/actions';
+import { setStatus, setPanelSettings, setPanelStatus, updateAppSettings, setRecaptcha } from 'shared/actions';
 import { appendQueryString, getCmsConfirmContent } from 'shared/utils';
-import { isNextPanelCmsConfirm } from 'shared/selectors';
+import { getPanelManager, isNextPanelCmsConfirm, getCurrentPanelIndex, getSetting } from 'shared/selectors';
 import { setErrors, updateFormData } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
+import { getErrors } from 'form/selectors';
 import { getSubmitCasePostData, getSaveCasePostData, getCmsConfirmContentFields } from 'case/selectors';
 import { walkFlattenedKeys } from 'case/utils';
 import { types } from './types';
@@ -30,6 +31,7 @@ export const saveCase = () => {
     if (result.status === 'error') {
       dispatch(saveCaseFailure(result));
       dispatch(setErrors(result.validationErrors));
+      dispatch(jumpToFirstPanelWithError());
       return false;
     } else {
       dispatch(saveCaseSuccess(result));
@@ -68,6 +70,7 @@ export const submitCase = () => {
     if (result.status === 'error') {
       dispatch(submitCaseFailure(result));
       dispatch(setErrors(result.validationErrors));
+      dispatch(jumpToFirstPanelWithError());
       dispatch(setStatus('ready'));
       return false;
     } else {
@@ -92,6 +95,42 @@ export const submitCase = () => {
     }
   };
 };
+
+const jumpToFirstPanelWithError = () => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const errors = getErrors(state);
+    const panels = getPanelManager(state);
+    const extendForm = getSetting(state, 'extendForm');
+
+    const jumpToPanelIndex = getFirstPanelIndexWithError(errors, panels, extendForm);
+    if (jumpToPanelIndex) {
+      const currentPanelIndex = getCurrentPanelIndex(state);
+      dispatch(setPanelStatus(currentPanelIndex, 'wait'));
+      dispatch(setPanelStatus(jumpToPanelIndex, 'edit'));
+    }
+  };
+};
+
+function getFirstPanelIndexWithError(errors, panels, extendForm) {
+  for (const error of errors) {
+    if (!error.field) continue;
+
+    for (const [panelIndex, panel] of panels.entries()) {
+      if (panel.component !== 'CaseFormPanel') continue;
+      if (typeof panel.data.section !== 'number') continue;
+
+      const section = extendForm.sections[panel.data.section];
+      for (const field of section.extendFields) {
+        if (`extendFields.${field.columnKey}` === error.field) {
+          return panelIndex;
+        }
+      }
+    }
+  }
+
+  return null;
+}
 
 export const prefillCustomer = () => {
   return async (dispatch, getState) => {

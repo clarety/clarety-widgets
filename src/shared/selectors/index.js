@@ -75,6 +75,11 @@ export const getIsEditingFirstPanel = (state) => {
   return panels[0].status === 'edit';
 };
 
+export const getCurrentPanelIndex = (state) => {
+  const panels = getPanelManager(state);
+  return panels.findIndex(panel => panel.status === 'edit');
+};
+
 export const getIndexOfPanelWithComponent = (state, componentName) => {
   const panels = getPanelManager(state);
   return panels.findIndex(panel => panel.component === componentName);

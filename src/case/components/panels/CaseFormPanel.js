@@ -51,7 +51,7 @@ export class CaseFormPanel extends BasePanel {
     if (error) {
       if (error.field) {
         const ref = this.fieldRefs[error.field];
-        scrollIntoView(ref);
+        if (ref) scrollIntoView(ref);
       } else {
         scrollIntoView(this);
       }
