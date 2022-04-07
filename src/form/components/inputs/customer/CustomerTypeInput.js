@@ -6,7 +6,7 @@ import { getCustomerTypeOptions } from 'shared/utils';
 import { getFormData } from 'shared/selectors';
 import { TextInput, SelectInput } from 'form/components';
 
-export const _CustomerTypeInput = ({ formData, customerTypeField = 'customer.type', businessNameField = 'customer.businessName' }) => {
+export const _CustomerTypeInput = ({ formData, customerTypeField = 'customer.type', businessNameField = 'customer.businessName', readOnly }) => {
   const showBusinessName = formData[customerTypeField] === 'business';
   const customerTypeOptions = getCustomerTypeOptions();
 
@@ -21,6 +21,7 @@ export const _CustomerTypeInput = ({ formData, customerTypeField = 'customer.typ
               options={customerTypeOptions}
               initialValue={customerTypeOptions[0].value}
               testId="customer-type-input"
+              disabled={readOnly}
               required
             />
           </Form.Group>
@@ -35,6 +36,7 @@ export const _CustomerTypeInput = ({ formData, customerTypeField = 'customer.typ
               <TextInput
                 field={businessNameField}
                 testId="business-name-input"
+                readOnly={readOnly}
                 required
               />
             </Form.Group>

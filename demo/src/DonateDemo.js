@@ -41,6 +41,7 @@ window.renderDonateWidget = async (props) => {
         showMobile: true,
         showPhoneCountrySelect: true,
         showCountry: true,
+        showCustomerType: true,
       },
     },
     // {

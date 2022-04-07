@@ -12,7 +12,10 @@ export const fetchCustomer = () => {
       dispatch(fetchCustomerSuccess(customer));
       dispatch(setCustomer(customer));
       dispatch(setCustomerFormData(customer));
-      dispatch(updateAppSettings({ customerHasProfile: customer.hasProfile }));
+      dispatch(updateAppSettings({
+        fetchedCustomer: true,
+        customerHasProfile: customer.hasProfile,
+      }));
       return true;
     } else {
       dispatch(fetchCustomerFailure(customer));

@@ -25,7 +25,7 @@ class _SelectInput extends React.Component {
   }
 
   render() {
-    const { value, options, placeholder, testId, error, hideErrors, onChange, getTranslationKey } = this.props;
+    const { value, options, placeholder, testId, error, hideErrors, onChange, getTranslationKey, disabled } = this.props;
 
     return (
       <React.Fragment>
@@ -35,6 +35,7 @@ class _SelectInput extends React.Component {
           onChange={onChange}
           data-testid={testId}
           isInvalid={error !== null}
+          disabled={disabled}
         >
           <option value="" hidden>{placeholder || t('select', 'Select')}</option>
           

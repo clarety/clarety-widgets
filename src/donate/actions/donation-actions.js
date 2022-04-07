@@ -67,11 +67,15 @@ export const selectDefaults = (offers) => ({
   offers: offers,
 });
 
-export const handleUrlParams = () => {
+export const handleAmountUrlParam = () => {
   return async (dispatch, getState) => {
-    const urlParams = new URLSearchParams(window.location.search);
-    
-    const amount = Number(urlParams.get('amount'));
-    if (amount) dispatch(selectAmount('single', amount, true));
+    const amount = new URLSearchParams(window.location.search).get('amount');
+    if (amount) {
+      const offers = getSetting(getState(), 'priceHandles');
+      for (const offer of offers) {
+        const isVariable = !offer.amounts.find(handle => handle.amount === amount);
+        dispatch(selectAmount(offer.frequency, amount, isVariable));
+      }
+    }
   };
 };

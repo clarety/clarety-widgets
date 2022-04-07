@@ -8,9 +8,9 @@ import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { statuses, setStore, initTrackingData, fetchSettings, updateAppSettings, setPanels } from 'shared/actions';
 import { PanelManager, StepIndicator } from 'shared/components';
-import { getJwtCustomer, Resources } from 'shared/utils';
+import { getJwtCustomer, Resources, convertOptions } from 'shared/utils';
 import { Recaptcha } from 'form/components';
-import { handleUrlParams, selectFrequency } from 'donate/actions';
+import { handleAmountUrlParam, selectFrequency } from 'donate/actions';
 import { rootReducer } from 'donate/reducers';
 import { DonationApi, mapDonationSettings, setupDefaultResources } from 'donate/utils';
 import { fetchCustomer } from 'donate/actions/customer-actions';
@@ -60,7 +60,7 @@ export class DonateWidget extends React.Component {
 export class _DonateWidgetRoot extends React.Component {
   async componentDidMount() {
     const { storeUid, singleOfferId, recurringOfferId, categoryUid } = this.props;
-    const { updateAppSettings, setStore, initTrackingData, fetchSettings, handleUrlParams, fetchCustomer } = this.props;
+    const { updateAppSettings, setStore, initTrackingData, fetchSettings, handleAmountUrlParam, fetchCustomer } = this.props;
 
     if (!singleOfferId && !recurringOfferId && !categoryUid) {
       throw new Error('[DonateWidget] A singleOfferId, recurringOfferId, or categoryUid is required');
@@ -76,10 +76,6 @@ export class _DonateWidgetRoot extends React.Component {
       await i18next.init();
     }
 
-    const givingTypeOptions = this.props.givingTypeOptions
-      ? this.props.givingTypeOptions.map(option => ({ value: option, label: option }))
-      : undefined;
-
     updateAppSettings({
       singleOfferId:        singleOfferId,
       recurringOfferId:     recurringOfferId,
@@ -88,7 +84,7 @@ export class _DonateWidgetRoot extends React.Component {
       confirmPageMode:      this.props.confirmPageMode,
       defaultCountry:       this.props.defaultCountry,
       fundraisingPageUid:   this.props.fundraisingPageUid,
-      givingTypeOptions:    givingTypeOptions,
+      givingTypeOptions:    convertOptions(this.props.givingTypeOptions),
       addressFinderKey:     this.props.addressFinderKey,
       addressFinderCountry: this.props.addressFinderCountry,
       hideCurrencyCode:     this.props.hideCurrencyCode,
@@ -99,9 +95,9 @@ export class _DonateWidgetRoot extends React.Component {
 
     initTrackingData(this.props);
 
-    const jwtCustomer = getJwtCustomer();
+    const jwtCustomer = await this.findJwtCustomer();
     if (jwtCustomer) {
-      DonationApi.setJwtCustomer(jwtCustomer.jwtString);
+      DonationApi.setJwtCustomer(jwtCustomer);
       await fetchCustomer();
     }
 
@@ -116,7 +112,22 @@ export class _DonateWidgetRoot extends React.Component {
     const { defaultFrequency, selectFrequency } = this.props;
     if (defaultFrequency) selectFrequency(defaultFrequency);
 
-    handleUrlParams();
+    handleAmountUrlParam();
+  }
+
+  async findJwtCustomer() {
+    // Check for cookie.
+    const cookieJwt = getJwtCustomer();
+    if (cookieJwt && cookieJwt.jwtString) return cookieJwt.jwtString;
+
+    // Check for action auth.
+    const actionKey = new URLSearchParams(window.location.search).get('clarety_action');
+    if (actionKey) {
+      const actionAuth = await DonationApi.actionAuth(actionKey);
+      if (actionAuth && actionAuth.jwtCustomer) return actionAuth.jwtCustomer;
+    }
+
+    return null;
   }
 
   render() {
@@ -160,7 +171,7 @@ const actions = {
   initTrackingData: initTrackingData,
   fetchSettings: fetchSettings,
   updateAppSettings: updateAppSettings,
-  handleUrlParams: handleUrlParams,
+  handleAmountUrlParam: handleAmountUrlParam,
   fetchCustomer: fetchCustomer,
   selectFrequency: selectFrequency,
 };
