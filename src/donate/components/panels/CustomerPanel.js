@@ -14,14 +14,8 @@ export class CustomerPanel extends BasePanel {
   componentDidMount() {
     const { fetchedCustomer, formData } = this.props;
 
-    const hasAnyAddressField = formData['customer.billing.address1']
-                            || formData['customer.billing.address2']
-                            || formData['customer.billing.suburb']
-                            || formData['customer.billing.state']
-                            || formData['customer.billing.postcode']
-                            || formData['customer.billing.country'];
-
-    if (fetchedCustomer && hasAnyAddressField) {
+    // Disable address finder if we've fetched a customer with an address.
+    if (fetchedCustomer && formData['customer.billing.address1']) {
       this.setState({ disableAddressFinder: true });
     }
   }
