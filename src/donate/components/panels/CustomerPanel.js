@@ -7,7 +7,24 @@ import { TextInput, EmailInput, PhoneInput, CheckboxInput, StateInput, CountryIn
 import { DonatePayPalBtn } from 'donate/components';
 
 export class CustomerPanel extends BasePanel {
-  state = {};
+  state = {
+    disableAddressFinder: false,
+  };
+
+  componentDidMount() {
+    const { fetchedCustomer, formData } = this.props;
+
+    const hasAnyAddressField = formData['customer.billing.address1']
+                            || formData['customer.billing.address2']
+                            || formData['customer.billing.suburb']
+                            || formData['customer.billing.state']
+                            || formData['customer.billing.postcode']
+                            || formData['customer.billing.country'];
+
+    if (fetchedCustomer && hasAnyAddressField) {
+      this.setState({ disableAddressFinder: true });
+    }
+  }
 
   onShowPanel() {
     if (this.props.layout === 'tabs') {
