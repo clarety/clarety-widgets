@@ -1,5 +1,6 @@
 import { ClaretyApi } from 'clarety-utils';
 import { types } from '../actions';
+import {getCartTotalItemsQty} from "cart/selectors";
 
 export function fetchItems(cartUid) {
   return async dispatch => {
@@ -40,6 +41,7 @@ const updateCartItem = item => {
       return false;
     } else {
       dispatch(updateCartItemSuccess(result));
+      updateCartIcon(getState());
       return true;
     }
   };
@@ -59,11 +61,18 @@ const removeCartItem = item => {
       return false;
     } else {
       dispatch(removeCartItemSuccess(result));
+      updateCartIcon(getState());
       return true;
     }
   };
 }
+function updateCartIcon(state){
+  let quantity = getCartTotalItemsQty(state);
 
+  if(window.updateCartCount) {
+    window.updateCartCount(quantity);
+  }
+}
 
 //Anything that is within the list actions below of types.*** are found in the types.js as the types.* is used here and in the list-reducer like a constant is used within PHP
 
