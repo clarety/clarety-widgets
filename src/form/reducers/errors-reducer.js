@@ -13,7 +13,11 @@ export const errorsReducer = (state = initialState, action) => {
       return [];
 
     case types.updateFormData:
-      return state.filter(error => error.field !== action.field);
+      if (state.find(error => error.field === action.field)) {
+        return state.filter(error => error.field !== action.field);
+      }
+
+      return state;
 
     case sharedTypes.loginFailure:
       const message = action.result.error_description;

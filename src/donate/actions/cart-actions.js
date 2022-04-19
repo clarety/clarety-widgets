@@ -1,17 +1,19 @@
 import { addItem, updateItem, clearItems, setCustomer, setTrackingData } from 'shared/actions';
 import { getCart, getParsedFormData } from 'shared/selectors';
-import { getDonationPanelSelection, getSalelineDescription } from 'donate/selectors';
+import { getDonationPanelSelection, getDonationStartDate, getDonationGivingType } from 'donate/selectors';
 
 export const adjustDonation = (amount) => {
   return (dispatch, getState) => {
     const state = getState();
     const cart = getCart(state);
 
-    const index = cart.items.findIndex(cartItem => cartItem.type === 'donation');
+    const index = cart.items.findIndex(item => item.type === 'donation');
     if (index !== -1) {
       const cartItem = cart.items[index];
-      cartItem.price += amount;
-      dispatch(updateItem(index, cartItem));
+      dispatch(updateItem(index, {
+        ...cartItem,
+        price: cartItem.price + amount,
+      }));
     }
   };
 };
@@ -20,7 +22,7 @@ export const addDonationToCart = () => {
   return (dispatch, getState) => {
     const state = getState();
     const selection = getDonationPanelSelection(state);
-    const description = getSalelineDescription(state);
+    const description = getDonationGivingType(state);
 
     dispatch(clearItems());
 
@@ -52,5 +54,22 @@ export const addCustomerToCart = () => {
     }
 
     return true;
+  };
+};
+
+export const setDonationStartDate = () => {
+  return (dispatch, getState) => {
+    const state = getState();
+    const cart = getCart(state);
+    const startDate = getDonationStartDate(state);
+
+    const index = cart.items.findIndex(item => item.type === 'donation');
+    if (index !== -1) {
+      const cartItem = cart.items[index];
+      dispatch(updateItem(index, {
+        ...cartItem,
+        startDate,
+      }));
+    }
   };
 };

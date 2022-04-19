@@ -97,7 +97,19 @@ export const getSelectedOffer = (state) => {
   return priceHandles.find(offer => offer.frequency === donationPanel.frequency);
 };
 
-export const getSalelineDescription = (state) => {
+export const getDonationStartDate = (state) => {
+  const formData = getFormData(state);
+  const frequency = getSelectedFrequency(state);
+  const paymentMethod = getSelectedPaymentMethod(state);
+
+  if (frequency === 'recurring' && !!paymentMethod.startDates) {
+    return formData['saleline.startDate'] || paymentMethod.startDates[0];
+  }
+
+  return undefined;
+};
+
+export const getDonationGivingType = (state) => {
   const formData = getFormData(state);
   const selectedGivingType = formData['saleline.givingType'] || '';
 
@@ -107,6 +119,12 @@ export const getSalelineDescription = (state) => {
   }
 
   return selectedGivingType;
+};
+
+export const getSelectedPaymentMethod = (state) => {
+  const formData = getFormData(state);
+  const paymentType = formData['payment.type'];
+  return getPaymentMethod(state, paymentType);
 };
 
 export const getPaymentMethod = (state, type) => {
@@ -140,6 +158,7 @@ export const getPaymentPostData = (state) => {
     saleline:  cart.items[0],
     customer:  cart.customer,
     payment:   cart.payment,
+    startDate: cart.items[0].startDate,
 
     fundraising: fundraisingData,
     recaptchaResponse: recaptcha,

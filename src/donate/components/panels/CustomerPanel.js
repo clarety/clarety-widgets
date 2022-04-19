@@ -7,7 +7,18 @@ import { TextInput, EmailInput, PhoneInput, CheckboxInput, StateInput, CountryIn
 import { DonatePayPalBtn } from 'donate/components';
 
 export class CustomerPanel extends BasePanel {
-  state = {};
+  state = {
+    disableAddressFinder: false,
+  };
+
+  componentDidMount() {
+    const { fetchedCustomer, formData } = this.props;
+
+    // Disable address finder if we've fetched a customer with an address.
+    if (fetchedCustomer && formData['customer.billing.address1']) {
+      this.setState({ disableAddressFinder: true });
+    }
+  }
 
   onShowPanel() {
     if (this.props.layout === 'tabs') {
@@ -267,11 +278,11 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderCustomerTypeFields() {
-    const { settings } = this.props;
+    const { settings, fetchedCustomer } = this.props;
     if (!settings.showCustomerType) return null;
 
     return (
-      <CustomerTypeInput />
+      <CustomerTypeInput readOnly={fetchedCustomer} />
     );
   }
 
@@ -294,7 +305,7 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderBasicFields() {
-    const { canEditEmail } = this.props;
+    const { canEditEmail, fetchedCustomer } = this.props;
 
     return (
       <React.Fragment>
@@ -302,20 +313,20 @@ export class CustomerPanel extends BasePanel {
           <Col sm>
             <Form.Group controlId="firstName">
               <Form.Label>{t('first-name', 'First Name')}</Form.Label>
-              <TextInput field="customer.firstName" testId="first-name-input" required />
+              <TextInput field="customer.firstName" testId="first-name-input" required readOnly={fetchedCustomer} />
             </Form.Group>
           </Col>
           <Col sm>
             <Form.Group controlId="lastName">
               <Form.Label>{t('last-name', 'Last Name')}</Form.Label>
-              <TextInput field="customer.lastName" testId="last-name-input" required />
+              <TextInput field="customer.lastName" testId="last-name-input" required readOnly={fetchedCustomer} />
             </Form.Group>
           </Col>
         </Form.Row>
 
         <Form.Group controlId="email">
           <Form.Label>{t('email', 'Email')}</Form.Label>
-          <EmailInput field="customer.email" type="email" testId="email-input" readOnly={!canEditEmail} required />
+          <EmailInput field="customer.email" type="email" testId="email-input" required readOnly={!canEditEmail} />
         </Form.Group>
       </React.Fragment>
     );

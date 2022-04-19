@@ -20,6 +20,8 @@ export class CustomerConnect {
       tracking: getTrackingData(state),
 
       canEditEmail: !getCustomerHasProfile(state),
+      fetchedCustomer: getSetting(state, 'fetchedCustomer'),
+
       defaultCountry: getSetting(state, 'defaultCountry'),
       sourceOptions: getSourceOptions(state),
       addressFinderKey: getSetting(state, 'addressFinderKey'),

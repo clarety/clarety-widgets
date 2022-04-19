@@ -11,6 +11,8 @@ import { FieldError } from 'form/components';
 import { updateFormData } from 'form/actions';
 import { getValidationError } from 'form/utils';
 
+enLabels['SZ'] = 'Eswatini';
+
 const _PhoneInput = ({ value, placeholder, country, onChange, error, required, showCountrySelect = false }) => {
   country = country || Config.get('phoneCountry') || 'AU';
   if (country === 'UK') country = 'GB';

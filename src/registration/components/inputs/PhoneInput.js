@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactPhoneNumberInput from 'react-phone-number-input';
 import flags from 'react-phone-number-input/flags';
+import enLabels from 'react-phone-number-input/locale/en';
 import 'react-phone-number-input/style.css';
 import { Form } from 'react-bootstrap';
 import { Config } from 'clarety-utils';
@@ -8,6 +9,8 @@ import { t } from 'shared/translations';
 import { FormContext } from 'shared/utils';
 import { FieldError } from 'form/components';
 import { getValidationError } from 'form/utils';
+
+enLabels['SZ'] = 'Eswatini';
 
 class PurePhoneInput extends React.PureComponent {
   render() {
@@ -29,6 +32,7 @@ class PurePhoneInput extends React.PureComponent {
           limitMaxLength={true}
           inputClassName={className}
           country={country}
+          labels={enLabels}
           displayInitialValueAsLocalNumber
           flags={flags}
         />

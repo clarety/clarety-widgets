@@ -85,6 +85,11 @@ export function capitalize(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+export function convertOptions(options) {
+  if (!options || !Array.isArray(options)) return undefined;
+  return options.map(option => ({ value: option, label: option }));
+}
+
 export const getCustomerTypeOptions = () => [
   { value: 'individual', label: t('individual', 'Individual') },
   { value: 'business',   label: t('business', 'Business') },

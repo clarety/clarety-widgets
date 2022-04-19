@@ -3,14 +3,24 @@ import memoize from 'memoize-one';
 import { Form, Row, Col, Button, Spinner } from 'react-bootstrap';
 import { getLanguage, t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
-import { requiredField, emailField, getSuburbLabel, getStateLabel, getPostcodeLabel, moveInArray } from 'shared/utils';
+import { requiredField, emailField, getSuburbLabel, getStateLabel, getPostcodeLabel, moveInArray, scrollIntoView } from 'shared/utils';
 import { TextInput, TextAreaInput, EmailInput, PhoneInput, NumberInput, CurrencyInput, CheckboxInput, CheckboxesInput, SelectInput, RadioInput, DateInput, StateInput, CountryInput, PostcodeInput, FileUploadInput, RatingInput, RankingInput, FormElement, SubmitButton, BackButton, ErrorMessages } from 'form/components';
 
 export class CaseFormPanel extends BasePanel {
+  fieldRefs = [];
+
   onPressBack = (event) => {
     event.preventDefault();
     this.props.prevPanel();
   };
+
+  componentDidUpdate(prevProps) {
+    super.componentDidUpdate(prevProps);
+
+    if (prevProps.errors !== this.props.errors) {
+      this.scrollToFirstError(this.props.errors);
+    }
+  }
 
   onPressNext = async (event) => {
     event.preventDefault();
@@ -31,12 +41,22 @@ export class CaseFormPanel extends BasePanel {
   onPressSave = async (event) => {
     const didSave = await this.props.onSave();
 
-    if (didSave) {
-      alert(t('case-form-saved', 'Your progress has been saved. Return to this page at any time to continue.'));
-    } else {
+    if (!didSave) {
       alert('An error occured, please correct the invalid fields and try again');
     }
   };
+
+  scrollToFirstError(errors) {
+    const error = errors[0] || null;
+    if (error) {
+      if (error.field) {
+        const ref = this.fieldRefs[error.field];
+        if (ref) scrollIntoView(ref);
+      } else {
+        scrollIntoView(this);
+      }
+    }
+  }
 
   isBusiness() {
     return this.props.formData['customer.type'] === '1';
@@ -380,7 +400,7 @@ export class CaseFormPanel extends BasePanel {
 
   renderTextField(field, fieldKey) {
     return (
-      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--text">
+      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--text" ref={ref => this.fieldRefs[fieldKey] = ref}>
         {this.renderLabel(field, fieldKey)}
 
         <TextInput
@@ -396,7 +416,7 @@ export class CaseFormPanel extends BasePanel {
 
   renderTextAreaField(field, fieldKey) {
     return (
-      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--textarea">
+      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--textarea" ref={ref => this.fieldRefs[fieldKey] = ref}>
         {this.renderLabel(field, fieldKey)}
 
         <TextAreaInput
@@ -411,7 +431,7 @@ export class CaseFormPanel extends BasePanel {
 
   renderEmailField(field, fieldKey) {
     return (
-      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--email">
+      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--email" ref={ref => this.fieldRefs[fieldKey] = ref}>
         {this.renderLabel(field, fieldKey)}
 
         <EmailInput
@@ -428,7 +448,7 @@ export class CaseFormPanel extends BasePanel {
     const { settings } = this.props;
 
     return (
-      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--phone">
+      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--phone" ref={ref => this.fieldRefs[fieldKey] = ref}>
         {this.renderLabel(field, fieldKey)}
 
         <PhoneInput
@@ -444,7 +464,7 @@ export class CaseFormPanel extends BasePanel {
 
   renderNumberField(field, fieldKey) {
     return (
-      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--number">
+      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--number" ref={ref => this.fieldRefs[fieldKey] = ref}>
         {this.renderLabel(field, fieldKey)}
 
         <NumberInput
@@ -459,7 +479,7 @@ export class CaseFormPanel extends BasePanel {
 
   renderCurrencyField(field, fieldKey) {
     return (
-      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--currency">
+      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--currency" ref={ref => this.fieldRefs[fieldKey] = ref}>
         {this.renderLabel(field, fieldKey)}
 
         <CurrencyInput
@@ -474,7 +494,7 @@ export class CaseFormPanel extends BasePanel {
 
   renderCheckboxField(field, fieldKey) {
     return (
-      <div key={fieldKey} className="field field--checkbox">
+      <div key={fieldKey} className="field field--checkbox" ref={ref => this.fieldRefs[fieldKey] = ref}>
         <CheckboxInput
           field={fieldKey}
           label={this.getFieldLabel(field, fieldKey)}
@@ -489,7 +509,7 @@ export class CaseFormPanel extends BasePanel {
 
   renderCheckboxesField(field, fieldKey) {
     return (
-      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--checkboxes">
+      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--checkboxes" ref={ref => this.fieldRefs[fieldKey] = ref}>
         {this.renderLabel(field, fieldKey)}
 
         <CheckboxesInput
@@ -506,7 +526,7 @@ export class CaseFormPanel extends BasePanel {
 
   renderSelectField(field, fieldKey) {
     return (
-      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--select">
+      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--select" ref={ref => this.fieldRefs[fieldKey] = ref}>
         {this.renderLabel(field, fieldKey)}
 
         <SelectInput
@@ -523,7 +543,7 @@ export class CaseFormPanel extends BasePanel {
 
   renderRadioField(field, fieldKey) {
     return (
-      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--radio">
+      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--radio" ref={ref => this.fieldRefs[fieldKey] = ref}>
         {this.renderLabel(field, fieldKey)}
 
         <RadioInput
@@ -540,7 +560,7 @@ export class CaseFormPanel extends BasePanel {
 
   renderDateField(field, fieldKey) {
     return (
-      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--date">
+      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--date" ref={ref => this.fieldRefs[fieldKey] = ref}>
         {this.renderLabel(field, fieldKey)}
 
         <DateInput
@@ -556,7 +576,7 @@ export class CaseFormPanel extends BasePanel {
 
   renderFileUploadField(field, fieldKey) {
     return (
-      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--fileupload">
+      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--fileupload" ref={ref => this.fieldRefs[fieldKey] = ref}>
         {this.renderLabel(field, fieldKey)}
 
         <FileUploadInput
@@ -585,7 +605,7 @@ export class CaseFormPanel extends BasePanel {
     const country = this.props.formData[`${fieldKey}.country`];
 
     return (
-      <div key={fieldKey} className="field field--address">
+      <div key={fieldKey} className="field field--address" ref={ref => this.fieldRefs[fieldKey] = ref}>
         {settings.hideCountry
           ? <FormElement
               key={fieldKey}
@@ -629,7 +649,7 @@ export class CaseFormPanel extends BasePanel {
     const country = this.props.formData[`${fieldKey}.country`];
 
     return (
-      <div key={fieldKey} className="field field--country-postcode">
+      <div key={fieldKey} className="field field--country-postcode" ref={ref => this.fieldRefs[fieldKey] = ref}>
         <Form.Row>
           <Col sm>
             <CountryField
@@ -651,7 +671,7 @@ export class CaseFormPanel extends BasePanel {
     const country = this.props.formData[`${fieldKey}.country`];
 
     return (
-      <div key={fieldKey} className="field field--country-state-postcode">
+      <div key={fieldKey} className="field field--country-state-postcode" ref={ref => this.fieldRefs[fieldKey] = ref}>
         <Form.Row key={fieldKey}>
           <Col>
             <CountryField
@@ -678,7 +698,7 @@ export class CaseFormPanel extends BasePanel {
     const { settings, defaultCountry } = this.props;
 
     return (
-      <Form.Row key={fieldKey}>
+      <Form.Row key={fieldKey} ref={ref => this.fieldRefs[fieldKey] = ref}>
         <Col>
           <CountryField
             fieldKey={fieldKey}
@@ -692,7 +712,7 @@ export class CaseFormPanel extends BasePanel {
 
   renderTitleField(field, fieldKey) {
     return (
-      <div key={fieldKey} className="field field--title">
+      <div key={fieldKey} className="field field--title" ref={ref => this.fieldRefs[fieldKey] = ref}>
         <h2 className="title">{field.question || field.label}</h2>
 
         {this.renderExplanation(field)}
@@ -730,7 +750,7 @@ export class CaseFormPanel extends BasePanel {
 
   renderRatingField(field, fieldKey) {
     return (
-      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--rating">
+      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--rating" ref={ref => this.fieldRefs[fieldKey] = ref}>
         {this.renderLabel(field, fieldKey)}
 
         <RatingInput
@@ -744,7 +764,7 @@ export class CaseFormPanel extends BasePanel {
 
   renderRankingField(field, fieldKey) {
     return (
-      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--ranking">
+      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--ranking" ref={ref => this.fieldRefs[fieldKey] = ref}>
         {this.renderLabel(field, fieldKey)}
 
         <RankingInput
@@ -759,7 +779,7 @@ export class CaseFormPanel extends BasePanel {
 
   renderAcceptTermsField(field, fieldKey) {
     return (
-      <div key={fieldKey} className="field field--acceptterms">
+      <div key={fieldKey} className="field field--acceptterms" ref={ref => this.fieldRefs[fieldKey] = ref}>
         <div
           className="terms-html"
           dangerouslySetInnerHTML={{ __html: field.html }}

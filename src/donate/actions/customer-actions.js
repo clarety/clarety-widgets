@@ -12,7 +12,10 @@ export const fetchCustomer = () => {
       dispatch(fetchCustomerSuccess(customer));
       dispatch(setCustomer(customer));
       dispatch(setCustomerFormData(customer));
-      dispatch(updateAppSettings({ customerHasProfile: customer.hasProfile }));
+      dispatch(updateAppSettings({
+        fetchedCustomer: true,
+        customerHasProfile: customer.hasProfile,
+      }));
       return true;
     } else {
       dispatch(fetchCustomerFailure(customer));
@@ -24,9 +27,12 @@ export const fetchCustomer = () => {
 export const setCustomerFormData = (customer) => {
   return async (dispatch, getState) => {
     const formData = {
-      'customer.firstName': customer.firstName,
-      'customer.lastName':  customer.lastName,
-      'customer.email':     customer.email,
+      'customer.type':         customer.type,
+      'customer.firstName':    customer.firstName,
+      'customer.lastName':     customer.lastName,
+      'customer.businessName': customer.businessName,
+      'customer.email':        customer.email,
+      'customer.mobile':       customer.mobile,
     };
 
     const { billing } = customer;
@@ -38,15 +44,6 @@ export const setCustomerFormData = (customer) => {
       formData['customer.billing.state']    = billing.state;
       formData['customer.billing.postcode'] = billing.postcode;
       formData['customer.billing.country']  = billing.country;
-
-      if (billing.country === 'AU' && billing.state) {
-        const state = billing.state.toUpperCase();
-        if (['NSW', 'VIC', 'QLD', 'SA', 'WA', 'TAS', 'ACT', 'NT'].includes(state)) {
-          formData['customer.billing.state'] = state;
-        } else {
-          formData['customer.billing.state'] = undefined;
-        }
-      }
     }
 
     dispatch(setFormData(formData));

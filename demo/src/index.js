@@ -6,9 +6,10 @@ import { Config } from '../../src';
 Config.init({
   // instanceKey: 'mdc',
   // instanceKey: 'clarety-baseline',
+  instanceKey: 'charlies',
   // instanceKey: 'tnc',
   // instanceKey: 'tnc-hk',
-  instanceKey: 'clarety-church',
+  // instanceKey: 'clarety-church',
   // instanceKey: 'ethiopiaid',
   // instanceKey: 'a21',
   // instanceKey: 'miraclebabies',
@@ -16,7 +17,7 @@ Config.init({
   // instanceKey: 'bsfs',
   devSitePath: 'http://localhost:3000/',
   // phoneCountry: 'AU',
-  localhostProtocol: 'http:',
+  localhostProtocol: 'https:',
 });
 
 // Mock cookies.
