@@ -22,6 +22,11 @@ export class CaseFormPanel extends BasePanel {
     }
   }
 
+  onEditPanel() {
+    super.onEditPanel();
+    this.scrollIntoView();
+  }
+
   onPressNext = async (event) => {
     event.preventDefault();
 
