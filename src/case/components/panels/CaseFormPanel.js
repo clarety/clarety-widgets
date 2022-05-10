@@ -9,11 +9,6 @@ import { TextInput, TextAreaInput, EmailInput, PhoneInput, NumberInput, Currency
 export class CaseFormPanel extends BasePanel {
   fieldRefs = [];
 
-  onPressBack = (event) => {
-    event.preventDefault();
-    this.props.prevPanel();
-  };
-
   componentDidUpdate(prevProps) {
     super.componentDidUpdate(prevProps);
 
@@ -22,10 +17,11 @@ export class CaseFormPanel extends BasePanel {
     }
   }
 
-  onEditPanel() {
-    super.onEditPanel();
+  onPressBack = (event) => {
+    event.preventDefault();
+    this.props.prevPanel();
     this.scrollIntoView();
-  }
+  };
 
   onPressNext = async (event) => {
     event.preventDefault();
@@ -41,6 +37,7 @@ export class CaseFormPanel extends BasePanel {
     }
 
     nextPanel();
+    this.scrollIntoView();
   };
 
   onPressSave = async (event) => {
