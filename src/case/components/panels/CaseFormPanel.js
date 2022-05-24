@@ -3,7 +3,7 @@ import memoize from 'memoize-one';
 import { Form, Row, Col, Button, Spinner } from 'react-bootstrap';
 import { getLanguage, t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
-import { requiredField, emailField, getSuburbLabel, getStateLabel, getPostcodeLabel, moveInArray, scrollIntoView } from 'shared/utils';
+import { requiredField, emailField, addressField, getSuburbLabel, getStateLabel, getPostcodeLabel, moveInArray, scrollIntoView } from 'shared/utils';
 import { TextInput, TextAreaInput, EmailInput, PhoneInput, NumberInput, CurrencyInput, CheckboxInput, CheckboxesInput, SelectInput, RadioInput, DateInput, StateInput, CountryInput, PostcodeInput, FileUploadInput, RatingInput, RankingInput, FormElement, SubmitButton, BackButton, ErrorMessages } from 'form/components';
 
 export class CaseFormPanel extends BasePanel {
@@ -98,11 +98,7 @@ export class CaseFormPanel extends BasePanel {
         const fieldType = this.getFieldType(field, fieldKey);
 
         if (fieldType === 'address') {
-          requiredField(errors, formData, `${fieldKey}.address1`);
-          requiredField(errors, formData, `${fieldKey}.suburb`);
-          requiredField(errors, formData, `${fieldKey}.state`);
-          requiredField(errors, formData, `${fieldKey}.postcode`);
-          requiredField(errors, formData, `${fieldKey}.country`);
+          addressField(errors, formData, fieldKey);
         } else if (fieldType === 'country') {
           requiredField(errors, formData, `${fieldKey}.country`);
         } else if (fieldType === 'country-postcode') {
@@ -139,7 +135,12 @@ export class CaseFormPanel extends BasePanel {
     for (const field of form.extendFields) {
       const fieldKey = `extendFields.${field.columnKey}`;
       if (requiredFields.includes(fieldKey)) {
-        requiredField(errors, formData, fieldKey);
+        const fieldType = this.getFieldType(field, fieldKey);
+        if (fieldType === 'address') {
+          addressField(errors, formData, fieldKey);
+        } else {
+          requiredField(errors, formData, fieldKey);
+        }
       }
     }
   }
