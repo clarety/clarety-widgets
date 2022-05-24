@@ -169,7 +169,9 @@ export class CaseFormPanel extends BasePanel {
   }
 
   getFieldLabel(field, fieldKey) {
-    return t(`${fieldKey}.label`, field.question || field.label);
+    const label = t(`${fieldKey}.label`, field.question || field.label);
+    const isRequired = this.props.requiredFields.includes(fieldKey);
+    return label + (isRequired ? ' *' : '');
   }
 
   getInitialValue(fieldKey) {
@@ -604,8 +606,9 @@ export class CaseFormPanel extends BasePanel {
   }
 
   renderAddressField(field, fieldKey) {
-    const { settings, defaultCountry } = this.props;
+    const { settings, defaultCountry, requiredFields } = this.props;
     const country = this.props.formData[`${fieldKey}.country`];
+    const isRequired = requiredFields.includes(fieldKey);
 
     return (
       <div key={fieldKey} className="field field--address" ref={ref => this.fieldRefs[fieldKey] = ref}>
@@ -621,6 +624,7 @@ export class CaseFormPanel extends BasePanel {
                   fieldKey={fieldKey}
                   region={settings.region}
                   defaultCountry={defaultCountry}
+                  required={isRequired}
                 />
               </Col>
             </Form.Row>
@@ -628,19 +632,19 @@ export class CaseFormPanel extends BasePanel {
 
         <Form.Row>
           <Col sm>
-            <Address1Field fieldKey={fieldKey} country={country} />
+            <Address1Field fieldKey={fieldKey} country={country} required={isRequired} />
           </Col>
           <Col sm>
-            <SuburbField fieldKey={fieldKey} country={country} />
+            <SuburbField fieldKey={fieldKey} country={country} required={isRequired} />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col sm>
-            <StateField fieldKey={fieldKey} country={country} />
+            <StateField fieldKey={fieldKey} country={country} required={isRequired} />
           </Col>
           <Col sm>
-            <PostcodeField fieldKey={fieldKey} country={country} />
+            <PostcodeField fieldKey={fieldKey} country={country} required={isRequired} />
           </Col>
         </Form.Row>
       </div>
@@ -648,8 +652,9 @@ export class CaseFormPanel extends BasePanel {
   }
 
   renderCountryPostcodeField(field, fieldKey) {
-    const { settings, defaultCountry } = this.props;
+    const { settings, defaultCountry, requiredFields } = this.props;
     const country = this.props.formData[`${fieldKey}.country`];
+    const isRequired = requiredFields.includes(fieldKey);
 
     return (
       <div key={fieldKey} className="field field--country-postcode" ref={ref => this.fieldRefs[fieldKey] = ref}>
@@ -659,10 +664,11 @@ export class CaseFormPanel extends BasePanel {
               fieldKey={fieldKey}
               region={settings.region}
               defaultCountry={defaultCountry}
+              required={isRequired}
             />
           </Col>
           <Col sm>
-            <PostcodeField fieldKey={fieldKey} country={country} />
+            <PostcodeField fieldKey={fieldKey} country={country} required={isRequired} />
           </Col>
         </Form.Row>
       </div>
@@ -670,8 +676,9 @@ export class CaseFormPanel extends BasePanel {
   }
 
   renderCountryStatePostcodeField(field, fieldKey) {
-    const { settings, defaultCountry } = this.props;
+    const { settings, defaultCountry, requiredFields } = this.props;
     const country = this.props.formData[`${fieldKey}.country`];
+    const isRequired = requiredFields.includes(fieldKey);
 
     return (
       <div key={fieldKey} className="field field--country-state-postcode" ref={ref => this.fieldRefs[fieldKey] = ref}>
@@ -681,16 +688,17 @@ export class CaseFormPanel extends BasePanel {
               fieldKey={fieldKey}
               region={settings.region}
               defaultCountry={defaultCountry}
+              required={isRequired}
             />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col sm>
-            <StateField fieldKey={fieldKey} country={country} />
+            <StateField fieldKey={fieldKey} country={country} required={isRequired} />
           </Col>
           <Col sm>
-            <PostcodeField fieldKey={fieldKey} country={country} />
+            <PostcodeField fieldKey={fieldKey} country={country} required={isRequired} />
           </Col>
         </Form.Row>
       </div>
@@ -698,7 +706,8 @@ export class CaseFormPanel extends BasePanel {
   }
 
   renderCountryField(field, fieldKey) {
-    const { settings, defaultCountry } = this.props;
+    const { settings, defaultCountry, requiredFields } = this.props;
+    const isRequired = requiredFields.includes(fieldKey);
 
     return (
       <Form.Row key={fieldKey} ref={ref => this.fieldRefs[fieldKey] = ref}>
@@ -707,6 +716,7 @@ export class CaseFormPanel extends BasePanel {
             fieldKey={fieldKey}
             region={settings.region}
             defaultCountry={defaultCountry}
+            required={isRequired}
           />
         </Col>
       </Form.Row>
@@ -913,46 +923,46 @@ export class CaseFormPanel extends BasePanel {
   }
 }
 
-function Address1Field({ fieldKey }) {
+function Address1Field({ fieldKey, required }) {
   return (
     <Form.Group controlId={`${fieldKey}.address1`}>
-      <Form.Label>{t('street', 'Street')}</Form.Label>
+      <Form.Label>{t('street', 'Street')}{required && ' *'}</Form.Label>
       <TextInput field={`${fieldKey}.address1`} type="street" />
     </Form.Group>
   );
 }
 
-function SuburbField({ fieldKey, country }) {
+function SuburbField({ fieldKey, country, required }) {
   return (
     <Form.Group controlId={`${fieldKey}.suburb`}>
-      <Form.Label>{getSuburbLabel(country)}</Form.Label>
+      <Form.Label>{getSuburbLabel(country)}{required && ' *'}</Form.Label>
       <TextInput field={`${fieldKey}.suburb`} />
     </Form.Group>
   );
 }
 
-function StateField({ fieldKey, country }) {
+function StateField({ fieldKey, country, required }) {
   return (
     <Form.Group controlId={`${fieldKey}.state`}>
-      <Form.Label>{getStateLabel(country)}</Form.Label>
+      <Form.Label>{getStateLabel(country)}{required && ' *'}</Form.Label>
       <StateInput field={`${fieldKey}.state`} country={country} />
     </Form.Group>
   );
 }
 
-function PostcodeField({ fieldKey, country }) {
+function PostcodeField({ fieldKey, country, required }) {
   return (
     <Form.Group controlId={`${fieldKey}.postcode`}>
-      <Form.Label>{getPostcodeLabel(country)}</Form.Label>
+      <Form.Label>{getPostcodeLabel(country)}{required && ' *'}</Form.Label>
       <PostcodeInput field={`${fieldKey}.postcode`} country={country} />
     </Form.Group>
   );
 }
 
-function CountryField({ fieldKey, region, defaultCountry }) {
+function CountryField({ fieldKey, region, defaultCountry, required }) {
   return (
     <Form.Group controlId="country">
-      <Form.Label>{t('country', 'Country')}</Form.Label>
+      <Form.Label>{t('country', 'Country')}{required && ' *'}</Form.Label>
       <CountryInput
         field={`${fieldKey}.country`}
         initialValue={defaultCountry}
