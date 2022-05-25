@@ -348,18 +348,22 @@ export class CaseFormPanel extends BasePanel {
   }
 
   renderField(field, resourceKey = null) {
+    const { shownFields, fetchedCustomer, settings } = this.props;
+
     const fieldKey = resourceKey ? resourceKey + '.' + field.columnKey : field.columnKey;
 
     // Ignore fields that aren't in the 'shown fields' list.
-    if (!this.props.shownFields.includes(fieldKey)) return null;
+    if (!shownFields.includes(fieldKey)) return null;
 
     // Ignore conditional fields that don't meet their condition.
     if (field.conditionalField && !this.shouldShowConditionalField(field)) return null;
 
+    const isDisabled = fetchedCustomer && settings.disableIfPrefilled && settings.disableIfPrefilled.includes(fieldKey);
+
     switch (this.getFieldType(field, fieldKey)) {
-      case 'text':         return this.renderTextField(field, fieldKey);
+      case 'text':         return this.renderTextField(field, fieldKey, isDisabled);
       case 'textarea':     return this.renderTextAreaField(field, fieldKey);
-      case 'email':        return this.renderEmailField(field, fieldKey);
+      case 'email':        return this.renderEmailField(field, fieldKey, isDisabled);
       case 'phonenumber':  return this.renderPhoneField(field, fieldKey);
       case 'number':       return this.renderNumberField(field, fieldKey);
       case 'currency':     return this.renderCurrencyField(field, fieldKey);
@@ -403,7 +407,7 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
-  renderTextField(field, fieldKey) {
+  renderTextField(field, fieldKey, isDisabled = false) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--text" ref={ref => this.fieldRefs[fieldKey] = ref}>
         {this.renderLabel(field, fieldKey)}
@@ -412,6 +416,7 @@ export class CaseFormPanel extends BasePanel {
           field={fieldKey}
           required={field.required}
           initialValue={this.getInitialValue(fieldKey)}
+          disabled={isDisabled}
         />
 
         {this.renderExplanation(field)}
@@ -434,7 +439,7 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
-  renderEmailField(field, fieldKey) {
+  renderEmailField(field, fieldKey, isDisabled = false) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--email" ref={ref => this.fieldRefs[fieldKey] = ref}>
         {this.renderLabel(field, fieldKey)}
@@ -442,6 +447,7 @@ export class CaseFormPanel extends BasePanel {
         <EmailInput
           field={fieldKey}
           required={field.required}
+          disabled={isDisabled}
         />
 
         {this.renderExplanation(field)}
