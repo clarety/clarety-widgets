@@ -203,13 +203,16 @@ export class DetailsPanel extends BasePanel {
     this.validateRequired('customer.firstName', formData, errors);
     this.validateRequired('customer.lastName', formData, errors);
     this.validateEmail('customer.email', formData, errors);
-    this.validateRequired('customer.gender', formData, errors);
     this.validateRequired('customer.dateOfBirthDay', formData, errors);
     this.validateRequired('customer.dateOfBirthMonth', formData, errors);
     this.validateRequired('customer.dateOfBirthYear', formData, errors);
 
     if (settings.isMobileRequired) {
       this.validatePhone('customer.mobile', formData, errors);
+    }
+
+    if (settings.showGender) {
+      this.validateRequired('customer.gender', formData, errors);
     }
 
     this.validateDob({
@@ -348,7 +351,7 @@ export class DetailsPanel extends BasePanel {
               </Alert>
             }
 
-            <Button type="submit">{t('btn.next', 'Next')}</Button>
+            <Button type="submit">{this.getSubmitBtnText()}</Button>
           </Form>
         </div>
       </PanelContainer>
@@ -358,8 +361,6 @@ export class DetailsPanel extends BasePanel {
   renderCustomerForm() {
     const { isPrefilled, appSettings, settings, participantIndex } = this.props;
     const { formData } = this.state;
-
-    const genderOptions = this.translateOptions(getGenderOptions(appSettings));
 
     const showAutofill = participantIndex !== 0 && !isPrefilled;
     const showAddressAutofill = showAutofill && (settings.showDeliveryAddress || settings.showBillingAddress);
@@ -416,16 +417,18 @@ export class DetailsPanel extends BasePanel {
           </Form.Row>
         }
 
-        <Form.Row>
-          <Col>
-            <SimpleSelectInput
-              field="customer.gender"
-              label={t('label.customer.gender', 'Gender')}
-              options={genderOptions}
-              required
-            />
-          </Col>
-        </Form.Row>
+        {settings.showGender &&
+          <Form.Row>
+            <Col>
+              <SimpleSelectInput
+                field="customer.gender"
+                label={t('label.customer.gender', 'Gender')}
+                options={this.translateOptions(getGenderOptions(appSettings))}
+                required
+              />
+            </Col>
+          </Form.Row>
+        }
 
         <Form.Row>
           <Col>
@@ -771,6 +774,10 @@ export class DetailsPanel extends BasePanel {
     const year  = formData['customer.dateOfBirthYear'];
     
     return new Date(Number(year), Number(month) - 1, Number(day));
+  }
+
+  getSubmitBtnText() {
+    return t('btn.next', 'Next');
   }
 
   validateRequired(field, formData, errors, message) {

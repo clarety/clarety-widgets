@@ -1,4 +1,4 @@
-import { getOrganisation, getPromoCode, getTrackingData, getCurrency } from 'shared/selectors';
+import { getOrganisation, getPromoCode, getTrackingData, getCurrency, getIndexOfPanelWithComponent } from 'shared/selectors';
 import { parseNestedElements } from 'shared/utils';
 
 export const getSettings = (state) => state.settings;
@@ -30,6 +30,34 @@ export const getEventName = (state) => {
 export const getPanelCount = (state) => state.panelManager.length;
 
 export const getCurrentPanelIndex = (state) => state.panelManager.findIndex(panel => panel.status === 'edit');
+
+export const getPanelIndexesForCartItems = (state) => {
+  const panelIndexes = {};
+
+  const cart = getCart(state);
+  for (const item of cart.items) {
+    let panelIndex = -1;
+
+    switch (item.type) {
+      case 'event':
+        panelIndex = getIndexOfPanelWithComponent(state, 'DetailsPanel');
+        if (panelIndex !== -1) panelIndex += item.options.participantIndex;
+        break;
+
+      case 'donation':
+        panelIndex = getIndexOfPanelWithComponent(state, 'DonationPanel');
+        break;
+
+      case 'merchandise':
+        panelIndex = getIndexOfPanelWithComponent(state, 'MerchPanel');
+        break;
+    }
+
+    panelIndexes[item.appRef] = panelIndex;
+  }
+
+  return panelIndexes;
+};
 
 export const getProgress = (state) => {
   const index = getCurrentPanelIndex(state);

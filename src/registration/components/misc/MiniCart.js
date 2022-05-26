@@ -3,12 +3,13 @@ import { connect } from 'react-redux';
 import { Container, Row, Col, ProgressBar } from 'react-bootstrap';
 import { Breakpoint } from 'react-socks';
 import { t } from 'shared/translations';
+import { getSetting } from 'shared/selectors';
 import { Qty, LanguageSelect } from 'registration/components';
 import { getEventName, getQtys, getFormattedCartTotal, getProgress } from 'registration/selectors';
 
 class _MiniCart extends React.Component {
   render() {
-    const { eventName, qtys, cartTotal, progress, resources } = this.props;
+    const { eventName, qtys, cartTotal, progress, resources, variant } = this.props;
     const MiniCartBrand = resources.getComponent('MiniCartBrand');
 
     return (
@@ -41,7 +42,10 @@ class _MiniCart extends React.Component {
               </Col>
               <Col>
                 <div><LanguageSelect /></div>
-                <div className="mini-cart__cart-total">{cartTotal}</div>
+
+                {variant !== 'express' &&
+                  <div className="mini-cart__cart-total">{cartTotal}</div>
+                }
               </Col>
             </Row>
           </Breakpoint>
@@ -59,6 +63,7 @@ const mapStateToProps = state => {
     qtys: getQtys(state),
     cartTotal: getFormattedCartTotal(state),
     progress: getProgress(state),
+    variant: getSetting(state, 'variant'),
   };
 };
 

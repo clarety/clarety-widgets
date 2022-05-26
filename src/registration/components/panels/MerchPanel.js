@@ -164,6 +164,8 @@ export class MerchPanel extends BasePanel {
     const { layout, index, isBusy, settings, merchandise } = this.props;
     const { selectedItem, qtys } = this.state;
 
+    const messageText = t('merchPanel.message', settings.messageText || '');
+
     return (
       <PanelContainer layout={layout} status="edit" className="merch-panel">
         <PanelHeader
@@ -174,7 +176,7 @@ export class MerchPanel extends BasePanel {
         />
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
 
-          <p className="message-text">{t('merchPanel.message', settings.messageText || '')}</p>
+          {messageText && <p className="message-text">{messageText}</p>}
 
           <Row className="merch-items">
             {merchandise.map(item =>

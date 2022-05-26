@@ -6,6 +6,15 @@ import { Currency } from 'shared/components';
 import { formatDate } from 'shared/utils';
 
 export class _PaymentPanel extends BasePaymentPanel {
+  onEditCartItem = (event, item) => {
+    event.preventDefault();
+
+    const panelIndex = this.props.cartItemPanelIndexes[item.appRef];
+    if (panelIndex !== -1) {
+      this.props.editPanelAtIndex(panelIndex);
+    }
+  };
+
   getTitleText() {
     const { settings } = this.props;
     return settings.title || t(['rego-payment-title', 'payment-details'], 'Payment Details');
@@ -23,7 +32,15 @@ export class _PaymentPanel extends BasePaymentPanel {
       <React.Fragment>
         <div className="cart-summary">
           {cart.items.map((item, index) =>
-            <CartItem key={index} item={item} />
+            <CartItem
+              key={index}
+              item={item}
+              onClickEdit={
+                this.props.cartItemPanelIndexes[item.appRef] !== -1
+                  ? this.onEditCartItem
+                  : undefined
+              }
+            />
           )}
           
           <CartTotals summary={cart.summary} />
@@ -80,10 +97,13 @@ export class _PaymentPanel extends BasePaymentPanel {
 
 export const PaymentPanel = injectStripe(_PaymentPanel);
 
-const CartItem = ({ item }) => (
+const CartItem = ({ item, onClickEdit }) => (
   <Row as="dl" className="cart-item">
     <Col as="dt">
       {item.description}
+      &nbsp;&nbsp;
+      {onClickEdit && <a href="#" onClick={(event) => onClickEdit(event, item)}>({t('edit', 'Edit')})</a>}
+
       {item.discountDescription &&
         <p className="discount-description">{item.discountDescription}</p>
       }
