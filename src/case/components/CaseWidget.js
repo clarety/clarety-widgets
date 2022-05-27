@@ -71,6 +71,7 @@ export class _CaseWidgetRoot extends React.Component {
       allowSave:            this.props.allowSave,
       saveStage:            this.props.saveStage,
       submitStage:          this.props.submitStage,
+      eventUid:             this.props.eventUid,
       variant:              this.props.variant,
       shownFields:          this.props.shownFields,
       requiredFields:       this.props.requiredFields,
