@@ -2,12 +2,16 @@ import React from 'react';
 import memoize from 'memoize-one';
 import { Form, Row, Col, Button, Spinner } from 'react-bootstrap';
 import { getLanguage, t } from 'shared/translations';
-import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
+import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, AddressFinder } from 'shared/components';
 import { requiredField, emailField, addressField, getSuburbLabel, getStateLabel, getPostcodeLabel, moveInArray, scrollIntoView } from 'shared/utils';
 import { TextInput, TextAreaInput, EmailInput, PhoneInput, NumberInput, CurrencyInput, CheckboxInput, CheckboxesInput, SelectInput, RadioInput, DateInput, StateInput, CountryInput, PostcodeInput, FileUploadInput, RatingInput, RankingInput, FormElement, SubmitButton, BackButton, ErrorMessages } from 'form/components';
 
 export class CaseFormPanel extends BasePanel {
   fieldRefs = [];
+
+  state = {
+    disableAddressFinders: false,
+  };
 
   componentDidUpdate(prevProps) {
     super.componentDidUpdate(prevProps);
@@ -38,6 +42,7 @@ export class CaseFormPanel extends BasePanel {
 
     nextPanel();
     this.scrollIntoView();
+    this.setState({ disableAddressFinders: true });
   };
 
   onPressSave = async (event) => {
@@ -612,47 +617,23 @@ export class CaseFormPanel extends BasePanel {
   }
 
   renderAddressField(field, fieldKey) {
-    const { settings, defaultCountry, requiredFields } = this.props;
-    const country = this.props.formData[`${fieldKey}.country`];
+    const { settings, requiredFields } = this.props;
     const isRequired = requiredFields.includes(fieldKey);
 
     return (
       <div key={fieldKey} className="field field--address" ref={ref => this.fieldRefs[fieldKey] = ref}>
-        {settings.hideCountry
-          ? <FormElement
-              key={fieldKey}
-              field={`${fieldKey}.country`}
-              value={defaultCountry}
-            />
-          : <Form.Row key={fieldKey}>
-              <Col>
-                <CountryField
-                  fieldKey={fieldKey}
-                  region={settings.region}
-                  defaultCountry={defaultCountry}
-                  required={isRequired}
-                />
-              </Col>
-            </Form.Row>
-        }
-
-        <Form.Row>
-          <Col sm>
-            <Address1Field fieldKey={fieldKey} country={country} required={isRequired} />
-          </Col>
-          <Col sm>
-            <SuburbField fieldKey={fieldKey} country={country} required={isRequired} />
-          </Col>
-        </Form.Row>
-
-        <Form.Row>
-          <Col sm>
-            <StateField fieldKey={fieldKey} country={country} required={isRequired} />
-          </Col>
-          <Col sm>
-            <PostcodeField fieldKey={fieldKey} country={country} required={isRequired} />
-          </Col>
-        </Form.Row>
+        <AddressField
+          fieldKey={fieldKey}
+          addressFinderKey={this.props.addressFinderKey}
+          addressFinderCountry={this.props.addressFinderCountry}
+          disableAddressFinder={this.state.disableAddressFinders}
+          hideCountry={settings.hideCountry}
+          defaultCountry={this.props.defaultCountry}
+          region={settings.region}
+          formData={this.props.formData}
+          setFormData={this.props.setFormData}
+          required={isRequired}
+        />
       </div>
     );
   }
@@ -925,6 +906,125 @@ export class CaseFormPanel extends BasePanel {
         <PanelBody layout={layout} status="done">
         </PanelBody>
       </PanelContainer>
+    );
+  }
+}
+
+
+
+class AddressField extends React.Component {
+  state = {
+    useAddressFinder: true,
+  };
+
+  componentDidMount() {
+    const { disableAddressFinder } = this.props;
+    if (disableAddressFinder) this.setState({ useAddressFinder: false });
+  }
+
+  componentDidUpdate(prevProps) {
+    const { disableAddressFinder } = this.props;
+    if (prevProps.disableAddressFinder !== disableAddressFinder && disableAddressFinder === true) {
+      this.setState({ useAddressFinder: false });
+    }
+  }
+
+  shouldUseAddressFinder() {
+    const { addressFinderKey, addressFinderCountry, defaultCountry, formData, fieldKey } = this.props;
+    
+    if (addressFinderCountry) {
+      if (formData[`${fieldKey}.country`] !== addressFinderCountry) {
+        return false;
+      }
+    }
+
+    return addressFinderKey && defaultCountry;
+  }
+
+  onAddressFinderSelect = (address) => {
+    const { fieldKey } = this.props;
+
+    this.props.setFormData({
+      [`${fieldKey}.address1`]: address.address1,
+      [`${fieldKey}.address2`]: address.address2,
+      [`${fieldKey}.suburb`]:   address.suburb,
+      [`${fieldKey}.state`]:    address.state,
+      [`${fieldKey}.postcode`]: address.postcode,
+      [`${fieldKey}.country`]:  address.country,
+      [`${fieldKey}.dpid`]:     address.dpid,
+    });
+  };
+
+  onPressDisableAddressFinder = () => this.setState({
+    useAddressFinder: false,
+  });
+
+  render() {
+    const { fieldKey, required, defaultCountry } = this.props;
+    const country = this.props.formData[`${fieldKey}.country`];
+    const useAddressFinder = this.state.useAddressFinder && this.shouldUseAddressFinder();
+
+    return (
+      <React.Fragment>
+        {this.props.hideCountry
+          ? <FormElement
+              key={fieldKey}
+              field={`${fieldKey}.country`}
+              value={defaultCountry}
+            />
+
+          : <Form.Row key={fieldKey}>
+              <Col>
+                <CountryField
+                  fieldKey={fieldKey}
+                  region={this.props.region}
+                  defaultCountry={defaultCountry}
+                  required={required}
+                />
+              </Col>
+            </Form.Row>
+        }
+
+        {useAddressFinder
+          ? <Form.Row>
+              <Col>
+                <Form.Group>
+                  <Form.Label htmlFor="address-finder-input">{t('address', 'Address')}</Form.Label>
+                  <AddressFinder
+                    id="address-finder-input"
+                    apiKey={this.props.addressFinderKey}
+                    country={this.props.addressFinderCountry}
+                    onSelect={this.onAddressFinderSelect}
+                  />
+
+                  <Button variant="link" onClick={this.onPressDisableAddressFinder}>
+                    {t('cant-find-your-address', "Can't find your address?")}
+                  </Button>
+                </Form.Group>
+              </Col>
+            </Form.Row>
+
+          : <React.Fragment>
+              <Form.Row>
+                <Col sm>
+                  <Address1Field fieldKey={fieldKey} country={country} required={required} />
+                </Col>
+                <Col sm>
+                  <SuburbField fieldKey={fieldKey} country={country} required={required} />
+                </Col>
+              </Form.Row>
+      
+              <Form.Row>
+                <Col sm>
+                  <StateField fieldKey={fieldKey} country={country} required={required} />
+                </Col>
+                <Col sm>
+                  <PostcodeField fieldKey={fieldKey} country={country} required={required} />
+                </Col>
+              </Form.Row>
+            </React.Fragment>
+        }
+      </React.Fragment>
     );
   }
 }

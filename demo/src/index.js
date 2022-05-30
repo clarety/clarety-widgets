@@ -12,6 +12,7 @@ Config.init({
   // instanceKey: 'clarety-church',
   // instanceKey: 'ethiopiaid',
   instanceKey: 'a21',
+  // instanceKey: 'mc',
   // instanceKey: 'miraclebabies',
   // instanceKey: 'bibleleague',
   // instanceKey: 'bsfs',

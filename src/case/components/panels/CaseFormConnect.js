@@ -19,6 +19,9 @@ export class CaseFormConnect {
       fieldTypes: getSetting(state, 'fieldTypes'),
       showSaveBtn: getSetting(state, 'allowSave') && getIsLoggedIn(state),
       fetchedCustomer: getSetting(state, 'fetchedCustomer'),
+      defaultCountry: getSetting(state, 'defaultCountry'),
+      addressFinderKey: getSetting(state, 'addressFinderKey'),
+      addressFinderCountry: getSetting(state, 'addressFinderCountry'),
     };
   };
 
