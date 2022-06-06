@@ -18,7 +18,9 @@ export function phoneNumberField(errors, formData, field, message = null) {
 
 export function addressField(errors, formData, field, message = null) {
   requiredField(errors, formData, `${field}.address1`, message);
-  requiredField(errors, formData, `${field}.suburb`, message);
+  if (formData[`${field}.country`] !== 'NZ') {
+    requiredField(errors, formData, `${field}.suburb`, message);
+  }
   requiredField(errors, formData, `${field}.state`, message);
   requiredField(errors, formData, `${field}.postcode`, message);
   requiredField(errors, formData, `${field}.country`, message);
