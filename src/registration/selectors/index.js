@@ -254,6 +254,7 @@ const getParticipantPostData = (state, participant, index) => {
   const customer = parseNestedElements(participant.customer);
   const extendFormId = getExtendFormId(state);
   const addOns = getParticipantAddOns(participant);
+  const trackingData = getTrackingData(state);
 
   return {
     offerId: offerId,
@@ -261,7 +262,10 @@ const getParticipantPostData = (state, participant, index) => {
     quantity: 1,
     participants: [{
       productId: productId,
-      customer: customer,
+      customer: {
+        ...customer,
+        ...trackingData,
+      },
       extendFormId: extendFormId,
       extendForm: participant.extendForm,
       addons: addOns,

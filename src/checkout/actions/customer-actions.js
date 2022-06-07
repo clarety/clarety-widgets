@@ -62,7 +62,13 @@ export const createOrUpdateCustomer = () => {
 export const createCustomer = () => {
   return async (dispatch, getState) => {
     const { cart, formData } = getState();
-    const { customer } = parseNestedElements(formData);
+    const { customer, sale } = parseNestedElements(formData);
+
+    // Copy sale attribution data into customer
+    customer.sourceId         = sale.sourceId;
+    customer.channel          = sale.channel;
+    customer.emailResponseUid = sale.emailResponseUid;
+    customer.sendResponseUid  = sale.sendResponseUid;
 
     dispatch(createCustomerRequest(customer));
 

@@ -1,5 +1,5 @@
 import { setStatus, setCustomer, login, emailStatuses } from 'shared/actions';
-import { getCart } from 'shared/selectors';
+import { getCart, getTrackingData } from 'shared/selectors';
 import { parseNestedElements } from 'shared/utils';
 import { types } from 'registration/actions';
 import { RegistrationApi } from 'registration/utils';
@@ -57,8 +57,13 @@ export const createAcountAndLogin = () => {
 
 export const createAccount = () => {
   return async (dispatch, getState) => {
-    const { formData } = getState();
-    const { customer } = parseNestedElements(formData);
+    const state = getState();
+    const formData = parseNestedElements(state.formData);
+
+    const customer = {
+      ...formData.customer,
+      ...getTrackingData(state),
+    };
     
     dispatch(createAccountRequest(customer));
     dispatch(setStatus('busy'));
