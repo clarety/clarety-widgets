@@ -938,6 +938,11 @@ class AddressField extends React.Component {
       }
     }
 
+    // Don't use if we already have an address.
+    if (formData[`${fieldKey}.address1`]) {
+      return false;
+    }
+
     return addressFinderKey && defaultCountry;
   }
 
@@ -1010,7 +1015,7 @@ class AddressField extends React.Component {
                   <Address1Field fieldKey={fieldKey} country={country} required={required} />
                 </Col>
                 <Col sm>
-                  <SuburbField fieldKey={fieldKey} country={country} required={required} />
+                  <SuburbField fieldKey={fieldKey} country={country} required={required && country !== 'NZ'} />
                 </Col>
               </Form.Row>
       

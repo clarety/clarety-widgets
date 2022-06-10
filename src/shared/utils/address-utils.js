@@ -8,6 +8,8 @@ export function getCountryOptions(region) {
     ];
   }
 
+  // TODO: get country list from explain elements...
+
   return allCountryOptions;
 }
 
@@ -42,9 +44,11 @@ export function getPostcodeLabel(country) {
     case 'AU': 
     case 'NZ': 
     case 'UK':
-        return t('postcode', 'Postcode');
-    case 'US': return t('zipcode', 'Zip Code');
-    default:   return t('postcode', 'Zip Code / Postcode');
+      return t('postcode', 'Postcode');
+    case 'US':
+      return t('zipcode', 'Zip Code');
+    default:
+      return t('postcode', 'Zip Code / Postcode');
   }
 }
 
@@ -128,6 +132,7 @@ const usStateOptions = [
 const allCountryOptions = [
   { value: 'US', label: 'United States' },
   { value: 'AU', label: 'Australia' },
+  { value: 'NZ', label: 'New Zealand' },
   { value: 'UK', label: 'United Kingdom' },
   { value: '',   label: '———' },
   { value: 'AF', label: 'Afghanistan' },
