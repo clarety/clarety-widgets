@@ -313,7 +313,7 @@ export class MerchPanel extends BasePanel {
           
           <p>{t('merchPanel.doneMessage', settings.title || 'Check Out Our Official Merchandise')}</p>
 
-          <Button onClick={this.onClickEdit}>
+          <Button onClick={this.onPressEdit}>
             {t('btn.edit', 'Edit')}
           </Button>
           
