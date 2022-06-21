@@ -53,11 +53,10 @@ export class MerchPanel extends BasePanel {
     }
   };
 
-  onClickEdit = (event) => {
-    event.preventDefault();
+  onEditPanel() {
     this.props.removeItemsWithType('merchandise');
-    this.props.editPanel();
-  };
+    this.reset();
+  }
 
   onFormChange = (field, value) => {
     this.setState(prevState => ({
