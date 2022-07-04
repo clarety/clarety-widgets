@@ -225,7 +225,7 @@ export class QtysPanel extends BasePanel {
           </div>
           
           <Button onClick={this.onClickEdit}>
-            {t('btn.edit', 'Edit')}
+            {t(['qtysPanel.editBtn', 'btn.edit'], 'Edit')}
           </Button>
 
         </PanelBody>
