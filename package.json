@@ -1,6 +1,6 @@
 {
   "name": "clarety-widgets",
-  "version": "12.5.46",
+  "version": "12.5.47",
   "main": "lib/index.js",
   "module": "es/index.js",
   "sideEffects": [
