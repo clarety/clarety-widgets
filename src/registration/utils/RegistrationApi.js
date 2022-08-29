@@ -1,14 +1,13 @@
+import i18next from 'i18next';
 import { ClaretyApi } from 'clarety-utils';
 
 export class RegistrationApi {
   static storeId = null;
   static seriesId = null;
-  static locale = null;
 
-  static init({ storeId, seriesId, locale }) {
+  static init({ storeId, seriesId }) {
     this.storeId = storeId;
     this.seriesId = seriesId;
-    this.locale = locale;
   }
 
   static setJwtCustomer(jwtCustomer) {
@@ -18,13 +17,13 @@ export class RegistrationApi {
   // Events
 
   static async fetchEvents() {
-    const params = { storeId: this.storeId, seriesId: this.seriesId, locale: this.locale };
+    const params = { storeId: this.storeId, seriesId: this.seriesId, locale: i18next.language };
     const results = await ClaretyApi.get('registration-series-events/', params);
     return results[0];
   }
 
   static async fetchEvent(eventId) {
-    const params = { eventId, storeId: this.storeId, seriesId: this.seriesId, locale: this.locale };
+    const params = { eventId, storeId: this.storeId, seriesId: this.seriesId, locale: i18next.language };
     const results = await ClaretyApi.get('registration-full/', params);
     return results[0];
   }

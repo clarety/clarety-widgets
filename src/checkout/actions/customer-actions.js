@@ -1,3 +1,4 @@
+import i18next from 'i18next';
 import jwtDecode from 'jwt-decode';
 import { ClaretyApi } from 'clarety-utils';
 import { emailStatuses, setCustomer } from 'shared/actions';
@@ -93,7 +94,7 @@ export const updateCustomer = () => {
     dispatch(updateCustomerRequest(customer));
 
     const { customerUid } = cart.customer;
-    let results = await ClaretyApi.put(`carts/${cart.cartUid}/customers/${customerUid}/`, customer);
+    let results = await ClaretyApi.put(`carts/${cart.cartUid}/customers/${customerUid}/`, customer, { locale: i18next.language });
     const result = results[0];
 
     if (result.status === 'error') {
