@@ -38,7 +38,7 @@ export class Cart extends React.Component {
         const jwtSession = getJwtSession();
         if (jwtSession) {
             ClaretyApi.setJwtSession(jwtSession.jwtString);
-            Cart.store.dispatch(fetchItems(jwtSession.cartUid));
+            Cart.store.dispatch(fetchItems(jwtSession.cartUid, this.props.defaultLanguage));
         }
     };
 

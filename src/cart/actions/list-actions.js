@@ -2,11 +2,12 @@ import { ClaretyApi } from 'clarety-utils';
 import { types } from '../actions';
 import {getCartTotalItemsQty} from "cart/selectors";
 
-export function fetchItems(cartUid) {
-  return async dispatch => {
-    dispatch(fetchItemsRequest());
+export function fetchItems(cartUid, locale = null) {
+  return async (dispatch) => {
+    dispatch(fetchItemsRequest(cartUid, locale));
 
-    const results = await ClaretyApi.get(`carts/${cartUid}/`);
+    const endpoint = `carts/${cartUid}/` + (locale ? `?locale=${locale}` : '');
+    const results = await ClaretyApi.get(endpoint);
     const result = results[0];
 
     if (result) {
@@ -78,9 +79,11 @@ function updateCartIcon(state){
 
 // Fetch Items
 
-function fetchItemsRequest() {
+function fetchItemsRequest(cartUid, locale) {
   return {
     type: types.fetchItemsRequest,
+    cartUid,
+    locale,
   };
 }
 
