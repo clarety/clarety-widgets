@@ -1,3 +1,4 @@
+import i18next from 'i18next';
 import { ClaretyApi } from 'clarety-utils';
 import { parseNestedElements } from 'shared/utils';
 import { types } from 'checkout/actions';
@@ -6,7 +7,7 @@ export const fetchCart = (cartUid) => {
   return async (dispatch) => {
     dispatch(fetchCartRequest(cartUid));
 
-    const results = await ClaretyApi.get(`carts/${cartUid}/`);
+    const results = await ClaretyApi.get(`carts/${cartUid}/`, { locale: i18next.language });
     const result = results[0];
 
     if (result.status === 'error') {
@@ -22,7 +23,7 @@ export const removeItem = (itemUid) => {
     const { cart } = getState();
 
     dispatch(removeItemRequest(cart.cartUid));
-    const results = await ClaretyApi.delete(`carts/${cart.cartUid}/items/${itemUid}/`);
+    const results = await ClaretyApi.delete(`carts/${cart.cartUid}/items/${itemUid}/`, { locale: i18next.language });
     const result = results[0];
 
     if (!results) {
@@ -60,7 +61,7 @@ export const updateSale = () => {
 
     dispatch(updateSaleRequest(postData.sale));
 
-    const results = await ClaretyApi.put(`carts/${cart.cartUid}/sale/`, postData.sale);
+    const results = await ClaretyApi.put(`carts/${cart.cartUid}/sale/`, postData.sale, { locale: i18next.language });
     const result = results[0];
 
     if (result.status === 'error') {
@@ -77,7 +78,7 @@ export const applyPromoCode = (promoCode) => {
 
     dispatch(applyPromoCodeRequest(promoCode));
 
-    const results = await ClaretyApi.post(`carts/${cart.cartUid}/promo-codes/`, { promoCode });
+    const results = await ClaretyApi.post(`carts/${cart.cartUid}/promo-codes/`, { promoCode }, { locale: i18next.language });
     const result = results[0];
 
     if (result.status === 'error') {

@@ -85,7 +85,6 @@ class _RegistrationRoot extends React.Component {
     if (i18next.isInitialized) {
       i18next.on('languageChanged', (language) => {
         this.forceUpdate();
-        RegistrationApi.locale = language;
         this.fetchInitData();
       });
     } else {
@@ -104,8 +103,8 @@ class _RegistrationRoot extends React.Component {
     });
 
     // Init API.
-    const { storeId, seriesId, defaultLanguage } = this.props;
-    RegistrationApi.init({ storeId, seriesId, locale: defaultLanguage });
+    const { storeId, seriesId } = this.props;
+    RegistrationApi.init({ storeId, seriesId });
 
     // Auth.
     const jwtAccount = getJwtAccount();
@@ -137,7 +136,7 @@ class _RegistrationRoot extends React.Component {
         storeUid: storeUid,
         offerSingle: donationSingleOfferId,
         offerRecurring: donationRecurringOfferId,
-        locale: RegistrationApi.locale,
+        locale: i18next.language,
       }, mapDonationSettings);
     }
   }

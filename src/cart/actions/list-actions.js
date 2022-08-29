@@ -1,13 +1,13 @@
+import i18next from 'i18next';
 import { ClaretyApi } from 'clarety-utils';
 import { types } from '../actions';
 import {getCartTotalItemsQty} from "cart/selectors";
 
-export function fetchItems(cartUid, locale = null) {
+export function fetchItems(cartUid) {
   return async (dispatch) => {
-    dispatch(fetchItemsRequest(cartUid, locale));
+    dispatch(fetchItemsRequest(cartUid));
 
-    const endpoint = `carts/${cartUid}/` + (locale ? `?locale=${locale}` : '');
-    const results = await ClaretyApi.get(endpoint);
+    const results = await ClaretyApi.get(`carts/${cartUid}/`, { locale: i18next.language });
     const result = results[0];
 
     if (result) {
@@ -79,11 +79,10 @@ function updateCartIcon(state){
 
 // Fetch Items
 
-function fetchItemsRequest(cartUid, locale) {
+function fetchItemsRequest(cartUid) {
   return {
     type: types.fetchItemsRequest,
     cartUid,
-    locale,
   };
 }
 
