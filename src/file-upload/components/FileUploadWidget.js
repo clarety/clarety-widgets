@@ -33,6 +33,7 @@ registerPlugin(
 const uploadUrl = 'ajax.php?FileUpload/upload';
 
 const mimeTypes = {
+  'csv':  'text/csv',
   'txt':  'text/plain',
   'jpeg': 'image/jpeg',
   'jpg':  'image/jpeg',
