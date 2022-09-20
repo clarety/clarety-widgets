@@ -1,3 +1,4 @@
+import i18next from 'i18next';
 import jwtDecode from 'jwt-decode';
 import { ClaretyApi } from 'clarety-utils';
 import { emailStatuses, setCustomer } from 'shared/actions';
@@ -62,7 +63,13 @@ export const createOrUpdateCustomer = () => {
 export const createCustomer = () => {
   return async (dispatch, getState) => {
     const { cart, formData } = getState();
-    const { customer } = parseNestedElements(formData);
+    const { customer, sale } = parseNestedElements(formData);
+
+    // Copy sale attribution data into customer
+    customer.sourceId         = sale.sourceId;
+    customer.channel          = sale.channel;
+    customer.emailResponseUid = sale.emailResponseUid;
+    customer.sendResponseUid  = sale.sendResponseUid;
 
     dispatch(createCustomerRequest(customer));
 
@@ -87,7 +94,7 @@ export const updateCustomer = () => {
     dispatch(updateCustomerRequest(customer));
 
     const { customerUid } = cart.customer;
-    let results = await ClaretyApi.put(`carts/${cart.cartUid}/customers/${customerUid}/`, customer);
+    let results = await ClaretyApi.put(`carts/${cart.cartUid}/customers/${customerUid}/`, customer, { locale: i18next.language });
     const result = results[0];
 
     if (result.status === 'error') {

@@ -2,16 +2,15 @@ import React from 'react';
 import memoize from 'memoize-one';
 import { Form, Row, Col, Button, Spinner } from 'react-bootstrap';
 import { getLanguage, t } from 'shared/translations';
-import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
-import { requiredField, emailField, getSuburbLabel, getStateLabel, getPostcodeLabel, moveInArray, scrollIntoView } from 'shared/utils';
+import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, AddressFinder } from 'shared/components';
+import { requiredField, emailField, addressField, getSuburbLabel, getStateLabel, getPostcodeLabel, moveInArray, scrollIntoView } from 'shared/utils';
 import { TextInput, TextAreaInput, EmailInput, PhoneInput, NumberInput, CurrencyInput, CheckboxInput, CheckboxesInput, SelectInput, RadioInput, DateInput, StateInput, CountryInput, PostcodeInput, FileUploadInput, RatingInput, RankingInput, FormElement, SubmitButton, BackButton, ErrorMessages } from 'form/components';
 
 export class CaseFormPanel extends BasePanel {
   fieldRefs = [];
 
-  onPressBack = (event) => {
-    event.preventDefault();
-    this.props.prevPanel();
+  state = {
+    disableAddressFinders: false,
   };
 
   componentDidUpdate(prevProps) {
@@ -21,6 +20,12 @@ export class CaseFormPanel extends BasePanel {
       this.scrollToFirstError(this.props.errors);
     }
   }
+
+  onPressBack = (event) => {
+    event.preventDefault();
+    this.props.prevPanel();
+    this.scrollIntoView();
+  };
 
   onPressNext = async (event) => {
     event.preventDefault();
@@ -36,6 +41,8 @@ export class CaseFormPanel extends BasePanel {
     }
 
     nextPanel();
+    this.scrollIntoView();
+    this.setState({ disableAddressFinders: true });
   };
 
   onPressSave = async (event) => {
@@ -96,11 +103,7 @@ export class CaseFormPanel extends BasePanel {
         const fieldType = this.getFieldType(field, fieldKey);
 
         if (fieldType === 'address') {
-          requiredField(errors, formData, `${fieldKey}.address1`);
-          requiredField(errors, formData, `${fieldKey}.suburb`);
-          requiredField(errors, formData, `${fieldKey}.state`);
-          requiredField(errors, formData, `${fieldKey}.postcode`);
-          requiredField(errors, formData, `${fieldKey}.country`);
+          addressField(errors, formData, fieldKey);
         } else if (fieldType === 'country') {
           requiredField(errors, formData, `${fieldKey}.country`);
         } else if (fieldType === 'country-postcode') {
@@ -137,7 +140,12 @@ export class CaseFormPanel extends BasePanel {
     for (const field of form.extendFields) {
       const fieldKey = `extendFields.${field.columnKey}`;
       if (requiredFields.includes(fieldKey)) {
-        requiredField(errors, formData, fieldKey);
+        const fieldType = this.getFieldType(field, fieldKey);
+        if (fieldType === 'address') {
+          addressField(errors, formData, fieldKey);
+        } else {
+          requiredField(errors, formData, fieldKey);
+        }
       }
     }
   }
@@ -166,7 +174,9 @@ export class CaseFormPanel extends BasePanel {
   }
 
   getFieldLabel(field, fieldKey) {
-    return t(`${fieldKey}.label`, field.question || field.label);
+    const label = t(`${fieldKey}.label`, field.question || field.label);
+    const isRequired = this.props.requiredFields.includes(fieldKey);
+    return label + (isRequired ? ' *' : '');
   }
 
   getInitialValue(fieldKey) {
@@ -343,18 +353,22 @@ export class CaseFormPanel extends BasePanel {
   }
 
   renderField(field, resourceKey = null) {
+    const { shownFields, fetchedCustomer, settings } = this.props;
+
     const fieldKey = resourceKey ? resourceKey + '.' + field.columnKey : field.columnKey;
 
     // Ignore fields that aren't in the 'shown fields' list.
-    if (!this.props.shownFields.includes(fieldKey)) return null;
+    if (!shownFields.includes(fieldKey)) return null;
 
     // Ignore conditional fields that don't meet their condition.
     if (field.conditionalField && !this.shouldShowConditionalField(field)) return null;
 
+    const isDisabled = fetchedCustomer && settings.disableIfPrefilled && settings.disableIfPrefilled.includes(fieldKey);
+
     switch (this.getFieldType(field, fieldKey)) {
-      case 'text':         return this.renderTextField(field, fieldKey);
+      case 'text':         return this.renderTextField(field, fieldKey, isDisabled);
       case 'textarea':     return this.renderTextAreaField(field, fieldKey);
-      case 'email':        return this.renderEmailField(field, fieldKey);
+      case 'email':        return this.renderEmailField(field, fieldKey, isDisabled);
       case 'phonenumber':  return this.renderPhoneField(field, fieldKey);
       case 'number':       return this.renderNumberField(field, fieldKey);
       case 'currency':     return this.renderCurrencyField(field, fieldKey);
@@ -398,7 +412,7 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
-  renderTextField(field, fieldKey) {
+  renderTextField(field, fieldKey, isDisabled = false) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--text" ref={ref => this.fieldRefs[fieldKey] = ref}>
         {this.renderLabel(field, fieldKey)}
@@ -407,6 +421,7 @@ export class CaseFormPanel extends BasePanel {
           field={fieldKey}
           required={field.required}
           initialValue={this.getInitialValue(fieldKey)}
+          disabled={isDisabled}
         />
 
         {this.renderExplanation(field)}
@@ -429,7 +444,7 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
-  renderEmailField(field, fieldKey) {
+  renderEmailField(field, fieldKey, isDisabled = false) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--email" ref={ref => this.fieldRefs[fieldKey] = ref}>
         {this.renderLabel(field, fieldKey)}
@@ -437,6 +452,7 @@ export class CaseFormPanel extends BasePanel {
         <EmailInput
           field={fieldKey}
           required={field.required}
+          disabled={isDisabled}
         />
 
         {this.renderExplanation(field)}
@@ -601,52 +617,31 @@ export class CaseFormPanel extends BasePanel {
   }
 
   renderAddressField(field, fieldKey) {
-    const { settings, defaultCountry } = this.props;
-    const country = this.props.formData[`${fieldKey}.country`];
+    const { settings, requiredFields } = this.props;
+    const isRequired = requiredFields.includes(fieldKey);
 
     return (
       <div key={fieldKey} className="field field--address" ref={ref => this.fieldRefs[fieldKey] = ref}>
-        {settings.hideCountry
-          ? <FormElement
-              key={fieldKey}
-              field={`${fieldKey}.country`}
-              value={defaultCountry}
-            />
-          : <Form.Row key={fieldKey}>
-              <Col>
-                <CountryField
-                  fieldKey={fieldKey}
-                  region={settings.region}
-                  defaultCountry={defaultCountry}
-                />
-              </Col>
-            </Form.Row>
-        }
-
-        <Form.Row>
-          <Col sm>
-            <Address1Field fieldKey={fieldKey} country={country} />
-          </Col>
-          <Col sm>
-            <SuburbField fieldKey={fieldKey} country={country} />
-          </Col>
-        </Form.Row>
-
-        <Form.Row>
-          <Col sm>
-            <StateField fieldKey={fieldKey} country={country} />
-          </Col>
-          <Col sm>
-            <PostcodeField fieldKey={fieldKey} country={country} />
-          </Col>
-        </Form.Row>
+        <AddressField
+          fieldKey={fieldKey}
+          addressFinderKey={this.props.addressFinderKey}
+          addressFinderCountry={this.props.addressFinderCountry}
+          disableAddressFinder={this.state.disableAddressFinders}
+          hideCountry={settings.hideCountry}
+          defaultCountry={this.props.defaultCountry}
+          region={settings.region}
+          formData={this.props.formData}
+          setFormData={this.props.setFormData}
+          required={isRequired}
+        />
       </div>
     );
   }
 
   renderCountryPostcodeField(field, fieldKey) {
-    const { settings, defaultCountry } = this.props;
+    const { settings, defaultCountry, requiredFields } = this.props;
     const country = this.props.formData[`${fieldKey}.country`];
+    const isRequired = requiredFields.includes(fieldKey);
 
     return (
       <div key={fieldKey} className="field field--country-postcode" ref={ref => this.fieldRefs[fieldKey] = ref}>
@@ -656,10 +651,11 @@ export class CaseFormPanel extends BasePanel {
               fieldKey={fieldKey}
               region={settings.region}
               defaultCountry={defaultCountry}
+              required={isRequired}
             />
           </Col>
           <Col sm>
-            <PostcodeField fieldKey={fieldKey} country={country} />
+            <PostcodeField fieldKey={fieldKey} country={country} required={isRequired} />
           </Col>
         </Form.Row>
       </div>
@@ -667,8 +663,9 @@ export class CaseFormPanel extends BasePanel {
   }
 
   renderCountryStatePostcodeField(field, fieldKey) {
-    const { settings, defaultCountry } = this.props;
+    const { settings, defaultCountry, requiredFields } = this.props;
     const country = this.props.formData[`${fieldKey}.country`];
+    const isRequired = requiredFields.includes(fieldKey);
 
     return (
       <div key={fieldKey} className="field field--country-state-postcode" ref={ref => this.fieldRefs[fieldKey] = ref}>
@@ -678,16 +675,17 @@ export class CaseFormPanel extends BasePanel {
               fieldKey={fieldKey}
               region={settings.region}
               defaultCountry={defaultCountry}
+              required={isRequired}
             />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col sm>
-            <StateField fieldKey={fieldKey} country={country} />
+            <StateField fieldKey={fieldKey} country={country} required={isRequired} />
           </Col>
           <Col sm>
-            <PostcodeField fieldKey={fieldKey} country={country} />
+            <PostcodeField fieldKey={fieldKey} country={country} required={isRequired} />
           </Col>
         </Form.Row>
       </div>
@@ -695,7 +693,8 @@ export class CaseFormPanel extends BasePanel {
   }
 
   renderCountryField(field, fieldKey) {
-    const { settings, defaultCountry } = this.props;
+    const { settings, defaultCountry, requiredFields } = this.props;
+    const isRequired = requiredFields.includes(fieldKey);
 
     return (
       <Form.Row key={fieldKey} ref={ref => this.fieldRefs[fieldKey] = ref}>
@@ -704,6 +703,7 @@ export class CaseFormPanel extends BasePanel {
             fieldKey={fieldKey}
             region={settings.region}
             defaultCountry={defaultCountry}
+            required={isRequired}
           />
         </Col>
       </Form.Row>
@@ -910,46 +910,170 @@ export class CaseFormPanel extends BasePanel {
   }
 }
 
-function Address1Field({ fieldKey }) {
+
+
+class AddressField extends React.Component {
+  state = {
+    useAddressFinder: true,
+  };
+
+  componentDidMount() {
+    const { disableAddressFinder } = this.props;
+    if (disableAddressFinder) this.setState({ useAddressFinder: false });
+  }
+
+  componentDidUpdate(prevProps) {
+    const { disableAddressFinder } = this.props;
+    if (prevProps.disableAddressFinder !== disableAddressFinder && disableAddressFinder === true) {
+      this.setState({ useAddressFinder: false });
+    }
+  }
+
+  shouldUseAddressFinder() {
+    const { addressFinderKey, addressFinderCountry, defaultCountry, formData, fieldKey } = this.props;
+    
+    if (addressFinderCountry) {
+      if (formData[`${fieldKey}.country`] !== addressFinderCountry) {
+        return false;
+      }
+    }
+
+    // Don't use if we already have an address.
+    if (formData[`${fieldKey}.address1`]) {
+      return false;
+    }
+
+    return addressFinderKey && defaultCountry;
+  }
+
+  onAddressFinderSelect = (address) => {
+    const { fieldKey } = this.props;
+
+    this.props.setFormData({
+      [`${fieldKey}.address1`]: address.address1,
+      [`${fieldKey}.address2`]: address.address2,
+      [`${fieldKey}.suburb`]:   address.suburb,
+      [`${fieldKey}.state`]:    address.state,
+      [`${fieldKey}.postcode`]: address.postcode,
+      [`${fieldKey}.country`]:  address.country,
+      [`${fieldKey}.dpid`]:     address.dpid,
+    });
+  };
+
+  onPressDisableAddressFinder = () => this.setState({
+    useAddressFinder: false,
+  });
+
+  render() {
+    const { fieldKey, required, defaultCountry } = this.props;
+    const country = this.props.formData[`${fieldKey}.country`];
+    const useAddressFinder = this.state.useAddressFinder && this.shouldUseAddressFinder();
+
+    return (
+      <React.Fragment>
+        {this.props.hideCountry
+          ? <FormElement
+              key={fieldKey}
+              field={`${fieldKey}.country`}
+              value={defaultCountry}
+            />
+
+          : <Form.Row key={fieldKey}>
+              <Col>
+                <CountryField
+                  fieldKey={fieldKey}
+                  region={this.props.region}
+                  defaultCountry={defaultCountry}
+                  required={required}
+                />
+              </Col>
+            </Form.Row>
+        }
+
+        {useAddressFinder
+          ? <Form.Row>
+              <Col>
+                <Form.Group>
+                  <Form.Label htmlFor="address-finder-input">{t('address', 'Address')}</Form.Label>
+                  <AddressFinder
+                    id="address-finder-input"
+                    apiKey={this.props.addressFinderKey}
+                    country={this.props.addressFinderCountry}
+                    onSelect={this.onAddressFinderSelect}
+                  />
+
+                  <Button variant="link" onClick={this.onPressDisableAddressFinder}>
+                    {t('cant-find-your-address', "Can't find your address?")}
+                  </Button>
+                </Form.Group>
+              </Col>
+            </Form.Row>
+
+          : <React.Fragment>
+              <Form.Row>
+                <Col sm>
+                  <Address1Field fieldKey={fieldKey} country={country} required={required} />
+                </Col>
+                <Col sm>
+                  <SuburbField fieldKey={fieldKey} country={country} required={required && country !== 'NZ'} />
+                </Col>
+              </Form.Row>
+      
+              <Form.Row>
+                <Col sm>
+                  <StateField fieldKey={fieldKey} country={country} required={required} />
+                </Col>
+                <Col sm>
+                  <PostcodeField fieldKey={fieldKey} country={country} required={required} />
+                </Col>
+              </Form.Row>
+            </React.Fragment>
+        }
+      </React.Fragment>
+    );
+  }
+}
+
+function Address1Field({ fieldKey, required }) {
   return (
     <Form.Group controlId={`${fieldKey}.address1`}>
-      <Form.Label>{t('street', 'Street')}</Form.Label>
+      <Form.Label>{t('street', 'Street')}{required && ' *'}</Form.Label>
       <TextInput field={`${fieldKey}.address1`} type="street" />
     </Form.Group>
   );
 }
 
-function SuburbField({ fieldKey, country }) {
+function SuburbField({ fieldKey, country, required }) {
   return (
     <Form.Group controlId={`${fieldKey}.suburb`}>
-      <Form.Label>{getSuburbLabel(country)}</Form.Label>
+      <Form.Label>{getSuburbLabel(country)}{required && ' *'}</Form.Label>
       <TextInput field={`${fieldKey}.suburb`} />
     </Form.Group>
   );
 }
 
-function StateField({ fieldKey, country }) {
+function StateField({ fieldKey, country, required }) {
   return (
     <Form.Group controlId={`${fieldKey}.state`}>
-      <Form.Label>{getStateLabel(country)}</Form.Label>
+      <Form.Label>{getStateLabel(country)}{required && ' *'}</Form.Label>
       <StateInput field={`${fieldKey}.state`} country={country} />
     </Form.Group>
   );
 }
 
-function PostcodeField({ fieldKey, country }) {
+function PostcodeField({ fieldKey, country, required }) {
   return (
     <Form.Group controlId={`${fieldKey}.postcode`}>
-      <Form.Label>{getPostcodeLabel(country)}</Form.Label>
+      <Form.Label>{getPostcodeLabel(country)}{required && ' *'}</Form.Label>
       <PostcodeInput field={`${fieldKey}.postcode`} country={country} />
     </Form.Group>
   );
 }
 
-function CountryField({ fieldKey, region, defaultCountry }) {
+function CountryField({ fieldKey, region, defaultCountry, required }) {
   return (
     <Form.Group controlId="country">
-      <Form.Label>{t('country', 'Country')}</Form.Label>
+      <Form.Label>{t('country', 'Country')}{required && ' *'}</Form.Label>
       <CountryInput
         field={`${fieldKey}.country`}
         initialValue={defaultCountry}

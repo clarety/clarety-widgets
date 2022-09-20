@@ -8,7 +8,12 @@ import { BasePanel, TextInput, EmailInput, DobInput, Button, FormElement } from 
 export class LoginPanel extends BasePanel {
   constructor(props) {
     super(props);
-    this.state.mode = props.isLoggedIn ? 'logged-in' : 'check-email';
+    this.state.mode = props.isLoggedIn
+      ? 'logged-in'
+      : props.settings.guestOnly
+      ? 'guest-account'
+      : 'check-email';
+
     this.state.passwordResetStatus = 'ready';
   }
 
@@ -135,9 +140,11 @@ export class LoginPanel extends BasePanel {
     super.componentDidUpdate(prevProps, prevState);
 
     // Check if email has been modified, and reset status.
-    if (this.state.formData.email !== prevState.formData.email) {
-      this.setMode('check-email');
-      this.onChangeField('password', '');
+    if (!this.props.settings.guestOnly) {
+      if (this.state.formData.email !== prevState.formData.email) {
+        this.setMode('check-email');
+        this.onChangeField('password', '');
+      }
     }
 
     if (this.props.errors !== prevProps.errors) {
@@ -560,10 +567,13 @@ export class LoginPanel extends BasePanel {
 
   renderDone() {
     const { formData } = this.state;
-    const { layout, index, isLoggedIn, customer } = this.props;
+    const { layout, index, isLoggedIn, customer, settings } = this.props;
 
     const email = isLoggedIn ? customer.email : formData['email'];
-    const title = layout === 'stack' ? t('loginPanel.doneTitle', 'You are logged in as') : email;
+
+    const title = layout === 'stack'
+      ? t('loginPanel.editTitle', settings.title || 'Account Details')
+      : email;
 
     return (
       <PanelContainer layout={layout} status="done">

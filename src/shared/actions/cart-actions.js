@@ -95,6 +95,7 @@ export const initTrackingData = (widgetProps) => {
   return {
     type: types.setTrackingData,
     trackingData: {
+      channel:          widgetProps.channel,
       sourceId:         widgetProps.sourceId,
       sourceUid:        widgetProps.sourceUid,
       sourceAdditional: widgetProps.sourceAdditional,

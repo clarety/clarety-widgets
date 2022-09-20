@@ -85,6 +85,7 @@ class _RegistrationRoot extends React.Component {
     if (i18next.isInitialized) {
       i18next.on('languageChanged', (language) => {
         this.forceUpdate();
+        this.fetchInitData();
       });
     } else {
       // Use i18next without translation.
@@ -114,12 +115,16 @@ class _RegistrationRoot extends React.Component {
       await fetchAuthCustomer();
     }
 
+    this.fetchInitData();
+  }
+
+  fetchInitData() {
     // Events.
     const { eventId, fetchFullEvent, fetchEvents } = this.props;
     if (eventId) {
-      await fetchFullEvent(eventId);
+      fetchFullEvent(eventId);
     } else {
-      await fetchEvents();
+      fetchEvents();
     }
 
     // Donations.
@@ -127,10 +132,11 @@ class _RegistrationRoot extends React.Component {
     if (donationSingleOfferId || donationRecurringOfferId) {
       const mapDonationSettings = (result) => ({ priceHandles: result.offers });
 
-      await fetchSettings('donations/', {
+      fetchSettings('donations/', {
         storeUid: storeUid,
         offerSingle: donationSingleOfferId,
         offerRecurring: donationRecurringOfferId,
+        locale: i18next.language,
       }, mapDonationSettings);
     }
   }

@@ -1,8 +1,9 @@
-import { getParsedFormData, getRecaptcha } from 'shared/selectors';
+import { getParsedFormData, getRecaptcha, getTrackingData } from 'shared/selectors';
 
 export const getRsvpPostData = (state) => {  
   const formData = getParsedFormData(state);
   const recaptcha = getRecaptcha(state);
+  const trackingData = getTrackingData(state);
 
   // Convert 'sessions' object into an array of UIDs,
   // and filter out any that were set to 'false'.
@@ -14,5 +15,6 @@ export const getRsvpPostData = (state) => {
     customer: formData.customer,
     recaptchaResponse: recaptcha,
     ...formData.additionalData,
+    ...trackingData,
   };
 };

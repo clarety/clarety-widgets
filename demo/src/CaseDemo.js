@@ -46,6 +46,8 @@ export default class CaseDemo extends React.Component {
       // caseTypeUid: 'ctp_7lvr', // baseline
       caseTypeUid: 'ctp_w5kw', // a21
       // caseTypeUid: "ctp_r8nr", // tnc
+      // caseTypeUid: "ctp_3gyy", // mc
+
 
       // allowSave: true,
       // saveStage: '0',
@@ -63,6 +65,7 @@ export default class CaseDemo extends React.Component {
       //   'extendFields.surveyformhelloranking',
       // ],
 
+      // a21
       shownFields: [
         'customer.type',
         'customer.firstName',
@@ -88,10 +91,39 @@ export default class CaseDemo extends React.Component {
         'customer.email',
         // 'extendFields.testcaseformformtexttwo',
       ],
-
       fieldTypes: {
         'customer.billingAddress': 'country',
       },
+
+      /*
+      // mc
+      "shownFields": [
+        "customer.firstName",
+        "customer.lastName",
+        "customer.email",
+        "customer.mobile",
+        "customer.billingAddress",
+        "extendFields.sampleregistrationformshareholdername",
+        "extendFields.sampleregistrationformshareholdernumbe",
+        "extendFields.sampleregistrationformnumberofshares",
+        "extendFields.sampleregistrationformdateoffirstpurch"
+      ],
+      "requiredFields": [
+        "customer.firstName",
+        "customer.lastName",
+        "customer.email",
+        "customer.mobile",
+        "customer.billingAddress",
+        "extendFields.sampleregistrationformshareholdername",
+        "extendFields.sampleregistrationformshareholdernumbe",
+        "extendFields.sampleregistrationformnumberofshares",
+        "extendFields.sampleregistrationformdateoffirstpurch"
+      ],
+      "fieldTypes": {
+        "customer.billingAddress": "address"
+      },
+      */
+
     });
   }
 

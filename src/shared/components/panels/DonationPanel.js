@@ -82,13 +82,13 @@ export class DonationPanel extends BasePanel {
     nextPanel();
   };
 
-  onPressEdit = (event) => {
-    event.preventDefault();
+  onEditPanel() {
     this.props.removeItemsWithType('donation');
-    this.props.editPanel();
   }
 
   componentDidUpdate(prevProps) {
+    super.componentDidUpdate(prevProps);
+
     const { priceHandles } = this.props;
 
     if (prevProps.priceHandles !== priceHandles) {

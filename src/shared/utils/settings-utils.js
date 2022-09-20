@@ -28,6 +28,9 @@ export function getCustomerPanelSettingsFromWidgetProps(props) {
     showDetails:       getShowDetails(props.detailsOption),
     isDetailsRequired: getIsDetailsRequired(props.detailsOption),
     detailsText:       props.detailsText,
+
+    showDob:           getShowDob(props.dobOption),
+    requireDob:        getIsDobRequired(props.dobOption),
   };
 };
 
@@ -38,9 +41,7 @@ function getPhoneType(phoneOption) {
 }
 
 function getIsPhoneRequired(phoneOption) {
-  if (phoneOption === 'mobile_required') return true;
-
-  return false;
+  return phoneOption === 'mobile_required';
 }
 
 function getAddressType(addressOption) {
@@ -60,11 +61,17 @@ function getIsAddressRequired(addressOption) {
 }
 
 function getShowDetails(detailsOption) {
-  if (detailsOption === 'optional' || detailsOption === 'required') return true;
-
-  return false;
+  return detailsOption === 'optional' || detailsOption === 'required';
 }
 
 function getIsDetailsRequired(detailsOption) {
   return detailsOption === 'required';
+}
+
+function getShowDob(dobOption) {
+  return dobOption === 'dob' || dobOption === 'dob_required';
+}
+
+function getIsDobRequired(dobOption) {
+  return dobOption === 'dob_required';
 }

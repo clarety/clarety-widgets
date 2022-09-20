@@ -70,6 +70,19 @@ export const submitRegistration = (paymentData) => {
   };
 };
 
+export const submitExpressRegistration = () => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const postData = getSubmitRegistrationPostData(state);
+
+    dispatch(registrationSubmitRequest(postData));
+    const result = await RegistrationApi.submitRegistration(postData);
+    if (!result) return false;
+
+    return await dispatch(handlePaymentResult(result));
+  };
+};
+
 const preparePayment = (paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     // Stripe payment.

@@ -19,6 +19,7 @@ const getCasePostData = (state) => {
   return {
     caseTypeUid: getSetting(state, 'caseTypeUid'),
     caseUid: getSetting(state, 'caseUid'),
+    eventUid: getSetting(state, 'eventUid'),
     subject: getSetting(state, 'caseSubject'),
     variant: getSetting(state, 'variant'),
     ...getParsedFormData(state),

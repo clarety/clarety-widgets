@@ -92,6 +92,7 @@ class _PanelManager extends React.Component {
           nextPanel={() => this.nextPanel(index)}
           prevPanel={() => this.editPanel(index - 1)}
           editPanel={() => this.editPanel(index)}
+          editPanelAtIndex={this.editPanel}
           resetAllPanels={this.resetAllPanels}
 
           ref={ref => this.panelRefs[index] = ref}

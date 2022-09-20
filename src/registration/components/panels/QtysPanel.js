@@ -68,7 +68,10 @@ export class QtysPanel extends BasePanel {
       detailsPanels.push({
         component: DetailsPanel,
         connect: DetailsConnect,
-        data: { participantIndex },
+        data: {
+          participantIndex,
+          isLastParticipant: participantIndex+1 === participantCount,
+        },
       });
     }
 
@@ -222,7 +225,7 @@ export class QtysPanel extends BasePanel {
           </div>
           
           <Button onClick={this.onClickEdit}>
-            {t('btn.edit', 'Edit')}
+            {t(['qtysPanel.editBtn', 'btn.edit'], 'Edit')}
           </Button>
 
         </PanelBody>

@@ -1,3 +1,4 @@
+import i18next from 'i18next';
 import { ClaretyApi } from 'clarety-utils';
 import { fetchSettings } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
@@ -26,7 +27,7 @@ export const addDonation = (donation) => {
 
     dispatch(addDonationRequest(donation));
 
-    const results = await ClaretyApi.post(`carts/${cart.cartUid}/donations/`, donation);
+    const results = await ClaretyApi.post(`carts/${cart.cartUid}/donations/`, donation, { locale: i18next.language });
     const result = results[0];
 
     if (result.status === 'error') {

@@ -140,6 +140,7 @@ export const prefillCustomer = () => {
     if (customer) {
       // Prefill customer form data.
       walkFlattenedKeys(customer, (key, value) => dispatch(updateFormData(key, value)), 'customer.');
+      dispatch(updateAppSettings({ fetchedCustomer: true }));
     }
   };
 };

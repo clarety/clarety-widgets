@@ -53,11 +53,10 @@ export class MerchPanel extends BasePanel {
     }
   };
 
-  onClickEdit = (event) => {
-    event.preventDefault();
+  onEditPanel() {
     this.props.removeItemsWithType('merchandise');
-    this.props.editPanel();
-  };
+    this.reset();
+  }
 
   onFormChange = (field, value) => {
     this.setState(prevState => ({
@@ -164,6 +163,8 @@ export class MerchPanel extends BasePanel {
     const { layout, index, isBusy, settings, merchandise } = this.props;
     const { selectedItem, qtys } = this.state;
 
+    const messageText = t('merchPanel.message', settings.messageText || '');
+
     return (
       <PanelContainer layout={layout} status="edit" className="merch-panel">
         <PanelHeader
@@ -174,7 +175,7 @@ export class MerchPanel extends BasePanel {
         />
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
 
-          <p className="message-text">{t('merchPanel.message', settings.messageText || '')}</p>
+          {messageText && <p className="message-text">{messageText}</p>}
 
           <Row className="merch-items">
             {merchandise.map(item =>
@@ -312,7 +313,7 @@ export class MerchPanel extends BasePanel {
           
           <p>{t('merchPanel.doneMessage', settings.title || 'Check Out Our Official Merchandise')}</p>
 
-          <Button onClick={this.onClickEdit}>
+          <Button onClick={this.onPressEdit}>
             {t('btn.edit', 'Edit')}
           </Button>
           
