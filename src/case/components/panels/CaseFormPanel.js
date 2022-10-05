@@ -97,6 +97,11 @@ export class CaseFormPanel extends BasePanel {
 
     // Validate required.
     for (const element of customerElement.elements) {
+      if(element.property === 'optIn'){
+        //customer.optIn is always on the last panel and is validated then, ignore it.
+        continue;
+      }
+
       const fieldKey = `customer.${element.property}`;
       if (requiredFields.includes(fieldKey)) {
         const field = this.getFieldForElement(element);
@@ -131,7 +136,7 @@ export class CaseFormPanel extends BasePanel {
   }
 
   validateExtendFields(errors, section = null) {
-    const { requiredFields, formData } = this.props;
+    const { requiredFields, formData, isLastSection } = this.props;
 
     const form = section !== null
       ? this.props.form.sections[section]
@@ -147,6 +152,11 @@ export class CaseFormPanel extends BasePanel {
           requiredField(errors, formData, fieldKey);
         }
       }
+    }
+
+    //Validate if the opt-in checkbox is required
+    if ((section === null || isLastSection) && requiredFields.includes('customer.optIn')) {
+      requiredField(errors, formData, 'customer.optIn');
     }
   }
 
@@ -347,8 +357,38 @@ export class CaseFormPanel extends BasePanel {
 
         <div className="form-fields">
           {form.extendFields.map(field => this.renderField(field, 'extendFields'))}
+
+          {this.renderOptIn(section)}
+
         </div>
       </div>
+    );
+  }
+
+  renderOptIn(section) {
+    const { shownFields, requiredFields, settings, isLastSection, customerElement } = this.props;
+
+    let fieldKey = 'customer.optIn';
+
+    let shouldShowOptIn = ((section === null || isLastSection) && shownFields.includes(fieldKey));
+    if (!shouldShowOptIn) return null;
+
+    let label = '';
+    if(settings.optInText){
+      label = settings.optInText + (requiredFields.includes(fieldKey) ? ' *' : '');
+    }else{
+      const element = customerElement.elements.find(el => el.property === 'optIn');
+      const field = this.getFieldForElement(element);
+      label = this.getFieldLabel(field, fieldKey);
+    }
+
+    return (
+        <div className="field field--checkbox" ref={ref => this.fieldRefs[fieldKey] = ref}>
+          <CheckboxInput
+              field={fieldKey}
+              label={label}
+          />
+        </div>
     );
   }
 
