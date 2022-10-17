@@ -156,7 +156,8 @@ export class CustomerPanel extends BasePanel {
     const { formData, settings } = this.props;
 
     // NOTE: explicitly check for false! the default (ie 'undefined') is true.
-    if (settings.requireAddress !== false) {
+    //Address field must be shown and required.
+    if (settings.showAddress !== false && settings.requireAddress !== false) {
       requiredField(errors, formData, 'customer.billing.address1');
 
       if (formData['customer.billing.country'] !== 'NZ') {
