@@ -44,10 +44,10 @@ export class _PaymentPanel extends BasePaymentPanel {
   }
   
   renderCartSummary() {
-    const { frequency, amount } = this.props;
+    const { frequency, scheduleLabel, amount } = this.props;
     
     const label = frequency === 'recurring'
-      ? t('monthly-donation-amount', 'Monthly Donation Amount')
+      ? scheduleLabel + ' ' + t('donation-amount', 'Donation Amount')
       : t('donation-amount', 'Donation Amount');
 
     return (
