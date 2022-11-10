@@ -73,13 +73,15 @@ const selectDefaults = (state, offers) => {
 
   for (const offer of offers) {
     const defaultAmount = offer.amounts.find(amount => amount.default) || offer.amounts[0];
+    if (!defaultAmount) throw new Error('Offer contains no amounts');
+
     const defaultPaymentUid = getDefaultOfferPaymentUid(offer);
 
     defaultSelections[offer.frequency] = {
       offerUid: offer.offerUid,
       offerPaymentUid: defaultPaymentUid,
-      amount: defaultAmount ? defaultAmount.amount : 0,
-      isVariableAmount: false,
+      amount: defaultAmount.amount,
+      isVariableAmount: defaultAmount.variable,
     };
   }
 
