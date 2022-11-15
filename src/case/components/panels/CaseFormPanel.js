@@ -387,6 +387,7 @@ export class CaseFormPanel extends BasePanel {
           <CheckboxInput
               field={fieldKey}
               label={label}
+              initialValue={!!settings.preTickOptIn}
           />
         </div>
     );
