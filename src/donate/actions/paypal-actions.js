@@ -28,12 +28,14 @@ export const makePayPalPayment = (data, order, authorization) => {
 
     const { payer } = order;
     const { address } = order.purchase_units[0].shipping;
+    const phone = payer.phone ? payer.phone.phone_number.national_number : undefined;
 
     // Set cart customer.
     const customerData = {
       firstName: payer.name.given_name,
       lastName: payer.name.surname,
       email: payer.email_address,
+      mobile: phone,
       billing: {
         address1: address.address_line_1,
         address2: address.address_line_2,
@@ -51,6 +53,7 @@ export const makePayPalPayment = (data, order, authorization) => {
       'customer.email':            customerData.email,
       'customer.firstName':        customerData.firstName,
       'customer.lastName':         customerData.lastName,
+      'customer.mobile':           customerData.mobile,
       'customer.billing.address1': customerData.billing.address1,
       'customer.billing.address2': customerData.billing.address2,
       'customer.billing.suburb':   customerData.billing.suburb,
