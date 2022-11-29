@@ -10,7 +10,7 @@ import { statuses, setStore, initTrackingData, fetchSettings, updateAppSettings,
 import { PanelManager, StepIndicator } from 'shared/components';
 import { getJwtCustomer, Resources, convertOptions } from 'shared/utils';
 import { Recaptcha } from 'form/components';
-import { handleAmountUrlParam, selectFrequency } from 'donate/actions';
+import { handleAmountUrlParam, setApiCampaignUids, selectFrequency } from 'donate/actions';
 import { rootReducer } from 'donate/reducers';
 import { DonationApi, mapDonationSettings, setupDefaultResources } from 'donate/utils';
 import { fetchCustomer } from 'donate/actions/customer-actions';
@@ -60,7 +60,7 @@ export class DonateWidget extends React.Component {
 export class _DonateWidgetRoot extends React.Component {
   async componentDidMount() {
     const { storeUid, singleOfferId, recurringOfferId, categoryUid } = this.props;
-    const { updateAppSettings, setStore, initTrackingData, fetchSettings, handleAmountUrlParam, fetchCustomer } = this.props;
+    const { updateAppSettings, setStore, initTrackingData, fetchSettings, handleAmountUrlParam, setApiCampaignUids, fetchCustomer } = this.props;
 
     if (!singleOfferId && !recurringOfferId && !categoryUid) {
       throw new Error('[DonateWidget] A singleOfferId, recurringOfferId, or categoryUid is required');
@@ -94,6 +94,7 @@ export class _DonateWidgetRoot extends React.Component {
     setStore(storeUid);
 
     initTrackingData(this.props);
+    setApiCampaignUids();
 
     const jwtCustomer = await this.findJwtCustomer();
     if (jwtCustomer) {
@@ -172,6 +173,7 @@ const actions = {
   fetchSettings: fetchSettings,
   updateAppSettings: updateAppSettings,
   handleAmountUrlParam: handleAmountUrlParam,
+  setApiCampaignUids: setApiCampaignUids,
   fetchCustomer: fetchCustomer,
   selectFrequency: selectFrequency,
 };
