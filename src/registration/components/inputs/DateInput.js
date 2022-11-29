@@ -55,7 +55,7 @@ export class PureDateInput extends React.Component {
 
   onChangeDate = (date) => {
     const dateString = formatISO(date, { representation: 'date' });
-    this.props.onChange(dateString);
+    this.props.onChange(this.props.field, dateString);
   };
 
   render() {
