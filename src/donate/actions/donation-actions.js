@@ -1,8 +1,8 @@
 import { statuses, setStatus, fetchSettings } from 'shared/actions';
-import { getFormData, getSetting } from 'shared/selectors';
+import { getFormData, getSetting, getTrackingData } from 'shared/selectors';
 import { getStoreUid } from 'donate/selectors';
 import { types } from 'donate/actions';
-import { mapDonationSettings } from 'donate/utils';
+import { DonationApi, mapDonationSettings } from 'donate/utils';
 
 export const fetchFundOffers = () => {
   return async (dispatch, getState) => {
@@ -77,5 +77,13 @@ export const handleAmountUrlParam = () => {
         dispatch(selectAmount(offer.frequency, amount, isVariable));
       }
     }
+  };
+};
+
+export const setApiCampaignUids = () => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const trackingData = getTrackingData(state);
+    DonationApi.setCampaignUids(trackingData.emailResponseUid, trackingData.sendResponseUid);
   };
 };
