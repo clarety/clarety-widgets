@@ -3,7 +3,7 @@ import { Button, Form, Row, Col, Alert } from 'react-bootstrap';
 import { getLanguage, t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext, parseNestedElements, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
-import { TextInput, NumberInput, EmailInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput, StateInput, PostcodeInput, CountryInput, FormElement } from 'registration/components';
+import { TextInput, TextAreaInput, NumberInput, EmailInput, DateInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput, StateInput, PostcodeInput, CountryInput, FormElement } from 'registration/components';
 import { getGenderOptions, scrollIntoView } from 'registration/utils';
 
 export class DetailsPanel extends BasePanel {
@@ -636,6 +636,7 @@ export class DetailsPanel extends BasePanel {
 
   renderOptIn() {
     const { settings } = this.props;
+    if (settings.showOptIn === false) return null;
 
     return (
       <CheckboxInput
@@ -661,10 +662,12 @@ export class DetailsPanel extends BasePanel {
   renderExtendField = (field) => {
     switch (field.type) {
       case 'text':        return this.renderTextField(field);
+      case 'textarea':    return this.renderTextAreaField(field);
       case 'number':      return this.renderNumberField(field);
       case 'select':      return this.renderSelectField(field);
       case 'checkbox':    return this.renderCheckboxField(field);
       case 'phonenumber': return this.renderPhoneField(field);
+      case 'date':        return this.renderDateField(field);
       
       default: throw new Error(`Extend field type not supported: ${field.type}`);
     }
@@ -673,6 +676,16 @@ export class DetailsPanel extends BasePanel {
   renderTextField(field) {
     return (
       <TextInput
+        field={`extendForm.${field.columnKey}`}
+        label={t(`label.extendForm.${field.columnKey}`, field.label)}
+        required={field.required}
+      />
+    );
+  }
+
+  renderTextAreaField(field) {
+    return (
+      <TextAreaInput
         field={`extendForm.${field.columnKey}`}
         label={t(`label.extendForm.${field.columnKey}`, field.label)}
         required={field.required}
@@ -715,6 +728,16 @@ export class DetailsPanel extends BasePanel {
   renderPhoneField(field) {
     return (
       <PhoneInput
+        field={`extendForm.${field.columnKey}`}
+        label={t(`label.extendForm.${field.columnKey}`, field.label)}
+        required={field.required}
+      />
+    );
+  }
+
+  renderDateField(field) {
+    return (
+      <DateInput
         field={`extendForm.${field.columnKey}`}
         label={t(`label.extendForm.${field.columnKey}`, field.label)}
         required={field.required}

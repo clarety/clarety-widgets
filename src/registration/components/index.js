@@ -2,6 +2,7 @@ export * from './Registration';
 
 export * from './inputs/CheckboxInput';
 export * from './inputs/CountryInput';
+export * from './inputs/DateInput';
 export * from './inputs/DobInput';
 export * from './inputs/EmailInput';
 export * from './inputs/FormElement';
@@ -15,6 +16,7 @@ export * from './inputs/SimpleSelectInput';
 export * from './inputs/StateInput';
 export * from './inputs/TeamSearchInput';
 export * from './inputs/TextInput';
+export * from './inputs/TextAreaInput';
 
 export * from './panels/DetailsPanel';
 export * from './panels/DetailsConnect';
