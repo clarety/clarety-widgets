@@ -1,4 +1,4 @@
-import { addItem, updateItem, clearItems, setCustomer, setTrackingData } from 'shared/actions';
+import { addItem, updateItem, removeItemsWithType, setCustomer, setTrackingData } from 'shared/actions';
 import { getCart, getParsedFormData } from 'shared/selectors';
 import { getDonationPanelSelection, getDonationStartDate, getDonationGivingType } from 'donate/selectors';
 
@@ -24,7 +24,7 @@ export const addDonationToCart = () => {
     const selection = getDonationPanelSelection(state);
     const description = getDonationGivingType(state);
 
-    dispatch(clearItems());
+    dispatch(removeItemsWithType('donation'));
 
     dispatch(addItem({
       type:            'donation',

@@ -79,11 +79,3 @@ export const handleAmountUrlParam = () => {
     }
   };
 };
-
-export const setApiCampaignUids = () => {
-  return async (dispatch, getState) => {
-    const state = getState();
-    const trackingData = getTrackingData(state);
-    DonationApi.setCampaignUids(trackingData.emailResponseUid, trackingData.sendResponseUid);
-  };
-};

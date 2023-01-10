@@ -11,11 +11,12 @@ Config.init({
   // instanceKey: 'tnc-hk',
   // instanceKey: 'clarety-church',
   // instanceKey: 'ethiopiaid',
-  instanceKey: 'a21',
+  // instanceKey: 'a21',
   // instanceKey: 'mc',
   // instanceKey: 'miraclebabies',
   // instanceKey: 'bibleleague',
   // instanceKey: 'bsfs',
+  instanceKey: 'ihc',
   devSitePath: 'http://localhost:3000/',
   // phoneCountry: 'AU',
   localhostProtocol: 'https:',
@@ -105,6 +106,11 @@ const Demo = () => {
     return <CaseDemo />;
   }
 
+  if (url.endsWith('membership')) {
+    const MembershipDemo = require('./MembershipDemo').default;
+    return <MembershipDemo />;
+  }
+
   return (
     <div className="list-group m-5">
       <a href="subscribe" className="list-group-item list-group-item-action">Subscribe Widget Demo</a>
@@ -121,6 +127,7 @@ const Demo = () => {
       <a href="file-upload" className="list-group-item list-group-item-action">File Upload Demo</a>
       <a href="rsvp" className="list-group-item list-group-item-action">RSVP Demo</a>
       <a href="case" className="list-group-item list-group-item-action">Case Demo</a>
+      <a href="membership" className="list-group-item list-group-item-action">Membership Widget Demo</a>
     </div>
   );
 };

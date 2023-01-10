@@ -28,7 +28,20 @@ export class PriceHandlesPriceOnly extends PriceHandlesStandard {
 
   onMouseLeaveAmount = (amountInfo) => {
     const selectedAmountInfo = this.getSelectedAmountInfo();
-    this.setState({ description: selectedAmountInfo.description });
+    this.setState({ description: selectedAmountInfo ? selectedAmountInfo.description : '' });
+  };
+
+  onClickOther = () => {
+    const { selections, frequency } = this.props;
+    const currentSelection = selections[frequency];
+
+    // Select variable amount.
+    this.onSelectAmount(frequency, currentSelection.variableAmount, true);
+  };
+
+  onClickNone = () => {
+    // Select no amount.
+    this.onSelectAmount(this.props.frequency, null, false);
   };
 
   getDefaultDescription(frequency) {
@@ -37,7 +50,7 @@ export class PriceHandlesPriceOnly extends PriceHandlesStandard {
   }
 
   render() {
-    const { selections, frequency, offer } = this.props;
+    const { selections, frequency, offer, allowNone } = this.props;
     const currentSelection = selections[frequency];
     
     const variableAmount = this.getVariableAmount(offer);
@@ -59,6 +72,16 @@ export class PriceHandlesPriceOnly extends PriceHandlesStandard {
           {otherBtnText}
         </Button>
 
+        {allowNone &&
+          <Button
+            onClick={this.onClickNone}
+            variant="outline-primary"
+            className={currentSelection.amount === null ? 'amount selected' : 'amount'}
+          >
+            {t('none', 'None')}
+          </Button>
+        }
+
         {currentSelection.isVariableAmount &&
           this.renderVariableAmount(variableAmount, 'VariableAmountPriceOnly')
         }
@@ -69,12 +92,4 @@ export class PriceHandlesPriceOnly extends PriceHandlesStandard {
       </div>
     );
   }
-
-  onClickOther = () => {
-    const { selections, frequency } = this.props;
-    const currentSelection = selections[frequency];
-
-    // Select variable amount.
-    this.onSelectAmount(frequency, currentSelection.variableAmount, true);
-  };
 }

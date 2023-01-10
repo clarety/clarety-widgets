@@ -2,7 +2,7 @@ import React from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, ElementsConsumer } from '@stripe/react-stripe-js';
 import { getLanguage } from 'shared/translations';
-import { isStripe } from 'shared/actions/stripe-actions';
+import { isStripe } from 'shared/utils';
 
 
 export const injectStripe = (PaymentPanelComponent) => {

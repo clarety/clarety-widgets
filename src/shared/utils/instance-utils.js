@@ -1,17 +1,7 @@
 import { Config, getEnv } from 'clarety-utils';
 
-// Deprecated
-// TODO: remove once no-one is using...
-export function getAssetsPath() {
-  return getSitePath();
-}
-
 export function getSitePath() {
   let devSitePath = Config.get('devSitePath');
-
-  // TODO: remove once no-one is using 'devAssetsPath'.
-  if (!devSitePath) devSitePath = Config.get('devAssetsPath');
-
   if (!devSitePath) throw new Error('[Clarety] "devSitePath" not set in config.');
 
   return getEnv() === 'prod' ? '' : devSitePath;

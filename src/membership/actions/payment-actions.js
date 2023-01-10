@@ -5,9 +5,10 @@ import { getSetting } from 'shared/selectors';
 import { isHongKongDirectDebit, isStripe } from 'shared/utils';
 import { setErrors, updateFormData } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
-import { DonationApi } from 'donate/utils';
-import { types, addDonationToCart, addCustomerToCart, setDonationStartDate } from 'donate/actions';
-import { getStoreUid, getPaymentMethod, getPaymentPostData, getSelectedFrequency } from 'donate/selectors';
+import { types } from 'donate/actions';
+import { getStoreUid, getPaymentMethod, getSelectedFrequency } from 'donate/selectors';
+import { MembershipApi } from 'membership/utils';
+import { getPaymentPostData } from 'membership/selectors';
 
 export const makePayment = (paymentData, { isPageLayout } = {}) => {
   return async (dispatch, getState) => {
@@ -23,14 +24,6 @@ export const makePayment = (paymentData, { isPageLayout } = {}) => {
       dispatch(setStatus(statuses.ready));
       return false;
     }
-
-    // Update cart in page layout.
-    if (isPageLayout) {
-      dispatch(addDonationToCart());
-      dispatch(addCustomerToCart());
-    }
-
-    dispatch(setDonationStartDate());
 
     const paymentMethod = getPaymentMethod(state, paymentData.type);
     const frequency = getSelectedFrequency(state);
@@ -76,7 +69,7 @@ const attemptPayment = (paymentData, paymentMethod) => {
     const postData = getPaymentPostData(state);
     dispatch(makePaymentRequest(postData));
   
-    return DonationApi.createDonation(postData);
+    return MembershipApi.createMembership(postData);
   };
 };
 
@@ -233,7 +226,8 @@ const fetchPaymentMethods = () => {
     const storeUid = getStoreUid(state);
     const singleOfferId = getSetting(state, 'singleOfferId');
     const recurringOfferId = getSetting(state, 'recurringOfferId');
-    const result = await DonationApi.fetchPaymentMethods(storeUid, singleOfferId, recurringOfferId);
+
+    const result = await MembershipApi.fetchPaymentMethods(storeUid, singleOfferId, recurringOfferId);
 
     if (result.paymentMethods) {
       dispatch(fetchPaymentMethodsSuccess());
@@ -245,6 +239,8 @@ const fetchPaymentMethods = () => {
     }
   };
 };
+
+
 
 // Make Payment
 

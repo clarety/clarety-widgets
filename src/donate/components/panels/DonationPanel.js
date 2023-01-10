@@ -8,9 +8,8 @@ import { PriceHandlesStandard, PriceHandlesPriceOnly } from 'donate/components';
 import { FrequencySelect, ScheduleSelectButtonGroup, ScheduleSelectDropdown } from 'donate/components';
 
 export class DonationPanel extends BasePanel {
-  onShowPanel() {
-    const { layout, clearItems } = this.props;
-    if (layout === 'tabs') clearItems();
+  onEditPanel() {
+    this.props.removeAllDonationsFromCart();
   }
 
   onSelectSchedule = (offerPaymentUid) => {
@@ -47,11 +46,12 @@ export class DonationPanel extends BasePanel {
   }
 
   validateFields(errors) {
-    const { selections, frequency, formData, givingTypeOptions } = this.props;
+    const { selections, frequency, formData, givingTypeOptions, settings } = this.props;
 
-    // Make sure an amount has been selected.
+    // Make sure an amount has been selected. 'None' may be a valid selection depending on settings.
     const selection = selections[frequency];
-    if (!Number(selection.amount)) {
+    const didSelectNone = settings.allowNone && selection.amount === null;
+    if (!didSelectNone && !Number(selection.amount)) {
       errors.push({ message: t('invalid-donation', 'Please select a donation amount') });
     }
 
@@ -198,6 +198,7 @@ export class DonationPanel extends BasePanel {
         resources={resources}
         selectAmount={selectAmount}
         hideCents={settings.hideCents}
+        allowNone={settings.allowNone}
       />
     );
   }

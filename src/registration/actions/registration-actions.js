@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
-import { setPayment, isStripe, prepareStripePayment, authoriseStripePayment, setStatus, statuses } from 'shared/actions';
+import { setPayment, prepareStripePayment, authoriseStripePayment, setStatus, statuses } from 'shared/actions';
 import { getCart, getSetting } from 'shared/selectors';
+import { isStripe } from 'shared/utils';
 import { setErrors, clearErrors } from 'form/actions';
 import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getPaymentMethod } from 'registration/selectors';
 import { types } from 'registration/actions';

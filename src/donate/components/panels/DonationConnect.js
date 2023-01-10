@@ -1,5 +1,5 @@
 import { getSetting } from 'shared/selectors';
-import { clearItems } from 'shared/actions';
+import { removeItemsWithType } from 'shared/actions';
 import { getFormData, getErrors } from 'form/selectors';
 import { setErrors } from 'form/actions';
 import { getSelectedAmount, getGivingTypeOptions } from 'donate/selectors';
@@ -25,7 +25,7 @@ export class DonationConnect {
     selectAmount: selectAmount,
     selectSchedule: selectSchedule,
     onSubmit: addDonationToCart,
-    clearItems: clearItems,
+    removeAllDonationsFromCart: () => removeItemsWithType('donation'),
     setErrors: setErrors,
   };
 }
