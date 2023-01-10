@@ -24,6 +24,7 @@ module.exports = {
           'form':              './src/form',
           'fundraising-start': './src/fundraising-start',
           'lead-gen':          './src/lead-gen',
+          'membership':        './src/membership',
           'quiz':              './src/quiz',
           'registration':      './src/registration',
           'rsvp':              './src/rsvp',

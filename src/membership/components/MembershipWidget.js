@@ -8,14 +8,14 @@ import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { statuses, setStore, initTrackingData, fetchSettings, updateAppSettings, setPanels, setApiCampaignUids } from 'shared/actions';
 import { PanelManager, StepIndicator } from 'shared/components';
-import { getJwtCustomer, Resources, convertOptions } from 'shared/utils';
+import { getJwtCustomer, Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
-import { handleAmountUrlParam, selectFrequency } from 'donate/actions';
-import { rootReducer } from 'donate/reducers';
-import { DonationApi, mapDonationSettings, setupDefaultResources } from 'donate/utils';
 import { fetchCustomer } from 'donate/actions/customer-actions';
+import { ensureValidDonationPanel } from 'membership/actions';
+import { rootReducer } from 'membership/reducers';
+import { MembershipApi, mapMembershipWidgetSettings, setupDefaultResources } from 'membership/utils';
 
-export class DonateWidget extends React.Component {
+export class MembershipWidget extends React.Component {
   static store;
   static resources;
 
@@ -23,32 +23,32 @@ export class DonateWidget extends React.Component {
     // Setup redux store.
     const middleware = applyMiddleware(thunk);
     const composeDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-    DonateWidget.store = createStore(rootReducer, composeDevTools(middleware));
+    MembershipWidget.store = createStore(rootReducer, composeDevTools(middleware));
 
     // Setup resources.
-    DonateWidget.resources = new Resources();
-    setupDefaultResources(DonateWidget.resources);
+    MembershipWidget.resources = new Resources();
+    setupDefaultResources(MembershipWidget.resources);
   }
 
   static appSettings(settings) {
-    DonateWidget.store.dispatch(updateAppSettings(settings));
+    MembershipWidget.store.dispatch(updateAppSettings(settings));
   }
 
   static setPanels(panels) {
-    DonateWidget.resources.setPanels(panels);
-    DonateWidget.store.dispatch(setPanels(panels));
+    MembershipWidget.resources.setPanels(panels);
+    MembershipWidget.store.dispatch(setPanels(panels));
   }
 
   static setComponent(name, component) {
-    DonateWidget.resources.setComponent(name, component);
+    MembershipWidget.resources.setComponent(name, component);
   }
 
   render() {
     return (
-      <ReduxProvider store={DonateWidget.store}>
+      <ReduxProvider store={MembershipWidget.store}>
         <BreakpointProvider>
-          <DonateWidgetRoot
-            resources={DonateWidget.resources}
+          <MembershipWidgetRoot
+            resources={MembershipWidget.resources}
             {...this.props}
           />
         </BreakpointProvider>
@@ -57,13 +57,13 @@ export class DonateWidget extends React.Component {
   }
 }
 
-export class _DonateWidgetRoot extends React.Component {
+export class _MembershipWidgetRoot extends React.Component {
   async componentDidMount() {
-    const { storeUid, singleOfferId, recurringOfferId, categoryUid } = this.props;
-    const { updateAppSettings, setStore, initTrackingData, fetchSettings, handleAmountUrlParam, setApiCampaignUids, fetchCustomer } = this.props;
+    const { storeUid, membershipOfferId, membershipCategoryUid } = this.props;
+    const { updateAppSettings, setStore, initTrackingData, fetchSettings, setApiCampaignUids, fetchCustomer } = this.props;
 
-    if (!singleOfferId && !recurringOfferId && !categoryUid) {
-      throw new Error('[DonateWidget] A singleOfferId, recurringOfferId, or categoryUid is required');
+    if (!membershipOfferId && !membershipCategoryUid) {
+      throw new Error('[MembershipWidget] A membershipOfferId, or membershipCategoryUid is required');
     }
 
     // Translations.
@@ -77,18 +77,16 @@ export class _DonateWidgetRoot extends React.Component {
     }
 
     updateAppSettings({
-      singleOfferId:        singleOfferId,
-      recurringOfferId:     recurringOfferId,
-      variant:              this.props.variant,
-      confirmPageUrl:       this.props.confirmPageUrl,
-      confirmPageMode:      this.props.confirmPageMode,
-      defaultCountry:       this.props.defaultCountry,
-      fundraisingPageUid:   this.props.fundraisingPageUid,
-      givingTypeOptions:    convertOptions(this.props.givingTypeOptions),
-      addressFinderKey:     this.props.addressFinderKey,
-      addressFinderCountry: this.props.addressFinderCountry,
-      hideCurrencyCode:     this.props.hideCurrencyCode,
-      defaultFrequency:     this.props.defaultFrequency,
+      membershipOfferId:     membershipOfferId,
+      membershipCategoryUid: membershipCategoryUid,
+      variant:               this.props.variant,
+      confirmPageUrl:        this.props.confirmPageUrl,
+      confirmPageMode:       this.props.confirmPageMode,
+      defaultCountry:        this.props.defaultCountry,
+      addressFinderKey:      this.props.addressFinderKey,
+      addressFinderCountry:  this.props.addressFinderCountry,
+      hideCurrencyCode:      this.props.hideCurrencyCode,
+      defaultFrequency:      this.props.defaultFrequency,
     });
 
     setStore(storeUid);
@@ -98,22 +96,17 @@ export class _DonateWidgetRoot extends React.Component {
 
     const jwtCustomer = await this.findJwtCustomer();
     if (jwtCustomer) {
-      DonationApi.setJwtCustomer(jwtCustomer);
+      MembershipApi.setJwtCustomer(jwtCustomer);
       await fetchCustomer();
     }
 
-    await fetchSettings('donations/', {
+    await fetchSettings('membership/', {
       storeUid: storeUid,
-      offerSingle: singleOfferId,
-      offerRecurring: recurringOfferId,
-      categoryUid: categoryUid,
-    }, mapDonationSettings);
+      offerSingle: membershipOfferId,
+      categoryUid: membershipCategoryUid,
+    }, mapMembershipWidgetSettings);
 
-    // Select default frequency.
-    const { defaultFrequency, selectFrequency } = this.props;
-    if (defaultFrequency) selectFrequency(defaultFrequency);
-
-    handleAmountUrlParam();
+    this.props.ensureValidDonationPanel();
   }
 
   async findJwtCustomer() {
@@ -124,7 +117,7 @@ export class _DonateWidgetRoot extends React.Component {
     // Check for action auth.
     const actionKey = new URLSearchParams(window.location.search).get('clarety_action');
     if (actionKey) {
-      const actionAuth = await DonationApi.actionAuth(actionKey);
+      const actionAuth = await MembershipApi.actionAuth(actionKey);
       if (actionAuth && actionAuth.jwtCustomer) return actionAuth.jwtCustomer;
     }
 
@@ -145,7 +138,7 @@ export class _DonateWidgetRoot extends React.Component {
     }
 
     return (
-      <div className={`clarety-donate-widget h-100 ${layout} ${variant}`}>
+      <div className={`clarety-membership-widget h-100 ${layout} ${variant}`}>
         <BlockUi tag="div" blocking={status === statuses.busy} loader={<span></span>}>
           {showStepIndicator && <StepIndicator />}
 
@@ -172,11 +165,10 @@ const actions = {
   initTrackingData: initTrackingData,
   fetchSettings: fetchSettings,
   updateAppSettings: updateAppSettings,
-  handleAmountUrlParam: handleAmountUrlParam,
   setApiCampaignUids: setApiCampaignUids,
   fetchCustomer: fetchCustomer,
-  selectFrequency: selectFrequency,
+  ensureValidDonationPanel: ensureValidDonationPanel,
 };
 
-export const connectDonateWidgetRoot = connect(mapStateToProps, actions);
-export const DonateWidgetRoot = connectDonateWidgetRoot(_DonateWidgetRoot);
+export const connectMembershipWidgetRoot = connect(mapStateToProps, actions);
+export const MembershipWidgetRoot = connectMembershipWidgetRoot(_MembershipWidgetRoot);

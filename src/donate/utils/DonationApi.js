@@ -5,11 +5,6 @@ export class DonationApi {
     ClaretyApi.setJwtCustomer(jwtCustomer);
   }
 
-  static setCampaignUids(emailResponseUid = null, sendResponseUid = null) {
-    if (emailResponseUid) ClaretyApi.setHeader('emailResponseUid', emailResponseUid);
-    if (sendResponseUid) ClaretyApi.setHeader('sendResponseUid', sendResponseUid);
-  }
-
   static async actionAuth(actionKey) {
     const results = await ClaretyApi.get(`donations/action-auth/`, { actionKey });
     return results[0];

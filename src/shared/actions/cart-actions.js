@@ -1,4 +1,6 @@
 import uuid from 'uuid/v4';
+import { ClaretyApi } from 'clarety-utils';
+import { getTrackingData } from 'shared/selectors';
 import { types } from 'shared/actions';
 
 export const addItem = ({ offerId, offerUid, offerPaymentUid, productId, type, quantity, price, panel, options, description }) => ({
@@ -114,3 +116,13 @@ export const setRecaptcha = (recaptcha) => ({
 export const clearRecaptcha = () => ({
   type: types.clearRecaptcha,
 });
+
+export const setApiCampaignUids = () => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const trackingData = getTrackingData(state);
+    const { emailResponseUid, sendResponseUid } = trackingData;
+    if (emailResponseUid) ClaretyApi.setHeader('emailResponseUid', emailResponseUid);
+    if (sendResponseUid)  ClaretyApi.setHeader('sendResponseUid', sendResponseUid);
+  };
+};

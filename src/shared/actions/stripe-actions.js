@@ -1,16 +1,5 @@
-import {AuBankAccountElement, CardNumberElement} from '@stripe/react-stripe-js';
-
-export function isStripe(paymentMethod) {
-  return isStripeCard(paymentMethod) ||
-      isStripeAuBankAccount(paymentMethod);
-}
-export function isStripeCard(paymentMethod) {
-  return paymentMethod.gateway === 'stripe' ||
-      paymentMethod.gateway === 'stripe-sca';
-}
-export function isStripeAuBankAccount(paymentMethod) {
-  return paymentMethod.gateway === 'stripe-becs';
-}
+import { AuBankAccountElement, CardNumberElement } from '@stripe/react-stripe-js';
+import { isStripeAuBankAccount } from 'shared/utils';
 
 export const prepareStripePayment = (paymentData, paymentMethod, frequency) => {
   return async (dispatch, getState) => {

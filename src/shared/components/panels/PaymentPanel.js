@@ -2,10 +2,9 @@ import React from 'react';
 import { Form, Row, Col, Spinner, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import { CardNumberElement, CardExpiryElement, CardCvcElement, AuBankAccountElement } from '@stripe/react-stripe-js';
 import { Config } from 'clarety-utils';
-import { isStripeCard, isStripeAuBankAccount } from 'shared/actions/stripe-actions';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, injectStripe } from 'shared/components';
-import { requiredField, cardNumberField, cardExpiryField, ccvField } from 'shared/utils';
+import { requiredField, cardNumberField, cardExpiryField, ccvField, isStripeCard, isStripeAuBankAccount } from 'shared/utils';
 import { TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, AccountNumberInput, BsbInput, NZAccountNumberInput, PhoneInput, NumberInput, SelectInput } from 'form/components';
 
 export class _PaymentPanel extends BasePanel {
