@@ -101,7 +101,11 @@ export class DonationPanel extends BasePanel {
   }
 
   renderContent() {
-    const { layout, isBusy } = this.props;
+    const { layout, isBusy, offers } = this.props;
+
+    if (!offers || !offers.length) {
+      return null;
+    }
 
     return (
       <PanelContainer layout={layout} status="edit" className="donation-panel">

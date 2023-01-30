@@ -1,4 +1,4 @@
-import { removePanels, insertPanels } from 'shared/actions';
+import { removePanels, insertPanels, resetAllPanels } from 'shared/actions';
 import { getIndexOfPanelWithComponent } from 'shared/selectors';
 import { getPriceHandles } from 'donate/selectors';
 import { MembershipWidget } from 'membership/components';
@@ -9,6 +9,7 @@ export const ensureValidDonationPanel = () => {
 
     const priceHandles = getPriceHandles(state);
     if (!priceHandles || !priceHandles.length) {
+      dispatch(resetAllPanels());
       dispatch(removePanels({ withComponent: 'DonationPanel' }));
     } else {
       // Insert a donation panel 
