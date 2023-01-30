@@ -4,6 +4,7 @@ import smoothscroll from 'smoothscroll-polyfill';
 
 smoothscroll.polyfill();
 
+export { ClaretyApi } from 'clarety-utils';
 export { Config } from 'clarety-utils';
 export { connect } from 'react-redux';
 

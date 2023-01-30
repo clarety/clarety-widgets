@@ -71,7 +71,7 @@ class _PanelManager extends React.Component {
   }
 
   renderPanel = (panel, index) => {
-    const { layout, settings, resources } = this.props;
+    const { layout, settings, resources, isPreview } = this.props;
     const PanelComponent = this.components[panel.component];
     const panelSettings = settings.panels[panel.component];
     
@@ -86,6 +86,7 @@ class _PanelManager extends React.Component {
           layout={layout}
           settings={panelSettings}
           resources={resources}
+          isPreview={isPreview}
           
           {...panel.data}
 

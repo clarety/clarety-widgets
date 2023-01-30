@@ -89,9 +89,10 @@ export class _PaymentPanel extends BasePanel {
   onPressNext = async (event) => {
     event.preventDefault();
 
-    const { onSubmit, nextPanel, layout } = this.props;
+    const { onSubmit, nextPanel, layout, isPreview } = this.props;
 
     if (layout === 'page') return;
+    if (isPreview) return;
 
     const isValid = this.validate();
     if (!isValid) return;

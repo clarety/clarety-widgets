@@ -39,8 +39,8 @@ function insertPanels(state, action) {
 
   const panels = action.panels.map(panel => ({
     id: nextId(),
-    component: panel.component ? panel.component.name : null,
-    connect: panel.connect ? panel.connect.name : null,
+    component: toString(panel.component),
+    connect: toString(panel.connect),
     status: panel.status || 'wait',
     isValid: panel.isValid || false,
     data: panel.data || {},
@@ -50,6 +50,16 @@ function insertPanels(state, action) {
   newState.splice(index, 0, ...panels);
 
   return newState;
+}
+
+function toString(classOrString) {
+  if (!classOrString) return null;
+
+  // Already a string.
+  if (typeof classOrString === 'string') return classOrString;
+
+  // Use the name of the class.
+  return classOrString.name;
 }
 
 function removePanels(state, action) {

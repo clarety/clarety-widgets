@@ -135,7 +135,7 @@ const handlePaymentComplete = (result, paymentData, paymentMethod) => {
     dispatch(updateCartData({ items: result.salelines }));
 
     if (confirmPageUrl) {      
-      if (confirmPageMode === 'redirect') {
+      if (confirmPageMode === 'redirect' || confirmPageMode === 'redirect-iframe-parent') {
         // Redirect to confirm page, jwt is set in cookie.
         if (window.location.protocol === 'https:') {
           Cookies.set('session-jwt', result.jwt, { sameSite: 'none', secure: true });
@@ -143,7 +143,11 @@ const handlePaymentComplete = (result, paymentData, paymentMethod) => {
           Cookies.set('session-jwt', result.jwt);
         }
 
-        window.location.href = confirmPageUrl;
+        if (confirmPageMode === 'redirect-iframe-parent') {
+          parent.postMessage({ redirect: confirmPageUrl }, '*');
+        } else {
+          window.location.href = confirmPageUrl;
+        }
       }
       
       if (confirmPageMode === 'replace') {

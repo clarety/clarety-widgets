@@ -10,10 +10,10 @@ export class MembershipApi {
     return results[0];
   }
 
-  static async fetchPaymentMethods(storeUid, membershipOfferId, membershipCategoryUid) {
+  static async fetchPaymentMethods(storeUid, singleOfferId, membershipCategoryUid) {
     const params = {
       storeUid: storeUid,
-      offerSingle: membershipOfferId,
+      offerSingle: singleOfferId,
       categoryUid: membershipCategoryUid,
     };
 

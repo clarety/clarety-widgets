@@ -6,12 +6,12 @@ import i18next from 'i18next';
 import { BreakpointProvider } from 'react-socks';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { statuses, setStore, initTrackingData, fetchSettings, updateAppSettings, setPanels, setApiCampaignUids } from 'shared/actions';
+import { statuses, setStore, initTrackingData, fetchSettings, updateAppSettings, setPanels, setPanelSettings, setApiCampaignUids } from 'shared/actions';
 import { PanelManager, StepIndicator } from 'shared/components';
 import { getJwtCustomer, Resources } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { fetchCustomer } from 'donate/actions/customer-actions';
-import { ensureValidDonationPanel } from 'membership/actions';
+import { ensureValidDonationPanel, fetchOffersIfChanged } from 'membership/actions';
 import { rootReducer } from 'membership/reducers';
 import { MembershipApi, mapMembershipWidgetSettings, setupDefaultResources } from 'membership/utils';
 
@@ -59,11 +59,11 @@ export class MembershipWidget extends React.Component {
 
 export class _MembershipWidgetRoot extends React.Component {
   async componentDidMount() {
-    const { storeUid, membershipOfferId, membershipCategoryUid } = this.props;
-    const { updateAppSettings, setStore, initTrackingData, fetchSettings, setApiCampaignUids, fetchCustomer } = this.props;
+    const { storeUid, singleOfferId, categoryUid } = this.props;
+    const { updateAppSettings, setPanelSettings, setStore, initTrackingData, fetchSettings, setApiCampaignUids, fetchCustomer, fetchOffersIfChanged } = this.props;
 
-    if (!membershipOfferId && !membershipCategoryUid) {
-      throw new Error('[MembershipWidget] A membershipOfferId, or membershipCategoryUid is required');
+    if (!singleOfferId && !categoryUid) {
+      throw new Error('[MembershipWidget] A singleOfferId or categoryUid is required');
     }
 
     // Translations.
@@ -77,17 +77,50 @@ export class _MembershipWidgetRoot extends React.Component {
     }
 
     updateAppSettings({
-      membershipOfferId:     membershipOfferId,
-      membershipCategoryUid: membershipCategoryUid,
-      variant:               this.props.variant,
-      confirmPageUrl:        this.props.confirmPageUrl,
-      confirmPageMode:       this.props.confirmPageMode,
-      defaultCountry:        this.props.defaultCountry,
-      addressFinderKey:      this.props.addressFinderKey,
-      addressFinderCountry:  this.props.addressFinderCountry,
-      hideCurrencyCode:      this.props.hideCurrencyCode,
-      defaultFrequency:      this.props.defaultFrequency,
+      singleOfferId:        singleOfferId,
+      categoryUid:          categoryUid,
+      variant:              this.props.variant,
+      confirmPageUrl:       this.props.confirmPageUrl,
+      confirmPageMode:      this.props.confirmPageMode,
+      defaultCountry:       this.props.defaultCountry,
+      addressFinderKey:     this.props.addressFinderKey,
+      addressFinderCountry: this.props.addressFinderCountry,
+      hideCurrencyCode:     this.props.hideCurrencyCode,
+      defaultFrequency:     this.props.defaultFrequency,
     });
+
+    if (this.props.preview && parent) {
+      window.addEventListener('message', async (event) => {
+        if (event.data.action === 'update-settings') {
+          const updatedSettings = event.data.settings;
+
+          console.log('[WIDGET]', 'update-settings', updatedSettings);
+
+          // App settings.
+          if (updatedSettings.app) {
+
+            // Re-fetch price handles if offers changed.
+            fetchOffersIfChanged({
+              singleOfferId: updatedSettings.app.singleOfferId,
+              categoryUid:   updatedSettings.app.categoryUid,
+            }).then(() => {
+              this.props.ensureValidDonationPanel();
+            });
+
+            updateAppSettings(updatedSettings.app);
+          }
+
+          // Panel settings.
+          if (updatedSettings.panels) {
+            for (const [panelName, panelSettings] of Object.entries(updatedSettings.panels)) {
+              setPanelSettings(panelName, panelSettings);
+            }
+          }          
+        }
+      });
+
+      parent.postMessage({ action: 'widget-ready' }, '*');
+    }
 
     setStore(storeUid);
 
@@ -102,8 +135,8 @@ export class _MembershipWidgetRoot extends React.Component {
 
     await fetchSettings('membership/', {
       storeUid: storeUid,
-      offerSingle: membershipOfferId,
-      categoryUid: membershipCategoryUid,
+      offerSingle: singleOfferId,
+      categoryUid: categoryUid,
     }, mapMembershipWidgetSettings);
 
     this.props.ensureValidDonationPanel();
@@ -145,6 +178,7 @@ export class _MembershipWidgetRoot extends React.Component {
           <PanelManager
             layout={layout || 'tabs'}
             resources={this.props.resources}
+            isPreview={this.props.preview}
           />
         </BlockUi>
 
@@ -165,8 +199,10 @@ const actions = {
   initTrackingData: initTrackingData,
   fetchSettings: fetchSettings,
   updateAppSettings: updateAppSettings,
+  setPanelSettings: setPanelSettings,
   setApiCampaignUids: setApiCampaignUids,
   fetchCustomer: fetchCustomer,
+  fetchOffersIfChanged: fetchOffersIfChanged,
   ensureValidDonationPanel: ensureValidDonationPanel,
 };
 
