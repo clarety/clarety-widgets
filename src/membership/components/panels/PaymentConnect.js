@@ -8,7 +8,7 @@ import { makePayment } from 'membership/actions';
 export class PaymentConnect {
   static mapStateToProps = (state, ownProps) => {
     const cart = getCart(state);
-    const cartTotal = cart.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+    const cartTotal = cart.items.reduce((total, item) => total + (item.price * (item.quantity || 1)), 0);
 
     return {
       isBusy: getIsBusy(state),

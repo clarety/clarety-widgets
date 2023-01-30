@@ -63,13 +63,14 @@ export class CustomerPanel extends BasePanel {
   onPressNext = async (event) => {
     event.preventDefault();
 
-    const { onSubmit, nextPanel, layout } = this.props;
+    const { onSubmit, nextPanel, layout, isPreview } = this.props;
 
     if (layout === 'page') return;
+    if (isPreview) return nextPanel();
 
     this.onPressDisableAddressFinder();
 
-    const isValid = this.validate();
+    const isValid = await this.validate();
     if (!isValid) return;
     
     const didSubmit = await onSubmit();
@@ -78,14 +79,14 @@ export class CustomerPanel extends BasePanel {
     nextPanel();
   };
 
-  validate() {
+  async validate() {
     const errors = [];
-    this.validateFields(errors);
+    await this.validateFields(errors);
     this.props.setErrors(errors);
     return errors.length === 0;
   }
 
-  validateFields(errors) {
+  async validateFields(errors) {
     this.validateCustomerTypeFields(errors);
     this.validateTitleField(errors);
     this.validateBasicFields(errors);
