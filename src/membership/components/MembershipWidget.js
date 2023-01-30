@@ -62,7 +62,7 @@ export class _MembershipWidgetRoot extends React.Component {
     const { storeUid, singleOfferId, categoryUid } = this.props;
     const { updateAppSettings, setPanelSettings, setStore, initTrackingData, fetchSettings, setApiCampaignUids, fetchCustomer, fetchOffersIfChanged } = this.props;
 
-    if (!singleOfferId && !categoryUid) {
+    if (!this.props.preview && !singleOfferId && !categoryUid) {
       throw new Error('[MembershipWidget] A singleOfferId or categoryUid is required');
     }
 
@@ -98,6 +98,9 @@ export class _MembershipWidgetRoot extends React.Component {
 
           // App settings.
           if (updatedSettings.app) {
+            // Use null for any unset offers.
+            if (!updatedSettings.app.singleOfferId) updatedSettings.app.singleOfferId = null;
+            if (!updatedSettings.app.categoryUid) updatedSettings.app.categoryUid = null;
 
             // Re-fetch price handles if offers changed.
             fetchOffersIfChanged({
@@ -170,6 +173,13 @@ export class _MembershipWidgetRoot extends React.Component {
       );
     }
 
+    // Check if we're previewing in the widget designer and don't have an offer yet.
+    if (this.props.preview && (!this.props.offers || !this.props.offers.length)) {
+      return (
+        <div className="text-center">Select an offer to get started</div>
+      );
+    }
+
     return (
       <div className={`clarety-membership-widget h-100 ${layout} ${variant}`}>
         <BlockUi tag="div" blocking={status === statuses.busy} loader={<span></span>}>
@@ -190,7 +200,8 @@ export class _MembershipWidgetRoot extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    status: state.status
+    status: state.status,
+    offers: state.settings.membershipOffers,
   };
 };
 
