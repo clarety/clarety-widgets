@@ -2,11 +2,7 @@ import { SuggestedAmount, SuggestedAmountLg, VariableAmount, VariableAmountLg, S
 
 export const mapMembershipWidgetSettings = (result) => {
   const membershipOffers = result.offers.filter(offer => offer.type === 'membership');
-  const donationOffers = result.offers.filter(offer => offer.type === 'donation');
-
-  if (donationOffers.length) {
-    validatePriceHandles(donationOffers);
-  }
+  const donationOffers = result.offers.filter(offer => offer.type === 'donation' && validatePriceHandles(offer));
 
   const settings = {
     currency: result.currency,
@@ -30,11 +26,12 @@ export function setupDefaultResources(resources) {
   resources.setComponent('VariableAmountPriceOnly', VariableAmount);
 }
 
-function validatePriceHandles(offers) {
-  for (const offer of offers) {
-    const variableAmounts = offer.amounts.filter(amount => amount.variable);
-    if (!variableAmounts.length) {
-      throw new Error(`[Clarety] No variable amount (ie: $0 price handle) found for offer "${offer.name}" (UID: ${offer.offerUid})`);
-    }
+function validatePriceHandles(offer) {
+  const variableAmounts = offer.amounts.filter(amount => amount.variable);
+  if (!variableAmounts.length) {
+    console.error(`[Clarety] Invalid donation offer: No variable amount (ie: $0 price handle) found for offer "${offer.name}" (UID: ${offer.offerUid})`);
+    return false;
   }
+
+  return true;
 }

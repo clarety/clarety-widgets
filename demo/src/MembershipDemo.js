@@ -85,7 +85,7 @@ export default class MembershipDemo extends React.Component {
       // ihc
       storeUid: 'str_wey5',
       // membershipOfferId: '23',
-      membershipCategoryUid: 'ctg_37q4',
+      categoryUid: 'ctg_37q4',
 
       sourceId: '17',
       responseId: 'e9c2e351d90b11e996fd',
