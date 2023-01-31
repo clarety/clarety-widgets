@@ -107,7 +107,7 @@ export class _MembershipWidgetRoot extends React.Component {
               singleOfferId: updatedSettings.app.singleOfferId,
               categoryUid:   updatedSettings.app.categoryUid,
             }).then(() => {
-              this.props.ensureValidDonationPanel();
+              this.props.ensureValidDonationPanel(this.props.resources);
             });
 
             updateAppSettings(updatedSettings.app);
@@ -142,7 +142,7 @@ export class _MembershipWidgetRoot extends React.Component {
       categoryUid: categoryUid,
     }, mapMembershipWidgetSettings);
 
-    this.props.ensureValidDonationPanel();
+    this.props.ensureValidDonationPanel(this.props.resources);
   }
 
   async findJwtCustomer() {
