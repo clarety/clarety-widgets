@@ -2,7 +2,7 @@ import { getSetting, getElement, getIsLoggedIn } from 'shared/selectors';
 import { getFormData, getErrors } from 'form/selectors';
 import { setErrors, setFormData } from 'form/actions';
 import { getIsBusy } from 'donate/selectors';
-import { submitCase, saveCase } from 'case/actions';
+import { submitCase, saveCase, jumpToSection } from 'case/actions';
 
 export class CaseFormConnect {
   static mapStateToProps = (state) => {
@@ -30,5 +30,6 @@ export class CaseFormConnect {
     onSave: saveCase,
     setFormData: setFormData,
     setErrors: setErrors,
+    jumpToSection: jumpToSection,
   };
 }

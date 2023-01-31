@@ -1,6 +1,8 @@
 import React from 'react';
 import memoize from 'memoize-one';
 import { Form, Row, Col, Button, Spinner } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faCheck, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { getLanguage, t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, AddressFinder } from 'shared/components';
 import { requiredField, emailField, addressField, getSuburbLabel, getStateLabel, getPostcodeLabel, moveInArray, scrollIntoView } from 'shared/utils';
@@ -194,12 +196,20 @@ export class CaseFormPanel extends BasePanel {
     return initialValues[fieldKey];
   }
 
+  getCustomerSectionName() {
+    return t('your-details', 'Your Details');
+  }
+
   shouldShowConditionalField(field) {
     const value = this.props.formData[`extendFields.${field.conditionalField}`];
 
     return Array.isArray(value)
       ? value.includes(field.conditionalValue)
       : value == field.conditionalValue;
+  }
+
+  shouldShowSectionSidebar() {
+    return !!this.props.settings.showSectionSidebar;
   }
 
   renderWait() {
@@ -236,8 +246,24 @@ export class CaseFormPanel extends BasePanel {
         {this.renderHeader()}
 
         <PanelBody layout={layout} status="edit" isBusy={isBusy}>
-          {this.renderErrorMessages()}
-          {this.renderForm()}
+          {this.shouldShowSectionSidebar()
+            ?
+              <Row>
+                <Col xs={3}>
+                  {this.renderSectionSidebar()}
+                </Col>
+
+                <Col xs={9}>
+                  {this.renderErrorMessages()}
+                  {this.renderForm()}  
+                </Col>
+              </Row>
+            :
+              <React.Fragment>
+                {this.renderErrorMessages()}
+                {this.renderForm()}
+              </React.Fragment>
+          }
         </PanelBody>
 
         {this.renderFooter()}
@@ -256,6 +282,48 @@ export class CaseFormPanel extends BasePanel {
         number={index + 1}
         title={settings.title}
       />
+    );
+  }
+
+  renderSectionSidebar() {
+    const { form } = this.props;
+    const currentSection = this.props.section;
+
+    return (
+      <div>
+        <div>
+          <Button
+            variant="link"
+            onClick={() => this.props.jumpToSection('customer')}
+          >
+            {currentSection === 'customer'
+              ? <FontAwesomeIcon icon={faArrowRight} />
+              : <FontAwesomeIcon icon={faCheck} />
+            }
+            &nbsp;&nbsp;
+            {this.getCustomerSectionName()}
+          </Button>
+        </div>
+
+        {form.sections.map((section, index) =>
+          <div key={index}>
+            <Button
+              variant="link"
+              onClick={() => this.props.jumpToSection(index)}
+              disabled={currentSection === 'customer' || currentSection < index}
+            >
+              {currentSection === index
+                ? <FontAwesomeIcon icon={faArrowRight} />
+                : currentSection === 'customer' || currentSection < index
+                ? <FontAwesomeIcon icon={faMinus} />
+                : <FontAwesomeIcon icon={faCheck} />
+              }
+              &nbsp;&nbsp;
+              {section.name}
+            </Button>
+          </div>
+        )}
+      </div>
     );
   }
 
@@ -294,7 +362,7 @@ export class CaseFormPanel extends BasePanel {
     return (
       <div>
         <div className="form-header">
-          <h2 className="title">{t('your-details', 'Your Details')}</h2>
+          <h2 className="title">{this.getCustomerSectionName()}</h2>
         </div>
 
         <div className="form-fields">

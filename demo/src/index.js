@@ -5,7 +5,7 @@ import { Config } from '../../src';
 
 Config.init({
   // instanceKey: 'mdc',
-  // instanceKey: 'clarety-baseline',
+  instanceKey: 'clarety-baseline',
   // instanceKey: 'charlies',
   // instanceKey: 'tnc',
   // instanceKey: 'tnc-hk',
@@ -16,7 +16,7 @@ Config.init({
   // instanceKey: 'miraclebabies',
   // instanceKey: 'bibleleague',
   // instanceKey: 'bsfs',
-  instanceKey: 'ihc',
+  // instanceKey: 'ihc',
   devSitePath: 'http://localhost:3000/',
   // phoneCountry: 'AU',
   localhostProtocol: 'https:',
@@ -106,6 +106,11 @@ const Demo = () => {
     return <CaseDemo />;
   }
 
+  if (url.endsWith('case-section-sidebar')) {
+    const CaseSectionSidebarDemo = require('./CaseSectionSidebarDemo').default;
+    return <CaseSectionSidebarDemo />;
+  }
+
   if (url.endsWith('membership')) {
     const MembershipDemo = require('./MembershipDemo').default;
     return <MembershipDemo />;
@@ -113,21 +118,22 @@ const Demo = () => {
 
   return (
     <div className="list-group m-5">
-      <a href="subscribe" className="list-group-item list-group-item-action">Subscribe Widget Demo</a>
-      <a href="unsubscribe" className="list-group-item list-group-item-action">Unsubscribe Widget Demo</a>
-      <a href="donate" className="list-group-item list-group-item-action">Donate Widget Demo</a>
-      <a href="fund-donate" className="list-group-item list-group-item-action">Fund Donate Widget Demo</a>
-      <a href="donate-page" className="list-group-item list-group-item-action">Donate Page Demo</a>
-      <a href="registration" className="list-group-item list-group-item-action">Registration Demo</a>
-      <a href="checkout" className="list-group-item list-group-item-action">Checkout Demo</a>
-      <a href="cart" className="list-group-item list-group-item-action">Cart Demo</a>
-      <a href="lead-gen" className="list-group-item list-group-item-action">Lead Gen Demo</a>
-      <a href="quiz" className="list-group-item list-group-item-action">Quiz Demo</a>
-      <a href="fundraising-start" className="list-group-item list-group-item-action">Fundraising Start Demo</a>
-      <a href="file-upload" className="list-group-item list-group-item-action">File Upload Demo</a>
-      <a href="rsvp" className="list-group-item list-group-item-action">RSVP Demo</a>
-      <a href="case" className="list-group-item list-group-item-action">Case Demo</a>
-      <a href="membership" className="list-group-item list-group-item-action">Membership Widget Demo</a>
+      <a href="subscribe" className="list-group-item list-group-item-action">Subscribe Widget</a>
+      <a href="unsubscribe" className="list-group-item list-group-item-action">Unsubscribe Widget</a>
+      <a href="donate" className="list-group-item list-group-item-action">Donate Widget</a>
+      <a href="fund-donate" className="list-group-item list-group-item-action">Fund Donate Widget</a>
+      <a href="donate-page" className="list-group-item list-group-item-action">Donate Page</a>
+      <a href="registration" className="list-group-item list-group-item-action">Registration</a>
+      <a href="checkout" className="list-group-item list-group-item-action">Checkout</a>
+      <a href="cart" className="list-group-item list-group-item-action">Cart</a>
+      <a href="lead-gen" className="list-group-item list-group-item-action">Lead Gen</a>
+      <a href="quiz" className="list-group-item list-group-item-action">Quiz</a>
+      <a href="fundraising-start" className="list-group-item list-group-item-action">Fundraising Start</a>
+      <a href="file-upload" className="list-group-item list-group-item-action">File Upload</a>
+      <a href="rsvp" className="list-group-item list-group-item-action">RSVP Widget</a>
+      <a href="case" className="list-group-item list-group-item-action">Case Widget</a>
+      <a href="case-section-sidebar" className="list-group-item list-group-item-action">Case Widget - Section Sidebar</a>
+      <a href="membership" className="list-group-item list-group-item-action">Membership Widget</a>
     </div>
   );
 };
