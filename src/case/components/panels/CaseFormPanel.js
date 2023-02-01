@@ -13,6 +13,7 @@ export class CaseFormPanel extends BasePanel {
 
   state = {
     disableAddressFinders: false,
+    subformCounts: {},
   };
 
   componentDidUpdate(prevProps) {
@@ -210,6 +211,28 @@ export class CaseFormPanel extends BasePanel {
 
   shouldShowSectionSidebar() {
     return !!this.props.settings.showSectionSidebar;
+  }
+
+  getSubformCount(state, subform, fieldKey) {
+    return state.subformCounts[fieldKey] || Number(subform.minRepeats || 0);
+  }
+
+  addSubform(subform, fieldKey) {
+    this.setState(prev => ({
+      subformCounts: {
+        ...prev.subformCounts,
+        [fieldKey]: this.getSubformCount(prev, subform, fieldKey) + 1,
+      }
+    }));
+  }
+
+  removeSubform(subform, fieldKey) {
+    this.setState(prev => ({
+      subformCounts: {
+        ...prev.subformCounts,
+        [fieldKey]: this.getSubformCount(prev, subform, fieldKey) - 1,
+      }
+    }));
   }
 
   renderWait() {
@@ -461,10 +484,10 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
-  renderField(field, resourceKey = null) {
+  renderField(field, resourceKey = null, subformIndex = null) {
     const { shownFields, fetchedCustomer, settings } = this.props;
 
-    const fieldKey = resourceKey ? resourceKey + '.' + field.columnKey : field.columnKey;
+    let fieldKey = resourceKey ? resourceKey + '.' + field.columnKey : field.columnKey;
 
     // Ignore fields that aren't in the 'shown fields' list.
     if (!shownFields.includes(fieldKey)) return null;
@@ -473,6 +496,9 @@ export class CaseFormPanel extends BasePanel {
     if (field.conditionalField && !this.shouldShowConditionalField(field)) return null;
 
     const isDisabled = fetchedCustomer && settings.disableIfPrefilled && settings.disableIfPrefilled.includes(fieldKey);
+
+    // Subform fields only: Update field key with subform index. 
+    if (subformIndex !== null) fieldKey = fieldKey.replace('#', subformIndex);
 
     switch (this.getFieldType(field, fieldKey)) {
       case 'text':         return this.renderTextField(field, fieldKey, isDisabled);
@@ -493,6 +519,7 @@ export class CaseFormPanel extends BasePanel {
       case 'rating':       return this.renderRatingField(field, fieldKey);
       case 'ranking':      return this.renderRankingField(field, fieldKey);
       case 'acceptterms':  return this.renderAcceptTermsField(field, fieldKey);
+      case 'subform':      return this.renderSubform(field, fieldKey);
 
       // Address fields.
       case 'address': return this.renderAddressField(field, fieldKey);
@@ -895,6 +922,39 @@ export class CaseFormPanel extends BasePanel {
         />
 
         {this.renderCheckboxField(field, fieldKey)}
+      </div>
+    );
+  }
+
+  renderSubform(subform, fieldKey) {
+    const subformCount = this.getSubformCount(this.state, subform, fieldKey);
+    const canAdd = subformCount < subform.maxRepeats;
+    const canRemove = subformCount > subform.minRepeats;
+
+    return (
+      <div key={fieldKey} className="field field--subform" ref={ref => this.fieldRefs[fieldKey] = ref}>
+        <div style={{ marginBottom: 16 }}>
+          <div>{subform.label}</div>
+          <div>{subform.explanation}</div>
+        </div>
+
+        {Array(subformCount).fill(0).map((_, index) =>
+          <div key={index} style={{ background: '#f8f9fa', padding: '14px 16px 4px', borderRadius: 5, marginBottom: 16 }}>
+            {subform.extendFields.map(field => this.renderField(field, fieldKey + '.#', index))}
+          </div>
+        )}
+
+        {canAdd &&
+          <Button onClick={() => this.addSubform(subform, fieldKey)} style={{ marginRight: 10 }}>
+            Add
+          </Button>
+        }
+
+        {canRemove &&
+          <Button onClick={() => this.removeSubform(subform, fieldKey)}>
+            Remove
+          </Button>
+        }
       </div>
     );
   }
