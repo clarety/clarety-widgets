@@ -186,9 +186,8 @@ export class CaseFormPanel extends BasePanel {
     return this.props.fieldTypes[fieldKey] || field.type;
   }
 
-  getFieldLabel(field, fieldKey) {
+  getFieldLabel(field, fieldKey, isRequired) {
     const label = t(`${fieldKey}.label`, field.question || field.label);
-    const isRequired = this.props.requiredFields.includes(fieldKey);
     return label + (isRequired ? ' *' : '');
   }
 
@@ -470,7 +469,7 @@ export class CaseFormPanel extends BasePanel {
     }else{
       const element = customerElement.elements.find(el => el.property === 'optIn');
       const field = this.getFieldForElement(element);
-      label = this.getFieldLabel(field, fieldKey);
+      label = this.getFieldLabel(field, fieldKey, false);
     }
 
     return (
@@ -485,7 +484,7 @@ export class CaseFormPanel extends BasePanel {
   }
 
   renderField(field, resourceKey = null, subformIndex = null) {
-    const { shownFields, fetchedCustomer, settings } = this.props;
+    const { shownFields, requiredFields, fetchedCustomer, settings } = this.props;
 
     let fieldKey = resourceKey ? resourceKey + '.' + field.columnKey : field.columnKey;
 
@@ -495,45 +494,46 @@ export class CaseFormPanel extends BasePanel {
     // Ignore conditional fields that don't meet their condition.
     if (field.conditionalField && !this.shouldShowConditionalField(field)) return null;
 
-    const isDisabled = fetchedCustomer && settings.disableIfPrefilled && settings.disableIfPrefilled.includes(fieldKey);
+    const isRequired = requiredFields.includes(fieldKey);
+    const isDisabled = fetchedCustomer && (settings.disableIfPrefilled || []).includes(fieldKey);
 
     // Subform fields only: Update field key with subform index. 
     if (subformIndex !== null) fieldKey = fieldKey.replace('#', subformIndex);
 
     switch (this.getFieldType(field, fieldKey)) {
-      case 'text':         return this.renderTextField(field, fieldKey, isDisabled);
-      case 'textarea':     return this.renderTextAreaField(field, fieldKey);
-      case 'email':        return this.renderEmailField(field, fieldKey, isDisabled);
-      case 'phonenumber':  return this.renderPhoneField(field, fieldKey);
-      case 'number':       return this.renderNumberField(field, fieldKey);
-      case 'currency':     return this.renderCurrencyField(field, fieldKey);
-      case 'checkbox':     return this.renderCheckboxField(field, fieldKey);
-      case 'checkboxs':    return this.renderCheckboxesField(field, fieldKey);
-      case 'select':       return this.renderSelectField(field, fieldKey);
-      case 'radio':        return this.renderRadioField(field, fieldKey);
-      case 'date':         return this.renderDateField(field, fieldKey);
-      case 'fileupload':   return this.renderFileUploadField(field, fieldKey);
-      case 'title':        return this.renderTitleField(field, fieldKey);
-      case 'hidden':       return this.renderHiddenField(field, fieldKey);
-      case 'customertype': return this.renderCustomerTypeField(field, fieldKey);
-      case 'rating':       return this.renderRatingField(field, fieldKey);
-      case 'ranking':      return this.renderRankingField(field, fieldKey);
-      case 'acceptterms':  return this.renderAcceptTermsField(field, fieldKey);
-      case 'subform':      return this.renderSubform(field, fieldKey);
+      case 'text':         return this.renderTextField({ field, fieldKey, isRequired, isDisabled });
+      case 'textarea':     return this.renderTextAreaField({ field, fieldKey, isRequired, isDisabled });
+      case 'email':        return this.renderEmailField({ field, fieldKey, isRequired, isDisabled });
+      case 'phonenumber':  return this.renderPhoneField({ field, fieldKey, isRequired, isDisabled });
+      case 'number':       return this.renderNumberField({ field, fieldKey, isRequired, isDisabled });
+      case 'currency':     return this.renderCurrencyField({ field, fieldKey, isRequired, isDisabled });
+      case 'checkbox':     return this.renderCheckboxField({ field, fieldKey, isRequired, isDisabled });
+      case 'checkboxs':    return this.renderCheckboxesField({ field, fieldKey, isRequired, isDisabled });
+      case 'select':       return this.renderSelectField({ field, fieldKey, isRequired, isDisabled });
+      case 'radio':        return this.renderRadioField({ field, fieldKey, isRequired, isDisabled });
+      case 'date':         return this.renderDateField({ field, fieldKey, isRequired, isDisabled });
+      case 'fileupload':   return this.renderFileUploadField({ field, fieldKey, isRequired, isDisabled });
+      case 'title':        return this.renderTitleField({ field, fieldKey, isRequired, isDisabled });
+      case 'hidden':       return this.renderHiddenField({ field, fieldKey, isRequired, isDisabled });
+      case 'customertype': return this.renderCustomerTypeField({ field, fieldKey, isRequired, isDisabled });
+      case 'rating':       return this.renderRatingField({ field, fieldKey, isRequired, isDisabled });
+      case 'ranking':      return this.renderRankingField({ field, fieldKey, isRequired, isDisabled });
+      case 'acceptterms':  return this.renderAcceptTermsField({ field, fieldKey, isRequired, isDisabled });
+      case 'subform':      return this.renderSubform({ field, fieldKey, isRequired, isDisabled });
 
       // Address fields.
-      case 'address': return this.renderAddressField(field, fieldKey);
-      case 'country': return this.renderCountryField(field, fieldKey);
-      case 'country-postcode': return this.renderCountryPostcodeField(field, fieldKey);
-      case 'country-state-postcode': return this.renderCountryStatePostcodeField(field, fieldKey);
+      case 'address': return this.renderAddressField({ field, fieldKey, isRequired, isDisabled });
+      case 'country': return this.renderCountryField({ field, fieldKey, isRequired, isDisabled });
+      case 'country-postcode': return this.renderCountryPostcodeField({ field, fieldKey, isRequired, isDisabled });
+      case 'country-state-postcode': return this.renderCountryStatePostcodeField({ field, fieldKey, isRequired, isDisabled });
     }
 
     console.warn(`renderField not implemented for type: ${field.type}`);
     return null;
   }
 
-  renderLabel(field, fieldKey) {
-    const label = this.getFieldLabel(field, fieldKey);
+  renderLabel(field, fieldKey, isRequired) {
+    const label = this.getFieldLabel(field, fieldKey, isRequired);
     return <label dangerouslySetInnerHTML={{ __html: label }} />;
   }
 
@@ -548,15 +548,15 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
-  renderTextField(field, fieldKey, isDisabled = false) {
+  renderTextField({ field, fieldKey, isRequired = false, isDisabled = false }) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--text" ref={ref => this.fieldRefs[fieldKey] = ref}>
-        {this.renderLabel(field, fieldKey)}
+        {this.renderLabel(field, fieldKey, isRequired)}
 
         <TextInput
           field={fieldKey}
-          required={field.required}
           initialValue={this.getInitialValue(fieldKey)}
+          required={isRequired}
           disabled={isDisabled}
         />
 
@@ -565,29 +565,14 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
-  renderTextAreaField(field, fieldKey) {
+  renderTextAreaField({ field, fieldKey, isRequired = false, isDisabled = false }) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--textarea" ref={ref => this.fieldRefs[fieldKey] = ref}>
-        {this.renderLabel(field, fieldKey)}
+        {this.renderLabel(field, fieldKey, isRequired)}
 
         <TextAreaInput
           field={fieldKey}
-          required={field.required}
-        />
-
-        {this.renderExplanation(field)}
-      </Form.Group>
-    );
-  }
-
-  renderEmailField(field, fieldKey, isDisabled = false) {
-    return (
-      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--email" ref={ref => this.fieldRefs[fieldKey] = ref}>
-        {this.renderLabel(field, fieldKey)}
-
-        <EmailInput
-          field={fieldKey}
-          required={field.required}
+          required={isRequired}
           disabled={isDisabled}
         />
 
@@ -596,16 +581,33 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
-  renderPhoneField(field, fieldKey) {
+  renderEmailField({ field, fieldKey, isRequired = false, isDisabled = false }) {
+    return (
+      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--email" ref={ref => this.fieldRefs[fieldKey] = ref}>
+        {this.renderLabel(field, fieldKey, isRequired)}
+
+        <EmailInput
+          field={fieldKey}
+          required={isRequired}
+          disabled={isDisabled}
+        />
+
+        {this.renderExplanation(field)}
+      </Form.Group>
+    );
+  }
+
+  renderPhoneField({ field, fieldKey, isRequired = false, isDisabled = false }) {
     const { settings } = this.props;
 
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--phone" ref={ref => this.fieldRefs[fieldKey] = ref}>
-        {this.renderLabel(field, fieldKey)}
+        {this.renderLabel(field, fieldKey, isRequired)}
 
         <PhoneInput
           field={fieldKey}
-          required={field.required}
+          required={isRequired}
+          disabled={isDisabled}
           showCountrySelect={settings.showPhoneCountrySelect}
         />
 
@@ -614,14 +616,15 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
-  renderNumberField(field, fieldKey) {
+  renderNumberField({ field, fieldKey, isRequired = false, isDisabled = false }) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--number" ref={ref => this.fieldRefs[fieldKey] = ref}>
-        {this.renderLabel(field, fieldKey)}
+        {this.renderLabel(field, fieldKey, isRequired)}
 
         <NumberInput
           field={fieldKey}
-          required={field.required}
+          required={isRequired}
+          disabled={isDisabled}
         />
 
         {this.renderExplanation(field)}
@@ -629,14 +632,15 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
-  renderCurrencyField(field, fieldKey) {
+  renderCurrencyField({ field, fieldKey, isRequired = false, isDisabled = false }) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--currency" ref={ref => this.fieldRefs[fieldKey] = ref}>
-        {this.renderLabel(field, fieldKey)}
+        {this.renderLabel(field, fieldKey, isRequired)}
 
         <CurrencyInput
           field={fieldKey}
-          required={field.required}
+          required={isRequired}
+          disabled={isDisabled}
         />
 
         {this.renderExplanation(field)}
@@ -644,14 +648,15 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
-  renderCheckboxField(field, fieldKey) {
+  renderCheckboxField({ field, fieldKey, isRequired = false, isDisabled = false }) {
     return (
       <div key={fieldKey} className="field field--checkbox" ref={ref => this.fieldRefs[fieldKey] = ref}>
         <CheckboxInput
           field={fieldKey}
-          label={this.getFieldLabel(field, fieldKey)}
-          required={field.required}
+          label={this.getFieldLabel(field, fieldKey, isRequired)}
           initialValue={this.getInitialValue(fieldKey)}
+          required={isRequired}
+          disabled={isDisabled}
         />
 
         {this.renderExplanation(field)}
@@ -659,16 +664,17 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
-  renderCheckboxesField(field, fieldKey) {
+  renderCheckboxesField({ field, fieldKey, isRequired = false, isDisabled = false }) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--checkboxes" ref={ref => this.fieldRefs[fieldKey] = ref}>
-        {this.renderLabel(field, fieldKey)}
+        {this.renderLabel(field, fieldKey, isRequired)}
 
         <CheckboxesInput
           field={fieldKey}
           options={field.options}
-          required={field.required}
           initialValue={this.getInitialValue(fieldKey)}
+          required={isRequired}
+          disabled={isDisabled}
         />
 
         {this.renderExplanation(field)}
@@ -676,16 +682,17 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
-  renderSelectField(field, fieldKey) {
+  renderSelectField({ field, fieldKey, isRequired = false, isDisabled = false }) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--select" ref={ref => this.fieldRefs[fieldKey] = ref}>
-        {this.renderLabel(field, fieldKey)}
+        {this.renderLabel(field, fieldKey, isRequired)}
 
         <SelectInput
           field={fieldKey}
           options={field.options}
-          required={field.required}
           initialValue={this.getInitialValue(fieldKey)}
+          required={isRequired}
+          disabled={isDisabled}
         />
 
         {this.renderExplanation(field)}
@@ -693,16 +700,17 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
-  renderRadioField(field, fieldKey) {
+  renderRadioField({ field, fieldKey, isRequired = false, isDisabled = false }) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--radio" ref={ref => this.fieldRefs[fieldKey] = ref}>
-        {this.renderLabel(field, fieldKey)}
+        {this.renderLabel(field, fieldKey, isRequired)}
 
         <RadioInput
           field={fieldKey}
           options={field.options}
-          required={field.required}
           initialValue={this.getInitialValue(fieldKey)}
+          required={isRequired}
+          disabled={isDisabled}
         />
 
         {this.renderExplanation(field)}
@@ -710,15 +718,16 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
-  renderDateField(field, fieldKey) {
+  renderDateField({ field, fieldKey, isRequired = false, isDisabled = false }) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--date" ref={ref => this.fieldRefs[fieldKey] = ref}>
-        {this.renderLabel(field, fieldKey)}
+        {this.renderLabel(field, fieldKey, isRequired)}
 
         <DateInput
           field={fieldKey}
-          required={field.required}
           initialValue={this.getInitialValue(fieldKey)}
+          required={isRequired}
+          disabled={isDisabled}
         />
 
         {this.renderExplanation(field)}
@@ -726,17 +735,18 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
-  renderFileUploadField(field, fieldKey) {
+  renderFileUploadField({ field, fieldKey, isRequired = false, isDisabled = false }) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--fileupload" ref={ref => this.fieldRefs[fieldKey] = ref}>
-        {this.renderLabel(field, fieldKey)}
+        {this.renderLabel(field, fieldKey, isRequired)}
 
         <FileUploadInput
           field={fieldKey}
           maxFiles={field.maxFiles}
           maxFileSize={field.maxFileSize}
           acceptedFileTypes={field.fileTypes}
-          required={field.required}
+          required={isRequired}
+          disabled={isDisabled}
         />
 
         <div className="explanation explanation--fileupload">
@@ -752,9 +762,7 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
-  renderAddressField(field, fieldKey) {
-    const { settings, requiredFields } = this.props;
-    const isRequired = requiredFields.includes(fieldKey);
+  renderAddressField({ field, fieldKey, isRequired = false, isDisabled = false }) {
 
     return (
       <div key={fieldKey} className="field field--address" ref={ref => this.fieldRefs[fieldKey] = ref}>
@@ -769,15 +777,15 @@ export class CaseFormPanel extends BasePanel {
           formData={this.props.formData}
           setFormData={this.props.setFormData}
           required={isRequired}
+          disabled={isDisabled}
         />
       </div>
     );
   }
 
-  renderCountryPostcodeField(field, fieldKey) {
-    const { settings, defaultCountry, requiredFields } = this.props;
+  renderCountryPostcodeField({ field, fieldKey, isRequired = false, isDisabled = false }) {
+    const { settings, defaultCountry } = this.props;
     const country = this.props.formData[`${fieldKey}.country`];
-    const isRequired = requiredFields.includes(fieldKey);
 
     return (
       <div key={fieldKey} className="field field--country-postcode" ref={ref => this.fieldRefs[fieldKey] = ref}>
@@ -788,20 +796,25 @@ export class CaseFormPanel extends BasePanel {
               region={settings.region}
               defaultCountry={defaultCountry}
               required={isRequired}
+              disabled={isDisabled}
             />
           </Col>
           <Col sm>
-            <PostcodeField fieldKey={fieldKey} country={country} required={isRequired} />
+            <PostcodeField
+              fieldKey={fieldKey}
+              country={country}
+              required={isRequired}
+              disabled={isDisabled}
+            />
           </Col>
         </Form.Row>
       </div>
     );
   }
 
-  renderCountryStatePostcodeField(field, fieldKey) {
-    const { settings, defaultCountry, requiredFields } = this.props;
+  renderCountryStatePostcodeField({ field, fieldKey, isRequired = false, isDisabled = false }) {
+    const { settings, defaultCountry } = this.props;
     const country = this.props.formData[`${fieldKey}.country`];
-    const isRequired = requiredFields.includes(fieldKey);
 
     return (
       <div key={fieldKey} className="field field--country-state-postcode" ref={ref => this.fieldRefs[fieldKey] = ref}>
@@ -812,25 +825,35 @@ export class CaseFormPanel extends BasePanel {
               region={settings.region}
               defaultCountry={defaultCountry}
               required={isRequired}
+              disabled={isDisabled}
             />
           </Col>
         </Form.Row>
 
         <Form.Row>
           <Col sm>
-            <StateField fieldKey={fieldKey} country={country} required={isRequired} />
+            <StateField
+              fieldKey={fieldKey}
+              country={country}
+              required={isRequired}
+              disabled={isDisabled}
+            />
           </Col>
           <Col sm>
-            <PostcodeField fieldKey={fieldKey} country={country} required={isRequired} />
+            <PostcodeField
+              fieldKey={fieldKey}
+              country={country}
+              required={isRequired}
+              disabled={isDisabled}
+            />
           </Col>
         </Form.Row>
       </div>
     );
   }
 
-  renderCountryField(field, fieldKey) {
-    const { settings, defaultCountry, requiredFields } = this.props;
-    const isRequired = requiredFields.includes(fieldKey);
+  renderCountryField({ field, fieldKey, isRequired = false, isDisabled = false }) {
+    const { settings, defaultCountry } = this.props;
 
     return (
       <Form.Row key={fieldKey} ref={ref => this.fieldRefs[fieldKey] = ref}>
@@ -840,13 +863,14 @@ export class CaseFormPanel extends BasePanel {
             region={settings.region}
             defaultCountry={defaultCountry}
             required={isRequired}
+            disabled={isDisabled}
           />
         </Col>
       </Form.Row>
     );
   }
 
-  renderTitleField(field, fieldKey) {
+  renderTitleField({ field, fieldKey, isRequired = false, isDisabled = false }) {
     return (
       <div key={fieldKey} className="field field--title" ref={ref => this.fieldRefs[fieldKey] = ref}>
         <h2 className="title">{field.question || field.label}</h2>
@@ -856,7 +880,7 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
-  renderHiddenField(field, fieldKey) {
+  renderHiddenField({ field, fieldKey, isRequired = false, isDisabled = false }) {
     return (
       <FormElement
         key={fieldKey}
@@ -866,7 +890,7 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
-  renderCustomerTypeField(field, fieldKey) {
+  renderCustomerTypeField({ field, fieldKey, isRequired = false, isDisabled = false }) {
     const businessNameField = {
       columnKey: 'businessName',
       type:      'text',
@@ -876,21 +900,23 @@ export class CaseFormPanel extends BasePanel {
 
     return (
       <React.Fragment key={fieldKey}>
-        {this.renderSelectField(field, fieldKey)}
+        {this.renderSelectField({ field, fieldKey, isRequired, isDisabled })}
         {this.isBusiness() &&
-          this.renderTextField(businessNameField, 'customer.businessName')
+          this.renderTextField({ field: businessNameField, fieldKey: 'customer.businessName', isRequired: true, isDisabled })
         }
       </React.Fragment>
     );
   }
 
-  renderRatingField(field, fieldKey) {
+  renderRatingField({ field, fieldKey, isRequired = false, isDisabled = false }) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--rating" ref={ref => this.fieldRefs[fieldKey] = ref}>
-        {this.renderLabel(field, fieldKey)}
+        {this.renderLabel(field, fieldKey, isRequired)}
 
         <RatingInput
           field={fieldKey}
+          required={isRequired}
+          disabled={isDisabled}
         />
 
         {this.renderExplanation(field)}
@@ -898,10 +924,10 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
-  renderRankingField(field, fieldKey) {
+  renderRankingField({ field, fieldKey, isRequired = false, isDisabled = false }) {
     return (
       <Form.Group controlId={fieldKey} key={fieldKey} className="field field--ranking" ref={ref => this.fieldRefs[fieldKey] = ref}>
-        {this.renderLabel(field, fieldKey)}
+        {this.renderLabel(field, fieldKey, isRequired)}
 
         <RankingInput
           field={fieldKey}
@@ -913,7 +939,7 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
-  renderAcceptTermsField(field, fieldKey) {
+  renderAcceptTermsField({ field, fieldKey, isRequired = false, isDisabled = false }) {
     return (
       <div key={fieldKey} className="field field--acceptterms" ref={ref => this.fieldRefs[fieldKey] = ref}>
         <div
@@ -921,12 +947,13 @@ export class CaseFormPanel extends BasePanel {
           dangerouslySetInnerHTML={{ __html: field.html }}
         />
 
-        {this.renderCheckboxField(field, fieldKey)}
+        {this.renderCheckboxField({ field, fieldKey, isRequired, isDisabled })}
       </div>
     );
   }
 
-  renderSubform(subform, fieldKey) {
+  renderSubform({ field, fieldKey, isRequired = false, isDisabled = false }) {
+    const subform = field;
     const subformCount = this.getSubformCount(this.state, subform, fieldKey);
     const canAdd = subformCount < subform.maxRepeats;
     const canRemove = subformCount > subform.minRepeats;
