@@ -67,6 +67,7 @@ export default class CaseSectionSidebarDemo extends React.Component {
         'extendFields.casewidgetsectiontestformheadingtext',
         'extendFields.casewidgetsectiontestformhelloinput1',
         'extendFields.casewidgetsectiontestformhelloinput2',
+        'extendFields.casewidgetsectiontestformhellohtml',
       ],
       requiredFields: [
         'customer.firstName',

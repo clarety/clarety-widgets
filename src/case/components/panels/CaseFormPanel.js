@@ -529,6 +529,7 @@ export class CaseFormPanel extends BasePanel {
       case 'date':         return this.renderDateField({ field, fieldKey, isRequired, isDisabled });
       case 'fileupload':   return this.renderFileUploadField({ field, fieldKey, isRequired, isDisabled });
       case 'title':        return this.renderTitleField({ field, fieldKey, isRequired, isDisabled });
+      case 'html':         return this.renderHtmlField({ field, fieldKey, isRequired, isDisabled });
       case 'hidden':       return this.renderHiddenField({ field, fieldKey, isRequired, isDisabled });
       case 'customertype': return this.renderCustomerTypeField({ field, fieldKey, isRequired, isDisabled });
       case 'rating':       return this.renderRatingField({ field, fieldKey, isRequired, isDisabled });
@@ -892,6 +893,17 @@ export class CaseFormPanel extends BasePanel {
 
         {this.renderExplanation(field)}
       </div>
+    );
+  }
+
+  renderHtmlField({ field, fieldKey, isRequired = false, isDisabled = false }) {
+    return (
+      <div
+        key={fieldKey}
+        className="field field--html"
+        ref={ref => this.fieldRefs[fieldKey] = ref}
+        dangerouslySetInnerHTML={{ __html: field.html }}
+      />
     );
   }
 
