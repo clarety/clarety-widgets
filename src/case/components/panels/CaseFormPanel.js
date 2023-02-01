@@ -147,8 +147,11 @@ export class CaseFormPanel extends BasePanel {
 
     for (const field of form.extendFields) {
       const fieldKey = `extendFields.${field.columnKey}`;
-      if (requiredFields.includes(fieldKey)) {
-        const fieldType = this.getFieldType(field, fieldKey);
+      const fieldType = this.getFieldType(field, fieldKey);
+
+      if (fieldType === 'subform') {
+        this.validateSubform(errors, field, fieldKey);
+      } else if (requiredFields.includes(fieldKey)) {
         if (fieldType === 'address') {
           addressField(errors, formData, fieldKey);
         } else {
@@ -160,6 +163,20 @@ export class CaseFormPanel extends BasePanel {
     //Validate if the opt-in checkbox is required
     if ((section === null || isLastSection) && requiredFields.includes('customer.optIn')) {
       requiredField(errors, formData, 'customer.optIn');
+    }
+  }
+
+  validateSubform(errors, subform, fieldKey) {
+    const { requiredFields, formData } = this.props;
+
+    const subformCount = this.getSubformCount(this.state, subform, fieldKey);
+    for (let i = 0; i < subformCount; i += 1) {
+      for (const subfield of subform.extendFields) {
+        const subfieldKey = `${fieldKey}.#.${subfield.columnKey}`;
+        if (requiredFields.includes(subfieldKey)) {
+          requiredField(errors, formData, subfieldKey.replace('#', i));
+        }
+      }
     }
   }
 
