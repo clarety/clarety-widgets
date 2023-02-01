@@ -106,3 +106,49 @@
     padding: 20px;
   }
 }
+
+.section-sidebar {
+  display: flex;
+  flex-direction: column;
+
+  .btn {
+    text-align: left;
+
+    &.active {
+      color: $primary;
+      opacity: 1;
+    }
+
+    &:hover {
+      background: $light;
+      text-decoration: none;
+    }
+  }
+
+  .icon {
+    display: inline-block;
+    width: 0.875em;
+    font-weight: 900;
+    margin-right: 10px;
+    text-align: center;
+  }
+}
+
+.subform-header {
+  margin-bottom: 16px;
+
+  .title {
+    @extend .h5;
+  }
+
+  .explanation {
+    color: $gray-600;
+  }
+}
+
+.subform-container {
+  background: $light;
+  padding: 12px 16px 4px;
+  border-radius: 5px;
+  margin-bottom: 16px;
+}

@@ -329,38 +329,36 @@ export class CaseFormPanel extends BasePanel {
     const currentSection = this.props.section;
 
     return (
-      <div>
-        <div>
-          <Button
-            variant="link"
-            onClick={() => this.props.jumpToSection('customer')}
-          >
-            {currentSection === 'customer'
-              ? <FontAwesomeIcon icon={faArrowRight} />
-              : <FontAwesomeIcon icon={faCheck} />
-            }
-            &nbsp;&nbsp;
-            {this.getCustomerSectionName()}
-          </Button>
-        </div>
+      <div className="section-sidebar">
+        <Button
+          variant="link"
+          onClick={() => this.props.jumpToSection('customer')}
+          disabled={currentSection === 'customer'}
+          className={currentSection === 'customer' ? 'active' : undefined}
+        >
+          {currentSection === 'customer'
+            ? <FontAwesomeIcon icon={faArrowRight} className="icon" />
+            : <FontAwesomeIcon icon={faCheck} className="icon" />
+          }
+          {this.getCustomerSectionName()}
+        </Button>
 
         {form.sections.map((section, index) =>
-          <div key={index}>
-            <Button
-              variant="link"
-              onClick={() => this.props.jumpToSection(index)}
-              disabled={currentSection === 'customer' || currentSection < index}
-            >
-              {currentSection === index
-                ? <FontAwesomeIcon icon={faArrowRight} />
-                : currentSection === 'customer' || currentSection < index
-                ? <FontAwesomeIcon icon={faMinus} />
-                : <FontAwesomeIcon icon={faCheck} />
-              }
-              &nbsp;&nbsp;
-              {section.name}
-            </Button>
-          </div>
+          <Button
+            key={index}
+            variant="link"
+            onClick={() => this.props.jumpToSection(index)}
+            disabled={currentSection === 'customer' || currentSection <= index}
+            className={currentSection === index ? 'active' : undefined}
+          >
+            {currentSection === index
+              ? <FontAwesomeIcon icon={faArrowRight} className="icon" />
+              : currentSection === 'customer' || currentSection < index
+              ? <span className="icon">&bull;</span>
+              : <FontAwesomeIcon icon={faCheck} className="icon" />
+            }
+            {section.name}
+          </Button>
         )}
       </div>
     );
@@ -975,18 +973,23 @@ export class CaseFormPanel extends BasePanel {
     const canAdd = subformCount < subform.maxRepeats;
     const canRemove = subformCount > subform.minRepeats;
 
+    const forms = [];
+    for (let index = 0; index < subformCount; index += 1) {
+      forms.push(
+        <div key={index} className="subform-container">
+          {subform.extendFields.map(field => this.renderField(field, fieldKey + '.#', index))}
+        </div>
+      );
+    }
+
     return (
       <div key={fieldKey} className="field field--subform" ref={ref => this.fieldRefs[fieldKey] = ref}>
-        <div style={{ marginBottom: 16 }}>
-          <div>{subform.label}</div>
-          <div>{subform.explanation}</div>
+        <div className="subform-header">
+          <div className="title">{subform.label}</div>
+          <div className="explanation">{subform.explanation}</div>
         </div>
 
-        {Array(subformCount).fill(0).map((_, index) =>
-          <div key={index} style={{ background: '#f8f9fa', padding: '14px 16px 4px', borderRadius: 5, marginBottom: 16 }}>
-            {subform.extendFields.map(field => this.renderField(field, fieldKey + '.#', index))}
-          </div>
-        )}
+        {forms}
 
         {canAdd &&
           <Button onClick={() => this.addSubform(subform, fieldKey)} style={{ marginRight: 10 }}>
