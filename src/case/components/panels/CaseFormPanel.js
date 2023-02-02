@@ -366,7 +366,7 @@ export class CaseFormPanel extends BasePanel {
         </div>
 
         {/* Sidebar for large devices */}
-        <div className="section-sidebar d-none d-lg-block">
+        <div className="section-sidebar d-none d-lg-flex">
           <Button
             variant="link"
             onClick={() => this.props.jumpToPanelForSection('customer')}
