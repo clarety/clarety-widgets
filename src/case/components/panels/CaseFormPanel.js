@@ -567,7 +567,7 @@ export class CaseFormPanel extends BasePanel {
       case 'date':         return this.renderDateField({ field, fieldKey, isRequired, isDisabled });
       case 'fileupload':   return this.renderFileUploadField({ field, fieldKey, isRequired, isDisabled });
       case 'title':        return this.renderTitleField({ field, fieldKey, isRequired, isDisabled });
-      case 'html':         return this.renderHtmlField({ field, fieldKey, isRequired, isDisabled });
+      case 'contentblock': return this.renderContentBlockField({ field, fieldKey, isRequired, isDisabled });
       case 'hidden':       return this.renderHiddenField({ field, fieldKey, isRequired, isDisabled });
       case 'customertype': return this.renderCustomerTypeField({ field, fieldKey, isRequired, isDisabled });
       case 'rating':       return this.renderRatingField({ field, fieldKey, isRequired, isDisabled });
@@ -934,11 +934,11 @@ export class CaseFormPanel extends BasePanel {
     );
   }
 
-  renderHtmlField({ field, fieldKey, isRequired = false, isDisabled = false }) {
+  renderContentBlockField({ field, fieldKey, isRequired = false, isDisabled = false }) {
     return (
       <div
         key={fieldKey}
-        className="field field--html"
+        className="field field--contentblock"
         ref={ref => this.fieldRefs[fieldKey] = ref}
         dangerouslySetInnerHTML={{ __html: field.html }}
       />
