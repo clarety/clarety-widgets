@@ -1,6 +1,6 @@
 import React from 'react';
 import memoize from 'memoize-one';
-import { Form, Row, Col, Button, Spinner } from 'react-bootstrap';
+import { Form, Row, Col, Button, Spinner, Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faCheck, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { getLanguage, t } from 'shared/translations';
@@ -288,11 +288,11 @@ export class CaseFormPanel extends BasePanel {
           {this.shouldShowSectionSidebar()
             ?
               <Row>
-                <Col xs={3}>
+                <Col lg={3}>
                   {this.renderSectionSidebar()}
                 </Col>
 
-                <Col xs={9}>
+                <Col lg={9}>
                   {this.renderErrorMessages()}
                   {this.renderForm()}  
                 </Col>
@@ -328,39 +328,77 @@ export class CaseFormPanel extends BasePanel {
     const { form } = this.props;
     const currentSection = this.props.section;
 
-    return (
-      <div className="section-sidebar">
-        <Button
-          variant="link"
-          onClick={() => this.props.jumpToPanelForSection('customer')}
-          disabled={currentSection === 'customer'}
-          className={currentSection === 'customer' ? 'active' : undefined}
-        >
-          {currentSection === 'customer'
-            ? <FontAwesomeIcon icon={faArrowRight} className="icon" />
-            : <FontAwesomeIcon icon={faCheck} className="icon" />
-          }
-          {this.getCustomerSectionName()}
-        </Button>
+    const currentSectionName
+      = currentSection === undefined ? ''
+      : currentSection === 'customer' ? this.getCustomerSectionName()
+      : form.sections[currentSection].name;
 
-        {form.sections.map((section, index) =>
+    return (
+      <React.Fragment>
+        {/* Dropdown for small devices */}
+        <div className="section-dropdown d-lg-none">
+          <Dropdown>
+            <Dropdown.Toggle>
+              {currentSectionName}
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <Dropdown.Item
+                onClick={() => this.props.jumpToPanelForSection('customer')}
+                disabled={currentSection === 'customer'}
+                className={currentSection === 'customer' ? 'active' : undefined}
+              >
+                {this.getCustomerSectionName()}
+              </Dropdown.Item>
+
+              {form.sections.map((section, index) =>
+                <Dropdown.Item
+                  key={index}
+                  onClick={() => this.props.jumpToPanelForSection(index)}
+                  disabled={currentSection === 'customer' || currentSection <= index}
+                  className={currentSection === index ? 'active' : undefined}
+                >
+                  {section.name}
+                </Dropdown.Item>
+              )}
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
+
+        {/* Sidebar for large devices */}
+        <div className="section-sidebar d-none d-lg-block">
           <Button
-            key={index}
             variant="link"
-            onClick={() => this.props.jumpToPanelForSection(index)}
-            disabled={currentSection === 'customer' || currentSection <= index}
-            className={currentSection === index ? 'active' : undefined}
+            onClick={() => this.props.jumpToPanelForSection('customer')}
+            disabled={currentSection === 'customer'}
+            className={currentSection === 'customer' ? 'active' : undefined}
           >
-            {currentSection === index
+            {currentSection === 'customer'
               ? <FontAwesomeIcon icon={faArrowRight} className="icon" />
-              : currentSection === 'customer' || currentSection < index
-              ? <span className="icon">&bull;</span>
               : <FontAwesomeIcon icon={faCheck} className="icon" />
             }
-            {section.name}
+            {this.getCustomerSectionName()}
           </Button>
-        )}
-      </div>
+
+          {form.sections.map((section, index) =>
+            <Button
+              key={index}
+              variant="link"
+              onClick={() => this.props.jumpToPanelForSection(index)}
+              disabled={currentSection === 'customer' || currentSection <= index}
+              className={currentSection === index ? 'active' : undefined}
+            >
+              {currentSection === index
+                ? <FontAwesomeIcon icon={faArrowRight} className="icon" />
+                : currentSection === 'customer' || currentSection < index
+                ? <span className="icon">&bull;</span>
+                : <FontAwesomeIcon icon={faCheck} className="icon" />
+              }
+              {section.name}
+            </Button>
+          )}
+        </div>
+      </React.Fragment>
     );
   }
 

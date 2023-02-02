@@ -112,6 +112,7 @@
   flex-direction: column;
 
   .btn {
+    display: flex;
     text-align: left;
 
     &.active {
@@ -127,10 +128,35 @@
 
   .icon {
     display: inline-block;
+    flex-shrink: 0;
     width: 0.875em;
     font-weight: 900;
     margin-right: 10px;
     text-align: center;
+  }
+}
+
+.section-dropdown {
+  margin-bottom: 20px;
+
+  .dropdown-toggle {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .dropdown-menu {
+    width: 100%;
+
+    .dropdown-item {
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      &.active {
+        color: $primary;
+        opacity: 1;
+      }
+    }
   }
 }
 
