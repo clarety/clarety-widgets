@@ -47,6 +47,7 @@ export class CaseWidget extends React.Component {
         <CaseWidgetRoot
           resources={CaseWidget.resources}
           {...this.props}
+          sectionNavStyle={this.props.sectionNavStyle || 'step-indicator'}
         />
       </ReduxProvider>
     );
@@ -78,6 +79,7 @@ export class _CaseWidgetRoot extends React.Component {
       fieldTypes:           this.props.fieldTypes,
       saveConfirmPageUrl:   this.props.saveConfirmPageUrl,
       confirmPageUrl:       this.props.confirmPageUrl,
+      sectionNavStyle:      this.props.sectionNavStyle,
       defaultCountry:       this.props.defaultCountry,
       addressFinderKey:     this.props.addressFinderKey,
       addressFinderCountry: this.props.addressFinderCountry,
@@ -116,7 +118,7 @@ export class _CaseWidgetRoot extends React.Component {
   }
 
   render() {
-    const { status, reCaptchaKey, layout, showStepIndicator } = this.props;
+    const { status, reCaptchaKey, layout, sectionNavStyle } = this.props;
     const variant = this.props.variant || '';
 
     // Show a loading indicator while we init.
@@ -130,10 +132,17 @@ export class _CaseWidgetRoot extends React.Component {
 
     const isBlocked = status === statuses.busy || status === 'busy-save';
 
+    const withNavClassName
+      = sectionNavStyle === 'sidebar' ? 'with-section-sidebar'
+      : sectionNavStyle === 'step-indicator' ? 'with-step-indicator'
+      : '';
+
     return (
-      <div className={`clarety-case-widget h-100 ${layout} ${variant}`}>
+      <div className={`clarety-case-widget h-100 ${layout} ${variant || ''} ${withNavClassName}`}>
         <BlockUi tag="div" blocking={isBlocked} loader={<span></span>}>
-          {showStepIndicator && <StepIndicator />}
+          {sectionNavStyle === 'step-indicator' &&
+            <StepIndicator />
+          }
 
           <PanelManager
             layout={layout || 'tabs'}

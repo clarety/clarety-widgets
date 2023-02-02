@@ -2,7 +2,7 @@ import { getSetting, getElement, getIsLoggedIn } from 'shared/selectors';
 import { getFormData, getErrors } from 'form/selectors';
 import { setErrors, setFormData } from 'form/actions';
 import { getIsBusy } from 'donate/selectors';
-import { submitCase, saveCase, jumpToSection } from 'case/actions';
+import { submitCase, saveCase, jumpToPanelForSection } from 'case/actions';
 
 export class CaseFormConnect {
   static mapStateToProps = (state) => {
@@ -18,6 +18,7 @@ export class CaseFormConnect {
       requiredFields: getSetting(state, 'requiredFields'),
       fieldTypes: getSetting(state, 'fieldTypes'),
       showSaveBtn: getSetting(state, 'allowSave') && getIsLoggedIn(state),
+      sectionNavStyle: getSetting(state, 'sectionNavStyle'),
       fetchedCustomer: getSetting(state, 'fetchedCustomer'),
       defaultCountry: getSetting(state, 'defaultCountry'),
       addressFinderKey: getSetting(state, 'addressFinderKey'),
@@ -30,6 +31,6 @@ export class CaseFormConnect {
     onSave: saveCase,
     setFormData: setFormData,
     setErrors: setErrors,
-    jumpToSection: jumpToSection,
+    jumpToPanelForSection: jumpToPanelForSection,
   };
 }

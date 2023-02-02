@@ -96,6 +96,26 @@ export const submitCase = () => {
   };
 };
 
+export const jumpToPanelForSection = (section) => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const panels = getPanelManager(state);
+
+    // 'wait' all panels after the section we're jumping to.
+    panels.forEach((panel, index) => {
+      if (panel.data.section !== undefined) {
+        if (panel.data.section > section || (section === 'customer' && panel.data.section !== 'customer')) {
+          dispatch(setPanelStatus(index, 'wait'));
+        }
+      }
+    });
+
+    // 'edit' the panel with the section we're jumping to.
+    const nextPanelIndex = panels.findIndex(panel => panel.data.section === section);
+    dispatch(setPanelStatus(nextPanelIndex, 'edit'));
+  }
+};
+
 const jumpToFirstPanelWithError = () => {
   return async (dispatch, getState) => {
     const state = getState();

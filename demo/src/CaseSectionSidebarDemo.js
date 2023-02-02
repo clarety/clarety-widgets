@@ -19,7 +19,6 @@ const renderCaseWidget = async (props) => {
       component: CaseFormPanel,
       connect: CaseFormConnect,
       settings: {
-        showSectionSidebar: true,
         showPhoneCountrySelect: true,
         submitBtnText: props.submitBtnText,
         saveBtnText: props.saveBtnText,
@@ -43,6 +42,7 @@ export default class CaseSectionSidebarDemo extends React.Component {
   componentDidMount() {
     renderCaseWidget({
       elementId: 'case-widget-demo',
+      sectionNavStyle: 'sidebar',
 
       // allowSave: true,
       // saveStage: '0',

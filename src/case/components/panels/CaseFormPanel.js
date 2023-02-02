@@ -226,7 +226,7 @@ export class CaseFormPanel extends BasePanel {
   }
 
   shouldShowSectionSidebar() {
-    return !!this.props.settings.showSectionSidebar;
+    return this.props.sectionNavStyle === 'sidebar';
   }
 
   getSubformCount(state, subform, fieldKey) {
@@ -332,7 +332,7 @@ export class CaseFormPanel extends BasePanel {
       <div className="section-sidebar">
         <Button
           variant="link"
-          onClick={() => this.props.jumpToSection('customer')}
+          onClick={() => this.props.jumpToPanelForSection('customer')}
           disabled={currentSection === 'customer'}
           className={currentSection === 'customer' ? 'active' : undefined}
         >
@@ -347,7 +347,7 @@ export class CaseFormPanel extends BasePanel {
           <Button
             key={index}
             variant="link"
-            onClick={() => this.props.jumpToSection(index)}
+            onClick={() => this.props.jumpToPanelForSection(index)}
             disabled={currentSection === 'customer' || currentSection <= index}
             className={currentSection === index ? 'active' : undefined}
           >
@@ -1003,17 +1003,19 @@ export class CaseFormPanel extends BasePanel {
 
         {forms}
 
-        {canAdd &&
-          <Button onClick={() => this.addSubform(subform, fieldKey)} style={{ marginRight: 10 }}>
-            Add
-          </Button>
-        }
+        <div className="subform-footer">
+          {canAdd &&
+            <Button size="sm" onClick={() => this.addSubform(subform, fieldKey)} style={{ marginRight: 10 }}>
+              Add
+            </Button>
+          }
 
-        {canRemove &&
-          <Button onClick={() => this.removeSubform(subform, fieldKey)}>
-            Remove
-          </Button>
-        }
+          {canRemove &&
+            <Button size="sm" onClick={() => this.removeSubform(subform, fieldKey)}>
+              Remove
+            </Button>
+          }
+        </div>
       </div>
     );
   }
