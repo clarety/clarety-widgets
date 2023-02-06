@@ -146,6 +146,11 @@ export class CaseFormPanel extends BasePanel {
       : this.props.form;
 
     for (const field of form.extendFields) {
+      // Skip hidden conditional fields.
+      if (field.conditionalField && !this.shouldShowConditionalField(field)) {
+        continue;
+      }
+
       const fieldKey = `extendFields.${field.columnKey}`;
       const fieldType = this.getFieldType(field, fieldKey);
 
