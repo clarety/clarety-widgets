@@ -9,6 +9,7 @@ class _PanelManager extends React.Component {
 
   constructor(props) {
     super(props);
+
     this.setupPanelComponents(props.panels, props.resources);
 
     if (props.layout === 'page') {
@@ -16,8 +17,14 @@ class _PanelManager extends React.Component {
     }
   }
 
-  setupPanelComponents(panels, resources) {
+  componentDidUpdate(prevPops) {
+    // If panels were added after constructor, they need to be setup.
+    if (this.props.panels.length !== prevPops.panels.length) {
+      this.setupPanelComponents(this.props.panels, this.props.resources);
+    }
+  }
 
+  setupPanelComponents(panels, resources) {
     panels.forEach(panel => {
       let panelComponent = resources.getComponent(panel.component);
 
@@ -77,6 +84,8 @@ class _PanelManager extends React.Component {
     
     const shouldScroll = layout === 'stack' && panel.status === 'edit';
     const className = shouldScroll ? 'panel panel-last' : 'panel';
+
+    if (!PanelComponent) return null;
 
     return (
       <ScrollIntoView isActive={shouldScroll} key={panel.id} className={className}>
