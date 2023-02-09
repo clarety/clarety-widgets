@@ -14,6 +14,8 @@ import { rootReducer } from 'case/reducers';
 import { setupFormPanels, prefillCustomer, prefillInProgressCase } from 'case/actions';
 import { mapCaseSettings } from 'case/utils';
 
+const urlParams = new URLSearchParams(window.location.search);
+
 export class CaseWidget extends React.Component {
   static store;
   static resources;
@@ -88,22 +90,31 @@ export class _CaseWidgetRoot extends React.Component {
     this.props.setStore(this.props.storeUid);
 
     this.props.initTrackingData(this.props);
-    
-    const jwtAccount = getJwtAccount();
-    if (jwtAccount) {
-      ClaretyApi.setAuth(jwtAccount.jwtString);
-      this.props.setAuth(jwtAccount.jwtString);
 
+    let hasAuth = await this.findAndApplyJwtAccount();
+    let caseUid = urlParams.get('caseUid');
+    if (!hasAuth) {
+      const actionAuth = await this.findAndAttemptActionAuth();
+      if (actionAuth) {
+        hasAuth = true;
+        if (actionAuth.caseUid) caseUid = actionAuth.caseUid;
+      }
+    }
+
+    if (hasAuth) {
       const { prefillCustomer, prefillInProgressCase, caseTypeUid, saveStage } = this.props;
-
       const promises = [];
 
       // Pre-fill customer data.
       promises.push(prefillCustomer());
-      
-      if (this.props.allowSave) {
-        // Pre-fill in-progress case form.
-        promises.push(prefillInProgressCase(caseTypeUid, saveStage));
+
+      // Pre-fill in-progress case.
+      if (caseUid) {
+        if (caseUid !== 'new') {
+          promises.push(prefillInProgressCase({ caseUid }));
+        }
+      } else if (this.props.allowSave) {
+        promises.push(prefillInProgressCase({ caseTypeUid, stage: saveStage }));
       }
 
       await Promise.allSettled(promises);
@@ -115,6 +126,34 @@ export class _CaseWidgetRoot extends React.Component {
     }, mapCaseSettings);
 
     this.props.setupFormPanels();
+  }
+
+  async findAndApplyJwtAccount() {
+    // Check for jwtAccount cookie.
+    const jwtAccount = getJwtAccount();
+    if (jwtAccount && jwtAccount.jwtString) {
+      ClaretyApi.setAuth(jwtAccount.jwtString);
+      this.props.setAuth(jwtAccount.jwtString);
+      return true;
+    }
+
+    return false;
+  }
+
+  async findAndAttemptActionAuth() {
+    // Check for action auth url param.
+    const actionKey = urlParams.get('clarety_action');
+    if (actionKey) {
+      const response = await ClaretyApi.get('cases/action-auth', { actionKey });
+      const actionAuth = response[0] || null;
+
+      if (actionAuth && actionAuth.jwtCustomer) {
+        ClaretyApi.setJwtCustomer(actionAuth.jwtCustomer);
+        return actionAuth;
+      }
+    }
+
+    return null;
   }
 
   render() {

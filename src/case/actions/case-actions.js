@@ -165,9 +165,9 @@ export const prefillCustomer = () => {
   };
 };
 
-export const prefillInProgressCase = (caseTypeUid, stage) => {
+export const prefillInProgressCase = ({ caseUid, caseTypeUid, stage }) => {
   return async (dispatch, getState) => {
-    const results = await ClaretyApi.get('cases/in-progress', { caseTypeUid, stage });
+    const results = await ClaretyApi.get('cases/in-progress', { caseUid, caseTypeUid, stage });
     const caseObj = results[0];
 
     if (caseObj && caseObj.caseUid) {
