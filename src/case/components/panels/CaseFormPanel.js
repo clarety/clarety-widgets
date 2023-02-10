@@ -822,11 +822,13 @@ export class CaseFormPanel extends BasePanel {
   }
 
   renderAddressField({ field, fieldKey, isRequired = false, isDisabled = false }) {
+    const { settings } = this.props;
 
     return (
       <div key={fieldKey} className="field field--address" ref={ref => this.fieldRefs[fieldKey] = ref}>
         <AddressField
           fieldKey={fieldKey}
+          label={this.getFieldLabel(field, fieldKey)}
           addressFinderKey={this.props.addressFinderKey}
           addressFinderCountry={this.props.addressFinderCountry}
           disableAddressFinder={this.state.disableAddressFinders}
@@ -1238,7 +1240,7 @@ class AddressField extends React.Component {
   });
 
   render() {
-    const { fieldKey, required, defaultCountry } = this.props;
+    const { fieldKey, required, defaultCountry, label } = this.props;
     const country = this.props.formData[`${fieldKey}.country`];
     const useAddressFinder = this.state.useAddressFinder && this.shouldUseAddressFinder();
 
@@ -1258,6 +1260,7 @@ class AddressField extends React.Component {
                   region={this.props.region}
                   defaultCountry={defaultCountry}
                   required={required}
+                  labelPrefix={label}
                 />
               </Col>
             </Form.Row>
@@ -1285,19 +1288,39 @@ class AddressField extends React.Component {
           : <React.Fragment>
               <Form.Row>
                 <Col sm>
-                  <Address1Field fieldKey={fieldKey} country={country} required={required} />
+                  <Address1Field
+                    fieldKey={fieldKey}
+                    country={country}
+                    required={required}
+                    labelPrefix={label}
+                  />
                 </Col>
                 <Col sm>
-                  <SuburbField fieldKey={fieldKey} country={country} required={required && country !== 'NZ'} />
+                  <SuburbField
+                    fieldKey={fieldKey}
+                    country={country}
+                    required={required && country !== 'NZ'}
+                    labelPrefix={label}
+                  />
                 </Col>
               </Form.Row>
       
               <Form.Row>
                 <Col sm>
-                  <StateField fieldKey={fieldKey} country={country} required={required} />
+                  <StateField
+                    fieldKey={fieldKey}
+                    country={country}
+                    required={required}
+                    labelPrefix={label}
+                  />
                 </Col>
                 <Col sm>
-                  <PostcodeField fieldKey={fieldKey} country={country} required={required} />
+                  <PostcodeField
+                    fieldKey={fieldKey}
+                    country={country}
+                    required={required}
+                    labelPrefix={label}
+                  />
                 </Col>
               </Form.Row>
             </React.Fragment>
@@ -1307,46 +1330,46 @@ class AddressField extends React.Component {
   }
 }
 
-function Address1Field({ fieldKey, required }) {
+function Address1Field({ fieldKey, required, labelPrefix }) {
   return (
     <Form.Group controlId={`${fieldKey}.address1`}>
-      <Form.Label>{t('street', 'Street')}{required && ' *'}</Form.Label>
+      <Form.Label>{labelPrefix} {t('street', 'Street')}{required && ' *'}</Form.Label>
       <TextInput field={`${fieldKey}.address1`} type="street" />
     </Form.Group>
   );
 }
 
-function SuburbField({ fieldKey, country, required }) {
+function SuburbField({ fieldKey, country, required, labelPrefix }) {
   return (
     <Form.Group controlId={`${fieldKey}.suburb`}>
-      <Form.Label>{getSuburbLabel(country)}{required && ' *'}</Form.Label>
+      <Form.Label>{labelPrefix} {getSuburbLabel(country)}{required && ' *'}</Form.Label>
       <TextInput field={`${fieldKey}.suburb`} />
     </Form.Group>
   );
 }
 
-function StateField({ fieldKey, country, required }) {
+function StateField({ fieldKey, country, required, labelPrefix }) {
   return (
     <Form.Group controlId={`${fieldKey}.state`}>
-      <Form.Label>{getStateLabel(country)}{required && ' *'}</Form.Label>
+      <Form.Label>{labelPrefix} {getStateLabel(country)}{required && ' *'}</Form.Label>
       <StateInput field={`${fieldKey}.state`} country={country} />
     </Form.Group>
   );
 }
 
-function PostcodeField({ fieldKey, country, required }) {
+function PostcodeField({ fieldKey, country, required, labelPrefix }) {
   return (
     <Form.Group controlId={`${fieldKey}.postcode`}>
-      <Form.Label>{getPostcodeLabel(country)}{required && ' *'}</Form.Label>
+      <Form.Label>{labelPrefix} {getPostcodeLabel(country)}{required && ' *'}</Form.Label>
       <PostcodeInput field={`${fieldKey}.postcode`} country={country} />
     </Form.Group>
   );
 }
 
-function CountryField({ fieldKey, region, defaultCountry, required }) {
+function CountryField({ fieldKey, region, defaultCountry, required, labelPrefix }) {
   return (
     <Form.Group controlId="country">
-      <Form.Label>{t('country', 'Country')}{required && ' *'}</Form.Label>
+      <Form.Label>{labelPrefix} {t('country', 'Country')}{required && ' *'}</Form.Label>
       <CountryInput
         field={`${fieldKey}.country`}
         initialValue={defaultCountry}

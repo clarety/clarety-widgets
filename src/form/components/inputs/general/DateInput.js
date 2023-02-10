@@ -66,6 +66,9 @@ export function _DateInput({ value, error, onChange, initialValue, setInitialVal
 
   const popper = usePopper(popperRef.current, popperElement, {
     placement: 'bottom-start',
+    modifiers: [
+      { name: 'flip', enabled: false },
+    ],
   });
 
   const closePopper = () => {
