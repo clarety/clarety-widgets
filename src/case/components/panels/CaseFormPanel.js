@@ -858,6 +858,7 @@ export class CaseFormPanel extends BasePanel {
               defaultCountry={defaultCountry}
               required={isRequired}
               disabled={isDisabled}
+              labelPrefix={this.getFieldLabel(field, fieldKey)}
             />
           </Col>
           <Col sm>
@@ -866,6 +867,7 @@ export class CaseFormPanel extends BasePanel {
               country={country}
               required={isRequired}
               disabled={isDisabled}
+              labelPrefix={this.getFieldLabel(field, fieldKey)}
             />
           </Col>
         </Form.Row>
@@ -887,6 +889,7 @@ export class CaseFormPanel extends BasePanel {
               defaultCountry={defaultCountry}
               required={isRequired}
               disabled={isDisabled}
+              labelPrefix={this.getFieldLabel(field, fieldKey)}
             />
           </Col>
         </Form.Row>
@@ -898,6 +901,7 @@ export class CaseFormPanel extends BasePanel {
               country={country}
               required={isRequired}
               disabled={isDisabled}
+              labelPrefix={this.getFieldLabel(field, fieldKey)}
             />
           </Col>
           <Col sm>
@@ -906,6 +910,7 @@ export class CaseFormPanel extends BasePanel {
               country={country}
               required={isRequired}
               disabled={isDisabled}
+              labelPrefix={this.getFieldLabel(field, fieldKey)}
             />
           </Col>
         </Form.Row>
