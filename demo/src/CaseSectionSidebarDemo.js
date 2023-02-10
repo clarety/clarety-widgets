@@ -61,6 +61,7 @@ export default class CaseSectionSidebarDemo extends React.Component {
         'customer.mobile',
 
         'extendFields.casewidgetsectiontestformtestsubform',
+        'extendFields.casewidgetsectiontestformdate',
         'extendFields.casewidgetsectiontestformtestsubform.#.formcontactname',
         'extendFields.casewidgetsectiontestformtestsubform.#.formcontactnumber',
 

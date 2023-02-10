@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import FocusTrap from 'focus-trap-react';
+import { usePopper } from 'react-popper';
+import { DayPicker } from 'react-day-picker';
+import 'react-day-picker/dist/style.css';
 import { Form } from 'react-bootstrap';
-import DatePicker, { setDefaultLocale } from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { parseISO, formatISO } from 'date-fns';
+import { parseISO, formatISO, format as formatDate } from 'date-fns';
 import { getLanguage } from 'shared/translations';
 import { updateFormData } from 'form/actions';
 import { getValidationError } from 'form/utils';
@@ -23,59 +25,118 @@ import bgLocale from 'date-fns/locale/bg';
 import ukLocale from 'date-fns/locale/uk';
 import elLocale from 'date-fns/locale/el';
 
-export class _DateInput extends React.Component {
-  constructor(props) {
-    super(props);
-
-    const locale = this.getLocale();
-    if (locale) setDefaultLocale(locale);
-
-    if (!props.value && props.initialValue !== undefined) {
-      props.setInitialValue(props.initialValue);
-    }
+function getDateLocale() {
+  switch (getLanguage()) {
+    case 'pt':     return ptLocale;
+    case 'ru':     return ruLocale;
+    case 'es':     return esLocale;
+    case 'es-419': return esLocale;
+    case 'fr':     return frLocale;
+    case 'de':     return deLocale;
+    case 'nb':     return nbLocale;
+    case 'da':     return daLocale;
+    case 'sv':     return svLocale;
+    case 'bg':     return bgLocale;
+    case 'uk':     return ukLocale;
+    case 'el':     return elLocale;
+    case 'th':     return thLocale;
+    case 'km':     return undefined; // TODO: Khmer
+    default:       return undefined;
   }
+}
 
-  getLocale() {
-    switch (getLanguage()) {
-      case 'pt':     return ptLocale;
-      case 'ru':     return ruLocale;
-      case 'es':     return esLocale;
-      case 'es-419': return esLocale;
-      case 'fr':     return frLocale;
-      case 'de':     return deLocale;
-      case 'nb':     return nbLocale;
-      case 'da':     return daLocale;
-      case 'sv':     return svLocale;
-      case 'bg':     return bgLocale;
-      case 'uk':     return ukLocale;
-      case 'el':     return elLocale;
-      case 'th':     return thLocale;
-      case 'km':     return undefined; // TODO: Khmer
+const thisYear = new Date().getFullYear();
+const minYear = thisYear - 90;
+const maxYear = thisYear + 10;
+
+export function _DateInput({ value, error, onChange, initialValue, setInitialValue }) {
+  React.useEffect(() => {
+    if (!value && initialValue !== undefined) {
+      setInitialValue(initialValue);
     }
-  }
+  }, []);
 
-  onChangeDate = (date) => {
-    const dateString = formatISO(date, { representation: 'date' });
-    this.props.onChange(dateString);
+  const date = value ? parseISO(value) : null;
+  const displayDate = date ? formatDate(date, 'd MMM yyyy') : '';
+
+  const inputRef = React.useRef(null);
+  const popperRef = React.useRef(null);
+  const [popperElement, setPopperElement] = React.useState(null);
+  const [isPopperOpen, setIsPopperOpen] = React.useState(false);
+
+  const popper = usePopper(popperRef.current, popperElement, {
+    placement: 'bottom-start',
+  });
+
+  const closePopper = () => {
+    setIsPopperOpen(false);
   };
 
-  render() {
-    const { value, error } = this.props;
-    const date = value ? parseISO(value) : null;
+  const handleButtonClick = () => {
+    inputRef.current.blur();
+    setIsPopperOpen(true);
+  };
 
-    return (
-      <Form.Group>
-        <DatePicker
-          selected={date}
-          onChange={this.onChangeDate}
-          dateFormat="d MMM yyyy"
-          fixedHeight
+  const handleDaySelect = (date) => {
+    if (date) {
+      const isoDate = formatISO(date, { representation: 'date' });
+      onChange(isoDate);
+    }
+
+    closePopper();
+  };  
+
+  return (
+    <Form.Group>
+      <div ref={popperRef}>
+        <Form.Control
+          type="text"
+          onFocus={handleButtonClick}
+          onChange={() => {}}
+          value={displayDate}
+          isInvalid={!!error}
+          ref={inputRef}
         />
 
         <FieldError error={error} />
-      </Form.Group>
-    );
-  }
+      </div>
+
+      {isPopperOpen && (
+        <FocusTrap
+          active
+          focusTrapOptions={{
+            initialFocus: false,
+            allowOutsideClick: true,
+            clickOutsideDeactivates: true,
+            onDeactivate: closePopper,
+          }}
+        >
+          <div
+            tabIndex={-1}
+            style={{ ...popper.styles.popper, zIndex: 1000 }}
+            className="dialog-sheet"
+            {...popper.attributes.popper}
+            ref={setPopperElement}
+            role="dialog"
+          >
+            <div style={{ background:'white', border: '1px solid #ccc', borderRadius: 5 }}>
+              <DayPicker
+                initialFocus={isPopperOpen}
+                mode="single"
+                defaultMonth={date}
+                selected={date}
+                onSelect={handleDaySelect}
+                fromYear={minYear}
+                toYear={maxYear}
+                captionLayout="dropdown"
+                locale={getDateLocale()}
+              />
+            </div>
+          </div>
+        </FocusTrap>
+      )}
+    </Form.Group>
+  );
 }
 
 const mapStateToProps = (state, ownProps) => {
