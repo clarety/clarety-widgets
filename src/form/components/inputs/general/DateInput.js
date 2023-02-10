@@ -124,7 +124,6 @@ export function _DateInput({ value, error, onChange, initialValue, setInitialVal
           >
             <div style={{ background:'white', border: '1px solid #ccc', borderRadius: 5 }}>
               <DayPicker
-                initialFocus={isPopperOpen}
                 mode="single"
                 defaultMonth={date}
                 selected={date}
