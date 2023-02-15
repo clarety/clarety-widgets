@@ -117,6 +117,7 @@ export class DonationPanel extends BasePanel {
           {this.renderScheduleSelect()}
           {this.renderPriceHandles()}
           {this.renderGivingType()}
+          {this.renderCommentInput()}
         </PanelBody>
 
         {this.renderFooter()}
@@ -243,6 +244,24 @@ export class DonationPanel extends BasePanel {
             </Col>
           </Row>
         }
+      </div>
+    );
+  }
+
+  renderCommentInput() {
+    const { settings } = this.props;
+    if (!settings.showComment) return null;
+
+    return (
+      <div className="comment">
+        <Row>
+          <Col>
+            <Form.Group>
+              <Form.Label>{settings.commentLabel || t('donation-comment-label', 'Donation Made In Honour Of')}</Form.Label>
+              <TextInput field="saleline.givingType" />
+            </Form.Group>
+          </Col>
+        </Row>
       </div>
     );
   }
