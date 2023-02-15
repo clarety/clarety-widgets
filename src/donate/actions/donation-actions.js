@@ -36,23 +36,6 @@ export const fetchOffers = ({ singleOfferId, recurringOfferId, categoryUid }) =>
   };
 };
 
-export const fetchOffersIfChanged = ({ singleOfferId, recurringOfferId, categoryUid }) => {
-  return async (dispatch, getState) => {
-    const state = getState();
-
-    const offerDidChange =
-      singleOfferId    !== getSetting(state, 'singleOfferId') ||
-      recurringOfferId !== getSetting(state, 'recurringOfferId') ||
-      categoryUid      !== getSetting(state, 'categoryUid');
-
-    if (offerDidChange) {
-      return dispatch(fetchOffers({ singleOfferId, recurringOfferId, categoryUid }));
-    }
-
-    return false;
-  };
-};
-
 export const selectFrequency = (frequency) => ({
   type: types.selectFrequency,
   frequency: frequency,
