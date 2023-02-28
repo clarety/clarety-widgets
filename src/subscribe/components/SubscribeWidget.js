@@ -82,7 +82,7 @@ export class _SubscribeWidgetRoot extends React.Component {
   }
 
   render() {
-    const { status, resources, reCaptchaKey } = this.props;
+    const { status, reCaptchaKey } = this.props;
 
     // Show a loading indicator while we init.
     if (status === 'initializing') {
@@ -96,8 +96,19 @@ export class _SubscribeWidgetRoot extends React.Component {
     return (
       <div className="clarety-subscribe-widget h-100">
         {this.renderHeader()}
-        <PanelManager layout="tabs" resources={resources} />
-        {reCaptchaKey && <Recaptcha siteKey={reCaptchaKey} language={i18next.language} />}
+
+        <PanelManager
+          layout="tabs"
+          resources={this.props.resources}
+          isPreview={this.props.preview}
+        />
+
+        {reCaptchaKey &&
+          <Recaptcha
+            siteKey={reCaptchaKey}
+            language={i18next.language}
+          />
+        }
       </div>
     );
   }
