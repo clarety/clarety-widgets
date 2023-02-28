@@ -72,12 +72,18 @@ export class CaseFormPanel extends BasePanel {
   onPressNext = async (event) => {
     event.preventDefault();
 
-    const { onSubmit, nextPanel, section, isLastSection } = this.props;
+    const { onSubmit, nextPanel, section, isLastSection, isPreview } = this.props;
+    const shouldSubmit = section === undefined || isLastSection;
+
+    if (isPreview) {
+      if (shouldSubmit) return;
+      return nextPanel();
+    }
 
     const isValid = this.validate();
     if (!isValid) return;
 
-    if (section === undefined || isLastSection) {
+    if (shouldSubmit) {
       const didSubmit = await onSubmit();
       if (!didSubmit) return;
     }

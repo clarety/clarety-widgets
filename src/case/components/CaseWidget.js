@@ -186,6 +186,7 @@ export class _CaseWidgetRoot extends React.Component {
           <PanelManager
             layout={layout || 'tabs'}
             resources={this.props.resources}
+            isPreview={this.props.preview}
           />
         </BlockUi>
 
