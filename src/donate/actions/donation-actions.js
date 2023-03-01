@@ -8,7 +8,7 @@ export const fetchFundOffers = () => {
   return async (dispatch, getState) => {
     const state = getState();
     const { fundId } = getFormData(state);
-    return dispatch(fetchOffers(fundId, fundId));
+    return dispatch(fetchOffers({ singleOfferId: fundId, recurringOfferId: fundId }));
   };
 };
 
