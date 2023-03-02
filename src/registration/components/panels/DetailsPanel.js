@@ -35,21 +35,27 @@ export class DetailsPanel extends BasePanel {
     }
   }
 
+  componentDidMount() {
+    super.componentDidMount();
+    this.handleParticipantPropUpdate(this.props.participant);
+  }
+
   componentDidUpdate(prevProps) {
     super.componentDidUpdate(prevProps);
+    this.handleParticipantPropUpdate(this.props.participant, prevProps.participant);
+  }
 
-    const { participant } = this.props;
-
+  handleParticipantPropUpdate(participant, prevParticipant = {}) {
     if (participant) {
-      if (participant.errors !== prevProps.participant.errors) {
+      if (participant.errors !== prevParticipant.errors) {
         this.setState({ errors: participant.errors });
       }
   
-      if (participant.customer !== prevProps.participant.customer) {
+      if (participant.customer !== prevParticipant.customer) {
         this.prefillCustomerFormData(participant.customer);
       }
 
-      if (participant.offerId !== prevProps.participant.offerId) {
+      if (participant.offerId !== prevParticipant.offerId) {
         this.onFormChange('waveProductId', undefined);
       }
     }

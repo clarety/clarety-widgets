@@ -55,13 +55,13 @@ async function renderRegistrations(props) {
       },
     },
     {
-      component: QtysPanel,
-      connect: QtysConnect,
+      component: TeamPanel,
+      connect: TeamConnect,
       settings: {},
     },
     {
-      component: TeamPanel,
-      connect: TeamConnect,
+      component: QtysPanel,
+      connect: QtysConnect,
       settings: {},
     },
     {
