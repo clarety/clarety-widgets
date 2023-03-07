@@ -106,6 +106,7 @@ export class _CaseWidgetRoot extends React.Component {
       const promises = [];
 
       // Pre-fill customer data.
+      // Note that our JWT might not auth us to load any customer data.
       promises.push(prefillCustomer());
 
       // Pre-fill in-progress case.
@@ -147,8 +148,9 @@ export class _CaseWidgetRoot extends React.Component {
       const response = await ClaretyApi.get('cases/action-auth', { actionKey });
       const actionAuth = response[0] || null;
 
-      if (actionAuth && actionAuth.jwtCustomer) {
-        ClaretyApi.setJwtCustomer(actionAuth.jwtCustomer);
+      if (actionAuth) {
+        if (actionAuth.jwtCustomer) ClaretyApi.setJwtCustomer(actionAuth.jwtCustomer);
+        if (actionAuth.jwtSession)  ClaretyApi.setJwtSession(actionAuth.jwtSession);
         return actionAuth;
       }
     }
