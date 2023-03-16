@@ -19,7 +19,7 @@ export function renderWidget(elementId, component) {
 }
 
 export function getJwtSession() {
-  return getDecodedJwtCookie('jwtSession');
+  return getDecodedJwtCookie('jwtSession') || getDecodedJwtCookie('session-jwt');
 }
 
 export function getJwtAccount() {

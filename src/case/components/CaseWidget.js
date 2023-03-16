@@ -8,7 +8,7 @@ import 'react-block-ui/style.css';
 import { ClaretyApi } from 'clarety-utils';
 import { statuses, setStore, setStatus, setAuth, initTrackingData, fetchSettings, updateAppSettings, setPanels } from 'shared/actions';
 import { PanelManager, StepIndicator } from 'shared/components';
-import { Resources, getJwtAccount } from 'shared/utils';
+import { Resources, getJwtAccount, getJwtSession } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { rootReducer } from 'case/reducers';
 import { setupFormPanels, prefillCustomer, prefillInProgressCase } from 'case/actions';
@@ -91,13 +91,26 @@ export class _CaseWidgetRoot extends React.Component {
 
     this.props.initTrackingData(this.props);
 
-    let hasAuth = await this.findAndApplyJwtAccount();
     let caseUid = urlParams.get('caseUid');
-    if (!hasAuth) {
-      const actionAuth = await this.findAndAttemptActionAuth();
-      if (actionAuth) {
-        hasAuth = true;
-        if (actionAuth.caseUid) caseUid = actionAuth.caseUid;
+
+    // Attempt to find and apply auth.
+    let hasAuth = false;
+    {
+      // First try JWT account cookie.
+      hasAuth = await this.findAndApplyJwtAccount();
+
+      // Then try action auth URL param.
+      if (!hasAuth) {
+        const actionAuth = await this.findAndAttemptActionAuth();
+        if (actionAuth) {
+          hasAuth = true;
+          if (actionAuth.caseUid) caseUid = actionAuth.caseUid;
+        }
+      }
+
+      // Then try JWT session cookie.
+      if (!hasAuth) {
+        hasAuth = await this.findAndApplyJwtSession();
       }
     }
 
@@ -135,6 +148,17 @@ export class _CaseWidgetRoot extends React.Component {
     if (jwtAccount && jwtAccount.jwtString) {
       ClaretyApi.setAuth(jwtAccount.jwtString);
       this.props.setAuth(jwtAccount.jwtString);
+      return true;
+    }
+
+    return false;
+  }
+
+  async findAndApplyJwtSession() {
+    // Check for jwtSession cookie.
+    const jwtSession = getJwtSession();
+    if (jwtSession && jwtSession.jwtString) {
+      ClaretyApi.setJwtSession(jwtSession.jwtString);
       return true;
     }
 
