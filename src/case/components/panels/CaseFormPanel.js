@@ -684,7 +684,7 @@ export class CaseFormPanel extends BasePanel {
 
   renderTextAreaField({ field, fieldKey, isRequired = false, isDisabled = false }) {
     return (
-      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--textarea" ref={ref => this.fieldRefs[fieldKey] = ref}>
+      <Form.Group controlId={fieldKey} key={fieldKey} className={`field field--textarea size-${field.size}`} ref={ref => this.fieldRefs[fieldKey] = ref}>
         {this.renderLabel(field, fieldKey, isRequired)}
 
         <TextAreaInput
