@@ -1,9 +1,9 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { statuses, setStatus, setRecaptcha, clearRecaptcha, setPayment, updateCartData, prepareStripePayment, authoriseStripePayment, updateAppSettings } from 'shared/actions';
+import { statuses, setStatus, setRecaptcha, clearRecaptcha, setPayment, setCustomer, updateCartData, prepareStripePayment, authoriseStripePayment, updateAppSettings } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
 import { isHongKongDirectDebit, isStripe } from 'shared/utils';
-import { setErrors, updateFormData } from 'form/actions';
+import { setFormData, setErrors, updateFormData } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { DonationApi } from 'donate/utils';
 import { types, addDonationToCart, addCustomerToCart, setDonationStartDate } from 'donate/actions';
@@ -247,6 +247,88 @@ const fetchPaymentMethods = () => {
       dispatch(fetchPaymentMethodsFailure());
       return false;
     }
+  };
+};
+
+export const fetchStripePaymentIntent = ({ amount, currency }) => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const storeUid = getStoreUid(state);
+    return DonationApi.fetchStripePaymentIntent(storeUid, amount, currency);
+  };
+}
+
+export const makeStripeWalletPayment = (stripePaymentMethod, stripePaymentIntent) => {
+  return async (dispatch, getState) => {
+    // Set cart donation.
+    dispatch(addDonationToCart());
+
+    const { billing_details } = stripePaymentMethod;
+
+    let firstName = '';
+    let lastName = '';
+    const nameParts = billing_details.name.split(' ');
+
+    if (nameParts.length === 1) {
+      firstName = nameParts[0];
+    } else if (nameParts.length === 2) {
+      firstName = nameParts[0];
+      lastName = nameParts[1];
+    } else if (nameParts.length > 2) {
+      lastName = nameParts.pop();
+      firstName = nameParts.join(' ');
+    }
+
+    // Set cart customer.
+    const customerData = {
+      firstName: firstName,
+      lastName: lastName,
+      email: billing_details.email,
+      mobile: billing_details.phone,
+      billing: {
+        address1: billing_details.address.line1,
+        address2: billing_details.address.line2,
+        suburb:   billing_details.address.city,
+        state:    billing_details.address.state,
+        postcode: billing_details.address.postal_code,
+        country:  billing_details.address.country,
+      },
+    };
+
+    dispatch(setCustomer(customerData));
+
+    // Set customer form data.
+    const formData = {
+      'customer.email':            customerData.email,
+      'customer.firstName':        customerData.firstName,
+      'customer.lastName':         customerData.lastName,
+      'customer.mobile':           customerData.mobile,
+      'customer.billing.address1': customerData.billing.address1,
+      'customer.billing.address2': customerData.billing.address2,
+      'customer.billing.suburb':   customerData.billing.suburb,
+      'customer.billing.state':    customerData.billing.state,
+      'customer.billing.postcode': customerData.billing.postcode,
+      'customer.billing.country':  customerData.billing.country,
+    };
+    dispatch(setFormData(formData));
+
+    // Set cart payment.
+    const paymentData = {
+      type: 'stripe-wallet',
+      walletType: stripePaymentMethod.card.wallet.type,
+      gatewayToken: stripePaymentIntent.id,
+    };
+    dispatch(setPayment(paymentData));
+
+    // Post payment.
+    const state = getState();
+    const postData = getPaymentPostData(state);
+    dispatch(makePaymentRequest(postData));
+  
+    const result = await DonationApi.createDonation(postData);
+
+    // Handle result.
+    return dispatch(handlePaymentResult(result));
   };
 };
 

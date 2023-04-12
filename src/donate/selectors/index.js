@@ -198,7 +198,7 @@ export const getSuccessfulDonation = (state) => {
 };
 
 export const getHasExpressPaymentMethods = (state) => {
-  const expressMethods = ['paypal'];
+  const expressMethods = ['paypal', 'stripe-wallet'];
 
   const paymentMethods = getPaymentMethods(state);
   for (const method of paymentMethods) {
