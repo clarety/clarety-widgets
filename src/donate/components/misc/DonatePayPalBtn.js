@@ -27,7 +27,7 @@ export const _DonatePayPalBtn = (props) => {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  paymentMethod: getPaymentMethod(state, 'paypal'),
+  paymentMethod: getPaymentMethod(state, 'wallet', 'paypal'),
   currency: getSetting(state, 'currency'),
   amount: getDonationPanelSelection(state).amount,
   frequency: getSelectedFrequency(state),
