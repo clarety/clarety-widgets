@@ -64,7 +64,15 @@ export const DonateStripeWalletBtnInner = (props) => {
   if (paymentRequest) {
     return (
       <PaymentRequestButtonElement
-        options={{paymentRequest}}
+        options={{
+          paymentRequest,
+          style: {
+            paymentRequestButton: {
+              type: 'donate',
+              height: '45px',
+            },
+          },
+        }}
       />
     );
   }
@@ -98,7 +106,7 @@ export const _DonateStripeWalletBtn = (props) => {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  paymentMethod: getPaymentMethod(state, 'stripe-wallet'),
+  paymentMethod: getPaymentMethod(state, 'wallet', 'stripe'),
   currency: getSetting(state, 'currency').code.toLowerCase(),
   amount: Math.floor(Number(getDonationPanelSelection(state).amount) * 100),
   frequency: getSelectedFrequency(state),

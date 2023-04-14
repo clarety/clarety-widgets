@@ -127,9 +127,9 @@ export const getSelectedPaymentMethod = (state) => {
   return getPaymentMethod(state, paymentType);
 };
 
-export const getPaymentMethod = (state, type) => {
+export const getPaymentMethod = (state, type, gateway = null) => {
   const paymentMethods = getSetting(state, 'paymentMethods') || [];
-  return paymentMethods.find(paymentMethod => paymentMethod.type === type);
+  return paymentMethods.find(pm => pm.type === type && (!gateway || pm.gateway === gateway));
 };
 
 export const getPaymentMethods = (state) => {
@@ -198,7 +198,7 @@ export const getSuccessfulDonation = (state) => {
 };
 
 export const getHasExpressPaymentMethods = (state) => {
-  const expressMethods = ['paypal', 'stripe-wallet'];
+  const expressMethods = ['wallet', 'paypal'];
 
   const paymentMethods = getPaymentMethods(state);
   for (const method of paymentMethods) {

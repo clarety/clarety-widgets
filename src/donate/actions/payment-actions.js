@@ -32,7 +32,7 @@ export const makePayment = (paymentData, { isPageLayout } = {}) => {
 
     dispatch(setDonationStartDate());
 
-    const paymentMethod = getPaymentMethod(state, paymentData.type);
+    const paymentMethod = getPaymentMethod(state, paymentData.type, paymentData.gateway);
     const frequency = getSelectedFrequency(state);
 
     // Prepare payment.
@@ -314,8 +314,8 @@ export const makeStripeWalletPayment = (stripePaymentMethod, stripePaymentIntent
 
     // Set cart payment.
     const paymentData = {
-      type: 'stripe-wallet',
-      walletType: stripePaymentMethod.card.wallet.type,
+      type: 'wallet',
+      gateway: 'stripe',
       gatewayToken: stripePaymentIntent.id,
     };
     dispatch(setPayment(paymentData));
@@ -328,7 +328,8 @@ export const makeStripeWalletPayment = (stripePaymentMethod, stripePaymentIntent
     const result = await DonationApi.createDonation(postData);
 
     // Handle result.
-    return dispatch(handlePaymentResult(result));
+    const paymentMethod = getPaymentMethod(state, 'wallet', 'stripe');
+    return dispatch(handlePaymentResult(result, paymentData, paymentMethod));
   };
 };
 
