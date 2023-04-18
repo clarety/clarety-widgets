@@ -30,4 +30,15 @@ export class DonationApi {
     const results = await ClaretyApi.get('widgets/donations/', params);
     return results[0];
   }
+
+  static async fetchStripePaymentIntent(storeUid, amount, currency) {
+    const params = {
+      storeUid: storeUid,
+      amount: amount,
+      currency: currency,
+    };
+
+    const results = await ClaretyApi.get('donations/stripe-payment-intent/', params);
+    return results[0];
+  }
 }

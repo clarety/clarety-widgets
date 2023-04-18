@@ -35,21 +35,27 @@ export class DetailsPanel extends BasePanel {
     }
   }
 
+  componentDidMount() {
+    super.componentDidMount();
+    this.handleParticipantPropUpdate(this.props.participant);
+  }
+
   componentDidUpdate(prevProps) {
     super.componentDidUpdate(prevProps);
+    this.handleParticipantPropUpdate(this.props.participant, prevProps.participant);
+  }
 
-    const { participant } = this.props;
-
+  handleParticipantPropUpdate(participant, prevParticipant = {}) {
     if (participant) {
-      if (participant.errors !== prevProps.participant.errors) {
+      if (participant.errors !== prevParticipant.errors) {
         this.setState({ errors: participant.errors });
       }
   
-      if (participant.customer !== prevProps.participant.customer) {
+      if (participant.customer !== prevParticipant.customer) {
         this.prefillCustomerFormData(participant.customer);
       }
 
-      if (participant.offerId !== prevProps.participant.offerId) {
+      if (participant.offerId !== prevParticipant.offerId) {
         this.onFormChange('waveProductId', undefined);
       }
     }
@@ -203,28 +209,33 @@ export class DetailsPanel extends BasePanel {
     this.validateRequired('customer.firstName', formData, errors);
     this.validateRequired('customer.lastName', formData, errors);
     this.validateEmail('customer.email', formData, errors);
-    this.validateRequired('customer.dateOfBirthDay', formData, errors);
-    this.validateRequired('customer.dateOfBirthMonth', formData, errors);
-    this.validateRequired('customer.dateOfBirthYear', formData, errors);
 
     if (settings.isMobileRequired) {
       this.validatePhone('customer.mobile', formData, errors);
     }
 
-    if (settings.showGender) {
+    if (settings.showGender && settings.isGenderRequired !== false) {
       this.validateRequired('customer.gender', formData, errors);
     }
 
-    this.validateDob({
-      field: 'customer.dateOfBirth',
-      dob: this.getDob(),
-      eventDate: eventDate,
-      minAge: minAge,
-      maxAge: maxAge,
-      errors: errors,
-    });
+    if (settings.isDobRequired !== false) {
+      this.validateRequired('customer.dateOfBirthDay', formData, errors);
+      this.validateRequired('customer.dateOfBirthMonth', formData, errors);
+      this.validateRequired('customer.dateOfBirthYear', formData, errors);
 
-    this.validateAddressFields(errors);
+      this.validateDob({
+        field: 'customer.dateOfBirth',
+        dob: this.getDob(),
+        eventDate: eventDate,
+        minAge: minAge,
+        maxAge: maxAge,
+        errors: errors,
+      });
+    }
+
+    if (settings.isAddressRequired !== false) {
+      this.validateAddressFields(errors);
+    }
 
     if (waveOptions.length > 1)  {
       this.validateRequired('waveProductId', formData, errors);

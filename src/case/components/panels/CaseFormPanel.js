@@ -16,6 +16,45 @@ export class CaseFormPanel extends BasePanel {
     subformCounts: {},
   };
 
+  componentDidMount() {
+    this.initSubformCounts();
+  }
+
+  initSubformCounts() {
+    const { section, formData } = this.props;
+
+    if (section !== 'customer') {
+      const form = section !== undefined
+        ? this.props.form.sections[section]
+        : this.props.form;
+      
+      for (const field of form.extendFields) {
+        if (field.type === 'subform') {
+          let repeats = field.minRepeats || 0;
+
+          // Check existing form data for this subform
+          const subformKey = 'extendFields.' + field.columnKey;
+          for (const key in formData) {
+            if (key.startsWith(subformKey)) {
+              // Make sure we have enough repeats for this index.
+              const index = parseInt(key.split('.')[2]);
+              if (!Number.isNaN(index)) {
+                repeats = Math.max(repeats, index + 1);
+              }
+            }
+          }
+
+          this.setState(prev => ({
+            subformCounts: {
+              ...prev.subformCounts,
+              [subformKey]: repeats,
+            }
+          }));
+        }
+      }
+    }
+  }
+
   componentDidUpdate(prevProps) {
     super.componentDidUpdate(prevProps);
 
@@ -33,12 +72,18 @@ export class CaseFormPanel extends BasePanel {
   onPressNext = async (event) => {
     event.preventDefault();
 
-    const { onSubmit, nextPanel, section, isLastSection } = this.props;
+    const { onSubmit, nextPanel, section, isLastSection, isPreview } = this.props;
+    const shouldSubmit = section === undefined || isLastSection;
+
+    if (isPreview) {
+      if (shouldSubmit) return;
+      return nextPanel();
+    }
 
     const isValid = this.validate();
     if (!isValid) return;
 
-    if (section === undefined || isLastSection) {
+    if (shouldSubmit) {
       const didSubmit = await onSubmit();
       if (!didSubmit) return;
     }
@@ -248,6 +293,19 @@ export class CaseFormPanel extends BasePanel {
   }
 
   removeSubform(subform, fieldKey) {
+    const { formData, setFormData } = this.props;
+
+    // Clear subform data.
+    const index = this.getSubformCount(this.state, subform, fieldKey) - 1;
+    const subformKey = `${fieldKey}.${index}.`;
+    const clearedFields = {};
+    for (const key in formData) {
+      if (key.startsWith(subformKey)) {
+        clearedFields[key] = undefined;
+      }
+    }
+    setFormData(clearedFields);
+
     this.setState(prev => ({
       subformCounts: {
         ...prev.subformCounts,
@@ -626,7 +684,7 @@ export class CaseFormPanel extends BasePanel {
 
   renderTextAreaField({ field, fieldKey, isRequired = false, isDisabled = false }) {
     return (
-      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--textarea" ref={ref => this.fieldRefs[fieldKey] = ref}>
+      <Form.Group controlId={fieldKey} key={fieldKey} className={`field field--textarea size-${field.size}`} ref={ref => this.fieldRefs[fieldKey] = ref}>
         {this.renderLabel(field, fieldKey, isRequired)}
 
         <TextAreaInput
@@ -858,6 +916,7 @@ export class CaseFormPanel extends BasePanel {
               defaultCountry={defaultCountry}
               required={isRequired}
               disabled={isDisabled}
+              labelPrefix={this.getFieldLabel(field, fieldKey)}
             />
           </Col>
           <Col sm>
@@ -866,6 +925,7 @@ export class CaseFormPanel extends BasePanel {
               country={country}
               required={isRequired}
               disabled={isDisabled}
+              labelPrefix={this.getFieldLabel(field, fieldKey)}
             />
           </Col>
         </Form.Row>
@@ -887,6 +947,7 @@ export class CaseFormPanel extends BasePanel {
               defaultCountry={defaultCountry}
               required={isRequired}
               disabled={isDisabled}
+              labelPrefix={this.getFieldLabel(field, fieldKey)}
             />
           </Col>
         </Form.Row>
@@ -898,6 +959,7 @@ export class CaseFormPanel extends BasePanel {
               country={country}
               required={isRequired}
               disabled={isDisabled}
+              labelPrefix={this.getFieldLabel(field, fieldKey)}
             />
           </Col>
           <Col sm>
@@ -906,6 +968,7 @@ export class CaseFormPanel extends BasePanel {
               country={country}
               required={isRequired}
               disabled={isDisabled}
+              labelPrefix={this.getFieldLabel(field, fieldKey)}
             />
           </Col>
         </Form.Row>

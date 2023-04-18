@@ -6,11 +6,11 @@ import i18next from 'i18next';
 import { BreakpointProvider } from 'react-socks';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { statuses, setStore, initTrackingData, fetchSettings, updateAppSettings, setPanels, setPanelSettings, setApiCampaignUids } from 'shared/actions';
+import { statuses, setStore, initTrackingData, fetchSettings, updateAppSettings, setPanels, setApiCampaignUids } from 'shared/actions';
 import { PanelManager, StepIndicator } from 'shared/components';
 import { getJwtCustomer, Resources, convertOptions } from 'shared/utils';
 import { Recaptcha } from 'form/components';
-import { handleAmountUrlParam, selectFrequency, fetchOffersIfChanged } from 'donate/actions';
+import { handleAmountUrlParam, selectFrequency } from 'donate/actions';
 import { rootReducer } from 'donate/reducers';
 import { DonationApi, mapDonationSettings, setupDefaultResources } from 'donate/utils';
 import { fetchCustomer } from 'donate/actions/customer-actions';
@@ -60,9 +60,9 @@ export class DonateWidget extends React.Component {
 export class _DonateWidgetRoot extends React.Component {
   async componentDidMount() {
     const { storeUid, singleOfferId, recurringOfferId, categoryUid } = this.props;
-    const { updateAppSettings, setPanelSettings, setStore, initTrackingData, fetchSettings, handleAmountUrlParam, setApiCampaignUids, fetchCustomer, fetchOffersIfChanged } = this.props;
+    const { updateAppSettings, setStore, initTrackingData, fetchSettings, handleAmountUrlParam, setApiCampaignUids, fetchCustomer } = this.props;
 
-    if (!this.props.preview && (!singleOfferId && !recurringOfferId && !categoryUid)) {
+    if (!singleOfferId && !recurringOfferId && !categoryUid) {
       throw new Error('[DonateWidget] A singleOfferId, recurringOfferId, or categoryUid is required');
     }
 
@@ -91,37 +91,6 @@ export class _DonateWidgetRoot extends React.Component {
       hideCurrencyCode:     this.props.hideCurrencyCode,
       defaultFrequency:     this.props.defaultFrequency,
     });
-
-    if (this.props.preview && parent) {
-      window.addEventListener('message', async (event) => {
-        if (event.data.action === 'update-settings') {
-          const updatedSettings = event.data.settings;
-
-          console.log('[WIDGET]', 'update-settings', updatedSettings);
-
-          // App settings.
-          if (updatedSettings.app) {
-            // Re-fetch price handles if offer changed.
-            fetchOffersIfChanged({
-              singleOfferId:    updatedSettings.app.singleOfferId,
-              recurringOfferId: updatedSettings.app.recurringOfferId,
-              categoryUid:      updatedSettings.app.categoryUid,
-            });
-
-            updateAppSettings(updatedSettings.app);
-          }
-
-          // Panel settings.
-          if (updatedSettings.panels) {
-            for (const [panelName, panelSettings] of Object.entries(updatedSettings.panels)) {
-              setPanelSettings(panelName, panelSettings);
-            }
-          }
-        }
-      });
-
-      parent.postMessage({ action: 'widget-ready' }, '*');
-    }
 
     setStore(storeUid);
 
@@ -176,13 +145,6 @@ export class _DonateWidgetRoot extends React.Component {
       );
     }
 
-    // Check if we're previewing in the widget designer and don't have an offer yet.
-    if (this.props.preview && (!this.props.offers || !this.props.offers.length)) {
-      return (
-        <div className="text-center">Select an offer to get started</div>
-      );
-    }
-
     return (
       <div className={`clarety-donate-widget h-100 ${layout} ${variant}`}>
         <BlockUi tag="div" blocking={status === statuses.busy} loader={<span></span>}>
@@ -191,6 +153,7 @@ export class _DonateWidgetRoot extends React.Component {
           <PanelManager
             layout={layout || 'tabs'}
             resources={this.props.resources}
+            isPreview={this.props.preview}
           />
         </BlockUi>
 
@@ -212,11 +175,9 @@ const actions = {
   initTrackingData: initTrackingData,
   fetchSettings: fetchSettings,
   updateAppSettings: updateAppSettings,
-  setPanelSettings: setPanelSettings,
   handleAmountUrlParam: handleAmountUrlParam,
   setApiCampaignUids: setApiCampaignUids,
   fetchCustomer: fetchCustomer,
-  fetchOffersIfChanged: fetchOffersIfChanged,
   selectFrequency: selectFrequency,
 };
 

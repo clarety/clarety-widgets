@@ -1,4 +1,5 @@
 import React from 'react';
+import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelBody } from 'shared/components';
 
 export class ConfirmPanel extends BasePanel {
@@ -11,11 +12,11 @@ export class ConfirmPanel extends BasePanel {
     const content = settings.confirmContent || t('opt-in-confirm', 'Thank you for subscribing!');
 
     return (
-      <PanelContainer layout={layout} status="edit" className="cms-confirm-panel">
+      <PanelContainer layout={layout} status="edit" className="confirm-panel">
         <PanelBody layout={layout} status="edit">
-
-          {content}
-
+          <p className="confirm-panel-content">
+            {content}
+          </p>
         </PanelBody>
       </PanelContainer>
     );

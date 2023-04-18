@@ -82,14 +82,14 @@ export default class DonateDemo extends React.Component {
       elementId: 'donate-widget-demo',
 
       // // baseline
-      // storeUid: 'str_wey5',
-      // singleOfferId: '8',
-      // recurringOfferId: '17',
-
-      // church
-      storeUid: 'str_7e1l',
+      storeUid: 'str_wey5',
       singleOfferId: '8',
       recurringOfferId: '17',
+
+      // church
+      // storeUid: 'str_7e1l',
+      // singleOfferId: '8',
+      // recurringOfferId: '17',
 
       // storeUid: 'str_mp60', // tnc-hk
       // storeUid: 'str_l9p7',
@@ -107,7 +107,7 @@ export default class DonateDemo extends React.Component {
       responseId: 'e9c2e351d90b11e996fd',
       emailResponseId: '1234',
 
-      defaultFrequency: 'recurring', //single|recurring
+      // defaultFrequency: 'recurring', //single|recurring
 
       // givingTypeOptions: [
       //     "General Donation",

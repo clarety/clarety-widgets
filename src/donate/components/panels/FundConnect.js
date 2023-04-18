@@ -1,4 +1,3 @@
-import { getSetting } from 'shared/selectors';
 import { getFormData, getErrors } from 'form/selectors';
 import { setErrors, setFormData } from 'form/actions';
 import { getIsBusy, getFunds, getFundOptions, getDefaultFundId, getSelectedFund } from 'donate/selectors';

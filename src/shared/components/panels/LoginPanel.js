@@ -336,7 +336,7 @@ export class LoginPanel extends BasePanel {
     return (
       <React.Fragment>
         {this.allowGuest()
-          ? <p>{t('loginPanel.noAccountPrompt', 'There is no account associated with this email, would you like to create one or checkout as a guest?')}</p>
+          ? <p>{t(['loginPanel.noAccountPromptGuest', 'loginPanel.noAccountPrompt'], 'There is no account associated with this email, would you like to create one or checkout as a guest?')}</p>
           : <p>{t('loginPanel.noAccountPrompt', 'There is no account associated with this email, please create one.')}</p>
         }
 

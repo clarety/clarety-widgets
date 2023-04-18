@@ -8,7 +8,7 @@ export const fetchFundOffers = () => {
   return async (dispatch, getState) => {
     const state = getState();
     const { fundId } = getFormData(state);
-    return dispatch(fetchOffers(fundId, fundId));
+    return dispatch(fetchOffers({ singleOfferId: fundId, recurringOfferId: fundId }));
   };
 };
 
@@ -33,23 +33,6 @@ export const fetchOffers = ({ singleOfferId, recurringOfferId, categoryUid }) =>
     dispatch(setStatus(statuses.ready));
 
     return true;
-  };
-};
-
-export const fetchOffersIfChanged = ({ singleOfferId, recurringOfferId, categoryUid }) => {
-  return async (dispatch, getState) => {
-    const state = getState();
-
-    const offerDidChange =
-      singleOfferId    !== getSetting(state, 'singleOfferId') ||
-      recurringOfferId !== getSetting(state, 'recurringOfferId') ||
-      categoryUid      !== getSetting(state, 'categoryUid');
-
-    if (offerDidChange) {
-      return dispatch(fetchOffers({ singleOfferId, recurringOfferId, categoryUid }));
-    }
-
-    return false;
   };
 };
 

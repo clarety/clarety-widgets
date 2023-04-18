@@ -8,7 +8,7 @@ import 'react-block-ui/style.css';
 import { ClaretyApi } from 'clarety-utils';
 import { statuses, setStore, setStatus, setAuth, initTrackingData, fetchSettings, updateAppSettings, setPanels } from 'shared/actions';
 import { PanelManager, StepIndicator } from 'shared/components';
-import { Resources, getJwtAccount } from 'shared/utils';
+import { Resources, getJwtAccount, getJwtSession } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { rootReducer } from 'case/reducers';
 import { setupFormPanels, prefillCustomer, prefillInProgressCase } from 'case/actions';
@@ -91,13 +91,26 @@ export class _CaseWidgetRoot extends React.Component {
 
     this.props.initTrackingData(this.props);
 
-    let hasAuth = await this.findAndApplyJwtAccount();
     let caseUid = urlParams.get('caseUid');
-    if (!hasAuth) {
-      const actionAuth = await this.findAndAttemptActionAuth();
-      if (actionAuth) {
-        hasAuth = true;
-        if (actionAuth.caseUid) caseUid = actionAuth.caseUid;
+
+    // Attempt to find and apply auth.
+    let hasAuth = false;
+    {
+      // First try JWT account cookie.
+      hasAuth = await this.findAndApplyJwtAccount();
+
+      // Then try action auth URL param.
+      if (!hasAuth) {
+        const actionAuth = await this.findAndAttemptActionAuth();
+        if (actionAuth) {
+          hasAuth = true;
+          if (actionAuth.caseUid) caseUid = actionAuth.caseUid;
+        }
+      }
+
+      // Then try JWT session cookie.
+      if (!hasAuth) {
+        hasAuth = await this.findAndApplyJwtSession();
       }
     }
 
@@ -106,6 +119,7 @@ export class _CaseWidgetRoot extends React.Component {
       const promises = [];
 
       // Pre-fill customer data.
+      // Note that our JWT might not auth us to load any customer data.
       promises.push(prefillCustomer());
 
       // Pre-fill in-progress case.
@@ -140,6 +154,17 @@ export class _CaseWidgetRoot extends React.Component {
     return false;
   }
 
+  async findAndApplyJwtSession() {
+    // Check for jwtSession cookie.
+    const jwtSession = getJwtSession();
+    if (jwtSession && jwtSession.jwtString) {
+      ClaretyApi.setJwtSession(jwtSession.jwtString);
+      return true;
+    }
+
+    return false;
+  }
+
   async findAndAttemptActionAuth() {
     // Check for action auth url param.
     const actionKey = urlParams.get('clarety_action');
@@ -147,8 +172,9 @@ export class _CaseWidgetRoot extends React.Component {
       const response = await ClaretyApi.get('cases/action-auth', { actionKey });
       const actionAuth = response[0] || null;
 
-      if (actionAuth && actionAuth.jwtCustomer) {
-        ClaretyApi.setJwtCustomer(actionAuth.jwtCustomer);
+      if (actionAuth) {
+        if (actionAuth.jwtCustomer) ClaretyApi.setJwtCustomer(actionAuth.jwtCustomer);
+        if (actionAuth.jwtSession)  ClaretyApi.setJwtSession(actionAuth.jwtSession);
         return actionAuth;
       }
     }
@@ -186,6 +212,7 @@ export class _CaseWidgetRoot extends React.Component {
           <PanelManager
             layout={layout || 'tabs'}
             resources={this.props.resources}
+            isPreview={this.props.preview}
           />
         </BlockUi>
 

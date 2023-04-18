@@ -65,7 +65,8 @@ export const makePayPalPayment = (data, order, authorization) => {
 
     // Set cart payment.
     const paymentData = {
-      type: 'paypal',
+      type: 'wallet',
+      gateway: 'paypal',
       gatewayToken: order.id,
     };
     dispatch(setPayment(paymentData));
