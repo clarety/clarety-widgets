@@ -335,8 +335,8 @@ export class CaseFormPanel extends BasePanel {
 
     const currentSectionName
       = currentSection === undefined ? ''
-      : currentSection === 'customer' ? this.getCustomerSectionName()
-      : form.sections[currentSection].name;
+      : currentSection === 'customer' ? "1. " + this.getCustomerSectionName()
+      : (currentSection + 2) + ". " + form.sections[currentSection].name;
 
     return (
       <React.Fragment>
@@ -353,7 +353,7 @@ export class CaseFormPanel extends BasePanel {
                 disabled={currentSection === 'customer'}
                 className={currentSection === 'customer' ? 'active' : undefined}
               >
-                {this.getCustomerSectionName()}
+                1. {this.getCustomerSectionName()}
               </Dropdown.Item>
 
               {form.sections.map((section, index) =>
@@ -363,7 +363,7 @@ export class CaseFormPanel extends BasePanel {
                   disabled={currentSection === 'customer' || currentSection <= index}
                   className={currentSection === index ? 'active' : undefined}
                 >
-                  {section.name}
+                  {index + 2}. {section.name}
                 </Dropdown.Item>
               )}
             </Dropdown.Menu>
@@ -382,7 +382,7 @@ export class CaseFormPanel extends BasePanel {
               ? <FontAwesomeIcon icon={faArrowRight} className="icon" />
               : <FontAwesomeIcon icon={faCheck} className="icon" />
             }
-            {this.getCustomerSectionName()}
+            1. {this.getCustomerSectionName()}
           </Button>
 
           {form.sections.map((section, index) =>
@@ -399,7 +399,7 @@ export class CaseFormPanel extends BasePanel {
                 ? <span className="icon">&bull;</span>
                 : <FontAwesomeIcon icon={faCheck} className="icon" />
               }
-              {section.name}
+              {index + 2}. {section.name}
             </Button>
           )}
         </div>
