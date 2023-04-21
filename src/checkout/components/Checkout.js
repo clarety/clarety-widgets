@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
-import { Provider } from 'react-redux';
+import { Provider, connect } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import i18next from 'i18next';
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
@@ -13,15 +13,14 @@ import { getIsCartComplete, getCartShippingRequired } from 'shared/selectors';
 import { updateFormData } from 'form/actions';
 import { Recaptcha } from 'form/components';
 import { fetchCart, fetchCustomer } from 'checkout/actions';
+import { shouldAllowExpressCheckout } from 'checkout/selectors';
 import { rootReducer } from 'checkout/reducers';
-import { CartSummary } from 'checkout/components';
+import { CartSummary, ExpressCheckout } from 'checkout/components';
 import { setupDefaultResources } from 'checkout/utils';
 
 export class Checkout extends React.Component {
   static store;
   static resources;
-
-  state = { isReady: false, isCartComplete: false };
 
   static init() {
     // Setup store.
@@ -46,6 +45,24 @@ export class Checkout extends React.Component {
     Checkout.resources.setComponent(name, component);
   }
 
+  render() {
+    return (
+      <Provider store={Checkout.store}>
+        <CheckoutRoot
+          resources={Checkout.resources}
+          {...this.props}
+        />
+      </Provider>
+    );
+  }
+}
+
+export class _CheckoutRoot extends React.Component {
+  state = {
+    isReady: false,
+    isCartComplete: false,
+  };
+
   async componentDidMount() {
     // Translations.
     if (i18next.isInitialized) {
@@ -57,43 +74,44 @@ export class Checkout extends React.Component {
       await i18next.init();
     }
 
-    Checkout.store.dispatch(updateAppSettings({
+    this.props.updateAppSettings({
       storeUid:             this.props.storeUid,
       defaultCountry:       this.props.defaultCountry,
       addressFinderKey:     this.props.addressFinderKey,
       addressFinderCountry: this.props.addressFinderCountry,
       donationOfferId:      this.props.donationOfferId,
       donationOfferUid:     this.props.donationOfferUid,
-    }));
+    });
 
     // Set tracking data.
-    Checkout.store.dispatch(updateFormData('sale.sourceId', this.props.sourceId));
-    Checkout.store.dispatch(updateFormData('sale.sendResponseUid', this.props.responseId));
-    Checkout.store.dispatch(updateFormData('sale.emailResponseUid', this.props.emailResponseId));
-    Checkout.store.dispatch(updateFormData('sale.channel', this.props.channel));
+    const { updateFormData } = this.props;
+    updateFormData('sale.sourceId', this.props.sourceId);
+    updateFormData('sale.sendResponseUid', this.props.responseId);
+    updateFormData('sale.emailResponseUid', this.props.emailResponseId);
+    updateFormData('sale.channel', this.props.channel);
 
     const jwtAccount = getJwtAccount();
     if (jwtAccount) {
       ClaretyApi.setAuth(jwtAccount.jwtString);
-      Checkout.store.dispatch(setAuth(jwtAccount.jwtString));
-      await Checkout.store.dispatch(fetchCustomer(jwtAccount.customer_uid));
+      this.props.setAuth(jwtAccount.jwtString);
+      await this.props.fetchCustomer(jwtAccount.customer_uid);
     }
 
     const jwtSession = getJwtSession();
     if (jwtSession) {
       ClaretyApi.setJwtSession(jwtSession.jwtString);
-      await Checkout.store.dispatch(fetchCart(jwtSession.cartUid));
+      await this.props.fetchCart(jwtSession.cartUid);
 
       const state = Checkout.store.getState();
       this.setState({ isCartComplete: getIsCartComplete(state) });
 
       // Remove shipping panel if shipping isn't required.
       if (!getCartShippingRequired(state)) {
-        Checkout.store.dispatch(removePanels({ withComponent: 'ShippingPanel' }));
+        this.props.removePanels({ withComponent: 'ShippingPanel' });
       }
     }
 
-    await Checkout.store.dispatch(fetchSettings('checkout/', { cartUid: jwtSession.cartUid }));
+    await this.props.fetchSettings('checkout/', { cartUid: jwtSession.cartUid });
 
     this.setState({ isReady: true });
   }
@@ -115,7 +133,7 @@ export class Checkout extends React.Component {
       );
     }
 
-    const { reCaptchaKey } = this.props;
+    const { reCaptchaKey, showExpressCheckout } = this.props;
 
     return (
       <Provider store={Checkout.store}>
@@ -127,6 +145,11 @@ export class Checkout extends React.Component {
 
             <Col lg={6} className="col-checkout">
               <h1>{t('checkout', 'Checkout')}</h1>
+
+              {showExpressCheckout &&
+                <ExpressCheckout />
+              }
+
               <PanelManager layout="accordian" resources={Checkout.resources} />
             </Col>
           </Row>
@@ -137,3 +160,22 @@ export class Checkout extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    showExpressCheckout: shouldAllowExpressCheckout(state),
+  };
+};
+
+const actions = {
+  updateAppSettings: updateAppSettings,
+  updateFormData: updateFormData,
+  setAuth: setAuth,
+  fetchCart: fetchCart,
+  fetchSettings: fetchSettings,
+  fetchCustomer: fetchCustomer,
+  removePanels: removePanels,
+};
+
+export const connectCheckoutRoot = connect(mapStateToProps, actions);
+export const CheckoutRoot = connectCheckoutRoot(_CheckoutRoot);

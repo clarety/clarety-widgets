@@ -44,10 +44,10 @@ class _PromoCodeForm extends React.Component {
 
   render() {
     const { promoCode } = this.state.formData;
-    const { isBusy } = this.props;
+    const { isBusy, isDisabled } = this.props;
 
     return (
-      <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
+      <BlockUi tag="div" blocking={isDisabled} loader={<span></span>}>
         <FormContext.Provider value={this.state}>
           <Form onSubmit={this.onPressApplyDiscount} className="promo-code-form">
             <Form.Row>
@@ -73,6 +73,7 @@ class _PromoCodeForm extends React.Component {
 const mapStateToProps = state => {
   return {
     isBusy: state.status === statuses.busyPromoCode,
+    isDisabled: state.status !== statuses.ready,
     errors: state.errors,
   };
 };

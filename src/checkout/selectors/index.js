@@ -36,9 +36,14 @@ export const getPaymentMethods = (state) => {
   return availableMethods.filter(method => allowedMethods.includes(method.type));
 };
 
-export const getPaymentMethod = (state, type) => {
+export const getPaymentMethod = (state, type, gateway = null) => {
   const paymentMethods = getSetting(state, 'paymentMethods');
-  return paymentMethods.find(method => method.type === type);
+  return paymentMethods.find(pm => pm.type === type && (!gateway || pm.gateway === gateway));
+};
+
+export const hasExpressPaymentMethod = (state) => {
+  const paymentMethods = getPaymentMethods(state);
+  return paymentMethods && paymentMethods.some(method => method.type === 'wallet');
 };
 
 export const getPaymentPostData = (state) => getCart(state).payment;
@@ -46,4 +51,9 @@ export const getPaymentPostData = (state) => getCart(state).payment;
 export const getDonationInCart = (state) => {
   const offerUid = getSetting(state, 'donationOfferUid');
   return getCart(state).items.find(item => item.offerUid === offerUid);
+};
+
+export const shouldAllowExpressCheckout = (state) => {
+  const cart = getCart(state);
+  return cart.allowGuest && hasExpressPaymentMethod(state);
 };

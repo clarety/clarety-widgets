@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { loadStripe } from '@stripe/stripe-js';
 import { PaymentRequestButtonElement, useStripe, Elements } from '@stripe/react-stripe-js';
-import { getSetting } from 'shared/selectors';
 import { toCents } from 'shared/utils';
-import { getPaymentMethod, getDonationPanelSelection, getSelectedFrequency } from 'donate/selectors';
-import { fetchStripePaymentIntent, makeStripeWalletPayment } from 'donate/actions';
+import { getSetting, getCart, getCartShippingRequired } from 'shared/selectors';
+import { getPaymentMethod } from 'checkout/selectors';
+import { fetchStripePaymentIntent, makeStripeWalletPayment, fetchStripeShippingOptions } from 'checkout/actions';
 
-export const DonateStripeWalletBtnInner = (props) => {
+export const CheckoutStripeWalletBtnInner = (props) => {
   const stripe = useStripe();
   const [paymentRequest, setPaymentRequest] = useState(null);
 
@@ -17,22 +17,37 @@ export const DonateStripeWalletBtnInner = (props) => {
         country: props.country,
         currency: props.currency,
         total: {
-          label: 'Donation',
+          label: 'Total',
           amount: props.amount,
         },
         requestPayerName: true,
         requestPayerEmail: true,
         requestPayerPhone: true,
+        requestShipping: props.isShippingRequired,
       });
 
       pr.canMakePayment().then(result => {
         if (result) {
           setPaymentRequest(pr);
 
-          pr.on('paymentmethod', async (event) => {
-            const { paymentMethod } = event;
+          pr.on('shippingaddresschange', async (event) => {
+            const shippingOptions = await props.fetchStripeShippingOptions(event.shippingAddress);
+            if (!shippingOptions || !shippingOptions.length) {
+              event.updateWith({
+                status: 'invalid_shipping_address',
+              });
+            } else {
+              event.updateWith({
+                status: 'success',
+                shippingOptions: shippingOptions,
+              });
+            }
+          });
 
-            const pi = await props.fetchStripePaymentIntent({ amount: props.amount, currency: props.currency });
+          pr.on('paymentmethod', async (event) => {
+            const { paymentMethod, shippingAddress, shippingOption } = event;
+
+            const pi = await props.fetchStripePaymentIntent();
             if (pi && pi.clientSecret) {
               const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(
                 pi.clientSecret,
@@ -50,10 +65,10 @@ export const DonateStripeWalletBtnInner = (props) => {
                   if (actionError) {
                     console.error('stripe wallet action failed', actionError);
                   } else {
-                    props.makeStripeWalletPayment(paymentMethod, paymentIntent);
+                    props.makeStripeWalletPayment(paymentMethod, paymentIntent, shippingAddress, shippingOption);
                   }
                 } else {
-                  props.makeStripeWalletPayment(paymentMethod, paymentIntent);
+                  props.makeStripeWalletPayment(paymentMethod, paymentIntent, shippingAddress, shippingOption);
                 }
               }
             }
@@ -70,7 +85,6 @@ export const DonateStripeWalletBtnInner = (props) => {
           paymentRequest,
           style: {
             paymentRequestButton: {
-              type: 'donate',
               height: '45px',
             },
           },
@@ -82,18 +96,12 @@ export const DonateStripeWalletBtnInner = (props) => {
   return null;
 };
 
-export const _DonateStripeWalletBtn = (props) => {
-  const { paymentMethod, frequency } = props;
-
+export const _CheckoutStripeWalletBtn = (props) => {
+  const { paymentMethod } = props;
   const [stripePromise, setStripePromise] = useState(null);
 
   useEffect(() => {
-    // Make sure we should display.
-    const shouldHide = !paymentMethod
-      || (paymentMethod.singleOnly && frequency !== 'single')
-      || (paymentMethod.recurringOnly && frequency !== 'recurring');
-
-    if (!shouldHide && !stripePromise) {
+    if (!stripePromise) {
       setStripePromise(loadStripe(paymentMethod.publicKey));
     }
   }, [props]);
@@ -102,22 +110,23 @@ export const _DonateStripeWalletBtn = (props) => {
 
   return (
     <Elements stripe={stripePromise}>
-      <DonateStripeWalletBtnInner {...props} />
+      <CheckoutStripeWalletBtnInner {...props} />
     </Elements>
   );
 };
 
 const mapStateToProps = (state, ownProps) => ({
   paymentMethod: getPaymentMethod(state, 'wallet', 'stripe'),
-  currency: getSetting(state, 'currency').code.toLowerCase(),
-  amount: toCents(getDonationPanelSelection(state).amount),
-  frequency: getSelectedFrequency(state),
+  currency: getCart(state).currency.code.toLowerCase(),
+  amount: toCents(getCart(state).summary.subTotal),
   country: getSetting(state, 'defaultCountry'),
+  isShippingRequired: getCartShippingRequired(state),
 });
 
 const actions = {
   fetchStripePaymentIntent: fetchStripePaymentIntent,
   makeStripeWalletPayment: makeStripeWalletPayment,
+  fetchStripeShippingOptions: fetchStripeShippingOptions,
 };
 
-export const DonateStripeWalletBtn = connect(mapStateToProps, actions)(_DonateStripeWalletBtn);
+export const CheckoutStripeWalletBtn = connect(mapStateToProps, actions)(_CheckoutStripeWalletBtn);
