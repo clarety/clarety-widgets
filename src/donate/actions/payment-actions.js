@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { statuses, setStatus, setRecaptcha, clearRecaptcha, setPayment, setCustomer, updateCartData, prepareStripePayment, authoriseStripePayment, updateAppSettings } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
-import { isHongKongDirectDebit, isStripe } from 'shared/utils';
+import { isHongKongDirectDebit, isStripe, splitName } from 'shared/utils';
 import { setFormData, setErrors, updateFormData } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { DonationApi } from 'donate/utils';
@@ -264,20 +264,7 @@ export const makeStripeWalletPayment = (stripePaymentMethod, stripePaymentIntent
     dispatch(addDonationToCart());
 
     const { billing_details } = stripePaymentMethod;
-
-    let firstName = '';
-    let lastName = '';
-    const nameParts = billing_details.name.split(' ');
-
-    if (nameParts.length === 1) {
-      firstName = nameParts[0];
-    } else if (nameParts.length === 2) {
-      firstName = nameParts[0];
-      lastName = nameParts[1];
-    } else if (nameParts.length > 2) {
-      lastName = nameParts.pop();
-      firstName = nameParts.join(' ');
-    }
+    const { firstName, lastName } = splitName(billing_details.name);
 
     // Set cart customer.
     const customerData = {

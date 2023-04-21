@@ -2,8 +2,9 @@ import Cookies from 'js-cookie';
 import { ClaretyApi } from 'clarety-utils';
 import { setPayment, prepareStripePayment, authoriseStripePayment, setStatus, statuses } from 'shared/actions';
 import { getCart, getSetting } from 'shared/selectors';
-import { getJwtSession, isStripe } from 'shared/utils';
-import { types } from 'checkout/actions';
+import { getJwtSession, isStripe, splitName } from 'shared/utils';
+import { setFormData } from 'form/actions';
+import { types, createCustomer, updateSale } from 'checkout/actions';
 import { getPaymentMethod, getPaymentPostData } from 'checkout/selectors';
 
 export const fetchPaymentMethods = () => {
@@ -152,6 +153,76 @@ const handleStripeAuthorise = (paymentResult, paymentData, paymentMethod) => {
       // Handle result.
       return await dispatch(handlePaymentResult(result, paymentData, paymentMethod));
     }
+  };
+};
+
+export const fetchStripePaymentIntent = () => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const cart = getCart(state);
+    const response = await ClaretyApi.get(`carts/${cart.cartUid}/stripe-payment-intent/`);
+    return response[0];
+  };
+}
+
+export const makeStripeWalletPayment = (stripePaymentMethod, stripePaymentIntent, shippingAddress, shippingOption) => {
+  return async (dispatch, getState) => {
+    const state = getState();
+
+    dispatch(setStatus(statuses.busy));
+    
+    // Create customer.
+    const { billing_details } = stripePaymentMethod;
+    const { firstName, lastName } = splitName(billing_details.name);
+    const formData = {
+      'customer.forceNewCustomer': true,
+      'customer.firstName':        firstName,
+      'customer.lastName':         lastName,
+      'customer.email':            billing_details.email,
+      'customer.mobile':           billing_details.phone,
+      'customer.billing.address1': billing_details.address.line1,
+      'customer.billing.address2': billing_details.address.line2,
+      'customer.billing.suburb':   billing_details.address.city,
+      'customer.billing.state':    billing_details.address.state,
+      'customer.billing.postcode': billing_details.address.postal_code,
+      'customer.billing.country':  billing_details.address.country,
+    };
+
+    if (shippingAddress) {
+      formData['customer.delivery.address1'] = shippingAddress.addressLine[0] || '';
+      formData['customer.delivery.address2'] = shippingAddress.addressLine[1] || '';
+      formData['customer.delivery.suburb']   = shippingAddress.city;
+      formData['customer.delivery.state']    = shippingAddress.region;
+      formData['customer.delivery.postcode'] = shippingAddress.postalCode;
+      formData['customer.delivery.country']  = shippingAddress.country;
+    }
+
+    dispatch(setFormData(formData));
+    const customerOk = await dispatch(createCustomer());
+    if (!customerOk) return false;
+
+    // Set selected shipping option.
+    const shippingUid = shippingOption ? shippingOption.id : null;
+    if (shippingUid) {
+      dispatch(setFormData({ 'sale.shippingUid': shippingUid }));
+      await dispatch(updateSale());
+    }
+
+    // Prepare payment.
+    const paymentData = {
+      type: 'wallet',
+      gateway: 'stripe',
+      gatewayToken: stripePaymentIntent.id,
+    };
+    const paymentMethod = getPaymentMethod(state, 'wallet', 'stripe');
+    dispatch(setPayment(paymentData));
+  
+    // Attempt payment.
+    const result = await dispatch(attemptPayment(paymentData, paymentMethod));
+    if (!result) return false;
+
+    // Handle result.
+    return await dispatch(handlePaymentResult(result, paymentData, paymentMethod));
   };
 };
 

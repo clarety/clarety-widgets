@@ -13,8 +13,8 @@ initTranslations({
 Checkout.init();
 
 Checkout.setClientIds({
-  //dev:  '82ee4a2479780256c9bf9b951f5d1cfb', // baseline
-  dev: 'ab0c9407ba7f0581ebc49fa787049e80', // a21
+  dev:  '82ee4a2479780256c9bf9b951f5d1cfb', // baseline
+  // dev: 'ab0c9407ba7f0581ebc49fa787049e80', // a21
   // dev: '43fa6c712a8bf4fcae2f84e3ecd59454', // bible league
   prod: '',
 });
@@ -80,13 +80,18 @@ export default class CheckoutDemo extends React.Component {
     return (
       <div className="checkout">
         <Checkout
-          addressFinderKey="ADDRESSFINDER_DEMO_KEY"
-          defaultCountry="NZ"
+          // addressFinderKey="ADDRESSFINDER_DEMO_KEY"
+          // defaultCountry="NZ"
+
+          // baseline
+          storeUid="str_wey5"
+          defaultCountry="AU"
+          defaultLanguage="en-AU"
 
           // A21
-          storeUid="str_8lo8"
-          donationOfferId="19"
-          donationOfferUid="ofr_y2qy"
+          // storeUid="str_8lo8"
+          // donationOfferId="19"
+          // donationOfferUid="ofr_y2qy"
         />
       </div>
     );

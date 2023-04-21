@@ -1,6 +1,6 @@
 import i18next from 'i18next';
 import { ClaretyApi } from 'clarety-utils';
-import { parseNestedElements } from 'shared/utils';
+import { parseNestedElements, toCents } from 'shared/utils';
 import { types } from 'checkout/actions';
 
 export const fetchCart = (cartUid) => {
@@ -50,6 +50,27 @@ export const fetchShippingOptions = () => {
       dispatch(fetchShippingOptionsSuccess(results));
       return true;
     }
+  };
+};
+
+export const fetchStripeShippingOptions = (shippingAddress) => {
+  return async (dispatch, getState) => {
+    const { cart } = getState();
+
+    const address = {
+      suburb: shippingAddress.city,
+      state: shippingAddress.region,
+      postcode: shippingAddress.postalCode,
+      country: shippingAddress.country,
+    };
+
+    const results = await ClaretyApi.put(`carts/${cart.cartUid}/shipping-options/`, { address });
+    return results.map(option => ({
+      id: option.shippingUid,
+      label: option.label,
+      detail: option.expectedDelivery ? `Expected Delivery: ${option.expectedDelivery}` : undefined,
+      amount: toCents(option.amount),
+    }));
   };
 };
 
