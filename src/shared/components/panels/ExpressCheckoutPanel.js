@@ -2,7 +2,7 @@ import React from 'react';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { ErrorMessages } from 'form/components';
-import { DonatePayPalBtn } from 'donate/components';
+import { DonatePayPalBtn, DonateStripeWalletBtn } from 'donate/components';
 
 export class ExpressCheckoutPanel extends BasePanel {
   renderWait() {
@@ -45,12 +45,13 @@ export class ExpressCheckoutPanel extends BasePanel {
 
           <div className="express-checkout-buttons">
             <DonatePayPalBtn />
+            <DonateStripeWalletBtn />
           </div>
           
           {!settings.hideOrTitle &&
             <div className="express-checkout-or">
               <div className="line" />
-              <h2 className="title">{settings.orTitle || t('or', 'Or')}</h2>
+              <h2 className="text">{settings.orTitle || t('or', 'Or')}</h2>
               <div className="line" />
             </div>
           }
