@@ -258,7 +258,7 @@ export class CustomerPanel extends BasePanel {
   renderExpressCheckout() {
     const { layout, settings, hasExpressPaymentMethods } = this.props;
 
-    if (layout === 'page') return null; // page uses 'ExpressCheckoutPanel'
+    if (layout === 'page') return null; // page uses 'ExpressDonationPanel'
     if (!settings.showExpressCheckoutBtns) return null;
     if (!hasExpressPaymentMethods) return null;
 

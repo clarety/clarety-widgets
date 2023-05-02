@@ -1,8 +1,8 @@
 import React from 'react';
 import { DonateWidget, renderWidget } from '../../src/';
 import { DonationPanel, DonationConnect } from '../../src/donate/components';
-import { ExpressCheckoutPanel } from '../../src/shared/components';
-import { ExpressCheckoutConnect } from '../../src/donate/components';
+import { ExpressDonationPanel } from '../../src/shared/components';
+import { ExpressDonationConnect } from '../../src/donate/components';
 import { CustomerPanel, CustomerConnect } from '../../src/donate/components';
 import { FundraisingPanel, FundraisingConnect } from '../../src/donate/components';
 import { PaymentPanel, PaymentConnect } from '../../src/donate/components';
@@ -19,8 +19,8 @@ window.renderDonatePage = (props) => {
       settings: {},
     },
     {
-      component: ExpressCheckoutPanel,
-      connect: ExpressCheckoutConnect,
+      component: ExpressDonationPanel,
+      connect: ExpressDonationConnect,
       settings: {
         title: 'Express Donation',
       },

@@ -11,6 +11,36 @@ export const DonateStripeWalletBtnInner = (props) => {
   const stripe = useStripe();
   const [paymentRequest, setPaymentRequest] = useState(null);
 
+  const onPaymentMethod = async (event) => {
+    const { paymentMethod } = event;
+
+    const pi = await props.fetchStripePaymentIntent({ amount: props.amount, currency: props.currency });
+    if (pi && pi.clientSecret) {
+      const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(
+        pi.clientSecret,
+        { payment_method: paymentMethod.id },
+        { handleActions: false }
+      );
+
+      if (confirmError) {
+        event.complete('fail');
+      } else {
+        event.complete('success');
+
+        if (paymentIntent.status === "requires_action") {
+          const { error: actionError } = await stripe.confirmCardPayment(clientSecret);
+          if (actionError) {
+            console.error('stripe wallet action failed', actionError);
+          } else {
+            props.makeStripeWalletPayment(paymentMethod, paymentIntent);
+          }
+        } else {
+          props.makeStripeWalletPayment(paymentMethod, paymentIntent);
+        }
+      }
+    }
+  }
+
   useEffect(() => {
     if (stripe) {
       const pr = stripe.paymentRequest({
@@ -28,40 +58,27 @@ export const DonateStripeWalletBtnInner = (props) => {
       pr.canMakePayment().then(result => {
         if (result) {
           setPaymentRequest(pr);
-
-          pr.on('paymentmethod', async (event) => {
-            const { paymentMethod } = event;
-
-            const pi = await props.fetchStripePaymentIntent({ amount: props.amount, currency: props.currency });
-            if (pi && pi.clientSecret) {
-              const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(
-                pi.clientSecret,
-                { payment_method: paymentMethod.id },
-                { handleActions: false }
-              );
-
-              if (confirmError) {
-                event.complete('fail');
-              } else {
-                event.complete('success');
-
-                if (paymentIntent.status === "requires_action") {
-                  const { error: actionError } = await stripe.confirmCardPayment(clientSecret);
-                  if (actionError) {
-                    console.error('stripe wallet action failed', actionError);
-                  } else {
-                    props.makeStripeWalletPayment(paymentMethod, paymentIntent);
-                  }
-                } else {
-                  props.makeStripeWalletPayment(paymentMethod, paymentIntent);
-                }
-              }
-            }
-          });
+          pr.on('paymentmethod', onPaymentMethod);
         }
       });
     }
   }, [stripe]);
+
+  // Update the amount if it changes.
+  useEffect(() => {
+    if (paymentRequest) {
+      paymentRequest.update({
+        total: {
+          label: 'Donation',
+          amount: props.amount,
+        },
+      });
+
+      // Re-bind the event handler, so the closure contains the new amount.
+      paymentRequest.off('paymentmethod');
+      paymentRequest.on('paymentmethod', onPaymentMethod);
+    }
+  }, [props.amount]);
 
   if (paymentRequest) {
     return (

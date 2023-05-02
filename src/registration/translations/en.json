@@ -228,10 +228,10 @@
       "doneMessage":  "Check out our offical merchandise"
     },
   
-    "expressCheckoutPanel": {
-      "waitTitle": "Express Checkout",
-      "editTitle": "Express Checkout",
-      "doneTitle": "Express Checkout"
+    "expressDonationPanel": {
+      "waitTitle": "Express Donation",
+      "editTitle": "Express Donation",
+      "doneTitle": "Express Donation"
     },
   
     "reviewPanel": {

@@ -4,7 +4,7 @@ import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/compon
 import { ErrorMessages } from 'form/components';
 import { DonatePayPalBtn, DonateStripeWalletBtn } from 'donate/components';
 
-export class ExpressCheckoutPanel extends BasePanel {
+export class ExpressDonationPanel extends BasePanel {
   renderWait() {
     const { layout, index, settings } = this.props;
 
@@ -14,7 +14,7 @@ export class ExpressCheckoutPanel extends BasePanel {
           status="wait"
           layout={layout}
           number={index + 1}
-          title={settings.title || t('expressCheckoutPanel.waitTitle', 'Express Checkout')}
+          title={settings.title || t('expressDonationPanel.waitTitle', 'Express Donation')}
         />
 
         <PanelBody layout={layout} status="wait">
@@ -36,7 +36,7 @@ export class ExpressCheckoutPanel extends BasePanel {
             status="edit"
             layout={layout}
             number={index + 1}
-            title={settings.title || t('expressCheckoutPanel.editTitle', 'Express Checkout')}
+            title={settings.title || t('expressDonationPanel.editTitle', 'Express Donation')}
           />
         }
 
@@ -69,7 +69,7 @@ export class ExpressCheckoutPanel extends BasePanel {
           status="done"
           layout={layout}
           number={index + 1}
-          title={settings.title || t('expressCheckoutPanel.doneTitle', 'Express Checkout')}
+          title={settings.title || t('expressDonationPanel.doneTitle', 'Express Donation')}
           onPressEdit={this.onPressEdit}
         />
 
@@ -79,3 +79,10 @@ export class ExpressCheckoutPanel extends BasePanel {
     );
   }
 }
+
+/**
+ * @deprecated
+ * Use "ExpressDonationPanel" instead, this is just an alias for backwards compatibility.
+ * The name "ExpressCheckoutPanel" is misleading, as it's only for donations.
+ */
+export const ExpressCheckoutPanel = ExpressDonationPanel;

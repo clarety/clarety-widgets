@@ -19,7 +19,7 @@ export * from './panels/CustomerPanel';
 export * from './panels/CustomerConnect';
 export * from './panels/DonationPanel';
 export * from './panels/DonationConnect';
-export * from './panels/ExpressCheckoutPanel';
+export * from './panels/ExpressDonationPanel';
 export * from './panels/LoginPanel';
 export * from './panels/PaymentPanel';
 export * from './panels/PaymentConnect';
