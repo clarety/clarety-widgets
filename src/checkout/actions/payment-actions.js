@@ -174,6 +174,7 @@ export const makeStripeWalletPayment = (stripePaymentMethod, stripePaymentIntent
     // Create customer.
     const { billing_details } = stripePaymentMethod;
     const { firstName, lastName } = splitName(billing_details.name);
+    const country = billing_details.address.country === 'GB' ? 'UK' : billing_details.address.country;
     const formData = {
       'customer.forceNewCustomer': true,
       'customer.firstName':        firstName,
@@ -185,7 +186,7 @@ export const makeStripeWalletPayment = (stripePaymentMethod, stripePaymentIntent
       'customer.billing.suburb':   billing_details.address.city,
       'customer.billing.state':    billing_details.address.state,
       'customer.billing.postcode': billing_details.address.postal_code,
-      'customer.billing.country':  billing_details.address.country,
+      'customer.billing.country':  country,
     };
 
     if (shippingAddress) {

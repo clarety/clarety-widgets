@@ -265,6 +265,7 @@ export const makeStripeWalletPayment = (stripePaymentMethod, stripePaymentIntent
 
     const { billing_details } = stripePaymentMethod;
     const { firstName, lastName } = splitName(billing_details.name);
+    const country = billing_details.address.country === 'GB' ? 'UK' : billing_details.address.country;
 
     // Set cart customer.
     const customerData = {
@@ -278,7 +279,7 @@ export const makeStripeWalletPayment = (stripePaymentMethod, stripePaymentIntent
         suburb:   billing_details.address.city,
         state:    billing_details.address.state,
         postcode: billing_details.address.postal_code,
-        country:  billing_details.address.country,
+        country:  country,
       },
     };
 

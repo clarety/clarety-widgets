@@ -25,6 +25,7 @@ export function splitName(fullName) {
   const nameParts = fullName.split(' ');
   if (nameParts.length === 1) {
     firstName = nameParts[0];
+    lastName = nameParts[0];
   } else if (nameParts.length === 2) {
     firstName = nameParts[0];
     lastName = nameParts[1];
