@@ -14,7 +14,7 @@ export const DonateStripeWalletBtnInner = (props) => {
   useEffect(() => {
     if (stripe) {
       const pr = stripe.paymentRequest({
-        country: props.country === 'UK' ? 'GB' : props.country,
+        country: props.paymentMethod.country,
         currency: props.currency,
         total: {
           label: 'Donation',
@@ -112,7 +112,6 @@ const mapStateToProps = (state, ownProps) => ({
   currency: getSetting(state, 'currency').code.toLowerCase(),
   amount: toCents(getDonationPanelSelection(state).amount),
   frequency: getSelectedFrequency(state),
-  country: getSetting(state, 'defaultCountry'),
 });
 
 const actions = {

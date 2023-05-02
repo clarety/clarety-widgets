@@ -14,7 +14,7 @@ export const CheckoutStripeWalletBtnInner = (props) => {
   useEffect(() => {
     if (stripe) {
       const pr = stripe.paymentRequest({
-        country: props.country === 'UK' ? 'GB' : props.country,
+        country: props.paymentMethod.country,
         currency: props.currency,
         total: {
           label: 'Total',
@@ -119,7 +119,6 @@ const mapStateToProps = (state, ownProps) => ({
   paymentMethod: getPaymentMethod(state, 'wallet', 'stripe'),
   currency: getCart(state).currency.code.toLowerCase(),
   amount: toCents(getCart(state).summary.subTotal),
-  country: getSetting(state, 'defaultCountry'),
   isShippingRequired: getCartShippingRequired(state),
 });
 
