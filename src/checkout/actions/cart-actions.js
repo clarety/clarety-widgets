@@ -97,8 +97,10 @@ export const selectDigitalWalletShippingOption = (shippingUid) => {
   return async (dispatch, getState) => {
     const { cart } = getState();
 
+    const data = { shippingUid };
+
     dispatch(updateSaleRequest(data));
-    const results = await ClaretyApi.put(`carts/${cart.cartUid}/sale/`, { shippingUid }, { locale: i18next.language });
+    const results = await ClaretyApi.put(`carts/${cart.cartUid}/sale/`, data, { locale: i18next.language });
     const result = results[0];
 
     if (result.status === 'error') {
