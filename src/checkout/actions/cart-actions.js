@@ -93,6 +93,24 @@ export const updateSale = () => {
   };
 };
 
+export const selectDigitalWalletShippingOption = (shippingUid) => {
+  return async (dispatch, getState) => {
+    const { cart } = getState();
+
+    dispatch(updateSaleRequest(data));
+    const results = await ClaretyApi.put(`carts/${cart.cartUid}/sale/`, { shippingUid }, { locale: i18next.language });
+    const result = results[0];
+
+    if (result.status === 'error') {
+      dispatch(updateSaleFailure(result));
+    } else {
+      dispatch(updateSaleSuccess(result));
+    }
+
+    return result;
+  }
+};
+
 export const applyPromoCode = (promoCode) => {
   return async (dispatch, getState) => {
     const { cart } = getState();

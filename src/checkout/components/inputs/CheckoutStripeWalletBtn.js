@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { loadStripe } from '@stripe/stripe-js';
 import { PaymentRequestButtonElement, useStripe, Elements } from '@stripe/react-stripe-js';
 import { toCents } from 'shared/utils';
-import { getSetting, getCart, getCartShippingRequired } from 'shared/selectors';
+import { getCart } from 'shared/selectors';
 import { getPaymentMethod } from 'checkout/selectors';
-import { fetchStripePaymentIntent, makeStripeWalletPayment, fetchStripeShippingOptions } from 'checkout/actions';
+import { fetchStripePaymentIntent, makeStripeWalletPayment, fetchStripeShippingOptions, selectDigitalWalletShippingOption } from 'checkout/actions';
 
 export const CheckoutStripeWalletBtnInner = (props) => {
   const stripe = useStripe();
@@ -15,15 +15,13 @@ export const CheckoutStripeWalletBtnInner = (props) => {
     if (stripe) {
       const pr = stripe.paymentRequest({
         country: props.paymentMethod.country,
-        currency: props.currency,
-        total: {
-          label: 'Total',
-          amount: props.amount,
-        },
+        currency: props.cart.currency.code.toLowerCase(),
+        total: cartToStripeDisplayTotal(props.cart),
+        displayItems: cartToStripeDisplayItems(props.cart),
         requestPayerName: true,
         requestPayerEmail: true,
         requestPayerPhone: true,
-        requestShipping: props.isShippingRequired,
+        requestShipping: props.cart.shippingRequired,
       });
 
       pr.canMakePayment().then(result => {
@@ -37,9 +35,25 @@ export const CheckoutStripeWalletBtnInner = (props) => {
                 status: 'invalid_shipping_address',
               });
             } else {
+              // auto-select the first shipping option.
+              const updatedCart = await props.selectDigitalWalletShippingOption(shippingOptions[0].id);
+
               event.updateWith({
                 status: 'success',
                 shippingOptions: shippingOptions,
+                total: cartToStripeDisplayTotal(updatedCart),
+                displayItems: cartToStripeDisplayItems(updatedCart),
+              });
+            }
+          });
+
+          pr.on('shippingoptionchange', async (event) => {
+            const updatedCart = await props.selectDigitalWalletShippingOption(event.shippingOption.id);
+            if (updatedCart) {
+              event.updateWith({
+                status: 'success',
+                total: cartToStripeDisplayTotal(updatedCart),
+                displayItems: cartToStripeDisplayItems(updatedCart),
               });
             }
           });
@@ -117,15 +131,40 @@ export const _CheckoutStripeWalletBtn = (props) => {
 
 const mapStateToProps = (state, ownProps) => ({
   paymentMethod: getPaymentMethod(state, 'wallet', 'stripe'),
-  currency: getCart(state).currency.code.toLowerCase(),
-  amount: toCents(getCart(state).summary.subTotal),
-  isShippingRequired: getCartShippingRequired(state),
+  cart: getCart(state),
 });
 
 const actions = {
   fetchStripePaymentIntent: fetchStripePaymentIntent,
   makeStripeWalletPayment: makeStripeWalletPayment,
   fetchStripeShippingOptions: fetchStripeShippingOptions,
+  selectDigitalWalletShippingOption: selectDigitalWalletShippingOption,
 };
 
 export const CheckoutStripeWalletBtn = connect(mapStateToProps, actions)(_CheckoutStripeWalletBtn);
+
+function cartToStripeDisplayTotal(cart) {
+  return {
+    label: 'Total',
+    amount: toCents(cart.summary.total),
+  };
+}
+
+function cartToStripeDisplayItems(cart) {
+  // Map cart items.
+  let displayItems = cart.items.map(item => ({
+    label: item.quantity > 1 ? `${item.description} (x ${item.quantity})` : item.description,
+    amount: toCents(item.total),
+  }));
+
+  // Add shipping if present.
+  const shippingAmount = toCents(cart.summary.shipping);
+  if (cart.shippingRequired && shippingAmount) {
+    displayItems.push({
+      label: 'Shipping',
+      amount: shippingAmount,
+    });
+  }
+
+  return displayItems;
+}
