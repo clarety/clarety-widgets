@@ -26,13 +26,15 @@ export const addDonationToCart = () => {
 
     dispatch(removeItemsWithType('donation'));
 
-    dispatch(addItem({
-      type:            'donation',
-      offerUid:        selection.offerUid,
-      offerPaymentUid: selection.offerPaymentUid,
-      price:           selection.amount,
-      description:     description,
-    }));
+    if (selection.amount > 0) {
+      dispatch(addItem({
+        type:            'donation',
+        offerUid:        selection.offerUid,
+        offerPaymentUid: selection.offerPaymentUid,
+        price:           selection.amount,
+        description:     description,
+      }));
+    }
 
     return true;
   };
