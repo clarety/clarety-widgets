@@ -47,7 +47,7 @@ function getDateLocale() {
 
 const thisYear = new Date().getFullYear();
 const minYear = thisYear - 110;
-const maxYear = thisYear + 5;
+const maxYear = thisYear + 12;
 
 export function _DateInput({ value, error, onChange, initialValue, setInitialValue }) {
   React.useEffect(() => {

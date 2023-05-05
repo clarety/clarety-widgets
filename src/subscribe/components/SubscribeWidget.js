@@ -63,6 +63,7 @@ export class _SubscribeWidgetRoot extends React.Component {
       storeCode: this.props.storeCode,
       caseTypeUid: this.props.caseTypeUid,
       caseStage: this.props.caseStage,
+      nameOption: this.props.nameOption,
       dropOptInField: this.props.dropOptInField,
       confirmPageUrl: this.props.confirmPageUrl,
       defaultCountry: this.props.defaultCountry,

@@ -1,4 +1,5 @@
 import { getSetting, getParsedFormData, getTrackingData, getRecaptcha } from 'shared/selectors';
+import { splitName } from 'shared/utils';
 
 export const getSubscribePostData = (state) => {
   const caseTypeUid = getSetting(state, 'caseTypeUid');
@@ -38,12 +39,9 @@ export const getCmsConfirmContentFields = (state) => {
   ];
 };
 
-const convertFullName = (formData) => {
-  const fullName = (formData.customer.fullName || '').trim();
+function convertFullName(formData) {
+  const { firstName, lastName } = splitName(formData.customer.fullName);
   formData.customer.fullName = undefined;
-
-  // Split full name into first and last.
-  const index = fullName.lastIndexOf(' ') + 1;
-  formData.customer.firstName = (index !== 0) ? fullName.substring(0, index - 1) : fullName;
-  formData.customer.lastName  = (index !== 0) ? fullName.substring(index, fullName.length) : '';
-};
+  formData.customer.firstName = firstName;
+  formData.customer.lastName = lastName;
+}

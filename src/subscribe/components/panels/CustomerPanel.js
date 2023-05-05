@@ -32,6 +32,13 @@ export class CustomerPanel extends BasePanel {
 
     if (settings.nameOption === 'full') {
       requiredField(errors, formData, 'customer.fullName');
+
+      if (formData['customer.fullName'] && !formData['customer.fullName'].includes(' ')) {
+        errors.push({
+          field: 'customer.fullName',
+          message: t('invalid-full-name', 'Please enter your full name'),
+        });
+      }
     }
 
     emailField(errors, formData, 'customer.email');
