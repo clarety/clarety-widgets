@@ -1,40 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { TextInput, FieldError } from 'form/components';
+import { updateFormData } from 'form/actions';
 import { getValidationError } from 'form/utils';
 
-const BACKSPACE_KEY =  8;
-const TAB_KEY       =  9;
-const SHIFT_KEY     = 16;
-
 export class _NZAccountNumberInput extends React.Component {
-  onKeyUp = (event) => {
-    const input = event.target;
+  onPaste = (event) => {
+    event.preventDefault();
+    const value = event.clipboardData.getData('text').replace(/[^0-9]/g, '');
 
-    // Ignore tabbing and backspace.
-    if (event.keyCode === TAB_KEY || event.keyCode === SHIFT_KEY || event.keyCode === BACKSPACE_KEY) {
-      return;
-    }
+    const bankCode = value.substr(0, 2);
+    const branchCode = value.substr(2, 4);
+    const accountNumber = value.substr(6, 7);
+    const suffixCode = value.substr(13, 3);
 
-    // Focus next input.
-    if (input.value.length === input.maxLength) {
-      if (input.nextSibling) input.nextSibling.focus();
-    }
-  };
-
-  onKeyDown = (event) => {
-    const input = event.target;
-
-    // Ignore tabbing.
-    if (event.keyCode === TAB_KEY || event.keyCode === SHIFT_KEY) {
-      return;
-    }
-
-    // Focus previous input.
-    if (event.keyCode === BACKSPACE_KEY && input.value.length === 0) {
-      event.preventDefault();
-      if (input.previousSibling) input.previousSibling.focus();
-    }
+    const { updateFormData } = this.props;
+    updateFormData(this.props.bankCodeField, bankCode);
+    updateFormData(this.props.branchCodeField, branchCode);
+    updateFormData(this.props.accountNumberField, accountNumber);
+    updateFormData(this.props.suffixCodeField, suffixCode);
   };
 
   render() {
@@ -48,8 +32,7 @@ export class _NZAccountNumberInput extends React.Component {
             maxLength={2}
             type="tel"
             required
-            onKeyUp={this.onKeyUp}
-            onKeyDown={this.onKeyDown}
+            onPaste={this.onPaste}
             hideErrors
           />
 
@@ -60,8 +43,6 @@ export class _NZAccountNumberInput extends React.Component {
             maxLength={4}
             type="tel"
             required
-            onKeyUp={this.onKeyUp}
-            onKeyDown={this.onKeyDown}
             hideErrors
           />
 
@@ -72,8 +53,6 @@ export class _NZAccountNumberInput extends React.Component {
             maxLength={7}
             type="tel"
             required
-            onKeyUp={this.onKeyUp}
-            onKeyDown={this.onKeyDown}
             hideErrors
           />
 
@@ -84,8 +63,6 @@ export class _NZAccountNumberInput extends React.Component {
             maxLength={3}
             type="tel"
             required
-            onKeyUp={this.onKeyUp}
-            onKeyDown={this.onKeyDown}
             hideErrors
           />
         </div>
@@ -109,4 +86,8 @@ const mapStateToProps = (state, ownProps) => {
   return { error };
 };
 
-export const NZAccountNumberInput = connect(mapStateToProps)(_NZAccountNumberInput);
+const actions = {
+  updateFormData: updateFormData,
+};
+
+export const NZAccountNumberInput = connect(mapStateToProps, actions)(_NZAccountNumberInput);
