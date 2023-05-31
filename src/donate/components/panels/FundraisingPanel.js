@@ -126,7 +126,26 @@ export class FundraisingPanel extends BasePanel {
             </Form.Group>
           </Col>
         </Form.Row>
+
+        {this.renderOptIn()}
       </React.Fragment>
+    );
+  }
+
+  renderOptIn() {
+    const { settings } = this.props;
+    if (!settings.showOptIn) return null;
+
+    return (
+      <Row className="optin-checkbox">
+        <Col>
+          <CheckboxInput
+            field="additionalData.optIn"
+            label={settings.optInText || t('newsletter-opt-in', 'Sign up for our newsletter')}
+            initialValue={!!settings.preTickOptIn}
+          />
+        </Col>
+      </Row>
     );
   }
 
