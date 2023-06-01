@@ -4,7 +4,7 @@ import { ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import { getSetting } from 'shared/selectors';
 import { selectFrequency } from 'donate/actions';
 
-const _FrequencySelect = ({ value, options, onChange }) => (
+export const _FrequencySelect = ({ value, options, onChange }) => (
   <div className="frequency-select">
     <ToggleButtonGroup
       type="radio"
@@ -26,7 +26,7 @@ const _FrequencySelect = ({ value, options, onChange }) => (
   </div>
 );
 
-const mapStateToProps = (state, ownProps) => {
+export const mapStateToProps = (state, ownProps) => {
   const priceHandles = getSetting(state, 'priceHandles');
 
   return {
@@ -38,7 +38,7 @@ const mapStateToProps = (state, ownProps) => {
   }
 };
 
-const actions = {
+export const actions = {
   onChange: selectFrequency,
 };
 

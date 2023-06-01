@@ -1,4 +1,4 @@
-export * from './amounts/FrequencySelect';
+export { FrequencySelect } from './amounts/FrequencySelect';
 export * from './amounts/ScheduleSelectButtonGroup';
 export * from './amounts/ScheduleSelectDropdown';
 export * from './amounts/SuggestedAmount';
