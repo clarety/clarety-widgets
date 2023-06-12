@@ -435,7 +435,7 @@ export class DetailsPanel extends BasePanel {
                 field="customer.gender"
                 label={t('label.customer.gender', 'Gender')}
                 options={this.translateOptions(getGenderOptions(appSettings))}
-                required={settings.isGenderRequired}
+                required={settings.isGenderRequired !== false}
               />
             </Col>
           </Form.Row>
@@ -449,7 +449,7 @@ export class DetailsPanel extends BasePanel {
               monthField="customer.dateOfBirthMonth"
               yearField="customer.dateOfBirthYear"
               label={t('label.customer.dateOfBirth', 'Date of Birth')}
-              required={settings.isDobRequired}
+              required={settings.isDobRequired !== false}
             />
           </Col>
         </Form.Row>
@@ -473,7 +473,7 @@ export class DetailsPanel extends BasePanel {
                 field="customer.mobile"
                 label={t('label.customer.mobile', 'Mobile')}
                 country={country}
-                required={settings.isMobileRequired}
+                required={settings.isMobileRequired !== false}
               />
             </Col>
           </Form.Row>
@@ -541,6 +541,7 @@ export class DetailsPanel extends BasePanel {
   renderAddressFields(title, type) {
     const { event, settings } = this.props;
     const country = this.state.formData[`customer.${type}.country`];
+    const isRequired = settings.isAddressRequired !== false;
 
     return (
       <React.Fragment>
@@ -552,7 +553,7 @@ export class DetailsPanel extends BasePanel {
               field={`customer.${type}.country`}
               label={t('label.customer.address.country', 'Country')}
               initialValue={event.country}
-              required={settings.isAddressRequired}
+              required={isRequired}
             />
           </Col>
         </Form.Row>
@@ -562,7 +563,7 @@ export class DetailsPanel extends BasePanel {
             <TextInput
               field={`customer.${type}.address1`}
               label={t('label.customer.address.address1', 'Address 1')}
-              required={settings.isAddressRequired}
+              required={isRequired}
             />
           </Col>
         </Form.Row>
@@ -581,7 +582,7 @@ export class DetailsPanel extends BasePanel {
             <TextInput
               field={`customer.${type}.suburb`}
               label={getSuburbLabel(country)}
-              required={settings.isAddressRequired}
+              required={isRequired}
             />
           </Col>
         </Form.Row>
@@ -592,7 +593,7 @@ export class DetailsPanel extends BasePanel {
               field={`customer.${type}.state`}
               label={getStateLabel(country)}
               country={country}
-              required={settings.isAddressRequired}
+              required={isRequired}
             />
           </Col>
           <Col>
@@ -600,7 +601,7 @@ export class DetailsPanel extends BasePanel {
               field={`customer.${type}.postcode`}
               label={getPostcodeLabel(country)}
               country={country}
-              required={settings.isAddressRequired}
+              required={isRequired}
             />
           </Col>
         </Form.Row>
