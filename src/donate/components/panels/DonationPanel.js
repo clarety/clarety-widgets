@@ -52,8 +52,16 @@ export class DonationPanel extends BasePanel {
     // Make sure an amount has been selected. 'None' may be a valid selection depending on settings.
     const selection = selections[frequency];
     const didSelectNone = settings.allowNone && selection.amount === null;
-    if (!didSelectNone && !Number(selection.amount)) {
-      errors.push({ message: t('invalid-donation', 'Please select a donation amount') });
+    if (!didSelectNone) {
+      if (!Number(selection.amount)) {
+        errors.push({
+          message: t('invalid-donation', 'Please select a donation amount'),
+        });
+      } else if (settings.minimumDonationAmount && Number(selection.amount) < settings.minimumDonationAmount) {
+        errors.push({
+          message: t('invalid-donation-minimum', `Kindly note the minimum online donation is $${settings.minimumDonationAmount.toFixed(2)}`),
+        });
+      }
     }
 
     if (givingTypeOptions) {
