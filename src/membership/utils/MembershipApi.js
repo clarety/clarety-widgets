@@ -20,4 +20,9 @@ export class MembershipApi {
     const results = await ClaretyApi.get('widgets/membership/', params);
     return results[0];
   }
+
+  static async actionAuth(actionKey) {
+    const results = await ClaretyApi.get(`membership/action-auth/`, { actionKey });
+    return results[0];
+  }
 }
