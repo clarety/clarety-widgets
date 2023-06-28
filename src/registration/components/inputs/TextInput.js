@@ -13,7 +13,7 @@ class PureTextInput extends React.PureComponent {
   };
 
   render() {
-    const { field, label, placeholder, explanation, value, onChange, type, error, disabled, required } = this.props;
+    const { field, label, placeholder, explanation, value, type, error, disabled, required } = this.props;
 
     return (
       <Form.Group controlId={field}>

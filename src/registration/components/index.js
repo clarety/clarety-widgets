@@ -1,6 +1,7 @@
 export * from './Registration';
 
 export * from './inputs/CheckboxInput';
+export * from './inputs/CheckboxesInput';
 export * from './inputs/CountryInput';
 export * from './inputs/DateInput';
 export * from './inputs/DobInput';

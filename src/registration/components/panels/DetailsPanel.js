@@ -3,7 +3,7 @@ import { Button, Form, Row, Col, Alert } from 'react-bootstrap';
 import { getLanguage, t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext, parseNestedElements, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
-import { TextInput, TextAreaInput, NumberInput, EmailInput, DateInput, DobInput, CheckboxInput, SimpleSelectInput, PhoneInput, StateInput, PostcodeInput, CountryInput, FormElement } from 'registration/components';
+import { TextInput, TextAreaInput, NumberInput, EmailInput, DateInput, DobInput, CheckboxInput, CheckboxesInput, RadioGroupInput, SimpleSelectInput, PhoneInput, StateInput, PostcodeInput, CountryInput, FormElement } from 'registration/components';
 import { getGenderOptions, scrollIntoView } from 'registration/utils';
 
 export class DetailsPanel extends BasePanel {
@@ -680,6 +680,9 @@ export class DetailsPanel extends BasePanel {
       case 'checkbox':    return this.renderCheckboxField(field);
       case 'phonenumber': return this.renderPhoneField(field);
       case 'date':        return this.renderDateField(field);
+      case 'checkboxs':   return this.renderCheckboxesField(field);
+      case 'radio':       return this.renderRadioField(field);
+      case 'acceptterms': return this.renderAcceptTermsField(field);
       
       default: throw new Error(`Extend field type not supported: ${field.type}`);
     }
@@ -754,6 +757,43 @@ export class DetailsPanel extends BasePanel {
         label={t(`label.extendForm.${field.columnKey}`, field.label)}
         required={field.required}
       />
+    );
+  }
+
+  renderCheckboxesField(field) {
+    return (
+      <CheckboxesInput
+        field={`extendForm.${field.columnKey}`}
+        label={t(`label.extendForm.${field.columnKey}`, field.label)}
+        options={field.options}
+        explanation={t(`explanation.extendForm.${field.columnKey}`, field.explanation)}
+        required={field.required}
+      />
+    );
+  }
+
+  renderRadioField(field) {
+    return (
+      <RadioGroupInput
+        field={`extendForm.${field.columnKey}`}
+        label={t(`label.extendForm.${field.columnKey}`, field.label)}
+        options={field.options}
+        explanation={t(`explanation.extendForm.${field.columnKey}`, field.explanation)}
+        required={field.required}
+      />
+    );
+  }
+
+  renderAcceptTermsField(field) {
+    return (
+      <div>
+        <div
+          className="terms-html"
+          dangerouslySetInnerHTML={{ __html: field.html }}
+        />
+
+        {this.renderCheckboxField(field)}
+      </div>
     );
   }
 
