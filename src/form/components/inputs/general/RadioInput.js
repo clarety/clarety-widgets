@@ -38,7 +38,7 @@ class _RadioInput extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    value: state.formData[ownProps.field] || null,
+    value: state.formData[ownProps.field],
     error: getValidationError(ownProps.field, state.errors),
   };
 };
