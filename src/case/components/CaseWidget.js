@@ -81,6 +81,7 @@ export class _CaseWidgetRoot extends React.Component {
       fieldTypes:           this.props.fieldTypes,
       saveConfirmPageUrl:   this.props.saveConfirmPageUrl,
       confirmPageUrl:       this.props.confirmPageUrl,
+      confirmPageMode:      this.props.confirmPageMode,
       sectionNavStyle:      this.props.sectionNavStyle,
       defaultCountry:       this.props.defaultCountry,
       addressFinderKey:     this.props.addressFinderKey,

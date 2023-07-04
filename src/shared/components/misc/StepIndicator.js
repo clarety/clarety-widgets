@@ -2,15 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { getSetting, getPanelManager } from 'shared/selectors';
 
-const _StepIndicator = ({ panels }) => (
-  <ol className="widget-step-indicator">
-    {panels.map(panel => (
-      <li key={panel.id} className={getClassName(panel.status)}>
-        <span>{panel.name}</span>
-      </li>
-    ))}
-  </ol>
-);
+const _StepIndicator = ({ panels }) => {
+  return (
+    <ol className="widget-step-indicator">
+      {panels.length > 1 && panels.map(panel => (
+        <li key={panel.id} className={getClassName(panel.status)}>
+          <span>{panel.name}</span>
+        </li>
+      ))}
+    </ol>
+  );
+};
 
 const mapStateToProps = (state) => {
   const panelSettings = getSetting(state, 'panels');

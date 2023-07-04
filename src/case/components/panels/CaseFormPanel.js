@@ -495,13 +495,16 @@ export class CaseFormPanel extends BasePanel {
     const { customerElement } = this.props;
     if (!customerElement) return null;
 
+    const hasSections = this.props.section !== undefined;
     const elements = this.reorderCustomerElements(customerElement.elements);
 
     return (
       <div>
-        <div className="form-header">
-          <h2 className="title">{this.getCustomerSectionName()}</h2>
-        </div>
+        {hasSections &&
+          <div className="form-header">
+            <h2 className="title">{this.getCustomerSectionName()}</h2>
+          </div>
+        }
 
         <div className="form-fields">
           {elements.map(element => this.renderCustomerElement(element))}

@@ -38,7 +38,12 @@ export const saveCase = () => {
 
       if (settings.saveConfirmPageUrl) {
         // Redirect.
-        window.location.href = appendQueryString(settings.saveConfirmPageUrl, { caseUid: result.caseUid });
+        const url = appendQueryString(settings.saveConfirmPageUrl, { caseUid: result.caseUid });
+        if (settings.confirmPageMode === 'redirect-iframe-parent') {
+          parent.postMessage({ redirect: url }, '*');
+        } else {
+          window.location.href = url;
+        }
       } else {
         // Show alert.
         dispatch(updateAppSettings({ caseUid: result.caseUid }));
@@ -78,7 +83,13 @@ export const submitCase = () => {
       
       if (settings.confirmPageUrl) {
         // Redirect.
-        window.location.href = appendQueryString(settings.confirmPageUrl, { caseUid: result.caseUid });
+        const url = appendQueryString(settings.confirmPageUrl, { caseUid: result.caseUid });
+        if (settings.confirmPageMode === 'redirect-iframe-parent') {
+          parent.postMessage({ redirect: url }, '*');
+        } else {
+          window.location.href = url;
+        }
+
         return false;
       } else {
         // Show confirm content.
