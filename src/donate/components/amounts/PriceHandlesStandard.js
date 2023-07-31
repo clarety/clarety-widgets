@@ -3,8 +3,6 @@ import { Breakpoint } from 'react-socks';
 import { getValidationError } from 'form/utils';
 
 export class PriceHandlesStandard extends React.Component {
-  autoFocusVariableAmount = false;
-
   onMouseEnterAmount = (amountInfo) => {
     // Override in subclass.
   };
@@ -118,7 +116,6 @@ export class PriceHandlesStandard extends React.Component {
         onMouseLeave={this.onMouseLeaveAmount}
         isSelected={currentSelection.isVariableAmount}
         error={errors && getValidationError('variable-amount', errors)}
-        autoFocus={this.autoFocusVariableAmount}
       />
     );
   }

@@ -4,8 +4,6 @@ import { t } from 'shared/translations';
 import { PriceHandlesStandard } from 'donate/components';
 
 export class PriceHandlesPriceOnly extends PriceHandlesStandard {
-  autoFocusVariableAmount = true;
-
   constructor(props) {
     super(props);
 
