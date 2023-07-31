@@ -2,6 +2,7 @@ export async function setupAddressFinder({ elementId, apiKey, country, onLoad, o
   await loadScript();
 
   const element = document.getElementById(elementId);
+  if (!element) return;
 
   const options = {
     show_locations: false,
