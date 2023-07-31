@@ -78,6 +78,8 @@ class _RegistrationRoot extends React.Component {
       paymentMethods: this.props.paymentMethods,
       languages: this.props.languages,
       currency: currency,
+      addressFinderKey: this.props.addressFinderKey,
+      addressFinderCountry: this.props.addressFinderCountry,
       ...this.props.settings,
     });
 

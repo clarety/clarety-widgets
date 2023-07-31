@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Form, Row, Col, Alert } from 'react-bootstrap';
 import { getLanguage, t } from 'shared/translations';
-import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
+import { BasePanel, PanelContainer, PanelHeader, PanelBody, AddressFinder } from 'shared/components';
 import { FormContext, parseNestedElements, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
 import { TextInput, TextAreaInput, NumberInput, EmailInput, DateInput, DobInput, CheckboxInput, CheckboxesInput, RadioGroupInput, SimpleSelectInput, PhoneInput, StateInput, PostcodeInput, CountryInput, FormElement } from 'registration/components';
 import { getGenderOptions, scrollIntoView } from 'registration/utils';
@@ -112,6 +112,8 @@ export class DetailsPanel extends BasePanel {
 
     const formData = {};
 
+    let disableAddressFinders = false;
+
     formData['customer.id']        = customer.id;
     formData['customer.firstName'] = customer.firstName;
     formData['customer.lastName']  = customer.lastName;
@@ -124,6 +126,7 @@ export class DetailsPanel extends BasePanel {
     formData['customer.dateOfBirthYear']  = customer.dateOfBirthYear;
 
     if (settings.showBillingAddress && customer.billing) {
+      disableAddressFinders = true;
       formData['customer.billing.address1'] = customer.billing.address1;
       formData['customer.billing.address2'] = customer.billing.address2;
       formData['customer.billing.suburb']   = customer.billing.suburb;
@@ -133,6 +136,7 @@ export class DetailsPanel extends BasePanel {
     }
 
     if (settings.showDeliveryAddress && customer.delivery) {
+      disableAddressFinders = true;
       formData['customer.delivery.address1'] = customer.delivery.address1;
       formData['customer.delivery.address2'] = customer.delivery.address2;
       formData['customer.delivery.suburb']   = customer.delivery.suburb;
@@ -145,7 +149,8 @@ export class DetailsPanel extends BasePanel {
       formData: {
         ...prevState.formData,
         ...formData,
-      }
+      },
+      disableAddressFinders,
     }));
   }
 
@@ -199,6 +204,11 @@ export class DetailsPanel extends BasePanel {
     const errors = [];
     this.validateFields(errors);
     this.setErrors(errors);
+
+    if (this.hasAddressError(errors)) {
+      this.setState({ disableAddressFinders: true });
+    }
+
     return errors.length === 0;
   }
 
@@ -268,6 +278,12 @@ export class DetailsPanel extends BasePanel {
     }
   }
 
+  hasAddressError(errors) {
+    return errors.some(err =>
+      err.field.startsWith('customer.delivery') ||
+      err.field.startsWith('customer.billing'));
+  }
+
   onSubmitForm() {
     // Override in subclass.
   }
@@ -293,6 +309,35 @@ export class DetailsPanel extends BasePanel {
     setErrors(participantIndex, errors);
     scrollIntoView(this.ref);
   }
+
+  shouldUseAddressFinder() {
+    return this.props.addressFinderKey
+        && this.props.addressFinderCountry
+        && !this.state.disableAddressFinders;
+  }
+
+  onPressDisableAddressFinder = () => {
+    this.setState({ disableAddressFinders: true });
+  };
+
+  onAddressFinderSelect = (type, address) => {
+    const formData = {
+      [`customer.${type}.address1`]: address.address1,
+      [`customer.${type}.address2`]: address.address2,
+      [`customer.${type}.suburb`]:   address.suburb,
+      [`customer.${type}.state`]:    address.state,
+      [`customer.${type}.postcode`]: address.postcode,
+      [`customer.${type}.country`]:  address.country,
+      [`customer.${type}.dpid`]:     address.dpid,
+    };
+
+    this.setState(prevState => ({
+      formData: {
+        ...prevState.formData,
+        ...formData,
+      }
+    }));
+  };
 
   reset() {
     const { resetDetails, participantIndex, removeAddOnsFromCart } = this.props;
@@ -543,9 +588,30 @@ export class DetailsPanel extends BasePanel {
     const country = this.state.formData[`customer.${type}.country`];
     const isRequired = settings.isAddressRequired !== false;
 
+    const titleJsx = <h4 className="extend-form-subtitle">{title}</h4>;
+
+    if (this.shouldUseAddressFinder()) {
+      return (
+        <Form.Group>
+          {titleJsx}
+
+          <AddressFinder
+            id={`address-finder-input-${type}`}
+            apiKey={this.props.addressFinderKey}
+            country={this.props.addressFinderCountry}
+            onSelect={(addr) => this.onAddressFinderSelect(type, addr)}
+          />
+
+          <Button variant="link" onClick={this.onPressDisableAddressFinder}>
+            {t('cant-find-your-address', "Can't find your address?")}
+          </Button>
+        </Form.Group>
+      );
+    }
+
     return (
       <React.Fragment>
-        <h4 className="extend-form-subtitle">{title}</h4>
+        {titleJsx}
 
         <Form.Row>
           <Col>

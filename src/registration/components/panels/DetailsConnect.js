@@ -46,6 +46,9 @@ export class DetailsConnect {
       isCorporateTeam: isCorporateTeam,
 
       registrationErrors: state.cart.errors,
+
+      addressFinderKey: getSetting(state, 'addressFinderKey'),
+      addressFinderCountry: getSetting(state, 'addressFinderCountry'),
     };
   };
 
