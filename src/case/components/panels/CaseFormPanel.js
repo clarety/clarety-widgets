@@ -264,7 +264,7 @@ export class CaseFormPanel extends BasePanel {
   }
 
   getCustomerSectionName() {
-    return t('your-details', 'Your Details');
+    return this.props.settings.customerSectionTitle || t('your-details', 'Your Details');
   }
 
   shouldShowConditionalField(field) {
