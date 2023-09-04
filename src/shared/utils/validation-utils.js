@@ -43,7 +43,7 @@ export function ccvField(errors, formData, field, message = null) {
 }
 
 export function validateRequired(value, field, errors, message = null) {
-  if (!value) {
+  if (!value && value !== 0) { // 0 is considered a valid value.
     errors.push({
       'field': field,
       'message': message || t('invalid-required', 'This is a required field'),

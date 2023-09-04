@@ -47,6 +47,8 @@ class _PanelManager extends React.Component {
 
     const nextIndex = this.getFirstIndexWithStatus('wait');
     if (nextIndex !== -1) this.setStatus(nextIndex, 'edit');
+
+    this.panelChangeEvent();
   };
 
   editPanel = (nextIndex) => {
@@ -66,12 +68,19 @@ class _PanelManager extends React.Component {
     }
     
     this.setStatus(nextIndex, 'edit');
+
+    this.panelChangeEvent();
   };
 
   resetAllPanels = () => {
     this.props.resetAllPanels();
     this.panelRefs.forEach(panelRef => panelRef && panelRef.reset());
   };
+
+  panelChangeEvent() {
+    const event = new Event('clarety-widget--change-panel');
+    window.dispatchEvent(event);
+  }
 
   render() {
     return this.props.panels.map(this.renderPanel);
