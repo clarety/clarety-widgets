@@ -178,13 +178,12 @@ export class DonationPanel extends BasePanel {
       <div className="schedule-select">
         <h3>{settings.scheduleSelectHeading || t('select-frequency', 'Select Frequency')}</h3>
 
-        {offer.schedules.length > 3
+        {offer.schedules.length > 2
           ? <ScheduleSelectDropdown
               value={value}
               schedules={offer.schedules}
               onChange={this.onSelectSchedule}
             />
-            
           : <ScheduleSelectButtonGroup
               value={value}
               schedules={offer.schedules}
