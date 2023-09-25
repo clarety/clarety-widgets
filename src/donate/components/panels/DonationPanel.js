@@ -47,7 +47,7 @@ export class DonationPanel extends BasePanel {
   }
 
   validateFields(errors) {
-    const { selections, frequency, formData, givingTypeOptions, settings } = this.props;
+    const { selections, frequency, formData, givingTypeOptions, settings, currency } = this.props;
 
     // Make sure an amount has been selected. 'None' may be a valid selection depending on settings.
     const selection = selections[frequency];
@@ -58,8 +58,10 @@ export class DonationPanel extends BasePanel {
           message: t('invalid-donation', 'Please select a donation amount'),
         });
       } else if (settings.minimumDonationAmount && Number(selection.amount) < settings.minimumDonationAmount) {
+        const currencySymbol = currency ? currency.symbol : '$';
+        const minAmountText = currencySymbol + settings.minimumDonationAmount.toFixed(2);
         errors.push({
-          message: t('invalid-donation-minimum', `Kindly note the minimum online donation is $${settings.minimumDonationAmount.toFixed(2)}`),
+          message: t('invalid-donation-minimum', `Kindly note the minimum online donation is {{amount}}`, { amount: minAmountText }),
         });
       }
     }

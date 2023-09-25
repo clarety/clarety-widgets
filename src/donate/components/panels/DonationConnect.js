@@ -1,4 +1,4 @@
-import { getSetting } from 'shared/selectors';
+import { getSetting, getCurrency } from 'shared/selectors';
 import { removeItemsWithType } from 'shared/actions';
 import { getFormData, getErrors } from 'form/selectors';
 import { setErrors } from 'form/actions';
@@ -18,6 +18,7 @@ export class DonationConnect {
       formData: getFormData(state),
       errors: getErrors(state),
       variant: getSetting(state, 'variant'),
+      currency: getCurrency(state),
     };
   };
 
