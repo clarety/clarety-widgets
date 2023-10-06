@@ -15,10 +15,10 @@ class _CheckboxInput extends React.Component {
   }
 
   render() {
-    const { value, field, label, error, onChange } = this.props;
+    const { value, field, label, error, onChange, className } = this.props;
 
     return (
-      <Form.Group controlId={field}>
+      <Form.Group controlId={field} className={className}>
         <FormCheck>
           <FormCheck.Input
             checked={value}

@@ -4,6 +4,7 @@ import { t } from 'shared/translations';
 import { _PaymentPanel as BasePaymentPanel, injectStripe } from 'shared/components';
 import { Currency } from 'shared/components';
 import { formatDate } from 'shared/utils';
+import { CheckboxInput } from 'form/components';
 
 export class _PaymentPanel extends BasePaymentPanel {
   onEditCartItem = (event, item) => {
@@ -48,6 +49,36 @@ export class _PaymentPanel extends BasePaymentPanel {
 
         {this.renderShippingOptions()}
       </React.Fragment>
+    );
+  }
+
+  renderTermsCheckbox() {
+    return (
+      <React.Fragment>
+        {super.renderTermsCheckbox()}
+        {this.renderCoverFeesCheckbox()}
+      </React.Fragment>
+    );
+  }
+
+  renderCoverFeesCheckbox() {
+    const { coverFeeAmount } = this.props;
+    if (!coverFeeAmount) return null;
+
+    return (
+      <CheckboxInput
+        field="payment.coverFees"
+        label={
+          <React.Fragment>
+            {t('give-additional', 'I choose to give an additional')}
+            {' '}
+            <Currency amount={coverFeeAmount} />
+            {' '}
+            {t('to-help-cover-costs', 'to help cover the costs and processing fees associated with my donation')}
+          </React.Fragment>
+        }
+        className="cover-fees-checkbox"
+      />
     );
   }
 

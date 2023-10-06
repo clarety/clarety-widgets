@@ -139,6 +139,8 @@ export default class RegistrationDemo extends React.Component {
       storeUid: "",
       seriesId: 3,
       // donationSingleOfferId: "37",
+      feeOfferUid: 'ofr_8m0g',
+      calcFeesFn: (amount) => amount * 0.05,
       sourceUid: null,
       responseId: null,
       emailResponseId: null,

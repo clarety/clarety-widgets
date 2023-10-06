@@ -76,6 +76,8 @@ class _RegistrationRoot extends React.Component {
       teamType: this.props.teamType,
       variant: this.props.variant,
       paymentMethods: this.props.paymentMethods,
+      feeOfferUid: this.props.feeOfferUid,
+      calcFeesFn: this.props.calcFeesFn,
       languages: this.props.languages,
       currency: currency,
       addressFinderKey: this.props.addressFinderKey,

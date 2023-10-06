@@ -206,8 +206,29 @@ export const getPaymentMethod = (state, type) => {
   return getPaymentMethods(state).find(method => method.type === type);
 };
 
+export const getShouldAddFeeCover = (state) => {
+  const formData = getFormData(state);
+  return !!formData['payment.coverFees'];
+};
+
+export const getFeeAmount = (state) => {
+  const feeOfferUid = getSetting(state, 'feeOfferUid');
+  const calcFeesFn = getSetting(state, 'calcFeesFn');
+  if (!feeOfferUid || !calcFeesFn) return null;
+
+  const cart = getCart(state);
+  if (!cart.summary || !cart.summary.total) return 0;
+  
+  return calcFeesFn(cart.summary.total);
+};
+
 export const getTotalAmount = (state) => {
   const cart = getCart(state);
+
+  if (getShouldAddFeeCover(state)) {
+    return cart.summary.total + getFeeAmount(state);
+  }
+
   return cart.summary.total;
 };
 
@@ -346,12 +367,21 @@ const getMerchandisePostData = (state) => {
 export const getSubmitRegistrationPostData = (state) => {
   const cart = getCart(state);
   const fundraising = getFundraisingPostData(state);
+  const feeCover = getCoverFeesPostData(state);
 
   return {
     uid: state.cart.uid,
     jwt: state.cart.jwt,
     fundraising: fundraising,
     ...cart.payment,
+    ...feeCover,
+  };
+};
+
+const getCoverFeesPostData = (state) => {
+  return {
+    feeOfferUid: getSetting(state, 'feeOfferUid'),
+    feeAmount: getFeeAmount(state),
   };
 };
 
@@ -371,4 +401,4 @@ const getIsRegisteringForSelf = (state) => {
   }
 
   return false;
-}
+};

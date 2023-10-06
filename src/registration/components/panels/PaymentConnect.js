@@ -2,7 +2,7 @@ import { getSetting } from 'shared/selectors';
 import { getFormData, getErrors } from 'form/selectors';
 import { setErrors, updateFormData } from 'form/actions';
 import { submitRegistration, updateShipping } from 'registration/actions';
-import { getCart, getPaymentMethods, getPanelIndexesForCartItems } from 'registration/selectors';
+import { getCart, getPaymentMethods, getPanelIndexesForCartItems, getFeeAmount } from 'registration/selectors';
 
 export class PaymentConnect {
   static mapStateToProps = (state, ownProps) => {
@@ -16,6 +16,7 @@ export class PaymentConnect {
       cartItemPanelIndexes: getPanelIndexesForCartItems(state),
       errors: getErrors(state),
       variant: getSetting(state, 'variant'),
+      coverFeeAmount: getFeeAmount(state),
     };
   };
   
