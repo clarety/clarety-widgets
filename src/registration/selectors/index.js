@@ -206,6 +206,11 @@ export const getPaymentMethod = (state, type) => {
   return getPaymentMethods(state).find(method => method.type === type);
 };
 
+export const getTotalAmount = (state) => {
+  const cart = getCart(state);
+  return cart.summary.total;
+};
+
 export const getCreateTeamPostData = (state) => {
   const event = getEvent(state);
   const customer = getCustomer(state);

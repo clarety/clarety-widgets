@@ -84,7 +84,7 @@ export const submitExpressRegistration = () => {
   };
 };
 
-const preparePayment = (paymentData, paymentMethod) => {
+export const preparePayment = (paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     // Stripe payment.
     if (isStripe(paymentMethod)) {
@@ -106,7 +106,7 @@ const preparePayment = (paymentData, paymentMethod) => {
   };
 };
 
-const attemptPayment = (paymentData, paymentMethod) => {
+export const attemptPayment = (paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     const state = getState();
     const postData = getSubmitRegistrationPostData(state);
@@ -118,7 +118,7 @@ const attemptPayment = (paymentData, paymentMethod) => {
   };
 };
 
-const handlePaymentResult = (result, paymentData, paymentMethod) => {
+export const handlePaymentResult = (result, paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     // TODO: temp api fix.
     if (result.status === 'Complete') result.status = 'complete';

@@ -6,6 +6,7 @@ import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, injectStripe } from 'shared/components';
 import { requiredField, cardNumberField, cardExpiryField, ccvField, isStripeCard, isStripeAuBankAccount } from 'shared/utils';
 import { TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, AccountNumberInput, BsbInput, NZAccountNumberInput, PhoneInput, NumberInput, SelectInput } from 'form/components';
+import { RegoPayPalBtn } from 'registration/components/misc/RegoPayPalBtn';
 
 export class _PaymentPanel extends BasePanel {
   state = {
@@ -286,7 +287,14 @@ export class _PaymentPanel extends BasePanel {
   }
 
   getPaymentMethod(type) {
-    return this.props.paymentMethods.find(method => method.type === type);
+    // for 'wallet' types the gateway is also included in the type key.
+    let gateway = null;
+    if (type && type.startsWith('wallet--')) {
+      gateway = type.split('--')[1];
+      type = 'wallet';
+    }
+
+    return this.props.paymentMethods.find(method => method.type === type && (!gateway || method.gateway === gateway));
   }
 
   getTitleText() {
@@ -400,12 +408,26 @@ export class _PaymentPanel extends BasePanel {
   }
 
   renderPaymentMethodOptions() {
-    const directDebitType = this.getDirectDebitType();
+    const options = [];
+
     const showCC = !!this.getPaymentMethod('gatewaycc');
+    if (showCC) {
+      options.push({ value: 'gatewaycc', label: t('credit-card', 'Credit Card') });
+    }
+
+    const directDebitType = this.getDirectDebitType();
     const showDD = !!directDebitType;
+    if (showDD) {
+      options.push({ value: directDebitType, label: t('direct-debit', 'Direct Debit') });
+    }
+
+    const showPayPal = !!this.getPaymentMethod('wallet--paypal');
+    if (showPayPal) {
+      options.push({ value: 'wallet--paypal', label: t('paypal', 'PayPal') });
+    }
 
     // Don't display selector if there's only one option.
-    if (!showCC || !showDD) return null;
+    if (options.length <= 1) return null;
 
     return (
       <div className="payment-method-select">
@@ -415,8 +437,9 @@ export class _PaymentPanel extends BasePanel {
           value={this.props.formData['payment.type']}
           onChange={this.onSelectPaymentType}
         >
-          {showCC && <ToggleButton value="gatewaycc" variant="outline-secondary">{t('credit-card', 'Credit Card')}</ToggleButton>}
-          {showDD && <ToggleButton value={directDebitType} variant="outline-secondary">{t('direct-debit', 'Direct Debit')}</ToggleButton>}
+          {options.map(opt =>
+            <ToggleButton key={opt.value} value={opt.value} variant="outline-secondary">{opt.label}</ToggleButton>
+          )}
         </ToggleButtonGroup>
       </div>
     );
@@ -440,6 +463,12 @@ export class _PaymentPanel extends BasePanel {
           case 'hk': return this.renderHKDirectDebitFields(paymentMethod);
           default:   return this.renderDirectDebitFields(paymentMethod);
         }
+      }
+    }
+
+    if (paymentMethod.type === 'wallet') {
+      if (paymentMethod.gateway === 'paypal') {
+        return this.renderPayPalFields(paymentMethod);
       }
     }
 
@@ -709,6 +738,14 @@ export class _PaymentPanel extends BasePanel {
     );
   }
 
+  renderPayPalFields(paymentMethod) {
+    return (
+      <div className="paypal-btn-container">
+        <RegoPayPalBtn />
+      </div>
+    );
+  }
+
   renderCvcInfoBtn() {
     const { settings } = this.props;
     if (!settings.showCvcInfoBtn) return null;
@@ -761,6 +798,8 @@ export class _PaymentPanel extends BasePanel {
     const { layout, isBusy, settings } = this.props;
     if (layout === 'page') return null;
 
+    const paymentType = this.props.formData['payment.type'];
+
     return (
       <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
         <Form.Row className="justify-content-center">
@@ -774,10 +813,12 @@ export class _PaymentPanel extends BasePanel {
           }
 
           <Col xs={layout === 'tabs' ? 6 : 12}>
-            <SubmitButton
-              title={this.getSubmitBtnText()}
-              testId="next-button"
-            />
+            {paymentType !== 'wallet--paypal' &&
+              <SubmitButton
+                title={this.getSubmitBtnText()}
+                testId="next-button"
+              />
+            }
           </Col>
         </Form.Row>
 

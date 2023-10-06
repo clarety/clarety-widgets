@@ -7,21 +7,32 @@ import { Registration, initTranslations, renderWidget } from '../../src';
 import '../../src/registration/style.scss';
 
 async function renderRegistrations(props) {
-  await initTranslations({
-    translationsPath: 'translations/{{lng}}.json',
-    defaultLanguage: 'en',
-  });
+  // await initTranslations({
+  //   translationsPath: 'translations/{{lng}}.json',
+  //   defaultLanguage: 'en',
+  // });
   
   Registration.init();
   
   Registration.setClientIds({
     // dev:  '82ee4a2479780256c9bf9b951f5d1cfb', // baseline
     // dev:  '60efcad7dc9df95cb418032c39565a79', // mdc
-    dev:  'ab0c9407ba7f0581ebc49fa787049e80', // a21
+    // dev:  'ab0c9407ba7f0581ebc49fa787049e80', // a21
+    dev:  '9987567f7e7c62c4f8a50b48950370ca', // bhcc
     prod: '',
   });
   
   Registration.setPanels([
+
+    // {
+    //   component: PaymentPanel,
+    //   connect: PaymentConnect,
+    //   settings: {
+    //     showCvcInfoBtn: true,
+    //   },
+    // },
+
+
     {
       component: ModePanel,
       connect: ModeConnect,
@@ -30,26 +41,14 @@ async function renderRegistrations(props) {
     {
       component: EventPanel,
       connect: EventConnect,
-      settings: {
-        showStateButtons: true,
-        showPromoCode: true,
-      },
-    },
-    {
-      component: DonationPanel,
-      connect: DonationConnect,
-      settings: {
-        showFrequencySelect: false,
-        showNoneButton: true,
-      },
+      settings: {},
     },
     {
       component: LoginPanel,
       connect: LoginConnect,
       settings: {
+        allowGuest: false,
         createAccount: true,
-        allowGuest: true,
-        showGuestForm: true,
         showFirstName: true,
         showLastName: true,
       },
@@ -57,7 +56,9 @@ async function renderRegistrations(props) {
     {
       component: TeamPanel,
       connect: TeamConnect,
-      settings: {},
+      settings: {
+        allowCreate: true,
+      },
     },
     {
       component: QtysPanel,
@@ -77,14 +78,21 @@ async function renderRegistrations(props) {
       connect: DetailsConnect,
       settings: {
         showBillingAddress: true,
-        showDeliveryAddress: true,
+        showGender: true,
+        isGenderRequired: true,
+        isDobRequired: true,
+        isMobileRequired: true,
+        isAddressRequired: true,
       },
     },
-    {
-      component: MerchPanel,
-      connect: MerchConnect,
-      settings: {},
-    },
+    // {
+    //   component: DonationPanel,
+    //   connect: DonationConnect,
+    //   settings: {
+    //     showFrequencySelect: false,
+    //     showNoneButton: true,
+    //   },
+    // },
     {
       component: ValidatePanel,
       connect: ValidateConnect,
@@ -94,8 +102,7 @@ async function renderRegistrations(props) {
       component: PaymentPanel,
       connect: PaymentConnect,
       settings: {
-        title: 'Registration Summary',
-        submitBtnText: 'Submit Registration',
+        showCvcInfoBtn: true,
       },
     },
   ]);
@@ -107,13 +114,13 @@ export default class RegistrationDemo extends React.Component {
   componentDidMount() {
     renderRegistrations({
       elementId: 'rego-widget-demo',
-      storeId: '1',
+      // storeId: '1',
 
       // a21
-      storeCode: 'US',
-      seriesId: '30',
-      prevSeriesId: '25',
-      donationSingleOfferId: '151',
+      // storeCode: 'US',
+      // seriesId: '30',
+      // prevSeriesId: '25',
+      // donationSingleOfferId: '151',
 
       // mdc
       // storeCode: 'AU',
@@ -126,17 +133,29 @@ export default class RegistrationDemo extends React.Component {
       // seriesId: '3',
       // prevSeriesId: '2',
       // donationSingleOfferId: '8',
+
+      // bhcc
+      storeId: null,
+      storeUid: "",
+      seriesId: 3,
+      // donationSingleOfferId: "37",
+      sourceUid: null,
+      responseId: null,
+      emailResponseId: null,
+      channel: 'rego',
+      currencyCode: 'AUD',
+      currencySymbol: '$',
       
-      sourceId: '17',
-      responseId: 'e9c2e351d90b11e996fd',
-      emailResponseId: '1234',
+      // sourceId: '17',
+      // responseId: 'e9c2e351d90b11e996fd',
+      // emailResponseId: '1234',
 
-      showLanguageSelect: true,
+      // showLanguageSelect: true,
 
-      languages: {
-        en: 'English',
-        th: 'Thai',
-      },
+      // languages: {
+      //   en: 'English',
+      //   th: 'Thai',
+      // },
     });
   }
 

@@ -21,6 +21,9 @@ export class PayPalBtn extends React.Component {
       onApprove: this.onApprove,
       onCancel: this.onCancel,
       onError: this.onError,
+      style: {
+        label: this.props.label,
+      },
     }).render(`#${elementId}`);
   };
 
@@ -35,9 +38,17 @@ export class PayPalBtn extends React.Component {
   }
 
   createOrder = (data, actions) => {
-    return actions.order.create({
+    const order = {
       purchase_units: [{ amount: { value: this.props.amount } }]
-    });
+    };
+
+    if (this.props.noShipping) {
+      order.application_context = {
+        shipping_preference: 'NO_SHIPPING',
+      };
+    }
+
+    return actions.order.create(order);
   };
 
   // onInit is called when the button first renders.
