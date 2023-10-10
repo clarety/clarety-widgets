@@ -6,7 +6,6 @@ import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, injectStripe } from 'shared/components';
 import { requiredField, cardNumberField, cardExpiryField, ccvField, isStripeCard, isStripeAuBankAccount } from 'shared/utils';
 import { TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, AccountNumberInput, BsbInput, NZAccountNumberInput, PhoneInput, NumberInput, SelectInput } from 'form/components';
-import { RegoPayPalBtn } from 'registration/components/misc/RegoPayPalBtn';
 
 export class _PaymentPanel extends BasePanel {
   state = {
@@ -738,10 +737,12 @@ export class _PaymentPanel extends BasePanel {
     );
   }
 
+  // Override in subclass to provide the appropriate PayPal button.
+  // for example see registration/components/panels/PaymentPanel.js
   renderPayPalFields(paymentMethod) {
     return (
-      <div className="paypal-btn-container">
-        <RegoPayPalBtn />
+      <div style={{ padding: 20, textAlign: 'center' }}>
+        Sorry, payment via PayPal is currently unavailable.
       </div>
     );
   }

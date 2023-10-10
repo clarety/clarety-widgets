@@ -5,6 +5,7 @@ import { _PaymentPanel as BasePaymentPanel, injectStripe } from 'shared/componen
 import { Currency } from 'shared/components';
 import { formatDate } from 'shared/utils';
 import { CheckboxInput } from 'form/components';
+import { RegoPayPalBtn } from 'registration/components/misc/RegoPayPalBtn';
 
 export class _PaymentPanel extends BasePaymentPanel {
   onEditCartItem = (event, item) => {
@@ -49,6 +50,14 @@ export class _PaymentPanel extends BasePaymentPanel {
 
         {this.renderShippingOptions()}
       </React.Fragment>
+    );
+  }
+
+  renderPayPalFields(paymentMethod) {
+    return (
+      <div className="paypal-btn-container">
+        <RegoPayPalBtn />
+      </div>
     );
   }
 
