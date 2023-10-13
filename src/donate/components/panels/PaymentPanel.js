@@ -27,6 +27,13 @@ export class _PaymentPanel extends BasePaymentPanel {
     }
   }
 
+  getAvailablePaymentMethodOptions() {
+    const options = super.getAvailablePaymentMethodOptions();
+
+    // Remove PayPal, it is shown ealier as an express payment option.
+    return options.filter(option => option.value !== 'wallet--paypal');
+  }
+
   getStartDateOptions(paymentMethod) {
     return createStartDateOptions(paymentMethod.startDates);
   }

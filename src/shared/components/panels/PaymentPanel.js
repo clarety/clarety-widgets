@@ -296,6 +296,31 @@ export class _PaymentPanel extends BasePanel {
     return this.props.paymentMethods.find(method => method.type === type && (!gateway || method.gateway === gateway));
   }
 
+  getDirectDebitType() {
+    if (this.getPaymentMethod('gatewaydd')) return 'gatewaydd';
+    if (this.getPaymentMethod('dd')) return 'dd';
+    return null;
+  }
+
+  getAvailablePaymentMethodOptions() {
+    const options = [];
+
+    if (this.getPaymentMethod('gatewaycc')) {
+      options.push({ value: 'gatewaycc', label: t('credit-card', 'Credit Card') });
+    }
+
+    const directDebitType = this.getDirectDebitType();
+    if (directDebitType) {
+      options.push({ value: directDebitType, label: t('direct-debit', 'Direct Debit') });
+    }
+
+    if (this.getPaymentMethod('wallet--paypal')) {
+      options.push({ value: 'wallet--paypal', label: t('paypal', 'PayPal') });
+    }
+
+    return options;
+  }
+
   getTitleText() {
     const { settings } = this.props;
     return settings.title || t('payment-details', 'Payment Details');
@@ -400,30 +425,8 @@ export class _PaymentPanel extends BasePanel {
     );
   }
 
-  getDirectDebitType() {
-    if(!!this.getPaymentMethod('gatewaydd')) return 'gatewaydd';
-    if(!!this.getPaymentMethod('dd')) return 'dd';
-    return null;
-  }
-
   renderPaymentMethodOptions() {
-    const options = [];
-
-    const showCC = !!this.getPaymentMethod('gatewaycc');
-    if (showCC) {
-      options.push({ value: 'gatewaycc', label: t('credit-card', 'Credit Card') });
-    }
-
-    const directDebitType = this.getDirectDebitType();
-    const showDD = !!directDebitType;
-    if (showDD) {
-      options.push({ value: directDebitType, label: t('direct-debit', 'Direct Debit') });
-    }
-
-    const showPayPal = !!this.getPaymentMethod('wallet--paypal');
-    if (showPayPal) {
-      options.push({ value: 'wallet--paypal', label: t('paypal', 'PayPal') });
-    }
+    const options = this.getAvailablePaymentMethodOptions();
 
     // Don't display selector if there's only one option.
     if (options.length <= 1) return null;
