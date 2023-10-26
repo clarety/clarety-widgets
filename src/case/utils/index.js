@@ -1,3 +1,5 @@
+import { ClaretyApi } from 'clarety-utils';
+
 export const mapCaseSettings = (settings) => {
   const { extendForm } = settings;
   if (extendForm) {
@@ -43,4 +45,22 @@ export function walkFlattenedKeys(obj, callback, keyPrefix = '') {
 
 function isObject(obj) {
   return obj && obj.constructor.name === 'Object';
+}
+
+export async function findAndAttemptCaseActionAuth() {
+  // Check for action auth url param.
+  const urlParams = new URLSearchParams(window.location.search);
+  const actionKey = urlParams.get('clarety_action');
+  if (actionKey) {
+    const response = await ClaretyApi.get('cases/action-auth', { actionKey });
+    const actionAuth = response[0] || null;
+
+    if (actionAuth) {
+      if (actionAuth.jwtCustomer) ClaretyApi.setJwtCustomer(actionAuth.jwtCustomer);
+      if (actionAuth.jwtSession)  ClaretyApi.setJwtSession(actionAuth.jwtSession);
+      return actionAuth;
+    }
+  }
+
+  return null;
 }

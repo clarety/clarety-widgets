@@ -12,9 +12,7 @@ import { Resources, getJwtAccount, getJwtSession } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { rootReducer } from 'case/reducers';
 import { setupFormPanels, prefillCustomer, prefillInProgressCase } from 'case/actions';
-import { mapCaseSettings } from 'case/utils';
-
-const urlParams = new URLSearchParams(window.location.search);
+import { mapCaseSettings, findAndAttemptCaseActionAuth } from 'case/utils';
 
 export class CaseWidget extends React.Component {
   static store;
@@ -92,6 +90,7 @@ export class _CaseWidgetRoot extends React.Component {
 
     this.props.initTrackingData(this.props);
 
+    const urlParams = new URLSearchParams(window.location.search);
     let caseUid = urlParams.get('caseUid');
 
     // Attempt to find and apply auth.
@@ -102,7 +101,7 @@ export class _CaseWidgetRoot extends React.Component {
 
       // Then try action auth URL param.
       if (!hasAuth) {
-        const actionAuth = await this.findAndAttemptActionAuth();
+        const actionAuth = await findAndAttemptCaseActionAuth();
         if (actionAuth) {
           hasAuth = true;
           if (actionAuth.caseUid) caseUid = actionAuth.caseUid;
@@ -164,23 +163,6 @@ export class _CaseWidgetRoot extends React.Component {
     }
 
     return false;
-  }
-
-  async findAndAttemptActionAuth() {
-    // Check for action auth url param.
-    const actionKey = urlParams.get('clarety_action');
-    if (actionKey) {
-      const response = await ClaretyApi.get('cases/action-auth', { actionKey });
-      const actionAuth = response[0] || null;
-
-      if (actionAuth) {
-        if (actionAuth.jwtCustomer) ClaretyApi.setJwtCustomer(actionAuth.jwtCustomer);
-        if (actionAuth.jwtSession)  ClaretyApi.setJwtSession(actionAuth.jwtSession);
-        return actionAuth;
-      }
-    }
-
-    return null;
   }
 
   render() {

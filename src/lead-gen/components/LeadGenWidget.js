@@ -12,6 +12,8 @@ import { SosProgress, ImageHeader } from 'lead-gen/components';
 import { rootReducer } from 'lead-gen/reducers';
 import { settingsMap } from 'lead-gen/utils';
 import { getIsShowingConfirmation } from 'lead-gen/selectors';
+import { prefillCustomer } from 'case/actions';
+import { findAndAttemptCaseActionAuth } from 'case/utils';
 
 export class LeadGenWidget extends React.Component {
   static store;
@@ -76,6 +78,14 @@ export class _LeadGenRoot extends React.Component {
 
     const customerPanelSettings = getCustomerPanelSettingsFromWidgetProps(this.props);
     setPanelSettings('CustomerPanel', customerPanelSettings);
+
+    // Attempt to find and apply auth.
+    const actionAuth = await findAndAttemptCaseActionAuth();
+    if (actionAuth) {
+      // Pre-fill customer data.
+      // Note that our JWT might not auth us to load any customer data.
+      await this.props.prefillCustomer();
+    }
 
     const { caseTypeUid, variant } = this.props;
     fetchSettings('leadgen/', { caseTypeUid, variant }, settingsMap);
@@ -149,6 +159,7 @@ const actions = {
   initTrackingData: initTrackingData,
   setPanelSettings: setPanelSettings,
   fetchSettings: fetchSettings,
+  prefillCustomer: prefillCustomer,
 };
 
 const LeadGenRoot = connect(mapStateToProps, actions)(_LeadGenRoot);
