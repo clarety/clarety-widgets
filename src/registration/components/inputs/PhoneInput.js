@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactPhoneNumberInput from 'react-phone-number-input';
-import flags from 'react-phone-number-input/flags';
 import enLabels from 'react-phone-number-input/locale/en';
 import 'react-phone-number-input/style.css';
 import { Form } from 'react-bootstrap';
@@ -34,7 +33,6 @@ class PurePhoneInput extends React.PureComponent {
           country={country}
           labels={enLabels}
           displayInitialValueAsLocalNumber
-          flags={flags}
         />
         <FieldError error={error} />
       </Form.Group>

@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ReactPhoneNumberInput from 'react-phone-number-input';
 import { getCountries, getCountryCallingCode } from 'react-phone-number-input/input';
-import flags from 'react-phone-number-input/flags';
 import enLabels from 'react-phone-number-input/locale/en';
 import 'react-phone-number-input/style.css';
 import { Config } from 'clarety-utils';
@@ -33,7 +32,6 @@ const _PhoneInput = ({ value, placeholder, country, onChange, error, required, s
         labels={getLabels()}
         displayInitialValueAsLocalNumber
         inputClassName={className}
-        flags={flags}
       />
       <FieldError error={error} />
     </React.Fragment>
