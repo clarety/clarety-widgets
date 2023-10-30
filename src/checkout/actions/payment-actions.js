@@ -2,7 +2,7 @@ import Cookies from 'js-cookie';
 import { ClaretyApi } from 'clarety-utils';
 import { setPayment, prepareStripePayment, authoriseStripePayment, setStatus, statuses } from 'shared/actions';
 import { getCart, getSetting } from 'shared/selectors';
-import { getJwtSession, isStripe, splitName } from 'shared/utils';
+import { getJwtSession, isStripe, splitName, convertCountry } from 'shared/utils';
 import { setFormData } from 'form/actions';
 import { types, createCustomer, updateSale } from 'checkout/actions';
 import { getPaymentMethod, getPaymentPostData } from 'checkout/selectors';
@@ -174,7 +174,7 @@ export const makeStripeWalletPayment = (stripePaymentMethod, stripePaymentIntent
     // Create customer.
     const { billing_details } = stripePaymentMethod;
     const { firstName, lastName } = splitName(billing_details.name);
-    const country = billing_details.address.country === 'GB' ? 'UK' : billing_details.address.country;
+
     const formData = {
       'customer.forceNewCustomer': true,
       'customer.firstName':        firstName,
@@ -186,7 +186,7 @@ export const makeStripeWalletPayment = (stripePaymentMethod, stripePaymentIntent
       'customer.billing.suburb':   billing_details.address.city,
       'customer.billing.state':    billing_details.address.state,
       'customer.billing.postcode': billing_details.address.postal_code,
-      'customer.billing.country':  country,
+      'customer.billing.country':  convertCountry(billing_details.address.country),
     };
 
     if (shippingAddress) {
@@ -195,7 +195,7 @@ export const makeStripeWalletPayment = (stripePaymentMethod, stripePaymentIntent
       formData['customer.delivery.suburb']   = shippingAddress.city;
       formData['customer.delivery.state']    = shippingAddress.region;
       formData['customer.delivery.postcode'] = shippingAddress.postalCode;
-      formData['customer.delivery.country']  = shippingAddress.country;
+      formData['customer.delivery.country']  = convertCountry(shippingAddress.country);
     }
 
     dispatch(setFormData(formData));

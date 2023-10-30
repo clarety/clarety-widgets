@@ -4,9 +4,9 @@ import Cookies from 'js-cookie';
 import { Config } from '../../src';
 
 Config.init({
-  instanceKey: 'bhcc',
+  // instanceKey: 'bhcc',
   // instanceKey: 'mdc',
-  // instanceKey: 'clarety-baseline',
+  instanceKey: 'clarety-baseline',
   // instanceKey: 'charlies',
   // instanceKey: 'tnc',
   // instanceKey: 'tnc-hk',
@@ -21,6 +21,7 @@ Config.init({
   devSitePath: 'http://localhost:3000/',
   // phoneCountry: 'AU',
   localhostProtocol: 'https:',
+  useValidIsoCountryCodes: true,
 });
 
 // Mock cookies.

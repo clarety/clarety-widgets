@@ -1,3 +1,4 @@
+import { Config } from 'clarety-utils';
 import { t } from 'shared/translations';
 
 export function getCountryOptions(region) {
@@ -8,15 +9,16 @@ export function getCountryOptions(region) {
     ];
   }
 
-  // TODO: get country list from explain elements...
-
-  return allCountryOptions;
+  return Config.get('useValidIsoCountryCodes')
+    ? isoCountryOptions
+    : allCountryOptions;
 }
 
 export function getStateOptions(country) {
   switch (country) {
     case 'AU': return auStateOptions;
     case 'UK': return ukStateOptions;
+    case 'GB': return ukStateOptions;
     case 'US': return usStateOptions;
     default:   return undefined;
   }
@@ -24,18 +26,32 @@ export function getStateOptions(country) {
 
 export function getSuburbLabel(country) {
   switch (country) {
-    case 'AU': return t('suburb', 'Suburb');
-    case 'NZ': return t('suburb', 'Suburb');
-    case 'UK': return t(['city-town', 'suburb'], 'City / Town');
-    default:   return t(['city-suburb', 'suburb'], 'City / Suburb');
+    case 'AU':
+      return t('suburb', 'Suburb');
+
+    case 'NZ':
+      return t('suburb', 'Suburb');
+
+    case 'UK':
+    case 'GB':
+      return t(['city-town', 'suburb'], 'City / Town');
+
+    default:
+      return t(['city-suburb', 'suburb'], 'City / Suburb');
   }
 }
 
 export function getStateLabel(country) {
   switch (country) {
-    case 'UK': return t('region', 'Region');
-    case 'NZ': return t('city', 'City');
-    default:   return t('state', 'State');
+    case 'UK':
+    case 'GB':
+      return t('region', 'Region');
+    
+    case 'NZ':
+      return t('city', 'City');
+    
+    default:
+      return t('state', 'State');
   }
 }
 
@@ -44,9 +60,12 @@ export function getPostcodeLabel(country) {
     case 'AU': 
     case 'NZ': 
     case 'UK':
+    case 'GB':
       return t('postcode', 'Postcode');
+
     case 'US':
       return t('zipcode', 'Zip Code');
+
     default:
       return t('postcode', 'Zip Code / Postcode');
   }
@@ -290,7 +309,6 @@ const allCountryOptions = [
   { value: 'NP', label: 'Nepal' },
   { value: 'NL', label: 'Netherlands' },
   { value: 'NC', label: 'New Caledonia' },
-  { value: 'NZ', label: 'New Zealand' },
   { value: 'NI', label: 'Nicaragua' },
   { value: 'NE', label: 'Niger' },
   { value: 'NG', label: 'Nigeria' },
@@ -375,3 +393,23 @@ const allCountryOptions = [
   { value: 'ZM', label: 'Zambia' },
   { value: 'ZW', label: 'Zimbabwe' },
 ];
+
+const isoCountryOptions = allCountryOptions.map(option => {
+  // UK is not a valid iso code, change it to GB.
+  if (option.value === 'UK') {
+    return {
+      ...option,
+      value: 'GB',
+    };
+  }
+
+  // East Timor is Timor-Leste
+  if (option.value === 'TP') {
+    return {
+      value: 'TL',
+      label: 'East Timor / Timor-Leste',
+    };
+  }
+
+  return option;
+});

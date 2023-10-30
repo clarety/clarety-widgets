@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { statuses, setStatus, setRecaptcha, clearRecaptcha, setPayment, setCustomer, updateCartData, prepareStripePayment, authoriseStripePayment, updateAppSettings } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
-import { isHongKongDirectDebit, isStripe, splitName } from 'shared/utils';
+import { isHongKongDirectDebit, isStripe, splitName, convertCountry } from 'shared/utils';
 import { setFormData, setErrors, updateFormData } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { DonationApi } from 'donate/utils';
@@ -265,7 +265,6 @@ export const makeStripeWalletPayment = (stripePaymentMethod, stripePaymentIntent
 
     const { billing_details } = stripePaymentMethod;
     const { firstName, lastName } = splitName(billing_details.name);
-    const country = billing_details.address.country === 'GB' ? 'UK' : billing_details.address.country;
 
     // Set cart customer.
     const customerData = {
@@ -279,7 +278,7 @@ export const makeStripeWalletPayment = (stripePaymentMethod, stripePaymentIntent
         suburb:   billing_details.address.city,
         state:    billing_details.address.state,
         postcode: billing_details.address.postal_code,
-        country:  country,
+        country:  convertCountry(billing_details.address.country),
       },
     };
 

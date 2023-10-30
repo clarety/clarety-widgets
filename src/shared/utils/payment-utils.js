@@ -1,3 +1,5 @@
+import { Config } from 'clarety-utils';
+
 export function isStripe(paymentMethod) {
   return isStripeCard(paymentMethod) || isStripeAuBankAccount(paymentMethod);
 }
@@ -35,4 +37,14 @@ export function splitName(fullName) {
   }
 
   return { firstName, lastName };
+}
+
+export function convertCountry(country) {
+  // for instances that aren't using valid iso codes
+  if (!Config.get('useValidIsoCountryCodes')) {
+    if (country === 'GB') return 'UK';
+    if (country === 'TL') return 'TP';    
+  }
+
+  return country;
 }
