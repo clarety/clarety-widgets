@@ -6,13 +6,14 @@ import enLabels from 'react-phone-number-input/locale/en';
 import 'react-phone-number-input/style.css';
 import { Config } from 'clarety-utils';
 import { t, getLanguage } from 'shared/translations';
+import { getSetting } from 'shared/selectors';
 import { FieldError } from 'form/components';
 import { updateFormData } from 'form/actions';
 import { getValidationError } from 'form/utils';
 
 enLabels['SZ'] = 'Eswatini';
 
-const _PhoneInput = ({ value, placeholder, country, onChange, error, required, showCountrySelect = false }) => {
+const _PhoneInput = ({ value, placeholder, country, onChange, error, required, showCountrySelect = false, mainSiteUrl }) => {
   country = country || Config.get('phoneCountry') || 'AU';
   if (country === 'UK') country = 'GB';
 
@@ -32,6 +33,7 @@ const _PhoneInput = ({ value, placeholder, country, onChange, error, required, s
         labels={getLabels()}
         displayInitialValueAsLocalNumber
         inputClassName={className}
+        flagsPath={`${mainSiteUrl}neutrino/hub01/images/flags/`}
       />
       <FieldError error={error} />
     </React.Fragment>
@@ -42,6 +44,7 @@ const mapStateToProps = (state, { field }) => {
   return {
     value: state.formData[field] || '',
     error: getValidationError(field, state.errors),
+    mainSiteUrl: getSetting(state, 'mainSiteUrl') || '',
   };
 };
 

@@ -90,6 +90,7 @@ export class _DonateWidgetRoot extends React.Component {
       addressFinderCountry: this.props.addressFinderCountry,
       hideCurrencyCode:     this.props.hideCurrencyCode,
       defaultFrequency:     this.props.defaultFrequency,
+      mainSiteUrl:          this.props.mainSiteUrl,
     });
 
     setStore(storeUid);
