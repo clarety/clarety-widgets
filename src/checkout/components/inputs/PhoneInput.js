@@ -39,6 +39,7 @@ class PurePhoneInput extends React.PureComponent {
           labels={enLabels}
           displayInitialValueAsLocalNumber
           inputClassName={className}
+          flagsPath="neutrino/hub01/images/flags/"
         />
         
         <FieldError error={error} />

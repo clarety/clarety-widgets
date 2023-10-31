@@ -33,6 +33,7 @@ class PurePhoneInput extends React.PureComponent {
           country={country}
           labels={enLabels}
           displayInitialValueAsLocalNumber
+          flagsPath="neutrino/hub01/images/flags/"
         />
         <FieldError error={error} />
       </Form.Group>
