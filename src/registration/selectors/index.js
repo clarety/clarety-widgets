@@ -379,10 +379,14 @@ export const getSubmitRegistrationPostData = (state) => {
 };
 
 const getCoverFeesPostData = (state) => {
-  return {
-    feeOfferUid: getSetting(state, 'feeOfferUid'),
-    feeAmount: getFeeAmount(state),
-  };
+  if (getShouldAddFeeCover(state)) {
+    return {
+      feeOfferUid: getSetting(state, 'feeOfferUid'),
+      feeAmount: getFeeAmount(state),
+    };
+  }
+
+  return undefined;
 };
 
 const getIsRegisteringForSelf = (state) => {
