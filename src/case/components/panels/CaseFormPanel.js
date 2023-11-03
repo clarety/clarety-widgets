@@ -568,7 +568,6 @@ export class CaseFormPanel extends BasePanel {
           {form.extendFields.map(field => this.renderField(field, 'extendFields'))}
 
           {this.renderOptIn(section)}
-
         </div>
       </div>
     );
@@ -582,23 +581,28 @@ export class CaseFormPanel extends BasePanel {
     let shouldShowOptIn = ((section === null || isLastSection) && shownFields.includes(fieldKey));
     if (!shouldShowOptIn) return null;
 
-    let label = '';
-    if(settings.optInText){
+    let label;
+    if (settings.optInText) {
       label = settings.optInText + (requiredFields.includes(fieldKey) ? ' *' : '');
-    }else{
+    } else {
       const element = customerElement.elements.find(el => el.property === 'optIn');
       const field = this.getFieldForElement(element);
       label = this.getFieldLabel(field, fieldKey, false);
     }
 
     return (
-        <div className="field field--checkbox" ref={ref => this.fieldRefs[fieldKey] = ref}>
-          <CheckboxInput
-              field={fieldKey}
-              label={label}
-              initialValue={!!settings.preTickOptIn}
-          />
-        </div>
+      <div className="field field--checkbox" ref={ref => this.fieldRefs[fieldKey] = ref}>
+        <CheckboxInput
+          field={fieldKey}
+          label={label}
+          initialValue={!!settings.preTickOptIn}
+        />
+
+        <FormElement
+          field="customer.optInConsentText"
+          value={label}
+        />
+      </div>
     );
   }
 

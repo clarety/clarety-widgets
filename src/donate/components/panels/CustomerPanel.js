@@ -524,13 +524,20 @@ export class CustomerPanel extends BasePanel {
     const { settings } = this.props;
     if (!settings.showOptIn) return null;
 
+    const label = settings.optInText || t('newsletter-opt-in', 'Sign up for our newsletter');
+
     return (
       <Row className="optin-checkbox">
         <Col>
           <CheckboxInput
             field="additionalData.optIn"
-            label={settings.optInText || t('newsletter-opt-in', 'Sign up for our newsletter')}
+            label={label}
             initialValue={!!settings.preTickOptIn}
+          />
+
+          <FormElement
+            field="additionalData.optInConsentText"
+            value={label}
           />
         </Col>
       </Row>
