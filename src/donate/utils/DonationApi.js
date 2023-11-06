@@ -1,6 +1,10 @@
 import { ClaretyApi } from 'clarety-utils';
 
 export class DonationApi {
+  static setAuth(jwt) {
+    ClaretyApi.setAuth(jwt);
+  }
+
   static setJwtCustomer(jwtCustomer) {
     ClaretyApi.setJwtCustomer(jwtCustomer);
   }

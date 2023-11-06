@@ -8,7 +8,7 @@ import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { statuses, setStore, initTrackingData, fetchSettings, updateAppSettings, setPanels, setApiCampaignUids } from 'shared/actions';
 import { PanelManager, StepIndicator } from 'shared/components';
-import { getJwtCustomer, Resources, convertOptions } from 'shared/utils';
+import { getJwtCustomer, getJwtAccount, Resources, convertOptions } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { handleAmountUrlParam, selectFrequency } from 'donate/actions';
 import { rootReducer } from 'donate/reducers';
@@ -98,18 +98,23 @@ export class _DonateWidgetRoot extends React.Component {
     initTrackingData(this.props);
     setApiCampaignUids();
 
-    const jwtCustomer = await this.findJwtCustomer();
-    if (jwtCustomer) {
-      DonationApi.setJwtCustomer(jwtCustomer);
-      await fetchCustomer();
+    const promises = [];
+
+    const hasAuth = await this.attemptCustomerAuth();
+    if (hasAuth) {
+      promises.push(fetchCustomer());
     }
 
-    await fetchSettings('donations/', {
-      storeUid: storeUid,
-      offerSingle: singleOfferId,
-      offerRecurring: recurringOfferId,
-      categoryUid: categoryUid,
-    }, mapDonationSettings);
+    promises.push(
+      fetchSettings( 'donations/', {
+        storeUid: storeUid,
+        offerSingle: singleOfferId,
+        offerRecurring: recurringOfferId,
+        categoryUid: categoryUid,
+      }, mapDonationSettings)
+    );
+
+    await Promise.all(promises);
 
     // Select default frequency.
     const { defaultFrequency, selectFrequency } = this.props;
@@ -118,19 +123,32 @@ export class _DonateWidgetRoot extends React.Component {
     handleAmountUrlParam();
   }
 
-  async findJwtCustomer() {
-    // Check for cookie.
+  async attemptCustomerAuth() {
+    // Check for jwt account cookie.
+    const jwtAccount = getJwtAccount();
+    if (jwtAccount && jwtAccount.jwtString) {
+      DonationApi.setAuth(jwtAccount.jwtString);
+      return true;
+    }
+
+    // Check for jwt customer cookie.
     const cookieJwt = getJwtCustomer();
-    if (cookieJwt && cookieJwt.jwtString) return cookieJwt.jwtString;
+    if (cookieJwt && cookieJwt.jwtString) {
+      DonationApi.setJwtCustomer(cookieJwt.jwtString);
+      return true;
+    }
 
     // Check for action auth.
     const actionKey = new URLSearchParams(window.location.search).get('clarety_action');
     if (actionKey) {
       const actionAuth = await DonationApi.actionAuth(actionKey);
-      if (actionAuth && actionAuth.jwtCustomer) return actionAuth.jwtCustomer;
+      if (actionAuth && actionAuth.jwtCustomer) {
+        DonationApi.setJwtCustomer(actionAuth.jwtCustomer);
+        return true;
+      }
     }
 
-    return null;
+    return false;
   }
 
   render() {
