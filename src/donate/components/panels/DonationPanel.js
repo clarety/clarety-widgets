@@ -30,7 +30,10 @@ export class DonationPanel extends BasePanel {
     if (isPreview) return nextPanel();
 
     const isValid = this.validate();
-    if (!isValid) return;
+    if (!isValid) {
+      this.scrollIntoView();
+      return;
+    }
     
     const didSubmit = await onSubmit();
     if (!didSubmit) return;
