@@ -36,13 +36,15 @@ class _CoverFeesCheckbox extends React.Component {
     const coverAmount = this.state.addedAmount || this.getCoverFeeAmount();
 
     return (
-      <Form.Group controlId="coverFees">
+      <Form.Group controlId="coverFees" className="cover-fees-checkbox">
         <FormCheck>
           <FormCheck.Input
             checked={this.state.addedAmount !== 0}
             onChange={this.onChange}
           />
-          <FormCheck.Label>{t('give-additional', 'I choose to give an additional')} <Currency amount={coverAmount} /> {t('to-help-cover-costs', 'to help cover the costs and processing fees associated with my donation')}</FormCheck.Label>
+          <FormCheck.Label>
+            {t('give-additional', 'I choose to give an additional')} <Currency amount={coverAmount} /> {t('to-help-cover-costs', 'to help cover the costs and processing fees associated with my donation')}
+          </FormCheck.Label>
         </FormCheck>
       </Form.Group>
     );

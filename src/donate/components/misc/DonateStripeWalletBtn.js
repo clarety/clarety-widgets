@@ -28,7 +28,7 @@ export const DonateStripeWalletBtnInner = (props) => {
         event.complete('success');
 
         if (paymentIntent.status === "requires_action") {
-          const { error: actionError } = await stripe.confirmCardPayment(clientSecret);
+          const { error: actionError } = await stripe.confirmCardPayment(pi.clientSecret);
           if (actionError) {
             console.error('stripe wallet action failed', actionError);
           } else {
