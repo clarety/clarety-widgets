@@ -103,6 +103,7 @@ export const initTrackingData = (widgetProps) => {
       sourceAdditional: widgetProps.sourceAdditional,
       sendResponseUid:  widgetProps.responseId,
       emailResponseUid: widgetProps.emailResponseId || urlParams.get('clarety_source'),
+      sourceUrl:        window.location.href,
       ...widgetProps.tracking,
     },
   };

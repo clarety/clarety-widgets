@@ -2,7 +2,7 @@ import { getSetting, getTrackingData, getSourceOptions } from 'shared/selectors'
 import { getFormData, getErrors } from 'form/selectors';
 import { setErrors, setFormData } from 'form/actions';
 import { getIsBusy, getCustomerHasProfile, getSelectedFrequency, getDonationPanelSelection, getHasExpressPaymentMethods } from 'donate/selectors';
-import { addCustomerToCart } from 'donate/actions';
+import { addCustomerToCart, createSale } from 'donate/actions';
 
 export class CustomerConnect {
   static mapStateToProps = (state) => {
@@ -32,8 +32,20 @@ export class CustomerConnect {
   };
 
   static actions = {
-    onSubmit: addCustomerToCart,
+    onSubmit: onSubmit,
     setFormData: setFormData,
     setErrors: setErrors,
+  };
+}
+
+function onSubmit() {
+  return async (dispatch, getState) => {
+    const state = getState();
+
+    if (getSetting(state, 'createSaleOnCustomerPanel')) {
+      return dispatch(createSale());
+    } else {
+      return dispatch(addCustomerToCart());
+    }
   };
 }

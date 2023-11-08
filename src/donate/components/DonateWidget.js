@@ -91,6 +91,7 @@ export class _DonateWidgetRoot extends React.Component {
       hideCurrencyCode:     this.props.hideCurrencyCode,
       defaultFrequency:     this.props.defaultFrequency,
       mainSiteUrl:          this.props.mainSiteUrl,
+      createSaleOnCustomerPanel: this.props.createSaleOnCustomerPanel,
     });
 
     setStore(storeUid);

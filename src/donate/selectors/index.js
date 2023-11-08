@@ -144,21 +144,20 @@ export const getPaymentMethods = (state) => {
   });
 };
 
-export const getPaymentPostData = (state) => {
+export const getCreateSalePostData = (state) => {
   const cart = getCart(state);
   const formData = getParsedFormData(state);
   const fundraisingData = getFundraisingData(state);
   const trackingData = getTrackingData(state);
   const recaptcha = getRecaptcha(state);
 
-  const postData = {
+  return {
     storeUid:  cart.store,
     uid:       cart.uid,
     jwt:       cart.jwt,
     saleline:  cart.items[0],
-    customer:  cart.customer,
-    payment:   cart.payment,
     startDate: cart.items[0].startDate,
+    customer:  cart.customer,
 
     fundraising: fundraisingData,
     recaptchaResponse: recaptcha,
@@ -166,8 +165,15 @@ export const getPaymentPostData = (state) => {
     ...formData.additionalData,
     ...trackingData,
   };
+};
 
-  return postData;
+export const getPaymentPostData = (state) => {
+  const cart = getCart(state);
+
+  return {
+    ...getCreateSalePostData(state),
+    payment: cart.payment,
+  };
 };
 
 const getFundraisingData = (state) => {

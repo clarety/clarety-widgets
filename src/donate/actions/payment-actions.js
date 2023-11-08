@@ -7,7 +7,55 @@ import { setFormData, setErrors, updateFormData } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { DonationApi } from 'donate/utils';
 import { types, addDonationToCart, addCustomerToCart, setDonationStartDate } from 'donate/actions';
-import { getStoreUid, getPaymentMethod, getPaymentPostData, getSelectedFrequency } from 'donate/selectors';
+import { getStoreUid, getPaymentMethod, getCreateSalePostData, getPaymentPostData, getSelectedFrequency } from 'donate/selectors';
+
+export const createSale = ({ isPageLayout } = {}) => {
+  return async (dispatch, getState) => {
+    const state = getState();
+
+    if (state.status !== statuses.ready) return false;
+    dispatch(setStatus(statuses.busy));
+
+    // ReCaptcha.
+    const recaptcha = await executeRecaptcha();
+    dispatch(setRecaptcha(recaptcha));
+    if (!recaptcha) {
+      dispatch(setStatus(statuses.ready));
+      return false;
+    }
+
+    // Update cart in page layout.
+    if (isPageLayout) {
+      dispatch(addDonationToCart());
+    }
+
+    dispatch(addCustomerToCart());
+    dispatch(setDonationStartDate());
+
+    const postData = getCreateSalePostData(getState());
+    const result = await DonationApi.createDonation(postData);
+
+    dispatch(setStatus(statuses.ready));
+    if (result.status === 'error') {
+      dispatch(setErrors(result.validationErrors));
+      return false;
+    } else if (result.status === 'pending') {
+      // Update our cart with the pending sale.
+      const updatedCartData = {
+        uid: result.uid,
+        jwt: result.jwt,
+        status: result.status,
+      };
+  
+      if (result.customer) {
+        updatedCartData.customer = result.customer;
+      }
+  
+      dispatch(updateCartData(updatedCartData));
+      return true;
+    }
+  };
+};
 
 export const makePayment = (paymentData, { isPageLayout } = {}) => {
   return async (dispatch, getState) => {

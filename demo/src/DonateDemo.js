@@ -125,6 +125,8 @@ export default class DonateDemo extends React.Component {
       // defaultCountry: 'NZ',
 
       confirmPageUrl: 'http://google.com/',
+
+      createSaleOnCustomerPanel: true,
     });
   }
 
