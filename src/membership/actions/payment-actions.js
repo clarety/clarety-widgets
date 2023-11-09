@@ -10,7 +10,7 @@ import { getStoreUid, getPaymentMethod, getSelectedFrequency } from 'donate/sele
 import { MembershipApi } from 'membership/utils';
 import { getPaymentPostData } from 'membership/selectors';
 
-export const makePayment = (paymentData, { isPageLayout } = {}) => {
+export const makePayment = (paymentData) => {
   return async (dispatch, getState) => {
     const state = getState();
 

@@ -1,15 +1,101 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { statuses, setStatus, setRecaptcha, clearRecaptcha, setPayment, setCustomer, updateCartData, prepareStripePayment, authoriseStripePayment, updateAppSettings } from 'shared/actions';
-import { getSetting } from 'shared/selectors';
+import { statuses, setStatus, setRecaptcha, clearRecaptcha, setPayment, setCustomer, updateCartData, prepareStripePayment, authoriseStripePayment, updateAppSettings, setPanelStatus } from 'shared/actions';
+import { getSetting, getPanelManager } from 'shared/selectors';
 import { isHongKongDirectDebit, isStripe, splitName, convertCountry } from 'shared/utils';
 import { setFormData, setErrors, updateFormData } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { DonationApi } from 'donate/utils';
-import { types, addDonationToCart, addCustomerToCart, setDonationStartDate } from 'donate/actions';
+import { types, addDonationToCart, addCustomerToCart, setDonationStartDate, selectAmount, selectSchedule, selectFrequency } from 'donate/actions';
 import { getStoreUid, getPaymentMethod, getCreateSalePostData, getPaymentPostData, getSelectedFrequency } from 'donate/selectors';
 
-export const createSale = ({ isPageLayout } = {}) => {
+export const fetchIncompleteSale = () => {
+  return async (dispatch, getState) => {
+    const state = getState();
+
+    // Fetch sale.
+    dispatch(setStatus(statuses.initializing));
+    const result = await DonationApi.fetchIncompleteDonation();
+    dispatch(setStatus(statuses.ready));
+
+    // Ensure we have a result.
+    if (!result || !result.status || result.status === 'error') {
+      console.warn('[Clarety] Unable to fetch incomplete donation');
+      return;
+    }
+
+    // Ensure sale is incomplete.
+    if (result.status !== 'incomplete') {
+      console.warn('[Clarety] Fetched donation is not incomplete');
+      return;
+    }
+
+    // Ensure we have a saleline.
+    if (!result.salelines || !result.salelines.length) {
+      console.warn('[Clarety] Fetched donation has no salelines');
+      return;
+    }
+
+    const saleline = result.salelines[0];
+
+    // Ensure we have an amount
+    if (!saleline.price) {
+      console.warn('[Clarety] Fetched incomplete sale without an amount');
+      return;
+    }
+
+    // Ensure we have the offer.
+    const offers = getSetting(state, 'priceHandles');
+    const offer = offers.find(offer => offer.offerUid === saleline.offerUid);
+    if (!offer) {
+      console.warn('[Clarety] Fetched incomplete sale with an unknown offer');
+      return;
+    }
+
+    // Ensure we have the offer payment.
+    if (saleline.offerPaymentUid) {
+      const offerPayment = offer.schedules.find(offerPayment => offerPayment.offerPaymentUid === saleline.offerPaymentUid);
+      if (!offerPayment) {
+        console.warn('[Clarety] Fetched incomplete sale with an unknown offer payment');
+        return;
+      }
+    }    
+
+    // Set the donation frquency / amount / schedule.
+    const frequency = saleline.offerPaymentUid ? 'recurring' : 'single';
+    const amount = saleline.price.toFixed(2)
+    const isVariableAmount = !offer.amounts.find(handle => handle.amount === amount);
+    dispatch(selectFrequency(frequency));
+    dispatch(selectAmount(frequency, amount, isVariableAmount));
+    if (saleline.offerPaymentUid) {
+      dispatch(selectSchedule(saleline.offerPaymentUid));
+    }
+
+    // Update the cart.
+    dispatch(updateCartData({
+      uid: result.uid,
+      jwt: result.jwt,
+      status: result.status,
+    }));
+    dispatch(addDonationToCart());
+
+    // Jump to the payment panel.
+    if (getSetting(state, 'layout') !== 'page') {
+      const panels = getPanelManager(state);
+      for (let index = 0; index < panels.length; index += 1) {
+        const panel = panels[index];
+        if (panel.component.includes('PaymentPanel')) {
+          dispatch(setPanelStatus(index, 'edit'));
+          break;
+        } else {
+          dispatch(setPanelStatus(index, 'done'));
+        }
+      }
+    }
+  };
+};
+
+export const createSale = () => {
   return async (dispatch, getState) => {
     const state = getState();
 
@@ -25,7 +111,7 @@ export const createSale = ({ isPageLayout } = {}) => {
     }
 
     // Update cart in page layout.
-    if (isPageLayout) {
+    if (getSetting(state, 'layout') === 'page') {
       dispatch(addDonationToCart());
     }
 
@@ -57,7 +143,7 @@ export const createSale = ({ isPageLayout } = {}) => {
   };
 };
 
-export const makePayment = (paymentData, { isPageLayout } = {}) => {
+export const makePayment = (paymentData) => {
   return async (dispatch, getState) => {
     const state = getState();
 
@@ -73,7 +159,7 @@ export const makePayment = (paymentData, { isPageLayout } = {}) => {
     }
 
     // Update cart in page layout.
-    if (isPageLayout) {
+    if (getSetting(state, 'layout') === 'page') {
       dispatch(addDonationToCart());
       dispatch(addCustomerToCart());
     }

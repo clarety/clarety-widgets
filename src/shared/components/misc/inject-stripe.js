@@ -4,13 +4,17 @@ import { Elements, ElementsConsumer } from '@stripe/react-stripe-js';
 import { getLanguage } from 'shared/translations';
 import { isStripe } from 'shared/utils';
 
-
 export const injectStripe = (PaymentPanelComponent) => {
   class PaymentPanel extends React.Component {
     static stripePromise = null;
 
+    state = {
+      isReady: false,
+    };
+
     componentDidMount() {
       this.maybeLoadStripe();
+      this.setState({ isReady: true });
     }
 
     componentDidUpdate(prevProps) {
@@ -40,6 +44,8 @@ export const injectStripe = (PaymentPanelComponent) => {
 
     render() {
       const { forwardedRef, ...props } = this.props;
+
+      if (!this.state.isReady) return null;
 
       if (!this.shouldUseStripe() || !this.stripePromise) {
         return <PaymentPanelComponent ref={forwardedRef} {...props} />;

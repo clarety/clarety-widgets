@@ -14,6 +14,7 @@ import { handleAmountUrlParam, selectFrequency } from 'donate/actions';
 import { rootReducer } from 'donate/reducers';
 import { DonationApi, mapDonationSettings, setupDefaultResources } from 'donate/utils';
 import { fetchCustomer } from 'donate/actions/customer-actions';
+import { fetchIncompleteSale } from 'donate/actions/sale-actions';
 
 export class DonateWidget extends React.Component {
   static store;
@@ -60,7 +61,7 @@ export class DonateWidget extends React.Component {
 export class _DonateWidgetRoot extends React.Component {
   async componentDidMount() {
     const { storeUid, singleOfferId, recurringOfferId, categoryUid } = this.props;
-    const { updateAppSettings, setStore, initTrackingData, fetchSettings, handleAmountUrlParam, setApiCampaignUids, fetchCustomer } = this.props;
+    const { updateAppSettings, setStore, initTrackingData, fetchSettings, handleAmountUrlParam, setApiCampaignUids } = this.props;
 
     if (!singleOfferId && !recurringOfferId && !categoryUid) {
       throw new Error('[DonateWidget] A singleOfferId, recurringOfferId, or categoryUid is required');
@@ -92,6 +93,7 @@ export class _DonateWidgetRoot extends React.Component {
       defaultFrequency:     this.props.defaultFrequency,
       mainSiteUrl:          this.props.mainSiteUrl,
       createSaleOnCustomerPanel: this.props.createSaleOnCustomerPanel,
+      layout:               this.props.layout || 'tabs',
     });
 
     setStore(storeUid);
@@ -101,9 +103,9 @@ export class _DonateWidgetRoot extends React.Component {
 
     const promises = [];
 
-    const hasAuth = await this.attemptCustomerAuth();
-    if (hasAuth) {
-      promises.push(fetchCustomer());
+    const authResult = await this.attemptAuth();
+    if (authResult.hasCustomerAuth) {
+      promises.push(this.props.fetchCustomer());
     }
 
     promises.push(
@@ -122,38 +124,62 @@ export class _DonateWidgetRoot extends React.Component {
     if (defaultFrequency) selectFrequency(defaultFrequency);
 
     handleAmountUrlParam();
+
+    // load the incomplete sale _last_
+    if (authResult.hasSaleAuth) {
+      await this.props.fetchIncompleteSale();
+    }
   }
 
-  async attemptCustomerAuth() {
+  async attemptAuth() {
+    const authResult = {
+      hasCustomerAuth: false,
+      hasSaleAuth: false,
+    };
+
     // Check for jwt account cookie.
     const jwtAccount = getJwtAccount();
     if (jwtAccount && jwtAccount.jwtString) {
       DonationApi.setAuth(jwtAccount.jwtString);
-      return true;
+      authResult.hasCustomerAuth = true;
+      return authResult;
     }
 
     // Check for jwt customer cookie.
     const cookieJwt = getJwtCustomer();
     if (cookieJwt && cookieJwt.jwtString) {
       DonationApi.setJwtCustomer(cookieJwt.jwtString);
-      return true;
+      authResult.hasCustomerAuth = true;
+      return authResult;
     }
 
     // Check for action auth.
     const actionKey = new URLSearchParams(window.location.search).get('clarety_action');
     if (actionKey) {
       const actionAuth = await DonationApi.actionAuth(actionKey);
-      if (actionAuth && actionAuth.jwtCustomer) {
-        DonationApi.setJwtCustomer(actionAuth.jwtCustomer);
-        return true;
+      if (actionAuth) {
+        if (actionAuth.jwtCustomer) {
+          DonationApi.setJwtCustomer(actionAuth.jwtCustomer);
+          authResult.hasCustomerAuth = true;
+          return authResult;
+        }
+
+        // If auth action returns a session we will attempt to load an incomplete sale.
+        if (actionAuth.jwtSession) {
+          DonationApi.setJwtSession(actionAuth.jwtSession);
+          authResult.hasCustomerAuth = true;
+          authResult.hasSaleAuth = true;
+          return authResult;
+        }
       }
     }
 
-    return false;
+    return authResult;
   }
 
   render() {
-    const { status, reCaptchaKey, showStepIndicator, layout } = this.props;
+    const { status, reCaptchaKey, showStepIndicator } = this.props;
+    const layout = this.props.layout || 'tabs';
     const variant = this.props.variant || '';
 
     // Show a loading indicator while we init.
@@ -171,7 +197,7 @@ export class _DonateWidgetRoot extends React.Component {
           {showStepIndicator && <StepIndicator />}
 
           <PanelManager
-            layout={layout || 'tabs'}
+            layout={layout}
             resources={this.props.resources}
             isPreview={this.props.preview}
           />
@@ -198,6 +224,7 @@ const actions = {
   handleAmountUrlParam: handleAmountUrlParam,
   setApiCampaignUids: setApiCampaignUids,
   fetchCustomer: fetchCustomer,
+  fetchIncompleteSale: fetchIncompleteSale,
   selectFrequency: selectFrequency,
 };
 

@@ -6,10 +6,10 @@ import { Config } from '../../src';
 Config.init({
   // instanceKey: 'bhcc',
   // instanceKey: 'mdc',
-  instanceKey: 'clarety-baseline',
+  // instanceKey: 'clarety-baseline',
   // instanceKey: 'charlies',
   // instanceKey: 'tnc',
-  // instanceKey: 'tnc-hk',
+  instanceKey: 'tnc-hk',
   // instanceKey: 'clarety-church',
   // instanceKey: 'ethiopiaid',
   // instanceKey: 'a21',

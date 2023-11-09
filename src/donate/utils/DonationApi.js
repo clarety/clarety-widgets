@@ -9,13 +9,22 @@ export class DonationApi {
     ClaretyApi.setJwtCustomer(jwtCustomer);
   }
 
+  static setJwtSession(jwtSession) {
+    ClaretyApi.setJwtSession(jwtSession);
+  }
+
   static async actionAuth(actionKey) {
-    const results = await ClaretyApi.get(`donations/action-auth/`, { actionKey });
+    const results = await ClaretyApi.get('donations/action-auth/', { actionKey });
     return results[0];
   }
 
   static async fetchCustomer() {
     const results = await ClaretyApi.get('donations/customer/');
+    return results[0];
+  }
+
+  static async fetchIncompleteDonation() {
+    const results = await ClaretyApi.get('donations/incomplete/');
     return results[0];
   }
 
