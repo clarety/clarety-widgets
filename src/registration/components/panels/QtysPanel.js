@@ -161,7 +161,7 @@ export class QtysPanel extends BasePanel {
     return Object.entries(types).map(([key, type]) =>
       <div className="m-3" key={key}>
         <Button onClick={() => this.onSelectType(key)}>
-          {this.getTypeTitle(type)}
+          {this.getTypeTitle(type, true)}
         </Button>
         <p className="text-muted">{this.getTypeSubtitle(type)}</p>
       </div>
@@ -192,9 +192,23 @@ export class QtysPanel extends BasePanel {
     );
   }
 
-  getTypeTitle(type) {
-    if (type.registrationType === 'adult') return t('qtysPanel.adult-title', 'Adults');
-    if (type.registrationType === 'child') return t('qtysPanel.child-title', 'Children');
+  getTypeTitle(type, isIndividual = false) {
+    if (type.registrationType === 'adult') {
+      if (isIndividual) {
+        return t('adult', 'Adult');
+      } else {
+        return t('qtysPanel.adult-title', 'Adults');
+      }
+    }
+
+    if (type.registrationType === 'child') {
+      if (isIndividual) {
+        return t('child', 'Child');
+      } else {
+        return t('qtysPanel.child-title', 'Children');
+      }
+    }
+
     return undefined;
   }
 
