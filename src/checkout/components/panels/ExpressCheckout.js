@@ -7,6 +7,22 @@ import { statuses } from 'shared/actions';
 import { CheckoutStripeWalletBtn } from 'checkout/components';
 
 function _ExpressCheckout({ isBusy }) {
+  const [hasActiveBtn, setHasActiveBtn] = React.useState(false);
+
+  const buttons = [
+    <CheckoutStripeWalletBtn
+      key="stripe-wallet-btn"
+      onShowBtn={() => setHasActiveBtn(true)}
+    />
+  ];
+
+  // At first, render buttons without the heading etc.
+  // We don't know if any of them will actually display yet.
+  if (!hasActiveBtn) {
+    return buttons;
+  }
+
+  // Once we know that at least one button will display, render the full component.
   return (
     <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
       <div className="express-checkout">
@@ -15,7 +31,7 @@ function _ExpressCheckout({ isBusy }) {
         </h4>
 
         <div className="express-checkout-buttons">
-          <CheckoutStripeWalletBtn />
+          {buttons}
         </div>
 
         <div className="express-checkout-or">

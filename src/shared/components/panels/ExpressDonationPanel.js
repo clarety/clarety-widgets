@@ -2,7 +2,7 @@ import React from 'react';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { ErrorMessages } from 'form/components';
-import { DonatePayPalBtn, DonateStripeWalletBtn } from 'donate/components';
+import { ExpressDonation } from 'donate/components';
 
 export class ExpressDonationPanel extends BasePanel {
   renderWait() {
@@ -43,18 +43,11 @@ export class ExpressDonationPanel extends BasePanel {
         <PanelBody status="edit" layout={layout} isBusy={isBusy}>
           <ErrorMessages />
 
-          <div className="express-checkout-buttons">
-            <DonatePayPalBtn />
-            <DonateStripeWalletBtn />
-          </div>
-          
-          {!settings.hideOrTitle &&
-            <div className="express-checkout-or">
-              <div className="line" />
-              <h2 className="text">{settings.orTitle || t('or', 'Or')}</h2>
-              <div className="line" />
-            </div>
-          }
+          <ExpressDonation
+            hideTitle
+            orTitle={settings.orTitle}
+            hideOrTitle={settings.hideOrTitle}
+          />
         </PanelBody>
       </PanelContainer>
     );
@@ -83,6 +76,6 @@ export class ExpressDonationPanel extends BasePanel {
 /**
  * @deprecated
  * Use "ExpressDonationPanel" instead, this is just an alias for backwards compatibility.
- * The name "ExpressCheckoutPanel" is misleading, as it's only for donations.
+ * The name "ExpressCheckoutPanel" was misleading, as the component is only for donations.
  */
 export const ExpressCheckoutPanel = ExpressDonationPanel;

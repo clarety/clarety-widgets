@@ -4,7 +4,7 @@ import { getLanguage, t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, AddressFinder } from 'shared/components';
 import { requiredField, emailField, phoneNumberField, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
 import { TextInput, EmailInput, PhoneInput, CheckboxInput, StateInput, CountryInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement, CustomerTypeInput, TitleInput, DobInput } from 'form/components';
-import { DonatePayPalBtn, DonateStripeWalletBtn } from 'donate/components';
+import { ExpressDonation } from 'donate/components';
 
 export class CustomerPanel extends BasePanel {
   state = {
@@ -263,20 +263,9 @@ export class CustomerPanel extends BasePanel {
     if (!hasExpressPaymentMethods) return null;
 
     return (
-      <div className="express-checkout">
-        <h4 className="title">{t('express-donation', 'Express Donation')}</h4>
-
-        <div className="express-checkout-buttons"> 
-          <DonateStripeWalletBtn />
-          <DonatePayPalBtn />
-        </div>
-
-        <div className="express-checkout-or">
-          <div className="line" />
-          <div className="text">{settings.orTitle || t('or', 'Or')}</div>
-          <div className="line" />
-        </div>
-      </div>
+      <ExpressDonation
+        orTitle={settings.orTitle}
+      />
     );
   }
 

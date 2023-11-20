@@ -81,10 +81,10 @@ export default class DonateDemo extends React.Component {
     window.renderDonateWidget({
       elementId: 'donate-widget-demo',
 
-      // // baseline
-      // storeUid: 'str_wey5',
-      // singleOfferId: '8',
-      // recurringOfferId: '17',
+      // baseline
+      storeUid: 'str_wey5',
+      singleOfferId: '8',
+      recurringOfferId: '17',
 
       // church
       // storeUid: 'str_7e1l',
@@ -102,9 +102,9 @@ export default class DonateDemo extends React.Component {
       // recurringOfferId: '105',
 
       // tnc-hk
-      storeUid: 'str_mp60',
-      singleOfferId: '1001',
-      recurringOfferId: '1002',
+      // storeUid: 'str_mp60',
+      // singleOfferId: '1001',
+      // recurringOfferId: '1002',
 
 
       fundraisingPageUid: 'abc-123',

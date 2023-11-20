@@ -12,6 +12,7 @@ export * from './amounts/VariableAmountLg';
 export * from './misc/CoverFeesCheckbox';
 export * from './misc/DonatePayPalBtn';
 export * from './misc/DonateStripeWalletBtn';
+export * from './misc/ExpressDonation';
 
 export * from './panels/CustomerPanel';
 export * from './panels/CustomerConnect';

@@ -26,6 +26,9 @@ export const CheckoutStripeWalletBtnInner = (props) => {
 
       pr.canMakePayment().then(result => {
         if (result) {
+          // the button will show.
+          if (props.onShowBtn) props.onShowBtn();          
+
           setPaymentRequest(pr);
 
           pr.on('shippingaddresschange', async (event) => {

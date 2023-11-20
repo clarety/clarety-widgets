@@ -5,13 +5,29 @@ import { getSetting } from 'shared/selectors';
 import { getPaymentMethod, getDonationPanelSelection, getSelectedFrequency } from 'donate/selectors';
 import { makePayPalPayment, validatePayPal, cancelPayPal } from 'donate/actions';
 
-export const _DonatePayPalBtn = (props) => {
-  const { paymentMethod, frequency } = props;
+export function _DonatePayPalBtn(props) {
+  const { paymentMethod, frequency, onShowBtn } = props;
 
-  // Make sure we should display.
-  if (!paymentMethod) return null;
-  if (paymentMethod.singleOnly && frequency !== 'single') return null;
-  if (paymentMethod.recurringOnly && frequency !== 'recurring') return null;
+  const [isShowing, setIsShowing] = React.useState(false);
+
+  React.useEffect(() => {
+    function shouldShow() {
+      // Check if btn should display.
+      if (!paymentMethod) return false;
+      if (paymentMethod.singleOnly && frequency !== 'single') return false;
+      if (paymentMethod.recurringOnly && frequency !== 'recurring') return false;
+      return true;
+    }
+
+    if (shouldShow()) {
+      if (onShowBtn) onShowBtn();
+      setIsShowing(true);
+    }
+  }, [paymentMethod, frequency]);
+
+  if (!isShowing) {
+    return null;
+  }
 
   return (
     <PayPalBtn

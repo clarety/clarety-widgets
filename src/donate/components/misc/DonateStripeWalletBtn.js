@@ -57,6 +57,9 @@ export const DonateStripeWalletBtnInner = (props) => {
 
       pr.canMakePayment().then(result => {
         if (result) {
+          // the button will show.
+          if (props.onShowBtn) props.onShowBtn();
+
           setPaymentRequest(pr);
           pr.on('paymentmethod', onPaymentMethod);
         }

@@ -49,6 +49,7 @@ export class Checkout extends React.Component {
     return (
       <Provider store={Checkout.store}>
         <CheckoutRoot
+          store={Checkout.store}
           resources={Checkout.resources}
           {...this.props}
         />
@@ -102,7 +103,7 @@ export class _CheckoutRoot extends React.Component {
       ClaretyApi.setJwtSession(jwtSession.jwtString);
       await this.props.fetchCart(jwtSession.cartUid);
 
-      const state = Checkout.store.getState();
+      const state = this.props.store.getState();
       this.setState({ isCartComplete: getIsCartComplete(state) });
 
       // Remove shipping panel if shipping isn't required.
@@ -136,11 +137,11 @@ export class _CheckoutRoot extends React.Component {
     const { reCaptchaKey, showExpressCheckout } = this.props;
 
     return (
-      <Provider store={Checkout.store}>
+      <Provider store={this.props.store}>
         <Container fluid>
           <Row>
             <Col lg={6} className="col-summary order-lg-1">
-              <CartSummary resources={Checkout.resources} />
+              <CartSummary resources={this.props.resources} />
             </Col>
 
             <Col lg={6} className="col-checkout">
@@ -150,7 +151,7 @@ export class _CheckoutRoot extends React.Component {
                 <ExpressCheckout />
               }
 
-              <PanelManager layout="accordian" resources={Checkout.resources} />
+              <PanelManager layout="accordian" resources={this.props.resources} />
             </Col>
           </Row>
         </Container>
