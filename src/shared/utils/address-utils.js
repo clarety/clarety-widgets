@@ -149,11 +149,7 @@ const usStateOptions = [
 ];
 
 const allCountryOptions = [
-  { value: 'US', label: 'United States' },
-  { value: 'AU', label: 'Australia' },
-  { value: 'NZ', label: 'New Zealand' },
-  { value: 'UK', label: 'United Kingdom' },
-  { value: '',   label: '———' },
+  { value: '', label: '' },
   { value: 'AF', label: 'Afghanistan' },
   { value: 'AX', label: 'Aland Islands' },
   { value: 'AL', label: 'Albania' },
@@ -168,6 +164,7 @@ const allCountryOptions = [
   { value: 'AM', label: 'Armenia' },
   { value: 'AW', label: 'Aruba' },
   { value: 'AC', label: 'Ascension Island' },
+  { value: 'AU', label: 'Australia' },
   { value: 'AT', label: 'Austria' },
   { value: 'AZ', label: 'Azerbaijan' },
   { value: 'BS', label: 'Bahamas' },
@@ -309,6 +306,7 @@ const allCountryOptions = [
   { value: 'NP', label: 'Nepal' },
   { value: 'NL', label: 'Netherlands' },
   { value: 'NC', label: 'New Caledonia' },
+  { value: 'NZ', label: 'New Zealand' },
   { value: 'NI', label: 'Nicaragua' },
   { value: 'NE', label: 'Niger' },
   { value: 'NG', label: 'Nigeria' },
@@ -378,6 +376,8 @@ const allCountryOptions = [
   { value: 'UG', label: 'Uganda' },
   { value: 'UA', label: 'Ukraine' },
   { value: 'AE', label: 'United Arab Emirates' },
+  { value: 'UK', label: 'United Kingdom' },
+  { value: 'US', label: 'United States' },
   { value: 'UM', label: 'US Minor Outlying Islands' },
   { value: 'UY', label: 'Uruguay' },
   { value: 'UZ', label: 'Uzbekistan' },

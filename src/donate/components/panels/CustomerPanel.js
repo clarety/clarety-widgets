@@ -330,16 +330,19 @@ export class CustomerPanel extends BasePanel {
     const showMobile = settings.phoneType === 'mobile' || settings.showMobile;
     if (!showMobile) return null;
 
-    const requireMobile = settings.isPhoneRequired || settings.requireMobile;
+    const isRequired = settings.isPhoneRequired || settings.requireMobile;
 
     return (
       <Form.Row>
         <Col>
           <Form.Group controlId="mobile">
-            <Form.Label>{t('mobile', 'Mobile')}</Form.Label>
+            <Form.Label>
+              {t('mobile', 'Mobile')}
+              {!isRequired && <span className="optional"> ({t('optional', 'Optional')})</span>}
+            </Form.Label>
             <PhoneInput
               field="customer.mobile"
-              required={requireMobile}
+              required={isRequired}
               showCountrySelect={settings.showPhoneCountrySelect}
               country={this.props.defaultCountry}
             />
@@ -363,7 +366,6 @@ export class CustomerPanel extends BasePanel {
   renderAddressFields() {
     const { settings } = this.props;
     const { disableAddressFinder } = this.state;
-    const country = this.props.formData['customer.billing.country'];
     
     // NOTE: explicitly check for false! the default (ie 'undefined') is true.
     if (settings.showAddress === false) return null;
@@ -397,36 +399,7 @@ export class CustomerPanel extends BasePanel {
     return (
       <React.Fragment>
         {this.renderCountryField()}
-
-        <Form.Row>
-          <Col sm>
-            <Form.Group controlId="street">
-              <Form.Label>{t('street', 'Street')}</Form.Label>
-              <TextInput field="customer.billing.address1" type="street" testId="street-input" />
-            </Form.Group>
-          </Col>
-          <Col sm>
-            <Form.Group controlId="suburb">
-              <Form.Label>{getSuburbLabel(country)}</Form.Label>
-              <TextInput field="customer.billing.suburb" testId="suburb-input" />
-            </Form.Group>
-          </Col>
-        </Form.Row>
-
-        <Form.Row>
-          <Col sm>
-            <Form.Group controlId="state">
-              <Form.Label>{getStateLabel(country)}</Form.Label>
-              <StateInput field="customer.billing.state" country={country} testId="state-input" />
-            </Form.Group>
-          </Col>
-          <Col sm>
-            <Form.Group controlId="postcode">
-              <Form.Label>{getPostcodeLabel(country)}</Form.Label>
-              <PostcodeInput field="customer.billing.postcode" country={country} testId="postcode-input" />
-            </Form.Group>
-          </Col>
-        </Form.Row>
+        {this.renderStreetAddressFields()}
       </React.Fragment>
     );
   }
@@ -457,6 +430,43 @@ export class CustomerPanel extends BasePanel {
           </Form.Group>
         </Col>
       </Form.Row>
+    );
+  }
+
+  renderStreetAddressFields() {
+    const country = this.props.formData['customer.billing.country'];
+
+    return (
+      <React.Fragment>
+        <Form.Row>
+          <Col sm>
+            <Form.Group controlId="street">
+              <Form.Label>{t('street', 'Street')}</Form.Label>
+              <TextInput field="customer.billing.address1" type="street" testId="street-input" />
+            </Form.Group>
+          </Col>
+          <Col sm>
+            <Form.Group controlId="suburb">
+              <Form.Label>{getSuburbLabel(country)}</Form.Label>
+              <TextInput field="customer.billing.suburb" testId="suburb-input" />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+        <Form.Row>
+          <Col sm>
+            <Form.Group controlId="state">
+              <Form.Label>{getStateLabel(country)}</Form.Label>
+              <StateInput field="customer.billing.state" country={country} testId="state-input" />
+            </Form.Group>
+          </Col>
+          <Col sm>
+            <Form.Group controlId="postcode">
+              <Form.Label>{getPostcodeLabel(country)}</Form.Label>
+              <PostcodeInput field="customer.billing.postcode" country={country} testId="postcode-input" />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+      </React.Fragment>
     );
   }
 
