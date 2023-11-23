@@ -83,7 +83,6 @@ const auStateOptions = [
 ];
 
 const ukStateOptions = [
-  { value: 'UK', label: 'UK' },
   { value: 'England', label: 'England' },
   { value: 'Channel Islands', label: 'Channel Islands' },
   { value: 'Isle of Man', label: 'Isle of Man' },
