@@ -13,7 +13,9 @@ const _EmailInput = ({ value, placeholder, error, onChange, hideErrors, readOnly
       onChange={onChange}
       isInvalid={error !== null}
       readOnly={readOnly}
+      autoCapitalize="off"
     />
+
     {!hideErrors && <FieldError error={error} />}
   </React.Fragment>
 );
