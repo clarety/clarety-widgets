@@ -91,7 +91,7 @@ export const DonateStripeWalletBtnInner = (props) => {
           style: {
             paymentRequestButton: {
               type: 'donate',
-              height: '45px',
+              height: `${props.height}px`,
             },
           },
         }}
@@ -132,6 +132,7 @@ const mapStateToProps = (state, ownProps) => ({
   currency: getSetting(state, 'currency').code.toLowerCase(),
   amount: toCents(getDonationPanelSelection(state).amount),
   frequency: getSelectedFrequency(state),
+  height: getSetting(state, 'expressPaymentBtnHeight') || 45,
 });
 
 const actions = {
