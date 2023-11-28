@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { loadStripe } from '@stripe/stripe-js';
 import { PaymentRequestButtonElement, useStripe, Elements } from '@stripe/react-stripe-js';
 import { toCents } from 'shared/utils';
-import { getCart } from 'shared/selectors';
+import { getCart, getSetting } from 'shared/selectors';
 import { getPaymentMethod } from 'checkout/selectors';
 import { fetchStripePaymentIntent, makeStripeWalletPayment, fetchStripeShippingOptions, selectDigitalWalletShippingOption } from 'checkout/actions';
 
@@ -102,7 +102,7 @@ export const CheckoutStripeWalletBtnInner = (props) => {
           paymentRequest,
           style: {
             paymentRequestButton: {
-              height: '45px',
+              height: `${props.height}px`,
             },
           },
         }}
@@ -135,6 +135,7 @@ export const _CheckoutStripeWalletBtn = (props) => {
 const mapStateToProps = (state, ownProps) => ({
   paymentMethod: getPaymentMethod(state, 'wallet', 'stripe'),
   cart: getCart(state),
+  height: getSetting(state, 'expressPaymentBtnHeight') || 45,
 });
 
 const actions = {

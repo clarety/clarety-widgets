@@ -38,6 +38,7 @@ export function _DonatePayPalBtn(props) {
       onSuccess={props.onPayPalSuccess}
       onCancel={props.onPayPalCancel}
       onError={props.onPayPalError}
+      height={props.height}
     />
   );
 };
@@ -47,6 +48,7 @@ const mapStateToProps = (state, ownProps) => ({
   currency: getSetting(state, 'currency'),
   amount: getDonationPanelSelection(state).amount,
   frequency: getSelectedFrequency(state),
+  height: getSetting(state, 'expressPaymentBtnHeight') || 45,
 });
 
 const actions = {

@@ -3,7 +3,7 @@ import { Form, Row, Col } from 'react-bootstrap';
 import { requiredField } from 'shared/utils';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
-import { SubmitButton, BackButton, ErrorMessages, SelectInput, TextInput } from 'form/components';
+import { Label, SubmitButton, BackButton, ErrorMessages, SelectInput, TextInput } from 'form/components';
 import { PriceHandlesStandard, PriceHandlesPriceOnly } from 'donate/components';
 import { FrequencySelect, ScheduleSelectButtonGroup, ScheduleSelectDropdown, CoverFeesCheckbox } from 'donate/components';
 
@@ -238,7 +238,9 @@ export class DonationPanel extends BasePanel {
         <Row>
           <Col>
             <Form.Group controlId="givingType">
-              <Form.Label>{t('give-to', 'Give To')}</Form.Label>
+              <Label required>
+                {t('give-to', 'Give To')}
+              </Label>
               <SelectInput
                 field="saleline.givingType"
                 options={givingTypeOptions}
@@ -251,7 +253,9 @@ export class DonationPanel extends BasePanel {
           <Row>
             <Col>
               <Form.Group controlId="otherGivingType">
-                <Form.Label>{t('please-specify', 'Please Specify')}</Form.Label>
+                <Label required>
+                  {t('please-specify', 'Please Specify')}
+                </Label>
                 <TextInput field="saleline.otherGivingType" />
               </Form.Group>
             </Col>
@@ -270,7 +274,9 @@ export class DonationPanel extends BasePanel {
         <Row>
           <Col>
             <Form.Group>
-              <Form.Label>{settings.commentLabel || t('donation-comment-label', 'Donation Made In Honour Of')}</Form.Label>
+              <Label>
+                {settings.commentLabel || t('donation-comment-label', 'Donation Made In Honour Of')}
+              </Label>
               <TextInput field="saleline.givingType" />
             </Form.Group>
           </Col>

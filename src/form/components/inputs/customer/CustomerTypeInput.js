@@ -4,7 +4,7 @@ import { Form, Col } from 'react-bootstrap';
 import { t } from 'shared/translations';
 import { getCustomerTypeOptions } from 'shared/utils';
 import { getFormData } from 'shared/selectors';
-import { TextInput, SelectInput } from 'form/components';
+import { Label, TextInput, SelectInput } from 'form/components';
 
 export const _CustomerTypeInput = ({ formData, customerTypeField = 'customer.type', businessNameField = 'customer.businessName', readOnly }) => {
   const showBusinessName = formData[customerTypeField] === 'business';
@@ -32,7 +32,7 @@ export const _CustomerTypeInput = ({ formData, customerTypeField = 'customer.typ
         <Form.Row>
           <Col>
             <Form.Group controlId="businessName">
-              <Form.Label>{t('business-name', 'Business Name')}</Form.Label>
+              <Label required>{t('business-name', 'Business Name')}</Label>
               <TextInput
                 field={businessNameField}
                 testId="business-name-input"

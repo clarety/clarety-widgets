@@ -18,6 +18,7 @@ export const _RegoPayPalBtn = (props) => {
       onSuccess={props.onPayPalSuccess}
       onCancel={props.onPayPalCancel}
       onError={props.onPayPalError}
+      height={props.height}
       label="pay"
       noShipping
     />
@@ -28,6 +29,7 @@ const mapStateToProps = (state, ownProps) => ({
   paymentMethod: getPaymentMethod(state, 'wallet', 'paypal'),
   currency: getSetting(state, 'currency'),
   amount: getTotalAmount(state),
+  height: getSetting(state, 'expressPaymentBtnHeight') || 45,
 });
 
 const actions = {

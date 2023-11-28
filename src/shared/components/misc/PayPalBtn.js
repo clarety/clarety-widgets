@@ -23,6 +23,7 @@ export class PayPalBtn extends React.Component {
       onError: this.onError,
       style: {
         label: this.props.label,
+        height: this.props.height,
       },
     }).render(`#${elementId}`);
   };

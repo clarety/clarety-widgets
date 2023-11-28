@@ -3,7 +3,7 @@ import { Form, Row, Col, Button } from 'react-bootstrap';
 import { getLanguage, t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, AddressFinder } from 'shared/components';
 import { requiredField, emailField, phoneNumberField, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
-import { TextInput, EmailInput, PhoneInput, CheckboxInput, StateInput, CountryInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement, CustomerTypeInput, TitleInput, DobInput } from 'form/components';
+import { Label, TextInput, EmailInput, PhoneInput, CheckboxInput, StateInput, CountryInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement, CustomerTypeInput, TitleInput, DobInput } from 'form/components';
 import { ExpressDonation } from 'donate/components';
 
 export class CustomerPanel extends BasePanel {
@@ -36,6 +36,13 @@ export class CustomerPanel extends BasePanel {
     }
 
     return addressFinderKey && defaultCountry;
+  }
+
+  isAddressRequired() {
+    const { settings } = this.props;
+
+    // NOTE: explicitly check for false, the default (ie 'undefined') is true.
+    return settings.showAddress !== false && settings.requireAddress !== false;
   }
 
   onAddressFinderSelect = (address) => {
@@ -154,11 +161,9 @@ export class CustomerPanel extends BasePanel {
   }
 
   validateAddressFields(errors) {
-    const { formData, settings } = this.props;
+    const { formData } = this.props;
 
-    // NOTE: explicitly check for false! the default (ie 'undefined') is true.
-    //Address field must be shown and required.
-    if (settings.showAddress !== false && settings.requireAddress !== false) {
+    if (this.isAddressRequired()) {
       requiredField(errors, formData, 'customer.billing.address1');
 
       if (formData['customer.billing.country'] !== 'NZ') {
@@ -286,7 +291,9 @@ export class CustomerPanel extends BasePanel {
       <Form.Row>
         <Col>
           <Form.Group>
-          <Form.Label>{t('title', 'Title')}</Form.Label>
+            <Label required={settings.requireTitle}>
+              {t('title', 'Title')}
+            </Label>
             <TitleInput
               required={settings.requireTitle}
             />
@@ -304,20 +311,20 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col sm>
             <Form.Group controlId="firstName">
-              <Form.Label>{t('first-name', 'First Name')}</Form.Label>
+              <Label required>{t('first-name', 'First Name')}</Label>
               <TextInput field="customer.firstName" testId="first-name-input" required readOnly={fetchedCustomer} />
             </Form.Group>
           </Col>
           <Col sm>
             <Form.Group controlId="lastName">
-              <Form.Label>{t('last-name', 'Last Name')}</Form.Label>
+              <Label required>{t('last-name', 'Last Name')}</Label>
               <TextInput field="customer.lastName" testId="last-name-input" required readOnly={fetchedCustomer} />
             </Form.Group>
           </Col>
         </Form.Row>
 
         <Form.Group controlId="email">
-          <Form.Label>{t('email', 'Email')}</Form.Label>
+          <Label required>{t('email', 'Email')}</Label>
           <EmailInput field="customer.email" type="email" testId="email-input" required readOnly={!canEditEmail} />
         </Form.Group>
       </React.Fragment>
@@ -336,10 +343,9 @@ export class CustomerPanel extends BasePanel {
       <Form.Row>
         <Col>
           <Form.Group controlId="mobile">
-            <Form.Label>
+            <Label required={isRequired}>
               {t('mobile', 'Mobile')}
-              {!isRequired && <span className="optional"> ({t('optional', 'Optional')})</span>}
-            </Form.Label>
+            </Label>
             <PhoneInput
               field="customer.mobile"
               required={isRequired}
@@ -378,7 +384,12 @@ export class CustomerPanel extends BasePanel {
           <Form.Row>
             <Col>
               <Form.Group>
-                <Form.Label htmlFor="address-finder-input">{t('address', 'Address')}</Form.Label>
+                <Label
+                  htmlFor="address-finder-input"
+                  required={this.isAddressRequired()}
+                >
+                  {t('address', 'Address')}
+                </Label>
                 <AddressFinder
                   id="address-finder-input"
                   apiKey={this.props.addressFinderKey}
@@ -420,7 +431,10 @@ export class CustomerPanel extends BasePanel {
       <Form.Row>
         <Col>
           <Form.Group controlId="country">
-            <Form.Label>{t('country', 'Country')}</Form.Label>
+            <Label required={this.isAddressRequired()}>
+              {t('country', 'Country')}
+            </Label>
+
             <CountryInput
               field="customer.billing.country"
               initialValue={defaultCountry}
@@ -435,19 +449,20 @@ export class CustomerPanel extends BasePanel {
 
   renderStreetAddressFields() {
     const country = this.props.formData['customer.billing.country'];
+    const required = this.isAddressRequired();
 
     return (
       <React.Fragment>
         <Form.Row>
           <Col sm>
             <Form.Group controlId="street">
-              <Form.Label>{t('street', 'Street')}</Form.Label>
+              <Label required={required}>{t('street', 'Street')}</Label>
               <TextInput field="customer.billing.address1" type="street" testId="street-input" />
             </Form.Group>
           </Col>
           <Col sm>
             <Form.Group controlId="suburb">
-              <Form.Label>{getSuburbLabel(country)}</Form.Label>
+              <Label required={required}>{getSuburbLabel(country)}</Label>
               <TextInput field="customer.billing.suburb" testId="suburb-input" />
             </Form.Group>
           </Col>
@@ -455,13 +470,13 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col sm>
             <Form.Group controlId="state">
-              <Form.Label>{getStateLabel(country)}</Form.Label>
+              <Label required={required}>{getStateLabel(country)}</Label>
               <StateInput field="customer.billing.state" country={country} testId="state-input" />
             </Form.Group>
           </Col>
           <Col sm>
             <Form.Group controlId="postcode">
-              <Form.Label>{getPostcodeLabel(country)}</Form.Label>
+              <Label required={required}>{getPostcodeLabel(country)}</Label>
               <PostcodeInput field="customer.billing.postcode" country={country} testId="postcode-input" />
             </Form.Group>
           </Col>
@@ -490,7 +505,9 @@ export class CustomerPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="customerSource">
-              <Form.Label>{t('how-did-you-hear-about-us', 'How did you hear about us?')}</Form.Label>
+              <Label required>
+                {t('how-did-you-hear-about-us', 'How did you hear about us?')}
+              </Label>
               <SelectInput
                 field="sale.sourceId"
                 options={this.props.sourceOptions}
@@ -505,7 +522,9 @@ export class CustomerPanel extends BasePanel {
           <Form.Row>
             <Col>
               <Form.Group controlId="customerSourceAdditional">
-                <Form.Label>{sourceOption.additionalDescription}</Form.Label>
+                <Label required={sourceOption.additionalRequired}>
+                  {sourceOption.additionalDescription}
+                </Label>
                 <TextInput
                   field="sale.sourceAdditional"
                   required={sourceOption.additionalRequired}

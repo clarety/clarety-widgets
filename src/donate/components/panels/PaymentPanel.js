@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import { t } from 'shared/translations';
 import { _PaymentPanel as BasePaymentPanel, injectStripe } from 'shared/components';
-import { SelectInput } from 'form/components';
+import { Label, SelectInput } from 'form/components';
 import { Currency } from 'shared/components';
 import { requiredField } from 'shared/utils';
 import { createStartDateOptions } from 'donate/utils';
@@ -80,7 +80,7 @@ export class _PaymentPanel extends BasePaymentPanel {
       <Row>
         <Col>
           <Form.Group controlId="startDate">
-            <Form.Label>{t('start-date', 'Start Date')}</Form.Label>
+            <Label required>{t('start-date', 'Start Date')}</Label>
             <SelectInput
               field="saleline.startDate"
               options={this.getStartDateOptions(paymentMethod)}

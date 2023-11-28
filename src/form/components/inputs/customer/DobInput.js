@@ -4,7 +4,7 @@ import { Form, Col } from 'react-bootstrap';
 import { t } from 'shared/translations';
 import { getFormData, getErrors } from 'shared/selectors';
 import { currentYear, iterate } from 'shared/utils';
-import { FieldError } from 'form/components';
+import { Label, FieldError } from 'form/components';
 import { updateFormData } from 'form/actions';
 import { getValidationError } from 'form/utils';
 
@@ -14,12 +14,9 @@ class _DobInput extends React.Component {
 
     return (
       <Form.Group>
-        <Form.Label>
+        <Label required={required}>
           {label || t('date-of-birth', 'Date of Birth')}
-          {!required &&
-            <span className="optional">{t('optional-label', ' (Optional)')}</span>
-          }
-        </Form.Label>
+        </Label>
 
         <Form.Row>
           <Col>
