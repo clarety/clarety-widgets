@@ -1,5 +1,6 @@
 export * from './misc/ErrorMessages';
 export * from './misc/FieldError';
+export * from './misc/Label';
 export * from './misc/Recaptcha';
 
 export * from './inputs/address/CountryInput';

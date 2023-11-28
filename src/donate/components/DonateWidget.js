@@ -93,6 +93,7 @@ export class _DonateWidgetRoot extends React.Component {
       defaultFrequency:     this.props.defaultFrequency,
       mainSiteUrl:          this.props.mainSiteUrl,
       createSaleOnCustomerPanel: this.props.createSaleOnCustomerPanel,
+      requiredLabelType:    this.props.requiredLabelType,
       layout:               this.props.layout || 'tabs',
     });
 

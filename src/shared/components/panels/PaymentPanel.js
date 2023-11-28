@@ -5,7 +5,7 @@ import { Config } from 'clarety-utils';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, injectStripe } from 'shared/components';
 import { requiredField, cardNumberField, cardExpiryField, ccvField, isStripeCard, isStripeAuBankAccount } from 'shared/utils';
-import { TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, AccountNumberInput, BsbInput, NZAccountNumberInput, PhoneInput, NumberInput, SelectInput } from 'form/components';
+import { Label, TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, AccountNumberInput, BsbInput, NZAccountNumberInput, PhoneInput, NumberInput, SelectInput } from 'form/components';
 
 export class _PaymentPanel extends BasePanel {
   state = {
@@ -487,7 +487,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="cardName">
-              <Form.Label>{t('card-name', 'Name on Card')}</Form.Label>
+              <Label required>{t('card-name', 'Name on Card')}</Label>
               <TextInput field="payment.cardName" testId="card-name-input" />
             </Form.Group>
           </Col>
@@ -496,7 +496,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="cardNumber">
-              <Form.Label>{t('card-number', 'Card Number')}</Form.Label>
+              <Label required>{t('card-number', 'Card Number')}</Label>
               <CardNumberInput field="payment.cardNumber" testId="card-number-input" />
             </Form.Group>
           </Col>
@@ -505,7 +505,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group>
-              <Form.Label>{t('card-expiry', 'Expiry')}</Form.Label>
+              <Label required>{t('card-expiry', 'Expiry')}</Label>
               <ExpiryInput
                 field="payment.cardExpiry"
                 monthField="payment.cardExpiryMonth"
@@ -517,7 +517,7 @@ export class _PaymentPanel extends BasePanel {
 
           <Col>
             <Form.Group controlId="ccv">
-              <Form.Label>{t('card-ccv', 'CVC')}</Form.Label>
+              <Label required>{t('card-ccv', 'CVC')}</Label>
               {this.renderCvcInfoBtn()}
               <CcvInput field="payment.cardSecurityCode" testId="ccv-input" />
             </Form.Group>
@@ -535,7 +535,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="accountName">
-              <Form.Label>{t('account-name', 'Account Name')}</Form.Label>
+              <Label required>{t('account-name', 'Account Name')}</Label>
               <TextInput field="payment.accountName" testId="account-name-input" />
             </Form.Group>
           </Col>
@@ -544,14 +544,14 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col sm={6}>
             <Form.Group controlId="accountBSB">
-              <Form.Label>{t('account-bsb', 'Account BSB')}</Form.Label>
+              <Label required>{t('account-bsb', 'Account BSB')}</Label>
               <BsbInput field="payment.accountBSB" testId="account-bsb-input" />
             </Form.Group>
           </Col>
 
           <Col sm={6}>
             <Form.Group controlId="accountNumber">
-              <Form.Label>{t('account-number', 'Account Number')}</Form.Label>
+              <Label required>{t('account-number', 'Account Number')}</Label>
               <AccountNumberInput field="payment.accountNumber" testId="account-number-input" />
             </Form.Group>
           </Col>
@@ -566,7 +566,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="accountName">
-              <Form.Label>{t('account-name', 'Account Name')}</Form.Label>
+              <Label required>{t('account-name', 'Account Name')}</Label>
               <TextInput field="payment.accountName" testId="account-name-input" />
             </Form.Group>
           </Col>
@@ -575,7 +575,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group>
-              <Form.Label>{t('account-number', 'Account Number')}</Form.Label>
+              <Label required>{t('account-number', 'Account Number')}</Label>
 
               <NZAccountNumberInput
                 bankCodeField="payment.bankCode"
@@ -596,7 +596,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="accountName">
-              <Form.Label>{t('account-name', 'Account Name')}</Form.Label>
+              <Label required>{t('account-name', 'Account Name')}</Label>
               <TextInput field="payment.accountName" testId="account-name-input" />
             </Form.Group>
           </Col>
@@ -605,14 +605,14 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col sm={6}>
             <Form.Group controlId="bankCode">
-              <Form.Label>{t('bank-code', 'Bank Code')}</Form.Label>
+              <Label required>{t('bank-code', 'Bank Code')}</Label>
               <NumberInput field="payment.bankCode" maxLength={3} testId="bank-code-input" />
             </Form.Group>
           </Col>
 
           <Col sm={6}>
             <Form.Group controlId="accountNumber">
-              <Form.Label>{t('account-number', 'Account Number')}</Form.Label>
+              <Label required>{t('account-number', 'Account Number')}</Label>
               <AccountNumberInput field="payment.accountNumber" maxLength={12} testId="account-number-input" />
             </Form.Group>
           </Col>
@@ -621,7 +621,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="verificationType">
-              <Form.Label>{t('verification-type', 'Verification Type')}</Form.Label>
+              <Label required>{t('verification-type', 'Verification Type')}</Label>
               <SelectInput
                 field="payment.verificationType"
                 options={[
@@ -636,14 +636,14 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col sm={6}>
             <Form.Group controlId="verificationNumber">
-              <Form.Label>{t('verification-number', 'Verification Number')}</Form.Label>
+              <Label required>{t('verification-number', 'Verification Number')}</Label>
               <TextInput field="payment.verificationNumber" testId="verification-number-input" />
             </Form.Group>
           </Col>
 
           <Col sm={6}>
             <Form.Group controlId="verificationMobile">
-              <Form.Label>{t('verification-mobile', 'Verification Mobile')}</Form.Label>
+              <Label required>{t('verification-mobile', 'Verification Mobile')}</Label>
               <PhoneInput field="payment.verificationMobile" testId="verification-mobile-input" />
             </Form.Group>
           </Col>
@@ -661,7 +661,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="accountName">
-              <Form.Label>{t('account-name', 'Account Name')}</Form.Label>
+              <Label required>{t('account-name', 'Account Name')}</Label>
               <TextInput field="payment.accountName" testId="account-name-input" />
             </Form.Group>
           </Col>
@@ -670,7 +670,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="account">
-              <Form.Label>{t('account', 'Account')}</Form.Label>
+              <Label required>{t('account', 'Account')}</Label>
               <AuBankAccountElement options={{ style, hideIcon: true }} />
             </Form.Group>
           </Col>
@@ -693,7 +693,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="cardName">
-              <Form.Label>{t('card-name', 'Name on Card')}</Form.Label>
+              <Label required>{t('card-name', 'Name on Card')}</Label>
               <TextInput field="payment.cardName" testId="card-name-input" />
             </Form.Group>
           </Col>
@@ -702,7 +702,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="cardNumber">
-              <Form.Label>{t('card-number', 'Card Number')}</Form.Label>
+              <Label required>{t('card-number', 'Card Number')}</Label>
               <CardNumberElement
                 options={{ style, placeholder: '•••• •••• •••• ••••' }}
               />
@@ -713,7 +713,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group>
-              <Form.Label>{t('card-expiry', 'Expiry')}</Form.Label>
+              <Label required>{t('card-expiry', 'Expiry')}</Label>
               <CardExpiryElement
                 options={{
                   style,
@@ -725,7 +725,7 @@ export class _PaymentPanel extends BasePanel {
 
           <Col>
             <Form.Group controlId="ccv">
-              <Form.Label>{t('card-ccv', 'CVC')}</Form.Label>
+              <Label required>{t('card-ccv', 'CVC')}</Label>
               {this.renderCvcInfoBtn()}
               <CardCvcElement
                 options={{ style, placeholder: '•••' }}
@@ -843,9 +843,9 @@ export class _PaymentPanel extends BasePanel {
           <Form.Row>
             <Col>
               <Form.Group controlId="authPassword">
-                <Form.Label>
+                <Label required>
                   {t('payment-auth-code', 'Please enter the authorisation code sent to your device')}
-                </Form.Label>
+                </Label>
                 <NumberInput
                   field="payment.authPassword"
                   maxLength={6}
