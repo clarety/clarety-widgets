@@ -96,6 +96,7 @@ export class _DonateWidgetRoot extends React.Component {
       expressPaymentBtnHeight: this.props.expressPaymentBtnHeight,
       requiredLabelType:    this.props.requiredLabelType,
       layout:               this.props.layout || 'tabs',
+      reCaptchaKey:         this.props.reCaptchaKey,
     });
 
     setStore(storeUid);

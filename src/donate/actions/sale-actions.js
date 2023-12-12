@@ -103,11 +103,13 @@ export const createSale = () => {
     dispatch(setStatus(statuses.busy));
 
     // ReCaptcha.
-    const recaptcha = await executeRecaptcha();
-    dispatch(setRecaptcha(recaptcha));
-    if (!recaptcha) {
-      dispatch(setStatus(statuses.ready));
-      return false;
+    if (getSetting(state, 'reCaptchaKey')) {
+      const recaptcha = await executeRecaptcha();
+      dispatch(setRecaptcha(recaptcha));
+      if (!recaptcha) {
+        dispatch(setStatus(statuses.ready));
+        return false;
+      }
     }
 
     // Update cart in page layout.
@@ -151,11 +153,13 @@ export const makePayment = (paymentData) => {
     dispatch(setStatus(statuses.busy));
 
     // ReCaptcha.
-    const recaptcha = await executeRecaptcha();
-    dispatch(setRecaptcha(recaptcha));
-    if (!recaptcha) {
-      dispatch(setStatus(statuses.ready));
-      return false;
+    if (getSetting(state, 'reCaptchaKey')) {
+      const recaptcha = await executeRecaptcha();
+      dispatch(setRecaptcha(recaptcha));
+      if (!recaptcha) {
+        dispatch(setStatus(statuses.ready));
+        return false;
+      }
     }
 
     // Update cart in page layout.
