@@ -84,8 +84,13 @@ export const createAccount = () => {
 
 export const createGuestAccount = () => {
   return async (dispatch, getState) => {
-    const { formData } = getState();
-    const { customer } = parseNestedElements(formData);
+    const state = getState();
+    const formData = parseNestedElements(state.formData);
+
+    const customer = {
+      ...formData.customer,
+      ...getTrackingData(state),
+    };
     
     dispatch(createGuestAccountRequest(customer));
     dispatch(setStatus('busy'));
