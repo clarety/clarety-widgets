@@ -1,7 +1,7 @@
 import { Config } from 'clarety-utils';
 
 export function isStripe(paymentMethod) {
-  return isStripeCard(paymentMethod) || isStripeAuBankAccount(paymentMethod);
+  return isStripeCard(paymentMethod) || isStripeAuBankAccount(paymentMethod) || isStripePaymentForm(paymentMethod);
 }
 
 export function isStripeCard(paymentMethod) {
@@ -10,6 +10,10 @@ export function isStripeCard(paymentMethod) {
 
 export function isStripeAuBankAccount(paymentMethod) {
   return paymentMethod.gateway === 'stripe-becs';
+}
+
+export function isStripePaymentForm(paymentMethod) {
+  return paymentMethod.type === 'stripe-payment-form';
 }
 
 export function isHongKongDirectDebit(paymentMethod) {

@@ -159,6 +159,12 @@ $xl: 1200px;
   .StripeElement {
     @extend .form-control;
     padding: 8px;
+  
+    &.stripe-payment-form {
+      padding: 0;
+      height: auto;
+      border: none;
+    }
   }
 
   // Hide number 'spinner' input controls.

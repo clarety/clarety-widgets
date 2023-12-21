@@ -1,13 +1,18 @@
 import { AuBankAccountElement, CardNumberElement } from '@stripe/react-stripe-js';
-import { isStripeAuBankAccount } from 'shared/utils';
+import { isStripePaymentForm, isStripeAuBankAccount } from 'shared/utils';
 
 export const prepareStripePayment = (paymentData, paymentMethod, frequency) => {
   return async (dispatch, getState) => {
-    const result = isStripeAuBankAccount(paymentMethod) ?
-        await createStripeAuBankAccountRecurringToken(paymentData, paymentMethod)
-          : frequency === 'recurring'
-               ? await createStripeRecurringToken(paymentData, paymentMethod)
-               : await createStripeSingleToken(paymentData, paymentMethod);
+    let result = null;
+    if (isStripePaymentForm(paymentMethod)) {
+      result = await createStripePaymentMethod(paymentData, paymentMethod);
+    } else if (isStripeAuBankAccount(paymentMethod)) {
+      result = await createStripeAuBankAccountRecurringToken(paymentData, paymentMethod);
+    } else if (frequency === 'recurring') {
+      result = await createStripeRecurringToken(paymentData, paymentMethod);
+    } else {
+      result = await createStripeSingleToken(paymentData, paymentMethod);
+    }
 
     if (result.error) {
       const validationErrors = [{ message: result.error.message }];
@@ -108,3 +113,29 @@ const createStripeAuBankAccountRecurringToken = async (paymentData, paymentMetho
     token: result.setupIntent && result.setupIntent.payment_method,
   };
 };
+
+const createStripePaymentMethod = async (paymentData, paymentMethod) => {
+  const { stripe, elements, customerName } = paymentData;
+
+  // Trigger form validation and wallet collection
+  const { error: submitError } = await elements.submit();
+  if (submitError) {
+    return { error: submitError };
+  }
+
+  const data = {
+    elements,
+    params: {
+      billing_details: {
+        name: customerName,
+      }
+    }
+  };
+  const result = await stripe.createPaymentMethod(data);
+
+  return {
+    error: result.error,
+    token: result.paymentMethod ? result.paymentMethod.id : undefined,
+  };
+
+}

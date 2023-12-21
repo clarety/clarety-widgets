@@ -4,8 +4,9 @@ import { CardNumberElement, CardExpiryElement, CardCvcElement, AuBankAccountElem
 import { Config } from 'clarety-utils';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, injectStripe } from 'shared/components';
-import { requiredField, cardNumberField, cardExpiryField, ccvField, isStripeCard, isStripeAuBankAccount } from 'shared/utils';
+import { requiredField, cardNumberField, cardExpiryField, ccvField, isStripeCard, isStripeAuBankAccount, isStripePaymentForm } from 'shared/utils';
 import { Label, TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, AccountNumberInput, BsbInput, NZAccountNumberInput, PhoneInput, NumberInput, SelectInput } from 'form/components';
+import { StripePaymentForm } from 'checkout/components/misc/StripePaymentForm';
 
 export class _PaymentPanel extends BasePanel {
   state = {
@@ -119,6 +120,11 @@ export class _PaymentPanel extends BasePanel {
   }
 
   validateFields(paymentMethod, errors) {
+    if (paymentMethod.type === 'stripe-payment-form') {
+      // stripe handles validation
+      return errors;
+    }
+
     if (paymentMethod.type === 'gatewaycc') {
       if (isStripeCard(paymentMethod)) {
         return this.validateStripeFields(errors);
@@ -207,6 +213,15 @@ export class _PaymentPanel extends BasePanel {
 
     const paymentType = formData['payment.type'];
     const paymentMethod = this.getPaymentMethod(paymentType);
+
+    if (isStripePaymentForm(paymentMethod)) {
+      return {
+        type: paymentType,
+        stripe: this.props.stripe,
+        elements: this.props.elements,
+        customerName: formData['customer.firstName'] + ' ' + formData['customer.lastName'],
+      };
+    }
 
     if (paymentType === 'gatewaycc') {
       if (isStripeCard(paymentMethod)) {
@@ -329,6 +344,24 @@ export class _PaymentPanel extends BasePanel {
   getSubmitBtnText() {
     const { settings } = this.props;
     return settings.submitBtnText || t('pay', 'Pay Now');
+  }
+
+  getStripePaymentFormCustomerInfo() {
+    const { formData } = this.props;
+    
+    return {
+      name: formData['customer.firstName'] + ' ' + formData['customer.lastName'],
+      email: formData['customer.email'],
+      phone: formData['customer.phone'],
+      address: {
+        address1: formData['customer.address1'],
+        address2: formData['customer.address2'],
+        suburb: formData['customer.suburb'],
+        state: formData['customer.state'],
+        country: formData['customer.country'],
+        postcode: formData['customer.postcode'],
+      },
+    };
   }
 
   renderWait() {
@@ -472,6 +505,10 @@ export class _PaymentPanel extends BasePanel {
       if (paymentMethod.gateway === 'paypal') {
         return this.renderPayPalFields(paymentMethod);
       }
+    }
+
+    if (isStripePaymentForm(paymentMethod)) {
+      return this.renderStripePaymentForm(paymentMethod);
     }
 
     if (paymentMethod.type === 'na') {
@@ -737,6 +774,15 @@ export class _PaymentPanel extends BasePanel {
         {this.renderCvcInfo()}
 
       </React.Fragment>
+    );
+  }
+
+  renderStripePaymentForm(paymentMethod) {
+    return (
+      <StripePaymentForm
+        paymentMethod={paymentMethod}
+        customerInfo={this.getStripePaymentFormCustomerInfo()}
+      />
     );
   }
 
