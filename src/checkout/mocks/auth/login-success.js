@@ -1,6 +1,0 @@
-export const loginSuccess = {
-  "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lclVpZCI6ImU3ZmI4ODMxLTRhODMtNDY4ZS04ZWVjLTU5MzE4NTkwOWYxOCJ9.S0fg9jG8J4189-D66N17ZoIH1eDptiPtMQJ-pnKhUgBq6CBr48-cR1I6AE18pweRBl7VA5EJcwHir3amgKMDoCkLQtsl9uaHygS-76pME_hcSobNiJhOwLk9sv1vbKCsEBhoQbEstkqlK4VwFDtVD5JJy_zXjmRcsQUabn_me8kRykgzTdTP_JrFaBwoE_cVf7NzEO-zM6236MH1WLJIFeKnEaIlGsjPwf1tJpqkUKzIz4Aqq18UUIwCESPP2ZmAQiTSNpf6YcGoInKgU_M4ZjuRl47tsIpkeps9EqOi8lsMOXvelYnhvJYPiynW3vbymJgmf2XGO9GstVc4CK39Rw",
-  "expires_in": 86400,
-  "token_type": "bearer",
-  "scope": null
-};

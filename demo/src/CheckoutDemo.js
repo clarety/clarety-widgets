@@ -2,7 +2,7 @@ import React from 'react';
 import { LoginPanel, PaymentPanel } from '../../src/shared/components';
 import { CheckoutCustomerPanel, AddressPanel, ShippingPanel, DonationPanel } from '../../src/checkout/components';
 import { LoginConnect, CheckoutCustomerConnect, AddressConnect, ShippingConnect, PaymentConnect, DonationConnect } from '../../src/checkout/components';
-import { Checkout, initTranslations, setupCheckoutAxiosMock } from '../../src';
+import { Checkout, initTranslations } from '../../src';
 import '../../src/checkout/style.scss';
 
 initTranslations({
@@ -72,10 +72,6 @@ Checkout.setPanels([
 ]);
 
 export default class CheckoutDemo extends React.Component {
-  componentWillMount() {
-    // setupCheckoutAxiosMock();
-  }
-
   render() {
     return (
       <div className="checkout">
