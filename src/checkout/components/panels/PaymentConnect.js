@@ -6,13 +6,16 @@ import { getPaymentMethods } from 'checkout/selectors';
 
 export class PaymentConnect {
   static mapStateToProps = (state, ownProps) => {
-    // stripe wallet is express checkout, ignore it on the payment panel.
-    const paymentMethods = getPaymentMethods(state).filter(pm => !(pm.type === 'wallet' && pm.gateway === 'stripe'));
+    const cart = getCart(state);
+
+    // 'wallet' types are for express checkout, ignore them on the payment panel.
+    const paymentMethods = getPaymentMethods(state).filter(pm => pm.type !== 'wallet');
 
     return {
       isBusy: state.status === 'busy',
       paymentMethods: paymentMethods,
-      cart: getCart(state),
+      currency: cart.currency.code,
+      amount: cart.summary.total,
       formData: getFormData(state),
       errors: getErrors(state),
       variant: getSetting(state, 'variant'),

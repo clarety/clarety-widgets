@@ -57,9 +57,19 @@ export const injectStripe = (PaymentPanelComponent) => {
       if (paymentMethod.type === 'stripe-payment-form') {
         options.mode = 'payment';
         options.paymentMethodCreation = 'manual';
-        options.currency = this.props.cart.currency.code.toLowerCase();
-        options.amount = toCents(this.props.cart.summary.total);
-        options.paymentMethodTypes = paymentMethod.allowedPaymentTypes;
+        options.currency = this.props.currency.toLowerCase();
+        options.amount = toCents(this.props.amount);
+
+        if (this.props.frequency) {
+          // donations allow different payment types depending on frequency.
+          if (this.props.frequency === 'recurring') {
+            options.paymentMethodTypes = paymentMethod.recurringPaymentTypes;
+          } else {
+            options.paymentMethodTypes = paymentMethod.singlePaymentTypes;
+          }
+        } else {
+          options.paymentMethodTypes = paymentMethod.allowedPaymentTypes;
+        }
       }
 
       return (

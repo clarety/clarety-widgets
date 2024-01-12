@@ -132,7 +132,7 @@ export default class DonateDemo extends React.Component {
 
       confirmPageUrl: 'http://google.com/',
 
-      createSaleOnCustomerPanel: true,
+      // createSaleOnCustomerPanel: true,
 
       requiredLabelType: '*',
       // requiredLabelType: 'optional',
