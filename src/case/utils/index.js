@@ -1,13 +1,22 @@
 import { ClaretyApi } from 'clarety-utils';
 
 export const mapCaseSettings = (settings) => {
-  const { extendForm } = settings;
-  if (extendForm) {
+  if (settings.extendForm) {
+    const { extendForm } = settings;
+
     extendForm.name = '';
 
     if (extendForm.extendFields && extendForm.extendFields[0].type === 'section') {
       extendForm.sections = splitFormIntoSections(extendForm);
     }
+  } else {
+    // Case types might not have an extend form,
+    // if so, provide an empty one with no fields.
+    settings.extendForm = {
+      id: null,
+      name: '',
+      extendFields: [],
+    };
   }
 
   return settings;
