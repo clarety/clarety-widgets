@@ -219,7 +219,7 @@ export class _PaymentPanel extends BasePanel {
         type: paymentType,
         stripe: this.props.stripe,
         elements: this.props.elements,
-        customerName: formData['customer.firstName'] + ' ' + formData['customer.lastName'],
+        customerInfo: this.getStripeCustomerInfo(),
       };
     }
 
@@ -230,6 +230,7 @@ export class _PaymentPanel extends BasePanel {
           stripe:   this.props.stripe,
           elements: this.props.elements,
           cardName: formData['payment.cardName'],
+          customerInfo: this.getStripeCustomerInfo(),
         };
       } else {
         return {
@@ -250,7 +251,7 @@ export class _PaymentPanel extends BasePanel {
           stripe:   this.props.stripe,
           elements: this.props.elements,
           accountName: formData['payment.accountName'],
-          customerEmail: formData['customer.email'],
+          customerInfo: this.getStripeCustomerInfo(),
         };
       } else if (paymentMethod.gateway === 'nz') {
         return {
@@ -346,20 +347,20 @@ export class _PaymentPanel extends BasePanel {
     return settings.submitBtnText || t('pay', 'Pay Now');
   }
 
-  getStripePaymentFormCustomerInfo() {
+  getStripeCustomerInfo() {
     const { formData } = this.props;
     
     return {
       name: formData['customer.firstName'] + ' ' + formData['customer.lastName'],
       email: formData['customer.email'],
-      phone: formData['customer.phone'],
+      phone: formData['customer.mobile'],
       address: {
-        address1: formData['customer.address1'],
-        address2: formData['customer.address2'],
-        suburb: formData['customer.suburb'],
-        state: formData['customer.state'],
-        country: formData['customer.country'],
-        postcode: formData['customer.postcode'],
+        line1: formData['customer.billing.address1'],
+        line2: formData['customer.billing.address2'],
+        city: formData['customer.billing.suburb'],
+        state: formData['customer.billing.state'],
+        country: formData['customer.billing.country'],
+        postal_code: formData['customer.billing.postcode'],
       },
     };
   }
@@ -781,7 +782,7 @@ export class _PaymentPanel extends BasePanel {
     return (
       <StripePaymentForm
         paymentMethod={paymentMethod}
-        customerInfo={this.getStripePaymentFormCustomerInfo()}
+        customerInfo={this.getStripeCustomerInfo()}
       />
     );
   }

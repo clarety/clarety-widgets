@@ -58,9 +58,7 @@ const createStripeSingleToken = async (paymentData, paymentMethod) => {
   const data = {
     type: 'card',
     card: elements.getElement(CardNumberElement),
-    billing_details: {
-      name: paymentData.cardName
-    },
+    billing_details: getStripeBillingDetails(paymentData),
   };
 
   const result = await stripe.createPaymentMethod(data);
@@ -79,9 +77,7 @@ const createStripeRecurringToken = async (paymentData, paymentMethod) => {
   const data = {
     payment_method: {
       card: elements.getElement(CardNumberElement),
-      billing_details: {
-        name: paymentData.cardName,
-      },
+      billing_details: getStripeBillingDetails(paymentData),
     },
   };
 
@@ -100,10 +96,7 @@ const createStripeAuBankAccountRecurringToken = async (paymentData, paymentMetho
   const data = {
     payment_method: {
       au_becs_debit: elements.getElement(AuBankAccountElement),
-      billing_details: {
-        name: paymentData.accountName,
-        email: paymentData.customerEmail, //email required for becs
-      },
+      billing_details: getStripeBillingDetails(paymentData),
     },
   };
 
@@ -115,7 +108,7 @@ const createStripeAuBankAccountRecurringToken = async (paymentData, paymentMetho
 };
 
 const createStripePaymentMethod = async (paymentData, paymentMethod) => {
-  const { stripe, elements, customerName } = paymentData;
+  const { stripe, elements } = paymentData;
 
   // Trigger form validation and wallet collection
   const { error: submitError } = await elements.submit();
@@ -126,9 +119,7 @@ const createStripePaymentMethod = async (paymentData, paymentMethod) => {
   const data = {
     elements,
     params: {
-      billing_details: {
-        name: customerName,
-      }
+      billing_details: getStripeBillingDetails(paymentData),
     }
   };
   const result = await stripe.createPaymentMethod(data);
@@ -138,4 +129,15 @@ const createStripePaymentMethod = async (paymentData, paymentMethod) => {
     token: result.paymentMethod ? result.paymentMethod.id : undefined,
   };
 
+}
+
+function getStripeBillingDetails(paymentData) {
+  // customerInfo is set via getStripeCustomerInfo() in the payment panel
+  const billing_details = { ...paymentData.customerInfo };
+
+  // Prefer cardName or accountName if present.
+  if (paymentData.cardName) billing_details.name = paymentData.cardName;
+  if (paymentData.accountName) billing_details.name = paymentData.accountName;
+
+  return billing_details;
 }
