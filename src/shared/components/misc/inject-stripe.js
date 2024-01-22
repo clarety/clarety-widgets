@@ -58,7 +58,10 @@ export const injectStripe = (PaymentPanelComponent) => {
         options.mode = 'payment';
         options.paymentMethodCreation = 'manual';
         options.currency = this.props.currency.toLowerCase();
-        options.amount = toCents(this.props.amount);
+
+        // stripe will error if we give an amount of 0
+        const dollarAmount = this.props.amount || 1.00;
+        options.amount = toCents(dollarAmount);
 
         if (this.props.frequency) {
           // donations allow different payment types depending on frequency.
