@@ -104,6 +104,13 @@ export const initTrackingData = (widgetProps) => {
       sendResponseUid:  widgetProps.responseId,
       emailResponseUid: widgetProps.emailResponseId || urlParams.get('clarety_source'),
       sourceUrl:        window.location.href,
+      utm: {
+        utm_campaign: urlParams.get('utm_campaign'),
+        utm_source: urlParams.get('utm_source'),
+        utm_medium: urlParams.get('utm_medium'),
+        utm_term: urlParams.get('utm_term'),
+        utm_content: urlParams.get('utm_content'),
+      },
       ...widgetProps.tracking,
     },
   };
