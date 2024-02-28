@@ -72,6 +72,7 @@ export class _LeadGenRoot extends React.Component {
       caseStage: this.props.caseStage,
       variant: this.props.variant,
       confirmPageUrl: this.props.confirmPageUrl,
+      confirmActionAuth: this.props.confirmActionAuth,
     });
 
     initTrackingData(this.props);

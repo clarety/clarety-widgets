@@ -48,10 +48,17 @@ export const createLead = () => {
       
       if (settings.confirmPageUrl) {
         // Redirect.
-        const redirect = result.caseUid
-          ? settings.confirmPageUrl + `?caseUid=${result.caseUid}`
-          : settings.confirmPageUrl;
-        window.location.href = redirect;
+        
+        const url = new URL(settings.confirmPageUrl);
+        if (result.caseUid) {
+          url.searchParams.append('caseUid', result.caseUid);
+        }
+        if (result.actionAuthKey) {
+          url.searchParams.append('clarety_action', result.actionAuthKey);
+        }
+
+        window.location.href = url.href;
+
         return false;
       } else {
         // Show CMS confirm content.

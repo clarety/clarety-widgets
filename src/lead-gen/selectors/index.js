@@ -1,20 +1,17 @@
 import { getSetting, getParsedFormData, getTrackingData, getRecaptcha } from 'shared/selectors';
 
 export const getLeadPostData = (state) => {
-  const caseTypeUid = getSetting(state, 'caseTypeUid');
-  const caseStage = getSetting(state, 'caseStage');
-  const variant = getSetting(state, 'variant');
   const formData = getParsedFormData(state);
   const trackingData = getTrackingData(state);
-  const recaptcha = getRecaptcha(state);
 
   return {
-    caseTypeUid: caseTypeUid,
-    stage: caseStage,
-    variant: variant,
+    caseTypeUid: getSetting(state, 'caseTypeUid'),
+    stage: getSetting(state, 'caseStage'),
+    variant: getSetting(state, 'variant'),
+    confirmActionAuth: getSetting(state, 'confirmActionAuth'),
     ...formData,
     ...trackingData,
-    recaptchaResponse: recaptcha,
+    recaptchaResponse: getRecaptcha(state),
   };
 };
 
