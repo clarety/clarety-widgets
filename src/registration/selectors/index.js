@@ -218,15 +218,17 @@ export const getFeeAmount = (state) => {
 
   const cart = getCart(state);
   if (!cart.summary || !cart.summary.total) return 0;
-  
-  return calcFeesFn(cart.summary.total);
+
+  const amount = calcFeesFn(cart.summary.total);
+  return roundToTwoDecimals(amount);
 };
 
 export const getTotalAmount = (state) => {
   const cart = getCart(state);
 
   if (getShouldAddFeeCover(state)) {
-    return cart.summary.total + getFeeAmount(state);
+    const total = cart.summary.total + getFeeAmount(state);
+    return roundToTwoDecimals(total);
   }
 
   return cart.summary.total;
@@ -366,13 +368,13 @@ const getMerchandisePostData = (state) => {
 
 export const getSubmitRegistrationPostData = (state) => {
   const cart = getCart(state);
-  const fundraising = getFundraisingPostData(state);
   const feeCover = getCoverFeesPostData(state);
 
   return {
     uid: state.cart.uid,
     jwt: state.cart.jwt,
-    fundraising: fundraising,
+    fundraising: getFundraisingPostData(state),
+    promoCode: getPromoCode(state),
     ...cart.payment,
     ...feeCover,
   };
@@ -406,3 +408,7 @@ const getIsRegisteringForSelf = (state) => {
 
   return false;
 };
+
+function roundToTwoDecimals(num) {
+  return Math.round((num + Number.EPSILON) * 100) / 100;
+}
