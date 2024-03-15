@@ -12,6 +12,7 @@ export class QuizCustomerConnect {
       isBusy: getIsBusy(state),
       formData: getFormData(state),
       errors: getErrors(state),
+      defaultCountry: getSetting(state, 'defaultCountry'),
     };
   };
 

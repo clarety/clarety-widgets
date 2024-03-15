@@ -46,6 +46,7 @@ function getIsPhoneRequired(phoneOption) {
 
 function getAddressType(addressOption) {
   if (addressOption === 'postcode'      || addressOption === 'postcode_required')      return 'postcode';
+  if (addressOption === 'state'         || addressOption === 'state_required')         return 'state';
   if (addressOption === 'australian'    || addressOption === 'australian_required')    return 'australian';
   if (addressOption === 'international' || addressOption === 'international_required') return 'international';
 
@@ -54,6 +55,7 @@ function getAddressType(addressOption) {
 
 function getIsAddressRequired(addressOption) {
   if (addressOption === 'postcode_required')      return true;
+  if (addressOption === 'state_required')         return true;
   if (addressOption === 'australian_required')    return true;
   if (addressOption === 'international_required') return true;
 

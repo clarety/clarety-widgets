@@ -105,6 +105,10 @@ export class CustomerPanel extends BasePanel {
       requiredField(errors, formData, 'customer.billing.postcode');
     }
 
+    if (addressType === 'state') {
+      requiredField(errors, formData, 'customer.billing.state');
+    }
+
     if (addressType === 'australian') {
       requiredField(errors, formData, 'customer.billing.address1');
       requiredField(errors, formData, 'customer.billing.suburb');
@@ -289,26 +293,18 @@ export class CustomerPanel extends BasePanel {
   }
 
   renderAddressFields() {
-    const { addressType } = this.props.settings;
-
-    if (addressType === 'postcode') {
-      return this.renderPostCodeField();
+    switch (this.props.settings.addressType) {
+      case 'postcode': return this.renderPostCodeField();
+      case 'state': return this.renderStateField();
+      case 'australian': return this.renderAustralianAddressFields();
+      case 'international': return this.renderInternationalAddressFields();
+      default: return null;
     }
-
-    if (addressType === 'australian') {
-      return this.renderAustralianAddressFields();
-    }
-
-    if (addressType === 'international') {
-      return this.renderInternationalAddressFields();
-    }
-
-    return null;
   }
 
   renderPostCodeField() {
     const { settings, formData } = this.props;
-    const country = formData['customer.billing.country'];
+    const country = formData['customer.billing.country'] || this.props.defaultCountry;
 
     return (
       <Form.Row>
@@ -318,6 +314,27 @@ export class CustomerPanel extends BasePanel {
               field="customer.billing.postcode"
               placeholder={getPostcodeLabel(country)}
               required={settings.isAddressRequired}
+            />
+          </Form.Group>
+        </Col>
+        <Col sm></Col>
+      </Form.Row>
+    );
+  }
+
+  renderStateField() {
+    const { settings, formData } = this.props;
+    const country = formData['customer.billing.country'] || this.props.defaultCountry;
+
+    return (
+      <Form.Row>
+        <Col sm>
+          <Form.Group>
+            <StateInput
+              field="customer.billing.state"
+              placeholder={getStateLabel(country)}
+              required={settings.isAddressRequired}
+              country={country}
             />
           </Form.Group>
         </Col>

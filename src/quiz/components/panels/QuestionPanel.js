@@ -6,7 +6,6 @@ import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/compon
 export class QuestionPanel extends BasePanel {
   onPressOption = (option) => {
     const { question, updateFormData, nextPanel } = this.props;
-
     updateFormData(`answers.${question.id}`, option.value);
     nextPanel();
   };
@@ -31,8 +30,7 @@ export class QuestionPanel extends BasePanel {
 
   renderEdit() {
     const { layout, isBusy, index, question, questions, quizType, settings } = this.props;
-
-	const questionIndex = questions.findIndex((q) => q.id === question.id);
+    const questionIndex = questions.findIndex((q) => q.id === question.id);
 
     return (
       <PanelContainer layout={layout} status="edit">

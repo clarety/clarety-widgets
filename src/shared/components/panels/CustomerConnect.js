@@ -8,6 +8,7 @@ export class CustomerConnect {
       formData: getFormData(state),
       errors: getErrors(state),
       variant: getSetting(state, 'variant'),
+      defaultCountry: getSetting(state, 'defaultCountry'),
     };
   };
 

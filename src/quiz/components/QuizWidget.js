@@ -75,6 +75,7 @@ export class _QuizWidgetRoot extends React.Component {
       resultsOnly: isResumed || this.props.resultsOnly,
       confirmPageUrl: this.props.confirmPageUrl,
       variant: this.props.variant,
+      defaultCountry: this.props.defaultCountry,
     });
 
     initTrackingData(this.props);
