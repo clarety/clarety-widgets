@@ -76,6 +76,7 @@ export class _QuizWidgetRoot extends React.Component {
       confirmPageUrl: this.props.confirmPageUrl,
       variant: this.props.variant,
       defaultCountry: this.props.defaultCountry,
+      confirmActionAuth: this.props.confirmActionAuth,
     });
 
     initTrackingData(this.props);

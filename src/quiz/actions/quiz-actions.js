@@ -91,7 +91,7 @@ export const submitQuiz = () => {
       dispatch(submitQuizSuccess(result));
       dispatch(updateVoteCounts());
 
-      const caseUid = settings.caseTypeUid
+      const lead = settings.caseTypeUid
         ? await dispatch(createLead(result.answersUid))
         : undefined;
 
@@ -103,12 +103,15 @@ export const submitQuiz = () => {
       });
       
       if (settings.confirmPageUrl) {
-        // Redirect.
-        // TODO: replace url param with jwt session cookie.
-        const redirect = caseUid
-          ? settings.confirmPageUrl + `?caseUid=${caseUid}`
-          : settings.confirmPageUrl;
-        window.location.href = redirect;
+        const url = new URL(settings.confirmPageUrl);
+        if (lead && lead.caseUid) {
+          url.searchParams.append('caseUid', lead.caseUid);
+        }
+        if (lead && lead.actionAuthKey) {
+          url.searchParams.append('clarety_action', lead.actionAuthKey);
+        }
+
+        window.location.href = url;
       } else {
         return true;
       }
@@ -173,7 +176,7 @@ export const createLead = (answersUid) => {
       return false;
     } else {
       dispatch(createLeadSuccess(result));
-      return result.caseUid;
+      return result;
     }
   };
 };
