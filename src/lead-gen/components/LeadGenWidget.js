@@ -93,7 +93,7 @@ export class _LeadGenRoot extends React.Component {
   }
 
   render() {
-    const { status, variant, resources, reCaptchaKey } = this.props;
+    const { status, variant, resources, reCaptchaKey, hideWidgetHeader } = this.props;
 
     // Show a loading indicator while we init.
     if (status === statuses.initializing) {
@@ -105,7 +105,7 @@ export class _LeadGenRoot extends React.Component {
     }
 
     return (
-      <div className={`clarety-lead-gen-widget h-100 ${variant}`}>
+      <div className={`clarety-lead-gen-widget h-100 ${variant} ${hideWidgetHeader ? 'hide-widget-header' : ''}`}>
         {this.renderHeader()}
         <PanelManager layout="tabs" resources={resources} />
         <Recaptcha siteKey={reCaptchaKey} language={i18next.language} />
@@ -114,21 +114,19 @@ export class _LeadGenRoot extends React.Component {
   }
 
   renderHeader() {
-    const { HeaderComponent, variant } = this.props;
+    const { HeaderComponent, variant, hideWidgetHeader } = this.props;
 
-    if (HeaderComponent) {
+    if (hideWidgetHeader) {
+      return null;
+    } else if (HeaderComponent) {
       return <HeaderComponent {...this.props} />;
-    }
-
-    if (variant === 'sos') {
+    } else if (variant === 'sos') {
       return <SosProgress sos={this.props.sos} />;
-    }
-
-    if (variant === 'download') {
+    } else if (variant === 'download') {
       return this.renderDownloadHeader();
+    } else {
+      return null;
     }
-
-    return null;
   }
 
   renderDownloadHeader() {
