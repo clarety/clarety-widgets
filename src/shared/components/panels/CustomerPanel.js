@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import { getLanguage, t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/components';
-import { requiredField, emailField, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
+import { requiredField, emailField, getSuburbLabel, getStateLabel, getPostcodeLabel, phoneNumberField } from 'shared/utils';
 import { TextInput, TextAreaInput, EmailInput, PhoneInput, CheckboxInput, StateInput, PostcodeInput, SubmitButton, ErrorMessages, FormElement, CustomerTypeInput, TitleInput, DobInput } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
@@ -67,8 +67,12 @@ export class CustomerPanel extends BasePanel {
   validateMobileField(errors) {
     const { formData, settings } = this.props;
 
-    if (settings.phoneType === 'mobile' && settings.isPhoneRequired) {
-      requiredField(errors, formData, 'customer.mobile');
+    if (settings.phoneType === 'mobile') {
+      if (formData['customer.mobile']) {
+        phoneNumberField(errors, formData, 'customer.mobile');
+      } else if (settings.isPhoneRequired) {
+        requiredField(errors, formData, 'customer.mobile');
+      }
     }
   }
 
@@ -459,6 +463,7 @@ export class CustomerPanel extends BasePanel {
           <CheckboxInput
             field="optIn"
             label={settings.optInText || t('subscribe-to-newsletter', 'Subscribe to newsletter')}
+            initialValue={!!settings.preTickOptIn}
           />
         </Col>
       </Form.Row>
