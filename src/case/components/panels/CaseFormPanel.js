@@ -199,6 +199,10 @@ export class CaseFormPanel extends BasePanel {
       const fieldKey = `extendFields.${field.columnKey}`;
       const fieldType = this.getFieldType(field, fieldKey);
 
+      if (fieldType === 'email' && formData[fieldKey]) {
+        emailField(errors, formData, fieldKey);
+      }
+
       if (fieldType === 'subform') {
         this.validateSubform(errors, field, fieldKey);
       } else if (requiredFields.includes(fieldKey)) {
