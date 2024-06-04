@@ -1,4 +1,6 @@
-import { getSetting, getParsedFormData, getTrackingData, getRecaptcha } from 'shared/selectors';
+import { getSetting, getFormData, getParsedFormData, getTrackingData, getRecaptcha } from 'shared/selectors';
+import { parseNestedElements } from 'shared/utils';
+import { fieldMeetsDisplayCondition } from 'case/utils';
 
 export const getSubmitCasePostData = (state) => {
   return {
@@ -22,7 +24,7 @@ const getCasePostData = (state) => {
     eventUid: getSetting(state, 'eventUid'),
     subject: getSetting(state, 'caseSubject'),
     variant: getSetting(state, 'variant'),
-    ...getParsedFormData(state),
+    ...getCaseFormData(state),
     ...getTrackingData(state),
     recaptchaResponse: getRecaptcha(state),
   };
@@ -38,3 +40,24 @@ export const getCmsConfirmContentFields = (state) => {
     }
   ];
 };
+
+function getCaseFormData(state) {
+  const extendForm = getSetting(state, 'extendForm');
+  const caseFormFields = extendForm ? extendForm.extendFields : [];
+
+  const allFormData = { ...getFormData(state) };
+  const fieldData = removeHiddenFieldData(caseFormFields, allFormData);
+  
+  return parseNestedElements(fieldData);
+}
+
+function removeHiddenFieldData(formFields, formData) {
+  for (const field of formFields) {
+    if (!fieldMeetsDisplayCondition(field, formData)) {
+      const fieldKey = `extendFields.${field.columnKey}`;
+      delete formData[fieldKey];
+    }
+  }
+
+  return formData;
+}
