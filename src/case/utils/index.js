@@ -73,3 +73,14 @@ export async function findAndAttemptCaseActionAuth() {
 
   return null;
 }
+
+export function fieldMeetsDisplayCondition(field, formData) {
+  if (!field.conditionalField) {
+    return true;
+  }
+
+  const value = formData[`extendFields.${field.conditionalField}`];
+  return Array.isArray(value)
+    ? value.includes(field.conditionalValue)
+    : value == field.conditionalValue;
+}

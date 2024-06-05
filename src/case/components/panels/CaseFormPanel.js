@@ -7,6 +7,7 @@ import { getLanguage, t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, AddressFinder } from 'shared/components';
 import { requiredField, emailField, addressField, getSuburbLabel, getStateLabel, getPostcodeLabel, moveInArray, scrollIntoView } from 'shared/utils';
 import { TextInput, TextAreaInput, EmailInput, PhoneInput, NumberInput, CurrencyInput, CheckboxInput, CheckboxesInput, SelectInput, RadioInput, DateInput, StateInput, CountryInput, PostcodeInput, FileUploadInput, RatingInput, RankingInput, FormElement, SubmitButton, BackButton, ErrorMessages } from 'form/components';
+import { fieldMeetsDisplayCondition } from 'case/utils';
 
 export class CaseFormPanel extends BasePanel {
   fieldRefs = [];
@@ -272,11 +273,7 @@ export class CaseFormPanel extends BasePanel {
   }
 
   shouldShowConditionalField(field) {
-    const value = this.props.formData[`extendFields.${field.conditionalField}`];
-
-    return Array.isArray(value)
-      ? value.includes(field.conditionalValue)
-      : value == field.conditionalValue;
+    return fieldMeetsDisplayCondition(field, this.props.formData);
   }
 
   shouldShowSectionSidebar() {
