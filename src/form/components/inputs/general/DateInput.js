@@ -87,7 +87,7 @@ export function _DateInput({ value, error, onChange, initialValue, setInitialVal
     }
 
     closePopper();
-  };  
+  };
 
   return (
     <Form.Group>
