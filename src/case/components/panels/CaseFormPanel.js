@@ -6,7 +6,7 @@ import { faArrowRight, faCheck, faMinus } from '@fortawesome/free-solid-svg-icon
 import { getLanguage, t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, AddressFinder } from 'shared/components';
 import { requiredField, emailField, addressField, getSuburbLabel, getStateLabel, getPostcodeLabel, moveInArray, scrollIntoView } from 'shared/utils';
-import { TextInput, TextAreaInput, EmailInput, PhoneInput, NumberInput, CurrencyInput, CheckboxInput, CheckboxesInput, SelectInput, RadioInput, DateInput, StateInput, CountryInput, PostcodeInput, FileUploadInput, RatingInput, RankingInput, FormElement, SubmitButton, BackButton, ErrorMessages } from 'form/components';
+import { TextInput, TextAreaInput, EmailInput, PhoneInput, NumberInput, CurrencyInput, CheckboxInput, CheckboxesInput, SelectInput, RadioInput, DateInput, DateTimeInput, TimeInput, StateInput, CountryInput, PostcodeInput, FileUploadInput, RatingInput, RankingInput, FormElement, SubmitButton, BackButton, ErrorMessages } from 'form/components';
 import { fieldMeetsDisplayCondition } from 'case/utils';
 
 export class CaseFormPanel extends BasePanel {
@@ -618,10 +618,13 @@ export class CaseFormPanel extends BasePanel {
     // Ignore conditional fields that don't meet their condition.
     if (field.conditionalField && !this.shouldShowConditionalField(field)) return null;
 
+    // The customer opt-in input is rendered seperately in the last section.
+    if (fieldKey === 'customer.optIn') return null;
+
     const isRequired = requiredFields.includes(fieldKey);
     const isDisabled = fetchedCustomer && (settings.disableIfPrefilled || []).includes(fieldKey);
 
-    // Subform fields only: Update field key with subform index. 
+    // Subform fields only: Insert subform index into the field key.
     if (subformIndex !== null) fieldKey = fieldKey.replace('#', subformIndex);
 
     switch (this.getFieldType(field, fieldKey)) {
@@ -636,6 +639,8 @@ export class CaseFormPanel extends BasePanel {
       case 'select':       return this.renderSelectField({ field, fieldKey, isRequired, isDisabled });
       case 'radio':        return this.renderRadioField({ field, fieldKey, isRequired, isDisabled });
       case 'date':         return this.renderDateField({ field, fieldKey, isRequired, isDisabled });
+      case 'datetime':     return this.renderDateTimeField({ field, fieldKey, isRequired, isDisabled });
+      case 'time':         return this.renderTimeField({ field, fieldKey, isRequired, isDisabled });
       case 'fileupload':   return this.renderFileUploadField({ field, fieldKey, isRequired, isDisabled });
       case 'title':        return this.renderTitleField({ field, fieldKey, isRequired, isDisabled });
       case 'contentblock': return this.renderContentBlockField({ field, fieldKey, isRequired, isDisabled });
@@ -654,6 +659,7 @@ export class CaseFormPanel extends BasePanel {
     }
 
     console.warn(`renderField not implemented for type: ${field.type}`);
+    console.warn('field', field);
     return null;
   }
 
@@ -849,6 +855,40 @@ export class CaseFormPanel extends BasePanel {
         {this.renderLabel(field, fieldKey, isRequired)}
 
         <DateInput
+          field={fieldKey}
+          initialValue={this.getInitialValue(fieldKey)}
+          required={isRequired}
+          disabled={isDisabled}
+        />
+
+        {this.renderExplanation(field)}
+      </Form.Group>
+    );
+  }
+
+  renderDateTimeField({ field, fieldKey, isRequired = false, isDisabled = false }) {
+    return (
+      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--datetime" ref={ref => this.fieldRefs[fieldKey] = ref}>
+        {this.renderLabel(field, fieldKey, isRequired)}
+
+        <DateTimeInput
+          field={fieldKey}
+          initialValue={this.getInitialValue(fieldKey)}
+          required={isRequired}
+          disabled={isDisabled}
+        />
+
+        {this.renderExplanation(field)}
+      </Form.Group>
+    );
+  }
+
+  renderTimeField({ field, fieldKey, isRequired = false, isDisabled = false }) {
+    return (
+      <Form.Group controlId={fieldKey} key={fieldKey} className="field field--time" ref={ref => this.fieldRefs[fieldKey] = ref}>
+        {this.renderLabel(field, fieldKey, isRequired)}
+
+        <TimeInput
           field={fieldKey}
           initialValue={this.getInitialValue(fieldKey)}
           required={isRequired}
