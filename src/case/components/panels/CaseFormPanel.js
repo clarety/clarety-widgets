@@ -273,7 +273,7 @@ export class CaseFormPanel extends BasePanel {
   }
 
   shouldShowConditionalField(field) {
-    return fieldMeetsDisplayCondition(field, this.props.formData);
+    return fieldMeetsDisplayCondition(field, this.props.formData, this.props.form.extendFields);
   }
 
   shouldShowSectionSidebar() {
