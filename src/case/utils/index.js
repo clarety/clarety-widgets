@@ -74,9 +74,25 @@ export async function findAndAttemptCaseActionAuth() {
   return null;
 }
 
-export function fieldMeetsDisplayCondition(field, formData) {
+export function fieldMeetsDisplayCondition(field, formData, formFields, depth = 1) {
+  if (depth > 10) {
+    // A misconfigured form could cause us to recurse
+    // infinitely, so use a fixed limit as a precuation.
+    console.error(`[Clarety] fieldMeetsDisplayCondition was recursively called to a depth of ${depth}`)
+    return false;
+  }
+
   if (!field.conditionalField) {
     return true;
+  }
+
+  // The condition field may itself be shown conditionally.
+  // Don't show this field if its condition field is not showing.
+  const conditionField = formFields.find(f => f.columnKey === field.conditionalField);
+  if (conditionField && conditionField.conditionalField) {
+    if (!fieldMeetsDisplayCondition(conditionField, formData, formFields, depth += 1)) {
+      return false;
+    }
   }
 
   const value = formData[`extendFields.${field.conditionalField}`];

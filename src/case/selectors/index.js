@@ -53,7 +53,7 @@ function getCaseFormData(state) {
 
 function removeHiddenFieldData(formFields, formData) {
   for (const field of formFields) {
-    if (!fieldMeetsDisplayCondition(field, formData)) {
+    if (!fieldMeetsDisplayCondition(field, formData, formFields)) {
       const fieldKey = `extendFields.${field.columnKey}`;
       delete formData[fieldKey];
     }
