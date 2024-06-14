@@ -8,7 +8,7 @@ export const fetchCustomer = () => {
     dispatch(fetchCustomerRequest());
     const customer = await DonationApi.fetchCustomer();
 
-    if (customer) {
+    if (customer && customer.status !== 'error') {
       dispatch(fetchCustomerSuccess(customer));
       dispatch(setCustomer(customer));
       dispatch(setCustomerFormData(customer));
