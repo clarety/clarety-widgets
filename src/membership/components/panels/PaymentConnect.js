@@ -10,10 +10,13 @@ export class PaymentConnect {
     const cart = getCart(state);
     const cartTotal = cart.items.reduce((total, item) => total + (item.price * (item.quantity || 1)), 0);
 
+    // 'wallet' types are for express donations, ignore them on the payment panel.
+    const paymentMethods = getPaymentMethods(state).filter(pm => pm.type !== 'wallet');
+
     return {
       isBusy: getIsBusy(state),
       amount: cartTotal,
-      paymentMethods: getPaymentMethods(state),
+      paymentMethods: paymentMethods,
       cartStatus: cart.status,
       authSecret: cart.authSecret,
       formData: getFormData(state),
