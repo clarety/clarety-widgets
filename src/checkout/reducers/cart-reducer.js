@@ -27,6 +27,7 @@ export const cartReducer = (state = initialState, action) => {
     // Cart
 
     case types.fetchCartSuccess:
+    case types.createCartSuccess:
     case types.updateSaleSuccess:
     case types.applyPromoCodeSuccess:
     case types.addDonationSuccess:

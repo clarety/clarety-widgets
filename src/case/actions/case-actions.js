@@ -5,7 +5,7 @@ import { getPanelManager, isNextPanelCmsConfirm, getCurrentPanelIndex, getSettin
 import { setErrors, updateFormData } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { getErrors } from 'form/selectors';
-import { getSubmitCasePostData, getSaveCasePostData, getCmsConfirmContentFields } from 'case/selectors';
+import { getSubmitCasePostData, getSaveCasePostData, getCmsConfirmContentFields, getCaseRequiresPayment } from 'case/selectors';
 import { walkFlattenedKeys } from 'case/utils';
 import { types } from './types';
 
@@ -81,31 +81,45 @@ export const submitCase = () => {
     } else {
       dispatch(submitCaseSuccess(result));
       
-      if (settings.confirmPageUrl) {
-        // Redirect.
-        const url = appendQueryString(settings.confirmPageUrl, { caseUid: result.caseUid });
-        if (settings.confirmPageMode === 'redirect-iframe-parent') {
-          parent.postMessage({ redirect: url }, '*');
-        } else {
-          window.location.href = url;
-        }
-
-        return false;
-      } else {
-        // Show confirm content.
-        if (isNextPanelCmsConfirm(state)) {
-          const fields = getCmsConfirmContentFields(state);
-          const confirmContent = getCmsConfirmContent(settings.widgetElementId, fields);
-          dispatch(setPanelSettings('CmsConfirmPanel', { confirmContent }));
-        }
-
-        dispatch(updateAppSettings({ isShowingConfirmation: true }));
+      if (getCaseRequiresPayment(state)) {
+        ClaretyApi.setJwtCustomer(result.jwtCustomer);
+        dispatch(updateAppSettings({ caseUid: result.caseUid }));
         dispatch(setStatus('ready'));
         return true;
+      } else {
+        return showCaseConfirmation(state, result.caseUid);
       }
     }
   };
 };
+
+export function showCaseConfirmation(state, caseUid) {
+  const { settings } = state;
+
+  if (settings.confirmPageUrl) {
+    // Redirect.
+    const url = appendQueryString(settings.confirmPageUrl, { caseUid });
+    if (settings.confirmPageMode === 'redirect-iframe-parent') {
+      parent.postMessage({ redirect: url }, '*');
+    } else {
+      window.location.href = url;
+    }
+
+    return false;
+  } else {
+    // Show confirm content.
+    if (isNextPanelCmsConfirm(state)) {
+      const fields = getCmsConfirmContentFields(state);
+      const confirmContent = getCmsConfirmContent(settings.widgetElementId, fields);
+      dispatch(setPanelSettings('CmsConfirmPanel', { confirmContent }));
+    }
+
+    dispatch(updateAppSettings({ isShowingConfirmation: true }));
+    dispatch(setStatus('ready'));
+
+    return true;
+  }
+}
 
 export const jumpToPanelForSection = (section) => {
   return async (dispatch, getState) => {

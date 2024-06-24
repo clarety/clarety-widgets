@@ -1,6 +1,7 @@
 import i18next from 'i18next';
 import { ClaretyApi } from 'clarety-utils';
 import { parseNestedElements, toCents } from 'shared/utils';
+import { getSetting } from 'shared/selectors';
 import { types } from 'checkout/actions';
 
 export const fetchCart = (cartUid) => {
@@ -14,6 +15,30 @@ export const fetchCart = (cartUid) => {
       dispatch(fetchCartFailure(result));
     } else {
       dispatch(fetchCartSuccess(result));
+    }
+  };
+};
+
+export const createCart = ({ offerUid, quantity }) => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const storeUid = getSetting(state, 'storeUid');
+
+    dispatch(createCartRequest(storeUid, offerUid, quantity));
+
+    const results = await ClaretyApi.post('carts/items/', { storeUid, offerUid, quantity });
+    const result = results[0];
+
+    if (result.status === 'error') {
+      dispatch(createCartFailure(result));
+      return false;
+    } else {
+      if (result.jwtSession) {
+        ClaretyApi.setJwtSession(result.jwtSession);
+      }
+
+      dispatch(createCartSuccess(result));
+      return true;
     }
   };
 };
@@ -147,6 +172,31 @@ const fetchCartFailure = (result) => ({
   type: types.fetchCartFailure,
   result: result,
 });
+
+// Create Cart
+
+function createCartRequest(storeUid, offerUid, quantity) {
+  return {
+    type: types.createCartRequest,
+    storeUid: storeUid,
+    offerUid: offerUid,
+    quantity: quantity,
+  };
+}
+
+function createCartSuccess(result) {
+  return {
+    type: types.createCartSuccess,
+    result: result,
+  };
+}
+
+function createCartFailure(result) {
+  return {
+    type: types.createCartFailure,
+    result: result,
+  };
+}
 
 // Remove Item
 
