@@ -1,5 +1,6 @@
 import { removePanels, insertPanels, setPanelStatus } from 'shared/actions';
 import { getSetting, getIndexOfPanelWithComponent } from 'shared/selectors';
+import { getCaseRequiresPayment } from 'case/selectors';
 import { CaseFormPanel, CaseFormConnect } from 'case/components';
 
 export const setupFormPanels = () => {
@@ -31,6 +32,11 @@ export const setupFormPanels = () => {
       }));
 
       dispatch(setPanelStatus(0, 'edit'));
-    }    
+    }
+
+    // Remove payment panel if we don't have an offer
+    if (!getCaseRequiresPayment(state)) {
+      dispatch(removePanels({ withComponent: 'PaymentPanel' }));
+    }
   };
 };

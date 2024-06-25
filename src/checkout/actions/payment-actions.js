@@ -2,11 +2,20 @@ import Cookies from 'js-cookie';
 import { ClaretyApi } from 'clarety-utils';
 import { setPayment, prepareStripePayment, authoriseStripePayment, setStatus, statuses } from 'shared/actions';
 import { getCart, getSetting } from 'shared/selectors';
+import { fetchSettings } from 'shared/actions';
 import { getJwtSession, isStripe, splitName, convertCountry } from 'shared/utils';
 import { setFormData } from 'form/actions';
 import { types, createCustomer, updateSale } from 'checkout/actions';
 import { getPaymentMethod, getPaymentPostData } from 'checkout/selectors';
 
+// Get all payment methods for the checkout.
+export function fetchCheckoutPaymentMethods() {
+  return fetchSettings('checkout/', {}, (settings) => ({
+    paymentMethods: settings.paymentMethods,
+  }));
+}
+
+// Get a whitelist of payment method keys that are allowed for this cart.
 export const fetchPaymentMethods = () => {
   return async (dispatch, getState) => {
     const state = getState();
@@ -48,7 +57,7 @@ export const makePayment = (paymentData) => {
   };
 };
 
-const preparePayment = (paymentData, paymentMethod) => {
+export const preparePayment = (paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     if (isStripe(paymentMethod)) {
       // Stripe payment.
@@ -78,7 +87,7 @@ const preparePayment = (paymentData, paymentMethod) => {
   };
 };
 
-const attemptPayment = (paymentData, paymentMethod) => {
+export const attemptPayment = (paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     const state = getState();
 
@@ -105,13 +114,13 @@ const handlePaymentResult = (result, paymentData, paymentMethod) => {
   }
 };
 
-const handlePaymentError = (result, paymentData, paymentMethod) => {
+export const handlePaymentError = (result, paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     dispatch(makePaymentFailure(result));
   };
 };
 
-const handlePaymentAuthorise = (result, paymentData, paymentMethod) => {
+export const handlePaymentAuthorise = (result, paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     if (isStripe(paymentMethod)) {
       return dispatch(handleStripeAuthorise(result, paymentData, paymentMethod));
@@ -250,7 +259,7 @@ const makePaymentRequest = (paymentData) => ({
   paymentData: paymentData,
 });
 
-const makePaymentSuccess = (result) => ({
+export const makePaymentSuccess = (result) => ({
   type: types.makePaymentSuccess,
   result: result,
 });

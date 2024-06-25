@@ -61,3 +61,7 @@ function removeHiddenFieldData(formFields, formData) {
 
   return formData;
 }
+
+export function getCaseRequiresPayment(state) {
+  return !!getSetting(state, 'offerUid');
+}

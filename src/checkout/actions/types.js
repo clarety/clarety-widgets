@@ -15,6 +15,10 @@ export const types = {
   fetchCartSuccess: 'FETCH_CART_SUCCESS',
   fetchCartFailure: 'FETCH_CART_FAILURE',
 
+  createCartRequest: 'CREATE_CART_REQUEST',
+  createCartSuccess: 'CREATE_CART_SUCCESS',
+  createCartFailure: 'CREATE_CART_FAILURE',
+
   addDonationRequest: 'ADD_DONATION_REQUEST',
   addDonationSuccess: 'ADD_DONATION_SUCCESS',
   addDonationFailure: 'ADD_DONATION_FAILURE',

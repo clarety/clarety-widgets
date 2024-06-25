@@ -29,7 +29,7 @@ class _PromoCodeForm extends React.Component {
     }));
   };
 
-  onPressApplyDiscount = event => {
+  onPressApplyDiscount = (event) => {
     event.preventDefault();
 
     const { promoCode } = this.state.formData;
@@ -42,6 +42,13 @@ class _PromoCodeForm extends React.Component {
     }
   }
 
+  onKeyDown = (event) => {
+    // enter/return key
+    if (event.keyCode === 13 || event.keyCode === 169) {
+      this.onPressApplyDiscount(event);
+    }
+  };
+
   render() {
     const { promoCode } = this.state.formData;
     const { isBusy, isDisabled } = this.props;
@@ -49,21 +56,28 @@ class _PromoCodeForm extends React.Component {
     return (
       <BlockUi tag="div" blocking={isDisabled} loader={<span></span>}>
         <FormContext.Provider value={this.state}>
-          <Form onSubmit={this.onPressApplyDiscount} className="promo-code-form">
+          <div className="form promo-code-form">
             <Form.Row>
               <Col>
-                <TextInput field="promoCode" label={t('promo-code', 'Discount Code')} hideLabel required />
+                <TextInput
+                  field="promoCode"
+                  label={t('promo-code', 'Discount Code')}
+                  onKeyDown={this.onKeyDown}
+                  hideLabel
+                  required
+                />
               </Col>
               <Col xs="auto">
                 <Button
                   title={t('apply', 'Apply')}
-                  type="submit"
                   isBusy={isBusy}
                   disabled={!promoCode}
+                  onClick={this.onPressApplyDiscount}
+                  type="button"
                 />
               </Col>
             </Form.Row>
-          </Form>
+          </div>
         </FormContext.Provider>
       </BlockUi>
     );
