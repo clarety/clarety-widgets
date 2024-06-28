@@ -51,7 +51,7 @@ export class _PaymentPanel extends BasePaymentPanel {
     return (
       <React.Fragment>
         <div className="cart-summary">
-          <CartSummary />
+          <CartSummary allowEdit={false} />
         </div>
 
         <PromoCodeForm />
