@@ -9,12 +9,12 @@ import { CartItem, PromoCodeForm } from 'checkout/components';
 
 class _CartSummary extends React.Component {
   render() {
-    const { cart, mode } = this.props;
+    const { cart, mode, allowEdit } = this.props;
     if (!cart.items) return null;
 
     return (
       <div>
-        {mode === 'incomplete' &&
+        {allowEdit && mode === 'incomplete' &&
           <PromoCodeForm />
         }
 
@@ -24,7 +24,7 @@ class _CartSummary extends React.Component {
         
         <CartTotals cart={cart} mode={mode} />
 
-        {mode === 'incomplete' &&
+        {allowEdit && mode === 'incomplete' &&
           <a href="shop?showCart=true" className="btn btn-link btn-edit-cart">{t('edit-cart', 'Edit Cart')}</a>
         }
       </div>
