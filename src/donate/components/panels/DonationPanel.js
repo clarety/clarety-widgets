@@ -180,21 +180,29 @@ export class DonationPanel extends BasePanel {
 
     const value = selections['recurring'].offerPaymentUid;
 
+    let scheduleSelectStyle = settings.scheduleSelectStyle || 'auto';
+    if (scheduleSelectStyle === 'auto') {
+      scheduleSelectStyle = offer.schedules.length > 2 ? 'dropdown' : 'button-group';
+    }
+
     return (
       <div className="schedule-select">
         <h3>{settings.scheduleSelectHeading || t('select-frequency', 'Select Frequency')}</h3>
 
-        {offer.schedules.length > 2
-          ? <ScheduleSelectDropdown
-              value={value}
-              schedules={offer.schedules}
-              onChange={this.onSelectSchedule}
-            />
-          : <ScheduleSelectButtonGroup
-              value={value}
-              schedules={offer.schedules}
-              onChange={this.onSelectSchedule}
-            />
+        {scheduleSelectStyle === 'dropdown' &&
+          <ScheduleSelectDropdown
+            value={value}
+            schedules={offer.schedules}
+            onChange={this.onSelectSchedule}
+          />
+        }
+
+        {scheduleSelectStyle === 'button-group' &&
+          <ScheduleSelectButtonGroup
+            value={value}
+            schedules={offer.schedules}
+            onChange={this.onSelectSchedule}
+          />
         }
       </div>
     );
