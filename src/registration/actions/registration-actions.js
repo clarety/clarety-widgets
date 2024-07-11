@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+import { getLanguage } from 'shared/translations';
 import { setPayment, prepareStripePayment, authoriseStripePayment, setStatus, statuses } from 'shared/actions';
 import { getCart, getSetting } from 'shared/selectors';
 import { isStripe } from 'shared/utils';
@@ -157,10 +158,16 @@ const handlePaymentComplete = (result, paymentData, paymentMethod) => {
     const confirmPageUrl = getSetting(state, 'confirmPageUrl');
 
     dispatch(registrationSubmitSuccess(result));
+    
+    Cookies.set('session-jwt', cart.jwt);
 
     // Redirect on success.
-    Cookies.set('session-jwt', cart.jwt);
-    window.location.href = confirmPageUrl || result.redirect || 'register-confirm.php';
+    const url = new URL(confirmPageUrl || result.redirect || 'register-confirm.php', document.location);
+    const language = getLanguage();
+    if (language) {
+      url.searchParams.set('language', language);
+    }
+    window.location.href = url.href;
   }
 };
 
