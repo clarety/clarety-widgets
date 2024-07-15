@@ -60,7 +60,6 @@ export const submitCase = () => {
     dispatch(setStatus('busy'));
 
     const state = getState();
-    const { settings } = state;
 
     const recaptcha = await executeRecaptcha();
     dispatch(setRecaptcha(recaptcha));
@@ -87,38 +86,41 @@ export const submitCase = () => {
         dispatch(setStatus('ready'));
         return true;
       } else {
-        return showCaseConfirmation(state, result.caseUid);
+        return dispatch(showCaseConfirmation(result.caseUid));
       }
     }
   };
 };
 
-export function showCaseConfirmation(state, caseUid) {
-  const { settings } = state;
+export function showCaseConfirmation(caseUid) {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const { settings } = state;
 
-  if (settings.confirmPageUrl) {
-    // Redirect.
-    const url = appendQueryString(settings.confirmPageUrl, { caseUid });
-    if (settings.confirmPageMode === 'redirect-iframe-parent') {
-      parent.postMessage({ redirect: url }, '*');
+    if (settings.confirmPageUrl) {
+      // Redirect.
+      const url = appendQueryString(settings.confirmPageUrl, { caseUid });
+      if (settings.confirmPageMode === 'redirect-iframe-parent') {
+        parent.postMessage({ redirect: url }, '*');
+      } else {
+        window.location.href = url;
+      }
+
+      return false;
     } else {
-      window.location.href = url;
+      // Show confirm content.
+      if (isNextPanelCmsConfirm(state)) {
+        const fields = getCmsConfirmContentFields(state);
+        const confirmContent = getCmsConfirmContent(settings.widgetElementId, fields);
+        dispatch(setPanelSettings('CmsConfirmPanel', { confirmContent }));
+      }
+
+      dispatch(updateAppSettings({ isShowingConfirmation: true }));
+      dispatch(setStatus('ready'));
+
+      return true;
     }
-
-    return false;
-  } else {
-    // Show confirm content.
-    if (isNextPanelCmsConfirm(state)) {
-      const fields = getCmsConfirmContentFields(state);
-      const confirmContent = getCmsConfirmContent(settings.widgetElementId, fields);
-      dispatch(setPanelSettings('CmsConfirmPanel', { confirmContent }));
-    }
-
-    dispatch(updateAppSettings({ isShowingConfirmation: true }));
-    dispatch(setStatus('ready'));
-
-    return true;
-  }
+  };
 }
 
 export const jumpToPanelForSection = (section) => {

@@ -55,6 +55,6 @@ const handlePaymentComplete = (result, paymentData, paymentMethod) => {
 
     await ClaretyApi.post('cases/', postData);
 
-    return showCaseConfirmation(state, caseUid);
+    return dispatch(showCaseConfirmation(caseUid));
   }
 };
