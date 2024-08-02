@@ -141,7 +141,7 @@ export class _CheckoutRoot extends React.Component {
         <Container fluid>
           <Row>
             <Col lg={6} className="col-summary order-lg-1">
-              <CartSummary resources={this.props.resources} />
+              <CartSummary resources={this.props.resources} allowEdit />
             </Col>
 
             <Col lg={6} className="col-checkout">
