@@ -17,6 +17,7 @@ export function getCountryOptions(region) {
 export function getStateOptions(country) {
   switch (country) {
     case 'AU': return auStateOptions;
+    case 'CA': return caStateOptions;
     case 'UK': return ukStateOptions;
     case 'GB': return ukStateOptions;
     case 'US': return usStateOptions;
@@ -36,6 +37,9 @@ export function getSuburbLabel(country) {
     case 'GB':
       return t(['city-town', 'suburb'], 'City / Town');
 
+    case 'CA':
+      return t('city', 'City');
+
     default:
       return t(['city-suburb', 'suburb'], 'City / Suburb');
   }
@@ -49,6 +53,9 @@ export function getStateLabel(country) {
     
     case 'NZ':
       return t('city', 'City');
+
+    case 'CA':
+      return t('province', 'Province');
     
     default:
       return t('state', 'State');
@@ -65,6 +72,9 @@ export function getPostcodeLabel(country) {
 
     case 'US':
       return t('zipcode', 'Zip Code');
+
+    case 'CA':
+      return t('postalcode', 'Postal Code');
 
     default:
       return t('postcode', 'Zip Code / Postcode');
@@ -91,6 +101,22 @@ const ukStateOptions = [
   { value: 'Northern Ireland', label: 'Northern Ireland' },
   { value: 'Scotland', label: 'Scotland' },
   { value: 'UK-Aberdeen', label: 'UK-Aberdeen' },
+];
+
+const caStateOptions = [
+  { value: 'AB', label: 'Alberta' },
+  { value: 'BC', label: 'British Columbia' },
+  { value: 'MB', label: 'Manitoba' },
+  { value: 'NB', label: 'New Brunswick' },
+  { value: 'NL', label: 'Newfoundland and Labrador' },
+  { value: 'NT', label: 'Northwest Territories' },
+  { value: 'NS', label: 'Nova Scotia' },
+  { value: 'NU', label: 'Nunavut' },
+  { value: 'ON', label: 'Ontario' },
+  { value: 'PE', label: 'Prince Edward Island' },
+  { value: 'QC', label: 'Quebec' },
+  { value: 'SK', label: 'Saskatchewan' },
+  { value: 'YT', label: 'Yukon' },
 ];
 
 const usStateOptions = [
