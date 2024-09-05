@@ -54,7 +54,9 @@ export class _PaymentPanel extends BasePaymentPanel {
           <CartSummary allowEdit={false} />
         </div>
 
-        <PromoCodeForm />
+        <PromoCodeForm
+          onPromoCodeApplied={this.props.fetchAllowedPaymentMethods}
+        />
       </React.Fragment>
     );
   }

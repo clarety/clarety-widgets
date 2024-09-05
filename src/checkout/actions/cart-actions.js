@@ -149,8 +149,10 @@ export const applyPromoCode = (promoCode) => {
 
     if (result.status === 'error') {
       dispatch(applyPromoCodeFailure(result));
+      return false;
     } else {
       dispatch(applyPromoCodeSuccess(result));
+      return true;
     }
   };
 };

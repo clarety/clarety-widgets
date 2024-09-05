@@ -27,6 +27,8 @@ export const getPaymentMethods = (state) => {
   const availableMethods = getSetting(state, 'paymentMethods');
   const allowedMethods = getCart(state).paymentMethods;
 
+  if (!availableMethods) return null;
+
   // Return all methods if we don't know which are allowed yet.
   if (!allowedMethods || !allowedMethods.length) {
     return availableMethods;

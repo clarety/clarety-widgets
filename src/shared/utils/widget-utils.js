@@ -64,15 +64,17 @@ export function getCmsConfirmContent(elementId, fields) {
 
 export function scrollIntoView(component, offset = 100) {
   const node = ReactDOM.findDOMNode(component);
-  const rect = node.getBoundingClientRect();
+  if (node) {
+    const rect = node.getBoundingClientRect();
 
-  const shouldScroll = rect.top < offset || rect.bottom > window.innerHeight;
+    const shouldScroll = rect.top < offset || rect.bottom > window.innerHeight;
 
-  if (shouldScroll) {
-    window.scrollTo({
-      top: rect.top + window.pageYOffset - offset,
-      behavior: 'smooth',
-    });
+    if (shouldScroll) {
+      window.scrollTo({
+        top: rect.top + window.pageYOffset - offset,
+        behavior: 'smooth',
+      });
+    }
   }
 }
 
