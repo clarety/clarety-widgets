@@ -29,11 +29,14 @@ class _PromoCodeForm extends React.Component {
     }));
   };
 
-  onPressApplyDiscount = (event) => {
+  onPressApplyDiscount = async (event) => {
     event.preventDefault();
 
     const { promoCode } = this.state.formData;
-    this.props.applyPromoCode(promoCode);
+    const didApply = await this.props.applyPromoCode(promoCode);
+    if (didApply && this.props.onPromoCodeApplied) {
+      this.props.onPromoCodeApplied();
+    }
   };
 
   componentDidUpdate(prevProps) {

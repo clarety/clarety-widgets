@@ -59,8 +59,10 @@ export class CaseFormPanel extends BasePanel {
   componentDidUpdate(prevProps) {
     super.componentDidUpdate(prevProps);
 
-    if (prevProps.errors !== this.props.errors) {
-      this.scrollToFirstError(this.props.errors);
+    if (this.props.status === 'edit') {
+      if (prevProps.errors !== this.props.errors) {
+        this.scrollToFirstError(this.props.errors);
+      }
     }
   }
 

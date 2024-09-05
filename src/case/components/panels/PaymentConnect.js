@@ -2,14 +2,18 @@ import { getSetting, getCart, getCurrency, getIsBusy } from 'shared/selectors';
 import { getFormData, getErrors } from 'form/selectors';
 import { updateFormData, setErrors } from 'form/actions';
 import { createCart, fetchCheckoutPaymentMethods, fetchPaymentMethods as fetchAllowedPaymentMethods } from 'checkout/actions';
+import { getPaymentMethods } from 'checkout/selectors';
 import { makePayment } from 'case/actions';
 
 export class PaymentConnect {
   static mapStateToProps = (state, ownProps) => {
+    const cart = getCart(state);
+
     return {
       isBusy: getIsBusy(state),
-      currency: getCurrency(state).code,
-      paymentMethods: getSetting(state, 'paymentMethods'),
+      currency: cart.currency ? cart.currency.code : null,
+      amount: cart.summary ? cart.summary.total : null,
+      paymentMethods: getPaymentMethods(state),
       cartStatus: getCart(state).status,
       authSecret: getCart(state).authSecret,
       formData: getFormData(state),
