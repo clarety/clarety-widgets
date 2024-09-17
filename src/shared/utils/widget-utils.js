@@ -2,8 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Cookies from 'js-cookie';
 import jwtDecode from 'jwt-decode';
-import { Config } from 'shared/utils/config';
 import { t } from 'shared/translations';
+import { Config } from 'shared/utils/config';
+import { ClaretyApi } from 'shared/utils/clarety-api';
 
 export const FormContext = React.createContext();
 
@@ -45,6 +46,26 @@ function getDecodedJwtCookie(cookieName) {
 let _nextId = 0;
 export function nextId() {
   return _nextId++;
+}
+
+/** @returns {{ fbp?: string, fbc?: string }} */
+export function getFacebookCookies() {
+  return {
+    fbp: Cookies.get('_fbp'),
+    fbc: Cookies.get('_fbc'),
+  };
+}
+
+export function setApiFacebookCookies() {
+  const facebookCookies = getFacebookCookies();
+
+  if (facebookCookies.fbp) {
+    ClaretyApi.setHeader('clarety-fbp', facebookCookies.fbp);
+  }
+
+  if (facebookCookies.fbc) {
+    ClaretyApi.setHeader('clarety-fbc', facebookCookies.fbc);
+  }
 }
 
 export function getCmsConfirmContent(elementId, fields) {
