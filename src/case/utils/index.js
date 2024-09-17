@@ -90,7 +90,7 @@ export function fieldMeetsDisplayCondition(field, formData, formFields, depth = 
   // Don't show this field if its condition field is not showing.
   const conditionField = formFields.find(f => f.columnKey === field.conditionalField);
   if (conditionField && conditionField.conditionalField) {
-    if (!fieldMeetsDisplayCondition(conditionField, formData, formFields, depth += 1)) {
+    if (!fieldMeetsDisplayCondition(conditionField, formData, formFields, depth + 1)) {
       return false;
     }
   }

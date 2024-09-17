@@ -5,6 +5,7 @@ export const getLeadPostData = (state) => {
   const trackingData = getTrackingData(state);
 
   return {
+    storeUid: getSetting(state, 'storeUid'),
     caseTypeUid: getSetting(state, 'caseTypeUid'),
     stage: getSetting(state, 'caseStage'),
     variant: getSetting(state, 'variant'),

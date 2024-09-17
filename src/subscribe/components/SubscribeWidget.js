@@ -61,6 +61,7 @@ export class _SubscribeWidgetRoot extends React.Component {
     updateAppSettings({
       widgetElementId: this.props.elementId,
       storeCode: this.props.storeCode,
+      storeUid: this.props.storeUid,
       caseTypeUid: this.props.caseTypeUid,
       caseStage: this.props.caseStage,
       nameOption: this.props.nameOption,
