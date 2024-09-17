@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { ClaretyApi } from 'clarety-utils';
+import { ClaretyApi } from 'shared/utils/clarety-api';
 import { types } from 'shared/actions';
 import { getClientId } from 'shared/selectors';
 

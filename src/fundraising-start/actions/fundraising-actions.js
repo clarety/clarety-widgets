@@ -1,4 +1,4 @@
-import { ClaretyApi } from 'clarety-utils';
+import { ClaretyApi } from 'shared/utils/clarety-api';
 import { appendQueryString } from 'shared/utils';
 import { setStatus } from 'shared/actions';
 import { setErrors } from 'form/actions';

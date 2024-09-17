@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Cookies from 'js-cookie';
 import jwtDecode from 'jwt-decode';
-import { Config } from 'clarety-utils';
+import { Config } from 'shared/utils/config';
 import { t } from 'shared/translations';
 
 export const FormContext = React.createContext();

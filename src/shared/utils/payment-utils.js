@@ -1,4 +1,4 @@
-import { Config } from 'clarety-utils';
+import { Config } from 'shared/utils/config';
 
 export function isStripe(paymentMethod) {
   return isStripeCard(paymentMethod) || isStripeAuBankAccount(paymentMethod) || isStripePaymentForm(paymentMethod);

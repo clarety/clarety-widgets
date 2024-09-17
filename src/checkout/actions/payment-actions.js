@@ -1,8 +1,8 @@
 import Cookies from 'js-cookie';
-import { ClaretyApi } from 'clarety-utils';
 import { setPayment, prepareStripePayment, authoriseStripePayment, setStatus, statuses } from 'shared/actions';
 import { getCart, getSetting } from 'shared/selectors';
 import { fetchSettings } from 'shared/actions';
+import { ClaretyApi } from 'shared/utils/clarety-api';
 import { getJwtSession, isStripe, splitName, convertCountry } from 'shared/utils';
 import { setFormData } from 'form/actions';
 import { types, createCustomer, updateSale } from 'checkout/actions';

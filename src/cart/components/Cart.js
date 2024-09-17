@@ -3,7 +3,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider} from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import i18next from 'i18next';
-import { ClaretyApi } from 'clarety-utils';
+import { ClaretyApi } from 'shared/utils/clarety-api';
 import { getJwtSession } from 'shared/utils';
 import { CartHeader, CartSummary, CartFooter } from "cart/components";
 import { cartReducer } from 'cart/reducers';

@@ -1,5 +1,5 @@
 import i18next from 'i18next';
-import { ClaretyApi } from 'clarety-utils';
+import { ClaretyApi } from 'shared/utils/clarety-api';
 import { fetchSettings } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
 import { types } from 'checkout/actions';

@@ -4,7 +4,7 @@ import ReactPhoneNumberInput from 'react-phone-number-input';
 import { getCountries, getCountryCallingCode } from 'react-phone-number-input/input';
 import enLabels from 'react-phone-number-input/locale/en';
 import 'react-phone-number-input/style.css';
-import { Config } from 'clarety-utils';
+import { Config } from 'shared/utils/config';
 import { t, getLanguage } from 'shared/translations';
 import { getSetting } from 'shared/selectors';
 import { FieldError } from 'form/components';

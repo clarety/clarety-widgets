@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { ClaretyApi } from 'clarety-utils';
+import { ClaretyApi } from 'shared/utils/clarety-api';
 import { setStatus, setRecaptcha } from 'shared/actions';
 import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';

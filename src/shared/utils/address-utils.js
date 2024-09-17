@@ -1,4 +1,4 @@
-import { Config } from 'clarety-utils';
+import { Config } from 'shared/utils/config';
 import { t } from 'shared/translations';
 
 export function getCountryOptions(region) {

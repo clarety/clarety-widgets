@@ -1,5 +1,5 @@
 import uuid from 'uuid/v4';
-import { ClaretyApi } from 'clarety-utils';
+import { ClaretyApi } from 'shared/utils/clarety-api';
 import { getTrackingData } from 'shared/selectors';
 import { types } from 'shared/actions';
 

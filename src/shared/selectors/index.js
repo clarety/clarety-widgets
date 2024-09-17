@@ -1,5 +1,5 @@
-import { getEnv } from 'clarety-utils';
 import { statuses } from 'shared/actions';
+import { getEnv } from 'shared/utils/env';
 import { parseNestedElements, getElementOptions } from 'shared/utils';
 
 export const getAuth = (state) => state.auth;

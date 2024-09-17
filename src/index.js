@@ -4,11 +4,11 @@ import smoothscroll from 'smoothscroll-polyfill';
 
 smoothscroll.polyfill();
 
-export { ClaretyApi } from 'clarety-utils';
-export { Config } from 'clarety-utils';
 export { connect } from 'react-redux';
 
 export { initTranslations } from 'shared/translations';
+export { ClaretyApi } from 'shared/utils/clarety-api';
+export { Config } from 'shared/utils/config';
 export { renderWidget, getElementOptions, getSitePath, loadCss } from 'shared/utils';
 
 export { DonateWidget } from 'donate/components';

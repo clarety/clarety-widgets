@@ -1,4 +1,4 @@
-import { ClaretyApi } from 'clarety-utils';
+import { ClaretyApi } from 'shared/utils/clarety-api';
 import { setStatus, statuses } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
 import { preparePayment, attemptPayment, handlePaymentError, handlePaymentAuthorise, makePaymentSuccess } from 'checkout/actions';

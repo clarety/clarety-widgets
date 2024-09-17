@@ -1,5 +1,5 @@
 import i18next from 'i18next';
-import { ClaretyApi } from 'clarety-utils';
+import { ClaretyApi } from 'shared/utils/clarety-api';
 
 export class RegistrationApi {
   static storeId = null;

@@ -1,4 +1,4 @@
-import { ClaretyApi } from 'clarety-utils';
+import { ClaretyApi } from 'shared/utils/clarety-api';
 import { types, statuses, setStatus } from 'shared/actions';
 
 export const fetchSettings = (endpoint, params, map) => {

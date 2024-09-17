@@ -1,6 +1,6 @@
-import { ClaretyApi } from 'clarety-utils';
 import { setStatus, setPanelSettings, updateAppSettings, setRecaptcha } from 'shared/actions';
 import { getSetting, isNextPanelCmsConfirm } from 'shared/selectors';
+import { ClaretyApi } from 'shared/utils/clarety-api';
 import { getCmsConfirmContent } from 'shared/utils';
 import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';

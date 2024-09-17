@@ -1,7 +1,7 @@
 import i18next from 'i18next';
 import jwtDecode from 'jwt-decode';
-import { ClaretyApi } from 'clarety-utils';
 import { emailStatuses, setCustomer } from 'shared/actions';
+import { ClaretyApi } from 'shared/utils/clarety-api';
 import { parseNestedElements } from 'shared/utils';
 import { types } from 'checkout/actions';
 

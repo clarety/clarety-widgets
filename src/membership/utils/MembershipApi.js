@@ -1,4 +1,4 @@
-import { ClaretyApi } from 'clarety-utils';
+import { ClaretyApi } from 'shared/utils/clarety-api';
 
 export class MembershipApi {
   static setJwtCustomer(jwtCustomer) {

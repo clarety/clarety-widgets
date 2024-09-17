@@ -1,4 +1,5 @@
-import { Config, getEnv } from 'clarety-utils';
+import { Config } from 'shared/utils/config';
+import { getEnv } from 'shared/utils/env';
 
 export function getSitePath() {
   let devSitePath = Config.get('devSitePath');

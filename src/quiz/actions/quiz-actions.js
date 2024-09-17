@@ -1,6 +1,6 @@
-import { ClaretyApi } from 'clarety-utils';
 import { setStatus, removePanels, insertPanels, setPanelStatus, setPanelSettings, updateAppSettings, setRecaptcha } from 'shared/actions';
 import { getSetting, getFormData, getIndexOfPanelWithComponent } from 'shared/selectors';
+import { ClaretyApi } from 'shared/utils/clarety-api';
 import { saveState, getCustomerPanelSettingsFromWidgetProps } from 'shared/utils';
 import { setErrors } from 'form/actions';
 import { executeRecaptcha } from 'form/components';

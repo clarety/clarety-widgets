@@ -28,7 +28,6 @@
     "axios": "^1.7.4",
     "babel-runtime": "^6.26.0",
     "card-validator": "^6.2.0",
-    "clarety-utils": "^1.4.0",
     "core-js": "^3.6.4",
     "custom-event-polyfill": "^1.0.7",
     "date-fns": "^2.15.0",
