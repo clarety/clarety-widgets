@@ -8,7 +8,7 @@ import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 import { statuses, setStore, initTrackingData, fetchSettings, updateAppSettings, setPanels, setApiCampaignUids } from 'shared/actions';
 import { PanelManager, StepIndicator } from 'shared/components';
-import { getJwtCustomer, getJwtAccount, Resources, convertOptions } from 'shared/utils';
+import { getJwtCustomer, getJwtAccount, Resources, convertOptions, setApiFacebookCookies } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { handleAmountUrlParam, selectFrequency } from 'donate/actions';
 import { rootReducer } from 'donate/reducers';
@@ -103,6 +103,7 @@ export class _DonateWidgetRoot extends React.Component {
 
     initTrackingData(this.props);
     setApiCampaignUids();
+    setApiFacebookCookies();
 
     const promises = [];
 
