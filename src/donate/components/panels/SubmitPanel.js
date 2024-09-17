@@ -14,7 +14,7 @@ export class SubmitPanel extends BasePanel {
 
     const { onSubmit, nextPanel } = this.props;
 
-    const isValid = this.validate();
+    const isValid = await this.validate();
     if (!isValid) return;
 
     const paymentPanel = this.getPaymentPanel();
@@ -33,13 +33,13 @@ export class SubmitPanel extends BasePanel {
     );
   }
 
-  validate() {
+  async validate() {
     // Validate any panels with a 'validate' function.
     for (const panel of this.props.panelRefs) {
       if (panel === this) continue;
       if (!panel.validate) continue;
 
-      if (!panel.validate()) {
+      if (!await panel.validate()) {
         panel.scrollIntoView();
         return false;
       }
