@@ -19,6 +19,7 @@ export const getSaveCasePostData = (state) => {
 
 const getCasePostData = (state) => {
   return {
+    storeUid: getSetting(state, 'storeUid'),
     caseTypeUid: getSetting(state, 'caseTypeUid'),
     caseUid: getSetting(state, 'caseUid'),
     eventUid: getSetting(state, 'eventUid'),

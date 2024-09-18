@@ -68,6 +68,7 @@ export class _LeadGenRoot extends React.Component {
     updateAppSettings({
       widgetElementId: this.props.elementId,
       storeCode: this.props.storeCode,
+      storeUid: this.props.storeUid,
       caseTypeUid: this.props.caseTypeUid,
       caseStage: this.props.caseStage,
       variant: this.props.variant,

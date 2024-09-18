@@ -3,6 +3,7 @@ import { splitName } from 'shared/utils';
 
 export const getSubscribePostData = (state) => {
   const caseTypeUid = getSetting(state, 'caseTypeUid');
+  const storeUid = getSetting(state, 'storeUid');
   const caseStage = getSetting(state, 'caseStage');
   const formData = getParsedFormData(state);
   const nameOption = getSetting(state, 'nameOption');
@@ -17,6 +18,7 @@ export const getSubscribePostData = (state) => {
 
   return {
     caseTypeUid: caseTypeUid,
+    storeUid: storeUid,
     stage: caseStage,
     optIn: optIn,
     ...formData,

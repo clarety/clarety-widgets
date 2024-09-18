@@ -5,7 +5,7 @@ import { connect, Provider as ReduxProvider } from 'react-redux';
 import i18next from 'i18next';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { statuses, setStore, setStatus, setAuth, initTrackingData, fetchSettings, updateAppSettings, setPanels } from 'shared/actions';
+import { statuses, setStatus, setAuth, initTrackingData, fetchSettings, updateAppSettings, setPanels } from 'shared/actions';
 import { PanelManager, StepIndicator } from 'shared/components';
 import { ClaretyApi } from 'shared/utils/clarety-api';
 import { Resources, getJwtAccount, getJwtSession } from 'shared/utils';
@@ -87,8 +87,6 @@ export class _CaseWidgetRoot extends React.Component {
       addressFinderKey:     this.props.addressFinderKey,
       addressFinderCountry: this.props.addressFinderCountry,
     });
-
-    this.props.setStore(this.props.storeUid);
 
     this.props.initTrackingData(this.props);
 
@@ -214,7 +212,6 @@ const mapStateToProps = state => {
 };
 
 const actions = {
-  setStore: setStore,
   setStatus: setStatus,
   setAuth: setAuth,
   initTrackingData: initTrackingData,
