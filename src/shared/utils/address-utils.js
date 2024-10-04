@@ -101,6 +101,7 @@ const ukStateOptions = [
   { value: 'Northern Ireland', label: 'Northern Ireland' },
   { value: 'Scotland', label: 'Scotland' },
   { value: 'UK-Aberdeen', label: 'UK-Aberdeen' },
+  { value: 'Wales', label: 'Wales' },
 ];
 
 const caStateOptions = [
