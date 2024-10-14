@@ -1,10 +1,10 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { statuses, setStatus, setRecaptcha, clearRecaptcha, setPayment, setCustomer, updateCartData, prepareStripePayment, authoriseStripePayment, updateAppSettings, setPanelStatus } from 'shared/actions';
+import { statuses, setStatus, setRecaptcha, clearRecaptcha, setTurnstileToken, setPayment, setCustomer, updateCartData, prepareStripePayment, authoriseStripePayment, updateAppSettings, setPanelStatus } from 'shared/actions';
 import { getSetting, getPanelManager } from 'shared/selectors';
 import { isHongKongDirectDebit, isStripe, splitName, convertCountry } from 'shared/utils';
 import { setFormData, setErrors, updateFormData } from 'form/actions';
-import { executeRecaptcha } from 'form/components';
+import { executeRecaptcha, currentTurnstileToken } from 'form/components';
 import { DonationApi } from 'donate/utils';
 import { types, addDonationToCart, addCustomerToCart, setDonationStartDate, selectAmount, selectSchedule, selectFrequency } from 'donate/actions';
 import { getStoreUid, getPaymentMethod, getCreateSalePostData, getPaymentPostData, getSelectedFrequency } from 'donate/selectors';
@@ -112,6 +112,17 @@ export const createSale = () => {
       }
     }
 
+    // Turnstile.
+    if (getSetting(state, 'turnstileSiteKey')) {
+      const turnstileToken = currentTurnstileToken();
+      dispatch(setTurnstileToken(turnstileToken));
+      if (!turnstileToken) {
+        dispatch(setErrors([{ message: 'Please verify you are human' }]));
+        dispatch(setStatus(statuses.ready));
+        return false;
+      }
+    }
+
     // Update cart in page layout.
     if (getSetting(state, 'layout') === 'page') {
       dispatch(addDonationToCart());
@@ -157,6 +168,17 @@ export const makePayment = (paymentData) => {
       const recaptcha = await executeRecaptcha();
       dispatch(setRecaptcha(recaptcha));
       if (!recaptcha) {
+        dispatch(setStatus(statuses.ready));
+        return false;
+      }
+    }
+
+    // Turnstile.
+    if (getSetting(state, 'turnstileSiteKey')) {
+      const turnstileToken = currentTurnstileToken();
+      dispatch(setTurnstileToken(turnstileToken));
+      if (!turnstileToken) {
+        dispatch(setErrors([{ message: 'Please verify you are human' }]));
         dispatch(setStatus(statuses.ready));
         return false;
       }

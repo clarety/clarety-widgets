@@ -60,6 +60,7 @@ export class SubmitPanel extends BasePanel {
         <PanelContainer layout={layout} status="edit" className="submit-panel">
           <PanelBody layout={layout} status="edit" isBusy={isBusy}>
             {this.renderTermsCheckbox()}
+            {this.renderCaptcha()}
 
             <Row>
               <Col>
@@ -82,6 +83,22 @@ export class SubmitPanel extends BasePanel {
   }
 
   renderTermsCheckbox() {
+    return null;
+  }
+
+  renderCaptcha() {
+    const { turnstileSiteKey } = this.props;
+  
+    if (turnstileSiteKey) {
+      return (
+        <Row>
+          <Col className="col-turnstile">
+            <Turnstile siteKey={turnstileSiteKey} />
+          </Col>
+        </Row>
+      );
+    }
+
     return null;
   }
 

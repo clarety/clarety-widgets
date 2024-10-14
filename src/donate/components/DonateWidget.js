@@ -97,6 +97,7 @@ export class _DonateWidgetRoot extends React.Component {
       requiredLabelType:    this.props.requiredLabelType,
       layout:               this.props.layout || 'tabs',
       reCaptchaKey:         this.props.reCaptchaKey,
+      turnstileSiteKey:     this.props.turnstileSiteKey,
     });
 
     setStore(storeUid);

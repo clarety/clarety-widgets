@@ -1,5 +1,5 @@
 import { statuses } from 'shared/actions';
-import { getCart, getTrackingData, getRecaptcha, getSetting, getFormData, getParsedFormData } from 'shared/selectors';
+import { getCart, getTrackingData, getRecaptcha, getTurnstileToken, getSetting, getFormData, getParsedFormData } from 'shared/selectors';
 import { formatPrice } from 'form/utils';
 
 export const getIsBusy = (state) => state.status !== statuses.ready;
@@ -150,6 +150,7 @@ export const getCreateSalePostData = (state) => {
   const fundraisingData = getFundraisingData(state);
   const trackingData = getTrackingData(state);
   const recaptcha = getRecaptcha(state);
+  const turnstileToken = getTurnstileToken(state);
 
   return {
     storeUid:  cart.store,
@@ -161,6 +162,7 @@ export const getCreateSalePostData = (state) => {
 
     fundraising: fundraisingData,
     recaptchaResponse: recaptcha,
+    turnstileToken: turnstileToken,
 
     ...formData.additionalData,
     ...trackingData,

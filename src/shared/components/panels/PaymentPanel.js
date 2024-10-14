@@ -5,7 +5,7 @@ import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, injectStripe } from 'shared/components';
 import { Config } from 'shared/utils/config';
 import { requiredField, cardNumberField, cardExpiryField, ccvField, isStripeCard, isStripeAuBankAccount, isStripePaymentForm } from 'shared/utils';
-import { Label, TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, AccountNumberInput, BsbInput, NZAccountNumberInput, PhoneInput, NumberInput, SelectInput } from 'form/components';
+import { Label, TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, AccountNumberInput, BsbInput, NZAccountNumberInput, PhoneInput, NumberInput, SelectInput, Turnstile } from 'form/components';
 import { StripePaymentForm } from 'checkout/components/misc/StripePaymentForm';
 
 export class _PaymentPanel extends BasePanel {
@@ -431,6 +431,7 @@ export class _PaymentPanel extends BasePanel {
           {this.renderPaymentMethodOptions()}
           {this.renderPaymentFields(paymentMethod)}
           {this.renderTermsCheckbox()}
+          {this.renderCaptcha()}
         </PanelBody>
 
         {this.renderFooter()}
@@ -448,6 +449,22 @@ export class _PaymentPanel extends BasePanel {
   }
 
   renderTermsCheckbox() {
+    return null;
+  }
+
+  renderCaptcha() {
+    const { turnstileSiteKey } = this.props;
+  
+    if (turnstileSiteKey) {
+      return (
+        <Row>
+          <Col className="col-turnstile">
+            <Turnstile siteKey={turnstileSiteKey} />
+          </Col>
+        </Row>
+      );
+    }
+
     return null;
   }
 
