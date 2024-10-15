@@ -125,6 +125,11 @@ export const clearRecaptcha = () => ({
   type: types.clearRecaptcha,
 });
 
+export const setTurnstileToken = (turnstileToken) => ({
+  type: types.setTurnstileToken,
+  turnstileToken: turnstileToken,
+});
+
 export const setApiCampaignUids = () => {
   return async (dispatch, getState) => {
     const state = getState();

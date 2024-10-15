@@ -37,6 +37,8 @@ export const types = {
   setRecaptcha:          'SET_RECAPTCHA',
   clearRecaptcha:        'CLEAR_RECAPTCHA',
 
+  setTurnstileToken:     'SET_TURNSTILE_TOKEN',
+
   // Auth Action Types
 
   setAuth: 'SET_AUTH',

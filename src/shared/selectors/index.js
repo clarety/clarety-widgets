@@ -53,6 +53,8 @@ export const getTrackingData = (state) => getCart(state).tracking;
 
 export const getRecaptcha = (state) => getCart(state).recaptcha;
 
+export const getTurnstileToken = (state) => getCart(state).turnstileToken;
+
 export const getCurrency = (state) => {
   if (state.cart && state.cart.currency) {
     return state.cart.currency;

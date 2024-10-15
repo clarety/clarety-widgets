@@ -19,6 +19,7 @@ const initialState = {
   },
 
   recaptcha: null,
+  turnstileToken: null,
 
   errors: null,
 
@@ -149,6 +150,12 @@ export const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         recaptcha: null,
+      };
+
+    case types.setTurnstileToken:
+      return {
+        ...state,
+        turnstileToken: action.turnstileToken,
       };
 
     default:

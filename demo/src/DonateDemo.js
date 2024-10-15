@@ -86,6 +86,12 @@ export default class DonateDemo extends React.Component {
       singleOfferId: '8',
       recurringOfferId: '17',
 
+      // tnc
+      // storeUid: 'str_oymo',
+      // singleOfferId: '8',
+      // recurringOfferId: '17',
+      // turnstileSiteKey: '0x4AAAAAAAxYtDTCw9FdH-SC',
+
       // church
       // storeUid: 'str_7e1l',
       // singleOfferId: '8',
