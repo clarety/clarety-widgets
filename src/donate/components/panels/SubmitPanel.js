@@ -2,7 +2,7 @@ import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelBody } from 'shared/components';
-import { SubmitButton, ErrorMessages } from 'form/components';
+import { SubmitButton, ErrorMessages, Turnstile } from 'form/components';
 
 export class SubmitPanel extends BasePanel {
   renderWait() {

@@ -109,6 +109,15 @@ export class _PaymentPanel extends BasePaymentPanel {
     const { settings } = this.props;
     return settings.submitBtnText || t('donate', 'Donate');
   }
+
+  renderCaptcha() {
+    // don't show captcha on this panel when in page layout
+    if (this.props.layout === 'page') {
+      return null;
+    }
+
+    return super.renderCaptcha();
+  }
 }
 
 export const PaymentPanel = injectStripe(_PaymentPanel);
