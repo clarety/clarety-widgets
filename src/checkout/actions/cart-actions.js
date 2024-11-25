@@ -51,7 +51,12 @@ export const removeItem = (itemUid) => {
     const results = await ClaretyApi.delete(`carts/${cart.cartUid}/items/${itemUid}/`, { locale: i18next.language });
     const result = results[0];
 
-    if (!results) {
+    if (result.status) {
+      // TEMP: api fix
+      result.status = result.status.toLowerCase();
+    }
+
+    if (!results || result.status === 'error') {
       dispatch(removeItemFailure());
       return false;
     } else {
