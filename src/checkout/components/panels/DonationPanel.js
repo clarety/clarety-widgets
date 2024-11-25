@@ -71,4 +71,10 @@ export class DonationPanel extends BaseDonationPanel {
     event.preventDefault();
     this.props.editPanel();
   }
+
+  onEditPanel() {
+    // override to prevent default behaviour of removing the donation on edit.
+    // the behaviour we want is to keep any existing donation in the cart,
+    // then remove it when moving to next panel, and add whatever option was selected.
+  }
 }

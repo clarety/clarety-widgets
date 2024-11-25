@@ -148,7 +148,7 @@ export class DonationPanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, index, priceHandles } = this.props;
+    const { layout, index, priceHandles, settings } = this.props;
 
     return (
       <PanelContainer layout={layout} status="edit" className="donation-panel">
@@ -156,7 +156,7 @@ export class DonationPanel extends BasePanel {
           status="edit"
           layout={layout}
           number={index + 1}
-          title={t('donationPanel.editTitle', 'Make A Donation')}
+          title={settings.title || t('donationPanel.editTitle', 'Make A Donation')}
         />
         <PanelBody layout={layout} status="edit">
           {priceHandles
@@ -177,7 +177,9 @@ export class DonationPanel extends BasePanel {
 
     return (
       <Form onSubmit={this.onClickNext}>
-        <p className="message-text">{t('donationPanel.message', settings.messageText || '')}</p>
+        <p className="message-text">
+          {settings.messageText || t('donationPanel.message', '')}
+        </p>
 
         <ErrorMessages />
 
@@ -198,7 +200,7 @@ export class DonationPanel extends BasePanel {
               isBusy={this.state.isBusyNone}
               disabled={this.state.isBusy}
             >
-              {t(['donationPanel.btn.none', 'btn.none'], 'None')}
+              {settings.noneBtnText || t(['donationPanel.btn.none', 'btn.none'], 'None')}
             </Button>
           }
           
@@ -207,7 +209,7 @@ export class DonationPanel extends BasePanel {
             isBusy={this.state.isBusy}
             disabled={this.state.isBusyNone}
           >
-            {t(['donationPanel.btn.next', 'btn.next'], 'Next')}
+            {settings.nextBtnText || t(['donationPanel.btn.next', 'btn.next'], 'Next')}
           </Button>
         </div>
       </Form>
