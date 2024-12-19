@@ -21,6 +21,7 @@ export class CustomerConnect {
 
       canEditEmail: !getCustomerHasProfile(state),
       fetchedCustomer: getSetting(state, 'fetchedCustomer'),
+      fetchedCustomerOptIn: getSetting(state, 'fetchedCustomerOptIn'),
 
       defaultCountry: getSetting(state, 'defaultCountry'),
       sourceOptions: getSourceOptions(state),

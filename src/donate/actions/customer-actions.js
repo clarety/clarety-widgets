@@ -14,6 +14,7 @@ export const fetchCustomer = () => {
       dispatch(setCustomerFormData(customer));
       dispatch(updateAppSettings({
         fetchedCustomer: true,
+        fetchedCustomerOptIn: !!customer.optIn,
         customerHasProfile: customer.hasProfile,
       }));
       return true;

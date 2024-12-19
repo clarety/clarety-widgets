@@ -186,8 +186,17 @@ export const prefillCustomer = () => {
 
     if (customer) {
       // Prefill customer form data.
-      walkFlattenedKeys(customer, (key, value) => dispatch(updateFormData(key, value)), 'customer.');
-      dispatch(updateAppSettings({ fetchedCustomer: true }));
+      walkFlattenedKeys(customer, (key, value) => {
+        // ignore optIn, we don't want to assume any un/pre ticked marketing opt-in.
+        if (key.includes('optIn')) return;
+
+        dispatch(updateFormData(key, value));
+      }, 'customer.');
+
+      dispatch(updateAppSettings({
+        fetchedCustomer: true,
+        fetchedCustomerOptIn: !!customer.optIn,
+      }));
     }
   };
 };

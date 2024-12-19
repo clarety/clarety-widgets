@@ -11,6 +11,8 @@ export class CustomerConnect {
       errors: getErrors(state),
       variant: getSetting(state, 'variant'),
       defaultCountry: getSetting(state, 'defaultCountry'),
+      fetchedCustomer: getSetting(state, 'fetchedCustomer'),
+      fetchedCustomerOptIn: getSetting(state, 'fetchedCustomerOptIn'),
     };
   };
 
