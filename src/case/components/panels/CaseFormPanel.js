@@ -211,6 +211,8 @@ export class CaseFormPanel extends BasePanel {
       } else if (requiredFields.includes(fieldKey)) {
         if (fieldType === 'address') {
           addressField(errors, formData, fieldKey);
+        } else if (fieldType === 'contentblock') {
+          // ignore. content blocks have no value, but can still be marked as required.
         } else {
           requiredField(errors, formData, fieldKey);
         }
