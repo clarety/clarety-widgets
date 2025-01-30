@@ -162,6 +162,8 @@ export class CaseFormPanel extends BasePanel {
           addressField(errors, formData, fieldKey);
         } else if (fieldType === 'country') {
           requiredField(errors, formData, `${fieldKey}.country`);
+        } else if (fieldType === 'postcode') {
+          requiredField(errors, formData, `${fieldKey}.postcode`);
         } else if (fieldType === 'country-postcode') {
           requiredField(errors, formData, `${fieldKey}.postcode`);
           requiredField(errors, formData, `${fieldKey}.country`);
@@ -658,6 +660,7 @@ export class CaseFormPanel extends BasePanel {
       // Address fields.
       case 'address': return this.renderAddressField({ field, fieldKey, isRequired, isDisabled });
       case 'country': return this.renderCountryField({ field, fieldKey, isRequired, isDisabled });
+      case 'postcode': return this.renderPostcodeField({ field, fieldKey, isRequired, isDisabled });
       case 'country-postcode': return this.renderCountryPostcodeField({ field, fieldKey, isRequired, isDisabled });
       case 'country-state-postcode': return this.renderCountryStatePostcodeField({ field, fieldKey, isRequired, isDisabled });
     }
@@ -950,6 +953,26 @@ export class CaseFormPanel extends BasePanel {
           required={isRequired}
           disabled={isDisabled}
         />
+      </div>
+    );
+  }
+
+  renderPostcodeField({ field, fieldKey, isRequired = false, isDisabled = false }) {
+    const country = this.props.formData[`${fieldKey}.country`];
+
+    return (
+      <div key={fieldKey} className="field field--postcode" ref={ref => this.fieldRefs[fieldKey] = ref}>
+        <Form.Row>
+          <Col>
+            <PostcodeField
+              fieldKey={fieldKey}
+              country={country}
+              required={isRequired}
+              disabled={isDisabled}
+              labelPrefix={this.getFieldLabel(field, fieldKey)}
+            />
+          </Col>
+        </Form.Row>
       </div>
     );
   }
