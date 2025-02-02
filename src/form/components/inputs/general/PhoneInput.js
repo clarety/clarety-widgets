@@ -13,7 +13,7 @@ import { getValidationError } from 'form/utils';
 
 enLabels['SZ'] = 'Eswatini';
 
-const _PhoneInput = ({ value, placeholder, country, onChange, error, required, showCountrySelect = false, mainSiteUrl }) => {
+const _PhoneInput = ({ value, placeholder, country, onChange, error, hideErrors, required, showCountrySelect = false, mainSiteUrl }) => {
   country = country || Config.get('phoneCountry') || 'AU';
   if (country === 'UK') country = 'GB';
 
@@ -35,7 +35,7 @@ const _PhoneInput = ({ value, placeholder, country, onChange, error, required, s
         inputClassName={className}
         flagsPath={`${mainSiteUrl}neutrino/hub01/images/flags/`}
       />
-      <FieldError error={error} />
+      {!hideErrors && <FieldError error={error} />}
     </React.Fragment>
   );
 }

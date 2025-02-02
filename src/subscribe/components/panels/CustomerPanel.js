@@ -4,7 +4,7 @@ import { BasePanel, PanelContainer, PanelHeader, PanelBody } from 'shared/compon
 import { requiredField, emailField } from 'shared/utils';
 import { InputGroup } from 'react-bootstrap';
 import { getLanguage, t } from 'shared/translations';
-import { TextInput, EmailInput, StateInput, CountryInput, ErrorMessages, SubmitButton, FormElement } from 'form/components';
+import { TextInput, EmailInput, PhoneInput, StateInput, CountryInput, ErrorMessages, SubmitButton, FormElement } from 'form/components';
 
 export class CustomerPanel extends BasePanel {
   onClickSubmit = async (event) => {
@@ -42,6 +42,10 @@ export class CustomerPanel extends BasePanel {
     }
 
     emailField(errors, formData, 'customer.email');
+
+    if (settings.requireMobile) {
+      requiredField(errors, formData, 'customer.mobile');
+    }
 
     if (settings.showCountry) {
       requiredField(errors, formData, 'customer.billing.country');
@@ -92,7 +96,7 @@ export class CustomerPanel extends BasePanel {
 
   renderCustomerForm() {
     const { defaultCountry } = this.props;
-    const { nameOption, showState, showCountry, buttonText } = this.props.settings;
+    const { nameOption, showMobile, showPhoneCountrySelect, showState, showCountry, buttonText } = this.props.settings;
 
     return (
       <Form onSubmit={this.onClickSubmit}>
@@ -110,6 +114,16 @@ export class CustomerPanel extends BasePanel {
           }
           
           <EmailInput field="customer.email" type="email" placeholder={t('email', 'Email')} hideErrors required />
+
+          {showMobile && 
+            <PhoneInput
+              field="customer.mobile"
+              placeholder={t('mobile', 'Mobile')}
+              showCountrySelect={showPhoneCountrySelect}
+              hideErrors
+              required
+            />
+          }
 
           {showState &&
             <StateInput field="customer.billing.state" placeholder={t('state', 'State')} country="AU" hideErrors required />
