@@ -536,6 +536,14 @@ export class _PaymentPanel extends BasePanel {
     throw new Error(`[Clarety] unhandled 'renderPaymentFields' for paymentMethod.type: ${paymentMethod.type}`);
   }
 
+  renderCardNumberLabel(paymentMethod) {
+    return (
+      <Label required>
+        {t('card-number', 'Card Number')}
+      </Label>
+    );
+  }
+
   renderCreditCardFields(paymentMethod) {
     return (
       <React.Fragment>
@@ -551,7 +559,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="cardNumber">
-              <Label required>{t('card-number', 'Card Number')}</Label>
+              {this.renderCardNumberLabel(paymentMethod)}
               <CardNumberInput field="payment.cardNumber" testId="card-number-input" />
             </Form.Group>
           </Col>
@@ -757,7 +765,7 @@ export class _PaymentPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="cardNumber">
-              <Label required>{t('card-number', 'Card Number')}</Label>
+              {this.renderCardNumberLabel(paymentMethod)}
               <CardNumberElement
                 options={{ style, placeholder: '•••• •••• •••• ••••' }}
               />
