@@ -140,6 +140,7 @@ export class _PaymentPanel extends BasePanel {
         switch (paymentMethod.gateway) {
           case 'nz': return this.validateNZDirectDebitFields(errors);
           case 'hk': return this.validateHKDirectDebitFields(errors);
+          case 'ca': return this.validateCADirectDebitFields(errors);
           default:   return this.validateDirectDebitFields(errors);
         }
       }
@@ -202,6 +203,15 @@ export class _PaymentPanel extends BasePanel {
     if (cartStatus === 'authorise') {
       requiredField(errors, formData, 'payment.authPassword');
     }
+  }
+
+  validateCADirectDebitFields(errors) {
+    const { formData, cartStatus } = this.props;
+
+    requiredField(errors, formData, 'payment.accountName');
+    requiredField(errors, formData, 'payment.bankCode');
+    requiredField(errors, formData, 'payment.branchCode');
+    requiredField(errors, formData, 'payment.accountNumber');
   }
 
   validateNoPaymentFields(errors) {
@@ -279,6 +289,14 @@ export class _PaymentPanel extends BasePanel {
         }
 
         return paymentData;
+      } else if (paymentMethod.gateway === 'ca') {
+        return {
+          type:          paymentType,
+          accountName:   formData['payment.accountName'],
+          bankCode:      formData['payment.bankCode'],
+          branchCode:    formData['payment.branchCode'],
+          accountNumber: formData['payment.accountNumber'],
+        };
       } else {
         return {
           type:          paymentType,
@@ -514,6 +532,7 @@ export class _PaymentPanel extends BasePanel {
         switch (paymentMethod.gateway) {
           case 'nz': return this.renderNZDirectDebitFields(paymentMethod);
           case 'hk': return this.renderHKDirectDebitFields(paymentMethod);
+          case 'ca': return this.renderCADirectDebitFields(paymentMethod);
           default:   return this.renderDirectDebitFields(paymentMethod);
         }
       }
@@ -703,6 +722,45 @@ export class _PaymentPanel extends BasePanel {
             </Form.Group>
           </Col>
         </Form.Row>
+      </React.Fragment>
+    );
+  }
+
+  renderCADirectDebitFields(paymentMethod) {
+    return (
+      <React.Fragment>
+        <Form.Row>
+          <Col>
+            <Form.Group controlId="accountName">
+              <Label required>{t('account-name', 'Account Name')}</Label>
+              <TextInput field="payment.accountName" testId="account-name-input" />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col sm={3}>
+            <Form.Group controlId="bankCode">
+              <Label required>{t('bank-number', 'Bank Number')}</Label>
+              <NumberInput field="payment.bankCode" maxLength={3} testId="bank-code-input" />
+            </Form.Group>
+          </Col>
+
+          <Col sm={3}>
+            <Form.Group controlId="branchCode">
+              <Label required>{t('transit-code', 'Transit Code')}</Label>
+              <NumberInput field="payment.branchCode" maxLength={5} testId="branch-code-input" />
+            </Form.Group>
+          </Col>
+
+          <Col sm={6}>
+            <Form.Group controlId="accountNumber">
+              <Label required>{t('account-number', 'Account Number')}</Label>
+              <AccountNumberInput field="payment.accountNumber" maxLength={12} testId="account-number-input" />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+
       </React.Fragment>
     );
   }
