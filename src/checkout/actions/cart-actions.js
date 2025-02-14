@@ -23,10 +23,11 @@ export const createCart = ({ offerUid, quantity }) => {
   return async (dispatch, getState) => {
     const state = getState();
     const storeUid = getSetting(state, 'storeUid');
+    const siteCode = getSetting(state, 'siteCode');
 
-    dispatch(createCartRequest(storeUid, offerUid, quantity));
+    dispatch(createCartRequest(storeUid, offerUid, quantity, siteCode));
 
-    const results = await ClaretyApi.post('carts/items/', { storeUid, offerUid, quantity });
+    const results = await ClaretyApi.post('carts/items/', { storeUid, offerUid, quantity, siteCode });
     const result = results[0];
 
     if (result.status === 'error') {
@@ -182,12 +183,13 @@ const fetchCartFailure = (result) => ({
 
 // Create Cart
 
-function createCartRequest(storeUid, offerUid, quantity) {
+function createCartRequest(storeUid, offerUid, quantity, siteCode) {
   return {
     type: types.createCartRequest,
     storeUid: storeUid,
     offerUid: offerUid,
     quantity: quantity,
+    siteCode: siteCode,
   };
 }
 
