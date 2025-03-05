@@ -27,7 +27,10 @@ export const makePayPalPayment = (data, order, authorization) => {
     dispatch(addDonationToCart());
 
     const { payer } = order;
-    const { address } = order.purchase_units[0].shipping;
+
+    const orderShipping = order.purchase_units[0] ? order.purchase_units[0].shipping : {};
+    const address = orderShipping.address || {};
+
     const phone = payer.phone ? payer.phone.phone_number.national_number : undefined;
 
     // Set cart customer.
