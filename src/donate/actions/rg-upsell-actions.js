@@ -91,7 +91,7 @@ export const selectRgUpsell = ({ offerUid, scheduleUid, scheduleName, amount }) 
       offerPaymentUid: scheduleUid,
       scheduleName: scheduleName,
       price: amount,
-      selectedPriceHandle: previousAmount,
+      rgUpsellOriginalAmount: previousAmount,
     }));
 
     // set the rg upsell data in the store.
