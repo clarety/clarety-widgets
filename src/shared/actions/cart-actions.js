@@ -3,7 +3,7 @@ import { ClaretyApi } from 'shared/utils/clarety-api';
 import { getTrackingData } from 'shared/selectors';
 import { types } from 'shared/actions';
 
-export const addItem = ({ offerId, offerUid, offerPaymentUid, productId, type, quantity, price, panel, options, description }) => ({
+export const addItem = ({ offerId, offerUid, offerPaymentUid, productId, type, quantity, price, panel, options, description, selectedPriceHandle }) => ({
   type: types.addItem,
   item: {
     offerId: offerId,
@@ -13,6 +13,7 @@ export const addItem = ({ offerId, offerUid, offerPaymentUid, productId, type, q
     quantity: quantity || 1,
     price: Number(price),
     description: description,
+    selectedPriceHandle: selectedPriceHandle,
 
     type: type,
     panel: panel,

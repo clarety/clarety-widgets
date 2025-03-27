@@ -2,8 +2,8 @@ import { getSetting, getCurrency } from 'shared/selectors';
 import { removeItemsWithType } from 'shared/actions';
 import { getFormData, getErrors } from 'form/selectors';
 import { setErrors } from 'form/actions';
-import { getSelectedAmount, getGivingTypeOptions } from 'donate/selectors';
-import { selectAmount, selectSchedule, addDonationToCart } from 'donate/actions';
+import { getSelectedAmount, getGivingTypeOptions, getIsRgUpsellEnabled } from 'donate/selectors';
+import { selectAmount, selectSchedule, addDonationToCart, maybeShowRgUpsell, resetRgUpsell } from 'donate/actions';
 
 export class DonationConnect {
   static mapStateToProps = (state) => {
@@ -19,6 +19,7 @@ export class DonationConnect {
       errors: getErrors(state),
       variant: getSetting(state, 'variant'),
       currency: getCurrency(state),
+      upsellEnabled: getIsRgUpsellEnabled(state),
     };
   };
 
@@ -28,5 +29,7 @@ export class DonationConnect {
     onSubmit: addDonationToCart,
     removeAllDonationsFromCart: () => removeItemsWithType('donation'),
     setErrors: setErrors,
+    maybeShowRgUpsell: maybeShowRgUpsell,
+    resetRgUpsell: resetRgUpsell,
   };
 }

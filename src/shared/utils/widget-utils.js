@@ -104,6 +104,29 @@ export function currency(number) {
   return `${symbol}${number.toFixed(2)}`;
 }
 
+export function getCurrencySymbol(currency, hideCurrencyCode) {
+  if (hideCurrencyCode || !currency.code || currency.code === 'NOK') {
+    return currency.symbol;
+  }
+
+  if (currency.code === 'HKD') {
+    return 'HK$';
+  }
+
+  return currency.code + ' ' + currency.symbol;
+}
+
+export function formatPrice(amount, currency, hideCurrencyCode = false, hideCents = false) {
+  const currencySymbol = getCurrencySymbol(currency, hideCurrencyCode);
+
+  const formattedAmount = Number(amount).toLocaleString(undefined, {
+    minimumFractionDigits: hideCents ? 0 : 2,
+    maximumFractionDigits: hideCents ? 0 : 2,
+  })
+  
+  return currencySymbol + formattedAmount;
+}
+
 export function capitalize(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }

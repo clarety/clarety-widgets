@@ -25,6 +25,8 @@ export * from './panels/FundraisingPanel';
 export * from './panels/FundraisingConnect';
 export * from './panels/PaymentPanel';
 export * from './panels/PaymentConnect';
+export * from './panels/RgUpsellPanel';
+export * from './panels/RgUpsellConnect';
 export * from './panels/SubmitPanel';
 export * from './panels/SubmitConnect';
 export * from './panels/SuccessPanel';

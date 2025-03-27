@@ -1,28 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getSetting, getCurrency } from 'shared/selectors';
+import { getCurrencySymbol, formatPrice } from 'shared/utils';
 
 const _CurrencySymbol = ({ currency, hideCurrencyCode }) => {
-  if (hideCurrencyCode || !currency.code || currency.code === 'NOK') {
-    return currency.symbol;
-  }
-
-  if (currency.code === 'HKD') {
-    return 'HK$';
-  }
-
-  return currency.code + ' ' + currency.symbol;
+  return getCurrencySymbol(currency, hideCurrencyCode);
 };
 
-const _Currency = ({ amount = 0, hideCents }) => (
-  <React.Fragment>
-    <CurrencySymbol />
-    {Number(amount).toLocaleString(undefined, {
-      minimumFractionDigits: hideCents ? 0 : 2,
-      maximumFractionDigits: hideCents ? 0 : 2,
-    })}
-  </React.Fragment>
-);
+const _Currency = ({ currency, amount = 0, hideCurrencyCode = false, hideCents = false }) => {
+  return formatPrice(amount, currency, hideCurrencyCode, hideCents);
+};
 
 const mapStateToProps = (state, ownProps) => {
   return {

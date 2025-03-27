@@ -58,6 +58,11 @@ const Demo = () => {
     return <FundDonateDemo />;
   }
 
+  if (url.indexOf('donate-rg-upsell') !== -1) {
+    const DonateRgUpsellDemo = require('./DonateRgUpsellDemo').default;
+    return <DonateRgUpsellDemo />;
+  }
+
   if (url.indexOf('donate') !== -1) {
     const DonateDemo = require('./DonateDemo').default;
     return <DonateDemo />;
@@ -123,6 +128,7 @@ const Demo = () => {
       <a href="subscribe" className="list-group-item list-group-item-action">Subscribe Widget</a>
       <a href="unsubscribe" className="list-group-item list-group-item-action">Unsubscribe Widget</a>
       <a href="donate" className="list-group-item list-group-item-action">Donate Widget</a>
+      <a href="donate-rg-upsell" className="list-group-item list-group-item-action">Donate Widget RG Upsell</a>
       <a href="fund-donate" className="list-group-item list-group-item-action">Fund Donate Widget</a>
       <a href="donate-page" className="list-group-item list-group-item-action">Donate Page</a>
       <a href="registration" className="list-group-item list-group-item-action">Registration</a>

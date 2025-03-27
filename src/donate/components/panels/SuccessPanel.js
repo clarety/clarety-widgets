@@ -32,7 +32,7 @@ export class SuccessPanel extends BasePanel {
   }
 
   renderContent() {
-    const { layout, isBusy, index, settings, customer, donation } = this.props;
+    const { layout, isBusy, index, settings, customer } = this.props;
 
     return (
       <PanelContainer layout={layout} status="edit" className="success-panel">
@@ -55,14 +55,6 @@ export class SuccessPanel extends BasePanel {
             <tr>
               <th scope="row">Email</th>
               <td>{customer.email}</td>
-            </tr>
-            <tr>
-              <th scope="row">Frequency</th>
-              <td>{donation.frequency}</td>
-            </tr>
-            <tr>
-              <th scope="row">Amount</th>
-              <td>{donation.amount}</td>
             </tr>
           </tbody>
         </Table>
