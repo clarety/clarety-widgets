@@ -1,6 +1,6 @@
 import { statuses } from 'shared/actions';
-import { getCart, getTrackingData, getRecaptcha, getTurnstileToken, getSetting, getFormData, getParsedFormData } from 'shared/selectors';
-import { formatPrice } from 'form/utils';
+import { getCart, getTrackingData, getRecaptcha, getTurnstileToken, getSetting, getFormData, getParsedFormData, getCurrency } from 'shared/selectors';
+import { formatPrice } from 'shared/utils';
 
 export const getIsBusy = (state) => state.status !== statuses.ready;
 
@@ -57,10 +57,31 @@ export const getSelectedAmount = (state) => {
   
   if (!selection || !selection.amount) return '';
 
-  const currency = getSetting(state, 'currency');
-  const amount = Number(selection.amount).toFixed(2);
+  const currency = getCurrency(state);
+  const hideCurrencyCode = getSetting(state, 'hideCurrencyCode');
+
+  return formatPrice(selection.amount, currency, hideCurrencyCode);
+};
+
+export const getSelectedPriceHandle = (state) => {
+  const offer = getSelectedOffer(state);
+  const selection = getDonationPanelSelection(state);
   
-  return currency.symbol + amount;
+  // make sure something is selected.
+  if (!selection || !selection.amount) {
+    return null;
+  }
+
+  // try to find a matching price handle.
+  for (const priceHandle of offer.amounts) {
+    if (Math.abs(Number(priceHandle.amount) - Number(selection.amount)) < Number.EPSILON) {
+      return priceHandle;
+    }
+  }
+
+  // return the variable amount handle (if there is one).
+  const priceHandle = offer.amounts.find(priceHandle => priceHandle.variable);
+  return priceHandle;
 };
 
 export const getFrequencyLabel = (state, offerUid) => {
@@ -72,9 +93,13 @@ export const getFrequencyLabel = (state, offerUid) => {
 export const getSchedules = (state) => {
   const offer = getSelectedOffer(state);
   return offer ? offer.schedules : undefined;
-}
+};
 
 export const getScheduleLabel = (state) => {
+  // get the schedule name from rg upsell if present.
+  const rgUpsell = getRgUpsell(state);
+  if (rgUpsell) return rgUpsell.scheduleName;
+
   const selection = getDonationPanelSelection(state);
   if (!selection) return '';
 
@@ -195,16 +220,6 @@ export const getCustomerFullName = (state) => {
   return `${firstName} ${lastName}`;
 };
 
-export const getSuccessfulDonation = (state) => {
-  const cart = getCart(state);
-  const item = cart.items[0];
-
-  const frequency = item ? getFrequencyLabel(state, item.offerUid) : '';
-  const amount = item ? formatPrice(item.price) : '0';
-
-  return { frequency, amount };
-};
-
 export const getHasExpressPaymentMethods = (state) => {
   const expressMethods = ['wallet', 'paypal'];
 
@@ -214,4 +229,45 @@ export const getHasExpressPaymentMethods = (state) => {
   }
 
   return false;
+};
+
+export const getRgUpsell = (state) => {
+  return state.rgUpsell;
+};
+
+export const getDonationAmount = (state) => {
+  // use the rg upsell amount if present.
+  const rgUpsell = getRgUpsell(state);
+  if (rgUpsell) return rgUpsell.amount;
+
+  // otherwise use the amount selected on the donation panel.
+  const selection = getDonationPanelSelection(state);
+  return selection ? selection.amount : 0;
+};
+
+export const getDonationFrequency = (state) => {
+  // if an rg upsell is present, the frequency is recurring.
+  const rgUpsell = getRgUpsell(state);
+  if (rgUpsell) return 'recurring';
+
+  // otherwise use the frequency selected on the donation panel.
+  return getSelectedFrequency(state);
+};
+
+export const getIsRgUpsellEnabled = (state) => {
+  // if an offer has an rg upsell, and we have settings for the RgUpsellPanel, then rg upsell is enabled.
+
+  let offerHasRgUpsell = false;
+  const offers = getPriceHandles(state);
+  for (const offer of offers) {
+    if (offer.rgUpsell) {
+      offerHasRgUpsell = true;
+      break;
+    }
+  }
+
+  const panelSettings = getSetting(state, 'panels');
+  const hasRgUpsellPanelSettings = !!panelSettings['RgUpsellPanel'];
+
+  return offerHasRgUpsell && hasRgUpsellPanelSettings;
 };

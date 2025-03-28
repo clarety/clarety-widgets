@@ -4,20 +4,7 @@ import Cookies from 'js-cookie';
 import { Config } from '../../src';
 
 Config.init({
-  // instanceKey: 'bhcc',
-  // instanceKey: 'mdc',
   instanceKey: 'clarety-baseline',
-  // instanceKey: 'charlies',
-  // instanceKey: 'tnc',
-  // instanceKey: 'tnc-hk',
-  // instanceKey: 'clarety-church',
-  // instanceKey: 'ethiopiaid',
-  // instanceKey: 'a21',
-  // instanceKey: 'mc',
-  // instanceKey: 'miraclebabies',
-  // instanceKey: 'bibleleague',
-  // instanceKey: 'bsfs',
-  // instanceKey: 'ihc',
   devSitePath: 'http://localhost:3000/',
   // phoneCountry: 'AU',
   localhostProtocol: 'https:',
@@ -56,6 +43,11 @@ const Demo = () => {
   if (url.indexOf('fund-donate') !== -1) {
     const FundDonateDemo = require('./FundDonateDemo').default;
     return <FundDonateDemo />;
+  }
+
+  if (url.indexOf('donate-rg-upsell') !== -1) {
+    const DonateRgUpsellDemo = require('./DonateRgUpsellDemo').default;
+    return <DonateRgUpsellDemo />;
   }
 
   if (url.indexOf('donate') !== -1) {
@@ -123,6 +115,7 @@ const Demo = () => {
       <a href="subscribe" className="list-group-item list-group-item-action">Subscribe Widget</a>
       <a href="unsubscribe" className="list-group-item list-group-item-action">Unsubscribe Widget</a>
       <a href="donate" className="list-group-item list-group-item-action">Donate Widget</a>
+      <a href="donate-rg-upsell" className="list-group-item list-group-item-action">Donate Widget RG Upsell</a>
       <a href="fund-donate" className="list-group-item list-group-item-action">Fund Donate Widget</a>
       <a href="donate-page" className="list-group-item list-group-item-action">Donate Page</a>
       <a href="registration" className="list-group-item list-group-item-action">Registration</a>

@@ -9,7 +9,9 @@ import { FrequencySelect, ScheduleSelectButtonGroup, ScheduleSelectDropdown, Cov
 
 export class DonationPanel extends BasePanel {
   onEditPanel() {
-    this.props.removeAllDonationsFromCart();
+    const { removeAllDonationsFromCart, upsellEnabled, resetRgUpsell } = this.props;
+    removeAllDonationsFromCart();
+    if (upsellEnabled) resetRgUpsell();
   }
 
   onSelectSchedule = (offerPaymentUid) => {
@@ -24,7 +26,7 @@ export class DonationPanel extends BasePanel {
   onPressNext = async (event) => {
     event.preventDefault();
 
-    const { onSubmit, nextPanel, layout, isPreview } = this.props;
+    const { onSubmit, nextPanel, layout, isPreview, upsellEnabled, maybeShowRgUpsell } = this.props;
 
     if (layout === 'page') return;
     if (isPreview) return nextPanel();
@@ -37,6 +39,10 @@ export class DonationPanel extends BasePanel {
     
     const didSubmit = await onSubmit();
     if (!didSubmit) return;
+
+    if (upsellEnabled) {
+      maybeShowRgUpsell();
+    }
 
     nextPanel();
   };

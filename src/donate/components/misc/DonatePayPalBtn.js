@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { PayPalBtn } from 'shared/components';
 import { getSetting } from 'shared/selectors';
-import { getPaymentMethod, getDonationPanelSelection, getSelectedFrequency } from 'donate/selectors';
+import { getPaymentMethod, getDonationAmount, getDonationFrequency } from 'donate/selectors';
 import { makePayPalPayment, validatePayPal, cancelPayPal } from 'donate/actions';
 
 export function _DonatePayPalBtn(props) {
@@ -46,8 +46,8 @@ export function _DonatePayPalBtn(props) {
 const mapStateToProps = (state, ownProps) => ({
   paymentMethod: getPaymentMethod(state, 'wallet', 'paypal'),
   currency: getSetting(state, 'currency'),
-  amount: getDonationPanelSelection(state).amount,
-  frequency: getSelectedFrequency(state),
+  amount: getDonationAmount(state),
+  frequency: getDonationFrequency(state),
   height: getSetting(state, 'expressPaymentBtnHeight') || 45,
 });
 

@@ -6,7 +6,7 @@ import i18next from 'i18next';
 import { BreakpointProvider } from 'react-socks';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { statuses, setStore, initTrackingData, fetchSettings, updateAppSettings, setPanels, setApiCampaignUids } from 'shared/actions';
+import { statuses, setStore, initTrackingData, fetchSettings, updateAppSettings, setPanels, removePanels, setApiCampaignUids } from 'shared/actions';
 import { PanelManager, StepIndicator } from 'shared/components';
 import { getJwtCustomer, getJwtAccount, Resources, convertOptions, setApiFacebookCookies } from 'shared/utils';
 import { Recaptcha } from 'form/components';
@@ -61,7 +61,7 @@ export class DonateWidget extends React.Component {
 export class _DonateWidgetRoot extends React.Component {
   async componentDidMount() {
     const { storeUid, singleOfferId, recurringOfferId, categoryUid } = this.props;
-    const { updateAppSettings, setStore, initTrackingData, fetchSettings, handleAmountUrlParam, setApiCampaignUids } = this.props;
+    const { updateAppSettings, setStore, initTrackingData, fetchSettings, handleAmountUrlParam, setApiCampaignUids, removePanels } = this.props;
 
     if (!singleOfferId && !recurringOfferId && !categoryUid) {
       throw new Error('[DonateWidget] A singleOfferId, recurringOfferId, or categoryUid is required');
@@ -105,6 +105,9 @@ export class _DonateWidgetRoot extends React.Component {
     initTrackingData(this.props);
     setApiCampaignUids();
     setApiFacebookCookies();
+
+    // if there's an upsell panel remove it right away.
+    removePanels({ withComponent: 'RgUpsellPanel' });
 
     const promises = [];
 
@@ -231,6 +234,7 @@ const actions = {
   fetchCustomer: fetchCustomer,
   fetchIncompleteSale: fetchIncompleteSale,
   selectFrequency: selectFrequency,
+  removePanels: removePanels,
 };
 
 export const connectDonateWidgetRoot = connect(mapStateToProps, actions);

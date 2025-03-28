@@ -5,6 +5,10 @@ export const types = {
   selectSchedule:  'SELECT_SCHEDULE',
   selectDefaults:  'SELECT_DEFAULTS',
 
+  // RG Upsell Action Types
+  setRgUpsell: 'SET_RG_UPSELL',
+  clearRgUpsell: 'CLEAR_RG_UPSELL',
+  
   // Payment Action Types
   makePaymentRequest: 'MAKE_PAYMENT_REQUEST',
   makePaymentSuccess: 'MAKE_PAYMENT_SUCCESS',
