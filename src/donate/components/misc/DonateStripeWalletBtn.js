@@ -4,7 +4,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { PaymentRequestButtonElement, useStripe, Elements } from '@stripe/react-stripe-js';
 import { getSetting } from 'shared/selectors';
 import { toCents } from 'shared/utils';
-import { getPaymentMethod, getDonationPanelSelection, getSelectedFrequency } from 'donate/selectors';
+import { getPaymentMethod, getDonationAmount, getDonationFrequency } from 'donate/selectors';
 import { fetchStripePaymentIntent, makeStripeWalletPayment } from 'donate/actions';
 
 export const DonateStripeWalletBtnInner = (props) => {
@@ -130,8 +130,8 @@ export const _DonateStripeWalletBtn = (props) => {
 const mapStateToProps = (state, ownProps) => ({
   paymentMethod: getPaymentMethod(state, 'wallet', 'stripe'),
   currency: getSetting(state, 'currency').code.toLowerCase(),
-  amount: toCents(getDonationPanelSelection(state).amount),
-  frequency: getSelectedFrequency(state),
+  amount: toCents(getDonationAmount(state)),
+  frequency: getDonationFrequency(state),
   height: getSetting(state, 'expressPaymentBtnHeight') || 45,
 });
 

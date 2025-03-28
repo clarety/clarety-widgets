@@ -4,20 +4,7 @@ import Cookies from 'js-cookie';
 import { Config } from '../../src';
 
 Config.init({
-  // instanceKey: 'bhcc',
-  // instanceKey: 'mdc',
   instanceKey: 'clarety-baseline',
-  // instanceKey: 'charlies',
-  // instanceKey: 'tnc',
-  // instanceKey: 'tnc-hk',
-  // instanceKey: 'clarety-church',
-  // instanceKey: 'ethiopiaid',
-  // instanceKey: 'a21',
-  // instanceKey: 'mc',
-  // instanceKey: 'miraclebabies',
-  // instanceKey: 'bibleleague',
-  // instanceKey: 'bsfs',
-  // instanceKey: 'ihc',
   devSitePath: 'http://localhost:3000/',
   // phoneCountry: 'AU',
   localhostProtocol: 'https:',
