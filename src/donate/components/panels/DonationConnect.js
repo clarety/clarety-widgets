@@ -3,7 +3,8 @@ import { removeItemsWithType } from 'shared/actions';
 import { getFormData, getErrors } from 'form/selectors';
 import { setErrors } from 'form/actions';
 import { getSelectedAmount, getGivingTypeOptions, getIsRgUpsellEnabled } from 'donate/selectors';
-import { selectAmount, selectSchedule, addDonationToCart, maybeShowRgUpsell, resetRgUpsell } from 'donate/actions';
+import { selectAmount, selectSchedule, addDonationToCart, resetRgUpsell } from 'donate/actions';
+import { maybeShowRgUpsell } from 'donate/actions/rg-upsell-maybe-show-action';
 
 export class DonationConnect {
   static mapStateToProps = (state) => {

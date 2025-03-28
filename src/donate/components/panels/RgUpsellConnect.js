@@ -1,5 +1,5 @@
 import { getSelectedAmount } from 'donate/selectors';
-import { selectRgUpsell, skipRgUpsell } from 'donate/actions';
+import { selectRgUpsell, skipRgUpsell } from 'donate/actions/rg-upsell-actions';
 
 export class RgUpsellConnect {
   static mapStateToProps = (state) => {

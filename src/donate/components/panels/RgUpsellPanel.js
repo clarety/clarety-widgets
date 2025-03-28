@@ -67,7 +67,7 @@ export class RgUpsellPanel extends BasePanel {
                 </Button>
               ))}
 
-              <Button variant="secondary" onClick={this.onSkipUpsell}>
+              <Button variant="outline-primary" onClick={this.onSkipUpsell}>
                 {t('keep-my-one-time-donation', 'Keep my one-time {{amount}} donation', { amount: currentAmount })}
               </Button>
             </div>
