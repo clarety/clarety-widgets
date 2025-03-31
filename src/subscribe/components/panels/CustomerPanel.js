@@ -94,9 +94,20 @@ export class CustomerPanel extends BasePanel {
     );
   }
 
+  getPlaceholder(key, text, required = true) {
+    const { useAsteriskForRequiredFields } = this.props.settings;
+
+    let placeholder = t(key, text);
+    if (placeholder && required && useAsteriskForRequiredFields) {
+      placeholder += ' *';
+    }
+
+    return placeholder;
+  }
+
   renderCustomerForm() {
     const { defaultCountry } = this.props;
-    const { nameOption, showMobile, showPhoneCountrySelect, showState, showCountry, buttonText } = this.props.settings;
+    const { nameOption, showMobile, showPhoneCountrySelect, showState, showCountry, buttonText, requireMobile } = this.props.settings;
 
     return (
       <Form onSubmit={this.onClickSubmit}>
@@ -104,21 +115,42 @@ export class CustomerPanel extends BasePanel {
         <InputGroup>
           {(nameOption === 'firstandlast' || !nameOption) &&
             <React.Fragment>
-              <TextInput field="customer.firstName" placeholder={t('first-name', 'First Name')} hideErrors required />
-              <TextInput field="customer.lastName" placeholder={t('last-name', 'Last Name')} hideErrors required />
+              <TextInput
+                field="customer.firstName"
+                placeholder={this.getPlaceholder('first-name', 'First Name')}
+                hideErrors
+                required
+              />
+              <TextInput
+                field="customer.lastName"
+                placeholder={this.getPlaceholder('last-name', 'Last Name')}
+                hideErrors
+                required
+              />
             </React.Fragment>
           }
 
           {nameOption === 'full' &&
-            <TextInput field="customer.fullName" placeholder={t('full-name', 'Full Name')} hideErrors required />
+            <TextInput
+              field="customer.fullName"
+              placeholder={this.getPlaceholder('full-name', 'Full Name')}
+              hideErrors
+              required
+            />
           }
           
-          <EmailInput field="customer.email" type="email" placeholder={t('email', 'Email')} hideErrors required />
+          <EmailInput
+            field="customer.email"
+            type="email"
+            placeholder={this.getPlaceholder('email', 'Email')}
+            hideErrors
+            required
+          />
 
           {showMobile && 
             <PhoneInput
               field="customer.mobile"
-              placeholder={t('mobile', 'Mobile')}
+              placeholder={this.getPlaceholder('mobile', 'Mobile', !!requireMobile)}
               showCountrySelect={showPhoneCountrySelect}
               hideErrors
               required
@@ -126,12 +158,27 @@ export class CustomerPanel extends BasePanel {
           }
 
           {showState &&
-            <StateInput field="customer.billing.state" placeholder={t('state', 'State')} country="AU" hideErrors required />
+            <StateInput
+              field="customer.billing.state"
+              placeholder={this.getPlaceholder('state', 'State', false)}
+              country={defaultCountry}
+              hideErrors
+              required
+            />
           }
 
           {showCountry
-            ? <CountryInput field="customer.billing.country" initialValue={defaultCountry} placeholder={t('country', 'Country')} hideErrors required />
-            : <FormElement field="customer.billing.country" value={defaultCountry} />
+            ? <CountryInput
+                field="customer.billing.country"
+                initialValue={defaultCountry}
+                placeholder={this.getPlaceholder('country', 'Country')}
+                hideErrors
+                required
+              />
+            : <FormElement
+                field="customer.billing.country"
+                value={defaultCountry}
+              />
           }
 
           <InputGroup.Append>
