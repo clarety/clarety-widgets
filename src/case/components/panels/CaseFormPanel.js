@@ -958,7 +958,8 @@ export class CaseFormPanel extends BasePanel {
   }
 
   renderPostcodeField({ field, fieldKey, isRequired = false, isDisabled = false }) {
-    const country = this.props.formData[`${fieldKey}.country`];
+    const { settings, formData } = this.props;
+    const country = formData[`${fieldKey}.country`];
 
     return (
       <div key={fieldKey} className="field field--postcode" ref={ref => this.fieldRefs[fieldKey] = ref}>
@@ -970,6 +971,7 @@ export class CaseFormPanel extends BasePanel {
               required={isRequired}
               disabled={isDisabled}
               labelPrefix={this.getFieldLabel(field, fieldKey)}
+              hideLabelPrefix={!!settings.hideAddressLabelPrefix}
             />
           </Col>
         </Form.Row>
@@ -992,6 +994,7 @@ export class CaseFormPanel extends BasePanel {
               required={isRequired}
               disabled={isDisabled}
               labelPrefix={this.getFieldLabel(field, fieldKey)}
+              hideLabelPrefix={!!settings.hideAddressLabelPrefix}
             />
           </Col>
           <Col sm>
@@ -1001,6 +1004,7 @@ export class CaseFormPanel extends BasePanel {
               required={isRequired}
               disabled={isDisabled}
               labelPrefix={this.getFieldLabel(field, fieldKey)}
+              hideLabelPrefix={!!settings.hideAddressLabelPrefix}
             />
           </Col>
         </Form.Row>
@@ -1023,6 +1027,7 @@ export class CaseFormPanel extends BasePanel {
               required={isRequired}
               disabled={isDisabled}
               labelPrefix={this.getFieldLabel(field, fieldKey)}
+              hideLabelPrefix={!!settings.hideAddressLabelPrefix}
             />
           </Col>
         </Form.Row>
@@ -1035,6 +1040,7 @@ export class CaseFormPanel extends BasePanel {
               required={isRequired}
               disabled={isDisabled}
               labelPrefix={this.getFieldLabel(field, fieldKey)}
+              hideLabelPrefix={!!settings.hideAddressLabelPrefix}
             />
           </Col>
           <Col sm>
@@ -1044,6 +1050,7 @@ export class CaseFormPanel extends BasePanel {
               required={isRequired}
               disabled={isDisabled}
               labelPrefix={this.getFieldLabel(field, fieldKey)}
+              hideLabelPrefix={!!settings.hideAddressLabelPrefix}
             />
           </Col>
         </Form.Row>
@@ -1378,8 +1385,8 @@ class AddressField extends React.Component {
   });
 
   render() {
-    const { fieldKey, required, defaultCountry, label } = this.props;
-    const country = this.props.formData[`${fieldKey}.country`];
+    const { fieldKey, required, defaultCountry, label, settings, formData } = this.props;
+    const country = formData[`${fieldKey}.country`];
     const useAddressFinder = this.state.useAddressFinder && this.shouldUseAddressFinder();
 
     return (
@@ -1399,6 +1406,7 @@ class AddressField extends React.Component {
                   defaultCountry={defaultCountry}
                   required={required}
                   labelPrefix={label}
+                  hideLabelPrefix={!!settings.hideAddressLabelPrefix}
                 />
               </Col>
             </Form.Row>
@@ -1431,6 +1439,7 @@ class AddressField extends React.Component {
                     country={country}
                     required={required}
                     labelPrefix={label}
+                    hideLabelPrefix={!!settings.hideAddressLabelPrefix}
                   />
                 </Col>
                 <Col sm>
@@ -1439,6 +1448,7 @@ class AddressField extends React.Component {
                     country={country}
                     required={required && country !== 'NZ'}
                     labelPrefix={label}
+                    hideLabelPrefix={!!settings.hideAddressLabelPrefix}
                   />
                 </Col>
               </Form.Row>
@@ -1450,6 +1460,7 @@ class AddressField extends React.Component {
                     country={country}
                     required={required}
                     labelPrefix={label}
+                    hideLabelPrefix={!!settings.hideAddressLabelPrefix}
                   />
                 </Col>
                 <Col sm>
@@ -1458,6 +1469,7 @@ class AddressField extends React.Component {
                     country={country}
                     required={required}
                     labelPrefix={label}
+                    hideLabelPrefix={!!settings.hideAddressLabelPrefix}
                   />
                 </Col>
               </Form.Row>
@@ -1468,46 +1480,46 @@ class AddressField extends React.Component {
   }
 }
 
-function Address1Field({ fieldKey, required, labelPrefix }) {
+function Address1Field({ fieldKey, required, labelPrefix, hideLabelPrefix = false }) {
   return (
     <Form.Group controlId={`${fieldKey}.address1`}>
-      <Form.Label>{labelPrefix} {t('street', 'Street')}{required && ' *'}</Form.Label>
+      <Form.Label>{!hideLabelPrefix && labelPrefix} {t('street', 'Street')}{required && ' *'}</Form.Label>
       <TextInput field={`${fieldKey}.address1`} type="street" />
     </Form.Group>
   );
 }
 
-function SuburbField({ fieldKey, country, required, labelPrefix }) {
+function SuburbField({ fieldKey, country, required, labelPrefix, hideLabelPrefix = false }) {
   return (
     <Form.Group controlId={`${fieldKey}.suburb`}>
-      <Form.Label>{labelPrefix} {getSuburbLabel(country)}{required && ' *'}</Form.Label>
+      <Form.Label>{!hideLabelPrefix && labelPrefix} {getSuburbLabel(country)}{required && ' *'}</Form.Label>
       <TextInput field={`${fieldKey}.suburb`} />
     </Form.Group>
   );
 }
 
-function StateField({ fieldKey, country, required, labelPrefix }) {
+function StateField({ fieldKey, country, required, labelPrefix, hideLabelPrefix = false }) {
   return (
     <Form.Group controlId={`${fieldKey}.state`}>
-      <Form.Label>{labelPrefix} {getStateLabel(country)}{required && ' *'}</Form.Label>
+      <Form.Label>{!hideLabelPrefix && labelPrefix} {getStateLabel(country)}{required && ' *'}</Form.Label>
       <StateInput field={`${fieldKey}.state`} country={country} />
     </Form.Group>
   );
 }
 
-function PostcodeField({ fieldKey, country, required, labelPrefix }) {
+function PostcodeField({ fieldKey, country, required, labelPrefix, hideLabelPrefix = false }) {
   return (
     <Form.Group controlId={`${fieldKey}.postcode`}>
-      <Form.Label>{labelPrefix} {getPostcodeLabel(country)}{required && ' *'}</Form.Label>
+      <Form.Label>{!hideLabelPrefix && labelPrefix} {getPostcodeLabel(country)}{required && ' *'}</Form.Label>
       <PostcodeInput field={`${fieldKey}.postcode`} country={country} />
     </Form.Group>
   );
 }
 
-function CountryField({ fieldKey, region, defaultCountry, required, labelPrefix }) {
+function CountryField({ fieldKey, region, defaultCountry, required, labelPrefix, hideLabelPrefix = false }) {
   return (
     <Form.Group controlId="country">
-      <Form.Label>{labelPrefix} {t('country', 'Country')}{required && ' *'}</Form.Label>
+      <Form.Label>{!hideLabelPrefix && labelPrefix} {t('country', 'Country')}{required && ' *'}</Form.Label>
       <CountryInput
         field={`${fieldKey}.country`}
         initialValue={defaultCountry}
