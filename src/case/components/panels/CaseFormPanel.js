@@ -958,7 +958,7 @@ export class CaseFormPanel extends BasePanel {
   }
 
   renderPostcodeField({ field, fieldKey, isRequired = false, isDisabled = false }) {
-    const { settings, formData } = this.props;
+    const { settings, formData, defaultCountry } = this.props;
     const country = formData[`${fieldKey}.country`];
 
     return (
@@ -967,7 +967,7 @@ export class CaseFormPanel extends BasePanel {
           <Col>
             <PostcodeField
               fieldKey={fieldKey}
-              country={country}
+              country={country || defaultCountry}
               required={isRequired}
               disabled={isDisabled}
               labelPrefix={this.getFieldLabel(field, fieldKey)}
@@ -1000,7 +1000,7 @@ export class CaseFormPanel extends BasePanel {
           <Col sm>
             <PostcodeField
               fieldKey={fieldKey}
-              country={country}
+              country={country || defaultCountry}
               required={isRequired}
               disabled={isDisabled}
               labelPrefix={this.getFieldLabel(field, fieldKey)}
@@ -1046,7 +1046,7 @@ export class CaseFormPanel extends BasePanel {
           <Col sm>
             <PostcodeField
               fieldKey={fieldKey}
-              country={country}
+              country={country || defaultCountry}
               required={isRequired}
               disabled={isDisabled}
               labelPrefix={this.getFieldLabel(field, fieldKey)}
@@ -1466,7 +1466,7 @@ class AddressField extends React.Component {
                 <Col sm>
                   <PostcodeField
                     fieldKey={fieldKey}
-                    country={country}
+                    country={country || defaultCountry}
                     required={required}
                     labelPrefix={label}
                     hideLabelPrefix={!!settings.hideAddressLabelPrefix}
