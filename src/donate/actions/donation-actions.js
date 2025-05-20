@@ -70,7 +70,8 @@ export const selectDefaults = (offers) => ({
 
 export const handleAmountUrlParam = () => {
   return async (dispatch, getState) => {
-    const amount = new URLSearchParams(window.location.search).get('amount');
+    const urlParams = new URLSearchParams(window.location.search);
+    const amount = urlParams.get('clarety_amount') || urlParams.get('amount');
     if (amount) {
       const offers = getSetting(getState(), 'priceHandles');
       for (const offer of offers) {
