@@ -63,7 +63,7 @@ export class RgUpsellPanel extends BasePanel {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 20 }}>
               {this.props.amounts.map((amount, index) => (
                 <Button key={index} variant="primary" onClick={() => this.onSelectUpsell(amount)}>
-                  <Currency amount={amount} /> {rgUpsell.scheduleName}
+                  <Currency amount={amount} hideCents={settings.hideCents} /> {rgUpsell.scheduleName}
                 </Button>
               ))}
 
