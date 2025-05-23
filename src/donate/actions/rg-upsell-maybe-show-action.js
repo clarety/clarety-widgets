@@ -67,7 +67,7 @@ function getSuggestedRgUpsellAmount(fixedUpsellAmount, percentageUpsellAmount, c
   }
 
   if (percentageUpsellAmount) {
-    return (percentageUpsellAmount / 100) * Number(currentDonationAmount);
+    return Math.ceil((percentageUpsellAmount / 100) * Number(currentDonationAmount));
   }
 
   return null;
