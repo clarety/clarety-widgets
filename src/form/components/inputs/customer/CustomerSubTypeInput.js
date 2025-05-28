@@ -6,7 +6,7 @@ import { getCustomerSubTypeOptions } from 'shared/selectors';
 import { getFormData } from 'shared/selectors';
 import { SelectInput } from 'form/components';
 
-export const _CustomerSubTypeInput = ({ options, formData, customerSubTypeField = 'customer.subtype', readOnly }) => {
+export const _CustomerSubTypeInput = ({ options, formData, customerSubTypeField = 'customer.subType', readOnly }) => {
   return (
     <React.Fragment>
       <Form.Row>
