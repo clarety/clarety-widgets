@@ -3,7 +3,7 @@ import { Form, Row, Col, Button } from 'react-bootstrap';
 import { getLanguage, t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, AddressFinder } from 'shared/components';
 import { requiredField, emailField, phoneNumberField, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
-import { Label, TextInput, EmailInput, PhoneInput, CheckboxInput, StateInput, CountryInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement, CustomerTypeInput, TitleInput, DobInput } from 'form/components';
+import { Label, TextInput, EmailInput, PhoneInput, CheckboxInput, StateInput, CountryInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement, CustomerTypeInput, CustomerSubTypeInput, TitleInput, DobInput } from 'form/components';
 import { ExpressDonation } from 'donate/components';
 
 export class CustomerPanel extends BasePanel {
@@ -226,6 +226,7 @@ export class CustomerPanel extends BasePanel {
           {this.renderErrorMessages()}
           {this.renderExpressCheckout()}
           {this.renderCustomerTypeFields()}
+          {this.renderCustomerSubTypeFields()}
           {this.renderTitleField()}
           {this.renderBasicFields()}
           {this.renderMobileField()}
@@ -280,6 +281,15 @@ export class CustomerPanel extends BasePanel {
 
     return (
       <CustomerTypeInput readOnly={fetchedCustomer} />
+    );
+  }
+
+  renderCustomerSubTypeFields() {
+    const { settings, fetchedCustomer } = this.props;
+    if (!settings.showCustomerSubType) return null;
+
+    return (
+      <CustomerSubTypeInput readOnly={fetchedCustomer} />
     );
   }
 

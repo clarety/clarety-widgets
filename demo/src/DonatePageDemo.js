@@ -33,6 +33,7 @@ window.renderDonatePage = (props) => {
         showCustomerType: true,
         showSource: true,
         showCountry: true,
+        showCustomerSubType: true,
       },
     },
     // {

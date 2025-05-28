@@ -9,6 +9,7 @@ export * from './inputs/address/StateInput';
 export * from './inputs/address/PostcodeInput';
 
 export * from './inputs/customer/CustomerTypeInput';
+export * from './inputs/customer/CustomerSubTypeInput';
 export * from './inputs/customer/DobInput';
 export * from './inputs/customer/TitleInput';
 
