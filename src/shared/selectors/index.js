@@ -110,7 +110,7 @@ export const getCustomerSubTypeOptions = (state) => {
      const customerElement = getElement(state, 'customer');
      const subTypeElement = customerElement.elements.find(element => element.property === 'subType');
      return subTypeElement.options;
-   } catch (error) {
+  } catch (error) {
      return [{ value: '', label: '' }];
   }
 };

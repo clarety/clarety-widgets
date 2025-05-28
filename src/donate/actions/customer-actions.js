@@ -29,6 +29,7 @@ export const setCustomerFormData = (customer) => {
   return async (dispatch, getState) => {
     const formData = {
       'customer.type':         customer.type,
+      'customer.subType':      customer.subType,
       'customer.title':         customer.title,
       'customer.firstName':    customer.firstName,
       'customer.lastName':     customer.lastName,

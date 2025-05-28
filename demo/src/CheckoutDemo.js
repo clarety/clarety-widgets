@@ -44,6 +44,7 @@ Checkout.setPanels([
     settings: {
       hideLabels: true,
       showCustomerType: true,
+      showCustomerSubType: true,
       showSource: true,
     },
   },
