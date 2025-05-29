@@ -103,3 +103,14 @@ export const getTitleOptions = (state) => {
     return [];
   }
 };
+
+export const getCustomerSubTypeOptions = (state) => {
+  // Try to get the 'customer -> subtype' element, which may not exist.
+  try {
+     const customerElement = getElement(state, 'customer');
+     const subTypeElement = customerElement.elements.find(element => element.property === 'subType');
+     return subTypeElement.options;
+  } catch (error) {
+     return [{ value: '', label: '' }];
+  }
+};

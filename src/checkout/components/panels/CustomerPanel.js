@@ -3,6 +3,7 @@ import { Form, Row, Col } from 'react-bootstrap';
 import { getLanguage, t } from 'shared/translations';
 import { PanelContainer, PanelHeader, PanelBody } from 'shared/components';
 import { FormContext, getCustomerTypeOptions } from 'shared/utils';
+import { getCustomerSubTypeOptions } from 'shared/selectors';
 import { BasePanel, TextInput, SelectInput, PhoneInput, DobInput, CheckboxInput, FormElement, Button } from 'checkout/components';
 
 export class CheckoutCustomerPanel extends BasePanel {
@@ -105,6 +106,7 @@ export class CheckoutCustomerPanel extends BasePanel {
     if (customer) {
       formData = {
         'customer.type':             customer.type,
+        'customer.subType':          customer.subType,
         'customer.businessName':     customer.businessName,
         'customer.firstName':        customer.firstName,
         'customer.lastName':         customer.lastName,
@@ -181,6 +183,8 @@ export class CheckoutCustomerPanel extends BasePanel {
                   </Col>
                 </Form.Row>
               }
+
+              {this.renderCustomerSubTypeFields()}
 
               <Form.Row>
                 <Col sm={6}>
@@ -262,6 +266,27 @@ export class CheckoutCustomerPanel extends BasePanel {
           </FormContext.Provider>
         </PanelBody>
       </PanelContainer>
+    );
+  }
+
+  renderCustomerSubTypeFields() {
+    const { settings } = this.props;
+    if(!settings.showCustomerSubType) return null;
+    return (
+      <React.Fragment>
+        <Form.Row>
+          <Col>
+            <SelectInput
+              field="customer.subType"
+              placeholder={t('subType', 'Sub Type')}
+              options={this.props.customerSubTypeOptions}
+              testId="customer-sub-type-input"
+              hideLabel
+              required
+            />
+          </Col>
+        </Form.Row>
+      </React.Fragment>
     );
   }
 
