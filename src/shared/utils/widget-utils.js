@@ -5,6 +5,7 @@ import jwtDecode from 'jwt-decode';
 import { t } from 'shared/translations';
 import { Config } from 'shared/utils/config';
 import { ClaretyApi } from 'shared/utils/clarety-api';
+import i18next from 'i18next';
 
 export const FormContext = React.createContext();
 
@@ -119,7 +120,7 @@ export function getCurrencySymbol(currency, hideCurrencyCode) {
 export function formatPrice(amount, currency, hideCurrencyCode = false, hideCents = false) {
   const currencySymbol = getCurrencySymbol(currency, hideCurrencyCode);
 
-  const formattedAmount = Number(amount).toLocaleString(undefined, {
+  const formattedAmount = Number(amount).toLocaleString(i18next.language, {
     minimumFractionDigits: hideCents ? 0 : 2,
     maximumFractionDigits: hideCents ? 0 : 2,
   })
