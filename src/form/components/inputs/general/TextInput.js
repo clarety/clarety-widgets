@@ -46,9 +46,11 @@ class _TextInput extends React.Component {
   }
 }
 
-const mapStateToProps = (state, { field }) => {
+const mapStateToProps = (state, { field, displayFn }) => {
+  if (!displayFn) displayFn = val => val;
+
   return {
-    value: state.formData[field] || '',
+    value: displayFn(state.formData[field] || ''),
     error: getValidationError(field, state.errors),
   };
 };

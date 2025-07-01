@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Card, InputGroup } from 'react-bootstrap';
 import { t } from 'shared/translations';
 import { CurrencySymbol } from 'shared/components';
-import { cleanDecimal } from 'form/utils';
+import { cleanDecimal, displayInputDecimal } from 'form/utils';
 
 export const VariableAmountLg = ({ value, amountInfo, isSelected, onChange }) => {
   let input = React.createRef();
@@ -28,7 +28,7 @@ export const VariableAmountLg = ({ value, amountInfo, isSelected, onChange }) =>
             <Form.Control
               placeholder={t('label.variableAmountInput', 'Enter Amount')}
               ref={input}
-              value={value}
+              value={displayInputDecimal(value)}
               type="text"
               onFocus={event => onChange(event.target.value)}
               onChange={event => onChange(cleanDecimal(event.target.value))}

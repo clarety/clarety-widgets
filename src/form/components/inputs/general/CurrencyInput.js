@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { InputGroup } from 'react-bootstrap';
 import { getSetting } from 'shared/selectors';
 import { TextInput } from 'form/components';
-import { cleanDecimal } from 'form/utils';
+import { cleanDecimal, displayInputDecimal } from 'form/utils';
 
 export const _CurrencyInput = ({ currency, ...props}) => (
   <InputGroup>
@@ -13,7 +13,11 @@ export const _CurrencyInput = ({ currency, ...props}) => (
       </InputGroup.Text>
     </InputGroup.Prepend>
 
-    <TextInput cleanFn={cleanDecimal} {...props} />
+    <TextInput
+      {...props}
+      cleanFn={cleanDecimal}
+      displayFn={displayInputDecimal}
+    />
   </InputGroup>
 );
 

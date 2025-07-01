@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, InputGroup } from 'react-bootstrap';
 import { t } from 'shared/translations';
 import { CurrencySymbol } from 'shared/components';
-import { cleanDecimal } from 'form/utils';
+import { cleanDecimal, displayInputDecimal } from 'form/utils';
 import { FieldError } from 'form/components';
 
 export const VariableAmount = ({ amountInfo, value, placeholder, isSelected, autoFocus, onChange, onMouseEnter, onMouseLeave, error }) => (
@@ -13,7 +13,7 @@ export const VariableAmount = ({ amountInfo, value, placeholder, isSelected, aut
       </InputGroup.Prepend>
 
       <Form.Control
-        value={value}
+        value={displayInputDecimal(value)}
         placeholder={placeholder || amountInfo.title || t('other-amount', 'Other Amount')}
         type="tel"
         onFocus={event => onChange(event.target.value)}
