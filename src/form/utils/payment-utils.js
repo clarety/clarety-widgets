@@ -70,9 +70,6 @@ function getDecimalSeparator() {
 }
 
 export const cleanDecimal = (number) => {
-  // Remove '$' prefix
-  number = number.replace('$', '');
-
   if (getDecimalSeparator() === ',') {
     // comma is the decial separator, but we want to store it as a dot.
 
@@ -87,7 +84,7 @@ export const cleanDecimal = (number) => {
     number = number.replaceAll(',', '');
   }
 
-  // allow digitals, then optionally a dot, followed by up to 2 digits.
+  // only allow digits, then optionally a dot, followed by up to 2 digits.
   const match = number.match(/^\d+(\.\d{0,2})?/);
   return match ? match[0] : '';
 };
