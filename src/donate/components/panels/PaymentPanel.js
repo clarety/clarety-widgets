@@ -51,15 +51,17 @@ export class _PaymentPanel extends BasePaymentPanel {
   }
   
   renderCartSummary() {
-    const { frequency, scheduleLabel, amount } = this.props;
+    const { frequency, scheduleLabel, amount, settings } = this.props;
     
     const label = frequency === 'recurring'
       ? scheduleLabel + ' ' + t('donation-amount', 'Donation Amount')
       : t('donation-amount', 'Donation Amount');
 
+    const hideCents = settings.hideCents && Number.isInteger(parseFloat(amount));
+
     return (
       <p className="donation-summary">
-        {label}: <b><Currency amount={amount} /></b>
+        {label}: <b><Currency amount={amount} hideCents={hideCents} /></b>
       </p>
     );
   }
