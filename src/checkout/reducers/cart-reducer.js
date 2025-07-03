@@ -95,6 +95,18 @@ export const cartReducer = (state = initialState, action) => {
         customer: null,
       };
 
+    // Tracking
+
+    case sharedTypes.setTrackingData:
+      return {
+        ...state,
+        
+        tracking: {
+          ...state.tracking,
+          ...action.trackingData,
+        },
+      };
+
     default:
       return state;
   }
