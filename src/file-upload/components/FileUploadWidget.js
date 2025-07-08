@@ -1,8 +1,8 @@
 import React from 'react';
 import { FilePond, registerPlugin } from 'react-filepond';
 import { Status } from 'filepond';
-// import { create as createDoka } from '../react-doka/lib/doka.esm.min';
-// import '../react-doka/lib/doka.min.css';
+import { create as createDoka } from '../react-doka/lib/doka.esm.min';
+import '../react-doka/lib/doka.min.css';
 
 // Filepond Plugins
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
@@ -17,6 +17,9 @@ import FilePondPluginImageCrop from 'filepond-plugin-image-crop';
 import FilePondPluginImageResize from 'filepond-plugin-image-resize';
 import FilePondPluginImageFilter from 'filepond-plugin-image-filter';
 import FilePondPluginImageTransform from 'filepond-plugin-image-transform';
+
+// localisation
+import locale_id_ID from 'filepond/locale/id-id.js';
 
 registerPlugin(
   FilePondPluginFileValidateType,
@@ -54,24 +57,25 @@ export class FileUploadWidget extends React.Component {
     maxFileSize: null,
     acceptedFileTypes: [],
     showImageEditor: false,
+    locale: null,
   };
 
   constructor(props) {
     super(props);
 
-    this.state = { uploads: [], initialFiles: [] };
+    this.state = {
+      uploads: [],
+      localeOptions: {},
+    };
     
     if (props.previouslyUploaded) {
       // json string contains '&quot;' so convert them to double quotes.
       const json = props.previouslyUploaded.replace(/&quot;/g, '"');
-      const previouslyUploaded = JSON.parse(json);
+      this.state.uploads = JSON.parse(json);
+    }
 
-      this.state.uploads = previouslyUploaded;
-
-      this.state.initialFiles = previouslyUploaded.map(file => ({
-        source: file.token,
-        options: { type: 'local', file: file },
-      }));
+    if (['id', 'id-ID', 'id_ID'].includes(props.locale)) {
+      this.state.localeOptions = locale_id_ID;
     }
   }
 
@@ -81,10 +85,21 @@ export class FileUploadWidget extends React.Component {
     if (!error) {
       const response = JSON.parse(fileItem.serverId);
       const upload = response[0];
+      upload.filepondId = fileItem.id;
 
-      this.setState(prevState => ({
-        uploads: [...prevState.uploads, upload]
-      }));
+      const maxFiles = Number(this.props.maxFiles) || 1;
+
+      this.setState(prevState => {
+        // remove existing upload with this ID.
+        const prevUploads = prevState.uploads.filter(upload => upload.filepondId !== fileItem.id);
+
+        // add the new upload, and restrict to max file count.
+        const nextUploads = [...prevUploads, upload].slice(-maxFiles);
+        
+        return {
+          uploads: nextUploads,
+        };
+    });
     }
   };
 
@@ -98,7 +113,7 @@ export class FileUploadWidget extends React.Component {
     if (error) return;
 
     this.setState(prevState => ({
-      uploads: prevState.uploads.filter(upload => upload.token !== fileItem.file.token),
+      uploads: prevState.uploads.filter(upload => upload.filepondId !== fileItem.id),
     }));
   };
 
@@ -124,7 +139,7 @@ export class FileUploadWidget extends React.Component {
   }
 
   render() {
-    const { uploads } = this.state;
+    const { uploads, localeOptions } = this.state;
     const { maxFiles, showImageEditor, name } = this.props;
 
     const acceptedFileTypes = this.props.acceptedFileTypes.map(type => mimeTypes[type]);
@@ -136,8 +151,6 @@ export class FileUploadWidget extends React.Component {
           ref={ref => this.pond = ref}
 
           name="filepond"
-          // TODO: investigate initial files bug.
-          // files={this.state.initialFiles}
           server={uploadUrl}
 
           allowMultiple={maxFiles > 1}
@@ -153,7 +166,10 @@ export class FileUploadWidget extends React.Component {
           onprocessfiles={this.onProcessFiles}
           onremovefile={this.onRemoveFile}
           
-          // imageEditEditor={showImageEditor ? createDoka() : null}
+          imageEditEditor={showImageEditor ? createDoka() : null}
+          imageEditInstantEdit={!!showImageEditor}
+
+          {...localeOptions}
         />
         <input type="hidden" name={name} value={JSON.stringify(uploads)} />
         <input type="hidden" name={`filecount-${name}`} value={uploads.length} />
