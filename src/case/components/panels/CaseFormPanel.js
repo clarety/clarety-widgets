@@ -952,6 +952,7 @@ export class CaseFormPanel extends BasePanel {
           setFormData={this.props.setFormData}
           required={isRequired}
           disabled={isDisabled}
+          hideAddressLabelPrefix={!!settings.hideAddressLabelPrefix}
         />
       </div>
     );
@@ -1385,7 +1386,7 @@ class AddressField extends React.Component {
   });
 
   render() {
-    const { fieldKey, required, defaultCountry, label, settings, formData } = this.props;
+    const { fieldKey, required, defaultCountry, label, formData, hideAddressLabelPrefix } = this.props;
     const country = formData[`${fieldKey}.country`];
     const useAddressFinder = this.state.useAddressFinder && this.shouldUseAddressFinder();
 
@@ -1406,7 +1407,7 @@ class AddressField extends React.Component {
                   defaultCountry={defaultCountry}
                   required={required}
                   labelPrefix={label}
-                  hideLabelPrefix={!!settings.hideAddressLabelPrefix}
+                  hideLabelPrefix={!!hideAddressLabelPrefix}
                 />
               </Col>
             </Form.Row>
@@ -1439,7 +1440,7 @@ class AddressField extends React.Component {
                     country={country}
                     required={required}
                     labelPrefix={label}
-                    hideLabelPrefix={!!settings.hideAddressLabelPrefix}
+                    hideLabelPrefix={!!hideAddressLabelPrefix}
                   />
                 </Col>
                 <Col sm>
@@ -1448,7 +1449,7 @@ class AddressField extends React.Component {
                     country={country}
                     required={required && country !== 'NZ'}
                     labelPrefix={label}
-                    hideLabelPrefix={!!settings.hideAddressLabelPrefix}
+                    hideLabelPrefix={!!hideAddressLabelPrefix}
                   />
                 </Col>
               </Form.Row>
@@ -1460,7 +1461,7 @@ class AddressField extends React.Component {
                     country={country}
                     required={required}
                     labelPrefix={label}
-                    hideLabelPrefix={!!settings.hideAddressLabelPrefix}
+                    hideLabelPrefix={!!hideAddressLabelPrefix}
                   />
                 </Col>
                 <Col sm>
@@ -1469,7 +1470,7 @@ class AddressField extends React.Component {
                     country={country || defaultCountry}
                     required={required}
                     labelPrefix={label}
-                    hideLabelPrefix={!!settings.hideAddressLabelPrefix}
+                    hideLabelPrefix={!!hideAddressLabelPrefix}
                   />
                 </Col>
               </Form.Row>
