@@ -1378,6 +1378,7 @@ class AddressField extends React.Component {
       [`${fieldKey}.postcode`]: address.postcode,
       [`${fieldKey}.country`]:  address.country,
       [`${fieldKey}.dpid`]:     address.dpid,
+      [`${fieldKey}.metadata`]: address.metadata,
     });
   };
 

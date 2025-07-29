@@ -29,6 +29,8 @@ export class AddressPanel extends BasePanel {
         'customer.billing.postcode': address.postcode,
         'customer.billing.country':  address.country,
         'customer.billing.dpid':     address.dpid,
+        'customer.billing.metadata': address.metadata,
+
       });
     }
 
@@ -41,6 +43,8 @@ export class AddressPanel extends BasePanel {
         'customer.delivery.postcode': address.postcode,
         'customer.delivery.country':  address.country,
         'customer.delivery.dpid':     address.dpid,
+        'customer.delivery.metadata': address.metadata,
+
       });
     }
   };
@@ -68,6 +72,8 @@ export class AddressPanel extends BasePanel {
         formData['customer.billing.postcode'] = formData['customer.delivery.postcode'];
         formData['customer.billing.country']  = formData['customer.delivery.country'];
         formData['customer.billing.dpid']     = formData['customer.delivery.dpid'];
+        formData['customer.billing.metadata']     = formData['customer.delivery.metadata'];
+
         this.updateFormData(formData);
       }
       
