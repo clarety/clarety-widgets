@@ -48,7 +48,7 @@ function onSelectHandler(fullAddress, metaData, country, onSelect) {
       postcode: metaData.postcode,
       country:  'AU',
       dpid:     metaData.dpid,
-      metadata: JSON.stringify(metaData),
+      metadata: metaData,
 
     });
   }
@@ -64,7 +64,7 @@ function onSelectHandler(fullAddress, metaData, country, onSelect) {
       postcode: selected.postcode(),
       country:  'NZ',
       dpid:     metaData.dpid,
-      metadata: JSON.stringify(metaData),
+      metadata: metaData,
 
     });
   }
