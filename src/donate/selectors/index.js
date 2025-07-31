@@ -1,6 +1,6 @@
 import { statuses } from 'shared/actions';
 import { getCart, getTrackingData, getRecaptcha, getTurnstileToken, getSetting, getFormData, getParsedFormData, getCurrency } from 'shared/selectors';
-import { formatPrice } from 'shared/utils';
+import { formatPrice, calculateImpression } from 'shared/utils';
 
 export const getIsBusy = (state) => state.status !== statuses.ready;
 
@@ -176,6 +176,7 @@ export const getCreateSalePostData = (state) => {
   const trackingData = getTrackingData(state);
   const recaptcha = getRecaptcha(state);
   const turnstileToken = getTurnstileToken(state);
+  const impression = calculateImpression(recaptcha);
 
   return {
     storeUid:  cart.store,
@@ -191,6 +192,8 @@ export const getCreateSalePostData = (state) => {
 
     ...formData.additionalData,
     ...trackingData,
+
+    impression: impression,
   };
 };
 
