@@ -329,6 +329,8 @@ export class DetailsPanel extends BasePanel {
       [`customer.${type}.postcode`]: address.postcode,
       [`customer.${type}.country`]:  address.country,
       [`customer.${type}.dpid`]:     address.dpid,
+      [`customer.${type}.metadata`]: address.metadata,
+
     };
 
     this.setState(prevState => ({

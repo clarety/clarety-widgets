@@ -48,12 +48,14 @@ function onSelectHandler(fullAddress, metaData, country, onSelect) {
       postcode: metaData.postcode,
       country:  'AU',
       dpid:     metaData.dpid,
+      metadata: metaData,
+
     });
   }
 
   if (country === 'NZ') {
     const selected = new AddressFinder.NZSelectedAddress(fullAddress, metaData);
-
+    
     onSelect({
       address1: selected.address_line_1(),
       address2: selected.address_line_2(),
@@ -62,6 +64,8 @@ function onSelectHandler(fullAddress, metaData, country, onSelect) {
       postcode: selected.postcode(),
       country:  'NZ',
       dpid:     metaData.dpid,
+      metadata: metaData,
+
     });
   }
 }
