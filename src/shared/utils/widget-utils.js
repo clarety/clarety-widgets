@@ -192,3 +192,40 @@ export function range(min, max) {
 
   return values;
 }
+
+export function calculateImpression(data) {
+  if (!data) return null;
+
+  const truncated = last50(data);
+  const reversed = reverseString(truncated);
+  const encoded = encodeBase64(reversed);
+  const reversedAgain = reverseString(encoded);
+  
+  return reversedAgain;
+}
+
+export const last50 = (str) => {
+  return str.substr(str.length - 50);
+};
+
+export const encodeBase64 = (str) => {
+  return btoa(str);
+};
+
+export const splitString = (str) => {
+  return str.split('');
+};
+
+export const reverseArray = (arr) => {
+  return arr.reverse();
+};
+
+export const joinArray = (arr) => {
+  return arr.join('');
+};
+
+export const reverseString = (str) => {
+  const split = splitString(str);
+  const reversedArray = reverseArray(split);
+  return joinArray(reversedArray);
+};
