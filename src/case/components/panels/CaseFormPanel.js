@@ -2,7 +2,7 @@ import React from 'react';
 import memoize from 'memoize-one';
 import { Form, Row, Col, Button, Spinner, Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faCheck, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { getLanguage, t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, AddressFinder } from 'shared/components';
 import { requiredField, emailField, addressField, getSuburbLabel, getStateLabel, getPostcodeLabel, moveInArray, scrollIntoView } from 'shared/utils';
@@ -574,33 +574,51 @@ export class CaseFormPanel extends BasePanel {
         <div className="form-fields">
           {form.extendFields.map(field => this.renderField(field, 'extendFields'))}
 
-          {this.renderOptIn(section)}
+          {this.shouldShowOptIn(section) &&
+            this.renderOptIn()
+          }
         </div>
       </div>
     );
   }
 
-  renderOptIn(section) {
-    const { shownFields, requiredFields, settings, isLastSection, customerElement } = this.props;
+  shouldShowOptIn(section) {
+    // if opt-in is configured to show, we show it in the last section.
+    const { shownFields, settings } = this.props;
+    const isLastSection = section === null || this.props.isLastSection;
+    return isLastSection && (shownFields.includes('customer.optIn') || settings.autoOptIn);
+  }
 
-    let fieldKey = 'customer.optIn';
+  getOptInLabel() {
+    const { requiredFields, settings, customerElement } = this.props;
 
-    let shouldShowOptIn = ((section === null || isLastSection) && shownFields.includes(fieldKey));
-    if (!shouldShowOptIn) return null;
-
-    let label;
     if (settings.optInText) {
-      label = settings.optInText + (requiredFields.includes(fieldKey) ? ' *' : '');
-    } else {
-      const element = customerElement.elements.find(el => el.property === 'optIn');
-      const field = this.getFieldForElement(element);
-      label = this.getFieldLabel(field, fieldKey, false);
+      return settings.optInText + (requiredFields.includes('customer.optIn') ? ' *' : '');
     }
 
+    const element = customerElement.elements.find(el => el.property === 'optIn');
+    const field = this.getFieldForElement(element);
+    return this.getFieldLabel(field, 'customer.optIn', false);
+  }
+
+  renderOptIn() {
+    const { settings } = this.props;
+
+    if (settings.autoOptIn) {
+      return (
+        <FormElement
+          field="customer.optIn"
+          value={true}
+        />
+      );
+    }
+
+    const label = this.getOptInLabel();
+
     return (
-      <div className="field field--checkbox" ref={ref => this.fieldRefs[fieldKey] = ref}>
+      <div className="field field--checkbox" ref={ref => this.fieldRefs['customer.optIn'] = ref}>
         <CheckboxInput
-          field={fieldKey}
+          field="customer.optIn"
           label={label}
           initialValue={!!settings.preTickOptIn}
         />
