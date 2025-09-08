@@ -1,10 +1,10 @@
 import React from 'react';
 import { Form, Row, Col, Spinner, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import { CardNumberElement, CardExpiryElement, CardCvcElement, AuBankAccountElement } from '@stripe/react-stripe-js';
-import { t } from 'shared/translations';
+import { t, toTranslationKey } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, injectStripe } from 'shared/components';
 import { Config } from 'shared/utils/config';
-import { requiredField, cardNumberField, cardExpiryField, ccvField, isStripeCard, isStripeAuBankAccount, isStripePaymentForm } from 'shared/utils';
+import { requiredField, cardNumberField, cardExpiryField, ccvField, isCreditCard, isDirectDebit, isStripeCard, isStripeBecs, isStripePaymentForm, isPayPal, isHkDirectDebit, isNzDirectDebit, isCaDirectDebit, isNoPayment } from 'shared/utils';
 import { Label, TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, AccountNumberInput, BsbInput, NZAccountNumberInput, PhoneInput, NumberInput, SelectInput, Turnstile } from 'form/components';
 import { StripePaymentForm } from 'checkout/components/misc/StripePaymentForm';
 
@@ -64,22 +64,15 @@ export class _PaymentPanel extends BasePanel {
     this.props.updateFormData('payment.type', paymentType);
   };
 
-  isHKDirectDebitAuth() {
-    if (this.props.cartStatus === 'authorise') {
-      const paymentMethod = this.getSelectedPaymentMethod();
-      if (paymentMethod) {
-        return paymentMethod.type === 'gatewaydd'
-            && paymentMethod.gateway === 'hk';
-      }
-    }
-
-    return false;
+  isAuthorizingHKDirectDebit() {
+    const paymentMethod = this.getSelectedPaymentMethod();
+    return this.props.cartStatus === 'authorise' && isHkDirectDebit(paymentMethod);
   }
 
   onPressBack = (event) => {
     event.preventDefault();
 
-    if (this.isHKDirectDebitAuth()) {
+    if (this.isAuthorizingHKDirectDebit()) {
       const paymentMethod = this.getSelectedPaymentMethod();
       this.props.cancelPaymentAuthorise(paymentMethod);
     } else {
@@ -105,10 +98,6 @@ export class _PaymentPanel extends BasePanel {
     nextPanel();
   };
 
-  isPaymentTypeDirectDebit(type) {
-    return type === 'gatewaydd' || type === 'dd';
-  }
-
   validate() {
     const errors = [];
 
@@ -120,12 +109,12 @@ export class _PaymentPanel extends BasePanel {
   }
 
   validateFields(paymentMethod, errors) {
-    if (paymentMethod.type === 'stripe-payment-form') {
+    if (isStripePaymentForm(paymentMethod)) {
       // stripe handles validation
       return errors;
     }
 
-    if (paymentMethod.type === 'gatewaycc') {
+    if (isCreditCard(paymentMethod)) {
       if (isStripeCard(paymentMethod)) {
         return this.validateStripeFields(errors);
       } else {
@@ -133,24 +122,26 @@ export class _PaymentPanel extends BasePanel {
       }
     }
 
-    if (this.isPaymentTypeDirectDebit(paymentMethod.type)) {
-      if(isStripeAuBankAccount(paymentMethod)) {
+    if (isDirectDebit(paymentMethod)) {
+      if (isStripeBecs(paymentMethod)) {
         return this.validateStripeAuBankAccountFields(errors);
+      } else if (isNzDirectDebit(paymentMethod)) {
+        return this.validateNZDirectDebitFields(errors);
+      } else if (isHkDirectDebit(paymentMethod)) {
+        return this.validateHKDirectDebitFields(errors);
+      } else if (isCaDirectDebit(paymentMethod)) {
+        return this.validateCADirectDebitFields(errors);
       } else {
-        switch (paymentMethod.gateway) {
-          case 'nz': return this.validateNZDirectDebitFields(errors);
-          case 'hk': return this.validateHKDirectDebitFields(errors);
-          case 'ca': return this.validateCADirectDebitFields(errors);
-          default:   return this.validateDirectDebitFields(errors);
-        }
+        return this.validateDirectDebitFields(errors);
       }
     }
     
-    if (paymentMethod.type === 'na') {
+    if (isNoPayment(paymentMethod)) {
       return this.validateNoPaymentFields(errors);
     }
 
-    throw new Error(`[Clarety] unhandled 'validate' for paymentMethod.type: ${paymentMethod.type}`);
+    console.error("[Clarety] unhandled 'validate' for paymentMethod", paymentMethod);
+    throw new Error("[Clarety] unhandled 'validate'");
   }
 
   validateStripeAuBankAccountFields(errors) {
@@ -233,7 +224,7 @@ export class _PaymentPanel extends BasePanel {
       };
     }
 
-    if (paymentType === 'gatewaycc') {
+    if (isCreditCard(paymentMethod)) {
       if (isStripeCard(paymentMethod)) {
         return {
           type:     paymentType,
@@ -254,8 +245,8 @@ export class _PaymentPanel extends BasePanel {
       }
     }
 
-    if (this.isPaymentTypeDirectDebit(paymentType)) {
-      if (paymentMethod.gateway === 'stripe-becs') {
+    if (isDirectDebit(paymentMethod)) {
+      if (isStripeBecs(paymentMethod)) {
         return {
           type:     paymentType,
           stripe:   this.props.stripe,
@@ -263,7 +254,7 @@ export class _PaymentPanel extends BasePanel {
           accountName: formData['payment.accountName'],
           customerInfo: this.getStripeCustomerInfo(),
         };
-      } else if (paymentMethod.gateway === 'nz') {
+      } else if (isNzDirectDebit(paymentMethod)) {
         return {
           type:          paymentType,
           accountName:   formData['payment.accountName'],
@@ -272,7 +263,7 @@ export class _PaymentPanel extends BasePanel {
           accountNumber: formData['payment.accountNumber'],
           suffixCode:    formData['payment.suffixCode'],
         };
-      } else if (paymentMethod.gateway === 'hk') {
+      } else if (isHkDirectDebit(paymentMethod)) {
         const paymentData = {
           type:               paymentType,
           accountName:        formData['payment.accountName'],
@@ -289,7 +280,7 @@ export class _PaymentPanel extends BasePanel {
         }
 
         return paymentData;
-      } else if (paymentMethod.gateway === 'ca') {
+      } else if (isCaDirectDebit(paymentMethod)) {
         return {
           type:          paymentType,
           accountName:   formData['payment.accountName'],
@@ -330,29 +321,13 @@ export class _PaymentPanel extends BasePanel {
     return this.props.paymentMethods.find(method => method.type === type && (!gateway || method.gateway === gateway));
   }
 
-  getDirectDebitType() {
-    if (this.getPaymentMethod('gatewaydd')) return 'gatewaydd';
-    if (this.getPaymentMethod('dd')) return 'dd';
-    return null;
-  }
-
   getAvailablePaymentMethodOptions() {
-    const options = [];
-
-    if (this.getPaymentMethod('gatewaycc')) {
-      options.push({ value: 'gatewaycc', label: t('credit-card', 'Credit Card') });
-    }
-
-    const directDebitType = this.getDirectDebitType();
-    if (directDebitType) {
-      options.push({ value: directDebitType, label: t('direct-debit', 'Direct Debit') });
-    }
-
-    if (this.getPaymentMethod('wallet--paypal')) {
-      options.push({ value: 'wallet--paypal', label: t('paypal', 'PayPal') });
-    }
-
-    return options;
+    return this.props.paymentMethods.map((paymentMethod) => ({
+      value: paymentMethod.type === 'wallet'
+        ? `wallet--${paymentMethod.gateway}`
+        : paymentMethod.type,
+      label: t(toTranslationKey(paymentMethod.label), paymentMethod.label),
+    }));
   }
 
   getTitleText() {
@@ -437,7 +412,7 @@ export class _PaymentPanel extends BasePanel {
     const paymentMethod = this.getSelectedPaymentMethod();
     if (!paymentMethod) return null;
 
-    if (this.isHKDirectDebitAuth()) {
+    if (this.isAuthorizingHKDirectDebit()) {
       return this.renderHKAuthorise();
     }
 
@@ -517,7 +492,7 @@ export class _PaymentPanel extends BasePanel {
   }
 
   renderPaymentFields(paymentMethod) {
-    if (paymentMethod.type === 'gatewaycc') {
+    if (isCreditCard(paymentMethod)) {
       if (isStripeCard(paymentMethod)) {
         return this.renderStripeFields(paymentMethod);
       } else {
@@ -525,34 +500,34 @@ export class _PaymentPanel extends BasePanel {
       }
     }
 
-    if (this.isPaymentTypeDirectDebit(paymentMethod.type)) {
-      if (isStripeAuBankAccount(paymentMethod)) {
+    if (isDirectDebit(paymentMethod)) {
+      if (isStripeBecs(paymentMethod)) {
         return this.renderStripeBecsFields(paymentMethod);
+      } else if (isNzDirectDebit(paymentMethod)) {
+        return this.renderNZDirectDebitFields(paymentMethod);
+      } else if (isHkDirectDebit(paymentMethod)) {
+        return this.renderHKDirectDebitFields(paymentMethod);
+      } else if (isCaDirectDebit(paymentMethod)) {
+        return this.renderCADirectDebitFields(paymentMethod);
       } else {
-        switch (paymentMethod.gateway) {
-          case 'nz': return this.renderNZDirectDebitFields(paymentMethod);
-          case 'hk': return this.renderHKDirectDebitFields(paymentMethod);
-          case 'ca': return this.renderCADirectDebitFields(paymentMethod);
-          default:   return this.renderDirectDebitFields(paymentMethod);
-        }
+        return this.renderDirectDebitFields(paymentMethod);
       }
     }
 
-    if (paymentMethod.type === 'wallet') {
-      if (paymentMethod.gateway === 'paypal') {
-        return this.renderPayPalFields(paymentMethod);
-      }
+    if (isPayPal(paymentMethod)) {
+      return this.renderPayPalFields(paymentMethod);
     }
 
     if (isStripePaymentForm(paymentMethod)) {
       return this.renderStripePaymentForm(paymentMethod);
     }
 
-    if (paymentMethod.type === 'na') {
+    if (isNoPayment(paymentMethod)) {
       return this.renderNoPaymentFields(paymentMethod);
     }
 
-    throw new Error(`[Clarety] unhandled 'renderPaymentFields' for paymentMethod.type: ${paymentMethod.type}`);
+    console.error("[Clarety] unhandled 'renderPaymentFields' for paymentMethod", paymentMethod);
+    throw new Error("[Clarety] unhandled 'renderPaymentFields'");
   }
 
   renderCardNumberLabel(paymentMethod) {

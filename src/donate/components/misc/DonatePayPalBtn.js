@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { isMethodAllowedForFrequency } from 'shared/utils';
 import { PayPalBtn } from 'shared/components';
 import { getSetting } from 'shared/selectors';
 import { getPaymentMethod, getDonationAmount, getDonationFrequency } from 'donate/selectors';
@@ -7,19 +8,10 @@ import { makePayPalPayment, validatePayPal, cancelPayPal } from 'donate/actions'
 
 export function _DonatePayPalBtn(props) {
   const { paymentMethod, frequency, onShowBtn } = props;
-
   const [isShowing, setIsShowing] = React.useState(false);
 
   React.useEffect(() => {
-    function shouldShow() {
-      // Check if btn should display.
-      if (!paymentMethod) return false;
-      if (paymentMethod.singleOnly && frequency !== 'single') return false;
-      if (paymentMethod.recurringOnly && frequency !== 'recurring') return false;
-      return true;
-    }
-
-    if (shouldShow()) {
+    if (!!paymentMethod && isMethodAllowedForFrequency(paymentMethod, frequency)) {
       if (onShowBtn) onShowBtn();
       setIsShowing(true);
     }

@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { statuses, setStatus, setRecaptcha, clearRecaptcha, setTurnstileToken, setPayment, setCustomer, updateCartData, prepareStripePayment, authoriseStripePayment, updateAppSettings, setPanelStatus } from 'shared/actions';
 import { getSetting, getPanelManager } from 'shared/selectors';
-import { isHongKongDirectDebit, isStripe, splitName, convertCountry } from 'shared/utils';
+import { isHkDirectDebit, isStripe, splitName, convertCountry } from 'shared/utils';
 import { setFormData, setErrors, updateFormData } from 'form/actions';
 import { executeRecaptcha, currentTurnstileToken } from 'form/components';
 import { DonationApi } from 'donate/utils';
@@ -284,7 +284,7 @@ const handlePaymentAuthorise = (result, paymentData, paymentMethod) => {
       return dispatch(handleStripeAuthorise(result, paymentData, paymentMethod));
     }
 
-    if (isHongKongDirectDebit(paymentMethod)) {
+    if (isHkDirectDebit(paymentMethod)) {
       return dispatch(handleHKDirectDebitAuthorise(result, paymentData, paymentMethod));
     }
 
@@ -369,7 +369,7 @@ const handleHKDirectDebitAuthorise = (paymentResult, paymentData, paymentMethod)
 
 export const cancelPaymentAuthorise = (paymentMethod) => {
   return async (dispatch, getState) => {
-    if (isHongKongDirectDebit(paymentMethod)) {
+    if (isHkDirectDebit(paymentMethod)) {
       return dispatch(cancelHKDirectDebitAuthorise(paymentMethod));
     }
 
