@@ -311,7 +311,7 @@ const handlePaymentComplete = (result, paymentData, paymentMethod) => {
         }
 
         if (confirmPageMode === 'redirect-iframe-parent') {
-          parent.postMessage({ redirect: confirmPageUrl }, '*');
+          parent.postMessage({ redirect: confirmPageUrl, jwt: result.jwt }, '*');
         } else {
           window.location.href = confirmPageUrl;
         }
