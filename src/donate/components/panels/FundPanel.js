@@ -6,7 +6,8 @@ import { SubmitButton, ErrorMessages, SelectInput } from 'form/components';
 
 export class FundPanel extends BasePanel {
   onShowPanel() {
-    if (this.props.layout === 'tabs') {
+    const { layout, index } = this.props;
+    if (layout === 'tabs' && index !== 0) {
       this.scrollIntoView();
     }
   }
