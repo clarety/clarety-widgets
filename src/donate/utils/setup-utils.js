@@ -32,7 +32,7 @@ function validatePriceHandles(offers) {
   for (const offer of offers) {
     const variableAmounts = offer.amounts.filter(amount => amount.variable);
     if (!variableAmounts.length) {
-      throw new Error(`[Clarety] No variable amount (ie: $0 price handle) found for offer "${offer.name}" (UID: ${offer.offerUid})`);
+      console.warn(`[Clarety] No variable amount (ie: $0 price handle) found for offer "${offer.name}" (UID: ${offer.offerUid})`);
     }
   }
 }
