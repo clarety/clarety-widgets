@@ -1,43 +1,117 @@
 import { Config } from 'shared/utils/config';
 
-export function isCreditCard(paymentMethod) {
-  return paymentMethod.type === 'gatewaycc';
+export class PaymentGatewayVersion {
+  static major = 1;
+  static minor = 0;
+
+  static initFromWidgetProps(widgetProps) {
+    if (widgetProps.paymentGatewayVersion) {
+      this.set(
+        widgetProps.paymentGatewayVersion.major,
+        widgetProps.paymentGatewayVersion.minor,
+      );
+    }
+  }
+
+  static set(major, minor) {
+    this.major = major;
+    this.minor = minor;
+  }
+
+  static min(major, minor) {
+    if (major < this.major) {
+      // we satisfy the minimum major version.
+      return true;
+    }
+
+    if (major === this.major) {
+      // we equal the minimum major version,
+      // do we satisfy the minimum minor version?
+      return minor <= this.minor;
+    }
+
+    return false;
+  }
 }
 
-export function isDirectDebit(paymentMethod) {
-  return paymentMethod.type === 'gatewaydd' || paymentMethod.type === 'dd';
+export function isCreditCard(paymentMethod) {
+  if (PaymentGatewayVersion.min(2, 0)) {
+    return paymentMethod.type === 'card';
+  } else {
+    return paymentMethod.type === 'gatewaycc';
+  }
 }
 
 export function isStripe(paymentMethod) {
-  return isStripeCard(paymentMethod) || isStripeBecs(paymentMethod) || isStripePaymentForm(paymentMethod);
+  if (PaymentGatewayVersion.min(2, 0)) {
+    return paymentMethod.gateway === 'stripe';
+  } else {
+    return isStripeCard(paymentMethod) || isStripeBecs(paymentMethod) || isStripePaymentForm(paymentMethod);
+  }
 }
 
 export function isStripeCard(paymentMethod) {
-  return paymentMethod.gateway === 'stripe' || paymentMethod.gateway === 'stripe-sca';
+  if (PaymentGatewayVersion.min(2, 0)) {
+    return paymentMethod.gateway === 'stripe' && paymentMethod.type === 'card';
+  } else {
+    return (paymentMethod.gateway === 'stripe' || paymentMethod.gateway === 'stripe-sca') && paymentMethod.type === 'gatewaycc';
+  }
 }
 
 export function isStripeBecs(paymentMethod) {
-  return paymentMethod.gateway === 'stripe-becs';
+  if (PaymentGatewayVersion.min(2, 0)) {
+    return paymentMethod.gateway === 'stripe' && paymentMethod.type === 'becs';
+  } else {
+    return paymentMethod.gateway === 'stripe-becs';
+  }
 }
 
 export function isStripePaymentForm(paymentMethod) {
   return paymentMethod.type === 'stripe-payment-form';
 }
 
+export function isXendit(paymentMethod) {
+  return paymentMethod.gateway === 'xendit';
+}
+
+export function isXenditCard(paymentMethod) {
+  return paymentMethod.gateway === 'xendit' && paymentMethod.type === 'card';
+}
+
 export function isPayPal(paymentMethod) {
-  return paymentMethod.type === 'wallet' && paymentMethod.gateway === 'paypal';
+  return paymentMethod.gateway === 'paypal';
 }
 
 export function isNzDirectDebit(paymentMethod) {
-  return paymentMethod.type === 'gatewaydd' && paymentMethod.gateway === 'nz';
+  if (PaymentGatewayVersion.min(2, 0)) {
+    return paymentMethod.type === 'nz-direct-debit';
+  } else {
+    return paymentMethod.type === 'gatewaydd' && paymentMethod.gateway === 'nz';
+  }
 }
 
 export function isHkDirectDebit(paymentMethod) {
-  return paymentMethod.type === 'gatewaydd' && paymentMethod.gateway === 'hk';
+  if (PaymentGatewayVersion.min(2, 0)) {
+    return paymentMethod.type === 'hk-direct-debit';
+  } else {
+    return paymentMethod.type === 'gatewaydd' && paymentMethod.gateway === 'hk';
+  }
 }
 
 export function isCaDirectDebit(paymentMethod) {
-  return paymentMethod.type === 'gatewaydd' && paymentMethod.gateway === 'ca';
+  if (PaymentGatewayVersion.min(2, 0)) {
+    return paymentMethod.type === 'ca-direct-debit';
+  } else {
+    return paymentMethod.type === 'gatewaydd' && paymentMethod.gateway === 'ca';
+  }
+}
+
+export function isAuDirectDebit(paymentMethod) {
+  if (PaymentGatewayVersion.min(2, 0)) {
+    return paymentMethod.type === 'au-direct-debit';
+  } else {
+    return paymentMethod.type === 'gatewaydd' && !['nz', 'hk', 'ca'].includes(paymentMethod.gateway);
+  }
 }
 
 export function isNoPayment(paymentMethod) {
@@ -45,15 +119,19 @@ export function isNoPayment(paymentMethod) {
 }
 
 export function isMethodAllowedForFrequency(paymentMethod, frequency) {
-  if (paymentMethod.singleOnly && frequency !== 'single') {
-    return false;
-  }
+  if (PaymentGatewayVersion.min(2, 0)) {
+    return paymentMethod.allowedFrequencies.includes(frequency);
+  } else {
+    if (paymentMethod.singleOnly && frequency !== 'single') {
+      return false;
+    }
 
-  if (paymentMethod.recurringOnly && frequency !== 'recurring') {
-    return false;
+    if (paymentMethod.recurringOnly && frequency !== 'recurring') {
+      return false;
+    }
+    
+    return true;
   }
-  
-  return true;
 }
 
 export function toCents(dollarAmount) {
@@ -87,4 +165,19 @@ export function convertCountry(country) {
   }
 
   return country;
+}
+
+let loadXenditScriptPromise = null;
+export function loadXenditScript() {
+  if (!loadXenditScriptPromise) {
+    loadXenditScriptPromise = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://js.xendit.co/cards-session.min.js';
+      script.async = true;
+      script.onload = resolve;
+      document.body.appendChild(script);
+    });
+  }
+
+  return loadXenditScriptPromise;
 }

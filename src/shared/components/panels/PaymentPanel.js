@@ -4,7 +4,7 @@ import { CardNumberElement, CardExpiryElement, CardCvcElement, AuBankAccountElem
 import { t, toTranslationKey } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, injectStripe } from 'shared/components';
 import { Config } from 'shared/utils/config';
-import { requiredField, cardNumberField, cardExpiryField, ccvField, isCreditCard, isDirectDebit, isStripeCard, isStripeBecs, isStripePaymentForm, isPayPal, isHkDirectDebit, isNzDirectDebit, isCaDirectDebit, isNoPayment } from 'shared/utils';
+import { requiredField, cardNumberField, cardExpiryField, ccvField, isCreditCard, isStripeCard, isStripeBecs, isStripePaymentForm, isXenditCard, isPayPal, isHkDirectDebit, isNzDirectDebit, isCaDirectDebit, isAuDirectDebit, isNoPayment, PaymentGatewayVersion } from 'shared/utils';
 import { Label, TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, AccountNumberInput, BsbInput, NZAccountNumberInput, PhoneInput, NumberInput, SelectInput, Turnstile } from 'form/components';
 import { StripePaymentForm } from 'checkout/components/misc/StripePaymentForm';
 
@@ -32,7 +32,7 @@ export class _PaymentPanel extends BasePanel {
     const { paymentMethods, updateFormData } = this.props;
 
     const paymentMethod = paymentMethods && paymentMethods[0] && paymentMethods[0].type
-      ? paymentMethods[0].type
+      ? this.getPaymentMethodKey(paymentMethods[0])
       : 'na';
 
     updateFormData('payment.type', paymentMethod);
@@ -110,30 +110,39 @@ export class _PaymentPanel extends BasePanel {
 
   validateFields(paymentMethod, errors) {
     if (isStripePaymentForm(paymentMethod)) {
-      // stripe handles validation
-      return errors;
+      return errors; // stripe handles validation
+    }
+    
+    if (isStripeCard(paymentMethod)) {
+      return this.validateStripeCardFields(errors);
     }
 
+    if (isXenditCard(paymentMethod)) {
+      return this.validateXenditCardFields(errors);
+    }
+    
     if (isCreditCard(paymentMethod)) {
-      if (isStripeCard(paymentMethod)) {
-        return this.validateStripeFields(errors);
-      } else {
-        return this.validateCreditCardFields(errors);
-      }
+      return this.validateCreditCardFields(errors);
     }
-
-    if (isDirectDebit(paymentMethod)) {
-      if (isStripeBecs(paymentMethod)) {
-        return this.validateStripeAuBankAccountFields(errors);
-      } else if (isNzDirectDebit(paymentMethod)) {
-        return this.validateNZDirectDebitFields(errors);
-      } else if (isHkDirectDebit(paymentMethod)) {
-        return this.validateHKDirectDebitFields(errors);
-      } else if (isCaDirectDebit(paymentMethod)) {
-        return this.validateCADirectDebitFields(errors);
-      } else {
-        return this.validateDirectDebitFields(errors);
-      }
+    
+    if (isStripeBecs(paymentMethod)) {
+      return this.validateStripeBecsFields(errors);
+    }
+    
+    if (isNzDirectDebit(paymentMethod)) {
+      return this.validateNZDirectDebitFields(errors);
+    }
+    
+    if (isHkDirectDebit(paymentMethod)) {
+      return this.validateHKDirectDebitFields(errors);
+    }
+    
+    if (isCaDirectDebit(paymentMethod)) {
+      return this.validateCADirectDebitFields(errors);
+    }
+    
+    if (isAuDirectDebit(paymentMethod)) {
+      return this.validateAUDirectDebitFields(errors);
     }
     
     if (isNoPayment(paymentMethod)) {
@@ -144,14 +153,29 @@ export class _PaymentPanel extends BasePanel {
     throw new Error("[Clarety] unhandled 'validate'");
   }
 
-  validateStripeAuBankAccountFields(errors) {
+  validateStripeBecsFields(errors) {
     const { formData } = this.props;
     requiredField(errors, formData, 'payment.accountName');
   }
 
+  /** @deprecated use validateStripeCardFields */
   validateStripeFields(errors) {
+    return this.validateStripeCardFields(errors);
+  }
+
+  validateStripeCardFields(errors) {
     const { formData } = this.props;
     requiredField(errors, formData, 'payment.cardName');
+  }
+
+  validateXenditCardFields(errors) {
+    const { formData } = this.props;
+
+    requiredField(errors, formData, 'payment.cardFirstName');
+    requiredField(errors, formData, 'payment.cardLastName');
+    cardNumberField(errors, formData, 'payment.cardNumber');
+    cardExpiryField(errors, formData, 'payment.cardExpiry', 'payment.cardExpiryMonth', 'payment.cardExpiryYear');
+    ccvField(errors, formData, 'payment.cardSecurityCode');
   }
 
   validateCreditCardFields(errors) {
@@ -163,7 +187,7 @@ export class _PaymentPanel extends BasePanel {
     ccvField(errors, formData, 'payment.cardSecurityCode');
   }
 
-  validateDirectDebitFields(errors) {
+  validateAUDirectDebitFields(errors) {
     const { formData } = this.props;
 
     requiredField(errors, formData, 'payment.accountName');
@@ -224,78 +248,97 @@ export class _PaymentPanel extends BasePanel {
       };
     }
 
-    if (isCreditCard(paymentMethod)) {
-      if (isStripeCard(paymentMethod)) {
-        return {
-          type:     paymentType,
-          stripe:   this.props.stripe,
-          elements: this.props.elements,
-          cardName: formData['payment.cardName'],
-          customerInfo: this.getStripeCustomerInfo(),
-        };
-      } else {
-        return {
-          type:             paymentType,
-          cardName:         formData['payment.cardName'],
-          cardNumber:       formData['payment.cardNumber'],
-          cardExpiryMonth:  formData['payment.cardExpiryMonth'],
-          cardExpiryYear:   '20' + formData['payment.cardExpiryYear'],
-          cardSecurityCode: formData['payment.cardSecurityCode'],
-        };
-      }
+    if (isStripeCard(paymentMethod)) {
+      return {
+        type:     paymentType,
+        stripe:   this.props.stripe,
+        elements: this.props.elements,
+        cardName: formData['payment.cardName'],
+        customerInfo: this.getStripeCustomerInfo(),
+      };
     }
 
-    if (isDirectDebit(paymentMethod)) {
-      if (isStripeBecs(paymentMethod)) {
-        return {
-          type:     paymentType,
-          stripe:   this.props.stripe,
-          elements: this.props.elements,
-          accountName: formData['payment.accountName'],
-          customerInfo: this.getStripeCustomerInfo(),
-        };
-      } else if (isNzDirectDebit(paymentMethod)) {
-        return {
-          type:          paymentType,
-          accountName:   formData['payment.accountName'],
-          bankCode:      formData['payment.bankCode'],
-          branchCode:    formData['payment.branchCode'],
-          accountNumber: formData['payment.accountNumber'],
-          suffixCode:    formData['payment.suffixCode'],
-        };
-      } else if (isHkDirectDebit(paymentMethod)) {
-        const paymentData = {
-          type:               paymentType,
-          accountName:        formData['payment.accountName'],
-          bankCode:           formData['payment.bankCode'],
-          accountNumber:      formData['payment.accountNumber'],
-          verificationType:   formData['payment.verificationType'],
-          verificationNumber: formData['payment.verificationNumber'],
-          verificationMobile: formData['payment.verificationMobile'],
-        };
+    if (isXenditCard(paymentMethod)) {
+      return {
+        type: paymentType,
+        cardFirstName: formData['payment.cardFirstName'],
+        cardLastName: formData['payment.cardLastName'],
+        cardNumber: formData['payment.cardNumber'],
+        cardExpiryMonth: formData['payment.cardExpiryMonth'],
+        cardExpiryYear: '20' + formData['payment.cardExpiryYear'],
+        cardSecurityCode: formData['payment.cardSecurityCode'],
+        customerInfo: this.getXenditCustomerInfo(),
+      };
+    }
+    
+    if (isCreditCard(paymentMethod)) {
+      return {
+        type:             paymentType,
+        cardName:         formData['payment.cardName'],
+        cardNumber:       formData['payment.cardNumber'],
+        cardExpiryMonth:  formData['payment.cardExpiryMonth'],
+        cardExpiryYear:   '20' + formData['payment.cardExpiryYear'],
+        cardSecurityCode: formData['payment.cardSecurityCode'],
+      };
+    }
 
-        if (cartStatus === 'authorise') {
-          paymentData['authSecret']   = this.props.authSecret;
-          paymentData['authPassword'] = formData['payment.authPassword'];
-        }
+    if (isStripeBecs(paymentMethod)) {
+      return {
+        type:     paymentType,
+        stripe:   this.props.stripe,
+        elements: this.props.elements,
+        accountName: formData['payment.accountName'],
+        customerInfo: this.getStripeCustomerInfo(),
+      };
+    }
+    
+    if (isNzDirectDebit(paymentMethod)) {
+      return {
+        type:          paymentType,
+        accountName:   formData['payment.accountName'],
+        bankCode:      formData['payment.bankCode'],
+        branchCode:    formData['payment.branchCode'],
+        accountNumber: formData['payment.accountNumber'],
+        suffixCode:    formData['payment.suffixCode'],
+      };
+    }
+    
+    if (isHkDirectDebit(paymentMethod)) {
+      const paymentData = {
+        type:               paymentType,
+        accountName:        formData['payment.accountName'],
+        bankCode:           formData['payment.bankCode'],
+        accountNumber:      formData['payment.accountNumber'],
+        verificationType:   formData['payment.verificationType'],
+        verificationNumber: formData['payment.verificationNumber'],
+        verificationMobile: formData['payment.verificationMobile'],
+      };
 
-        return paymentData;
-      } else if (isCaDirectDebit(paymentMethod)) {
-        return {
-          type:          paymentType,
-          accountName:   formData['payment.accountName'],
-          bankCode:      formData['payment.bankCode'],
-          branchCode:    formData['payment.branchCode'],
-          accountNumber: formData['payment.accountNumber'],
-        };
-      } else {
-        return {
-          type:          paymentType,
-          accountName:   formData['payment.accountName'],
-          accountBSB:    formData['payment.accountBSB'],
-          accountNumber: formData['payment.accountNumber'],
-        };
+      if (cartStatus === 'authorise') {
+        paymentData['authSecret']   = this.props.authSecret;
+        paymentData['authPassword'] = formData['payment.authPassword'];
       }
+
+      return paymentData;
+    }
+    
+    if (isCaDirectDebit(paymentMethod)) {
+      return {
+        type:          paymentType,
+        accountName:   formData['payment.accountName'],
+        bankCode:      formData['payment.bankCode'],
+        branchCode:    formData['payment.branchCode'],
+        accountNumber: formData['payment.accountNumber'],
+      };
+    }
+    
+    if (isAuDirectDebit(paymentMethod)) {
+      return {
+        type:          paymentType,
+        accountName:   formData['payment.accountName'],
+        accountBSB:    formData['payment.accountBSB'],
+        accountNumber: formData['payment.accountNumber'],
+      };
     }
 
     if (paymentType === 'na') {
@@ -305,29 +348,47 @@ export class _PaymentPanel extends BasePanel {
     throw new Error(`[Clarety] unhandled 'getPaymentData' for paymentType: ${paymentType}`);
   }
 
+  getPaymentMethodKey(paymentMethod) {
+    return PaymentGatewayVersion.min(2)
+      ? `gateway--${paymentMethod.gateway}--${paymentMethod.type}`
+      : paymentMethod.type;
+  }
+
   getSelectedPaymentMethod() {
     const paymentType = this.props.formData['payment.type'];
     return this.getPaymentMethod(paymentType);
   }
 
   getPaymentMethod(type) {
-    // for 'wallet' types the gateway is also included in the type key.
-    let gateway = null;
-    if (type && type.startsWith('wallet--')) {
-      gateway = type.split('--')[1];
-      type = 'wallet';
-    }
+    if (PaymentGatewayVersion.min(2)) {
+      const [_, gatewayKey, paymentMethodType] = type.split('--');
+      return this.props.paymentMethods.find(method => method.gateway === gatewayKey && method.type === paymentMethodType);
+    } else {
+      // for 'wallet' types the gateway is also included in the type key.
+      let gateway = null;
+      if (type && type.startsWith('wallet--')) {
+        gateway = type.split('--')[1];
+        type = 'wallet';
+      }
 
-    return this.props.paymentMethods.find(method => method.type === type && (!gateway || method.gateway === gateway));
+      return this.props.paymentMethods.find(method => method.type === type && (!gateway || method.gateway === gateway));
+    }
   }
 
   getAvailablePaymentMethodOptions() {
-    return this.props.paymentMethods.map((paymentMethod) => ({
-      value: paymentMethod.type === 'wallet'
-        ? `wallet--${paymentMethod.gateway}`
-        : paymentMethod.type,
-      label: t(toTranslationKey(paymentMethod.label), paymentMethod.label),
-    }));
+    if (PaymentGatewayVersion.min(2)) {
+      return this.props.paymentMethods.map((paymentMethod) => ({
+        value: this.getPaymentMethodKey(paymentMethod),
+        label: t(toTranslationKey(paymentMethod.label), paymentMethod.label),
+      }));
+    } else {
+      return this.props.paymentMethods.map((paymentMethod) => ({
+        value: paymentMethod.type === 'wallet'
+          ? `wallet--${paymentMethod.gateway}`
+          : paymentMethod.type,
+        label: t(toTranslationKey(paymentMethod.label), paymentMethod.label),
+      }));
+    }
   }
 
   getTitleText() {
@@ -355,6 +416,15 @@ export class _PaymentPanel extends BasePanel {
         country: formData['customer.billing.country'],
         postal_code: formData['customer.billing.postcode'],
       },
+    };
+  }
+
+  getXenditCustomerInfo() {
+    const { formData } = this.props;
+
+    return {
+      email: formData['customer.email'],
+      phone: formData['customer.mobile'],
     };
   }
 
@@ -492,26 +562,36 @@ export class _PaymentPanel extends BasePanel {
   }
 
   renderPaymentFields(paymentMethod) {
-    if (isCreditCard(paymentMethod)) {
-      if (isStripeCard(paymentMethod)) {
-        return this.renderStripeFields(paymentMethod);
-      } else {
-        return this.renderCreditCardFields(paymentMethod);
-      }
+    if (isStripeCard(paymentMethod)) {
+      return this.renderStripeCardFields(paymentMethod);
     }
 
-    if (isDirectDebit(paymentMethod)) {
-      if (isStripeBecs(paymentMethod)) {
-        return this.renderStripeBecsFields(paymentMethod);
-      } else if (isNzDirectDebit(paymentMethod)) {
-        return this.renderNZDirectDebitFields(paymentMethod);
-      } else if (isHkDirectDebit(paymentMethod)) {
-        return this.renderHKDirectDebitFields(paymentMethod);
-      } else if (isCaDirectDebit(paymentMethod)) {
-        return this.renderCADirectDebitFields(paymentMethod);
-      } else {
-        return this.renderDirectDebitFields(paymentMethod);
-      }
+    if (isXenditCard(paymentMethod)) {
+      return this.renderXenditCardFields(paymentMethod);
+    }
+    
+    if (isCreditCard(paymentMethod)) {
+      return this.renderCreditCardFields(paymentMethod);
+    }
+
+    if (isStripeBecs(paymentMethod)) {
+      return this.renderStripeBecsFields(paymentMethod);
+    }
+    
+    if (isNzDirectDebit(paymentMethod)) {
+      return this.renderNZDirectDebitFields(paymentMethod);
+    }
+    
+    if (isHkDirectDebit(paymentMethod)) {
+      return this.renderHKDirectDebitFields(paymentMethod);
+    }
+    
+    if (isCaDirectDebit(paymentMethod)) {
+      return this.renderCADirectDebitFields(paymentMethod);
+    }
+    
+    if (isAuDirectDebit(paymentMethod)) {
+      return this.renderAUDirectDebitFields(paymentMethod);
     }
 
     if (isPayPal(paymentMethod)) {
@@ -586,7 +666,61 @@ export class _PaymentPanel extends BasePanel {
     );
   }
 
-  renderDirectDebitFields(paymentMethod) {
+  renderXenditCardFields(paymentMethod) {
+    return (
+      <React.Fragment>
+        <Form.Row>
+          <Col>
+            <Form.Group controlId="cardFirstName">
+              <Label required>{t('card-first-name', 'Cardholder First Name')}</Label>
+              <TextInput field="payment.cardFirstName" />
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group controlId="cardLastName">
+              <Label required>{t('card-last-name', 'Cardholder Last Name')}</Label>
+              <TextInput field="payment.cardLastName" />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col>
+            <Form.Group controlId="cardNumber">
+              {this.renderCardNumberLabel(paymentMethod)}
+              <CardNumberInput field="payment.cardNumber" testId="card-number-input" />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col>
+            <Form.Group>
+              <Label required>{t('card-expiry', 'Expiry')}</Label>
+              <ExpiryInput
+                field="payment.cardExpiry"
+                monthField="payment.cardExpiryMonth"
+                yearField="payment.cardExpiryYear"
+                testId="expiry-input"
+              />
+            </Form.Group>
+          </Col>
+
+          <Col>
+            <Form.Group controlId="ccv">
+              <Label required>{t('card-ccv', 'CVC')}</Label>
+              {this.renderCvcInfoBtn()}
+              <CcvInput field="payment.cardSecurityCode" testId="ccv-input" />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+
+        {this.renderCvcInfo()}
+      </React.Fragment>
+    );
+  }
+
+  renderAUDirectDebitFields(paymentMethod) {
     return (
       <React.Fragment>
         <Form.Row>
@@ -779,7 +913,12 @@ export class _PaymentPanel extends BasePanel {
     );
   }
 
+  /** @deprecated use renderStripeCardFields */
   renderStripeFields(paymentMethod) {
+    return this.renderStripeCardFields(paymentMethod);
+  }
+
+  renderStripeCardFields(paymentMethod) {
     const { settings } = this.props;
     const style = settings.stripeStyle || { base: { fontSize: '16px' } };
 
