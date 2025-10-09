@@ -7,6 +7,7 @@ export * from './donation/VariableAmountLg';
 export * from './misc/AddressFinder';
 export * from './misc/Currency';
 export * from './misc/inject-stripe';
+export * from './misc/PaymentAuthModal';
 export * from './misc/PayPalBtn';
 export * from './misc/ScrollIntoView';
 export * from './misc/StepIndicator';
