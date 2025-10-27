@@ -6,7 +6,7 @@ import { RgUpsellPanel, RgUpsellConnect } from '../../src/donate/components';
 import { CustomerPanel, CustomerConnect } from '../../src/donate/components';
 import { PaymentPanel, PaymentConnect } from '../../src/donate/components';
 import { SuccessPanel, SuccessConnect } from '../../src/donate/components';
-import '../../src/donate/style.scss';
+import './styles/donate.css';
 
 function getCoverFeesAmount(donationAmount) {
   return donationAmount * 0.05;

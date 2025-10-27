@@ -1,17 +1,3 @@
-@import '~bootstrap/scss/bootstrap.scss';
-
-$white:      #FFFFFF;
-$light-grey: #CCCCCC;
-$mid-grey:   #999999;
-$dark-grey:  #455A65;
-$teal:       #00B9C5;
-
-$xs:    0px;
-$sm:  576px;
-$md:  768px;
-$lg:  992px;
-$xl: 1200px;
-
 .checkout {
   h1 {
     font-size: 40px;
@@ -27,7 +13,7 @@ $xl: 1200px;
     padding: 48px;
     background: #f8f9fa;
 
-    @media (min-width: #{$lg}) {
+    @media (min-width: 992px) {
       min-height: 100vh;
     }
   }
@@ -58,7 +44,7 @@ $xl: 1200px;
   }
 
   dt {
-    color: $mid-grey;
+    color: #999;
     font-weight: normal;
   }
 
@@ -85,7 +71,7 @@ $xl: 1200px;
     display: flex;
     align-items: center;
     padding: 17px 0;
-    border-bottom: 1px solid $light-grey;
+    border-bottom: 1px solid #ccc;
 
     h4 {
       margin-bottom: 0;
@@ -104,7 +90,7 @@ $xl: 1200px;
       height: 20px;
       margin-right: 10px;
       border-radius: 20px;
-      color: $white;
+      color: white;
       font-weight: bold;
       font-size: 13px;
     }
@@ -112,20 +98,20 @@ $xl: 1200px;
     .btn-edit {
       min-width: auto;
       padding: 0;
-      color: $teal;
+      color: #00B9C5;
       font-size: 13px;
     }
 
     &.active {
       margin-bottom: 15px;
 
-      h4 { color: $dark-grey; }
-      .circle { background: $dark-grey; }
+      h4 { color: #455A65; }
+      .circle { background: #455A65; }
     }
 
     &.inactive {
-      h4 { color: $light-grey; }
-      .circle { background: $light-grey; }
+      h4 { color: #ccc; }
+      .circle { background: #ccc; }
     }
   }
 
@@ -151,13 +137,12 @@ $xl: 1200px;
     }
 
     .date {
-      color: $mid-grey;
+      color: #999;
       font-size: 13px;
     }
   }
 
   .StripeElement {
-    @extend .form-control;
     padding: 8px;
   
     &.stripe-payment-form {
@@ -167,25 +152,22 @@ $xl: 1200px;
     }
   }
 
-  // Hide number 'spinner' input controls.
+  /* Hide number 'spinner' input controls. */
   input[type="number"]::-webkit-outer-spin-button,
   input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }
-  input[type="number"] {
-    -moz-appearance: textfield;
-  }
 
-  // react-phone-number-input overrides
+  /* react-phone-number-input overrides */
   .react-phone-number-input__input {
     height: calc(1.5em + 0.75rem + 2px);
     padding: 0.375rem 0.75rem;
     border-radius: .25rem;
     border: 1px solid #ced4da;
-    &:focus {
-      // border-color: $black;
-      border-color: #80bdff;
-    }
+  }
+
+  .react-phone-number-input__input:focus {
+    border-color: #80bdff;
   }
 }

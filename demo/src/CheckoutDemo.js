@@ -3,7 +3,7 @@ import { LoginPanel, PaymentPanel } from '../../src/shared/components';
 import { CheckoutCustomerPanel, AddressPanel, ShippingPanel, DonationPanel } from '../../src/checkout/components';
 import { LoginConnect, CheckoutCustomerConnect, AddressConnect, ShippingConnect, PaymentConnect, DonationConnect } from '../../src/checkout/components';
 import { Checkout, initTranslations } from '../../src';
-import '../../src/checkout/style.scss';
+import './styles/checkout.css';
 
 initTranslations({
   translationsPath: 'translations/{{lng}}.json',

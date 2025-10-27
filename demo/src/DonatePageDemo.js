@@ -7,7 +7,7 @@ import { CustomerPanel, CustomerConnect } from '../../src/donate/components';
 import { FundraisingPanel, FundraisingConnect } from '../../src/donate/components';
 import { PaymentPanel, PaymentConnect } from '../../src/donate/components';
 import { SubmitPanel, SubmitConnect } from '../../src/donate/components';
-import '../../src/donate/style.scss';
+import './styles/donate.css';
 
 window.renderDonatePage = (props) => {
   DonateWidget.init();

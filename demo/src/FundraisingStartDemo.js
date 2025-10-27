@@ -2,7 +2,7 @@ import React from 'react';
 import { FundraisingStart, initTranslations } from '../../src/';
 import { LoginPanel } from '../../src/shared/components';
 import { CampaignPanel, CampaignConnect, FundraisingStartLoginConnect } from '../../src/fundraising-start/components';
-import '../../src/fundraising-start/style.scss';
+import './styles/fundraising-start.css';
 
 initTranslations({
   translationsPath: 'translations/{{lng}}.json',

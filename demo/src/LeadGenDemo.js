@@ -2,7 +2,7 @@ import React from 'react';
 import { CustomerPanel, ConfirmPanel, CmsConfirmPanel, CmsConfirmConnect } from '../../src/shared/components';
 import { CustomerConnect } from '../../src/lead-gen/components';
 import { LeadGenWidget, initTranslations } from '../../src/';
-import '../../src/lead-gen/style.scss';
+import './styles/lead-gen.css';
 
 initTranslations({
   translationsPath: 'translations/{{lng}}.json',

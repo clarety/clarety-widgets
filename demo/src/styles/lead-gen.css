@@ -1,9 +1,7 @@
-@import '~bootstrap/scss/bootstrap.scss';
-
 .clarety-lead-gen-widget {
   .sos-progress {
     padding: 30px;
-    background: $light;
+    background: #f8f9fa;
     font-size: 1.2rem;
     text-align: center;
 

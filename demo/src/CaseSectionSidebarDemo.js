@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderWidget, CaseWidget, initTranslations } from '../../src/';
 import { CaseFormPanel, CaseFormConnect } from '../../src/case/components';
-import '../../src/case/style.scss';
+import './styles/case.css';
 
 const renderCaseWidget = async (props) => {
   await initTranslations({
