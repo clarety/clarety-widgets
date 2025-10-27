@@ -117,7 +117,7 @@ const mapStateToProps = (state, ownProps) => {
     month: formData[ownProps.monthField] || '',
     year:  formData[ownProps.yearField]  || '',
 
-    error:      ownProps.field ? getValidationError(ownProps.field, errors) : null,
+    error:      getValidationError(ownProps.field, errors),
     dayError:   getValidationError(ownProps.dayField, errors),
     monthError: getValidationError(ownProps.monthField, errors),
     yearError:  getValidationError(ownProps.yearField, errors),

@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { statuses, setStatus, setRecaptcha, clearRecaptcha, setPayment, updateCartData, prepareStripePayment, authoriseStripePayment, updateAppSettings } from 'shared/actions';
 import { getSetting } from 'shared/selectors';
-import { isHkDirectDebit, isStripe } from 'shared/utils';
+import { isHongKongDirectDebit, isStripe } from 'shared/utils';
 import { setErrors, updateFormData } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { types } from 'donate/actions';
@@ -117,7 +117,7 @@ const handlePaymentAuthorise = (result, paymentData, paymentMethod) => {
       return dispatch(handleStripeAuthorise(result, paymentData, paymentMethod));
     }
 
-    if (isHkDirectDebit(paymentMethod)) {
+    if (isHongKongDirectDebit(paymentMethod)) {
       return dispatch(handleHKDirectDebitAuthorise(result, paymentData, paymentMethod));
     }
 
@@ -202,7 +202,7 @@ const handleHKDirectDebitAuthorise = (paymentResult, paymentData, paymentMethod)
 
 export const cancelPaymentAuthorise = (paymentMethod) => {
   return async (dispatch, getState) => {
-    if (isHkDirectDebit(paymentMethod)) {
+    if (isHongKongDirectDebit(paymentMethod)) {
       return dispatch(cancelHKDirectDebitAuthorise(paymentMethod));
     }
 

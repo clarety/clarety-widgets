@@ -1,5 +1,4 @@
 import { getSetting, getTrackingData, getSourceOptions } from 'shared/selectors';
-import { PaymentGatewayVersion } from 'shared/utils';
 import { getFormData, getErrors } from 'form/selectors';
 import { setErrors, setFormData } from 'form/actions';
 import { getIsBusy, getCustomerHasProfile, getHasExpressPaymentMethods, getDonationAmount, getDonationFrequency } from 'donate/selectors';
@@ -42,7 +41,7 @@ function onSubmit() {
   return async (dispatch, getState) => {
     const state = getState();
 
-    if (getSetting(state, 'createSaleOnCustomerPanel') || PaymentGatewayVersion.min(2, 0)) {
+    if (getSetting(state, 'createSaleOnCustomerPanel')) {
       return dispatch(createSale());
     } else {
       return dispatch(addCustomerToCart());

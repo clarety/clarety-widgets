@@ -114,7 +114,3 @@ export const getCustomerSubTypeOptions = (state) => {
      return [{ value: '', label: '' }];
   }
 };
-
-export const getPaymentAuthModalUrl = (state) => {
-  return getSetting(state, 'paymentAuthModalUrl');
-};

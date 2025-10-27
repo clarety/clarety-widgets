@@ -5,12 +5,6 @@ export const t = (...args) => i18next.t(...args);
 
 export const getLanguage = () => i18next.language;
 
-export function toTranslationKey(text) {
-  return text && text.length
-    ? text.toLowerCase().replaceAll(' ', '-')
-    : undefined;
-}
-
 export async function initTranslations({ translationsPath, defaultLanguage, fallbackLanguage = 'en', debug = false, mainSiteUrl = null }) {
   const language = defaultLanguage || navigator.language || navigator.userLanguage || fallbackLanguage;
 

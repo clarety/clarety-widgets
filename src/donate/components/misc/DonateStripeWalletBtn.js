@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { loadStripe } from '@stripe/stripe-js';
 import { PaymentRequestButtonElement, useStripe, Elements } from '@stripe/react-stripe-js';
 import { getSetting } from 'shared/selectors';
-import { toCents, isMethodAllowedForFrequency } from 'shared/utils';
+import { toCents } from 'shared/utils';
 import { getPaymentMethod, getDonationAmount, getDonationFrequency } from 'donate/selectors';
 import { fetchStripePaymentIntent, makeStripeWalletPayment } from 'donate/actions';
 
@@ -104,12 +104,16 @@ export const DonateStripeWalletBtnInner = (props) => {
 
 export const _DonateStripeWalletBtn = (props) => {
   const { paymentMethod, frequency } = props;
+
   const [stripePromise, setStripePromise] = useState(null);
 
   useEffect(() => {
     // Make sure we should display.
-    const shouldShow = !!paymentMethod && isMethodAllowedForFrequency(paymentMethod, frequency);
-    if (shouldShow && !stripePromise) {
+    const shouldHide = !paymentMethod
+      || (paymentMethod.singleOnly && frequency !== 'single')
+      || (paymentMethod.recurringOnly && frequency !== 'recurring');
+
+    if (!shouldHide && !stripePromise) {
       setStripePromise(loadStripe(paymentMethod.publicKey));
     }
   }, [props]);

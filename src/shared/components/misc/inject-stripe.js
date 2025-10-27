@@ -2,7 +2,7 @@ import React from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, ElementsConsumer } from '@stripe/react-stripe-js';
 import { getLanguage } from 'shared/translations';
-import { isStripe, isStripePaymentForm, toCents } from 'shared/utils';
+import { isStripe, toCents } from 'shared/utils';
 
 export const injectStripe = (PaymentPanelComponent) => {
   class PaymentPanel extends React.Component {
@@ -54,7 +54,7 @@ export const injectStripe = (PaymentPanelComponent) => {
       const paymentMethod = this.getPaymentMethod();
 
       const options = {};
-      if (isStripePaymentForm(paymentMethod)) {
+      if (paymentMethod.type === 'stripe-payment-form') {
         options.mode = 'payment';
         options.paymentMethodCreation = 'manual';
         options.currency = this.props.currency.toLowerCase();
