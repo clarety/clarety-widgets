@@ -1,9 +1,3 @@
-@import '~bootstrap/scss/bootstrap.scss';
-
-.react-datepicker__input-container input {
-  @extend .form-control;
-}
-
 .save-btn-container {
   text-align: center;
 }
@@ -162,10 +156,6 @@
 
 .subform-header {
   margin-bottom: 16px;
-
-  .title {
-    @extend .h5;
-  }
 
   .explanation {
     color: $gray-600;

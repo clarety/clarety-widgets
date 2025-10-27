@@ -1,5 +1,3 @@
-@import '~bootstrap/scss/bootstrap.scss';
-
 .clarety-quiz-widget {
   .panel-header {
     text-align: center;
@@ -27,15 +25,13 @@
 
     .progress-bar {
       padding-left: 20px;
-      background: lighten($primary, 25%);
+      background: blue;
       color: black;
       text-align: left;
     }
   }
 
   .image-poll-result {
-    @extend .poll-result;
-
     .card-body {
       padding: 0;
 

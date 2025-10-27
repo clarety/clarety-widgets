@@ -2,7 +2,7 @@ import React from 'react';
 import { renderWidget, QuizWidget, initTranslations } from '../../src/';
 import { CustomerPanel } from '../../src/shared/components';
 import { QuestionPanel, QuestionConnect, QuizCustomerConnect, ResultsPanel, ResultsConnect } from '../../src/quiz/components';
-import '../../src/quiz/style.scss';
+import './styles/quiz.css';
 
 initTranslations({
   translationsPath: 'translations/{{lng}}.json',

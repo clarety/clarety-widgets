@@ -7,7 +7,7 @@ import { CustomerPanel, CustomerConnect } from '../../src/donate/components';
 import { PaymentPanel } from '../../src/shared/components';
 import { PaymentConnect } from '../../src/membership/components';
 import { SuccessPanel, SuccessConnect } from '../../src/donate/components';
-import '../../src/membership/style.scss';
+import './styles/membership.css';
 
 function getCoverFeesAmount(donationAmount) {
   return donationAmount * 0.05;

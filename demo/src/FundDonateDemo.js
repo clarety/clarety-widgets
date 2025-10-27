@@ -6,7 +6,7 @@ import { CustomerPanel, CustomerConnect } from '../../src/donate/components';
 import { FundraisingPanel, FundraisingConnect } from '../../src/donate/components';
 import { PaymentPanel, PaymentConnect } from '../../src/donate/components';
 import { SuccessPanel, SuccessConnect } from '../../src/donate/components';
-import '../../src/donate/style.scss';
+import './styles/donate.css';
 
 window.renderDonateWidget = async (props) => {
   await initTranslations({

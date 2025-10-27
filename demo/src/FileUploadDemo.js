@@ -1,6 +1,6 @@
 import React from 'react';
 import { FileUploadWidget } from '../../src';
-import './file-upload.css';
+import './styles/file-upload.css';
 
 export default class FileUploadDemo extends React.Component {
   render() {

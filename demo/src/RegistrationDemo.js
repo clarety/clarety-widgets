@@ -4,7 +4,7 @@ import { ModePanel, EventPanel, TeamPanel, QtysPanel, OffersPanel, DetailsPanel,
 import { MerchPanel, MerchConnect } from '../../src/registration/components';
 import { ModeConnect, EventConnect, LoginConnect, TeamConnect, QtysConnect, OffersConnect, DetailsConnect, DonationConnect, ValidateConnect, PaymentConnect } from '../../src/registration/components';
 import { Registration, initTranslations, renderWidget } from '../../src';
-import '../../src/registration/style.scss';
+import './styles/registration.css';
 
 async function renderRegistrations(props) {
   // await initTranslations({
