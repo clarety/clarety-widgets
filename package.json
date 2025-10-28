@@ -16,8 +16,7 @@
     "build": "nwb build-react-component --no-demo --copy-files",
     "clean": "nwb clean-module && nwb clean-demo",
     "prepublishOnly": "npm run build",
-    "start": "NODE_OPTIONS=--openssl-legacy-provider nwb serve-react-demo",
-    "release": "np --yolo"
+    "start": "NODE_OPTIONS=--openssl-legacy-provider nwb serve-react-demo"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.19",
@@ -72,7 +71,7 @@
   "devDependencies": {
     "babel-plugin-module-resolver": "^3.2.0",
     "bootstrap": "^4.3.1",
-    "np": "^4.0.2",
+    "np": "^10.2.0",
     "nwb": "^0.25.2",
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.9",
