@@ -4,7 +4,10 @@ export function getDefaultOfferPaymentUid(offer) {
   }
 
   if (offer.schedules && offer.schedules.length) {
-    return offer.schedules[0].offerPaymentUid;
+    const defaultSchedule = offer.schedules.find((schedule) => schedule.default);
+    return defaultSchedule
+      ? defaultSchedule.offerPaymentUid
+      : offer.schedules[0].offerPaymentUid;
   }
 
   return undefined;
