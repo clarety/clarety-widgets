@@ -8,7 +8,17 @@ export const fetchFundOffers = () => {
   return async (dispatch, getState) => {
     const state = getState();
     const { fundId } = getFormData(state);
-    return dispatch(fetchOffers({ singleOfferId: fundId, recurringOfferId: fundId }));
+    const fundFrequency = getSetting(state, 'fundFrequency');
+
+    let offersToFetch = {};
+    if (!fundFrequency || fundFrequency === 'single-only') {
+      offersToFetch.singleOfferId = fundId;
+    }
+    if (!fundFrequency || fundFrequency === 'recurring-only') {
+      offersToFetch.recurringOfferId = fundId;
+    }
+
+    return dispatch(fetchOffers(offersToFetch));
   };
 };
 

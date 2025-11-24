@@ -90,6 +90,7 @@ export class _DonateWidgetRoot extends React.Component {
       addressFinderKey:     this.props.addressFinderKey,
       addressFinderCountry: this.props.addressFinderCountry,
       hideCurrencyCode:     this.props.hideCurrencyCode,
+      fundFrequency:        this.props.fundFrequency,
       defaultFrequency:     this.props.defaultFrequency,
       mainSiteUrl:          this.props.mainSiteUrl,
       createSaleOnCustomerPanel: this.props.createSaleOnCustomerPanel,
@@ -99,6 +100,13 @@ export class _DonateWidgetRoot extends React.Component {
       reCaptchaKey:         this.props.reCaptchaKey,
       turnstileSiteKey:     this.props.turnstileSiteKey,
     });
+
+    // if we have a specific 'fund frequency', force 'default frequency' to match.
+    if (this.props.fundFrequency) {
+      updateAppSettings({
+        defaultFrequency: this.props.fundFrequency === 'recurring-only' ? 'recurring' : '',
+      });
+    }
 
     setStore(storeUid);
 
