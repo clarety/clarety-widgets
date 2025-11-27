@@ -172,7 +172,8 @@ export const getPaymentMethods = (state) => {
 export const getCreateSalePostData = (state) => {
   const cart = getCart(state);
   const formData = getParsedFormData(state);
-  const fundraisingData = getFundraisingData(state);
+  const fundraisingData = getFundraisingData(state, formData);
+  const eCardData = getECardData(state, formData);
   const trackingData = getTrackingData(state);
   const recaptcha = getRecaptcha(state);
   const turnstileToken = getTurnstileToken(state);
@@ -187,6 +188,7 @@ export const getCreateSalePostData = (state) => {
     customer:  cart.customer,
 
     fundraising: fundraisingData,
+    eCard: eCardData,
     recaptchaResponse: recaptcha,
     turnstileToken: turnstileToken,
 
@@ -206,13 +208,15 @@ export const getPaymentPostData = (state) => {
   };
 };
 
-const getFundraisingData = (state) => {
+const getFundraisingData = (state, formData) => {
   const pageUid = getSetting(state, 'fundraisingPageUid');
   if (!pageUid) return undefined;
 
-  const formData = getParsedFormData(state);
-
   return { pageUid, ...formData.fundraising };
+};
+
+const getECardData = (state, formData) => {
+  return formData.eCard;
 };
 
 export const getCustomerFullName = (state) => {

@@ -1,6 +1,7 @@
 import { statuses, setStatus, fetchSettings } from 'shared/actions';
 import { getFormData, getSetting } from 'shared/selectors';
-import { getStoreUid } from 'donate/selectors';
+import { setFormData } from 'form/actions';
+import { getStoreUid, getSelectedOffer } from 'donate/selectors';
 import { types } from 'donate/actions';
 import { mapDonationSettings } from 'donate/utils';
 
@@ -29,10 +30,22 @@ export const fetchOffers = ({ singleOfferId, recurringOfferId, categoryUid }) =>
     // Select default frequency.
     const defaultFrequency = getSetting(state, 'defaultFrequency');
     if (defaultFrequency) dispatch(selectFrequency(defaultFrequency));
+    dispatch(selectDefaultECard());
 
     dispatch(setStatus(statuses.ready));
 
     return true;
+  };
+};
+
+export const selectDefaultECard = () => {
+  return async (dispatch, getState) => {    
+    const state = getState();
+    const offer = getSelectedOffer(state);
+
+    dispatch(setFormData({
+      'eCard.productUid': offer?.eCards?.[0]?.productUid,
+    }));
   };
 };
 

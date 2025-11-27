@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import { getSetting } from 'shared/selectors';
-import { selectFrequency } from 'donate/actions';
+import { selectFrequency, selectDefaultECard } from 'donate/actions';
 
 export const _FrequencySelect = ({ value, options, onChange }) => (
   <div className="frequency-select">
@@ -38,8 +38,15 @@ export const mapStateToProps = (state, ownProps) => {
   }
 };
 
-export const actions = {
-  onChange: selectFrequency,
-};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onChange: (frequency) => {
+      dispatch(selectFrequency(frequency));
 
-export const FrequencySelect = connect(mapStateToProps, actions)(_FrequencySelect);
+      // changing frequency changes the selected offer, and each offer has separate e-card options.
+      dispatch(selectDefaultECard());
+    },
+  }
+}
+
+export const FrequencySelect = connect(mapStateToProps, mapDispatchToProps)(_FrequencySelect);
