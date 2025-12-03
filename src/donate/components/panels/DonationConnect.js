@@ -1,7 +1,7 @@
 import { getSetting, getCurrency } from 'shared/selectors';
 import { removeItemsWithType } from 'shared/actions';
 import { getFormData, getErrors } from 'form/selectors';
-import { setErrors } from 'form/actions';
+import { setErrors, setFormData } from 'form/actions';
 import { getSelectedAmount, getGivingTypeOptions, getIsRgUpsellEnabled } from 'donate/selectors';
 import { selectAmount, selectSchedule, addDonationToCart, resetRgUpsell } from 'donate/actions';
 import { maybeShowRgUpsell } from 'donate/actions/rg-upsell-maybe-show-action';
@@ -16,6 +16,7 @@ export class DonationConnect {
       selections: donationPanel.selections,
       selectedAmount: getSelectedAmount(state),
       givingTypeOptions: getGivingTypeOptions(state),
+      eCardsMode: getSetting(state, 'eCardsMode'),
       formData: getFormData(state),
       errors: getErrors(state),
       variant: getSetting(state, 'variant'),
@@ -29,6 +30,7 @@ export class DonationConnect {
     selectSchedule: selectSchedule,
     onSubmit: addDonationToCart,
     removeAllDonationsFromCart: () => removeItemsWithType('donation'),
+    setFormData: setFormData,
     setErrors: setErrors,
     maybeShowRgUpsell: maybeShowRgUpsell,
     resetRgUpsell: resetRgUpsell,

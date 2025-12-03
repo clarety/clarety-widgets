@@ -1,9 +1,9 @@
 import React from 'react';
-import { Form, Row, Col } from 'react-bootstrap';
-import { requiredField } from 'shared/utils';
+import { Form, Row, Col, Button } from 'react-bootstrap';
+import { requiredField, emailField, dateTimeField, futureDateTimeField } from 'shared/utils';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter } from 'shared/components';
-import { Label, SubmitButton, BackButton, ErrorMessages, SelectInput, TextInput } from 'form/components';
+import { Label, SubmitButton, BackButton, ErrorMessages, SelectInput, TextInput, EmailInput, TextAreaInput, DateTimeInput } from 'form/components';
 import { PriceHandlesStandard, PriceHandlesPriceOnly } from 'donate/components';
 import { FrequencySelect, ScheduleSelectButtonGroup, ScheduleSelectDropdown, CoverFeesCheckbox } from 'donate/components';
 
@@ -16,6 +16,12 @@ export class DonationPanel extends BasePanel {
 
   onSelectSchedule = (offerPaymentUid) => {
     this.props.selectSchedule(offerPaymentUid);
+  };
+
+  onSelectECard = (eCardProductUid) => {
+    this.props.setFormData({
+      'eCard.productUid': eCardProductUid,
+    });
   };
 
   onPressBack = (event) => {
@@ -82,6 +88,23 @@ export class DonationPanel extends BasePanel {
         requiredField(errors, formData, 'saleline.otherGivingType');
       }
     }
+
+    if (!!formData['eCard.productUid']) {
+      this.validateECardFields(errors);
+    }
+  }
+
+  validateECardFields(errors) {
+    const { formData } = this.props;
+
+    requiredField(errors, formData, 'eCard.firstName');
+    requiredField(errors, formData, 'eCard.lastName');
+    requiredField(errors, formData, 'eCard.email');
+    emailField(errors, formData, 'eCard.email');
+    requiredField(errors, formData, 'eCard.message');
+    requiredField(errors, formData, 'eCard.date');
+    dateTimeField(errors, formData, 'eCard.date');
+    futureDateTimeField(errors, formData, 'eCard.date');
   }
 
   isOtherGivingType() {
@@ -136,6 +159,7 @@ export class DonationPanel extends BasePanel {
           {this.renderScheduleSelect()}
           {this.renderPriceHandles()}
           {this.renderGivingType()}
+          {this.renderECardSection()}
           {this.renderCommentInput()}
           {this.renderCoverFeesCheckbox()}
         </PanelBody>
@@ -277,6 +301,183 @@ export class DonationPanel extends BasePanel {
         }
       </div>
     );
+  }
+
+  renderECardSection() {
+    const { eCardsMode, frequency, formData } = this.props;
+    if (eCardsMode !== 'enabled') {
+      return null;
+    }
+
+    const offer = this.getOffer(frequency);
+    if (!offer.eCards || !offer.eCards.length) {
+      return null;
+    }
+
+    const selectedECard = offer.eCards.find(
+      (eCard) => eCard.productUid === formData['eCard.productUid']
+    );
+
+    return (
+      <div className="e-cards">
+        {this.renderECardSectionTitle(offer, selectedECard)}
+        {this.renderECardSectionExplain(offer, selectedECard)}
+        {this.renderECardSelect(offer, selectedECard)}
+        {this.renderECardDetails(offer, selectedECard)}
+        {this.renderECardRecipientForm(offer, selectedECard)}
+        {this.renderECardMessageForm(offer, selectedECard)}
+        {this.renderECardDateForm(offer, selectedECard)}
+        {this.renderECardDisclaimer(offer, selectedECard)}
+      </div>
+    );
+  }
+
+  renderECardSectionTitle(offer, selectedECard) {
+    const { settings } = this.props;
+
+    return (
+      <h3 className="e-card-section-title">
+        {settings.eCardSectionTitle || t('e-card-section-title', 'Send an E-Card')}
+      </h3>
+    );
+  }
+
+  renderECardSectionExplain(offer, selectedECard) {
+    const { settings } = this.props;
+
+    if (settings.eCardSectionExplain) {
+      return (
+        <div className="e-card-section-explain">
+          {settings.eCardSectionExplain}
+        </div>
+      );
+    }
+
+    return null;
+  }
+
+  renderECardSelect(offer, selectedECard) {
+    if (offer.eCards.length < 2) return null;
+
+    return (
+      <div className="e-card-select">
+        {offer.eCards.map((eCard) => {
+          const isSelected = selectedECard === eCard;
+
+          return (
+            <Button
+              key={eCard.productUid}
+              onClick={() => this.onSelectECard(eCard.productUid)}
+              variant={isSelected ? 'secondary' : 'outline-secondary'}
+              className={isSelected ? 'selected' : undefined}
+            >
+              {eCard.name}
+            </Button>
+          );
+
+        })}
+      </div>
+    );
+  }
+
+  renderECardDetails(offer, selectedECard) {
+    if (!selectedECard) return null;
+
+    return (
+      <div className="e-card-details">
+        <div className="e-card-name">{selectedECard.name}</div>
+
+        {selectedECard.description &&
+          <div className="e-card-description">{selectedECard.description}</div>
+        }
+
+        {selectedECard.imageUrl &&
+          <img className="e-card-image" src={selectedECard.imageUrl} />
+        }
+      </div>
+    );
+  }
+
+  renderECardRecipientForm(offer, selectedECard) {
+    return (
+      <div className="e-card-recipient-form">
+        <Form.Row>
+          <Col sm>
+            <Form.Group controlId="eCardFirstName">
+              <Label required>{t('e-card-first-name', "Recipient's First Name")}</Label>
+              <TextInput field="eCard.firstName" required />
+            </Form.Group>
+          </Col>
+          <Col sm>
+            <Form.Group controlId="eCardLastName">
+              <Label required>{t('e-card-last-name', "Recipient's Last Name")}</Label>
+              <TextInput field="eCard.lastName" required />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+
+        <Form.Row>
+          <Col>
+            <Form.Group controlId="eCardEmail">
+              <Label required>{t('e-card-email', "Recipient's Email")}</Label>
+              <EmailInput field="eCard.email" type="email" required />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+      </div>
+    );
+  }
+
+  renderECardMessageForm(offer, selectedECard) {
+    const { formData } = this.props;
+
+    const maxLength = 320;
+    const charsRemaining = maxLength - (formData['eCard.message'] || '').length;
+
+    return (
+      <div className="e-card-message-form">
+        <Form.Row>
+          <Col>
+            <Form.Group controlId="eCardMessage">
+              <Label required>{t('e-card-message', 'Personal Message')}</Label>
+              <TextAreaInput field="eCard.message" maxlength={maxLength} required />
+              <div className="e-card-message-chars-remaining">
+                {charsRemaining} {t('characters-remaining', 'Characters Remaining')}
+              </div>
+            </Form.Group>
+          </Col>
+        </Form.Row>
+      </div>
+    );
+  }
+
+  renderECardDateForm(offer, selectedECard) {
+    return (
+      <div className="e-card-date-form">
+        <Form.Row>
+          <Col>
+            <Form.Group controlId="eCardDate">
+              <Label required>{t('e-card-date', 'Send E-Card On')}</Label>
+              <DateTimeInput field="eCard.date" required />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+      </div>
+    );
+  }
+
+  renderECardDisclaimer(offer, selectedECard) {
+    const { settings } = this.props;
+
+    if (settings.eCardDisclaimer) {
+      return (
+        <div className="e-card-disclaimer">
+          {settings.eCardDisclaimer}
+        </div>
+      );
+    }
+
+    return null;
   }
 
   renderCommentInput() {

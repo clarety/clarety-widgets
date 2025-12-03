@@ -1,4 +1,5 @@
 import cardValidator from 'card-validator';
+import { parseISO as parseIsoDate, isValid as isValidDate }  from 'date-fns';
 import { t } from 'shared/translations';
 
 export function requiredField(errors, formData, field, message = null) {
@@ -14,6 +15,16 @@ export function emailField(errors, formData, field, message = null) {
 export function phoneNumberField(errors, formData, field, message = null) {
   const phoneNumber = formData[field];
   validatePhoneNumber(phoneNumber, field, errors, message);
+}
+
+export function dateTimeField(errors, formData, field, message = null) {
+  const dateTime = formData[field];
+  validateDateTime(dateTime, field, errors, message);
+}
+
+export function futureDateTimeField(errors, formData, field, message = null) {
+  const dateTime = formData[field];
+  validateFutureDateTime(dateTime, field, errors, message);
 }
 
 export function addressField(errors, formData, field, message = null) {
@@ -78,6 +89,27 @@ export function validatePassword(password, field, errors, message = null) {
     errors.push({
       'field': field,
       'message': message || t('invalid-password', 'Password must contain at least 8 characters including 2 numbers'),
+    });
+  }
+}
+
+export function validateDateTime(dateTime, field, errors, message = null) {
+  const dateObj = parseIsoDate(dateTime);
+  if (!isValidDate(dateObj)) {
+    errors.push({
+      field: field,
+      message: message || t('invalid-date-time', 'Please enter a valid date and time'),
+    });
+  }
+}
+
+export function validateFutureDateTime(dateTime, field, errors, message = null) {
+  const dateObj = parseIsoDate(dateTime);
+  const nowObj = new Date();
+  if (!isValidDate(dateObj) || dateObj < nowObj) {
+    errors.push({
+      field: field,
+      message: message || t('invalid-future-date-time', 'Please enter a date and time in the future'),
     });
   }
 }

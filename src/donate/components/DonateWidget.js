@@ -10,7 +10,7 @@ import { statuses, setStore, initTrackingData, fetchSettings, updateAppSettings,
 import { PanelManager, StepIndicator } from 'shared/components';
 import { getJwtCustomer, getJwtAccount, Resources, convertOptions, setApiFacebookCookies } from 'shared/utils';
 import { Recaptcha } from 'form/components';
-import { handleAmountUrlParam, selectFrequency } from 'donate/actions';
+import { handleAmountUrlParam, selectDefaultECard, selectFrequency } from 'donate/actions';
 import { rootReducer } from 'donate/reducers';
 import { DonationApi, mapDonationSettings, setupDefaultResources } from 'donate/utils';
 import { fetchCustomer } from 'donate/actions/customer-actions';
@@ -99,6 +99,7 @@ export class _DonateWidgetRoot extends React.Component {
       layout:               this.props.layout || 'tabs',
       reCaptchaKey:         this.props.reCaptchaKey,
       turnstileSiteKey:     this.props.turnstileSiteKey,
+      eCardsMode:           this.props.eCardsMode,
     });
 
     // if we have a specific 'fund frequency', force 'default frequency' to match.
@@ -136,9 +137,10 @@ export class _DonateWidgetRoot extends React.Component {
     await Promise.all(promises);
 
     // Select default frequency.
-    const { defaultFrequency, selectFrequency } = this.props;
+    const { defaultFrequency, selectFrequency, selectDefaultECard } = this.props;
     if (defaultFrequency) selectFrequency(defaultFrequency);
-
+    selectDefaultECard();
+    
     handleAmountUrlParam();
 
     // load the incomplete sale _last_
@@ -242,6 +244,7 @@ const actions = {
   fetchCustomer: fetchCustomer,
   fetchIncompleteSale: fetchIncompleteSale,
   selectFrequency: selectFrequency,
+  selectDefaultECard: selectDefaultECard,
   removePanels: removePanels,
 };
 

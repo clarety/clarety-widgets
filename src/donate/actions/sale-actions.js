@@ -6,7 +6,7 @@ import { isHongKongDirectDebit, isStripe, splitName, convertCountry } from 'shar
 import { setFormData, setErrors, updateFormData } from 'form/actions';
 import { executeRecaptcha, currentTurnstileToken } from 'form/components';
 import { DonationApi } from 'donate/utils';
-import { types, addDonationToCart, addCustomerToCart, setDonationStartDate, selectAmount, selectSchedule, selectFrequency } from 'donate/actions';
+import { types, addDonationToCart, addCustomerToCart, setDonationStartDate, selectAmount, selectSchedule, selectFrequency, selectDefaultECard } from 'donate/actions';
 import { getStoreUid, getPaymentMethod, getCreateSalePostData, getPaymentPostData, getSelectedFrequency } from 'donate/selectors';
 
 export const fetchIncompleteSale = () => {
@@ -66,6 +66,7 @@ export const fetchIncompleteSale = () => {
     const amount = saleline.price.toFixed(2)
     const isVariableAmount = !offer.amounts.find(handle => handle.amount === amount);
     dispatch(selectFrequency(frequency));
+    dispatch(selectDefaultECard());
     dispatch(selectAmount(frequency, amount, isVariableAmount));
     if (saleline.offerPaymentUid) {
       dispatch(selectSchedule(saleline.offerPaymentUid));

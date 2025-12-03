@@ -6,7 +6,7 @@ import { updateFormData } from 'form/actions';
 import { getValidationError } from 'form/utils';
 import { FieldError } from 'form/components';
 
-const _TextAreaInput = ({ value, rows, placeholder, testId, error, onChange, required }) => {
+const _TextAreaInput = ({ value, rows, placeholder, testId, error, onChange, required, ...props }) => {
   if (placeholder && !required) placeholder += t('optional-label', ' (Optional)');
 
   return (
@@ -19,6 +19,7 @@ const _TextAreaInput = ({ value, rows, placeholder, testId, error, onChange, req
         onChange={onChange}
         data-testid={testId}
         isInvalid={error !== null}
+        {...props}
       />
       <FieldError error={error} />
     </React.Fragment>
