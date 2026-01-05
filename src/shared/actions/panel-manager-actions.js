@@ -1,4 +1,5 @@
 import { types } from 'shared/actions';
+import { getCurrentPanelIndex, getIndexOfPanelWithComponent } from 'shared/selectors';
 
 export const setPanels = panels => ({
   type: types.setPanels,
@@ -31,3 +32,16 @@ export const invalidatePanel = ({ component }) => ({
 export const resetAllPanels = () => ({
   type: types.resetAllPanels,
 });
+
+export const jumpToPanel = ({ component, atIndex }) => {
+  return async (dispatch, getState) => {
+    const state = getState();
+
+    const jumpToPanelIndex = atIndex ?? getIndexOfPanelWithComponent(state, component);
+    if (jumpToPanelIndex !== null && jumpToPanelIndex !== undefined) {
+      const currentPanelIndex = getCurrentPanelIndex(state);
+      dispatch(setPanelStatus(currentPanelIndex, 'wait'));
+      dispatch(setPanelStatus(jumpToPanelIndex, 'edit'));
+    }
+  };
+};

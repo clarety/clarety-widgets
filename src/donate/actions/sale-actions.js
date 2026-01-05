@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { statuses, setStatus, setRecaptcha, clearRecaptcha, setTurnstileToken, setPayment, setCustomer, updateCartData, prepareStripePayment, authoriseStripePayment, updateAppSettings, setPanelStatus } from 'shared/actions';
+import { statuses, setStatus, setRecaptcha, clearRecaptcha, setTurnstileToken, setPayment, setCustomer, updateCartData, prepareStripePayment, authoriseStripePayment, updateAppSettings, setPanelStatus, jumpToPanel } from 'shared/actions';
 import { getSetting, getPanelManager } from 'shared/selectors';
 import { isHongKongDirectDebit, isStripe, splitName, convertCountry } from 'shared/utils';
 import { setFormData, setErrors, updateFormData } from 'form/actions';
@@ -138,6 +138,13 @@ export const createSale = () => {
     dispatch(setStatus(statuses.ready));
     if (result.status === 'error') {
       dispatch(setErrors(result.validationErrors));
+
+      const hasECardError = result.validationErrors?.some(error => error.field?.startsWith('eCard.'));
+      if (hasECardError) {
+        // assume e-card fields are on donation panel.
+        dispatch(jumpToPanel({ component: 'DonationPanel' }));
+      }
+
       return false;
     } else if (result.status === 'pending') {
       // Update our cart with the pending sale.
