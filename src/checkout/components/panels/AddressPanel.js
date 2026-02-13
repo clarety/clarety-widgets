@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Col, Alert } from 'react-bootstrap';
 import { t } from 'shared/translations';
-import { PanelContainer, PanelHeader, PanelBody, AddressFinder } from 'shared/components';
+import { PanelContainer, PanelHeader, PanelBody, AddressFinder, LoqateInput } from 'shared/components';
 import { FormContext, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
 import { BasePanel, TextInput, PureCheckboxInput, StateInput, CountryInput, PostcodeInput, FormElement, Button } from 'checkout/components';
 
@@ -17,6 +17,18 @@ export class AddressPanel extends BasePanel {
     }
 
     return addressFinderKey && defaultCountry;
+  }
+
+  shouldUseLoqateAddress(addressType) {
+    const { loqateKey, loqateCountry, defaultCountry } = this.props;
+    const { formData } = this.state;
+    if (loqateCountry) {
+      if (formData[`customer.${addressType}.country`] !== loqateCountry) {
+        return false;
+      }
+    }
+
+    return loqateKey && defaultCountry;
   }
 
   onAddressFinderSelect = (addressType, address) => {
@@ -49,10 +61,53 @@ export class AddressPanel extends BasePanel {
     }
   };
 
+  onLoqateSelect = (addressType, address) => {
+    if (addressType === 'billing') {
+      this.updateFormData({
+        "customer.billing.fieldText": address.fieldText,
+        'customer.billing.address1': address.address1,
+        'customer.billing.address2': address.address2,
+        'customer.billing.additional1': address.additional1,
+        'customer.billing.suburb':   address.suburb,
+        'customer.billing.state':    address.state,
+        'customer.billing.postcode': address.postcode,
+        'customer.billing.country':  address.country,
+        'customer.billing.dpid':     address.dpid,
+
+      });
+    }
+
+    if (addressType === 'delivery') {
+      this.updateFormData({
+        "customer.delivery.fieldText": address.fieldText,
+        'customer.delivery.address1': address.address1,
+        'customer.delivery.address2': address.address2,
+        'customer.delivery.additional1': address.additional1,
+        'customer.delivery.suburb':   address.suburb,
+        'customer.delivery.state':    address.state,
+        'customer.delivery.postcode': address.postcode,
+        'customer.delivery.country':  address.country,
+        'customer.delivery.dpid':     address.dpid,
+      });
+    }
+    this.onLoqateChange(address.fieldText, addressType);
+  }
+
+  onLoqateChange = (value, addressType) => {
+    this.updateFormData({
+      [`customer.${addressType}.fieldText`]: value,
+    })
+  }
+
   onPressDisableAddressFinder = (addressType) => {
     if (addressType === 'billing')  this.setState({ disableBillingAddressFinder:  true });
     if (addressType === 'delivery') this.setState({ disableDeliveryAddressFinder: true });
   };
+
+  onPressDisableLoqate = (addressType) => {
+    if(addressType === 'billing') this.setState({disableBillingLoqate: true});
+    if(addressType === 'delivery') this.setState({disableDeliveryLoqate: true});
+  }
 
   onPressContinue = async (event) => {
     event.preventDefault();
@@ -237,6 +292,7 @@ export class AddressPanel extends BasePanel {
   renderErrors() {
     // Only render errors when using AddressFinder.
     if (!this.shouldUseAddressFinder()) return null;
+    if (!this.shouldUseLoqateAddress()) return null;
     if (!this.state.errors.length) return null;
     
     return (
@@ -290,11 +346,16 @@ export class AddressPanel extends BasePanel {
     const disableAddressFinder = addressType === 'billing'
       ? this.state.disableBillingAddressFinder
       : this.state.disableDeliveryAddressFinder;
+    
+    const disableLoqateAddress = addressType === 'billing'
+      ? this.state.disableBillingLoqate
+      : this.state.disableDeliveryLoqate;
 
     if (this.shouldUseAddressFinder(addressType) && !disableAddressFinder) {
       return this.renderAddressFinderInput(title, addressType);
+    }else if(this.shouldUseLoqateAddress(addressType) && !disableLoqateAddress){
+      return this.renderLoqateAddressInput(title, addressType);
     }
-
     return this.renderStandardAddressInputs(title, addressType);
   }
 
@@ -367,7 +428,7 @@ export class AddressPanel extends BasePanel {
 
   renderCountryField(addressType) {
     const { settings, defaultCountry } = this.props;
-
+    
     if (!settings.showCountry) {
       return (
         <FormElement field={`customer.${addressType}.country`} value={defaultCountry} />
@@ -411,6 +472,39 @@ export class AddressPanel extends BasePanel {
               <Button
                 variant="link"
                 onClick={() => this.onPressDisableAddressFinder(addressType)}
+                title={t('cant-find-your-address', "Can't find your address?")}
+              />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+      </React.Fragment>
+    );
+  }
+
+  renderLoqateAddressInput(title, addressType) {
+    const formData = this.state.formData;
+    return (
+      <React.Fragment>
+        <h5>{title}</h5>
+
+        {this.renderCountryField(addressType)}
+
+        <Form.Row>
+          <Col>
+            <Form.Group>
+              <LoqateInput
+                id={`${addressType}-loqate-input`}
+                apiKey={this.props.loqateKey}
+                country={this.props.loqateCountry}
+                addressType={addressType}
+                value={formData[`customer.${addressType}.fieldText`]}
+                onPlaceSelect={(address) => this.onLoqateSelect(addressType, address)}
+                onChange={this.onLoqateChange}
+              />
+
+              <Button
+                variant="link"
+                onClick={() => this.onPressDisableLoqate(addressType)}
                 title={t('cant-find-your-address', "Can't find your address?")}
               />
             </Form.Group>

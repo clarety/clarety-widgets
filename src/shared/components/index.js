@@ -10,6 +10,7 @@ export * from './misc/inject-stripe';
 export * from './misc/PayPalBtn';
 export * from './misc/ScrollIntoView';
 export * from './misc/StepIndicator';
+export * from './misc/LoqateAddress';
 
 export * from './panels/BasePanel';
 export * from './panels/CmsConfirmPanel';

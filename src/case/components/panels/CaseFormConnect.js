@@ -23,6 +23,8 @@ export class CaseFormConnect {
       defaultCountry: getSetting(state, 'defaultCountry'),
       addressFinderKey: getSetting(state, 'addressFinderKey'),
       addressFinderCountry: getSetting(state, 'addressFinderCountry'),
+      loqateKey:            getSetting(state, 'loqateKey'),
+      loqateCountry:        getSetting(state, 'loqateCountry')
     };
   };
 

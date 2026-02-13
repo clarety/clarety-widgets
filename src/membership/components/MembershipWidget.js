@@ -85,6 +85,8 @@ export class _MembershipWidgetRoot extends React.Component {
       defaultCountry:       this.props.defaultCountry,
       addressFinderKey:     this.props.addressFinderKey,
       addressFinderCountry: this.props.addressFinderCountry,
+      loqateKey:            this.props.loqateKey,
+      loqateCountry:        this.props.loqateCountry,
       hideCurrencyCode:     this.props.hideCurrencyCode,
       defaultFrequency:     this.props.defaultFrequency,
     });

@@ -49,6 +49,8 @@ export class DetailsConnect {
 
       addressFinderKey: getSetting(state, 'addressFinderKey'),
       addressFinderCountry: getSetting(state, 'addressFinderCountry'),
+      loqateKey:            getSetting(state, 'loqateKey'),
+      loqateCountry:        getSetting(state, 'loqateCountry')
     };
   };
 
