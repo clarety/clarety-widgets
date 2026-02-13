@@ -4,7 +4,7 @@ import { Form, Row, Col, Button, Spinner, Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { getLanguage, t } from 'shared/translations';
-import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, AddressFinder } from 'shared/components';
+import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, AddressFinder, LoqateInput } from 'shared/components';
 import { requiredField, emailField, addressField, getSuburbLabel, getStateLabel, getPostcodeLabel, moveInArray, scrollIntoView } from 'shared/utils';
 import { TextInput, TextAreaInput, EmailInput, PhoneInput, NumberInput, CurrencyInput, CheckboxInput, CheckboxesInput, SelectInput, RadioInput, DateInput, DateTimeInput, TimeInput, StateInput, CountryInput, PostcodeInput, FileUploadInput, RatingInput, RankingInput, FormElement, SubmitButton, BackButton, ErrorMessages } from 'form/components';
 import { fieldMeetsDisplayCondition } from 'case/utils';
@@ -14,6 +14,7 @@ export class CaseFormPanel extends BasePanel {
 
   state = {
     disableAddressFinders: false,
+    disableLoqateAddress: false,
     subformCounts: {},
   };
 
@@ -93,7 +94,7 @@ export class CaseFormPanel extends BasePanel {
 
     nextPanel();
     this.scrollIntoView();
-    this.setState({ disableAddressFinders: true });
+    this.setState({ disableAddressFinders: true, disableLoqateAddress: true });
   };
 
   onPressSave = async (event) => {
@@ -963,6 +964,9 @@ export class CaseFormPanel extends BasePanel {
           addressFinderKey={this.props.addressFinderKey}
           addressFinderCountry={this.props.addressFinderCountry}
           disableAddressFinder={this.state.disableAddressFinders}
+          loqateKey={this.props.loqateKey}
+          loqateCountry={this.props.loqateCountry}
+          disableLoqateAddress={this.state.disableLoqateAddress}
           hideCountry={settings.hideCountry}
           defaultCountry={this.props.defaultCountry}
           region={settings.region}
@@ -1354,17 +1358,22 @@ export class CaseFormPanel extends BasePanel {
 class AddressField extends React.Component {
   state = {
     useAddressFinder: true,
+    useLoqateAddress: true,
   };
 
   componentDidMount() {
-    const { disableAddressFinder } = this.props;
+    const { disableAddressFinder, disableLoqateAddress } = this.props;
     if (disableAddressFinder) this.setState({ useAddressFinder: false });
+    if(disableLoqateAddress) this.setState({useLoqateAddress: false});
   }
 
   componentDidUpdate(prevProps) {
-    const { disableAddressFinder } = this.props;
+    const { disableAddressFinder, disableLoqateAddress } = this.props;
     if (prevProps.disableAddressFinder !== disableAddressFinder && disableAddressFinder === true) {
       this.setState({ useAddressFinder: false });
+    }
+    if(prevProps.disableLoqateAddress !== disableLoqateAddress && disableLoqateAddress === true) {
+      this.setState({useLoqateAddress: false});
     }
   }
 
@@ -1385,6 +1394,23 @@ class AddressField extends React.Component {
     return addressFinderKey && defaultCountry;
   }
 
+  shouldUseLoqateAddress() {
+    const { loqateKey, loqateCountry, defaultCountry, formData, fieldKey } = this.props;
+    
+    if (loqateCountry) {
+      if (formData[`${fieldKey}.country`] !== loqateCountry) {
+        return false;
+      }
+    }
+
+    // Don't use if we already have an address.
+    if (formData[`${fieldKey}.address1`]) {
+      return false;
+    }
+
+    return loqateKey && defaultCountry;
+  }
+
   onAddressFinderSelect = (address) => {
     const { fieldKey } = this.props;
 
@@ -1400,14 +1426,95 @@ class AddressField extends React.Component {
     });
   };
 
+  onLoqateSelect = (address) => {
+    const { fieldKey } = this.props;
+
+    this.props.setFormData({
+      [`${fieldKey}.address1`]: address.address1,
+      [`${fieldKey}.address2`]: address.address2,
+      [`${fieldKey}.suburb`]:   address.suburb,
+      [`${fieldKey}.state`]:    address.state,
+      [`${fieldKey}.postcode`]: address.postcode,
+      [`${fieldKey}.country`]:  address.country,
+      [`${fieldKey}.dpid`]:     address.dpid,
+      [`${fieldKey}.fieldText`]: address.fieldText
+    });
+    this.onLoqateChange(address.fieldText);
+  };
+
+  onLoqateChange = value => {
+    const { fieldKey } = this.props;
+    this.props.setFormData({
+      [`${fieldKey}.fieldText`]: value,
+    })
+  }
+
   onPressDisableAddressFinder = () => this.setState({
     useAddressFinder: false,
   });
+
+  onPressDisableLoqate = () => this.setState({
+    useLoqateAddress: false,
+  })
 
   render() {
     const { fieldKey, required, defaultCountry, label, formData, hideAddressLabelPrefix } = this.props;
     const country = formData[`${fieldKey}.country`];
     const useAddressFinder = this.state.useAddressFinder && this.shouldUseAddressFinder();
+    const useLoqate = this.state.useLoqateAddress && this.shouldUseLoqateAddress();
+
+    
+    if(useAddressFinder){
+      return (
+          <React.Fragment>
+            <Form.Row>
+              <Col>
+                <Form.Group>
+                  <Form.Label htmlFor="address-finder-input">{t('address', 'Address')}</Form.Label>
+                  <AddressFinder
+                    id="address-finder-input"
+                    apiKey={this.props.addressFinderKey}
+                    country={this.props.addressFinderCountry}
+                    onSelect={this.onAddressFinderSelect}
+                  />
+
+                  <Button variant="link" onClick={this.onPressDisableAddressFinder}>
+                    {t('cant-find-your-address', "Can't find your address?")}
+                  </Button>
+                </Form.Group>
+              </Col>
+            </Form.Row>
+          </React.Fragment>
+      );
+    }else if(useLoqate){
+      return (
+       <React.Fragment>
+            <Form.Row>
+              <Col>
+                <Form.Group>
+                  <Form.Label
+                    htmlFor="address-loqate-input"
+                  >
+                    {t('address', 'Address')}
+                  </Form.Label>
+                  <LoqateInput
+                    id="address-loqate-input"
+                    apiKey={this.props.loqateKey}
+                    country={[this.props.loqateCountry]}
+                    onPlaceSelect={(address) => this.onLoqateSelect(address)}
+                    value={this.props.formData[`${fieldKey}.fieldText`]}
+                    onChange={this.onLoqateChange}
+                  />
+    
+                  <Button variant="link" onClick={this.onPressDisableLoqate}>
+                    {t('cant-find-your-address', "Can't find your address?")}
+                  </Button>
+                </Form.Group>
+              </Col>
+            </Form.Row>
+          </React.Fragment>
+      );
+    }
 
     return (
       <React.Fragment>
@@ -1432,26 +1539,8 @@ class AddressField extends React.Component {
             </Form.Row>
         }
 
-        {useAddressFinder
-          ? <Form.Row>
-              <Col>
-                <Form.Group>
-                  <Form.Label htmlFor="address-finder-input">{t('address', 'Address')}</Form.Label>
-                  <AddressFinder
-                    id="address-finder-input"
-                    apiKey={this.props.addressFinderKey}
-                    country={this.props.addressFinderCountry}
-                    onSelect={this.onAddressFinderSelect}
-                  />
-
-                  <Button variant="link" onClick={this.onPressDisableAddressFinder}>
-                    {t('cant-find-your-address', "Can't find your address?")}
-                  </Button>
-                </Form.Group>
-              </Col>
-            </Form.Row>
-
-          : <React.Fragment>
+        {
+           <React.Fragment>
               <Form.Row>
                 <Col sm>
                   <Address1Field
