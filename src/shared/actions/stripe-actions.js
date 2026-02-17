@@ -1,12 +1,12 @@
 import { AuBankAccountElement, CardNumberElement } from '@stripe/react-stripe-js';
-import { isStripePaymentForm, isStripeAuBankAccount } from 'shared/utils';
+import { isStripePaymentForm, isStripeBecs } from 'shared/utils';
 
 export const prepareStripePayment = (paymentData, paymentMethod, frequency) => {
   return async (dispatch, getState) => {
     let result = null;
     if (isStripePaymentForm(paymentMethod)) {
       result = await createStripePaymentMethod(paymentData, paymentMethod);
-    } else if (isStripeAuBankAccount(paymentMethod)) {
+    } else if (isStripeBecs(paymentMethod)) {
       result = await createStripeAuBankAccountRecurringToken(paymentData, paymentMethod);
     } else if (frequency === 'recurring') {
       result = await createStripeRecurringToken(paymentData, paymentMethod);

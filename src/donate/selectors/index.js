@@ -1,6 +1,6 @@
 import { statuses } from 'shared/actions';
 import { getCart, getTrackingData, getRecaptcha, getTurnstileToken, getSetting, getFormData, getParsedFormData, getCurrency } from 'shared/selectors';
-import { formatPrice, calculateImpression } from 'shared/utils';
+import { formatPrice, calculateImpression, isMethodAllowedForFrequency } from 'shared/utils';
 
 export const getIsBusy = (state) => state.status !== statuses.ready;
 
@@ -162,11 +162,7 @@ export const getPaymentMethods = (state) => {
 
   // Filter available methods for selected frequency.
   const frequency = getSelectedFrequency(state);
-  return paymentMethods.filter(paymentMethod => {
-    if (paymentMethod.singleOnly && frequency !== 'single') return false;
-    if (paymentMethod.recurringOnly && frequency !== 'recurring') return false;
-    return true;
-  });
+  return paymentMethods.filter(paymentMethod => isMethodAllowedForFrequency(paymentMethod, frequency));
 };
 
 export const getCreateSalePostData = (state) => {

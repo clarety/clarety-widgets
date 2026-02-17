@@ -33,6 +33,11 @@ export class DonationApi {
     return results[0];
   }
 
+  static async createPaymentSession(saleJwt, gatewayAccount, gatewayPaymentMethod, currency) {
+    const results = await ClaretyApi.post('donations/payment-sessions/', { saleJwt, gatewayAccount, gatewayPaymentMethod, currency });
+    return results[0];
+  }
+
   static async fetchPaymentMethods(storeUid, singleOfferId, recurringOfferId) {
     const params = {
       storeUid: storeUid,

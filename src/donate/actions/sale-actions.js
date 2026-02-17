@@ -2,11 +2,11 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { statuses, setStatus, setRecaptcha, clearRecaptcha, setTurnstileToken, setPayment, setCustomer, updateCartData, prepareStripePayment, authoriseStripePayment, updateAppSettings, setPanelStatus, jumpToPanel } from 'shared/actions';
 import { getSetting, getPanelManager } from 'shared/selectors';
-import { isHongKongDirectDebit, isStripe, splitName, convertCountry } from 'shared/utils';
+import { isHkDirectDebit, isStripe, isXendit, splitName, convertCountry } from 'shared/utils';
 import { setFormData, setErrors, updateFormData } from 'form/actions';
 import { executeRecaptcha, currentTurnstileToken } from 'form/components';
 import { DonationApi } from 'donate/utils';
-import { types, addDonationToCart, addCustomerToCart, setDonationStartDate, selectAmount, selectSchedule, selectFrequency, selectDefaultECard } from 'donate/actions';
+import { types, addDonationToCart, addCustomerToCart, setDonationStartDate, selectAmount, selectSchedule, selectFrequency, selectDefaultECard, prepareXenditPayment, authoriseXenditPayment } from 'donate/actions';
 import { getStoreUid, getPaymentMethod, getCreateSalePostData, getPaymentPostData, getSelectedFrequency } from 'donate/selectors';
 
 export const fetchIncompleteSale = () => {
@@ -218,8 +218,8 @@ export const makePayment = (paymentData) => {
 
 const preparePayment = (paymentData, paymentMethod, frequency) => {
   return async (dispatch, getState) => {
-    // Stripe payment.
     if (isStripe(paymentMethod)) {
+      // Stripe payment.
       const result = await dispatch(prepareStripePayment(paymentData, paymentMethod, frequency));
 
       if (result.validationErrors) {
@@ -230,11 +230,23 @@ const preparePayment = (paymentData, paymentMethod, frequency) => {
         dispatch(setPayment(result.payment));
         return true;
       }
+    } else if (isXendit(paymentMethod)) {
+      // Xendit payment.
+      const result = await dispatch(prepareXenditPayment(paymentData, paymentMethod, frequency));
+
+      if (result.validationErrors) {
+        dispatch(setErrors(result.validationErrors));
+        dispatch(setStatus(statuses.ready));
+        return false;
+      } else {
+        dispatch(setPayment(result.payment));
+        return true;
+      }
+    } else {
+      // Standard payment.
+      dispatch(setPayment(paymentData));
+      return true;
     }
-    
-    // Standard payment.
-    dispatch(setPayment(paymentData));
-    return true;
   };
 };
 
@@ -292,7 +304,11 @@ const handlePaymentAuthorise = (result, paymentData, paymentMethod) => {
       return dispatch(handleStripeAuthorise(result, paymentData, paymentMethod));
     }
 
-    if (isHongKongDirectDebit(paymentMethod)) {
+    if (isXendit(paymentMethod)) {
+      return dispatch(handleXenditAuthorise(result, paymentData, paymentMethod));
+    }
+
+    if (isHkDirectDebit(paymentMethod)) {
       return dispatch(handleHKDirectDebitAuthorise(result, paymentData, paymentMethod));
     }
 
@@ -362,6 +378,29 @@ const handleStripeAuthorise = (paymentResult, paymentData, paymentMethod) => {
   };
 };
 
+const handleXenditAuthorise = (paymentResult, paymentData, paymentMethod) => {
+  return async (dispatch, getState) => {
+    const authResult = await dispatch(authoriseXenditPayment(paymentResult, paymentData, paymentMethod));
+
+    if (authResult.validationErrors) {
+      dispatch(setErrors(authResult.validationErrors));
+      dispatch(setStatus(statuses.ready));
+      return false;
+    } else {
+      // Prepare payment.
+      dispatch(setPayment(authResult.payment));
+      dispatch(clearRecaptcha());
+
+      // Attempt payment.
+      const result = await dispatch(attemptPayment(paymentData, paymentMethod));
+      if (!result) return false;
+
+      // Handle result.
+      return await dispatch(handlePaymentResult(result, paymentData, paymentMethod));
+    }
+  };
+};
+
 const handleHKDirectDebitAuthorise = (paymentResult, paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     dispatch(updateCartData({
@@ -377,7 +416,7 @@ const handleHKDirectDebitAuthorise = (paymentResult, paymentData, paymentMethod)
 
 export const cancelPaymentAuthorise = (paymentMethod) => {
   return async (dispatch, getState) => {
-    if (isHongKongDirectDebit(paymentMethod)) {
+    if (isHkDirectDebit(paymentMethod)) {
       return dispatch(cancelHKDirectDebitAuthorise(paymentMethod));
     }
 

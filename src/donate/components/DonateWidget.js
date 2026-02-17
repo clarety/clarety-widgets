@@ -6,9 +6,10 @@ import i18next from 'i18next';
 import { BreakpointProvider } from 'react-socks';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
-import { statuses, setStore, initTrackingData, fetchSettings, updateAppSettings, setPanels, removePanels, setApiCampaignUids } from 'shared/actions';
-import { PanelManager, StepIndicator } from 'shared/components';
-import { getJwtCustomer, getJwtAccount, Resources, convertOptions, setApiFacebookCookies } from 'shared/utils';
+import { statuses, setStore, initTrackingData, fetchSettings, updateAppSettings, setPanels, removePanels, setApiCampaignUids, initPaymentGateways, onCancelPaymentAuth } from 'shared/actions';
+import { getPaymentAuthModalUrl } from 'shared/selectors';
+import { PanelManager, StepIndicator, PaymentAuthModal } from 'shared/components';
+import { getJwtCustomer, getJwtAccount, Resources, convertOptions, setApiFacebookCookies, PaymentGatewayVersion } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { handleAmountUrlParam, selectDefaultECard, selectFrequency } from 'donate/actions';
 import { rootReducer } from 'donate/reducers';
@@ -61,7 +62,7 @@ export class DonateWidget extends React.Component {
 export class _DonateWidgetRoot extends React.Component {
   async componentDidMount() {
     const { storeUid, singleOfferId, recurringOfferId, categoryUid } = this.props;
-    const { updateAppSettings, setStore, initTrackingData, fetchSettings, handleAmountUrlParam, setApiCampaignUids, removePanels } = this.props;
+    const { updateAppSettings, setStore, initTrackingData, fetchSettings, initPaymentGateways, handleAmountUrlParam, setApiCampaignUids, removePanels } = this.props;
 
     if (!singleOfferId && !recurringOfferId && !categoryUid) {
       throw new Error('[DonateWidget] A singleOfferId, recurringOfferId, or categoryUid is required');
@@ -76,6 +77,8 @@ export class _DonateWidgetRoot extends React.Component {
       // Use i18next without translation.
       await i18next.init();
     }
+
+    PaymentGatewayVersion.initFromWidgetProps(this.props);
 
     updateAppSettings({
       singleOfferId:        singleOfferId,
@@ -135,6 +138,8 @@ export class _DonateWidgetRoot extends React.Component {
     );
 
     await Promise.all(promises);
+
+    initPaymentGateways();
 
     // Select default frequency.
     const { defaultFrequency, selectFrequency, selectDefaultECard } = this.props;
@@ -196,7 +201,7 @@ export class _DonateWidgetRoot extends React.Component {
   }
 
   render() {
-    const { status, reCaptchaKey, showStepIndicator } = this.props;
+    const { status, reCaptchaKey, showStepIndicator, paymentAuthModalUrl, closePaymentAuthModal } = this.props;
     const layout = this.props.layout || 'tabs';
     const variant = this.props.variant || '';
 
@@ -221,16 +226,29 @@ export class _DonateWidgetRoot extends React.Component {
           />
         </BlockUi>
 
-        {reCaptchaKey && <Recaptcha siteKey={reCaptchaKey} language={i18next.language} />}
+        {paymentAuthModalUrl &&
+          <PaymentAuthModal
+            url={paymentAuthModalUrl}
+            onCancel={onCancelPaymentAuth}
+          />
+        }
+
+        {reCaptchaKey &&
+          <Recaptcha
+            siteKey={reCaptchaKey}
+            language={i18next.language}
+          />
+        }
       </div>
     );
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     status: state.status,
     offers: state.settings.priceHandles,
+    paymentAuthModalUrl: getPaymentAuthModalUrl(state),
   };
 };
 
@@ -246,6 +264,7 @@ const actions = {
   selectFrequency: selectFrequency,
   selectDefaultECard: selectDefaultECard,
   removePanels: removePanels,
+  initPaymentGateways: initPaymentGateways,
 };
 
 export const connectDonateWidgetRoot = connect(mapStateToProps, actions);
