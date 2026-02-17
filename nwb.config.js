@@ -31,6 +31,7 @@ module.exports = {
           'shared':            './src/shared',
           'subscribe':         './src/subscribe',
           'unsubscribe':       './src/unsubscribe',
+          'update-payment-details': './src/update-payment-details',
         },
       }],
     ],

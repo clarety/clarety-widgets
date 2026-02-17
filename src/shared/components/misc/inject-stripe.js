@@ -55,13 +55,15 @@ export const injectStripe = (PaymentPanelComponent) => {
 
       const options = {};
       if (paymentMethod.type === 'stripe-payment-form') {
-        options.mode = 'payment';
+        options.mode = this.props.stripeMode || 'payment';
         options.paymentMethodCreation = 'manual';
-        options.currency = this.props.currency.toLowerCase();
 
-        // stripe will error if we give an amount of 0
-        const dollarAmount = this.props.amount || 1.00;
-        options.amount = toCents(dollarAmount);
+        if (options.mode === 'payment') {
+          options.currency = this.props.currency.toLowerCase();
+          // stripe will error if we give an amount of 0
+          const dollarAmount = this.props.amount || (options.currency === 'hkd' ? 4.00 : 1.00);
+          options.amount = toCents(dollarAmount);
+        }
 
         if (this.props.frequency) {
           // donations allow different payment types depending on frequency.
@@ -72,6 +74,13 @@ export const injectStripe = (PaymentPanelComponent) => {
           }
         } else {
           options.paymentMethodTypes = paymentMethod.allowedPaymentTypes;
+        }
+
+        if (paymentMethod.customPaymentTypes) {
+          options.customPaymentMethods = paymentMethod.customPaymentTypes.map(customPaymentType => ({
+            id: customPaymentType.customPaymentMethodId,
+            options: { type: 'static' },
+          }));
         }
       }
 

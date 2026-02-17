@@ -19,6 +19,12 @@ export const prepareStripePayment = (paymentData, paymentMethod, frequency) => {
       return { validationErrors };
     }
 
+    if (result.stripeCustomPaymentMethodId) {
+      return {
+        stripeCustomPaymentMethodId: result.stripeCustomPaymentMethodId,
+      };
+    }
+
     const payment = {
       type: paymentMethod.type,
       gateway: paymentMethod.gateway,
@@ -111,9 +117,16 @@ const createStripePaymentMethod = async (paymentData, paymentMethod) => {
   const { stripe, elements } = paymentData;
 
   // Trigger form validation and wallet collection
-  const { error: submitError } = await elements.submit();
+  const { error: submitError, selectedPaymentMethod } = await elements.submit();
   if (submitError) {
     return { error: submitError };
+  }
+
+  if (selectedPaymentMethod.startsWith('cpmt_')) {
+    // this is a "custom payment method" (https://docs.stripe.com/payments/payment-element/custom-payment-methods)
+    return {
+      stripeCustomPaymentMethodId: selectedPaymentMethod,
+    };
   }
 
   const data = {

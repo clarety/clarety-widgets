@@ -11,17 +11,6 @@ Config.init({
   useValidIsoCountryCodes: true,
 });
 
-// Mock cookies.
-// Cookies.set('jwtAccount', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc2OWY1ZGNiYmZjOWRkOWI3MjYzYjdkMTVjOWVjYjViYjMxNWFjNTAiLCJqdGkiOiI3NjlmNWRjYmJmYzlkZDliNzI2M2I3ZDE1YzllY2I1YmIzMTVhYzUwIiwiaXNzIjoiIiwiYXVkIjowLCJzdWIiOiIxMDgiLCJ1c2VyX3R5cGUiOiJjdXN0b21lciIsImV4cCI6MzE0MTMyOTQ5MiwiaWF0IjoxNTcwNjY0NjI2LCJ0b2tlbl90eXBlIjoiYmVhcmVyIiwic2NvcGUiOm51bGwsImN1c3RvbWVyX3VpZCI6ImU3ZmI4ODMxLTRhODMtNDY4ZS04ZWVjLTU5MzE4NTkwOWYxOCJ9.Dv4_t4NrwHXvezCWS9p0LhQI_sOLnYk-3qyQXZF4gdo');
-// Cookies.set('jwtSession', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJjYXJ0VWlkIjoiOGMyNzU2YjItZjAxOC00YzI3LWEwMjUtYzMxZmNhN2U0ODJiIn0.WDXbbj84bUH7zGVNEEeSK1VwuEfBY8Lt6stiEr6Yhek');
-// Cookies.set('jwtCustomer', '');
-
-// Real cookies.
-// Cookies.set('jwtAccount', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpZCI6IjJhNWNkY2QyMzVmNmY0NzAyNWNlODQ2M2FkODFhZWJjY2EyYjRkM2QiLCJqdGkiOiIyYTVjZGNkMjM1ZjZmNDcwMjVjZTg0NjNhZDgxYWViY2NhMmI0ZDNkIiwiaXNzIjoiIiwiYXVkIjoiYWIwYzk0MDdiYTdmMDU4MWViYzQ5ZmE3ODcwNDllODAiLCJzdWIiOiIzMjY3NSIsInVzZXJfdHlwZSI6ImN1c3RvbWVyIiwiZXhwIjoxNjI1ODc5NTIyLCJpYXQiOjE2MjU3OTMxMjIsInRva2VuX3R5cGUiOiJiZWFyZXIiLCJzY29wZSI6bnVsbCwiY3VzdG9tZXJfdWlkIjoiY3N0XzByM2VrIn0.jwJit6GL5Ic9j-3APlHPJLVFCKW0UpXlbyNa-4S-EL92g8FHlAL552y5tnF0k8n4P3m4G60_sl98DsCcm-3v4SmlOrMEJh3MIAk74ph7VqIjFPYTiHN1htrrwNgis0u72jRILqm5VpKgpXgGO9agNyOJL3RXDciz9-CaAg4e3PBLXLAJ2nCdCVHZgindYggQ1kxIn1GpETX8DDY6emdVvbgGOy-k6TMKrxqo-QaEvn48E9Fa3HR-3H3_1sfsxsdurU6ViJDzypY4W3NU0kqsN_qSn4lRMQRaVOltcVoYGIxTrPA-5yEX1JbYCWSITyqamFrLC_QNsBUVwNJwI_PcZg');
-Cookies.set('jwtSession', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDA1MzIwOTMsImlzcyI6ImRldiIsInR5cGUiOiJzYWxlIiwic2FsZUlkIjoiMjMwNCIsImNhcnRVaWQiOiJjcnRfZ21rayJ9.kVEYqhTBXE7znHT8x_Oek55ztuVB2LtuvPFBArP4eVs');
-// Cookies.set('jwtCustomer', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lclVpZCI6ImNzdF9sODB3Iiwic3RvcmVVaWQiOiJzdHJfbDlwNyIsImlzcyI6ImRldiIsImV4cCI6MTU4ODcyNzcwMCwic3ViIjoiIiwiYXVkIjoiIn0.1fvSp4np51hnsdIVBUzsJ5I8eMHe1QJ0gIhi4nrYsyM');
-
-
 const Demo = () => {
   const url = window.location.href;
 
@@ -110,6 +99,11 @@ const Demo = () => {
     return <MembershipDemo />;
   }
 
+  if (url.endsWith('update-payment-details')) {
+    const UpdatePaymentDetailsDemo = require('./UpdatePaymentDetailsDemo').default;
+    return <UpdatePaymentDetailsDemo />;
+  }
+
   return (
     <div className="list-group m-5">
       <a href="subscribe" className="list-group-item list-group-item-action">Subscribe Widget</a>
@@ -129,6 +123,7 @@ const Demo = () => {
       <a href="case" className="list-group-item list-group-item-action">Case Widget</a>
       <a href="case-section-sidebar" className="list-group-item list-group-item-action">Case Widget - Section Sidebar</a>
       <a href="membership" className="list-group-item list-group-item-action">Membership Widget</a>
+      <a href="update-payment-details" className="list-group-item list-group-item-action">Update Payment Details Widget</a>
     </div>
   );
 };
