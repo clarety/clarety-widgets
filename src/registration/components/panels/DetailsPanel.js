@@ -125,10 +125,13 @@ export class DetailsPanel extends BasePanel {
     formData['customer.dateOfBirthDay']   = customer.dateOfBirthDay;
     formData['customer.dateOfBirthMonth'] = customer.dateOfBirthMonth;
     formData['customer.dateOfBirthYear']  = customer.dateOfBirthYear;
-
-    if (settings.showBillingAddress && customer.billing.address1) {
-      disableAddressFinders = true;
-      disableLoqateAddress = true;
+    
+    if (settings.showBillingAddress && customer.billing) {
+      if(customer.billing.address1){
+          disableAddressFinders = true;
+          disableLoqateAddress = true;
+      }
+      
       formData['customer.billing.address1'] = customer.billing.address1;
       formData['customer.billing.address2'] = customer.billing.address2;
       formData['customer.billing.suburb']   = customer.billing.suburb;
@@ -137,9 +140,12 @@ export class DetailsPanel extends BasePanel {
       formData['customer.billing.country']  = customer.billing.country || event.country;
     }
 
-    if (settings.showDeliveryAddress && customer.delivery.address1) {
-      disableAddressFinders = true;
-      disableLoqateAddress = true;
+    if (settings.showDeliveryAddress && customer.delivery) {
+      if(customer.delivery.address1){
+          disableAddressFinders = true;
+          disableLoqateAddress = true;
+      }
+      
       formData['customer.delivery.address1'] = customer.delivery.address1;
       formData['customer.delivery.address2'] = customer.delivery.address2;
       formData['customer.delivery.suburb']   = customer.delivery.suburb;
@@ -147,6 +153,8 @@ export class DetailsPanel extends BasePanel {
       formData['customer.delivery.postcode'] = customer.delivery.postcode;
       formData['customer.delivery.country']  = customer.delivery.country || event.country;
     }    
+
+    
 
     this.setState(prevState => ({
       formData: {
@@ -359,7 +367,7 @@ export class DetailsPanel extends BasePanel {
   onLoqateSelect = (type, address) => {
     const { apimap } = this.props
 
-    var formData = {
+    const formData = {
       [`customer.${type}.address1`]: address.address1,
       [`customer.${type}.address2`]: address.address2,
       [`customer.${type}.suburb`]:   address.suburb,
