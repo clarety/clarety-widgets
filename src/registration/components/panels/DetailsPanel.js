@@ -357,7 +357,9 @@ export class DetailsPanel extends BasePanel {
     }));
   };
   onLoqateSelect = (type, address) => {
-    const formData = {
+    const { apimap } = this.props
+
+    var formData = {
       [`customer.${type}.address1`]: address.address1,
       [`customer.${type}.address2`]: address.address2,
       [`customer.${type}.suburb`]:   address.suburb,
@@ -368,7 +370,11 @@ export class DetailsPanel extends BasePanel {
       [`customer.${type}.fieldText`]: address.fieldText,
     };
 
-    this.onLoqateChange(address.fieldText, type);
+    if(typeof apimap !== 'undefined' && apimap.length > 0){
+      apimap.forEach(element => {
+        formData[`customer.${type}.${element.field}`] = address[element.key];
+      });
+    }
 
     this.setState(prevState => ({
       formData: {
@@ -382,7 +388,7 @@ export class DetailsPanel extends BasePanel {
     const formData = {
       [`customer.${type}.fieldText`]: value,
     }
-
+    
     this.setState(prevState => ({
       formData: {
         ...prevState.formData,

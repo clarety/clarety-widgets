@@ -84,6 +84,8 @@ class _RegistrationRoot extends React.Component {
       addressFinderCountry: this.props.addressFinderCountry,
       loqateKey:            this.props.loqateKey,
       loqateCountry:        this.props.loqateCountry,
+      apimap:               this.props.apimap,
+
       ...this.props.settings,
     });
 

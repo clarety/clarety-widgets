@@ -966,6 +966,7 @@ export class CaseFormPanel extends BasePanel {
           disableAddressFinder={this.state.disableAddressFinders}
           loqateKey={this.props.loqateKey}
           loqateCountry={this.props.loqateCountry}
+          apimap={this.props.apimap}
           disableLoqateAddress={this.state.disableLoqateAddress}
           hideCountry={settings.hideCountry}
           defaultCountry={this.props.defaultCountry}
@@ -1427,9 +1428,9 @@ class AddressField extends React.Component {
   };
 
   onLoqateSelect = (address) => {
-    const { fieldKey } = this.props;
+    const { fieldKey, apimap } = this.props;
 
-    this.props.setFormData({
+    var data = {
       [`${fieldKey}.address1`]: address.address1,
       [`${fieldKey}.address2`]: address.address2,
       [`${fieldKey}.suburb`]:   address.suburb,
@@ -1438,7 +1439,14 @@ class AddressField extends React.Component {
       [`${fieldKey}.country`]:  address.country,
       [`${fieldKey}.dpid`]:     address.dpid,
       [`${fieldKey}.fieldText`]: address.fieldText
-    });
+    }
+    if(typeof apimap !== 'undefined' && apimap.length > 0){
+      apimap.forEach(element => {
+        data[`${fieldKey}.${element.field}`] = address[element.key];
+      });
+    }
+
+    this.props.setFormData(data);
     this.onLoqateChange(address.fieldText);
   };
 
@@ -1457,135 +1465,143 @@ class AddressField extends React.Component {
     useLoqateAddress: false,
   })
 
+  renderAddressFinder = () => {
+    return(
+      <React.Fragment>
+        <Form.Row>
+          <Col>
+            <Form.Group>
+              <Form.Label htmlFor="address-finder-input">{t('address', 'Address')}</Form.Label>
+              <AddressFinder
+                id="address-finder-input"
+                apiKey={this.props.addressFinderKey}
+                country={this.props.addressFinderCountry}
+                onSelect={this.onAddressFinderSelect}
+              />
+
+              <Button variant="link" onClick={this.onPressDisableAddressFinder}>
+                {t('cant-find-your-address', "Can't find your address?")}
+              </Button>
+            </Form.Group>
+          </Col>
+        </Form.Row>
+      </React.Fragment>
+    );
+  }
+
+  renderLoqateAddress = (fieldKey) => {
+    return (
+      <React.Fragment>
+        <Form.Row>
+          <Col>
+            <Form.Group>
+              <Form.Label
+                htmlFor="address-loqate-input"
+              >
+                {t('address', 'Address')}
+              </Form.Label>
+              <LoqateInput
+                id="address-loqate-input"
+                apiKey={this.props.loqateKey}
+                country={[this.props.loqateCountry]}
+                onPlaceSelect={(address) => this.onLoqateSelect(address)}
+                value={this.props.formData[`${fieldKey}.fieldText`]}
+                onChange={this.onLoqateChange}
+              />
+
+              <Button variant="link" onClick={this.onPressDisableLoqate}>
+                {t('cant-find-your-address', "Can't find your address?")}
+              </Button>
+            </Form.Group>
+          </Col>
+        </Form.Row>
+      </React.Fragment>
+    );
+  }
+
   render() {
     const { fieldKey, required, defaultCountry, label, formData, hideAddressLabelPrefix } = this.props;
     const country = formData[`${fieldKey}.country`];
     const useAddressFinder = this.state.useAddressFinder && this.shouldUseAddressFinder();
     const useLoqate = this.state.useLoqateAddress && this.shouldUseLoqateAddress();
-
     
     if(useAddressFinder){
-      return (
-          <React.Fragment>
-            <Form.Row>
-              <Col>
-                <Form.Group>
-                  <Form.Label htmlFor="address-finder-input">{t('address', 'Address')}</Form.Label>
-                  <AddressFinder
-                    id="address-finder-input"
-                    apiKey={this.props.addressFinderKey}
-                    country={this.props.addressFinderCountry}
-                    onSelect={this.onAddressFinderSelect}
-                  />
-
-                  <Button variant="link" onClick={this.onPressDisableAddressFinder}>
-                    {t('cant-find-your-address', "Can't find your address?")}
-                  </Button>
-                </Form.Group>
-              </Col>
-            </Form.Row>
-          </React.Fragment>
-      );
+      return this.renderAddressFinder();
     }else if(useLoqate){
+      return this.renderLoqateAddress(fieldKey);
+    }else{
+
       return (
-       <React.Fragment>
-            <Form.Row>
-              <Col>
-                <Form.Group>
-                  <Form.Label
-                    htmlFor="address-loqate-input"
-                  >
-                    {t('address', 'Address')}
-                  </Form.Label>
-                  <LoqateInput
-                    id="address-loqate-input"
-                    apiKey={this.props.loqateKey}
-                    country={[this.props.loqateCountry]}
-                    onPlaceSelect={(address) => this.onLoqateSelect(address)}
-                    value={this.props.formData[`${fieldKey}.fieldText`]}
-                    onChange={this.onLoqateChange}
+        <React.Fragment>
+          {this.props.hideCountry
+            ? <FormElement
+                key={fieldKey}
+                field={`${fieldKey}.country`}
+                value={defaultCountry}
+              />
+
+            : <Form.Row key={fieldKey}>
+                <Col>
+                  <CountryField
+                    fieldKey={fieldKey}
+                    region={this.props.region}
+                    defaultCountry={defaultCountry}
+                    required={required}
+                    labelPrefix={label}
+                    hideLabelPrefix={!!hideAddressLabelPrefix}
                   />
-    
-                  <Button variant="link" onClick={this.onPressDisableLoqate}>
-                    {t('cant-find-your-address', "Can't find your address?")}
-                  </Button>
-                </Form.Group>
-              </Col>
-            </Form.Row>
-          </React.Fragment>
+                </Col>
+              </Form.Row>
+          }
+
+          {
+            <React.Fragment>
+                <Form.Row>
+                  <Col sm>
+                    <Address1Field
+                      fieldKey={fieldKey}
+                      country={country}
+                      required={required}
+                      labelPrefix={label}
+                      hideLabelPrefix={!!hideAddressLabelPrefix}
+                    />
+                  </Col>
+                  <Col sm>
+                    <SuburbField
+                      fieldKey={fieldKey}
+                      country={country}
+                      required={required && country !== 'NZ'}
+                      labelPrefix={label}
+                      hideLabelPrefix={!!hideAddressLabelPrefix}
+                    />
+                  </Col>
+                </Form.Row>
+        
+                <Form.Row>
+                  <Col sm>
+                    <StateField
+                      fieldKey={fieldKey}
+                      country={country}
+                      required={required}
+                      labelPrefix={label}
+                      hideLabelPrefix={!!hideAddressLabelPrefix}
+                    />
+                  </Col>
+                  <Col sm>
+                    <PostcodeField
+                      fieldKey={fieldKey}
+                      country={country || defaultCountry}
+                      required={required}
+                      labelPrefix={label}
+                      hideLabelPrefix={!!hideAddressLabelPrefix}
+                    />
+                  </Col>
+                </Form.Row>
+              </React.Fragment>
+          }
+        </React.Fragment>
       );
     }
-
-    return (
-      <React.Fragment>
-        {this.props.hideCountry
-          ? <FormElement
-              key={fieldKey}
-              field={`${fieldKey}.country`}
-              value={defaultCountry}
-            />
-
-          : <Form.Row key={fieldKey}>
-              <Col>
-                <CountryField
-                  fieldKey={fieldKey}
-                  region={this.props.region}
-                  defaultCountry={defaultCountry}
-                  required={required}
-                  labelPrefix={label}
-                  hideLabelPrefix={!!hideAddressLabelPrefix}
-                />
-              </Col>
-            </Form.Row>
-        }
-
-        {
-           <React.Fragment>
-              <Form.Row>
-                <Col sm>
-                  <Address1Field
-                    fieldKey={fieldKey}
-                    country={country}
-                    required={required}
-                    labelPrefix={label}
-                    hideLabelPrefix={!!hideAddressLabelPrefix}
-                  />
-                </Col>
-                <Col sm>
-                  <SuburbField
-                    fieldKey={fieldKey}
-                    country={country}
-                    required={required && country !== 'NZ'}
-                    labelPrefix={label}
-                    hideLabelPrefix={!!hideAddressLabelPrefix}
-                  />
-                </Col>
-              </Form.Row>
-      
-              <Form.Row>
-                <Col sm>
-                  <StateField
-                    fieldKey={fieldKey}
-                    country={country}
-                    required={required}
-                    labelPrefix={label}
-                    hideLabelPrefix={!!hideAddressLabelPrefix}
-                  />
-                </Col>
-                <Col sm>
-                  <PostcodeField
-                    fieldKey={fieldKey}
-                    country={country || defaultCountry}
-                    required={required}
-                    labelPrefix={label}
-                    hideLabelPrefix={!!hideAddressLabelPrefix}
-                  />
-                </Col>
-              </Form.Row>
-            </React.Fragment>
-        }
-      </React.Fragment>
-    );
   }
 }
 

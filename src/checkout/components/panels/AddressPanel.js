@@ -62,8 +62,10 @@ export class AddressPanel extends BasePanel {
   };
 
   onLoqateSelect = (addressType, address) => {
+    const { apimap } = this.props;
+
     if (addressType === 'billing') {
-      this.updateFormData({
+      var data = {
         "customer.billing.fieldText": address.fieldText,
         'customer.billing.address1': address.address1,
         'customer.billing.address2': address.address2,
@@ -74,11 +76,19 @@ export class AddressPanel extends BasePanel {
         'customer.billing.country':  address.country,
         'customer.billing.dpid':     address.dpid,
 
-      });
+      }
+
+      if(typeof apimap !== 'undefined' && apimap.length > 0){
+        apimap.forEach(element => {
+          data[`customer.billing.${element.field}`] = address[element.key];
+        });
+      }
+
+      this.updateFormData(data);
     }
 
     if (addressType === 'delivery') {
-      this.updateFormData({
+      var data = {
         "customer.delivery.fieldText": address.fieldText,
         'customer.delivery.address1': address.address1,
         'customer.delivery.address2': address.address2,
@@ -88,7 +98,15 @@ export class AddressPanel extends BasePanel {
         'customer.delivery.postcode': address.postcode,
         'customer.delivery.country':  address.country,
         'customer.delivery.dpid':     address.dpid,
-      });
+      }
+
+      if(apimap.length > 0){
+        apimap.forEach(element => {
+          data[`customer.delivery.${element.field}`] = address[element.key];
+        });
+      }
+
+      this.updateFormData(data);
     }
     this.onLoqateChange(address.fieldText, addressType);
   }

@@ -48,26 +48,16 @@ export function LoqateInput({ label, name, error, containerStyle, apiKey, value,
 
 function transformLoqateAddress(selectedAddress, country) {
     const address = {};
-    if(country == 'AU'){
-        address.address1 = selectedAddress.Line1;
-        address.address2 = selectedAddress.Line2;
-        address.suburb = selectedAddress.City;
-        address.state = selectedAddress.Province
-        address.postcode = selectedAddress.PostalCode
-        address.country = selectedAddress.CountryIso2
-        address.dpid = selectedAddress.DomesticId
-        
-    }else if(country == 'ID'){
-        address.address1 = selectedAddress.Line1;
-        address.address2 = selectedAddress.Line2;
-        address.additional1 = selectedAddress.Line3;
-        address.suburb = selectedAddress.City;
-        address.state = selectedAddress.Province
-        address.postcode = selectedAddress.PostalCode
-        address.country = selectedAddress.CountryIso2
-        address.dpid = selectedAddress.DomesticId
-    }
-    address.fieldText = selectedAddress.Label
     
+    address.address1 = selectedAddress.Line1;
+    address.address2 = selectedAddress.Line2;
+    address.address3 = selectedAddress.Line3;
+    address.suburb = selectedAddress.City;
+    address.state = selectedAddress.Province
+    address.postcode = selectedAddress.PostalCode
+    address.country = selectedAddress.CountryIso2
+    address.dpid = selectedAddress.DomesticId
+               
+    address.fieldText = selectedAddress.Label
     return address;
 }

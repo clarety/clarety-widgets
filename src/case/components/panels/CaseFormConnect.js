@@ -24,7 +24,8 @@ export class CaseFormConnect {
       addressFinderKey: getSetting(state, 'addressFinderKey'),
       addressFinderCountry: getSetting(state, 'addressFinderCountry'),
       loqateKey:            getSetting(state, 'loqateKey'),
-      loqateCountry:        getSetting(state, 'loqateCountry')
+      loqateCountry:        getSetting(state, 'loqateCountry'),
+      apimap:               getSetting(state, 'apimap'),
     };
   };
 

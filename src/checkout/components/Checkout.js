@@ -82,6 +82,7 @@ export class _CheckoutRoot extends React.Component {
       addressFinderCountry: this.props.addressFinderCountry,
       loqateKey:            this.props.loqateKey,
       loqateCountry:        this.props.loqateCountry,
+      apimap:               this.props.apimap,
       donationOfferId:      this.props.donationOfferId,
       donationOfferUid:     this.props.donationOfferUid,
     });

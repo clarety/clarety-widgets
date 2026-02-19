@@ -76,19 +76,25 @@ export class CustomerPanel extends BasePanel {
   };
 
   onLoqateSelect = (address) => {
-    
-    this.props.setFormData({
+    const {apimap} = this.props
+    var data = {
       "customer.fieldText": address.fieldText,
       'customer.billing.address1': address.address1,
       'customer.billing.address2': address.address2,
-      'customer.billing.additional1': address.additional1,
       'customer.billing.suburb':   address.suburb,
       'customer.billing.state':    address.state,
       'customer.billing.postcode': address.postcode,
       'customer.billing.country':  address.country,
       'customer.billing.dpid':     address.dpid,
+    }
 
-    });
+    if(typeof apimap !== 'undefined' && apimap.length > 0){
+      apimap.forEach(element => {
+        data[`customer.billing.${element.field}`] = address[element.key];
+      });
+    }
+    
+    this.props.setFormData(data);
     this.onLoqateChange(address.fieldText);
   }
 

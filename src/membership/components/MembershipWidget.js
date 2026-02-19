@@ -89,6 +89,7 @@ export class _MembershipWidgetRoot extends React.Component {
       loqateCountry:        this.props.loqateCountry,
       hideCurrencyCode:     this.props.hideCurrencyCode,
       defaultFrequency:     this.props.defaultFrequency,
+      apimap:               this.props.apimap,
     });
 
     setStore(storeUid);
