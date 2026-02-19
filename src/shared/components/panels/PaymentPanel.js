@@ -1,11 +1,11 @@
 import React from 'react';
-import { Form, Row, Col, Spinner, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
+import { Form, Row, Col, Spinner, ToggleButtonGroup, ToggleButton, Modal } from 'react-bootstrap';
 import { CardNumberElement, CardExpiryElement, CardCvcElement, AuBankAccountElement } from '@stripe/react-stripe-js';
 import { t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, injectStripe } from 'shared/components';
 import { Config } from 'shared/utils/config';
 import { requiredField, cardNumberField, cardExpiryField, ccvField, isStripeCard, isStripeAuBankAccount, isStripePaymentForm } from 'shared/utils';
-import { Label, TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, AccountNumberInput, BsbInput, NZAccountNumberInput, PhoneInput, NumberInput, SelectInput, Turnstile } from 'form/components';
+import { Label, TextInput, SubmitButton, BackButton, Button, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, AccountNumberInput, BsbInput, NZAccountNumberInput, PhoneInput, NumberInput, SelectInput, Turnstile } from 'form/components';
 import { StripePaymentForm } from 'checkout/components/misc/StripePaymentForm';
 
 export class _PaymentPanel extends BasePanel {
@@ -53,9 +53,13 @@ export class _PaymentPanel extends BasePanel {
   }
 
   onShowPanel() {
-    this.props.onShowPanel();
+    const { onShowPanel, layout } = this.props;
 
-    if (this.props.layout === 'tabs') {
+    if (onShowPanel) {
+      onShowPanel();
+    }
+
+    if (layout === 'tabs') {
       this.scrollIntoView();
     }
   }
@@ -219,9 +223,9 @@ export class _PaymentPanel extends BasePanel {
   }
 
   getPaymentData() {
-    const { formData, cartStatus } = this.props;
+    const { formData, cartStatus, modalPaymentMethod } = this.props;
 
-    const paymentType = formData['payment.type'];
+    const paymentType = modalPaymentMethod?.type || formData['payment.type'];
     const paymentMethod = this.getPaymentMethod(paymentType);
 
     if (isStripePaymentForm(paymentMethod)) {
@@ -315,11 +319,18 @@ export class _PaymentPanel extends BasePanel {
   }
 
   getSelectedPaymentMethod() {
-    const paymentType = this.props.formData['payment.type'];
+    const { modalPaymentMethod, formData } = this.props;
+    const paymentType = modalPaymentMethod?.type || formData['payment.type'];
     return this.getPaymentMethod(paymentType);
   }
 
   getPaymentMethod(type) {
+    const { paymentMethods, modalPaymentMethod } = this.props;
+
+    if (modalPaymentMethod?.type === type) {
+      return modalPaymentMethod;
+    }
+
     // for 'wallet' types the gateway is also included in the type key.
     let gateway = null;
     if (type && type.startsWith('wallet--')) {
@@ -327,7 +338,7 @@ export class _PaymentPanel extends BasePanel {
       type = 'wallet';
     }
 
-    return this.props.paymentMethods.find(method => method.type === type && (!gateway || method.gateway === gateway));
+    return paymentMethods.find(method => method.type === type && (!gateway || method.gateway === gateway));
   }
 
   getDirectDebitType() {
@@ -367,9 +378,14 @@ export class _PaymentPanel extends BasePanel {
 
   getStripeCustomerInfo() {
     const { formData } = this.props;
+
+    let name = undefined;
+    if (formData['customer.firstName'] || formData['customer.lastName']) {
+      name = [formData['customer.firstName'], formData['customer.lastName']].join(' ');
+    }
     
     return {
-      name: formData['customer.firstName'] + ' ' + formData['customer.lastName'],
+      name: name,
       email: formData['customer.email'],
       phone: formData['customer.mobile'],
       address: {
@@ -433,8 +449,10 @@ export class _PaymentPanel extends BasePanel {
   }
 
   renderContent() {
-    const { layout, isBusy } = this.props;
-    const paymentMethod = this.getSelectedPaymentMethod();
+    const { layout, isBusy, formData } = this.props;
+
+    const paymentType = formData['payment.type'];
+    const paymentMethod = this.getPaymentMethod(paymentType);
     if (!paymentMethod) return null;
 
     if (this.isHKDirectDebitAuth()) {
@@ -453,7 +471,47 @@ export class _PaymentPanel extends BasePanel {
         </PanelBody>
 
         {this.renderFooter()}
+
+        {this.props.modalPaymentMethod &&
+          this.renderModalPaymentMethod()
+        }
       </React.Fragment>
+    );
+  }
+
+  renderModalPaymentMethod() {
+    const { modalPaymentMethod, onCloseModalPaymentMethod, isBusy } = this.props;
+    const busyStyle = { pointerEvents: 'none' };
+
+    return (
+      <Modal show onHide={onCloseModalPaymentMethod} className="modal-payment-method">
+        <Modal.Header>
+          <Modal.Title>{t(modalPaymentMethod.label, modalPaymentMethod.label)}</Modal.Title>
+        </Modal.Header>
+          
+        <Modal.Body style={isBusy ? busyStyle : undefined}>
+          {this.renderErrorMessages()}
+          {this.renderPaymentFields(modalPaymentMethod)}
+        </Modal.Body>
+  
+        <Modal.Footer style={isBusy ? busyStyle : undefined}>
+          <Button
+            variant="link"
+            onClick={onCloseModalPaymentMethod}
+            block
+          >
+            {t('cancel', 'Cancel')}
+          </Button>
+          <Button
+            variant="primary"
+            onClick={this.onPressNext}
+            isBusy={isBusy}
+            block
+          >
+            {t('submit', 'Submit')}
+          </Button>
+        </Modal.Footer>
+      </Modal>
     );
   }
 

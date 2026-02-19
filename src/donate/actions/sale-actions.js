@@ -362,9 +362,10 @@ const handleStripeAuthorise = (paymentResult, paymentData, paymentMethod) => {
   };
 };
 
-const handleHKDirectDebitAuthorise = (paymentResult, paymentData, paymentMethod) => {
+export const handleHKDirectDebitAuthorise = (paymentResult, paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     dispatch(updateCartData({
+      status: 'authorise',
       authSecret: paymentResult.authoriseSecret,
     }));
 
