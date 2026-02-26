@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Row, Col, Button } from 'react-bootstrap';
 import { getLanguage, t } from 'shared/translations';
-import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, AddressFinder } from 'shared/components';
+import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, AddressFinder, LoqateInput } from 'shared/components';
 import { requiredField, emailField, phoneNumberField, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
 import { Label, TextInput, EmailInput, PhoneInput, CheckboxInput, StateInput, CountryInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement, CustomerTypeInput, CustomerSubTypeInput, TitleInput, DobInput } from 'form/components';
 import { ExpressDonation } from 'donate/components';
@@ -9,6 +9,7 @@ import { ExpressDonation } from 'donate/components';
 export class CustomerPanel extends BasePanel {
   state = {
     disableAddressFinder: false,
+    disableLoqateAddress: false,
   };
 
   componentDidMount() {
@@ -17,6 +18,9 @@ export class CustomerPanel extends BasePanel {
     // Disable address finder if we've fetched a customer with an address.
     if (fetchedCustomer && formData['customer.billing.address1']) {
       this.setState({ disableAddressFinder: true });
+    }
+    if (fetchedCustomer && formData['customer.billing.address1']) {
+      this.setState({ disableLoqateAddress: true });
     }
   }
 
@@ -36,6 +40,18 @@ export class CustomerPanel extends BasePanel {
     }
 
     return addressFinderKey && defaultCountry;
+  }
+
+  shouldUseLoqateAddress(addressType) {
+    const { loqateKey, loqateCountry, defaultCountry, formData } = this.props;
+ 
+    if (loqateCountry) {
+      if (formData[`customer.billing.country`] !== loqateCountry) {
+        return false;
+      }
+    }
+
+    return loqateKey && defaultCountry;
   }
 
   isAddressRequired() {
@@ -59,9 +75,43 @@ export class CustomerPanel extends BasePanel {
     });
   };
 
+  onLoqateSelect = (address) => {
+    const {apimap} = this.props
+    var data = {
+      "customer.fieldText": address.fieldText,
+      'customer.billing.address1': address.address1,
+      'customer.billing.address2': address.address2,
+      'customer.billing.suburb':   address.suburb,
+      'customer.billing.state':    address.state,
+      'customer.billing.postcode': address.postcode,
+      'customer.billing.country':  address.country,
+      'customer.billing.dpid':     address.dpid,
+    }
+
+    if(typeof apimap !== 'undefined' && apimap.length > 0){
+      apimap.forEach(element => {
+        data[`customer.billing.${element.field}`] = address[element.key];
+      });
+    }
+    
+    this.props.setFormData(data);
+    this.onLoqateChange(address.fieldText);
+  }
+
+  
+  onLoqateChange = value => {
+    this.props.setFormData({
+      'customer.fieldText': value,
+    })
+  }
+
   onPressDisableAddressFinder = () => this.setState({
     disableAddressFinder: true,
   });
+
+  onPressDisableLoqate = () => this.setState({
+    disableLoqateAddress: true,
+  })
 
   onPressBack = (event) => {
     event.preventDefault();
@@ -78,6 +128,7 @@ export class CustomerPanel extends BasePanel {
     if (isPreview) return nextPanel();
 
     this.onPressDisableAddressFinder();
+    this.onPressDisableLoqate();
 
     const isValid = await this.validate();
     if (!isValid) return;
@@ -383,7 +434,7 @@ export class CustomerPanel extends BasePanel {
 
   renderAddressFields() {
     const { settings } = this.props;
-    const { disableAddressFinder } = this.state;
+    const { disableAddressFinder, disableLoqateAddress } = this.state;
     
     // NOTE: explicitly check for false! the default (ie 'undefined') is true.
     if (settings.showAddress === false) return null;
@@ -410,6 +461,38 @@ export class CustomerPanel extends BasePanel {
                 />
 
                 <Button variant="link" onClick={this.onPressDisableAddressFinder}>
+                  {t('cant-find-your-address', "Can't find your address?")}
+                </Button>
+              </Form.Group>
+            </Col>
+          </Form.Row>
+        </React.Fragment>
+      );
+    }else if (this.shouldUseLoqateAddress() && !disableLoqateAddress){
+      
+      return (
+        <React.Fragment>
+          {this.renderCountryField()}
+
+          <Form.Row>
+            <Col>
+              <Form.Group>
+                <Label
+                  htmlFor="address-loqate-input"
+                  required={this.isAddressRequired()}
+                >
+                  {t('address', 'Address')}
+                </Label>
+                <LoqateInput
+                  id="address-loqate-input"
+                  apiKey={this.props.loqateKey}
+                  country={[this.props.loqateCountry]}
+                  onPlaceSelect={(address) => this.onLoqateSelect(address)}
+                  value={this.props.formData['customer.fieldText']}
+                  onChange={this.onLoqateChange}
+                />
+  
+                <Button variant="link" onClick={this.onPressDisableLoqate}>
                   {t('cant-find-your-address', "Can't find your address?")}
                 </Button>
               </Form.Group>

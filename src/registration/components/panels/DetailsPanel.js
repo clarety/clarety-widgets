@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Form, Row, Col, Alert } from 'react-bootstrap';
 import { getLanguage, t } from 'shared/translations';
-import { BasePanel, PanelContainer, PanelHeader, PanelBody, AddressFinder } from 'shared/components';
+import { BasePanel, PanelContainer, PanelHeader, PanelBody, AddressFinder, LoqateInput } from 'shared/components';
 import { FormContext, parseNestedElements, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
 import { TextInput, TextAreaInput, NumberInput, EmailInput, DateInput, DobInput, CheckboxInput, CheckboxesInput, RadioGroupInput, SimpleSelectInput, PhoneInput, StateInput, PostcodeInput, CountryInput, FormElement } from 'registration/components';
 import { getGenderOptions, scrollIntoView } from 'registration/utils';
@@ -113,6 +113,7 @@ export class DetailsPanel extends BasePanel {
     const formData = {};
 
     let disableAddressFinders = false;
+    let disableLoqateAddress = false;
 
     formData['customer.id']        = customer.id;
     formData['customer.firstName'] = customer.firstName;
@@ -124,9 +125,13 @@ export class DetailsPanel extends BasePanel {
     formData['customer.dateOfBirthDay']   = customer.dateOfBirthDay;
     formData['customer.dateOfBirthMonth'] = customer.dateOfBirthMonth;
     formData['customer.dateOfBirthYear']  = customer.dateOfBirthYear;
-
+    
     if (settings.showBillingAddress && customer.billing) {
-      disableAddressFinders = true;
+      if(customer.billing.address1){
+          disableAddressFinders = true;
+          disableLoqateAddress = true;
+      }
+      
       formData['customer.billing.address1'] = customer.billing.address1;
       formData['customer.billing.address2'] = customer.billing.address2;
       formData['customer.billing.suburb']   = customer.billing.suburb;
@@ -136,7 +141,11 @@ export class DetailsPanel extends BasePanel {
     }
 
     if (settings.showDeliveryAddress && customer.delivery) {
-      disableAddressFinders = true;
+      if(customer.delivery.address1){
+          disableAddressFinders = true;
+          disableLoqateAddress = true;
+      }
+      
       formData['customer.delivery.address1'] = customer.delivery.address1;
       formData['customer.delivery.address2'] = customer.delivery.address2;
       formData['customer.delivery.suburb']   = customer.delivery.suburb;
@@ -145,12 +154,15 @@ export class DetailsPanel extends BasePanel {
       formData['customer.delivery.country']  = customer.delivery.country || event.country;
     }    
 
+    
+
     this.setState(prevState => ({
       formData: {
         ...prevState.formData,
         ...formData,
       },
       disableAddressFinders,
+      disableLoqateAddress
     }));
   }
 
@@ -206,7 +218,7 @@ export class DetailsPanel extends BasePanel {
     this.setErrors(errors);
 
     if (this.hasAddressError(errors)) {
-      this.setState({ disableAddressFinders: true });
+      this.setState({ disableAddressFinders: true, disableLoqateAddress: true });
     }
 
     return errors.length === 0;
@@ -311,13 +323,25 @@ export class DetailsPanel extends BasePanel {
   }
 
   shouldUseAddressFinder() {
+    
     return this.props.addressFinderKey
         && this.props.addressFinderCountry
         && !this.state.disableAddressFinders;
   }
 
+  shouldUseLoqateAddress() {
+
+    return this.props.loqateKey
+        && this.props.loqateCountry
+        && !this.state.disableLoqateAddress;
+  }
+
   onPressDisableAddressFinder = () => {
     this.setState({ disableAddressFinders: true });
+  };
+
+  onPressDisableLoqate = () => {
+    this.setState({ disableLoqateAddress: true });
   };
 
   onAddressFinderSelect = (type, address) => {
@@ -340,6 +364,47 @@ export class DetailsPanel extends BasePanel {
       }
     }));
   };
+  onLoqateSelect = (type, address) => {
+    const { apimap } = this.props
+
+    const formData = {
+      [`customer.${type}.address1`]: address.address1,
+      [`customer.${type}.address2`]: address.address2,
+      [`customer.${type}.suburb`]:   address.suburb,
+      [`customer.${type}.state`]:    address.state,
+      [`customer.${type}.postcode`]: address.postcode,
+      [`customer.${type}.country`]:  address.country,
+      [`customer.${type}.dpid`]:     address.dpid,
+      [`customer.${type}.fieldText`]: address.fieldText,
+    };
+
+    if(typeof apimap !== 'undefined' && apimap.length > 0){
+      apimap.forEach(element => {
+        formData[`customer.${type}.${element.field}`] = address[element.key];
+      });
+    }
+
+    this.setState(prevState => ({
+      formData: {
+        ...prevState.formData,
+        ...formData,
+      }
+    }));
+  }
+      
+  onLoqateChange = (value, type) => {
+    const formData = {
+      [`customer.${type}.fieldText`]: value,
+    }
+    
+    this.setState(prevState => ({
+      formData: {
+        ...prevState.formData,
+        ...formData,
+      }
+    }));
+
+  }
 
   reset() {
     const { resetDetails, participantIndex, removeAddOnsFromCart } = this.props;
@@ -608,6 +673,30 @@ export class DetailsPanel extends BasePanel {
             {t('cant-find-your-address', "Can't find your address?")}
           </Button>
         </Form.Group>
+      );
+    }else if(this.shouldUseLoqateAddress()){
+      return (
+            <Form.Row>
+              <Col>
+                <Form.Group>
+                  {titleJsx}
+                  <LoqateInput
+                    id="address-loqate-input"
+                    apiKey={this.props.loqateKey}
+                    country={[this.props.loqateCountry]}
+                    onPlaceSelect={(address) => this.onLoqateSelect(type, address)}
+                    value={this.state.formData[`customer.${type}.fieldText`]}
+                    addressType={type}
+                    onChange={this.onLoqateChange}
+                  />
+    
+                  <Button variant="link" onClick={this.onPressDisableLoqate}>
+                    {t('cant-find-your-address', "Can't find your address?")}
+                  </Button>
+                </Form.Group>
+              </Col>
+            </Form.Row>
+          
       );
     }
 

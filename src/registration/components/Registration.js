@@ -82,6 +82,10 @@ class _RegistrationRoot extends React.Component {
       currency: currency,
       addressFinderKey: this.props.addressFinderKey,
       addressFinderCountry: this.props.addressFinderCountry,
+      loqateKey:            this.props.loqateKey,
+      loqateCountry:        this.props.loqateCountry,
+      apimap:               this.props.apimap,
+
       ...this.props.settings,
     });
 
