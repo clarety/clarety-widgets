@@ -11,6 +11,7 @@ export * from './misc/PaymentAuthModal';
 export * from './misc/PayPalBtn';
 export * from './misc/ScrollIntoView';
 export * from './misc/StepIndicator';
+export * from './misc/LoqateAddress';
 
 export * from './panels/BasePanel';
 export * from './panels/CmsConfirmPanel';
