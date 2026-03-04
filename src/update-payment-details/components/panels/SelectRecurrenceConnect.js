@@ -5,6 +5,7 @@ export class SelectRecurrenceConnect {
   static mapStateToProps = (state) => {
     return {
       recurringDonations: getSetting(state, 'recurringDonations'),
+      customerName: getSetting(state, 'customerName'),
       hasAuthError: getSetting(state, 'hasAuthError'),
       formData: getFormData(state),
     };

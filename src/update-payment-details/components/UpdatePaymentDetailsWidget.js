@@ -54,6 +54,7 @@ export class _UpdatePaymentDetailsWidgetRoot extends React.Component {
 
     updateAppSettings({
       widgetElementId: this.props.elementId,
+      hideCurrencyCode: !!this.props.hideCurrencyCode,
     });
 
     setStore(storeUid);
