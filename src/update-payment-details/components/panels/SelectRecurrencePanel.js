@@ -88,7 +88,7 @@ export class SelectRecurrencePanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, isBusy, recurringDonations, hasAuthError } = this.props;
+    const { layout, isBusy, recurringDonations, customerName, hasAuthError } = this.props;
 
     return (
       <form onSubmit={this.onPressNext}>
@@ -96,7 +96,7 @@ export class SelectRecurrencePanel extends BasePanel {
           {this.renderHeader()}
 
           <PanelBody layout={layout} status="edit" isBusy={isBusy}>
-            <p className="sub-title">{t('select-recurrence.subtitle', 'Below is a summary of your recurring donations.')}</p>
+            <p className="sub-title">{t('select-recurrence.subtitle', 'Below is a summary of your recurring donations')}, {customerName}</p>
             <p>{t('select-recurrence.description', 'We are unable to process donations marked as "inactive." To continue your much-needed support, please select inactive donations and click on the update button to provide new payment details.')}</p>
 
             {recurringDonations?.length === 0 &&
