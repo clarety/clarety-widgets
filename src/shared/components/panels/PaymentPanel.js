@@ -118,7 +118,7 @@ export class _PaymentPanel extends BasePanel {
     }
 
     if (isXenditCard(paymentMethod)) {
-      return this.validateXenditCardFields(errors);
+      return this.validateXenditCardFields(errors, paymentMethod);
     }
     
     if (isCreditCard(paymentMethod)) {
@@ -168,11 +168,17 @@ export class _PaymentPanel extends BasePanel {
     requiredField(errors, formData, 'payment.cardName');
   }
 
-  validateXenditCardFields(errors) {
+  validateXenditCardFields(errors, paymentMethod) {
     const { formData } = this.props;
 
-    requiredField(errors, formData, 'payment.cardFirstName');
-    requiredField(errors, formData, 'payment.cardLastName');
+    const useFullNameField = !!paymentMethod.additionalSettings.useFullNameField;
+    if (useFullNameField) {
+      requiredField(errors, formData, 'payment.cardFullName');
+    } else {
+      requiredField(errors, formData, 'payment.cardFirstName');
+      requiredField(errors, formData, 'payment.cardLastName');
+    }
+
     cardNumberField(errors, formData, 'payment.cardNumber');
     cardExpiryField(errors, formData, 'payment.cardExpiry', 'payment.cardExpiryMonth', 'payment.cardExpiryYear');
     ccvField(errors, formData, 'payment.cardSecurityCode');
@@ -259,10 +265,14 @@ export class _PaymentPanel extends BasePanel {
     }
 
     if (isXenditCard(paymentMethod)) {
+      const useFullNameField = !!paymentMethod.additionalSettings.useFullNameField;
+      const cardFirstName = useFullNameField ? formData['payment.cardFullName'] : formData['payment.cardFirstName'];
+      const cardLastName = useFullNameField ? formData['payment.cardFullName'] : formData['payment.cardLastName'];
+
       return {
         type: paymentType,
-        cardFirstName: formData['payment.cardFirstName'],
-        cardLastName: formData['payment.cardLastName'],
+        cardFirstName,
+        cardLastName,
         cardNumber: formData['payment.cardNumber'],
         cardExpiryMonth: formData['payment.cardExpiryMonth'],
         cardExpiryYear: '20' + formData['payment.cardExpiryYear'],
@@ -667,22 +677,34 @@ export class _PaymentPanel extends BasePanel {
   }
 
   renderXenditCardFields(paymentMethod) {
+    const useFullNameField = !!paymentMethod.additionalSettings.useFullNameField;
+
     return (
       <React.Fragment>
-        <Form.Row>
-          <Col>
-            <Form.Group controlId="cardFirstName">
-              <Label required>{t('card-first-name', 'Cardholder First Name')}</Label>
-              <TextInput field="payment.cardFirstName" />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="cardLastName">
-              <Label required>{t('card-last-name', 'Cardholder Last Name')}</Label>
-              <TextInput field="payment.cardLastName" />
-            </Form.Group>
-          </Col>
-        </Form.Row>
+        {useFullNameField
+          ? <Form.Row>
+              <Col>
+                <Form.Group controlId="cardFullName">
+                  <Label required>{t('card-full-name', 'Cardholder Full Name')}</Label>
+                  <TextInput field="payment.cardFullName" />
+                </Form.Group>
+              </Col>
+            </Form.Row>
+          : <Form.Row>
+              <Col>
+                <Form.Group controlId="cardFirstName">
+                  <Label required>{t('card-first-name', 'Cardholder First Name')}</Label>
+                  <TextInput field="payment.cardFirstName" />
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group controlId="cardLastName">
+                  <Label required>{t('card-last-name', 'Cardholder Last Name')}</Label>
+                  <TextInput field="payment.cardLastName" />
+                </Form.Group>
+              </Col>
+            </Form.Row>
+        }
 
         <Form.Row>
           <Col>
