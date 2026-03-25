@@ -1,4 +1,4 @@
-import { getSetting, getCart, getPanelManager } from 'shared/selectors';
+import { getSetting, getCart, getPanelManager, getRecaptcha } from 'shared/selectors';
 
 export const getCartSummaryMode = (state) => {
   const panels = getPanelManager(state);
@@ -48,7 +48,12 @@ export const hasExpressPaymentMethod = (state) => {
   return paymentMethods && paymentMethods.some(method => method.type === 'wallet');
 };
 
-export const getPaymentPostData = (state) => getCart(state).payment;
+export const getPaymentPostData = (state) => {
+  return {
+    ...getCart(state).payment,
+    recaptchaResponse: getRecaptcha(state),
+  };
+};
 
 export const getDonationInCart = (state) => {
   const offerUid = getSetting(state, 'donationOfferUid');

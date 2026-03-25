@@ -1,10 +1,11 @@
 import Cookies from 'js-cookie';
-import { setPayment, prepareStripePayment, authoriseStripePayment, setStatus, statuses } from 'shared/actions';
+import { setPayment, prepareStripePayment, authoriseStripePayment, setStatus, statuses, setRecaptcha } from 'shared/actions';
 import { getCart, getSetting } from 'shared/selectors';
 import { fetchSettings } from 'shared/actions';
 import { ClaretyApi } from 'shared/utils/clarety-api';
 import { getJwtSession, isStripe, splitName, convertCountry } from 'shared/utils';
 import { setFormData } from 'form/actions';
+import { executeRecaptcha } from 'form/components';
 import { types, createCustomer, updateSale } from 'checkout/actions';
 import { getPaymentMethod, getPaymentPostData } from 'checkout/selectors';
 
@@ -41,6 +42,16 @@ export const makePayment = (paymentData) => {
     dispatch(setStatus(statuses.busy));
 
     const state = getState();
+
+    // ReCaptcha.
+    if (getSetting(state, 'reCaptchaKey')) {
+      const recaptcha = await executeRecaptcha();
+      dispatch(setRecaptcha(recaptcha));
+      if (!recaptcha) {
+        dispatch(setStatus(statuses.ready));
+        return false;
+      }
+    }
 
     const paymentMethod = getPaymentMethod(state, paymentData.type);
 
