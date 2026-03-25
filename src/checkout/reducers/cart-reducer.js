@@ -1,6 +1,5 @@
 import { types as sharedTypes } from 'shared/actions';
 import { types } from 'checkout/actions';
-import { Recaptcha } from 'form/components';
 
 const initialState = {
   cartUid: null,
