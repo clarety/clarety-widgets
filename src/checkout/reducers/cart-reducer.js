@@ -1,5 +1,6 @@
 import { types as sharedTypes } from 'shared/actions';
 import { types } from 'checkout/actions';
+import { Recaptcha } from 'form/components';
 
 const initialState = {
   cartUid: null,
@@ -94,6 +95,14 @@ export const cartReducer = (state = initialState, action) => {
         ...state,
         customer: null,
       };
+
+    // Recaptcha
+    
+    case sharedTypes.setRecaptcha:
+      return {
+        ...state,
+        recaptcha: action.recaptcha,
+      }
 
     // Tracking
 
