@@ -1,6 +1,5 @@
 import React, { forwardRef } from 'react';
 import AddressSearch from 'react-loqate';
-import 'react-loqate/dist/index.css';
 import { Form } from 'react-bootstrap';
 
 
