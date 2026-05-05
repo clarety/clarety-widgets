@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Row, Col, Button } from 'react-bootstrap';
 import { getLanguage, t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, AddressFinder, LoqateInput } from 'shared/components';
-import { requiredField, emailField, phoneNumberField, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
+import { requiredField, emailField, phoneNumberField, validateDayMonthYear, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
 import { Label, TextInput, EmailInput, PhoneInput, CheckboxInput, StateInput, CountryInput, SelectInput, PostcodeInput, SubmitButton, BackButton, ErrorMessages, FormElement, CustomerTypeInput, CustomerSubTypeInput, TitleInput, DobInput } from 'form/components';
 import { ExpressDonation } from 'donate/components';
 
@@ -207,9 +207,13 @@ export class CustomerPanel extends BasePanel {
       !!formData['customer.dateOfBirthYear'];
 
     if (settings.requireDob || atLeastOneInputHasData) {
-      requiredField(errors, formData, 'customer.dateOfBirthDay');
-      requiredField(errors, formData, 'customer.dateOfBirthMonth');
-      requiredField(errors, formData, 'customer.dateOfBirthYear');
+      validateDayMonthYear(
+        formData['customer.dateOfBirthDay'],
+        formData['customer.dateOfBirthMonth'],
+        formData['customer.dateOfBirthYear'],
+        'customer.dob',
+        errors,
+      );
     }
   }
 
@@ -427,6 +431,7 @@ export class CustomerPanel extends BasePanel {
 
     return (
       <DobInput
+        field="customer.dob"
         required={settings.requireDob}
       />
     );

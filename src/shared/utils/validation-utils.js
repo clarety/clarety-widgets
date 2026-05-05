@@ -103,6 +103,18 @@ export function validateDateTime(dateTime, field, errors, message = null) {
   }
 }
 
+export function validateDayMonthYear(day, month, year, field, errors, message = null) {
+  const monthIndex = parseInt(month) - 1;
+  const date = new Date(year, monthIndex, day);
+  
+  if (date.getDate() != day || date.getMonth() != monthIndex || date.getFullYear() != year) {
+    errors.push({
+      field: field,
+      message: message || t('invalid-date', 'Please enter a valid date'),
+    });
+  }
+}
+
 export function validateFutureDateTime(dateTime, field, errors, message = null) {
   const dateObj = parseIsoDate(dateTime);
   const nowObj = new Date();
