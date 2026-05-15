@@ -94,7 +94,6 @@ export class _DonateWidgetRoot extends React.Component {
       addressFinderCountry: this.props.addressFinderCountry,
       loqateKey:            this.props.loqateKey,
       loqateCountry:        this.props.loqateCountry,
-      apimap:               this.props.apimap,
       hideCurrencyCode:     this.props.hideCurrencyCode,
       fundFrequency:        this.props.fundFrequency,
       defaultFrequency:     this.props.defaultFrequency,

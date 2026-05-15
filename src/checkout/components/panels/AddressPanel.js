@@ -62,49 +62,36 @@ export class AddressPanel extends BasePanel {
   };
 
   onLoqateSelect = (addressType, address) => {
-    const { apimap } = this.props;
-
     if (addressType === 'billing') {
-      var data = {
+      const data = {
         "customer.billing.fieldText": address.fieldText,
         'customer.billing.address1': address.address1,
         'customer.billing.address2': address.address2,
+        'customer.billing.address3': address.address3,
         'customer.billing.additional1': address.additional1,
         'customer.billing.suburb':   address.suburb,
         'customer.billing.state':    address.state,
         'customer.billing.postcode': address.postcode,
         'customer.billing.country':  address.country,
         'customer.billing.dpid':     address.dpid,
-
-      }
-
-      if(typeof apimap !== 'undefined' && apimap.length > 0){
-        apimap.forEach(element => {
-          data[`customer.billing.${element.field}`] = address[element.key];
-        });
-      }
+      };
 
       this.updateFormData(data);
     }
 
     if (addressType === 'delivery') {
-      var data = {
+      const data = {
         "customer.delivery.fieldText": address.fieldText,
         'customer.delivery.address1': address.address1,
         'customer.delivery.address2': address.address2,
+        'customer.delivery.address3': address.address3,
         'customer.delivery.additional1': address.additional1,
         'customer.delivery.suburb':   address.suburb,
         'customer.delivery.state':    address.state,
         'customer.delivery.postcode': address.postcode,
         'customer.delivery.country':  address.country,
         'customer.delivery.dpid':     address.dpid,
-      }
-
-      if(apimap.length > 0){
-        apimap.forEach(element => {
-          data[`customer.delivery.${element.field}`] = address[element.key];
-        });
-      }
+      };
 
       this.updateFormData(data);
     }
@@ -516,7 +503,7 @@ export class AddressPanel extends BasePanel {
                 country={this.props.loqateCountry}
                 addressType={addressType}
                 value={formData[`customer.${addressType}.fieldText`]}
-                onPlaceSelect={(address) => this.onLoqateSelect(addressType, address)}
+                onSelect={(address) => this.onLoqateSelect(addressType, address)}
                 onChange={this.onLoqateChange}
               />
 
