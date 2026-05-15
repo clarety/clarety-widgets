@@ -966,7 +966,6 @@ export class CaseFormPanel extends BasePanel {
           disableAddressFinder={this.state.disableAddressFinders}
           loqateKey={this.props.loqateKey}
           loqateCountry={this.props.loqateCountry}
-          apimap={this.props.apimap}
           disableLoqateAddress={this.state.disableLoqateAddress}
           hideCountry={settings.hideCountry}
           defaultCountry={this.props.defaultCountry}
@@ -1428,23 +1427,17 @@ class AddressField extends React.Component {
   };
 
   onLoqateSelect = (address) => {
-    const { fieldKey, apimap } = this.props;
-
-    var data = {
+    const data = {
       [`${fieldKey}.address1`]: address.address1,
       [`${fieldKey}.address2`]: address.address2,
+      [`${fieldKey}.address3`]: address.address3,
       [`${fieldKey}.suburb`]:   address.suburb,
       [`${fieldKey}.state`]:    address.state,
       [`${fieldKey}.postcode`]: address.postcode,
       [`${fieldKey}.country`]:  address.country,
       [`${fieldKey}.dpid`]:     address.dpid,
       [`${fieldKey}.fieldText`]: address.fieldText
-    }
-    if(typeof apimap !== 'undefined' && apimap.length > 0){
-      apimap.forEach(element => {
-        data[`${fieldKey}.${element.field}`] = address[element.key];
-      });
-    }
+    };
 
     this.props.setFormData(data);
     this.onLoqateChange(address.fieldText);
@@ -1504,7 +1497,7 @@ class AddressField extends React.Component {
                 id="address-loqate-input"
                 apiKey={this.props.loqateKey}
                 country={[this.props.loqateCountry]}
-                onPlaceSelect={(address) => this.onLoqateSelect(address)}
+                onSelect={(address) => this.onLoqateSelect(address)}
                 value={this.props.formData[`${fieldKey}.fieldText`]}
                 onChange={this.onLoqateChange}
               />

@@ -71,29 +71,22 @@ export class CustomerPanel extends BasePanel {
       'customer.billing.country':  address.country,
       'customer.billing.dpid':     address.dpid,
       'customer.billing.metadata': address.metadata,
-
     });
   };
 
   onLoqateSelect = (address) => {
-    const {apimap} = this.props
-    var data = {
+    const data = {
       "customer.fieldText": address.fieldText,
       'customer.billing.address1': address.address1,
       'customer.billing.address2': address.address2,
+      'customer.billing.address3': address.address3,
       'customer.billing.suburb':   address.suburb,
       'customer.billing.state':    address.state,
       'customer.billing.postcode': address.postcode,
       'customer.billing.country':  address.country,
       'customer.billing.dpid':     address.dpid,
-    }
+    };
 
-    if(typeof apimap !== 'undefined' && apimap.length > 0){
-      apimap.forEach(element => {
-        data[`customer.billing.${element.field}`] = address[element.key];
-      });
-    }
-    
     this.props.setFormData(data);
     this.onLoqateChange(address.fieldText);
   }
@@ -487,7 +480,7 @@ export class CustomerPanel extends BasePanel {
                   id="address-loqate-input"
                   apiKey={this.props.loqateKey}
                   country={[this.props.loqateCountry]}
-                  onPlaceSelect={(address) => this.onLoqateSelect(address)}
+                  onSelect={(address) => this.onLoqateSelect(address)}
                   value={this.props.formData['customer.fieldText']}
                   onChange={this.onLoqateChange}
                 />

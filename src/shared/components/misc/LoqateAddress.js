@@ -1,9 +1,7 @@
 import React, { forwardRef } from 'react';
 import AddressSearch from 'react-loqate';
-import { Form } from 'react-bootstrap';
 
-
-export function LoqateInput({ label, name, error, containerStyle, apiKey, value, addressType, onPlaceSelect, placeholder, country, onChange }) {
+export function LoqateInput({ label, name, error, containerStyle, apiKey, value, addressType, onSelect, placeholder, country, onChange }) {
     return (
         <div style={containerStyle}>
             <AddressSearch
@@ -11,7 +9,7 @@ export function LoqateInput({ label, name, error, containerStyle, apiKey, value,
                 apiKey={apiKey}
                 countries={[country]}
                 limit={10}
-                onSelect={(address) => onPlaceSelect(transformLoqateAddress(address, country))}
+                onSelect={(address) => onSelect(transformLoqateAddress(address, country))}
                 components={{
                     Input: forwardRef((props, ref) => (
                         <input
@@ -44,19 +42,18 @@ export function LoqateInput({ label, name, error, containerStyle, apiKey, value,
     );
 }
 
-
 function transformLoqateAddress(selectedAddress, country) {
-    const address = {};
-    
-    address.address1 = selectedAddress.Line1;
-    address.address2 = selectedAddress.Line2;
-    address.address3 = selectedAddress.Line3;
-    address.suburb = selectedAddress.City;
-    address.state = selectedAddress.Province
-    address.postcode = selectedAddress.PostalCode
-    address.country = selectedAddress.CountryIso2
-    address.dpid = selectedAddress.DomesticId
-               
-    address.fieldText = selectedAddress.Label
-    return address;
+    return {
+        address1: selectedAddress.Line1,
+        address2: selectedAddress.Line2,
+        address3: selectedAddress.Line3 || selectedAddress.BuildingName,
+        suburb: selectedAddress.City,
+        state: selectedAddress.ProvinceName,
+        postcode: selectedAddress.PostalCode,
+        country: selectedAddress.CountryIso2,
+        dpid: selectedAddress.DomesticId,
+
+        // display text shown in the autosuggest field.
+        fieldText: selectedAddress.Label,
+    }
 }

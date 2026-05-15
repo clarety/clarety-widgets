@@ -365,11 +365,10 @@ export class DetailsPanel extends BasePanel {
     }));
   };
   onLoqateSelect = (type, address) => {
-    const { apimap } = this.props
-
     const formData = {
       [`customer.${type}.address1`]: address.address1,
       [`customer.${type}.address2`]: address.address2,
+      [`customer.${type}.address3`]: address.address3,
       [`customer.${type}.suburb`]:   address.suburb,
       [`customer.${type}.state`]:    address.state,
       [`customer.${type}.postcode`]: address.postcode,
@@ -377,13 +376,7 @@ export class DetailsPanel extends BasePanel {
       [`customer.${type}.dpid`]:     address.dpid,
       [`customer.${type}.fieldText`]: address.fieldText,
     };
-
-    if(typeof apimap !== 'undefined' && apimap.length > 0){
-      apimap.forEach(element => {
-        formData[`customer.${type}.${element.field}`] = address[element.key];
-      });
-    }
-
+    
     this.setState(prevState => ({
       formData: {
         ...prevState.formData,
@@ -684,7 +677,7 @@ export class DetailsPanel extends BasePanel {
                     id="address-loqate-input"
                     apiKey={this.props.loqateKey}
                     country={[this.props.loqateCountry]}
-                    onPlaceSelect={(address) => this.onLoqateSelect(type, address)}
+                    onSelect={(address) => this.onLoqateSelect(type, address)}
                     value={this.state.formData[`customer.${type}.fieldText`]}
                     addressType={type}
                     onChange={this.onLoqateChange}
