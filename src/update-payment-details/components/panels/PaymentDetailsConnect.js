@@ -12,6 +12,7 @@ export class PaymentDetailsConnect {
     return {
       isBusy: state.status === statuses.busy,
       selectedDonations: getSelectedDonations(state),
+      allowCatchUpPayment: getSetting(state, 'allowCatchUpPayment'),
       hasAuthError: getSetting(state, 'hasAuthError'),
       formData: getFormData(state),
       paymentMethods: paymentMethods,

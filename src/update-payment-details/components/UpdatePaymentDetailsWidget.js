@@ -54,6 +54,7 @@ export class _UpdatePaymentDetailsWidgetRoot extends React.Component {
 
     updateAppSettings({
       widgetElementId: this.props.elementId,
+      allowCatchUpPayment: this.props.allowCatchUpPayment,
       hideCurrencyCode: !!this.props.hideCurrencyCode,
     });
 

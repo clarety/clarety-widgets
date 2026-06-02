@@ -140,6 +140,12 @@ export class SelectRecurrencePanel extends BasePanel {
   }
 
   renderRecurringDonation = (recurringDonation) => {
+    const { settings } = this.props;
+
+    const status = settings.displayStatusFn
+      ? settings.displayStatusFn(recurringDonation)
+      : recurringDonation.status;
+
     return (
       <tr
         key={recurringDonation.salelinePaymentUid}
@@ -156,17 +162,30 @@ export class SelectRecurrencePanel extends BasePanel {
             />
           </div>
         </td>
+
         <td className="details-cell">
-          <div className="details-amount">{recurringDonation.amount} {recurringDonation.paymentSchedule}</div>
-          <div className="details-method">{recurringDonation.paymentMethod}</div>
+          {this.renderRecurringDonationDetails(recurringDonation)}
         </td>
 
         <td className="status-cell">
           <div className={recurrenceStatusClassName(recurringDonation.status)}>
-            {recurringDonation.status}
+            {status}
           </div>
         </td>
       </tr>
+    );
+  }
+
+  renderRecurringDonationDetails(recurringDonation) {
+    return (
+      <React.Fragment>
+        <div className="details-amount">
+          {recurringDonation.amount} {recurringDonation.paymentSchedule}
+        </div>
+        <div className="details-method">
+          {recurringDonation.paymentMethod}
+        </div>
+      </React.Fragment>
     );
   }
 
@@ -209,12 +228,13 @@ export class SelectRecurrencePanel extends BasePanel {
     return (
       <PanelFooter layout={layout} status="edit" isBusy={isBusy}>
         <Form.Row className="justify-content-center">
-          <Col xs={6}>
-            {index !== 0 &&
+          {index !== 0 &&
+            <Col xs={6}>
               <BackButton title={t('back', 'Back')} block onClick={this.onPressBack} />
-            }
-          </Col>
-          <Col xs={6}>
+            </Col>
+          }
+
+          <Col xs={index !== 0 ? 6 : 12}>
             <SubmitButton title={t('update', 'Update')} block isDisabled={!this.canProceed()} />
           </Col>
         </Form.Row>
