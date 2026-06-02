@@ -88,11 +88,11 @@ export class _PaymentDetailsPanel extends BasePaymentPanel {
   }
 
   renderCatchUpPaymentFields() {
-    const { selectedDonations } = this.props;
+    const { selectedDonations, allowCatchUpPayment } = this.props;
 
     const amount = selectedDonations.reduce((sum, donation) => sum += donation.catchUpAmount, 0);
 
-    if (!amount || !this.state.allowCatchUpForPaymentType) {
+    if (!allowCatchUpPayment || !amount || !this.state.allowCatchUpForPaymentType) {
       return <FormElement field="catchUpAmount" value="" />;
     }
 
