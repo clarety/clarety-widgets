@@ -46,7 +46,7 @@ function transformLoqateAddress(selectedAddress, country) {
     return {
         address1: selectedAddress.Line1,
         address2: selectedAddress.Line2,
-        address3: selectedAddress.Line3 || selectedAddress.BuildingName,
+        address3: selectedAddress.Line3 || selectedAddress.Company,
         suburb: selectedAddress.City,
         state: selectedAddress.ProvinceName,
         postcode: selectedAddress.PostalCode,
