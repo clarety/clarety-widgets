@@ -3,7 +3,7 @@ import { Button, Form, Row, Col, Alert } from 'react-bootstrap';
 import { getLanguage, t } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, AddressFinder } from 'shared/components';
 import { FormContext, parseNestedElements, getSuburbLabel, getStateLabel, getPostcodeLabel } from 'shared/utils';
-import { TextInput, TextAreaInput, NumberInput, EmailInput, DateInput, DobInput, CheckboxInput, CheckboxesInput, RadioGroupInput, SimpleSelectInput, PhoneInput, StateInput, PostcodeInput, CountryInput, FormElement } from 'registration/components';
+import { TextInput, TextAreaInput, NumberInput, EmailInput, DateInput, DobInput, CheckboxInput, CheckboxesInput, RadioGroupInput, SimpleSelectInput, TrueFalseSelectInput, PhoneInput, StateInput, PostcodeInput, CountryInput, FormElement } from 'registration/components';
 import { getGenderOptions, scrollIntoView } from 'registration/utils';
 
 export class DetailsPanel extends BasePanel {
@@ -705,13 +705,17 @@ export class DetailsPanel extends BasePanel {
   }
 
   renderAddOns() {
-    return this.props.addOns.map(addOn =>
-      <CheckboxInput
-        key={addOn.offerId}
-        field={`addOns.${addOn.offerId}`}
-        label={t(`label.addOn.${addOn.offerId}`, addOn.name)}
-      />
-    );
+    const { addOns, settings } = this.props;
+
+    return addOns.map((addOn) => {
+      const key = addOn.offerId;
+      const field = `addOns.${addOn.offerId}`;
+      const label = t(`label.addOn.${addOn.offerId}`, addOn.name);
+
+      return settings.addOnsInputType === 'select'
+        ? <TrueFalseSelectInput key={key} field={field} label={label} />
+        : <CheckboxInput key={key} field={field} label={label} />;
+    });
   }
 
   renderOptIn() {
