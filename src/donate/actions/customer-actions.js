@@ -43,6 +43,7 @@ export const setCustomerFormData = (customer) => {
     if (billing) {
       formData['customer.billing.address1'] = billing.address1;
       formData['customer.billing.address2'] = billing.address2;
+      formData['customer.billing.address3'] = billing.address3;
       formData['customer.billing.suburb']   = billing.suburb;
       formData['customer.billing.state']    = billing.state;
       formData['customer.billing.postcode'] = billing.postcode;
