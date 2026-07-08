@@ -303,8 +303,17 @@ const handlePaymentAuthorise = (result, paymentData, paymentMethod) => {
 const handlePaymentComplete = (result, paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     const state = getState();
-    const confirmPageUrl = getSetting(state, 'confirmPageUrl');
     const confirmPageMode = getSetting(state, 'confirmPageMode') || 'redirect';
+
+    let confirmPageUrl;
+    const getConfirmPageUrl = getSetting(state, 'getConfirmPageUrl');
+    
+    if (getConfirmPageUrl) {
+      confirmPageUrl = getConfirmPageUrl(state);
+    }
+    if (!confirmPageUrl) {
+      confirmPageUrl = getSetting(state, 'confirmPageUrl');
+    }
     
     dispatch(makePaymentSuccess(result));
     dispatch(updateCartData({ items: result.salelines }));
