@@ -975,6 +975,7 @@ export class CaseFormPanel extends BasePanel {
           required={isRequired}
           disabled={isDisabled}
           hideAddressLabelPrefix={!!settings.hideAddressLabelPrefix}
+          streetFieldCount={settings.streetFieldCount || 1}
         />
       </div>
     );
@@ -1427,6 +1428,8 @@ class AddressField extends React.Component {
   };
 
   onLoqateSelect = (address) => {
+    const { fieldKey } = this.props;
+
     const data = {
       [`${fieldKey}.address1`]: address.address1,
       [`${fieldKey}.address2`]: address.address2,
@@ -1523,7 +1526,6 @@ class AddressField extends React.Component {
     }else if(useLoqate){
       return this.renderLoqateAddress(fieldKey);
     }else{
-
       return (
         <React.Fragment>
           {this.props.hideCountry
@@ -1547,62 +1549,73 @@ class AddressField extends React.Component {
               </Form.Row>
           }
 
-          {
-            <React.Fragment>
-                <Form.Row>
-                  <Col sm>
-                    <Address1Field
-                      fieldKey={fieldKey}
-                      country={country}
-                      required={required}
-                      labelPrefix={label}
-                      hideLabelPrefix={!!hideAddressLabelPrefix}
-                    />
-                  </Col>
-                  <Col sm>
-                    <SuburbField
-                      fieldKey={fieldKey}
-                      country={country}
-                      required={required && country !== 'NZ'}
-                      labelPrefix={label}
-                      hideLabelPrefix={!!hideAddressLabelPrefix}
-                    />
-                  </Col>
-                </Form.Row>
-        
-                <Form.Row>
-                  <Col sm>
-                    <StateField
-                      fieldKey={fieldKey}
-                      country={country}
-                      required={required}
-                      labelPrefix={label}
-                      hideLabelPrefix={!!hideAddressLabelPrefix}
-                    />
-                  </Col>
-                  <Col sm>
-                    <PostcodeField
-                      fieldKey={fieldKey}
-                      country={country || defaultCountry}
-                      required={required}
-                      labelPrefix={label}
-                      hideLabelPrefix={!!hideAddressLabelPrefix}
-                    />
-                  </Col>
-                </Form.Row>
-              </React.Fragment>
-          }
+          <Form.Row>
+            <Col>
+              <StreetFields
+                fieldKey={fieldKey}
+                country={country}
+                required={required}
+                labelPrefix={label}
+                hideLabelPrefix={!!hideAddressLabelPrefix}
+                streetFieldCount={this.props.streetFieldCount}
+              />
+            </Col>
+          </Form.Row>
+
+          <Form.Row>
+            <Col>
+              <SuburbField
+                fieldKey={fieldKey}
+                country={country}
+                required={required && country !== 'NZ'}
+                labelPrefix={label}
+                hideLabelPrefix={!!hideAddressLabelPrefix}
+              />
+            </Col>
+          </Form.Row>
+  
+          <Form.Row>
+            <Col sm>
+              <StateField
+                fieldKey={fieldKey}
+                country={country}
+                required={required}
+                labelPrefix={label}
+                hideLabelPrefix={!!hideAddressLabelPrefix}
+              />
+            </Col>
+            <Col sm>
+              <PostcodeField
+                fieldKey={fieldKey}
+                country={country || defaultCountry}
+                required={required}
+                labelPrefix={label}
+                hideLabelPrefix={!!hideAddressLabelPrefix}
+              />
+            </Col>
+          </Form.Row>
         </React.Fragment>
       );
     }
   }
 }
 
-function Address1Field({ fieldKey, required, labelPrefix, hideLabelPrefix = false }) {
+function StreetFields({ fieldKey, required, labelPrefix, hideLabelPrefix = false, streetFieldCount = 1 }) {
   return (
-    <Form.Group controlId={`${fieldKey}.address1`}>
-      <Form.Label>{!hideLabelPrefix && labelPrefix} {t('street', 'Street')}{required && ' *'}</Form.Label>
+    <Form.Group controlId={`${fieldKey}.address1`} className="street-address">
+      <Form.Label>
+        {!hideLabelPrefix && labelPrefix} {t('street', 'Street')}{required && ' *'}
+      </Form.Label>
+      
       <TextInput field={`${fieldKey}.address1`} type="street" />
+
+      {streetFieldCount > 1 &&
+        <TextInput field={`${fieldKey}.address2`} type="street" />
+      }
+
+      {streetFieldCount > 2 &&
+        <TextInput field={`${fieldKey}.address3`} type="street" />
+      }
     </Form.Group>
   );
 }
