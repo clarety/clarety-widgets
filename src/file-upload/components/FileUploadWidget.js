@@ -140,7 +140,7 @@ export class FileUploadWidget extends React.Component {
 
   render() {
     const { uploads, localeOptions } = this.state;
-    const { maxFiles, showImageEditor, name } = this.props;
+    const { maxFiles, showImageEditor, capture, name } = this.props;
 
     const acceptedFileTypes = this.props.acceptedFileTypes.map(type => mimeTypes[type]);
     const maxFileSize = Number(this.props.maxFileSize || 0).toFixed(0) + 'KB';
@@ -156,6 +156,7 @@ export class FileUploadWidget extends React.Component {
           allowMultiple={maxFiles > 1}
           maxFiles={maxFiles}
           maxFileSize={maxFileSize}
+          captureMethod={capture}
 
           allowFileTypeValidation={true}
           acceptedFileTypes={acceptedFileTypes}
