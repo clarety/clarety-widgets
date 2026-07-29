@@ -180,11 +180,17 @@ export class SelectRecurrencePanel extends BasePanel {
     return (
       <React.Fragment>
         <div className="details-amount">
-          {recurringDonation.amount} {recurringDonation.paymentSchedule}
+          {recurringDonation.amount} {t(recurringDonation.paymentSchedule, recurringDonation.paymentSchedule)}
         </div>
         <div className="details-method">
-          {recurringDonation.paymentMethod}
+          {t(recurringDonation.paymentMethod, recurringDonation.paymentMethod)} {recurringDonation.paymentAccount}
         </div>
+
+        {recurringDonation.onBehalfOf &&
+          <div className="details-on-behalf-of">
+            {t('select-recurrence.on-behalf-of', 'On Behalf of')}: {recurringDonation.onBehalfOf}
+          </div>
+        }
       </React.Fragment>
     );
   }

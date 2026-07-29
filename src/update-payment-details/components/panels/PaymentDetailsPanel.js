@@ -74,7 +74,7 @@ export class _PaymentDetailsPanel extends BasePaymentPanel {
   }
 
   renderSelectedDonations() {
-    const { selectedDonations } = this.props;
+    const { selectedDonations, settings } = this.props;
 
     return (
       <div className="selected-donations-section">
@@ -82,6 +82,7 @@ export class _PaymentDetailsPanel extends BasePaymentPanel {
 
         <DonationList
           recurringDonations={selectedDonations}
+          displayStatusFn={settings.displayStatusFn}
         />
       </div>
     );

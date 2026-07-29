@@ -33,7 +33,7 @@ export class SuccessPanel extends BasePanel {
   }
 
   renderContent() {
-    const { layout, isBusy, index, settings, selectedDonations } = this.props;
+    const { layout, isBusy, index, settings } = this.props;
 
     return (
       <PanelContainer layout={layout} status="edit" className="success-panel">
@@ -50,11 +50,20 @@ export class SuccessPanel extends BasePanel {
           <p className="sub-title">{t('update-payment-details-success.subtitle', 'Your payment details have been updated and will be applied to the donations listed below.')}</p>
           <p>{t('update-payment-details-success.description', '')}</p>
 
-          <DonationList
-            recurringDonations={selectedDonations}
-          />
+          {this.renderDonationList()}
         </PanelBody>
       </PanelContainer>
+    );
+  }
+
+  renderDonationList() {
+    const { settings, selectedDonations } = this.props;
+
+    return (
+      <DonationList
+        recurringDonations={selectedDonations}
+        displayStatusFn={settings.displayStatusFn}
+      />
     );
   }
 
