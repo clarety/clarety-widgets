@@ -88,7 +88,7 @@ export class SelectRecurrencePanel extends BasePanel {
   }
 
   renderEdit() {
-    const { layout, isBusy, recurringDonations, customerName, hasAuthError } = this.props;
+    const { layout, isBusy, recurringDonations, hasAuthError } = this.props;
 
     return (
       <form onSubmit={this.onPressNext}>
@@ -119,6 +119,8 @@ export class SelectRecurrencePanel extends BasePanel {
   }
 
   renderSubtitle() {
+    const { customerName } = this.props;
+
     return (
       <p className="sub-title">
         {t('select-recurrence.subtitle', 'Below is a summary of your recurring donations')}, {customerName}.
