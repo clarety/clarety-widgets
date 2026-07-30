@@ -96,7 +96,7 @@ export class SelectRecurrencePanel extends BasePanel {
           {this.renderHeader()}
 
           <PanelBody layout={layout} status="edit" isBusy={isBusy}>
-            <p className="sub-title">{t('select-recurrence.subtitle', 'Below is a summary of your recurring donations')}, {customerName}</p>
+            {this.renderSubtitle()}
             <p>{t('select-recurrence.description', 'We are unable to process donations marked as "inactive." To continue your much-needed support, please select inactive donations and click on the update button to provide new payment details.')}</p>
 
             {recurringDonations?.length === 0 &&
@@ -115,6 +115,16 @@ export class SelectRecurrencePanel extends BasePanel {
           {this.renderFooter()}
         </PanelContainer>
       </form>
+    );
+  }
+
+  renderSubtitle() {
+    return (
+      <p className="sub-title">
+        {t('select-recurrence.subtitle', 'Below is a summary of your recurring donations')}, {customerName}.
+        {' '}
+        {t('select-recurrence.subtitle2', 'If any donations require attention, please select them and click Update to provide new payment details.')}
+      </p>
     );
   }
 

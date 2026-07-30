@@ -100,7 +100,7 @@ export class _PaymentDetailsPanel extends BasePaymentPanel {
     return (
       <div className="catch-up-section">
         <p className="catch-up-title">{t('catch-up.title', 'Would you like to make a catch-up donation?')}</p>
-        <p className="catch-up-description">{t('catch-up.description', "Before you updated your payment details today, one or more of your most recent donations didn't go through. Would you like to make a one-time catch-up donation now?")}</p>
+        <p className="catch-up-description">{t('catch-up.description', "One or more of your recent donations didn't go through. Would you like to make a one-time catch-up donation now?")}</p>
         <p className="catch-up-suggestion">{t('catch-up.suggested-amount', 'Suggested one-time catch up donation')}: <Currency amount={amount} /></p>
 
         <CurrencyInput

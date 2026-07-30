@@ -42,7 +42,7 @@ export class SuccessPanel extends BasePanel {
             status="edit"
             layout={layout}
             number={index + 1}
-            title={settings.title || t('thankyou', 'Thankyou!')}
+            title={settings.title || t('thankyou', 'Thank you!')}
           />
         }
 
