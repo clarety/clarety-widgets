@@ -11,9 +11,14 @@ import { getPaymentMethod, getPaymentPostData } from 'checkout/selectors';
 
 // Get all payment methods for the checkout.
 export function fetchCheckoutPaymentMethods() {
-  return fetchSettings('checkout/', {}, (settings) => ({
-    paymentMethods: settings.paymentMethods,
-  }));
+  return async (dispatch, getState) => {
+    const state = getState();
+    const cart = getCart(state);
+
+    await dispatch(fetchSettings('checkout/', { cartUid: cart.cartUid }, (settings) => ({
+      paymentMethods: settings.paymentMethods,
+    })));
+  };
 }
 
 // Get a whitelist of payment method keys that are allowed for this cart.
