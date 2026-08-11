@@ -42,7 +42,7 @@ export const fetchPaymentMethods = () => {
   };
 };
 
-export const makePayment = (paymentData) => {
+export const makePayment = (paymentData, onPaymentComplete = undefined) => {
   return async (dispatch, getState) => {
     dispatch(setStatus(statuses.busy));
 
@@ -69,7 +69,7 @@ export const makePayment = (paymentData) => {
     if (!result) return false;
 
     // Handle result.
-    return await dispatch(handlePaymentResult(result, paymentData, paymentMethod));
+    return await dispatch(handlePaymentResult(result, paymentData, paymentMethod, onPaymentComplete));
   };
 };
 
@@ -116,15 +116,15 @@ export const attemptPayment = (paymentData, paymentMethod) => {
   };
 };
 
-const handlePaymentResult = (result, paymentData, paymentMethod) => {
+const handlePaymentResult = (result, paymentData, paymentMethod, onPaymentComplete = undefined) => {
   return async (dispatch, getState) => {
     // TODO: temp api fix.
     if (result.status === 'Complete') result.status = 'complete';
 
     switch (result.status) {
       case 'error':     return dispatch(handlePaymentError(result, paymentData, paymentMethod));
-      case 'authorise': return dispatch(handlePaymentAuthorise(result, paymentData, paymentMethod));
-      case 'complete':  return dispatch(handlePaymentComplete(result, paymentData, paymentMethod));
+      case 'authorise': return dispatch(handlePaymentAuthorise(result, paymentData, paymentMethod, onPaymentComplete));
+      case 'complete':  return dispatch(handlePaymentComplete(result, paymentData, paymentMethod, onPaymentComplete));
       default: throw new Error('handlePaymentResult not implemented for status: ' + result.status);
     }    
   }
@@ -136,31 +136,35 @@ export const handlePaymentError = (result, paymentData, paymentMethod) => {
   };
 };
 
-export const handlePaymentAuthorise = (result, paymentData, paymentMethod) => {
+export const handlePaymentAuthorise = (result, paymentData, paymentMethod, onPaymentComplete = undefined) => {
   return async (dispatch, getState) => {
     if (isStripe(paymentMethod)) {
-      return dispatch(handleStripeAuthorise(result, paymentData, paymentMethod));
+      return dispatch(handleStripeAuthorise(result, paymentData, paymentMethod, onPaymentComplete));
     }
 
     throw new Error('handlePaymentAuthorise not implemented for payment method: ' + JSON.stringify(paymentMethod));
   };
 };
 
-const handlePaymentComplete = (result, paymentData, paymentMethod) => {
+const handlePaymentComplete = (result, paymentData, paymentMethod, onPaymentComplete = undefined) => {
   return async (dispatch, getState) => {
     dispatch(makePaymentSuccess(result));
 
-    const state = getState();
-    const confirmPageUrl = getSetting(state, 'confirmPageUrl');
-    const jwtSession = getJwtSession();
+    if (onPaymentComplete) {
+      return onPaymentComplete(result, paymentData, paymentMethod, dispatch, getState);
+    } else {
+      const state = getState();
+      const confirmPageUrl = getSetting(state, 'confirmPageUrl');
+      const jwtSession = getJwtSession();
 
-    // Set cookie and redirect to confirm page.
-    Cookies.set('jwtConfirm', jwtSession.jwtString);
-    window.location.href = confirmPageUrl || 'shop-confirm.php';
+      // Set cookie and redirect to confirm page.
+      Cookies.set('jwtConfirm', jwtSession.jwtString);
+      window.location.href = confirmPageUrl || 'shop-confirm.php';
+    }
   }
 };
 
-const handleStripeAuthorise = (paymentResult, paymentData, paymentMethod) => {
+const handleStripeAuthorise = (paymentResult, paymentData, paymentMethod, onPaymentComplete = undefined) => {
   return async (dispatch, getState) => {
     const authResult = await dispatch(authoriseStripePayment(paymentResult, paymentData, paymentMethod));
 
@@ -176,7 +180,7 @@ const handleStripeAuthorise = (paymentResult, paymentData, paymentMethod) => {
       if (!result) return false;
 
       // Handle result.
-      return await dispatch(handlePaymentResult(result, paymentData, paymentMethod));
+      return await dispatch(handlePaymentResult(result, paymentData, paymentMethod, onPaymentComplete));
     }
   };
 };
