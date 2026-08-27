@@ -1,4 +1,4 @@
-import { isCreditCard } from 'shared/utils';
+import { isXenditCard, isXenditVirtualAccount } from 'shared/utils';
 import { openPaymentAuthModal, closePaymentAuthModal } from 'shared/actions';
 import { getCart, getCurrency } from 'shared/selectors';
 import { DonationApi } from 'donate/utils';
@@ -9,17 +9,21 @@ export const prepareXenditPayment = (paymentData, paymentMethod, frequency) => {
     const cart = getCart(state);
     const currency = getCurrency(state);
 
-    // fetch a payment session id.
-    const response = await DonationApi.createPaymentSession(cart.jwt, paymentMethod.account, paymentMethod.type, currency.code);
-    if (!response || !response.paymentSessionUid) {
-      return {
-        validationErrors: [{ message: 'Something went wrong' }],
+    if (isXenditCard(paymentMethod)) {
+      // fetch a payment session id.
+      const response = await DonationApi.createPaymentSession(cart.jwt, paymentMethod.account, paymentMethod.type, currency.code);
+      if (!response || !response.paymentSessionUid) {
+        return {
+          validationErrors: [{ message: 'Something went wrong' }],
+        }
       }
-    }
-    const xenditSessionId = response.paymentSessionUid;
+      const xenditSessionId = response.paymentSessionUid;
 
-    if (isCreditCard(paymentMethod)) {
       return prepareXenditCardPayment(paymentData, paymentMethod, frequency, xenditSessionId, currency.code);
+    }
+
+    if (isXenditVirtualAccount(paymentMethod)) {
+      return prepareXenditVirtualAccountPayment(paymentData, paymentMethod, currency.code);
     }
 
     throw new Error('prepareXenditPayment not implemented for payment method');
@@ -65,6 +69,18 @@ async function prepareXenditCardPayment(paymentData, paymentMethod, frequency, x
       },
     };
   }
+}
+
+function prepareXenditVirtualAccountPayment(paymentData, paymentMethod, currency) {
+  return {
+    payment: {
+      type: 'gateway',
+      currency: currency,
+      gatewayAccount: paymentMethod.account,
+      gatewayPaymentMethod: paymentMethod.type,
+      accountName: paymentData.accountName,
+    },
+  };
 }
 
 export const authoriseXenditPayment = (paymentResult, paymentData, paymentMethod) => {
