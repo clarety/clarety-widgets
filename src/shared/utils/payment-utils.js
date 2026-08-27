@@ -78,6 +78,10 @@ export function isXenditCard(paymentMethod) {
   return paymentMethod.gateway === 'xendit' && paymentMethod.type === 'card';
 }
 
+export function isXenditVirtualAccount(paymentMethod) {
+  return paymentMethod.gateway === 'xendit' && paymentMethod.type === 'virtual-account';
+}
+
 export function isPayPal(paymentMethod) {
   return paymentMethod.gateway === 'paypal';
 }

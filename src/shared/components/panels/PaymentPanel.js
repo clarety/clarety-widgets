@@ -2,15 +2,16 @@ import React from 'react';
 import { Form, Row, Col, Spinner, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import { CardNumberElement, CardExpiryElement, CardCvcElement, AuBankAccountElement } from '@stripe/react-stripe-js';
 import { t, toTranslationKey } from 'shared/translations';
-import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, injectStripe } from 'shared/components';
+import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, injectStripe, Currency } from 'shared/components';
 import { Config } from 'shared/utils/config';
-import { requiredField, cardNumberField, cardExpiryField, ccvField, isCreditCard, isStripeCard, isStripeBecs, isStripePaymentForm, isXenditCard, isPayPal, isHkDirectDebit, isNzDirectDebit, isCaDirectDebit, isAuDirectDebit, isNoPayment, PaymentGatewayVersion } from 'shared/utils';
+import { requiredField, cardNumberField, cardExpiryField, ccvField, isCreditCard, isStripeCard, isStripeBecs, isStripePaymentForm, isXenditCard, isXenditVirtualAccount, isPayPal, isHkDirectDebit, isNzDirectDebit, isCaDirectDebit, isAuDirectDebit, isNoPayment, PaymentGatewayVersion } from 'shared/utils';
 import { Label, TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, AccountNumberInput, BsbInput, NZAccountNumberInput, PhoneInput, NumberInput, SelectInput, Turnstile } from 'form/components';
 import { StripePaymentForm } from 'checkout/components/misc/StripePaymentForm';
 
 export class _PaymentPanel extends BasePanel {
   state = {
     showCvcInfo: false,
+    copiedTransferCode: false,
   };
 
   constructor(props) {
@@ -98,6 +99,14 @@ export class _PaymentPanel extends BasePanel {
     nextPanel();
   };
 
+  onPressCopyTransferCode = async (event) => {
+    event.preventDefault();
+
+    const { cartPayment } = this.props;
+    await navigator.clipboard.writeText(cartPayment.transferCode);
+    this.setState({ copiedTransferCode: true });
+  };
+
   validate() {
     const errors = [];
 
@@ -143,6 +152,10 @@ export class _PaymentPanel extends BasePanel {
     
     if (isAuDirectDebit(paymentMethod)) {
       return this.validateAUDirectDebitFields(errors);
+    }
+
+    if (isXenditVirtualAccount(paymentMethod)) {
+      return this.validateXenditVirtualAccountFields(errors);
     }
     
     if (isNoPayment(paymentMethod)) {
@@ -233,6 +246,11 @@ export class _PaymentPanel extends BasePanel {
     requiredField(errors, formData, 'payment.bankCode');
     requiredField(errors, formData, 'payment.branchCode');
     requiredField(errors, formData, 'payment.accountNumber');
+  }
+
+  validateXenditVirtualAccountFields(errors) {
+    const { formData } = this.props;
+    requiredField(errors, formData, 'payment.accountName');
   }
 
   validateNoPaymentFields(errors) {
@@ -348,6 +366,13 @@ export class _PaymentPanel extends BasePanel {
         accountName:   formData['payment.accountName'],
         accountBSB:    formData['payment.accountBSB'],
         accountNumber: formData['payment.accountNumber'],
+      };
+    }
+
+    if (isXenditVirtualAccount(paymentMethod)) {
+      return {
+        type: paymentType,
+        accountName: formData['payment.accountName'], // virtual account payment channel
       };
     }
 
@@ -488,12 +513,16 @@ export class _PaymentPanel extends BasePanel {
   }
 
   renderContent() {
-    const { layout, isBusy } = this.props;
+    const { layout, isBusy, cartStatus } = this.props;
     const paymentMethod = this.getSelectedPaymentMethod();
     if (!paymentMethod) return null;
 
     if (this.isAuthorizingHKDirectDebit()) {
       return this.renderHKAuthorise();
+    }
+
+    if (cartStatus === 'transfer-code') {
+      return this.renderTransferCode();
     }
 
     return (
@@ -610,6 +639,10 @@ export class _PaymentPanel extends BasePanel {
 
     if (isStripePaymentForm(paymentMethod)) {
       return this.renderStripePaymentForm(paymentMethod);
+    }
+
+    if (isXenditVirtualAccount(paymentMethod)) {
+      return this.renderXenditVirtualAccount(paymentMethod);
     }
 
     if (isNoPayment(paymentMethod)) {
@@ -1006,6 +1039,29 @@ export class _PaymentPanel extends BasePanel {
     );
   }
 
+  renderXenditVirtualAccount(paymentMethod) {
+    const xenditPaymentChannels = paymentMethod.additionalSettings.paymentChannels || [];
+
+    return (
+      <React.Fragment>
+        <Form.Row>
+          <Col>
+            <Form.Group controlId="bank">
+              <Label required>{t('bank', 'Bank')}</Label>
+              <SelectInput
+                field="payment.accountName"
+                options={xenditPaymentChannels.map((channel) => ({
+                  value: channel,
+                  label: t(channel, channel),
+                }))}
+              />
+            </Form.Group>
+          </Col>
+        </Form.Row>
+      </React.Fragment>
+    );
+  }
+
   // Override in subclass to provide the appropriate PayPal button.
   // for example see registration/components/panels/PaymentPanel.js
   renderPayPalFields(paymentMethod) {
@@ -1124,6 +1180,53 @@ export class _PaymentPanel extends BasePanel {
 
         {this.renderFooter()}
       </React.Fragment>
+    );
+  }
+
+  renderTransferCode() {
+    const paymentMethod = this.getSelectedPaymentMethod();
+
+    if (isXenditVirtualAccount(paymentMethod)) {
+      return this.renderXenditVirtualAccountTransferCode();
+    }
+
+    return null;
+  }
+
+  renderXenditVirtualAccountTransferCode() {
+    const { layout, isBusy, amount, settings, cartPayment } = this.props;
+    const { copiedTransferCode } = this.state;
+    const hideCents = settings.hideCents && Number.isInteger(parseFloat(amount));
+
+    return (
+      <PanelBody layout={layout} status="edit" isBusy={isBusy}>
+        <p class="transfer-prompt">
+          {t('virtual-account-transfer-prompt', 'To complete your payment, please make the following transfer:')}
+        </p>
+
+        <table class="table table-striped">
+          <tbody>
+            <tr>
+              <td>{t('bank', 'Bank')}</td>
+              <td>{t(cartPayment.accountName, cartPayment.accountName)}</td>
+            </tr>
+            <tr>
+              <td>{t('virtual-account-number', 'Virtual Account Number')}</td>
+              <td>
+                {cartPayment.transferCode}
+                {' '}
+                <a href="#" onClick={this.onPressCopyTransferCode}>
+                  {copiedTransferCode ? t('copied', 'Copied') : t('copy', 'Copy')}
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td>{t('amount', 'Amount')}</td>
+              <td><Currency amount={amount} hideCents={hideCents} /></td>
+            </tr>
+          </tbody>
+        </table>
+      </PanelBody>
     );
   }
 

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { statuses, setStatus, setRecaptcha, clearRecaptcha, setTurnstileToken, setPayment, setCustomer, updateCartData, prepareStripePayment, authoriseStripePayment, updateAppSettings, setPanelStatus, jumpToPanel } from 'shared/actions';
+import { statuses, setStatus, setRecaptcha, clearRecaptcha, setTurnstileToken, setPayment, updatePayment, setCustomer, updateCartData, prepareStripePayment, authoriseStripePayment, updateAppSettings, setPanelStatus, jumpToPanel } from 'shared/actions';
 import { getSetting, getPanelManager } from 'shared/selectors';
 import { isHkDirectDebit, isStripe, isXendit, splitName, convertCountry } from 'shared/utils';
 import { setFormData, setErrors, updateFormData } from 'form/actions';
@@ -277,6 +277,7 @@ export const handlePaymentResult = (result, paymentData, paymentMethod) => {
 
     switch (result.status) {
       case 'error':     return dispatch(handlePaymentError(result, paymentData, paymentMethod));
+      case 'pending':   return dispatch(handlePaymentPending(result, paymentData, paymentMethod));
       case 'authorise': return dispatch(handlePaymentAuthorise(result, paymentData, paymentMethod));
       case 'complete':  return dispatch(handlePaymentComplete(result, paymentData, paymentMethod));
       default: throw new Error('handlePaymentResult not implemented for status:  ' + result.status);
@@ -297,6 +298,18 @@ const handlePaymentError = (result, paymentData, paymentMethod) => {
     return false;
   };
 };
+
+
+const handlePaymentPending = (result, paymentData, paymentMethod) => {
+  return async (dispatch, getState) => {
+    if (isXendit(paymentMethod)) {
+      return dispatch(handleXenditPending(result, paymentData, paymentMethod));
+    }
+
+    console.error('handlePaymentPending not implemented for payment method: ' +  JSON.stringify(paymentMethod));
+  };
+};
+
 
 const handlePaymentAuthorise = (result, paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
@@ -353,6 +366,19 @@ const handlePaymentComplete = (result, paymentData, paymentMethod) => {
       return true;
     }
   }
+};
+
+const handleXenditPending = (paymentResult, paymentData, paymentMethod) => {
+  return async (dispatch, getState) => {
+    if (paymentMethod.type === 'virtual-account') {
+      dispatch(updateCartData({ status: 'transfer-code' }));
+      dispatch(updatePayment({ transferCode: paymentResult.transferCode }));
+      dispatch(setStatus(statuses.ready));
+      return false;
+    } else {
+      console.error('handleXenditPending not implemented for payment method: ' +  JSON.stringify(paymentMethod));
+    }
+  };
 };
 
 const handleStripeAuthorise = (paymentResult, paymentData, paymentMethod) => {

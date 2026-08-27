@@ -78,6 +78,11 @@ export const setPayment = (payment) => ({
   payment: payment,
 });
 
+export const updatePayment = (payment) => ({
+  type: types.updatePayment,
+  payment: payment,
+});
+
 export const clearPayment = () => ({
   type: types.clearPayment,
 });

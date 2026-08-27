@@ -117,6 +117,15 @@ export const cartReducer = (state = initialState, action) => {
         ...state,
         payment: action.payment,
       };
+    
+    case types.updatePayment:
+      return {
+        ...state,
+        payment: {
+          ...state.payment,
+          ...action.payment,
+        },
+      };
 
     case types.clearPayment:
       return {

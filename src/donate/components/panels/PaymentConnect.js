@@ -17,6 +17,7 @@ export class PaymentConnect {
       currency: getCurrency(state).code,
       paymentMethods: paymentMethods,
       cartStatus: getCart(state).status,
+      cartPayment: getCart(state).payment,
       authSecret: getCart(state).authSecret,
       formData: getFormData(state),
       errors: getErrors(state),

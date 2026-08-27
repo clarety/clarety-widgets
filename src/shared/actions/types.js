@@ -25,6 +25,7 @@ export const types = {
   updateCustomer:        'UPDATE_CUSTOMER',
 
   setPayment:            'SET_PAYMENT',
+  updatePayment:         'UPDATE_PAYMENT',
   clearPayment:          'CLEAR_PAYMENT',
 
   updateCartData:        'UPDATE_CART_DATA',
