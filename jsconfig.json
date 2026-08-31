@@ -12,7 +12,9 @@
       "quiz/*":              ["./src/quiz/*"],
       "registration/*":      ["./src/registration/*"],
       "shared/*":            ["./src/shared/*"],
-      "subscribe/*":         ["./src/subscribe/*"]
+      "subscribe/*":         ["./src/subscribe/*"],
+      "unsubscribe/*":       ["./src/unsubscribe/*"],
+      "update-payment-details/*": ["./src/update-payment-details/*"]
     }
   },
   "exclude": ["node_modules", "es", "lib"]

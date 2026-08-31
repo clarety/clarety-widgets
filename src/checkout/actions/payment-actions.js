@@ -1,18 +1,24 @@
 import Cookies from 'js-cookie';
-import { setPayment, prepareStripePayment, authoriseStripePayment, setStatus, statuses } from 'shared/actions';
+import { setPayment, prepareStripePayment, authoriseStripePayment, setStatus, statuses, setRecaptcha } from 'shared/actions';
 import { getCart, getSetting } from 'shared/selectors';
 import { fetchSettings } from 'shared/actions';
 import { ClaretyApi } from 'shared/utils/clarety-api';
 import { getJwtSession, isStripe, splitName, convertCountry } from 'shared/utils';
 import { setFormData } from 'form/actions';
+import { executeRecaptcha } from 'form/components';
 import { types, createCustomer, updateSale } from 'checkout/actions';
 import { getPaymentMethod, getPaymentPostData } from 'checkout/selectors';
 
 // Get all payment methods for the checkout.
 export function fetchCheckoutPaymentMethods() {
-  return fetchSettings('checkout/', {}, (settings) => ({
-    paymentMethods: settings.paymentMethods,
-  }));
+  return async (dispatch, getState) => {
+    const state = getState();
+    const cart = getCart(state);
+
+    await dispatch(fetchSettings('checkout/', { cartUid: cart.cartUid }, (settings) => ({
+      paymentMethods: settings.paymentMethods,
+    })));
+  };
 }
 
 // Get a whitelist of payment method keys that are allowed for this cart.
@@ -36,11 +42,21 @@ export const fetchPaymentMethods = () => {
   };
 };
 
-export const makePayment = (paymentData) => {
+export const makePayment = (paymentData, onPaymentComplete = undefined) => {
   return async (dispatch, getState) => {
     dispatch(setStatus(statuses.busy));
 
     const state = getState();
+
+    // ReCaptcha.
+    if (getSetting(state, 'reCaptchaKey')) {
+      const recaptcha = await executeRecaptcha();
+      dispatch(setRecaptcha(recaptcha));
+      if (!recaptcha) {
+        dispatch(setStatus(statuses.ready));
+        return false;
+      }
+    }
 
     const paymentMethod = getPaymentMethod(state, paymentData.type);
 
@@ -53,7 +69,7 @@ export const makePayment = (paymentData) => {
     if (!result) return false;
 
     // Handle result.
-    return await dispatch(handlePaymentResult(result, paymentData, paymentMethod));
+    return await dispatch(handlePaymentResult(result, paymentData, paymentMethod, onPaymentComplete));
   };
 };
 
@@ -100,15 +116,15 @@ export const attemptPayment = (paymentData, paymentMethod) => {
   };
 };
 
-const handlePaymentResult = (result, paymentData, paymentMethod) => {
+const handlePaymentResult = (result, paymentData, paymentMethod, onPaymentComplete = undefined) => {
   return async (dispatch, getState) => {
     // TODO: temp api fix.
     if (result.status === 'Complete') result.status = 'complete';
 
     switch (result.status) {
       case 'error':     return dispatch(handlePaymentError(result, paymentData, paymentMethod));
-      case 'authorise': return dispatch(handlePaymentAuthorise(result, paymentData, paymentMethod));
-      case 'complete':  return dispatch(handlePaymentComplete(result, paymentData, paymentMethod));
+      case 'authorise': return dispatch(handlePaymentAuthorise(result, paymentData, paymentMethod, onPaymentComplete));
+      case 'complete':  return dispatch(handlePaymentComplete(result, paymentData, paymentMethod, onPaymentComplete));
       default: throw new Error('handlePaymentResult not implemented for status: ' + result.status);
     }    
   }
@@ -120,31 +136,35 @@ export const handlePaymentError = (result, paymentData, paymentMethod) => {
   };
 };
 
-export const handlePaymentAuthorise = (result, paymentData, paymentMethod) => {
+export const handlePaymentAuthorise = (result, paymentData, paymentMethod, onPaymentComplete = undefined) => {
   return async (dispatch, getState) => {
     if (isStripe(paymentMethod)) {
-      return dispatch(handleStripeAuthorise(result, paymentData, paymentMethod));
+      return dispatch(handleStripeAuthorise(result, paymentData, paymentMethod, onPaymentComplete));
     }
 
     throw new Error('handlePaymentAuthorise not implemented for payment method: ' + JSON.stringify(paymentMethod));
   };
 };
 
-const handlePaymentComplete = (result, paymentData, paymentMethod) => {
+const handlePaymentComplete = (result, paymentData, paymentMethod, onPaymentComplete = undefined) => {
   return async (dispatch, getState) => {
     dispatch(makePaymentSuccess(result));
 
-    const state = getState();
-    const confirmPageUrl = getSetting(state, 'confirmPageUrl');
-    const jwtSession = getJwtSession();
+    if (onPaymentComplete) {
+      return onPaymentComplete(result, paymentData, paymentMethod, dispatch, getState);
+    } else {
+      const state = getState();
+      const confirmPageUrl = getSetting(state, 'confirmPageUrl');
+      const jwtSession = getJwtSession();
 
-    // Set cookie and redirect to confirm page.
-    Cookies.set('jwtConfirm', jwtSession.jwtString);
-    window.location.href = confirmPageUrl || 'shop-confirm.php';
+      // Set cookie and redirect to confirm page.
+      Cookies.set('jwtConfirm', jwtSession.jwtString);
+      window.location.href = confirmPageUrl || 'shop-confirm.php';
+    }
   }
 };
 
-const handleStripeAuthorise = (paymentResult, paymentData, paymentMethod) => {
+const handleStripeAuthorise = (paymentResult, paymentData, paymentMethod, onPaymentComplete = undefined) => {
   return async (dispatch, getState) => {
     const authResult = await dispatch(authoriseStripePayment(paymentResult, paymentData, paymentMethod));
 
@@ -160,7 +180,7 @@ const handleStripeAuthorise = (paymentResult, paymentData, paymentMethod) => {
       if (!result) return false;
 
       // Handle result.
-      return await dispatch(handlePaymentResult(result, paymentData, paymentMethod));
+      return await dispatch(handlePaymentResult(result, paymentData, paymentMethod, onPaymentComplete));
     }
   };
 };

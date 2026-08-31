@@ -37,6 +37,7 @@ export class BasePanel extends React.Component {
 
   scrollIntoView() {
     scrollIntoView(this);
+    parent.postMessage({ scrollIntoView: true }, '*');
   }
 
   render() {

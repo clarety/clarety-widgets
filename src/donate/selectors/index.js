@@ -153,6 +153,11 @@ export const getSelectedPaymentMethod = (state) => {
 };
 
 export const getPaymentMethod = (state, type, gateway = null) => {
+  const modalPaymentMethod = getSetting(state, 'modalPaymentMethod');
+  if (modalPaymentMethod?.type === type) {
+    return modalPaymentMethod;
+  }
+
   const paymentMethods = getSetting(state, 'paymentMethods') || [];
   return paymentMethods.find(pm => pm.type === type && (!gateway || pm.gateway === gateway));
 };

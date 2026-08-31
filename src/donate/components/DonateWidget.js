@@ -105,6 +105,8 @@ export class _DonateWidgetRoot extends React.Component {
       reCaptchaKey:         this.props.reCaptchaKey,
       turnstileSiteKey:     this.props.turnstileSiteKey,
       eCardsMode:           this.props.eCardsMode,
+      
+      ...this.props,
     });
 
     // if we have a specific 'fund frequency', force 'default frequency' to match.
