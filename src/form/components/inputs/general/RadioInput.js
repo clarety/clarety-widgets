@@ -16,10 +16,10 @@ class _RadioInput extends React.Component {
   }
 
   render() {
-    const { field, value, options, onChange, error, getTranslationKey } = this.props;
+    const { field, value, options, onChange, error, formGroupClassName } = this.props;
 
     return (
-      <Form.Group>
+      <Form.Group className={formGroupClassName}>
         {options.map(option =>
           <FormCheck key={option.value} id={`${field}.${option.value}`} type="radio">
             <FormCheck.Input
@@ -27,15 +27,28 @@ class _RadioInput extends React.Component {
               checked={value === option.value}
               onChange={() => onChange(option.value)}
             />
-            <FormCheck.Label>
-              {t(getTranslationKey ? getTranslationKey(option.value, option.label) : option.label, option.label)}
-            </FormCheck.Label>
+
+            {this.renderLabel(option)}
           </FormCheck>
         )}
 
         <FieldError error={error} />
       </Form.Group>
     );
+  }
+
+  renderLabel(option) {
+    if (this.props.renderLabel) {
+      return this.props.renderLabel(option);
+    } else {
+      const { getTranslationKey } = this.props;
+      const translationKey = getTranslationKey ? getTranslationKey(option.value, option.label) : option.label;
+      return (
+        <FormCheck.Label>
+          {t(translationKey, option.label)}
+        </FormCheck.Label>
+      );
+    }
   }
 }
 
