@@ -1,12 +1,25 @@
 import React from 'react';
-import { Form, Row, Col, Spinner, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
+import { Form, Row, Col, Spinner, ToggleButtonGroup, ToggleButton, FormCheck } from 'react-bootstrap';
 import { CardNumberElement, CardExpiryElement, CardCvcElement, AuBankAccountElement } from '@stripe/react-stripe-js';
 import { t, toTranslationKey } from 'shared/translations';
 import { BasePanel, PanelContainer, PanelHeader, PanelBody, PanelFooter, injectStripe, Currency } from 'shared/components';
 import { Config } from 'shared/utils/config';
 import { requiredField, cardNumberField, cardExpiryField, ccvField, isCreditCard, isStripeCard, isStripeBecs, isStripePaymentForm, isXenditCard, isXenditVirtualAccount, isPayPal, isHkDirectDebit, isNzDirectDebit, isCaDirectDebit, isAuDirectDebit, isNoPayment, PaymentGatewayVersion } from 'shared/utils';
-import { Label, TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, AccountNumberInput, BsbInput, NZAccountNumberInput, PhoneInput, NumberInput, SelectInput, Turnstile } from 'form/components';
+import { Label, TextInput, SubmitButton, BackButton, ErrorMessages, CardNumberInput, ExpiryInput, CcvInput, AccountNumberInput, BsbInput, NZAccountNumberInput, PhoneInput, NumberInput, SelectInput, Turnstile, RadioInput } from 'form/components';
 import { StripePaymentForm } from 'checkout/components/misc/StripePaymentForm';
+
+const xenditVirtualAccountLogos = {
+  BCA_VIRTUAL_ACCOUNT: 'neutrino/hub01/images/xendit-virtual-account/bca.png',
+  BNI_VIRTUAL_ACCOUNT: 'neutrino/hub01/images/xendit-virtual-account/bni.png',
+  BRI_VIRTUAL_ACCOUNT: 'neutrino/hub01/images/xendit-virtual-account/bri.png',
+  MANDIRI_VIRTUAL_ACCOUNT: 'neutrino/hub01/images/xendit-virtual-account/mandiri.png',
+  PERMATA_VIRTUAL_ACCOUNT: 'neutrino/hub01/images/xendit-virtual-account/permata.png',
+  CIMB_VIRTUAL_ACCOUNT: 'neutrino/hub01/images/xendit-virtual-account/cimb.jpeg',
+  BSS_VIRTUAL_ACCOUNT: 'neutrino/hub01/images/xendit-virtual-account/bss.png',
+  BSI_VIRTUAL_ACCOUNT: 'neutrino/hub01/images/xendit-virtual-account/bsi.png',
+  BJB_VIRTUAL_ACCOUNT: 'neutrino/hub01/images/xendit-virtual-account/bjb.svg',
+  MUAMALAT_VIRTUAL_ACCOUNT: 'neutrino/hub01/images/xendit-virtual-account/muamalat.png',
+};
 
 export class _PaymentPanel extends BasePanel {
   state = {
@@ -1040,22 +1053,38 @@ export class _PaymentPanel extends BasePanel {
   }
 
   renderXenditVirtualAccount(paymentMethod) {
+    const { mainSiteUrl } = this.props;
+
     const xenditPaymentChannels = paymentMethod.additionalSettings.paymentChannels || [];
 
     return (
       <React.Fragment>
         <Form.Row>
           <Col>
-            <Form.Group controlId="bank">
-              <Label required>{t('bank', 'Bank')}</Label>
-              <SelectInput
-                field="payment.accountName"
-                options={xenditPaymentChannels.map((channel) => ({
-                  value: channel,
-                  label: t(channel, channel),
-                }))}
-              />
-            </Form.Group>
+            <RadioInput
+              field="payment.accountName"
+              formGroupClassName="xendit-virtual-account-radio-btns"
+              options={xenditPaymentChannels.map((channel) => ({
+                value: channel,
+                label: t(channel, channel),
+              }))}
+              renderLabel={(option) => {
+                if (xenditVirtualAccountLogos[option.value]) {
+                  const logoUrl = mainSiteUrl + xenditVirtualAccountLogos[option.value];
+                  return (
+                    <FormCheck.Label className={`form-check-label-${option.value}`}>
+                      <img src={logoUrl} title={option.label} />
+                    </FormCheck.Label>
+                  );
+                } else {
+                  return (
+                    <FormCheck.Label>
+                      {t(option.label, option.label)}
+                    </FormCheck.Label>
+                  );
+                }
+              }}
+            />
           </Col>
         </Form.Row>
       </React.Fragment>

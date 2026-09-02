@@ -23,6 +23,7 @@ export class PaymentConnect {
       errors: getErrors(state),
       variant: getSetting(state, 'variant'),
       turnstileSiteKey: getSetting(state, 'turnstileSiteKey'),
+      mainSiteUrl: getSetting(state, 'mainSiteUrl') || '',
     };
   };
 
