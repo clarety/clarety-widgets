@@ -18,6 +18,7 @@ export * from './inputs/StateInput';
 export * from './inputs/TeamSearchInput';
 export * from './inputs/TextInput';
 export * from './inputs/TextAreaInput';
+export * from './inputs/TrueFalseSelectInput';
 
 export * from './panels/DetailsPanel';
 export * from './panels/DetailsConnect';

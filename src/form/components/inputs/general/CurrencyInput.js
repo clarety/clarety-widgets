@@ -2,21 +2,23 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { InputGroup } from 'react-bootstrap';
 import { getSetting } from 'shared/selectors';
+import { CurrencySymbol } from 'shared/components';
 import { TextInput } from 'form/components';
 import { cleanDecimal, displayInputDecimal } from 'form/utils';
 
-export const _CurrencyInput = ({ currency, ...props}) => (
+export const _CurrencyInput = ({ currency, ...props }) => (
   <InputGroup>
     <InputGroup.Prepend>
       <InputGroup.Text>
-        {currency ? `${currency.code} ${currency.symbol}` : '$'}
+        <CurrencySymbol />
       </InputGroup.Text>
     </InputGroup.Prepend>
 
     <TextInput
-      {...props}
+      type="tel"
       cleanFn={cleanDecimal}
       displayFn={displayInputDecimal}
+      {...props}
     />
   </InputGroup>
 );

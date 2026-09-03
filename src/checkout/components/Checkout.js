@@ -84,6 +84,7 @@ export class _CheckoutRoot extends React.Component {
       loqateCountry:        this.props.loqateCountry,
       donationOfferId:      this.props.donationOfferId,
       donationOfferUid:     this.props.donationOfferUid,
+      reCaptchaKey:         this.props.reCaptchaKey,
     });
 
     // Set tracking data.

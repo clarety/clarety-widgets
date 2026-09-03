@@ -30,7 +30,7 @@ export const prepareXenditPayment = (paymentData, paymentMethod, frequency) => {
   };
 }
 
-async function prepareXenditCardPayment(paymentData, paymentMethod, frequency, xenditSessionId, currency) {
+export async function prepareXenditCardPayment(paymentData, paymentMethod, frequency, xenditSessionId, currency) {
   const cardData = {
     payment_session_id: xenditSessionId,
     card_number: paymentData.cardNumber,

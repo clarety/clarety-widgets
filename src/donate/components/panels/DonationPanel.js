@@ -95,16 +95,18 @@ export class DonationPanel extends BasePanel {
   }
 
   validateECardFields(errors) {
-    const { formData } = this.props;
+    const { eCardsMode, formData } = this.props;
 
-    requiredField(errors, formData, 'eCard.firstName');
-    requiredField(errors, formData, 'eCard.lastName');
-    requiredField(errors, formData, 'eCard.email');
-    emailField(errors, formData, 'eCard.email');
-    requiredField(errors, formData, 'eCard.message');
-    requiredField(errors, formData, 'eCard.date');
-    dateTimeField(errors, formData, 'eCard.date');
-    futureDateTimeField(errors, formData, 'eCard.date');
+    if (!!eCardsMode) {
+      requiredField(errors, formData, 'eCard.firstName');
+      requiredField(errors, formData, 'eCard.lastName');
+      requiredField(errors, formData, 'eCard.email');
+      emailField(errors, formData, 'eCard.email');
+      requiredField(errors, formData, 'eCard.message');
+      requiredField(errors, formData, 'eCard.date');
+      dateTimeField(errors, formData, 'eCard.date');
+      futureDateTimeField(errors, formData, 'eCard.date');
+    }
   }
 
   isOtherGivingType() {
@@ -399,18 +401,20 @@ export class DonationPanel extends BasePanel {
   }
 
   renderECardRecipientForm(offer, selectedECard) {
+    const { settings } = this.props;
+
     return (
       <div className="e-card-recipient-form">
         <Form.Row>
           <Col sm>
             <Form.Group controlId="eCardFirstName">
-              <Label required>{t('e-card-first-name', "Recipient's First Name")}</Label>
+              <Label required>{settings.eCardFirstNameLabel || t('e-card-first-name', "Recipient's First Name")}</Label>
               <TextInput field="eCard.firstName" required />
             </Form.Group>
           </Col>
           <Col sm>
             <Form.Group controlId="eCardLastName">
-              <Label required>{t('e-card-last-name', "Recipient's Last Name")}</Label>
+              <Label required>{settings.eCardLastNameLabel || t('e-card-last-name', "Recipient's Last Name")}</Label>
               <TextInput field="eCard.lastName" required />
             </Form.Group>
           </Col>
@@ -419,7 +423,7 @@ export class DonationPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="eCardEmail">
-              <Label required>{t('e-card-email', "Recipient's Email")}</Label>
+              <Label required>{settings.eCardEmailLabel || t('e-card-email', "Recipient's Email")}</Label>
               <EmailInput field="eCard.email" type="email" required />
             </Form.Group>
           </Col>
@@ -429,7 +433,7 @@ export class DonationPanel extends BasePanel {
   }
 
   renderECardMessageForm(offer, selectedECard) {
-    const { formData } = this.props;
+    const { settings, formData } = this.props;
 
     const maxLength = 320;
     const charsRemaining = maxLength - (formData['eCard.message'] || '').length;
@@ -439,10 +443,10 @@ export class DonationPanel extends BasePanel {
         <Form.Row>
           <Col>
             <Form.Group controlId="eCardMessage">
-              <Label required>{t('e-card-message', 'Personal Message')}</Label>
+              <Label required>{settings.eCardMessageLabel || t('e-card-message', 'Personal Message')}</Label>
               <TextAreaInput field="eCard.message" maxlength={maxLength} required />
               <div className="e-card-message-chars-remaining">
-                {charsRemaining} {t('characters-remaining', 'Characters Remaining')}
+                {charsRemaining} {t('characters-remaining', settings.charactersRemainingLabel || 'Characters Remaining')}
               </div>
             </Form.Group>
           </Col>
@@ -452,12 +456,14 @@ export class DonationPanel extends BasePanel {
   }
 
   renderECardDateForm(offer, selectedECard) {
+    const { settings } = this.props;
+
     return (
       <div className="e-card-date-form">
         <Form.Row>
           <Col>
             <Form.Group controlId="eCardDate">
-              <Label required>{t('e-card-date', 'Send E-Card On')}</Label>
+              <Label required>{settings.eCardDateLabel || t('e-card-date', 'Send E-Card On')}</Label>
               <DateTimeInput field="eCard.date" required />
             </Form.Group>
           </Col>

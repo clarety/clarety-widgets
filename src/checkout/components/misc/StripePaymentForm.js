@@ -1,7 +1,7 @@
 import React from 'react';
 import { PaymentElement } from '@stripe/react-stripe-js';
 
-export function StripePaymentForm({ paymentMethod, customerInfo, layout = 'tabs' }) {
+export function StripePaymentForm({ paymentMethod, customerInfo, layout = 'tabs', onChange = undefined }) {
   return (
     <PaymentElement
       className="stripe-payment-form"
@@ -11,6 +11,7 @@ export function StripePaymentForm({ paymentMethod, customerInfo, layout = 'tabs'
           billingDetails: customerInfo,
         },
       }}
+      onChange={onChange}
     />
   );
 }

@@ -16,7 +16,7 @@ class _TextInput extends React.Component {
   }
 
   render() {
-    const { value, type, placeholder, testId, error, onChange, initialValue, setInitialValue, required, hideErrors, cleanFn, ...props } = this.props;
+    const { value, type, placeholder, testId, error, onChange, initialValue, setInitialValue, required, hideErrors, cleanFn, displayFn, ...props } = this.props;
   
     return (
       <React.Fragment>

@@ -95,6 +95,14 @@ export const cartReducer = (state = initialState, action) => {
         customer: null,
       };
 
+    // Recaptcha
+    
+    case sharedTypes.setRecaptcha:
+      return {
+        ...state,
+        recaptcha: action.recaptcha,
+      }
+
     // Tracking
 
     case sharedTypes.setTrackingData:

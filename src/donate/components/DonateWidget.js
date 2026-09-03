@@ -105,6 +105,8 @@ export class _DonateWidgetRoot extends React.Component {
       reCaptchaKey:         this.props.reCaptchaKey,
       turnstileSiteKey:     this.props.turnstileSiteKey,
       eCardsMode:           this.props.eCardsMode,
+      
+      ...this.props,
     });
 
     // if we have a specific 'fund frequency', force 'default frequency' to match.
@@ -203,7 +205,7 @@ export class _DonateWidgetRoot extends React.Component {
   }
 
   render() {
-    const { status, reCaptchaKey, showStepIndicator, paymentAuthModalUrl, closePaymentAuthModal } = this.props;
+    const { status, reCaptchaKey, showStepIndicator, paymentAuthModalUrl } = this.props;
     const layout = this.props.layout || 'tabs';
     const variant = this.props.variant || '';
 
