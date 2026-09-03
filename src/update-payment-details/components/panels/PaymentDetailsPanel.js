@@ -11,6 +11,10 @@ export class _PaymentDetailsPanel extends BasePaymentPanel {
     return t('payment-details.title', 'Update Payment Details');
   }
 
+  showXenditCardEmailField() {
+    return true;
+  }
+
   renderContent() {
     const { layout, isBusy, formData } = this.props;
 
@@ -65,7 +69,7 @@ export class _PaymentDetailsPanel extends BasePaymentPanel {
             const selectedPaymentType = event?.value?.type;
             if (selectedPaymentType) {
               const allowCatchUpForPaymentType = paymentMethod.catchUpPaymentTypes.includes(selectedPaymentType);
-              this.setState({ allowCatchUpForPaymentType });
+              this.setState({ disableCatchUpForPaymentType: !allowCatchUpForPaymentType });
             }
           }
         }}
@@ -93,7 +97,7 @@ export class _PaymentDetailsPanel extends BasePaymentPanel {
 
     const amount = selectedDonations.reduce((sum, donation) => sum += donation.catchUpAmount, 0);
 
-    if (!allowCatchUpPayment || !amount || !this.state.allowCatchUpForPaymentType) {
+    if (!allowCatchUpPayment || !amount || this.state.disableCatchUpForPaymentType) {
       return <FormElement field="catchUpAmount" value="" />;
     }
 

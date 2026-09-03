@@ -261,6 +261,10 @@ export class _PaymentPanel extends BasePanel {
     // NOTE: no validation required.
   }
 
+  showXenditCardEmailField() {
+    return false;
+  }
+
   getPaymentData() {
     const { formData, cartStatus, modalPaymentMethod } = this.props;
 
@@ -474,7 +478,7 @@ export class _PaymentPanel extends BasePanel {
     const { formData } = this.props;
 
     return {
-      email: formData['customer.email'],
+      email: formData['payment.email'] || formData['customer.email'],
       phone: formData['customer.mobile'],
     };
   }
@@ -793,6 +797,17 @@ export class _PaymentPanel extends BasePanel {
                 </Form.Group>
               </Col>
             </Form.Row>
+        }
+
+        {this.showXenditCardEmailField() &&
+          <Form.Row>
+            <Col>
+              <Form.Group controlId="paymentEmail">
+                <Label required>{t('card-email', 'Cardholder Email')}</Label>
+                <TextInput field="payment.email" />
+              </Form.Group>
+            </Col>
+          </Form.Row>
         }
 
         <Form.Row>

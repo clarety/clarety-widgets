@@ -4,8 +4,9 @@ import { connect, Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import i18next from 'i18next';
 import BlockUi from 'react-block-ui';
-import { setStatus, setPanels, setStore, updateAppSettings, initTrackingData, fetchSettings } from 'shared/actions';
-import { PanelManager } from 'shared/components';
+import { setStatus, setPanels, setStore, updateAppSettings, initTrackingData, fetchSettings, initPaymentGateways, onCancelPaymentAuth } from 'shared/actions';
+import { getPaymentAuthModalUrl } from 'shared/selectors';
+import { PanelManager, PaymentAuthModal } from 'shared/components';
 import { Resources } from 'shared/utils';
 import { ClaretyApi } from 'shared/utils/clarety-api';
 import { Recaptcha } from 'form/components';
@@ -50,7 +51,7 @@ export class _UpdatePaymentDetailsWidgetRoot extends React.Component {
 
     i18next.init();
 
-    const { updateAppSettings, initTrackingData, setStatus, setStore, fetchSettings, storeUid } = this.props;
+    const { updateAppSettings, initTrackingData, setStatus, setStore, fetchSettings, storeUid, initPaymentGateways } = this.props;
 
     updateAppSettings({
       widgetElementId: this.props.elementId,
@@ -67,6 +68,8 @@ export class _UpdatePaymentDetailsWidgetRoot extends React.Component {
     } else {
       updateAppSettings({ hasAuthError: true });
     }
+
+    initPaymentGateways();
 
     setStatus('ready');
     this.setState({ isInitialising: false });
@@ -97,6 +100,8 @@ export class _UpdatePaymentDetailsWidgetRoot extends React.Component {
   }
 
   render() {
+    const { isBusy, resources, reCaptchaKey, paymentAuthModalUrl } = this.props;
+
     // Show a loading indicator while we init.
     if (this.state.isInitialising) {
       return (
@@ -108,10 +113,17 @@ export class _UpdatePaymentDetailsWidgetRoot extends React.Component {
 
     return (
       <div className="clarety-update-payment-details-widget">
-        <BlockUi tag="div" blocking={this.props.isBusy} loader={<span></span>}>
-          <PanelManager layout="tabs" resources={this.props.resources} />
-          <Recaptcha siteKey={this.props.reCaptchaKey} language={i18next.language} />
+        <BlockUi tag="div" blocking={isBusy} loader={<span></span>}>
+          <PanelManager layout="tabs" resources={resources} />
+          <Recaptcha siteKey={reCaptchaKey} language={i18next.language} />
         </BlockUi>
+
+        {paymentAuthModalUrl &&
+          <PaymentAuthModal
+            url={paymentAuthModalUrl}
+            onCancel={onCancelPaymentAuth}
+          />
+        }
       </div>
     );
   }
@@ -120,6 +132,7 @@ export class _UpdatePaymentDetailsWidgetRoot extends React.Component {
 const mapStateToProps = (state) => {
   return {
     isBusy: state.status !== 'ready',
+    paymentAuthModalUrl: getPaymentAuthModalUrl(state),
   };
 };
 
@@ -129,6 +142,7 @@ const actions = {
   setStatus: setStatus,
   setStore: setStore,
   fetchSettings: fetchSettings,
+  initPaymentGateways: initPaymentGateways,
 };
 
 const UpdatePaymentDetailsWidgetRoot = connect(mapStateToProps, actions)(_UpdatePaymentDetailsWidgetRoot);

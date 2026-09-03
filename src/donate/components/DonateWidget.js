@@ -205,7 +205,7 @@ export class _DonateWidgetRoot extends React.Component {
   }
 
   render() {
-    const { status, reCaptchaKey, showStepIndicator, paymentAuthModalUrl, closePaymentAuthModal } = this.props;
+    const { status, reCaptchaKey, showStepIndicator, paymentAuthModalUrl } = this.props;
     const layout = this.props.layout || 'tabs';
     const variant = this.props.variant || '';
 
