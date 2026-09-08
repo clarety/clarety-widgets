@@ -107,7 +107,7 @@ export const initTrackingData = (widgetProps) => {
       sourceId:         widgetProps.sourceId,
       sourceUid:        widgetProps.sourceUid,
       sourceAdditional: widgetProps.sourceAdditional,
-      sendResponseUid:  widgetProps.responseId || urlParams.get('clarety_responseid'),
+      sendResponseUid:  widgetProps.responseId || urlParams.get('clarety_response_uid'),
       emailResponseUid: widgetProps.emailResponseId || urlParams.get('clarety_source'),
       sourceUrl:        window.location.href,
       utm: {
