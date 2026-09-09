@@ -305,7 +305,7 @@ const handlePaymentComplete = (result, paymentData, paymentMethod) => {
     const state = getState();
     const confirmPageMode = getSetting(state, 'confirmPageMode') || 'redirect';
 
-    let confirmPageUrl = result.offerConfirmationPageUrl;
+    let confirmPageUrl = result.confirmPageUrl;
     
     if (!confirmPageUrl) {
       confirmPageUrl = getSetting(state, 'confirmPageUrl');
