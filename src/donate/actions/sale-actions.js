@@ -305,16 +305,13 @@ const handlePaymentComplete = (result, paymentData, paymentMethod) => {
     const state = getState();
     const confirmPageMode = getSetting(state, 'confirmPageMode') || 'redirect';
 
-    let confirmPageUrl;
-    const getConfirmPageUrl = getSetting(state, 'getConfirmPageUrl');
+    let confirmPageUrl = result.confirmPageUrl;
     
-    if (getConfirmPageUrl) {
-      confirmPageUrl = getConfirmPageUrl(state);
-    }
     if (!confirmPageUrl) {
       confirmPageUrl = getSetting(state, 'confirmPageUrl');
     }
-    
+
+
     dispatch(makePaymentSuccess(result));
     dispatch(updateCartData({ items: result.salelines }));
 
