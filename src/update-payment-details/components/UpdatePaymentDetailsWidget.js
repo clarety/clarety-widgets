@@ -4,13 +4,15 @@ import { connect, Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import i18next from 'i18next';
 import BlockUi from 'react-block-ui';
-import { setStatus, setPanels, setStore, updateAppSettings, initTrackingData, fetchSettings } from 'shared/actions';
+import { setStatus, setAuth, setPanels, setStore, updateAppSettings, initTrackingData, fetchSettings } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { Resources } from 'shared/utils';
 import { ClaretyApi } from 'shared/utils/clarety-api';
 import { Recaptcha } from 'form/components';
 import { rootReducer } from 'update-payment-details/reducers';
 import { settingsMap } from 'update-payment-details/utils';
+import { getJwtAccount} from 'shared/utils';
+
 
 export class UpdatePaymentDetailsWidget extends React.Component {
   static store;
@@ -73,6 +75,15 @@ export class _UpdatePaymentDetailsWidgetRoot extends React.Component {
   }
 
   async findAndAttemptAuth() {
+    const {setAuth} = this.props
+    const jwtAccount = getJwtAccount();
+    
+    if (jwtAccount) {
+      ClaretyApi.setAuth(jwtAccount.jwtString);
+      setAuth(jwtAccount.jwtString);
+      return true;
+    }
+
     // Check for action auth key in widget props.
     let actionKey = this.props.actionKey;
 
@@ -86,7 +97,7 @@ export class _UpdatePaymentDetailsWidgetRoot extends React.Component {
     if (actionKey) {
       const response = await ClaretyApi.get('update-payment-details/action-auth', { actionKey });
       const actionAuth = response[0] || null;
-  
+      
       if (actionAuth?.jwtCustomer) {
         ClaretyApi.setJwtCustomer(actionAuth.jwtCustomer);
         return true;
@@ -129,6 +140,7 @@ const actions = {
   setStatus: setStatus,
   setStore: setStore,
   fetchSettings: fetchSettings,
+  setAuth: setAuth,
 };
 
 const UpdatePaymentDetailsWidgetRoot = connect(mapStateToProps, actions)(_UpdatePaymentDetailsWidgetRoot);
