@@ -209,6 +209,10 @@ export class _PaymentPanel extends BasePanel {
       requiredField(errors, formData, 'payment.cardLastName');
     }
 
+    if (this.showXenditCardEmailField()) {
+      requiredField(errors, formData, 'payment.email');
+    }
+
     cardNumberField(errors, formData, 'payment.cardNumber');
     cardExpiryField(errors, formData, 'payment.cardExpiry', 'payment.cardExpiryMonth', 'payment.cardExpiryYear');
     ccvField(errors, formData, 'payment.cardSecurityCode');
