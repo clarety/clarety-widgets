@@ -36,8 +36,12 @@ export class BasePanel extends React.Component {
   }
 
   scrollIntoView() {
-    scrollIntoView(this);
-    parent.postMessage({ scrollIntoView: true }, '*');
+    const isInIframe = window.self !== window.top;
+    if (isInIframe) {
+      window.parent.postMessage({ scrollIntoView: true }, '*');
+    } else {
+      scrollIntoView(this);
+    }
   }
 
   render() {
