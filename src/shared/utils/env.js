@@ -7,7 +7,10 @@ export function getEnv() {
   if (url.startsWith('dev-'))      return 'dev';
   
   if (url.startsWith('stage-'))    return 'stage';
+  if (url.includes('stage-selfservice.claretyconnect.com')) return 'stage';
+
   if (url.startsWith('test-'))     return 'test';
+  if (url.includes('test-selfservice.claretyconnect.com')) return 'test';
 
   return 'prod';
 }
