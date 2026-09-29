@@ -7,7 +7,7 @@ import { setFormData, setErrors, updateFormData } from 'form/actions';
 import { executeRecaptcha, currentTurnstileToken } from 'form/components';
 import { DonationApi } from 'donate/utils';
 import { types, addDonationToCart, addCustomerToCart, setDonationStartDate, selectAmount, selectSchedule, selectFrequency, selectDefaultECard } from 'donate/actions';
-import { getStoreUid, getPaymentMethod, getCreateSalePostData, getPaymentPostData, getSelectedFrequency } from 'donate/selectors';
+import { getStoreUid, getPaymentMethod, getCreateSalePostData, getPaymentPostData, getDonationFrequency } from 'donate/selectors';
 
 export const fetchIncompleteSale = () => {
   return async (dispatch, getState) => {
@@ -201,7 +201,7 @@ export const makePayment = (paymentData) => {
     dispatch(setDonationStartDate());
 
     const paymentMethod = getPaymentMethod(state, paymentData.type, paymentData.gateway);
-    const frequency = getSelectedFrequency(state);
+    const frequency = getDonationFrequency(state);
 
     // Prepare payment.
     const prepared = await dispatch(preparePayment(paymentData, paymentMethod, frequency));

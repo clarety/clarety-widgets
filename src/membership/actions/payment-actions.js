@@ -6,7 +6,7 @@ import { isHongKongDirectDebit, isStripe } from 'shared/utils';
 import { setErrors, updateFormData } from 'form/actions';
 import { executeRecaptcha } from 'form/components';
 import { types } from 'donate/actions';
-import { getStoreUid, getPaymentMethod, getSelectedFrequency } from 'donate/selectors';
+import { getStoreUid, getPaymentMethod, getDonationFrequency } from 'donate/selectors';
 import { MembershipApi } from 'membership/utils';
 import { getPaymentPostData } from 'membership/selectors';
 
@@ -26,7 +26,7 @@ export const makePayment = (paymentData) => {
     }
 
     const paymentMethod = getPaymentMethod(state, paymentData.type);
-    const frequency = getSelectedFrequency(state);
+    const frequency = getDonationFrequency(state);
 
     // Prepare payment.
     const prepared = await dispatch(preparePayment(paymentData, paymentMethod, frequency));
