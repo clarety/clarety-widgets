@@ -16,6 +16,7 @@ export const getGivingTypeOptions = (state) => getSetting(state, 'givingTypeOpti
 
 export const getCustomerHasProfile = (state) => getSetting(state, 'customerHasProfile');
 
+/** NOTE: prefer getDonationFrequency, as the frequency may change after the donation panel (eg, via upsell) */
 export const getSelectedFrequency = (state) => getDonationPanel(state).frequency;
 
 export const getStoreUid = (state) => getCart(state).store;
@@ -124,7 +125,7 @@ export const getSelectedOffer = (state) => {
 
 export const getDonationStartDate = (state) => {
   const formData = getFormData(state);
-  const frequency = getSelectedFrequency(state);
+  const frequency = getDonationFrequency(state);
   const paymentMethod = getSelectedPaymentMethod(state);
 
   if (frequency === 'recurring' && !!paymentMethod.startDates) {
@@ -166,7 +167,7 @@ export const getPaymentMethods = (state) => {
   const paymentMethods = getSetting(state, 'paymentMethods') || [];
 
   // Filter available methods for selected frequency.
-  const frequency = getSelectedFrequency(state);
+  const frequency = getDonationFrequency(state);
   return paymentMethods.filter(paymentMethod => {
     if (paymentMethod.singleOnly && frequency !== 'single') return false;
     if (paymentMethod.recurringOnly && frequency !== 'recurring') return false;
