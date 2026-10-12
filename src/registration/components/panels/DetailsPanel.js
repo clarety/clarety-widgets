@@ -213,7 +213,7 @@ export class DetailsPanel extends BasePanel {
   }
 
   validateFields(errors) {
-    const { eventDate, minAge, maxAge, waveOptions, settings } = this.props;
+    const { eventDate, minAge, maxAge, waveOptions, addOns, settings } = this.props;
     const { formData } = this.state;
 
     this.validateRequired('customer.firstName', formData, errors);
@@ -249,6 +249,19 @@ export class DetailsPanel extends BasePanel {
 
     if (waveOptions.length > 1)  {
       this.validateRequired('waveProductId', formData, errors);
+    }
+
+    if (addOns && settings.addOnsInputType === 'select') {
+      // when displaying as select, ensure either true or false has been selected.
+      for (const addOn of addOns) {
+        const field = `addOns.${addOn.offerId}`;
+        if (formData[field] === undefined) {
+          errors.push({
+            field: field,
+            message: t('validation.required', 'This is a required field'),
+          });
+        } 
+      }
     }
     
     this.validateExtendFields(errors);
