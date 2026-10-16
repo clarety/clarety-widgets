@@ -11,6 +11,22 @@ export class _PaymentDetailsPanel extends BasePaymentPanel {
     return t('payment-details.title', 'Update Payment Details');
   }
 
+  getStripeCustomerInfo() {
+    const { customerName, billingAddress } = this.props;
+    
+    return {
+      name: customerName,
+      address: {
+        line1: billingAddress?.address1,
+        line2: billingAddress?.address2,
+        city: billingAddress?.suburb,
+        state: billingAddress?.state,
+        country: billingAddress?.country,
+        postal_code: billingAddress?.postcode,
+      },
+    };
+  }
+
   renderContent() {
     const { layout, isBusy, formData } = this.props;
 
@@ -54,6 +70,8 @@ export class _PaymentDetailsPanel extends BasePaymentPanel {
   }
 
   renderStripePaymentForm(paymentMethod) {
+    const { settings } = this.props;
+
     return (
       <StripePaymentForm
         paymentMethod={paymentMethod}
@@ -69,6 +87,7 @@ export class _PaymentDetailsPanel extends BasePaymentPanel {
             }
           }
         }}
+        hideCountry={settings.hideStripePaymentFormCountry}
       />
     );
   }

@@ -21,6 +21,8 @@ export class PaymentDetailsConnect {
       cartStatus: getCart(state).status,
       authSecret: getCart(state).authSecret,
       stripeMode: 'setup',
+      customerName: getSetting(state, 'customerName'),
+      billingAddress: getSetting(state, 'billingAddress'),
     };
   };
 
