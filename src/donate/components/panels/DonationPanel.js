@@ -14,6 +14,15 @@ export class DonationPanel extends BasePanel {
     if (upsellEnabled) resetRgUpsell();
   }
 
+  onShowPanel() {
+    super.onShowPanel();
+
+    const { googleEcommerceEnabled, dispatchGoogleEcommerceEvent } = this.props;
+    if (googleEcommerceEnabled) {
+      dispatchGoogleEcommerceEvent('view_item_list');
+    }
+  }
+
   onSelectSchedule = (offerPaymentUid) => {
     this.props.selectSchedule(offerPaymentUid);
   };
@@ -33,6 +42,7 @@ export class DonationPanel extends BasePanel {
     event.preventDefault();
 
     const { onSubmit, nextPanel, layout, isPreview, upsellEnabled, maybeShowRgUpsell } = this.props;
+    const { googleEcommerceEnabled, dispatchGoogleEcommerceEvent } = this.props;
 
     if (layout === 'page') return;
     if (isPreview) return nextPanel();
@@ -48,6 +58,10 @@ export class DonationPanel extends BasePanel {
 
     if (upsellEnabled) {
       maybeShowRgUpsell();
+    }
+
+    if (googleEcommerceEnabled) {
+      dispatchGoogleEcommerceEvent('add_to_cart');
     }
 
     nextPanel();

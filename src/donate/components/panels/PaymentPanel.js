@@ -9,6 +9,15 @@ import { createStartDateOptions } from 'donate/utils';
 import { CoverFeesCheckbox } from 'donate/components';
 
 export class _PaymentPanel extends BasePaymentPanel {
+  onShowPanel() {
+    super.onShowPanel();
+
+    const { googleEcommerceEnabled, dispatchGoogleEcommerceEvent } = this.props;
+    if (googleEcommerceEnabled) {
+      dispatchGoogleEcommerceEvent('begin_checkout');
+    }
+  }
+
   shouldShowStartDate(paymentMethod) {
     const { frequency, settings } = this.props;
 

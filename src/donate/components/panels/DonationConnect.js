@@ -5,6 +5,7 @@ import { setErrors, setFormData } from 'form/actions';
 import { getSelectedAmount, getGivingTypeOptions, getIsRgUpsellEnabled } from 'donate/selectors';
 import { selectAmount, selectSchedule, addDonationToCart, resetRgUpsell } from 'donate/actions';
 import { maybeShowRgUpsell } from 'donate/actions/rg-upsell-maybe-show-action';
+import { dispatchGoogleEcommerceEvent } from 'donate/actions/google-ecommerce';
 
 export class DonationConnect {
   static mapStateToProps = (state) => {
@@ -22,6 +23,7 @@ export class DonationConnect {
       variant: getSetting(state, 'variant'),
       currency: getCurrency(state),
       upsellEnabled: getIsRgUpsellEnabled(state),
+      googleEcommerceEnabled: getSetting(state, 'googleEcommerceEnabled'),
     };
   };
 
@@ -34,5 +36,6 @@ export class DonationConnect {
     setErrors: setErrors,
     maybeShowRgUpsell: maybeShowRgUpsell,
     resetRgUpsell: resetRgUpsell,
+    dispatchGoogleEcommerceEvent: dispatchGoogleEcommerceEvent,
   };
 }
