@@ -100,6 +100,7 @@ export class _DonateWidgetRoot extends React.Component {
       reCaptchaKey:         this.props.reCaptchaKey,
       turnstileSiteKey:     this.props.turnstileSiteKey,
       eCardsMode:           this.props.eCardsMode,
+      googleEcommerceEnabled: !!this.props.googleEcommerceEnabled,
       
       ...this.props,
     });

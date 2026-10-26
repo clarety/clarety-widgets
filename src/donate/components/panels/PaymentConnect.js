@@ -3,6 +3,7 @@ import { getFormData, getErrors } from 'form/selectors';
 import { updateFormData, setErrors } from 'form/actions';
 import { getIsBusy, getPaymentMethods, getScheduleLabel, getDonationAmount, getDonationFrequency } from 'donate/selectors';
 import { makePayment, cancelPaymentAuthorise } from 'donate/actions';
+import { dispatchGoogleEcommerceEvent } from 'donate/actions/google-ecommerce';
 
 export class PaymentConnect {
   static mapStateToProps = (state, ownProps) => {
@@ -22,6 +23,7 @@ export class PaymentConnect {
       errors: getErrors(state),
       variant: getSetting(state, 'variant'),
       turnstileSiteKey: getSetting(state, 'turnstileSiteKey'),
+      googleEcommerceEnabled: getSetting(state, 'googleEcommerceEnabled'),
     };
   };
 
@@ -31,5 +33,6 @@ export class PaymentConnect {
     cancelPaymentAuthorise: cancelPaymentAuthorise,
     updateFormData: updateFormData,
     setErrors: setErrors,
+    dispatchGoogleEcommerceEvent: dispatchGoogleEcommerceEvent,
   };
 }

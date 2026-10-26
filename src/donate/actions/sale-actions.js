@@ -7,6 +7,7 @@ import { setFormData, setErrors, updateFormData } from 'form/actions';
 import { executeRecaptcha, currentTurnstileToken } from 'form/components';
 import { DonationApi } from 'donate/utils';
 import { types, addDonationToCart, addCustomerToCart, setDonationStartDate, selectAmount, selectSchedule, selectFrequency, selectDefaultECard } from 'donate/actions';
+import { dispatchGoogleEcommerceEvent } from 'donate/actions/google-ecommerce';
 import { getStoreUid, getPaymentMethod, getCreateSalePostData, getPaymentPostData, getDonationFrequency } from 'donate/selectors';
 
 export const fetchIncompleteSale = () => {
@@ -314,6 +315,10 @@ const handlePaymentComplete = (result, paymentData, paymentMethod) => {
 
     dispatch(makePaymentSuccess(result));
     dispatch(updateCartData({ items: result.salelines }));
+
+    if (getSetting(state, 'googleEcommerceEnabled')) {
+      dispatch(dispatchGoogleEcommerceEvent('purchase'));
+    }
 
     if (confirmPageUrl) {      
       if (confirmPageMode === 'redirect' || confirmPageMode === 'redirect-iframe-parent') {
