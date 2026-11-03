@@ -209,6 +209,12 @@ export const getPaymentPostData = (state) => {
   };
 };
 
+export const getProcessingPaymentPostData = (state) => {
+  const postData = getPaymentPostData(state);
+  postData.payment.clientStatus = 'processing';
+  return postData;
+};
+
 const getFundraisingData = (state, formData) => {
   const pageUid = getSetting(state, 'fundraisingPageUid');
   if (!pageUid) return undefined;
