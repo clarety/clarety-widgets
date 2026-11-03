@@ -1,5 +1,10 @@
 import { AuBankAccountElement, CardNumberElement } from '@stripe/react-stripe-js';
+import Cookies from 'js-cookie';
 import { isStripePaymentForm, isStripeBecs } from 'shared/utils';
+import { ClaretyApi } from 'shared/utils/clarety-api';
+import { getCart, getCurrency, getSetting } from 'shared/selectors';
+import { DonationApi } from 'donate/utils';
+import { getProcessingPaymentPostData } from 'donate/selectors';
 
 export const prepareStripePayment = (paymentData, paymentMethod, frequency) => {
   return async (dispatch, getState) => {
@@ -55,6 +60,77 @@ export const authoriseStripePayment = (paymentResult, paymentData, paymentMethod
     };
 
     return { payment };
+  };
+};
+
+export const makeGatewayV2StripePayment = (paymentData, paymentMethod, frequency) => {
+  return async (dispatch, getState) => {
+    const { stripe, elements } = paymentData;
+    const state = getState();
+    const cart = getCart(state);
+    const currency = getCurrency(state);
+
+    const elementsResult = await elements.submit();
+    if (elementsResult.error) {
+      return {
+        validationErrors: [{ message: elementsResult.error.message }],
+      }
+    }
+
+    // fetch a payment intent.
+    const paymentSession = await DonationApi.createPaymentSession(cart.jwt, paymentMethod.account, paymentMethod.type, currency.code);
+    if (!paymentSession || !paymentSession.paymentIntentClientSecret) {
+      return {
+        validationErrors: [{ message: 'Something went wrong' }],
+      }
+    }
+
+    // set payment status to 'processing'.
+    const processingPaymentPostData = getProcessingPaymentPostData(state);
+    processingPaymentPostData.payment.type = 'gateway';
+    processingPaymentPostData.payment.gatewayAccount = paymentMethod.account;
+    processingPaymentPostData.payment.gatewayPaymentMethod = isStripePaymentForm(paymentMethod) ? elementsResult.selectedPaymentMethod : paymentMethod.type;
+    if (processingPaymentPostData.payment.gatewayPaymentMethod === 'apple_pay') {
+      processingPaymentPostData.payment.gatewayPaymentMethod = 'wallet';
+      processingPaymentPostData.payment.walletType = 'apple-pay';
+    }
+    if (processingPaymentPostData.payment.gatewayPaymentMethod === 'google_pay') {
+      processingPaymentPostData.payment.gatewayPaymentMethod = 'wallet';
+      processingPaymentPostData.payment.walletType = 'google-pay';
+    }
+    if (processingPaymentPostData.payment.gatewayPaymentMethod === 'link') {
+      processingPaymentPostData.payment.gatewayPaymentMethod = 'wallet';
+      processingPaymentPostData.payment.walletType = 'stripe-link';
+    }
+    processingPaymentPostData.payment.currency = paymentData.currency;
+    processingPaymentPostData.payment.gatewayReference = paymentSession.paymentIntentId;
+    const processingPaymentResults = await ClaretyApi.post('donations/', processingPaymentPostData);
+    const processingPaymentResult = processingPaymentResults[0];
+    if (processingPaymentResult.status === 'error') {
+      return {
+        validationErrors: [{ message: 'Something went wrong' }],
+      }
+    }
+
+    if (window.location.protocol === 'https:') {
+      Cookies.set('session-jwt', cart.jwt, { sameSite: 'none', secure: true });
+    } else {
+      Cookies.set('session-jwt', cart.jwt);
+    }
+    Cookies.set('session-jwt-source', window.location.href);
+
+    // NOTE: expect a redirect to happen during confirmPayment.
+    // Any code after this will only be reached if there is an immediate error when confirming the payment.
+    const result = await stripe.confirmPayment({
+      elements,
+      clientSecret: paymentSession.paymentIntentClientSecret,
+      confirmParams: {
+        return_url: getSetting(state, 'confirmPageUrl'),
+      },
+    });
+
+    const validationErrors = [{ message: result.error?.message || "An unexpected error occurred." }];
+    return { validationErrors };
   };
 };
 
@@ -140,8 +216,8 @@ const createStripePaymentMethod = async (paymentData, paymentMethod) => {
   return {
     error: result.error,
     token: result.paymentMethod ? result.paymentMethod.id : undefined,
+    type: result.paymentMethod ? result.paymentMethod.type : undefined,
   };
-
 }
 
 function getStripeBillingDetails(paymentData) {

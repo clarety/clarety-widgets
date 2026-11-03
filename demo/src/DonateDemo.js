@@ -43,6 +43,7 @@ window.renderDonateWidget = async (props) => {
         showCountry: true,
         showCustomerType: true,
         showCustomerSubType: true,
+        requireAddress: false,
         //showTitle:true,
       },
     },
@@ -88,6 +89,8 @@ export default class DonateDemo extends React.Component {
       singleOfferId: '8',
       recurringOfferId: '17',
 
+      paymentGatewayVersion: { major: 2, minor: 0 },
+
       // tnc
       // storeUid: 'str_oymo',
       // singleOfferId: '8',
@@ -131,7 +134,7 @@ export default class DonateDemo extends React.Component {
       //     "Other"
       // ],
 
-      // reCaptchaKey: '1234',
+      reCaptchaKey: '1234',
 
       showStepIndicator: true,
 

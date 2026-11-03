@@ -1,8 +1,8 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { statuses, setStatus, setRecaptcha, clearRecaptcha, setTurnstileToken, setPayment, updatePayment, setCustomer, updateCartData, prepareStripePayment, authoriseStripePayment, updateAppSettings, setPanelStatus, jumpToPanel } from 'shared/actions';
-import { getSetting, getPanelManager } from 'shared/selectors';
-import { isHkDirectDebit, isStripe, isXendit, splitName, convertCountry } from 'shared/utils';
+import { statuses, setStatus, setRecaptcha, clearRecaptcha, setTurnstileToken, setPayment, updatePayment, setCustomer, updateCartData, prepareStripePayment, authoriseStripePayment, makeGatewayV2StripePayment, updateAppSettings, setPanelStatus, jumpToPanel } from 'shared/actions';
+import { getSetting, getPanelManager, getCurrency } from 'shared/selectors';
+import { isHkDirectDebit, isStripe, isXendit, splitName, convertCountry, PaymentGatewayVersion } from 'shared/utils';
 import { setFormData, setErrors, updateFormData } from 'form/actions';
 import { executeRecaptcha, currentTurnstileToken } from 'form/components';
 import { DonationApi } from 'donate/utils';
@@ -24,9 +24,9 @@ export const fetchIncompleteSale = () => {
       return;
     }
 
-    // Ensure sale is incomplete.
-    if (result.status !== 'incomplete') {
-      console.warn('[Clarety] Fetched donation is not incomplete');
+    // Ensure sale is incomplete or pending.
+    if (result.status !== 'incomplete' && result.status !== 'pending') {
+      console.warn('[Clarety] Fetched donation is not incomplete or pending');
       return;
     }
 
@@ -168,6 +168,11 @@ export const makePayment = (paymentData) => {
   return async (dispatch, getState) => {
     const state = getState();
 
+    if (!paymentData.currency) {
+      const currency = getCurrency(state);
+      paymentData.currency = currency.code;
+    }
+
     if (state.status !== statuses.ready) return false;
     dispatch(setStatus(statuses.busy));
 
@@ -203,16 +208,26 @@ export const makePayment = (paymentData) => {
     const paymentMethod = getPaymentMethod(state, paymentData.type, paymentData.gateway);
     const frequency = getSelectedFrequency(state);
 
-    // Prepare payment.
-    const prepared = await dispatch(preparePayment(paymentData, paymentMethod, frequency));
-    if (!prepared) return false;
+    if (PaymentGatewayVersion.min(2, 0) && isStripe(paymentMethod)) {
+      // gateway v2 stripe payment.
+      const result = await dispatch(makeGatewayV2StripePayment(paymentData, paymentMethod, frequency));
+      if (result.validationErrors) {
+        dispatch(setErrors(result.validationErrors));
+        dispatch(setStatus(statuses.ready));
+        return false;
+      }
+    } else {
+      // Prepare payment.
+      const prepared = await dispatch(preparePayment(paymentData, paymentMethod, frequency));
+      if (!prepared) return false;
 
-    // Attempt payment.
-    const result = await dispatch(attemptPayment(paymentData, paymentMethod));
-    if (!result) return false;
+      // Attempt payment.
+      const result = await dispatch(attemptPayment(paymentData, paymentMethod));
+      if (!result) return false;
 
-    // Handle result.
-    return await dispatch(handlePaymentResult(result, paymentData, paymentMethod));
+      // Handle result.
+      return await dispatch(handlePaymentResult(result, paymentData, paymentMethod));
+    }
   };
 };
 
@@ -333,12 +348,7 @@ const handlePaymentComplete = (result, paymentData, paymentMethod) => {
   return async (dispatch, getState) => {
     const state = getState();
     const confirmPageMode = getSetting(state, 'confirmPageMode') || 'redirect';
-
-    let confirmPageUrl = result.confirmPageUrl;
-    
-    if (!confirmPageUrl) {
-      confirmPageUrl = getSetting(state, 'confirmPageUrl');
-    }
+    const confirmPageUrl = result.confirmPageUrl || getSetting(state, 'confirmPageUrl');
     
     dispatch(makePaymentSuccess(result));
     dispatch(updateCartData({ items: result.salelines }));

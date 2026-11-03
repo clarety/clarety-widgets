@@ -2,7 +2,7 @@ import React from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, ElementsConsumer } from '@stripe/react-stripe-js';
 import { getLanguage } from 'shared/translations';
-import { isStripe, isStripePaymentForm, toCents } from 'shared/utils';
+import { isStripe, isStripePaymentForm, toCents, PaymentGatewayVersion } from 'shared/utils';
 
 export const injectStripe = (PaymentPanelComponent) => {
   class PaymentPanel extends React.Component {
@@ -42,6 +42,25 @@ export const injectStripe = (PaymentPanelComponent) => {
       return paymentMethods.find(method => isStripe(method));
     }
 
+    getStripePaymentFormPaymentMethodTypes(paymentMethod) {
+      const { frequency } = this.props;
+
+      const settings = PaymentGatewayVersion.min(2, 0)
+        ? paymentMethod.additionalSettings
+        : paymentMethod;
+
+      if (frequency) {
+        // donations allow different payment types depending on frequency.
+        if (frequency === 'recurring') {
+          return settings.recurringPaymentTypes;
+        } else {
+          return settings.singlePaymentTypes;
+        }
+      }
+
+      return settings.allowedPaymentTypes;
+    }
+
     render() {
       const { forwardedRef, ...props } = this.props;
 
@@ -57,6 +76,9 @@ export const injectStripe = (PaymentPanelComponent) => {
       if (isStripePaymentForm(paymentMethod)) {
         options.mode = this.props.stripeMode || 'payment';
         options.paymentMethodCreation = 'manual';
+        if (this.props.frequency === 'recurring') {
+          options.setupFutureUsage = 'off_session';
+        }
 
         if (options.mode === 'payment') {
           options.currency = this.props.currency.toLowerCase();
@@ -65,16 +87,7 @@ export const injectStripe = (PaymentPanelComponent) => {
           options.amount = toCents(dollarAmount);
         }
 
-        if (this.props.frequency) {
-          // donations allow different payment types depending on frequency.
-          if (this.props.frequency === 'recurring') {
-            options.paymentMethodTypes = paymentMethod.recurringPaymentTypes;
-          } else {
-            options.paymentMethodTypes = paymentMethod.singlePaymentTypes;
-          }
-        } else {
-          options.paymentMethodTypes = paymentMethod.allowedPaymentTypes;
-        }
+        options.paymentMethodTypes = this.getStripePaymentFormPaymentMethodTypes(paymentMethod);
 
         if (paymentMethod.customPaymentTypes) {
           options.customPaymentMethods = paymentMethod.customPaymentTypes.map(customPaymentType => ({

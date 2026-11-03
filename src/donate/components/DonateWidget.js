@@ -9,7 +9,7 @@ import 'react-block-ui/style.css';
 import { statuses, setStore, initTrackingData, fetchSettings, updateAppSettings, setPanels, removePanels, setApiCampaignUids, initPaymentGateways, onCancelPaymentAuth } from 'shared/actions';
 import { getPaymentAuthModalUrl } from 'shared/selectors';
 import { PanelManager, StepIndicator, PaymentAuthModal } from 'shared/components';
-import { getJwtCustomer, getJwtAccount, Resources, convertOptions, setApiFacebookCookies, PaymentGatewayVersion } from 'shared/utils';
+import { getJwtCustomer, getJwtAccount, Resources, convertOptions, setApiFacebookCookies, PaymentGatewayVersion, getJwtSession } from 'shared/utils';
 import { Recaptcha } from 'form/components';
 import { handleAmountUrlParam, selectDefaultECard, selectFrequency } from 'donate/actions';
 import { rootReducer } from 'donate/reducers';
@@ -164,6 +164,8 @@ export class _DonateWidgetRoot extends React.Component {
       hasSaleAuth: false,
     };
 
+    const urlParams = new URLSearchParams(window.location.search);
+
     // Check for jwt account cookie.
     const jwtAccount = getJwtAccount();
     if (jwtAccount && jwtAccount.jwtString) {
@@ -181,7 +183,7 @@ export class _DonateWidgetRoot extends React.Component {
     }
 
     // Check for action auth.
-    const actionKey = new URLSearchParams(window.location.search).get('clarety_action');
+    const actionKey = urlParams.get('clarety_action');
     if (actionKey) {
       const actionAuth = await DonationApi.actionAuth(actionKey);
       if (actionAuth) {
@@ -198,6 +200,18 @@ export class _DonateWidgetRoot extends React.Component {
           authResult.hasSaleAuth = true;
           return authResult;
         }
+      }
+    }
+
+    // Check for payment-failed flag in url.
+    if (urlParams.get('payment-failed') === '1') {
+      // a payment flow using a redirect has failed, and the user has been redirected back to try again.
+      const jwtSession = getJwtSession()
+      if (jwtSession && jwtSession.jwtString) {
+        DonationApi.setJwtSession(jwtSession.jwtString);
+        authResult.hasCustomerAuth = true;
+        authResult.hasSaleAuth = true;
+        return authResult;
       }
     }
 
