@@ -1,12 +1,12 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { statuses, setStatus, setRecaptcha, clearRecaptcha, setTurnstileToken, setPayment, updatePayment, setCustomer, updateCartData, prepareStripePayment, authoriseStripePayment, makeGatewayV2StripePayment, updateAppSettings, setPanelStatus, jumpToPanel } from 'shared/actions';
+import { statuses, setStatus, setRecaptcha, clearRecaptcha, setTurnstileToken, setPayment, updatePayment, setCustomer, updateCartData, prepareStripePayment, authoriseStripePayment, updateAppSettings, setPanelStatus, jumpToPanel } from 'shared/actions';
 import { getSetting, getPanelManager, getCurrency } from 'shared/selectors';
 import { isHkDirectDebit, isStripe, isXendit, splitName, convertCountry, PaymentGatewayVersion } from 'shared/utils';
 import { setFormData, setErrors, updateFormData } from 'form/actions';
 import { executeRecaptcha, currentTurnstileToken } from 'form/components';
 import { DonationApi } from 'donate/utils';
-import { types, addDonationToCart, addCustomerToCart, setDonationStartDate, selectAmount, selectSchedule, selectFrequency, selectDefaultECard, prepareXenditPayment, authoriseXenditPayment } from 'donate/actions';
+import { types, addDonationToCart, addCustomerToCart, setDonationStartDate, selectAmount, selectSchedule, selectFrequency, selectDefaultECard, prepareXenditPayment, authoriseXenditPayment, makeGatewayV2StripeDonationPayment } from 'donate/actions';
 import { getStoreUid, getPaymentMethod, getCreateSalePostData, getPaymentPostData, getSelectedFrequency } from 'donate/selectors';
 
 export const fetchIncompleteSale = () => {
@@ -209,8 +209,8 @@ export const makePayment = (paymentData) => {
     const frequency = getSelectedFrequency(state);
 
     if (PaymentGatewayVersion.min(2, 0) && isStripe(paymentMethod)) {
-      // gateway v2 stripe payment.
-      const result = await dispatch(makeGatewayV2StripePayment(paymentData, paymentMethod, frequency));
+      // gateway v2 stripe donation payment.
+      const result = await dispatch(makeGatewayV2StripeDonationPayment(paymentData, paymentMethod, frequency));
       if (result.validationErrors) {
         dispatch(setErrors(result.validationErrors));
         dispatch(setStatus(statuses.ready));

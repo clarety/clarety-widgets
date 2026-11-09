@@ -1,4 +1,4 @@
-import { getSetting } from 'shared/selectors';
+import { getSetting, getCurrency } from 'shared/selectors';
 import { getFormData, getErrors } from 'form/selectors';
 import { setErrors, updateFormData } from 'form/actions';
 import { submitRegistration, updateShipping } from 'registration/actions';
@@ -9,6 +9,7 @@ export class PaymentConnect {
     return {
       isBusy: state.status === 'busy',
       errors: getErrors(state),
+      currency: getCurrency(state).code,
       paymentMethods: getPaymentMethods(state),
       formData: getFormData(state),
       submitBtnTitle: 'Submit Registration',

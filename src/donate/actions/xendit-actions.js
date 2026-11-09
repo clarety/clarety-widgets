@@ -1,7 +1,7 @@
 import { isXenditCard, isXenditVirtualAccount } from 'shared/utils';
+import { ClaretyApi } from 'shared/utils/clarety-api';
 import { openPaymentAuthModal, closePaymentAuthModal } from 'shared/actions';
 import { getCart, getCurrency } from 'shared/selectors';
-import { DonationApi } from 'donate/utils';
 
 export const prepareXenditPayment = (paymentData, paymentMethod, frequency) => {
   return async (dispatch, getState) => {
@@ -11,7 +11,7 @@ export const prepareXenditPayment = (paymentData, paymentMethod, frequency) => {
 
     if (isXenditCard(paymentMethod)) {
       // fetch a payment session id.
-      const response = await DonationApi.createPaymentSession(cart.jwt, paymentMethod.account, paymentMethod.type, currency.code);
+      const response = await ClaretyApi.createPaymentSession(cart.jwt, paymentMethod.account, paymentMethod.type, currency.code);
       if (!response || !response.paymentSessionUid) {
         return {
           validationErrors: [{ message: 'Something went wrong' }],

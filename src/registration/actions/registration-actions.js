@@ -1,12 +1,37 @@
 import Cookies from 'js-cookie';
 import { getLanguage } from 'shared/translations';
-import { setPayment, prepareStripePayment, authoriseStripePayment, setStatus, statuses } from 'shared/actions';
+import { setPayment, prepareStripePayment, authoriseStripePayment, setStatus, statuses, removePanels, jumpToPanel } from 'shared/actions';
 import { getCart, getSetting } from 'shared/selectors';
-import { isStripe } from 'shared/utils';
+import { isStripe, PaymentGatewayVersion } from 'shared/utils';
 import { setErrors, clearErrors } from 'form/actions';
 import { getCreateRegistrationPostData, getSubmitRegistrationPostData, getPaymentMethod } from 'registration/selectors';
-import { types } from 'registration/actions';
+import { types, makeGatewayV2StripeRegistrationPayment, fetchFullEvent } from 'registration/actions';
 import { RegistrationApi } from 'registration/utils';
+
+export const fetchPendingRegistration = () => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    dispatch(setStatus('initializing'));
+
+    const result = await RegistrationApi.fetchPendingRegistration();
+    if (result && result.status !== 'error') {
+      dispatch(registrationCreateSuccess(result));
+      dispatch(setStatus('initializing'));
+      await dispatch(fetchFullEvent(result.eventId));
+      return true;
+    } else {
+      dispatch(setStatus('ready'));
+      return false;
+    }
+  };
+};
+
+export const showPaymentPanelOnly = () => {
+  return async (dispatch, getState) => {
+    dispatch(removePanels({ exceptForComponent: 'PaymentPanel' }));
+    dispatch(jumpToPanel({ component: 'PaymentPanel' }));
+  };
+};
 
 export const createRegistration = () => {
   return async (dispatch, getState) => {
@@ -56,19 +81,28 @@ export const submitRegistration = (paymentData) => {
     dispatch(setStatus(statuses.submitting));
 
     const state = getState();
-
     const paymentMethod = getPaymentMethod(state, paymentData.type);
 
-    // Prepare payment.
-    const prepared = await dispatch(preparePayment(paymentData, paymentMethod));
-    if (!prepared) return false;
+    if (PaymentGatewayVersion.min(2, 0) && isStripe(paymentMethod)) {
+      // gateway v2 stripe payment.
+      const result = await dispatch(makeGatewayV2StripeRegistrationPayment(paymentData, paymentMethod));
+      if (result.validationErrors) {
+        dispatch(registrationSubmitFailure(undefined));
+        dispatch(setErrors(result.validationErrors));
+        return false;
+      }
+    } else {
+      // Prepare payment.
+      const prepared = await dispatch(preparePayment(paymentData, paymentMethod));
+      if (!prepared) return false;
 
-    // Attempt payment.
-    const result = await dispatch(attemptPayment(paymentData, paymentMethod));
-    if (!result) return false;
+      // Attempt payment.
+      const result = await dispatch(attemptPayment(paymentData, paymentMethod));
+      if (!result) return false;
 
-    // Handle result.
-    return await dispatch(handlePaymentResult(result, paymentData, paymentMethod));
+      // Handle result.
+      return await dispatch(handlePaymentResult(result, paymentData, paymentMethod));
+    }
   };
 };
 

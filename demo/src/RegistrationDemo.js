@@ -15,10 +15,10 @@ async function renderRegistrations(props) {
   Registration.init();
   
   Registration.setClientIds({
-    // dev:  '82ee4a2479780256c9bf9b951f5d1cfb', // baseline
+    dev:  '82ee4a2479780256c9bf9b951f5d1cfb', // baseline
     // dev:  '60efcad7dc9df95cb418032c39565a79', // mdc
     // dev:  'ab0c9407ba7f0581ebc49fa787049e80', // a21
-    dev:  '9987567f7e7c62c4f8a50b48950370ca', // bhcc
+    // dev:  '9987567f7e7c62c4f8a50b48950370ca', // bhcc
     prod: '',
   });
   
@@ -47,7 +47,7 @@ async function renderRegistrations(props) {
       component: LoginPanel,
       connect: LoginConnect,
       settings: {
-        allowGuest: false,
+        allowGuest: true,
         createAccount: true,
         showFirstName: true,
         showLastName: true,
@@ -78,10 +78,10 @@ async function renderRegistrations(props) {
       connect: DetailsConnect,
       settings: {
         showBillingAddress: true,
-        showGender: true,
-        isGenderRequired: true,
-        isDobRequired: true,
-        isMobileRequired: true,
+        showGender: false,
+        isGenderRequired: false,
+        isDobRequired: false,
+        isMobileRequired: false,
         isAddressRequired: true,
       },
     },
@@ -133,6 +133,7 @@ export default class RegistrationDemo extends React.Component {
       // seriesId: '3',
       // prevSeriesId: '2',
       // donationSingleOfferId: '8',
+      confirmPageUrl: 'https://clarety-baseline.dev.claretycontrol.com/sites/site-com-au/register-confirm.php',
 
       // bhcc
       storeId: null,
@@ -140,6 +141,7 @@ export default class RegistrationDemo extends React.Component {
       seriesId: 3,
       // donationSingleOfferId: "37",
       feeOfferUid: 'ofr_8m0g',
+
       calcFeesFn: (amount) => amount * 0.05,
       sourceUid: null,
       responseId: null,
@@ -147,6 +149,9 @@ export default class RegistrationDemo extends React.Component {
       channel: 'rego',
       currencyCode: 'AUD',
       currencySymbol: '$',
+
+      paymentGatewayVersion: { major: 2, minor: 0 },
+
       
       // sourceId: '17',
       // responseId: 'e9c2e351d90b11e996fd',

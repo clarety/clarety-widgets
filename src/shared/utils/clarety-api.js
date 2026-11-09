@@ -77,6 +77,11 @@ export class ClaretyApi {
     return response.data;
   }
 
+  static async createPaymentSession(saleJwt, gatewayAccount, gatewayPaymentMethod, currency) {
+    const results = await ClaretyApi.post('payment-sessions/', { saleJwt, gatewayAccount, gatewayPaymentMethod, currency });
+    return results[0];
+  }
+
   static async get(endpoint, params) {
     if (!_api) this.init();
 

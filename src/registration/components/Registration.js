@@ -10,10 +10,11 @@ import { t } from 'shared/translations';
 import { statuses, setPanels, setClientIds, setAuth, initTrackingData, fetchSettings, updateAppSettings } from 'shared/actions';
 import { PanelManager } from 'shared/components';
 import { ClaretyApi } from 'shared/utils/clarety-api';
-import { Resources, getJwtAccount } from 'shared/utils';
+import { Resources, getJwtAccount, PaymentGatewayVersion, getJwtSession } from 'shared/utils';
+import { setErrors } from 'form/actions';
 import { SuggestedAmount, SuggestedAmountLg, VariableAmount, VariableAmountLg, SuggestedAmountPriceOnly } from 'donate/components';
 import { MiniCart, MiniCartBrand, BusyOverlay } from 'registration/components';
-import { fetchEvents, fetchFullEvent, fetchAuthCustomer, setFundraising } from 'registration/actions';
+import { fetchEvents, fetchFullEvent, fetchAuthCustomer, setFundraising, fetchPendingRegistration, showPaymentPanelOnly } from 'registration/actions';
 import { rootReducer } from 'registration/reducers';
 import { RegistrationApi } from 'registration/utils';
 
@@ -67,9 +68,12 @@ export class Registration extends React.Component {
 class _RegistrationRoot extends React.Component {
   async componentDidMount() {
     // Settings.
-    const { currencySymbol, currencyCode, updateAppSettings } = this.props;
+    PaymentGatewayVersion.initFromWidgetProps(this.props);
+
+    const { currencySymbol, currencyCode } = this.props;
     const currency = currencySymbol ? { code: currencyCode, symbol: currencySymbol } : undefined;
-    updateAppSettings({
+
+    this.props.updateAppSettings({
       storeId: this.props.storeId,
       seriesId: this.props.seriesId,
       prevSeriesId: this.props.prevSeriesId,
@@ -80,6 +84,7 @@ class _RegistrationRoot extends React.Component {
       calcFeesFn: this.props.calcFeesFn,
       languages: this.props.languages,
       currency: currency,
+      confirmPageUrl: this.props.confirmPageUrl,
       addressFinderKey: this.props.addressFinderKey,
       addressFinderCountry: this.props.addressFinderCountry,
       loqateKey: this.props.loqateKey,
@@ -120,6 +125,23 @@ class _RegistrationRoot extends React.Component {
       ClaretyApi.setAuth(jwtAccount.jwtString);
       setAuth(jwtAccount.jwtString);
       await fetchAuthCustomer();
+    }
+
+    // Check for payment-failed flag in url.
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('payment-failed') === '1') {
+      // a payment flow using a redirect has failed, and the user has been redirected back to try again.
+      const jwtSession = getJwtSession()
+      if (jwtSession && jwtSession.jwtString) {
+        RegistrationApi.setJwtSession(jwtSession.jwtString);
+        const fetchedRegistration = await this.props.fetchPendingRegistration();
+        if (fetchedRegistration) {
+          this.props.showPaymentPanelOnly();
+          this.props.setErrors([
+            { message: 'Payment failed, please try again' },
+          ]);
+        }
+      }
     }
 
     this.fetchInitData();
@@ -193,15 +215,16 @@ const mapStateToProps = state => {
 
 const actions = {
   updateAppSettings: updateAppSettings,
-
   setAuth: setAuth,
   initTrackingData: initTrackingData,
+  setErrors: setErrors,
   setFundraising: setFundraising,
-
   fetchEvents: fetchEvents,
   fetchFullEvent: fetchFullEvent,
   fetchSettings: fetchSettings,
   fetchAuthCustomer: fetchAuthCustomer,
+  fetchPendingRegistration: fetchPendingRegistration,
+  showPaymentPanelOnly: showPaymentPanelOnly,
 };
 
 const RegistrationRoot = connect(mapStateToProps, actions)(_RegistrationRoot);

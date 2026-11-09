@@ -63,7 +63,13 @@ function toString(classOrString) {
 }
 
 function removePanels(state, action) {
-  return state.filter(panel => panel.component !== action.withComponent);
+  if (action.withComponent) {
+    return state.filter(panel => panel.component !== action.withComponent);
+  } else if (action.exceptForComponent) {
+    return state.filter(panel => panel.component === action.exceptForComponent);
+  } else {
+    return state;
+  }
 }
 
 function setPanelStatus(state, action) {
