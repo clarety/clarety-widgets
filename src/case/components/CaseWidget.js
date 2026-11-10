@@ -87,6 +87,7 @@ export class _CaseWidgetRoot extends React.Component {
       defaultCountry:       this.props.defaultCountry,
       addressFinderKey:     this.props.addressFinderKey,
       addressFinderCountry: this.props.addressFinderCountry,
+      mainSiteUrl:          this.props.mainSiteUrl,
     });
 
     this.props.initTrackingData(this.props);
