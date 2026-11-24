@@ -6,4 +6,5 @@ export * from './events-actions';
 export * from './participants-actions';
 export * from './paypal-actions';
 export * from './registration-actions';
+export * from './stripe-actions';
 export * from './teams-actions';

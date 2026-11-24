@@ -13,9 +13,10 @@ export const insertPanels = ({ afterComponent, atIndex, panels }) => ({
   panels: panels,
 });
 
-export const removePanels = ({ withComponent }) => ({
+export const removePanels = ({ withComponent, exceptForComponent }) => ({
   type: types.removePanels,
   withComponent: withComponent,
+  exceptForComponent: exceptForComponent,
 });
 
 export const setPanelStatus = (index, status) => ({

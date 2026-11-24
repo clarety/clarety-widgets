@@ -58,6 +58,24 @@ export const authoriseStripePayment = (paymentResult, paymentData, paymentMethod
   };
 };
 
+export function getStripePaymentFormDetails(elementsResult) {
+  const paymentMethod = elementsResult.selectedPaymentMethod;
+
+  if (paymentMethod === 'apple_pay') {
+    return { paymentMethod: 'card', walletType: 'apple-pay' };
+  }
+
+  if (paymentMethod === 'google_pay') {
+    return { paymentMethod: 'card', walletType: 'google-pay' };
+  }
+
+  if (paymentMethod === 'link') {
+    return { paymentMethod: 'card', walletType: 'stripe-link' };
+  }
+
+  return { paymentMethod, walletType: undefined };
+}
+
 const createStripeSingleToken = async (paymentData, paymentMethod) => {
   const { stripe, elements } = paymentData;
 
@@ -140,8 +158,8 @@ const createStripePaymentMethod = async (paymentData, paymentMethod) => {
   return {
     error: result.error,
     token: result.paymentMethod ? result.paymentMethod.id : undefined,
+    type: result.paymentMethod ? result.paymentMethod.type : undefined,
   };
-
 }
 
 function getStripeBillingDetails(paymentData) {

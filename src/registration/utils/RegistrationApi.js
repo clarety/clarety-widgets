@@ -14,6 +14,10 @@ export class RegistrationApi {
     ClaretyApi.setJwtCustomer(jwtCustomer);
   }
 
+  static setJwtSession(jwtSession) {
+    ClaretyApi.setJwtSession(jwtSession);
+  }
+
   // Events
 
   static async fetchEvents() {
@@ -90,6 +94,11 @@ export class RegistrationApi {
   }
 
   // Registration
+
+  static async fetchPendingRegistration() {
+    const results = await ClaretyApi.get('registration-sale/', { storeId: this.storeId });
+    return results[0];
+  }
 
   static async createRegistration(data) {
     const results = await ClaretyApi.post('registration-sale/', data, { storeId: this.storeId });
