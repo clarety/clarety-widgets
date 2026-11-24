@@ -62,15 +62,15 @@ export function getStripePaymentFormDetails(elementsResult) {
   const paymentMethod = elementsResult.selectedPaymentMethod;
 
   if (paymentMethod === 'apple_pay') {
-    return { paymentMethod: 'wallet', walletType: 'apple-pay' };
+    return { paymentMethod: 'card', walletType: 'apple-pay' };
   }
 
   if (paymentMethod === 'google_pay') {
-    return { paymentMethod: 'wallet', walletType: 'google-pay' };
+    return { paymentMethod: 'card', walletType: 'google-pay' };
   }
 
   if (paymentMethod === 'link') {
-    return { paymentMethod: 'wallet', walletType: 'stripe-link' };
+    return { paymentMethod: 'card', walletType: 'stripe-link' };
   }
 
   return { paymentMethod, walletType: undefined };

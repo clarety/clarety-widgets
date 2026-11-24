@@ -10,6 +10,7 @@ import { statuses, setStore, initTrackingData, fetchSettings, updateAppSettings,
 import { getPaymentAuthModalUrl } from 'shared/selectors';
 import { PanelManager, StepIndicator, PaymentAuthModal } from 'shared/components';
 import { getJwtCustomer, getJwtAccount, Resources, convertOptions, setApiFacebookCookies, PaymentGatewayVersion, getJwtSession } from 'shared/utils';
+import { setErrors } from 'form/actions';
 import { Recaptcha } from 'form/components';
 import { handleAmountUrlParam, selectDefaultECard, selectFrequency } from 'donate/actions';
 import { rootReducer } from 'donate/reducers';
@@ -211,6 +212,11 @@ export class _DonateWidgetRoot extends React.Component {
         DonationApi.setJwtSession(jwtSession.jwtString);
         authResult.hasCustomerAuth = true;
         authResult.hasSaleAuth = true;
+
+        this.props.setErrors([
+          { message: 'Payment failed, please try again' },
+        ]);
+
         return authResult;
       }
     }
@@ -275,6 +281,7 @@ const actions = {
   initTrackingData: initTrackingData,
   fetchSettings: fetchSettings,
   updateAppSettings: updateAppSettings,
+  setErrors: setErrors,
   handleAmountUrlParam: handleAmountUrlParam,
   setApiCampaignUids: setApiCampaignUids,
   fetchCustomer: fetchCustomer,
